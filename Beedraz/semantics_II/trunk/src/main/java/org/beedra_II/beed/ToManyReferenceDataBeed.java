@@ -1,11 +1,12 @@
 package org.beedra_II.beed;
 
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.BeedraBean;
-
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
@@ -17,11 +18,15 @@ import org.beedra_II.BeedraBean;
  *
  * @invar getProject() != null ? getProject.getTasks().contains(this);
  */
-public class ToManyReferenceBeed<_One_ extends BeedraBean,
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
+public class ToManyReferenceDataBeed<_One_ extends BeedraBean,
                                  _Many_ extends BeedraBean>
-    extends AbstractBeed<_One_, _Many_> {
+    extends AbstractBeed<_One_, Set<_Many_>> {
 
-  public ToManyReferenceBeed(_One_ bean) {
+  public ToManyReferenceDataBeed(_One_ bean) {
     super(bean);
   }
 
@@ -38,7 +43,7 @@ public class ToManyReferenceBeed<_One_ extends BeedraBean,
     $many.remove(many);
   }
 
-  private Set<_Many_> $many = new HashSet<_Many_>();
+  private final Set<_Many_> $many = new HashSet<_Many_>();
 
 }
 

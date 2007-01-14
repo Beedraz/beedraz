@@ -1,6 +1,13 @@
 package org.beedra_II.beed;
 
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
+
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface BeedChangeListener<_BeedChangeEvent_ extends BeedChangeEvent> {
 
   /**

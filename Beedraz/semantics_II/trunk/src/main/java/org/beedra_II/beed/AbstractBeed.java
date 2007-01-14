@@ -5,8 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.BeedraBean;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class AbstractBeed<_BeedraBean_ extends BeedraBean, _Value_>
     implements Beed<_BeedraBean_, _Value_> {
 
@@ -25,7 +30,7 @@ public abstract class AbstractBeed<_BeedraBean_ extends BeedraBean, _Value_>
   /**
    * @invar $bean != null;
    */
-  private _BeedraBean_ $bean;
+  private final _BeedraBean_ $bean;
 
   public final boolean isChangeListener(BeedChangeListener<BeedChangeEvent<_Value_>> listener) {
     return $changeListeners.contains(listener);

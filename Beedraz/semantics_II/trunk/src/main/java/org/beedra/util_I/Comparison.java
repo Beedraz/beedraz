@@ -1,6 +1,13 @@
 package org.beedra.util_I;
 
 
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
+
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public abstract class Comparison {
 
   /**

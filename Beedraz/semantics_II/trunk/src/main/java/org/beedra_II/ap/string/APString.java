@@ -1,7 +1,7 @@
 package org.beedra_II.ap.string;
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.ImmutableValueBeed;
+import org.beedra_II.beed.ImmutableValueDataBeed;
 
 
 
@@ -16,7 +16,7 @@ import org.beedra_II.beed.ImmutableValueBeed;
  */
 @Deprecated
 public class APString<_BeedraBean_ extends BeedraBean>
-    extends ImmutableValueBeed<_BeedraBean_, String> {
+    extends ImmutableValueDataBeed<_BeedraBean_, String> {
 
   public APString(_BeedraBean_ bean) {
     super(bean);

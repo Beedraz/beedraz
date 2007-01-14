@@ -2,6 +2,8 @@ package org.beedra_II.beed;
 
 
 import org.beedra_II.BeedraBean;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
+
 import static org.beedra.util_I.Comparison.equalsWithNull;
 
 
@@ -12,10 +14,14 @@ import static org.beedra.util_I.Comparison.equalsWithNull;
  * civilization
  * propagation
  */
-public abstract class MutableValueBeed<_BeedraBean_ extends BeedraBean, _Value_ extends Cloneable>
-    extends AbstractMutableBeed<_BeedraBean_, _Value_> {
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
+public abstract class MutableValueDataBeed<_BeedraBean_ extends BeedraBean, _Value_ extends Cloneable>
+    extends AbstractDataBeed<_BeedraBean_, _Value_> {
 
-  public MutableValueBeed(_BeedraBean_ bean) {
+  public MutableValueDataBeed(_BeedraBean_ bean) {
     super(bean);
   }
 

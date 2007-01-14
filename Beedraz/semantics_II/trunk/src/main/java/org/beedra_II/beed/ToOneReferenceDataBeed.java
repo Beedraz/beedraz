@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.beedra_II.BeedraBean;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
@@ -16,11 +17,15 @@ import org.beedra_II.BeedraBean;
  *
  * @invar getProject() != null ? getProject.getTasks().contains(this);
  */
-public class ToOneReferenceBeed<_One_ extends BeedraBean,
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
+public class ToOneReferenceDataBeed<_One_ extends BeedraBean,
                                 _Many_ extends BeedraBean>
-    extends AbstractMutableBeed<_Many_, _One_> {
+    extends AbstractDataBeed<_Many_, _One_> {
 
-  public ToOneReferenceBeed(_Many_ bean, String toManyPropertyName) {
+  public ToOneReferenceDataBeed(_Many_ bean, String toManyPropertyName) {
     super(bean);
     assert toManyPropertyName != null;
     $toManyPropertyName = toManyPropertyName;
@@ -36,7 +41,7 @@ public class ToOneReferenceBeed<_One_ extends BeedraBean,
     return $toManyRef.getBean();
   }
 
-  public final ToManyReferenceBeed<_One_, _Many_> getToManyReference() {
+  public final ToManyReferenceDataBeed<_One_, _Many_> getToManyReference() {
     return $toManyRef;
   }
 
@@ -56,7 +61,7 @@ public class ToOneReferenceBeed<_One_ extends BeedraBean,
     }
   }
 
-  private ToManyReferenceBeed<_One_, _Many_> toManyRef(_One_ one,
+  private ToManyReferenceDataBeed<_One_, _Many_> toManyRef(_One_ one,
                                                        String toManyPropertyName) {
     if (one == null) {
       return null;
@@ -78,7 +83,7 @@ public class ToOneReferenceBeed<_One_ extends BeedraBean,
     }
   }
 
-  private ToManyReferenceBeed<_One_, _Many_> $toManyRef;
+  private ToManyReferenceDataBeed<_One_, _Many_> $toManyRef;
 
 }
 

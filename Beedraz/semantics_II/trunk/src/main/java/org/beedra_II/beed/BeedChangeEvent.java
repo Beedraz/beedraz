@@ -2,6 +2,7 @@ package org.beedra_II.beed;
 
 
 import org.beedra_II.BeedraBean;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
@@ -10,6 +11,10 @@ import org.beedra_II.BeedraBean;
  * @note in Swing, the UndoableEdit is wrapped in the UndoableEditEvent, instead of inheritance; should we do this?
  * @todo consider making this type final, to enforce immutability
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class BeedChangeEvent<_Value_> {
 
   /*
@@ -48,7 +53,7 @@ public class BeedChangeEvent<_Value_> {
   /**
    * @invar $source != null;
    */
-  private Beed<? extends BeedraBean, _Value_> $source;
+  private final Beed<? extends BeedraBean, _Value_> $source;
 
   /**
    * @basic
@@ -57,7 +62,7 @@ public class BeedChangeEvent<_Value_> {
     return $oldValue;
   }
 
-  private _Value_ $oldValue;
+  private final _Value_ $oldValue;
 
   /**
    * @basic
@@ -66,7 +71,7 @@ public class BeedChangeEvent<_Value_> {
     return $newValue;
   }
 
-  private _Value_ $newValue;
+  private final _Value_ $newValue;
 
 }
 

@@ -1,8 +1,8 @@
 package org.beedra.example.beedra;
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.ImmutableValueBeed;
-import org.beedra_II.beed.ToManyReferenceBeed;
+import org.beedra_II.beed.ImmutableValueDataBeed;
+import org.beedra_II.beed.ToManyReferenceDataBeed;
 
 /**
  * To be added
@@ -13,11 +13,11 @@ import org.beedra_II.beed.ToManyReferenceBeed;
  */
 public class Project implements BeedraBean {
 
-  public final ImmutableValueBeed<Project, String> name =
-      new ImmutableValueBeed<Project, String>(this);
+  public final ImmutableValueDataBeed<Project, String> name =
+      new ImmutableValueDataBeed<Project, String>(this);
 
-  public final ToManyReferenceBeed<Project, Task> tasks =
-      new ToManyReferenceBeed<Project, Task>(this);
+  public final ToManyReferenceDataBeed<Project, Task> tasks =
+      new ToManyReferenceDataBeed<Project, Task>(this);
 
 }
 

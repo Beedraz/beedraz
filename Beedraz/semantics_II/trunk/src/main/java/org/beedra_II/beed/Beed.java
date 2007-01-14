@@ -1,18 +1,29 @@
 package org.beedra_II.beed;
 
+
 import org.beedra_II.BeedraBean;
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
  * @invar getBean() != null;
  * @invar getBean() == this'getBean();
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public interface Beed<_BeedraBean_ extends BeedraBean, _Value_> {
 
   /**
    * @basic
    */
   _BeedraBean_ getBean();
+
+  /**
+   * @basic
+   */
+  _Value_ get();
 
   /**
    * @basic

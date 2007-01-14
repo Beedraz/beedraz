@@ -6,7 +6,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
 import org.beedra_II.BeedraBean;
-
+import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
@@ -14,6 +14,10 @@ import org.beedra_II.BeedraBean;
  * @note must be immutable
  * @note in Swing, the UndoableEdit is wrapped in the UndoableEditEvent, instead of inheritance; should we do this?
  */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
 public class UndoableBeedChangeEvent<_Value_>
     extends BeedChangeEvent<_Value_>
     implements UndoableEdit {
@@ -25,15 +29,15 @@ public class UndoableBeedChangeEvent<_Value_>
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post canUndo();
    */
-  public UndoableBeedChangeEvent(MutableBeed<? extends BeedraBean, _Value_> source, _Value_ oldValue, _Value_ newValue) {
+  public UndoableBeedChangeEvent(DataBeed<? extends BeedraBean, _Value_> source, _Value_ oldValue, _Value_ newValue) {
     super(source, oldValue, newValue);
   }
 
   /**
    * @basic
    */
-   public final MutableBeed<? extends BeedraBean, _Value_> getSource() {
-     return (MutableBeed<? extends BeedraBean, _Value_>)super.getSource();
+   public final DataBeed<? extends BeedraBean, _Value_> getSource() {
+     return (DataBeed<? extends BeedraBean, _Value_>)super.getSource();
    }
 
   /**

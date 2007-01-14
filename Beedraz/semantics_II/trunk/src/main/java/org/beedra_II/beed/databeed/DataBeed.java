@@ -1,7 +1,8 @@
-package org.beedra_II.beed;
+package org.beedra_II.beed.databeed;
 
 
 import org.beedra_II.BeedraBean;
+import org.beedra_II.beed.Beed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

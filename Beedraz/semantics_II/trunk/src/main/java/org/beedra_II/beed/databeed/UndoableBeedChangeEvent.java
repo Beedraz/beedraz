@@ -1,4 +1,4 @@
-package org.beedra_II.beed;
+package org.beedra_II.beed.databeed;
 
 
 import javax.swing.undo.CannotRedoException;
@@ -6,6 +6,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
 import org.beedra_II.BeedraBean;
+import org.beedra_II.beed.BeedChangeEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

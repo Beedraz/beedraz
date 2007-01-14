@@ -1,4 +1,4 @@
-package org.beedra_II.beed;
+package org.beedra_II.beed.association;
 
 
 import java.util.Collections;
@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.BeedraBean;
+import org.beedra_II.beed.AbstractBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

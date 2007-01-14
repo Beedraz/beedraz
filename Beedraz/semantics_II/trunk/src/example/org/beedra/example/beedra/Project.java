@@ -1,8 +1,8 @@
 package org.beedra.example.beedra;
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.ImmutableValueDataBeed;
-import org.beedra_II.beed.ToManyReferenceDataBeed;
+import org.beedra_II.beed.association.ToManyReferenceDataBeed;
+import org.beedra_II.beed.databeed.ImmutableValueDataBeed;
 
 /**
  * To be added

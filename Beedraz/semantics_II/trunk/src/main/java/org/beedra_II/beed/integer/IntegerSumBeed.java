@@ -1,19 +1,16 @@
 package org.beedra_II.beed.integer;
 
 
-import java.util.Collections;
+import static org.beedra.util_I.Comparison.equalsWithNull;
+
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.BeedraBean;
 import org.beedra_II.beed.AbstractBeed;
 import org.beedra_II.beed.BeedChangeEvent;
 import org.beedra_II.beed.BeedChangeListener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
-
-import static org.beedra.util_I.Comparison.equalsWithNull;
 
 
 /**

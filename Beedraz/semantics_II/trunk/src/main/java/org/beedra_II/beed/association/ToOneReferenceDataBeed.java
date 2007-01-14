@@ -1,10 +1,12 @@
-package org.beedra_II.beed;
+package org.beedra_II.beed.association;
 
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.beedra_II.BeedraBean;
+import org.beedra_II.beed.databeed.AbstractDataBeed;
+import org.beedra_II.beed.databeed.UndoableBeedChangeEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

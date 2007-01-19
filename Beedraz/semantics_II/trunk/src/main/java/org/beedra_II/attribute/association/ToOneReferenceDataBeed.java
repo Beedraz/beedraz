@@ -1,12 +1,12 @@
-package org.beedra_II.beed.association;
+package org.beedra_II.attribute.association;
 
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.databeed.AbstractDataBeed;
-import org.beedra_II.beed.databeed.UndoableBeedChangeEvent;
+import org.beedra_II.attribute.databeed.AbstractDataBeed;
+import org.beedra_II.attribute.databeed.UndoableBeedChangeEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -60,6 +60,7 @@ public class ToOneReferenceDataBeed<_One_ extends BeedraBean,
       UndoableBeedChangeEvent<_One_> event =
         new UndoableBeedChangeEvent<_One_>(this, oldValue, get());
       fireChangeEvent(event);
+      // MUDO events on the other side
     }
   }
 

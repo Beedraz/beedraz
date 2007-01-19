@@ -1,9 +1,9 @@
-package org.beedra_II.beed.integer;
+package org.beedra_II.attribute.integer;
 
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.databeed.DataBeed;
-import org.beedra_II.beed.databeed.ImmutableValueDataBeed;
+import org.beedra_II.attribute.databeed.DataBeed;
+import org.beedra_II.attribute.databeed.ImmutableValueDataBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

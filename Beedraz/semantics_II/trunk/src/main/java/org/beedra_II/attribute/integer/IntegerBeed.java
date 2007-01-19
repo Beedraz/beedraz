@@ -1,8 +1,8 @@
-package org.beedra_II.beed.integer;
+package org.beedra_II.attribute.integer;
 
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.Beed;
+import org.beedra_II.attribute.PropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -11,7 +11,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface IntegerBeed<_BeedraBean_ extends BeedraBean>
-    extends Beed<_BeedraBean_, Integer> {
+    extends PropertyBeed<_BeedraBean_, Integer> {
 
   // NOP
 

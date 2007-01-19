@@ -1,4 +1,4 @@
-package org.beedra_II.beed;
+package org.beedra_II.attribute;
 
 
 import java.util.HashSet;
@@ -12,13 +12,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractBeed<_BeedraBean_ extends BeedraBean, _Value_>
-    implements Beed<_BeedraBean_, _Value_> {
+public abstract class AbstractPropertyBeed<_BeedraBean_ extends BeedraBean, _Value_>
+    implements PropertyBeed<_BeedraBean_, _Value_> {
 
   /**
    * @pre bean != null;
    */
-  protected AbstractBeed(_BeedraBean_ bean) {
+  protected AbstractPropertyBeed(_BeedraBean_ bean) {
     assert bean != null;
     $bean = bean;
   }

@@ -1,4 +1,4 @@
-package org.beedra_II.beed;
+package org.beedra_II.attribute;
 
 
 import org.beedra_II.BeedraBean;
@@ -13,7 +13,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Beed<_BeedraBean_ extends BeedraBean, _Value_> {
+public interface PropertyBeed<_BeedraBean_ extends BeedraBean, _Value_> {
 
   /**
    * @basic

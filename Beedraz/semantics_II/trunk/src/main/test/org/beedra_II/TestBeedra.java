@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.beedra.example.beedra.Project;
 import org.beedra.example.beedra.Task;
-import org.beedra_II.beed.BeedChangeEvent;
-import org.beedra_II.beed.BeedChangeListener;
+import org.beedra_II.attribute.BeedChangeEvent;
+import org.beedra_II.attribute.BeedChangeListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

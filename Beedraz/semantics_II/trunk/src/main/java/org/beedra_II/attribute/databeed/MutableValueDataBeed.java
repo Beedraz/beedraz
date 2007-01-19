@@ -1,4 +1,4 @@
-package org.beedra_II.beed.databeed;
+package org.beedra_II.attribute.databeed;
 
 
 import org.beedra_II.BeedraBean;
@@ -18,13 +18,10 @@ import static org.beedra.util_I.Comparison.equalsWithNull;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class ImmutableValueDataBeed<_BeedraBean_ extends BeedraBean, _Value_>
+public abstract class MutableValueDataBeed<_BeedraBean_ extends BeedraBean, _Value_ extends Cloneable>
     extends AbstractDataBeed<_BeedraBean_, _Value_> {
 
-  /**
-   * @pre bean != null;
-   */
-  public ImmutableValueDataBeed(_BeedraBean_ bean) {
+  public MutableValueDataBeed(_BeedraBean_ bean) {
     super(bean);
   }
 
@@ -32,7 +29,7 @@ public class ImmutableValueDataBeed<_BeedraBean_ extends BeedraBean, _Value_>
    * @basic
    */
   public final _Value_ get() {
-    return $value;
+    return safeValueCopy($value);
   }
 
   /**
@@ -42,14 +39,24 @@ public class ImmutableValueDataBeed<_BeedraBean_ extends BeedraBean, _Value_>
   public final void set(_Value_ value) {
     if (! equalsWithNull(value, $value)) {
       _Value_ oldValue = $value;
-      $value = value;
+      $value = safeValueCopy(value);
       UndoableBeedChangeEvent<_Value_> event =
-          new UndoableBeedChangeEvent<_Value_>(this, oldValue, $value);
+          new UndoableBeedChangeEvent<_Value_>(this,
+                                               safeValueCopy(oldValue),
+                                               safeValueCopy($value));
       fireChangeEvent(event);
     }
   }
 
   private _Value_ $value;
+
+  /**
+   * Returns a safe copy of {@code original}.
+   * If {@code _Value_} is an immutable type, you can return original.
+   *
+   * @result equalsWithNull(result, original);
+   */
+  protected abstract _Value_ safeValueCopy(_Value_ original);
 
 }
 

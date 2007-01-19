@@ -1,4 +1,4 @@
-package org.beedra_II.beed.integer;
+package org.beedra_II.attribute.integer;
 
 
 import static org.beedra.util_I.Comparison.equalsWithNull;
@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.AbstractBeed;
-import org.beedra_II.beed.BeedChangeEvent;
-import org.beedra_II.beed.BeedChangeListener;
+import org.beedra_II.attribute.AbstractPropertyBeed;
+import org.beedra_II.attribute.BeedChangeEvent;
+import org.beedra_II.attribute.BeedChangeListener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -24,7 +24,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class IntegerSumBeed<_BeedraBean_ extends BeedraBean>
-    extends AbstractBeed<_BeedraBean_, Integer>
+    extends AbstractPropertyBeed<_BeedraBean_, Integer>
     implements IntegerBeed<_BeedraBean_> {
 
   /**

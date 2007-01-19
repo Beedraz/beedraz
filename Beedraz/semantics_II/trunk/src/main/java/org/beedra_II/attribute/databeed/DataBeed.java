@@ -1,13 +1,13 @@
-package org.beedra_II.beed.databeed;
+package org.beedra_II.attribute.databeed;
 
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.Beed;
+import org.beedra_II.attribute.PropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Beed} that holds data. Non-data beeds represent
+ * {@link PropertyBeed} that holds data. Non-data beeds represent
  * offer <em>derived</em> information.
  */
 @CvsInfo(revision = "$Revision$",
@@ -15,7 +15,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface DataBeed<_BeedraBean_ extends BeedraBean, _Value_>
-    extends Beed<_BeedraBean_, _Value_> {
+    extends PropertyBeed<_BeedraBean_, _Value_> {
 
   /**
    * @post get().equals(value);

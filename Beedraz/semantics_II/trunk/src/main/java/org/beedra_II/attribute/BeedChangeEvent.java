@@ -1,4 +1,4 @@
-package org.beedra_II.beed;
+package org.beedra_II.attribute;
 
 
 import org.beedra_II.BeedraBean;
@@ -24,7 +24,7 @@ public class BeedChangeEvent<_Value_> {
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post canUndo();
    */
-  public BeedChangeEvent(Beed<? extends BeedraBean, _Value_> source, _Value_ oldValue, _Value_ newValue) {
+  public BeedChangeEvent(PropertyBeed<? extends BeedraBean, _Value_> source, _Value_ oldValue, _Value_ newValue) {
     assert source != null;
     $source = source;
     $oldValue = oldValue;
@@ -40,20 +40,20 @@ public class BeedChangeEvent<_Value_> {
    * compound events, from different sources. But in
    * that case, the receiving listener has to be able
    * to work with different sources of different types
-   * in any case (i.e., of polymorph type {@link Beed}),
+   * in any case (i.e., of polymorph type {@link PropertyBeed}),
    * so knowing the exact type at compile time is not
    * relevant anyway.
    *
    * @basic
    */
-  public Beed<? extends BeedraBean, _Value_> getSource() {
+  public PropertyBeed<? extends BeedraBean, _Value_> getSource() {
     return $source;
   }
 
   /**
    * @invar $source != null;
    */
-  private final Beed<? extends BeedraBean, _Value_> $source;
+  private final PropertyBeed<? extends BeedraBean, _Value_> $source;
 
   /**
    * @basic

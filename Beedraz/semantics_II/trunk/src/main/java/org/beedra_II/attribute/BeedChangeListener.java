@@ -1,4 +1,4 @@
-package org.beedra_II.beed;
+package org.beedra_II.attribute;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;

@@ -1,4 +1,4 @@
-package org.beedra_II.beed.association;
+package org.beedra_II.attribute.association;
 
 
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.BeedraBean;
-import org.beedra_II.beed.AbstractBeed;
+import org.beedra_II.attribute.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -25,7 +25,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class ToManyReferenceDataBeed<_One_ extends BeedraBean,
                                  _Many_ extends BeedraBean>
-    extends AbstractBeed<_One_, Set<_Many_>> {
+    extends AbstractPropertyBeed<_One_, Set<_Many_>> {
 
   public ToManyReferenceDataBeed(_One_ bean) {
     super(bean);

@@ -79,6 +79,46 @@ public class Project {
     // events
   }
 
+  /**
+   * @basic
+   */
+  public final boolean isTasksChangeListener(TasksChangeListener listener) {
+    return $tasksChangeListeners.contains(listener);
+  }
+
+  /**
+   * @post isTasksChangeListener(listener);
+   */
+  public final void addNameChangeListener(TasksChangeListener listener) {
+    $tasksChangeListeners.add(listener);
+  }
+
+  /**
+   * @post ! isTasksChangeListener(listener);
+   */
+  public final void removeNameChangeListener(TasksChangeListener listener) {
+    $tasksChangeListeners.remove(listener);
+  }
+
+  void fireTaskAddedEvent(Task addedTask) {
+    TaskAddedEvent event = new TaskAddedEvent(this, "tasks", addedTask);
+    for (TasksChangeListener listener : $tasksChangeListeners) {
+      listener.taskAdded(event);
+      // same event, because is immutable
+    }
+  }
+
+  void fireTaskRemovedEvent(Task removedTask) {
+    TaskRemovedEvent event = new TaskRemovedEvent(this, "tasks", removedTask);
+    for (TasksChangeListener listener : $tasksChangeListeners) {
+      listener.taskRemoved(event);
+      // same event, because is immutable
+    }
+  }
+
+  private final Set<TasksChangeListener> $tasksChangeListeners = new HashSet<TasksChangeListener>();
+
+
   private final Set<Task> $tasks = new HashSet<Task>();
 
 }

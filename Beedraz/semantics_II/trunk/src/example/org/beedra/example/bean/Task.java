@@ -63,6 +63,12 @@ public class Task {
       listener.propertyChange(event);
       // same event, because is immutable
     }
+    if (oldValue != null) {
+      oldValue.fireTaskRemovedEvent(this);
+    }
+    if ($project != null) {
+      $project.fireTaskAddedEvent(this);
+    }
   }
 
   private final Set<ProjectChangeListener> $projectChangeListeners = new HashSet<ProjectChangeListener>();

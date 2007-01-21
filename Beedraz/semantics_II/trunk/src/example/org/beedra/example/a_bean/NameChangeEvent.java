@@ -1,4 +1,20 @@
-package org.beedra.example.bean;
+/*<license>
+Copyright 2007 - $Date$ by the authors mentioned below.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
+package org.beedra.example.a_bean;
 
 
 import javax.swing.undo.CannotRedoException;
@@ -13,7 +29,7 @@ import javax.swing.undo.UndoableEdit;
  * @note must be immutable
  * @note in Swing, the UndoableEdit is wrapped in the UndoableEditEvent, instead of inheritance; should we do this?
  */
-public class ProjectChangeEvent implements UndoableEdit {
+public class NameChangeEvent implements UndoableEdit {
 
   /*
    * @pre source != null;
@@ -23,7 +39,7 @@ public class ProjectChangeEvent implements UndoableEdit {
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post canUndo();
    */
-  public ProjectChangeEvent(Task source, String propertyName, Project oldValue, Project newValue) {
+  public NameChangeEvent(Project source, String propertyName, String oldValue, String newValue) {
     assert source != null;
     assert propertyName != null;
     $source = source;
@@ -35,14 +51,14 @@ public class ProjectChangeEvent implements UndoableEdit {
   /**
    * @basic
    */
-  public final Task getSource() {
+  public final Project getSource() {
     return $source;
   }
 
   /**
    * @invar $source != null;
    */
-  private Task $source;
+  private Project $source;
 
   /**
    * @basic
@@ -59,20 +75,20 @@ public class ProjectChangeEvent implements UndoableEdit {
   /**
    * @basic
    */
-  public final Project getOldValue() {
+  public final String getOldValue() {
     return $oldValue;
   }
 
-  private Project $oldValue;
+  private String $oldValue;
 
   /**
    * @basic
    */
-  public final Project getNewValue() {
+  public final String getNewValue() {
     return $newValue;
   }
 
-  private Project $newValue;
+  private String $newValue;
 
   /**
    * @return false;
@@ -115,7 +131,7 @@ public class ProjectChangeEvent implements UndoableEdit {
     if (! canUndo()) {
       throw new CannotUndoException();
     }
-    $source.setProject(getOldValue()); // sends event; ok? I think not????
+    $source.setName(getOldValue()); // sends event; ok? I think not????
     // try catch for validation; should not happen
     $done = false;
   }
@@ -124,7 +140,7 @@ public class ProjectChangeEvent implements UndoableEdit {
     if (! canRedo()) {
       throw new CannotRedoException();
     }
-    $source.setProject(getNewValue()); // sends event; ok? I think not????
+    $source.setName(getNewValue()); // sends event; ok? I think not????
     // try catch for validation; should not happen
     $done = true;
   }

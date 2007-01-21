@@ -1,4 +1,4 @@
-package org.beedra_II.attribute.integer;
+package org.beedra_II.property.integer;
 
 
 import static org.beedra.util_I.Comparison.equalsWithNull;
@@ -6,10 +6,10 @@ import static org.beedra.util_I.Comparison.equalsWithNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.beedra_II.BeedraBean;
-import org.beedra_II.attribute.AbstractPropertyBeed;
-import org.beedra_II.attribute.BeedChangeEvent;
-import org.beedra_II.attribute.BeedChangeListener;
+import org.beedra_II.BeedListener;
+import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.simple.OldNewBEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -23,7 +23,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class IntegerSumBeed<_BeedraBean_ extends BeedraBean>
+public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
     extends AbstractPropertyBeed<_BeedraBean_, Integer>
     implements IntegerBeed<_BeedraBean_> {
 
@@ -36,9 +36,9 @@ public class IntegerSumBeed<_BeedraBean_ extends BeedraBean>
     super(bean);
   }
 
-  private class Listener implements BeedChangeListener<BeedChangeEvent<Integer>> {
+  private class Listener implements BeedListener<OldNewBEvent<Integer>> {
 
-    public void propertyChange(BeedChangeEvent<Integer> event) {
+    public void propertyChange(OldNewBEvent<Integer> event) {
       recalculate();
       // MUDO optimization
     }
@@ -66,12 +66,12 @@ public class IntegerSumBeed<_BeedraBean_ extends BeedraBean>
         if (term.get() == null) { // new value is null, and it is a change, because $value was not null
           Integer oldValue = $value;
           $value = null;
-          fireChangeEvent(new BeedChangeEvent<Integer>(this, oldValue, null));
+          fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, null));
         }
         else { // old value and term not null, there is a new value, and it is old + term
           Integer oldValue = $value;
           $value += term.get();
-          fireChangeEvent(new BeedChangeEvent<Integer>(this, oldValue, $value));
+          fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, $value));
         }
       }
       // otherwise, there is an existing null term; the new term cannot change null value
@@ -96,7 +96,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeedraBean>
         assert term.get() != null;
         Integer oldValue = $value;
         $value -= term.get();
-        fireChangeEvent(new BeedChangeEvent<Integer>(this, oldValue, $value));
+        fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, $value));
       }
       /* else, term != null, but $value is null; this means there is another term that is null,
          and removing this term won't change that */
@@ -125,7 +125,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeedraBean>
     if (! equalsWithNull(newValue, $value)) {
       Integer oldValue = $value;
       $value = newValue;
-      fireChangeEvent(new BeedChangeEvent<Integer>(this, oldValue, newValue));
+      fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, newValue));
     }
   }
 

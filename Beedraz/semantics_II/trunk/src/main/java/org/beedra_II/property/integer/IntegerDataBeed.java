@@ -1,9 +1,9 @@
-package org.beedra_II.attribute.integer;
+package org.beedra_II.property.integer;
 
 
-import org.beedra_II.BeedraBean;
-import org.beedra_II.attribute.databeed.DataBeed;
-import org.beedra_II.attribute.databeed.ImmutableValueDataBeed;
+import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.property.databeed.DataBeed;
+import org.beedra_II.property.databeed.ImmutableValueDataBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -11,7 +11,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class IntegerDataBeed<_BeedraBean_ extends BeedraBean>
+public class IntegerDataBeed<_BeedraBean_ extends BeanBeed>
     extends ImmutableValueDataBeed<_BeedraBean_, Integer>
     implements IntegerBeed<_BeedraBean_>, DataBeed<_BeedraBean_, Integer> {
 

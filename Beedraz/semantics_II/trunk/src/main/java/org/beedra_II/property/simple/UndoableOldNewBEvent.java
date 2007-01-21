@@ -1,45 +1,52 @@
-package org.beedra_II.attribute.databeed;
+/*<license>
+Copyright 2007 - $Date$ by the authors mentioned below.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
+package org.beedra_II.property.simple;
 
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
-import org.beedra_II.BeedraBean;
-import org.beedra_II.attribute.BeedChangeEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * @invar getSource() != null;
- * @note must be immutable
- * @note in Swing, the UndoableEdit is wrapped in the UndoableEditEvent, instead of inheritance; should we do this?
+ * @mudo definition
+ *
+ * @author Jan Dockx
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class UndoableBeedChangeEvent<_Value_>
-    extends BeedChangeEvent<_Value_>
+public class UndoableOldNewBEvent<_Source_ extends SimplePDB<_Type_, UndoableOldNewBEvent<_Source_, _Type_>>,
+                                  _Type_>
+    extends OldNewBEvent<_Source_, _Type_>
     implements UndoableEdit {
 
-  /*
+  /**
    * @pre source != null;
    * @post getSource() == sourcel
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
-   * @post canUndo();
    */
-  public UndoableBeedChangeEvent(DataBeed<? extends BeedraBean, _Value_> source, _Value_ oldValue, _Value_ newValue) {
+  public UndoableOldNewBEvent(_Source_ source, _Type_ oldValue, _Type_ newValue) {
     super(source, oldValue, newValue);
   }
-
-  /**
-   * @basic
-   */
-   public final DataBeed<? extends BeedraBean, _Value_> getSource() {
-     return (DataBeed<? extends BeedraBean, _Value_>)super.getSource();
-   }
 
   /**
    * @return false;
@@ -82,7 +89,7 @@ public class UndoableBeedChangeEvent<_Value_>
     if (! canUndo()) {
       throw new CannotUndoException();
     }
-    getSource().set(getOldValue()); // sends event; ok? I think not????
+    getSource().set(getOldValue()); // MUDO sends event; ok? I think not????
     // try catch for validation; should not happen
     $done = false;
   }
@@ -91,7 +98,7 @@ public class UndoableBeedChangeEvent<_Value_>
     if (! canRedo()) {
       throw new CannotRedoException();
     }
-    getSource().set(getNewValue()); // sends event; ok? I think not????
+    getSource().set(getNewValue()); // MDUO sends event; ok? I think not????
     // try catch for validation; should not happen
     $done = true;
   }

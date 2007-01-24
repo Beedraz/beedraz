@@ -29,7 +29,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBeanBeed
-    extends AbstractBeed<BeanEvent>
+    extends AbstractBeed<BeanBeed, BeanEvent>
     implements BeanBeed {
 
   // NOP

@@ -19,7 +19,7 @@ package org.beedra_II.property;
 
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
-import org.beedra_II.BeedEvent;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -32,25 +32,27 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPropertyBeed<_Event_ extends BeedEvent<? extends PropertyBeed<_Event_>>>
-    extends AbstractBeed<_Event_>
-    implements PropertyBeed<_Event_> {
+public abstract class AbstractPropertyBeed<_EventSource_ extends PropertyBeed<_EventSource_, _Event_, _Owner_>,
+                                           _Event_ extends Event<_EventSource_, _Event_>,
+                                           _Owner_ extends Beed<?, ?>>
+    extends AbstractBeed<_EventSource_, _Event_>
+    implements PropertyBeed<_EventSource_, _Event_, _Owner_> {
 
   /**
    * @pre ownerBeed != null;
    */
-  protected AbstractPropertyBeed(Beed<?> ownerBeed) {
+  protected AbstractPropertyBeed(_Owner_ ownerBeed) {
     assert ownerBeed != null;
     $ownerBeed = ownerBeed;
   }
 
-  public Beed<?> getOwnerBeed() {
+  public _Owner_ getOwnerBeed() {
     return $ownerBeed;
   }
 
   /**
    * @invar $ownerBeed != null;
    */
-  private final Beed<?> $ownerBeed;
+  private final _Owner_ $ownerBeed;
 
  }

@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.beedra_II.BeedEvent;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.SimplePB;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -39,7 +39,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class SetEvent<_Element_, _Source_ extends SimplePB<Set<_Element_>, SetEvent<_Element_, _Source_>>>
-    extends BeedEvent<_Source_> {
+    extends Event<_Source_> {
 
   /**
    * @pre source != null;

@@ -24,10 +24,16 @@ import static org.junit.Assert.assertNull;
 
 import org.beedra.example.z_beedra.Project;
 import org.beedra.example.z_beedra.Task;
+import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
+import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.bean.BeanEvent;
+import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.association.BidirToManyPBeed;
 import org.beedra_II.property.association.BidirToOnePDoBeed;
 import org.beedra_II.property.set.SetEvent;
-import org.beedra_II.property.simple.StraightSimplePDB;
+import org.beedra_II.property.simple.Instantiable;
+import org.beedra_II.property.simple.SimpleEditablePB;
 import org.beedra_II.property.simple.UndoableOldNewBEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -35,6 +41,43 @@ import org.junit.Test;
 
 
 public class TestBeedra {
+
+//  public interface IBeed extends Beed<IBeed, Listener<IBeed, IEvent>, IEvent> {
+//
+//  }
+//
+////  public interface IListener extends Listener<IBeed, IListener, IEvent> {
+////
+////  }
+//
+//  public class IEvent extends Event<IBeed, Listener<IBeed, IEvent>, IEvent> {
+//
+//    public IEvent(IBeed source) {
+//      super(source);
+//      // TODO Auto-generated constructor stub
+//    }
+//
+//  }
+//
+//  {
+//
+//    IBeed beed = null;
+//    Event<IBeed, Listener<IBeed, IEvent>, ?> event1 = new IEvent(beed);
+//    Event<IBeed, ?, ?> event2 = new IEvent(beed);
+//    Event<?, ?, ?> event3 = new IEvent(beed);
+//
+//
+//    Listener<IBeed, IEvent> listener = new Listener<IBeed, IEvent>() {
+//
+//      public void beedChanged(IEvent event) {
+//        // TODO Auto-generated method stub
+//
+//      }
+//
+//    };
+//
+//  }
+
 
   @Before
   public void setUp() throws Exception {
@@ -60,13 +103,23 @@ public class TestBeedra {
    * problem? I am not interested in undoability. A listener for an BeedEvent should suffice.
    * ? super XXX?????
    */
-  class NameChangedListener implements BeedListener<UndoableOldNewBEvent<StraightSimplePDB<String>, String>> {
+  class NameChangedListener implements Listener<Instantiable<String, Project>, Event<Instantiable<String, Project>, ?>> {
 
-    public void beedChanged(UndoableOldNewBEvent<StraightSimplePDB<String>, String> event) {
+    public void beedChanged(Event<Instantiable<String, Project>, ?> event) {
       $event = event;
     }
 
-    public UndoableOldNewBEvent<StraightSimplePDB<String>, String> $event;
+    public Event<Instantiable<String, Project>, ?> $event;
+
+  }
+
+  class ProjectBeanChangedListener implements Listener<BeanBeed, BeanEvent> {
+
+    public void beedChanged(BeanEvent event) {
+      $event = event;
+    }
+
+    public BeanEvent $event;
 
   }
 
@@ -75,27 +128,52 @@ public class TestBeedra {
     Project project = new Project();
     NameChangedListener listener = new NameChangedListener();
     project.name.addChangeListener(listener);
+    ProjectBeanChangedListener projectListener = new ProjectBeanChangedListener();
+    project.addChangeListener(projectListener);
+
     project.name.set("TEST");
     assertNotNull(listener.$event);
     assertEquals(project.name, listener.$event.getSource());
     assertNull(listener.$event.getOldValue());
     assertEquals("TEST", listener.$event.getNewValue());
+    assertNotNull(projectListener.$event);
+    assertEquals(project, projectListener.$event.getSource());
+    assertEquals(listener.$event, projectListener.$event.getCause());
     assertEquals("TEST", project.name.get());
+
     listener.$event = null;
+    projectListener.$event = null;
+
     project.name.set("TEST");
     assertNull(listener.$event);
+    assertNull(projectListener.$event);
+
     project.name.set("TEST ANOTHER");
     assertEquals(project.name, listener.$event.getSource());
     assertEquals("TEST", listener.$event.getOldValue());
     assertEquals("TEST ANOTHER", listener.$event.getNewValue());
+    assertNotNull(projectListener.$event);
+    assertEquals(project, projectListener.$event.getSource());
+    assertEquals(listener.$event, projectListener.$event.getCause());
     assertEquals("TEST ANOTHER", project.name.get());
+
+    listener.$event = null;
+    projectListener.$event = null;
+    project.name.set(null);
+    assertEquals(project.name, listener.$event.getSource());
+    assertEquals("TEST ANOTHER", listener.$event.getOldValue());
+    assertEquals(null, listener.$event.getNewValue());
+    assertNotNull(projectListener.$event);
+    assertEquals(project, projectListener.$event.getSource());
+    assertEquals(listener.$event, projectListener.$event.getCause());
+    assertEquals(null, project.name.get());
   }
 
   /*
    * problem? I am not interested in undoability. A listener for an BeedEvent should suffice.
    * ? super XXX?????
    */
-  class ProjectChangedListener implements BeedListener<UndoableOldNewBEvent<BidirToOnePDoBeed<Project, Task>, Project>> {
+  class ProjectChangedListener implements Listener<UndoableOldNewBEvent<BidirToOnePDoBeed<Project, Task>, Project>> {
 
     public void beedChanged(UndoableOldNewBEvent<BidirToOnePDoBeed<Project, Task>, Project> event) {
       $event = event;
@@ -105,7 +183,7 @@ public class TestBeedra {
 
   }
 
-  class TasksChangedListener implements BeedListener<SetEvent<Task, BidirToManyPBeed<Project, Task>>> {
+  class TasksChangedListener implements Listener<SetEvent<Task, BidirToManyPBeed<Project, Task>>> {
 
     public void beedChanged(SetEvent<Task, BidirToManyPBeed<Project, Task>> event) {
       $event = event;
@@ -117,9 +195,20 @@ public class TestBeedra {
 
   @Test
   public void projectWithTask() {
+
+    Listener<Event<? extends Beed>> allroundListener = new Listener<Event<? extends Beed>>() {
+
+      public void beedChanged(Event<? extends Beed> event) {
+         System.out.println(event);
+      }
+
+    };
+
+
     Task task = new Task();
     ProjectChangedListener taskProjectListener = new ProjectChangedListener();
     task.project.addChangeListener(taskProjectListener);
+    task.project.addChangeListener(allroundListener);
     assertNull(task.project.get());
     assertTrue(task.project.isChangeListener(taskProjectListener));
 
@@ -133,6 +222,11 @@ public class TestBeedra {
     assertNotNull(project1.tasks.get());
     assertTrue(project1.tasks.get().isEmpty());
     assertTrue(project1.tasks.isChangeListener(project1TasksListener));
+
+//    BeedEvent<? extends AbstractPropertyBeed<SetEvent<Task, BidirToManyPBeed<Project, Task>>>> betest = new SetEvent<Task, BidirToManyPBeed<Project, Task>>(project1.tasks, null, null);
+////    betest.setSource();
+//    Beed<?> source = betest.getSource();
+//    System.out.println(source);
 
     task.project.set(project1);
     assertNotNull(taskProjectListener.$event);
@@ -214,7 +308,12 @@ public class TestBeedra {
     assertTrue(project1.tasks.get().isEmpty());
     assertNotNull(project2.tasks.get());
     assertTrue(project2.tasks.get().isEmpty());
+
+
   }
+
+
+  Listener<Event<? extends Beed>> listener;
 
 }
 

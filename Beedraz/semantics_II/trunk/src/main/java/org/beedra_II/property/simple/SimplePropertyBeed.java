@@ -14,45 +14,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property;
+package org.beedra_II.property.simple;
 
 
 import org.beedra_II.Beed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.PropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * <p>{@link Beed Beeds} <em>of
- *   another beed</em>. They are <em>owned</em>
- *   (see {@link #getOwnerBeed()}), they do not exist on their own.</p>
- * <p>{@code PropertyBeeds} are like properties
- *   of JavaBeans. The JavaBean is the owner of the
- *   property.</p>
- * <p>Events send by {@code PropertyBeeds} are just
- *   {@link Event BeedEvents}.</p>
+ * <p>A {@link PropertyBeed} whose state is expressed
+ *   by one {@link #get() value} of type {@code _Type_}.
+ *   In general, the state can be {@link #get() retrieved},
+ *   but explicitly setting state requires a subtype.</p>
+ * <p>{@code SimplePropertyBeed SimplePropertyBeeds} send
+ *   {@link Event BeedEvents}. Most {@code SimplePropertyBeed SimplePropertyBeeds}
+ *   send {@link OldNewEvent OldNewBeedEvents}.</p>
  *
  * @author Jan Dockx
- *
- * @invar getOwner() != null;
- * @invar getOwner() == this'getOwner();
- *
- * @mudo since the owner os not always a Bean, other name? owned beed? weak beed?
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeed<_EventSource_ extends PropertyBeed<_EventSource_, _Event_, _Owner_>,
-                              _Event_ extends Event<_EventSource_, _Event_>,
-                              _Owner_ extends Beed<?, ?>>
-    extends Beed<_EventSource_, _Event_> {
+public interface SimplePropertyBeed<_Type_ extends Object,
+                                    _EventSource_ extends SimplePropertyBeed<_Type_, _EventSource_, _Event_, _Owner_>,
+                                    _Event_ extends Event<_EventSource_, _Event_>,
+                                    _Owner_ extends Beed<?, ?>>
+    extends PropertyBeed<_EventSource_, _Event_, _Owner_> {
 
   /**
    * @basic
-   * @mudo _Owner_ extends Beed<?>
    */
-  _Owner_ getOwnerBeed();
+  _Type_ get();
 
 }
 

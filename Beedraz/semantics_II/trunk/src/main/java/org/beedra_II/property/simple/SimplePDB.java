@@ -19,8 +19,8 @@ package org.beedra_II.property.simple;
 
 import javax.swing.undo.UndoableEdit;
 
-import org.beedra_II.BeedEvent;
-import org.beedra_II.DoBeed;
+import org.beedra_II.EditableBeed;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -29,13 +29,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * by the user.
  *
  * @author Jan Dockx
+ *
+ * @deprecated
  */
+@Deprecated
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SimplePDB<_Type_, _Event_ extends BeedEvent<? extends SimplePDB<_Type_, _Event_>> & UndoableEdit>
-    extends SimplePB<_Type_, _Event_>, DoBeed<_Event_> {
+public interface SimplePDB<_Type_, _Event_ extends Event<? extends SimplePDB<_Type_, _Event_>> & UndoableEdit>
+    extends SimplePB<_Type_, _Event_>, EditableBeed<_Event_> {
 
   /**
    * @post get().equals(t);

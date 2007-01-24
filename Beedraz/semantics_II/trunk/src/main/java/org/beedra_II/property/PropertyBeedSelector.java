@@ -25,12 +25,15 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * <p>Selects a {@link PropertyBeed} from a beed owner.</p>
  *
  * @author Jan Dockx
+ *
+ * @mudo both generics in arguments and return type! watch out!
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeedSelector<_Owner_ extends Beed<?>, _PBeed_ extends PropertyBeed<?>> {
+public interface PropertyBeedSelector<_Owner_ extends Beed<?, ?>,
+                                      _PBeed_ extends PropertyBeed<?, ?, _Owner_>> {
 
   /**
    * @basic

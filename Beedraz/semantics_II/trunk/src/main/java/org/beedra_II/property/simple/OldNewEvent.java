@@ -17,12 +17,12 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import org.beedra_II.BeedEvent;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link BeedEvent} that carries a simple old and new value,
+ * {@link Event} that carries a simple old and new value,
  * expressing the changed that occured in {@link #getSource()}.
  * The {@link #getSource() source} must be a {@link SimplePB}.
  *
@@ -32,9 +32,10 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class OldNewBEvent<_Source_ extends SimplePB<_Type_, ? extends OldNewBEvent<_Source_, _Type_>>,
-                          _Type_>
-    extends BeedEvent<_Source_> {
+public class OldNewEvent<_Type_,
+                         _Source_ extends SimplePropertyBeed<_Type_, _Source_, _Event_, ?>,
+                         _Event_ extends OldNewEvent<_Type_, _Source_, _Event_>>
+    extends Event<_Source_, _Event_> {
 
   /**
    * @pre source != null;
@@ -42,7 +43,7 @@ public class OldNewBEvent<_Source_ extends SimplePB<_Type_, ? extends OldNewBEve
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public OldNewBEvent(_Source_ source, _Type_ oldValue, _Type_ newValue) {
+  public OldNewEvent(_Source_ source, _Type_ oldValue, _Type_ newValue) {
     super(source);
     $oldValue = oldValue;
     $newValue = newValue;

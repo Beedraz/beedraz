@@ -1,8 +1,8 @@
 package org.beedra_II.property.integer;
 
 
-import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.property.PropertyBeed;
+import org.beedra_II.property.simple.OldNewEvent;
+import org.beedra_II.property.simple.SimplePB;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -10,8 +10,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface IntegerBeed<_BeedraBean_ extends BeanBeed>
-    extends PropertyBeed<_BeedraBean_, Integer> {
+public interface IntegerBeed
+    extends SimplePB<Integer, OldNewEvent<?extends IntegerBeed, Integer>> {
 
   // NOP
 

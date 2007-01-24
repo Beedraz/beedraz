@@ -17,9 +17,8 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import static org.beedra.util_I.Comparison.equalsWithNull;
-
 import org.beedra_II.Beed;
+import org.beedra_II.EditableBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -34,14 +33,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class StraightSimplePDB<_Type_>
-    extends AbstractPropertyBeed<UndoableOldNewBEvent<StraightSimplePDB<_Type_>, _Type_>>
-    implements SimplePDB<_Type_, UndoableOldNewBEvent<StraightSimplePDB<_Type_>, _Type_>> {
+public class SimpleEditablePropertyBeed<_Type_,
+                                        _EventSource_ extends SimpleEditablePropertyBeed<_Type_, _EventSource_, _Owner_>,
+                                        _Owner_ extends Beed<?, ?>>
+    extends AbstractPropertyBeed<_EventSource_, OldNewEdit<_Type_, _EventSource_>, _Owner_>
+    implements SimplePropertyBeed<_Type_, _EventSource_, OldNewEdit<_Type_, _EventSource_>, _Owner_>,
+               EditableBeed<_EventSource_, OldNewEdit<_Type_, _EventSource_>> {
 
   /**
    * @pre ownerBeed != null;
    */
-  public StraightSimplePDB(Beed<?> ownerBeed) {
+  public SimpleEditablePropertyBeed(_Owner_ ownerBeed) {
     super(ownerBeed);
   }
 
@@ -56,15 +58,26 @@ public class StraightSimplePDB<_Type_>
    * @post value != null ? get().equals(value) : get() == null;
    * @post ; all registred ap change listeners are warned
    */
-  public final void set(_Type_ t) {
-    if (! equalsWithNull(t, $t)) {
-      _Type_ oldValue = $t;
-      $t = safeValueCopy(t);
-      UndoableOldNewBEvent<StraightSimplePDB<_Type_>, _Type_> event =
-        new UndoableOldNewBEvent<StraightSimplePDB<_Type_>, _Type_>(
-            this, safeValueCopy(oldValue), safeValueCopy($t));
-      fireChangeEvent(event);
-    }
+  void assign(_Type_ t) {
+    $t = t;
+//    if (! equalsWithNull(t, $t)) {
+//      _Type_ oldValue = $t;
+//      $t = safeValueCopy(t);
+////      _Source_ andI = this;
+////      SimpleEditablePropertyBeed<_Type_, _Source_>  myself = this;
+////      SimpleEditablePropertyBeed<_Type_, SimpleEditablePropertyBeed<_Type_,_Source_>>  me = this;
+////      me = myself;
+////      myself = me;
+//      OldNewEdit<_Type_, _Source_> event = new OldNewEdit<_Type_, _Source_>(this, safeValueCopy(oldValue), safeValueCopy($t));
+////      UndoableOldNewEvent<_Type_, _Source_> event =
+////          new UndoableOldNewEvent<_Type_, _Source_>(this, safeValueCopy(oldValue), safeValueCopy($t));
+//      fireChangeEvent(event);
+//    }
+  }
+
+
+  void packageFireChangeEvent(OldNewEdit<_Type_, _EventSource_> edit) {
+    super.fireChangeEvent(edit);
   }
 
   private _Type_ $t;

@@ -17,9 +17,11 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import org.beedra.util_I.Comparison;
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoableEdit;
+import org.beedra_II.edit.Edit;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -33,10 +35,10 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class UndoableOldNewBEvent<_Source_ extends SimplePDB<_Type_, UndoableOldNewBEvent<_Source_, _Type_>>,
-                                  _Type_>
-    extends OldNewBEvent<_Source_, _Type_>
-    implements UndoableEdit {
+public final class OldNewEdit<_Type_,
+                              _Source_ extends SimpleEditablePropertyBeed<_Type_, _Source_, ?>>
+//    extends OldNewEvent<_Type_, _Source_, OldNewEdit<_Type_, _Source_>>
+    extends Edit<_Source_, OldNewEdit<_Type_, _Source_>> {
 
   /**
    * @pre source != null;
@@ -44,21 +46,37 @@ public class UndoableOldNewBEvent<_Source_ extends SimplePDB<_Type_, UndoableOld
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public UndoableOldNewBEvent(_Source_ source, _Type_ oldValue, _Type_ newValue) {
-    super(source, oldValue, newValue);
+  public OldNewEdit(_Source_ source, _Type_ oldValue, _Type_ newValue) {
+    super(source);
+//    super(source, oldValue, newValue);
+    $newValue = newValue;
+  }
+
+  public _Type_ getNewValue() {
+    return $newValue;
+  }
+
+  private _Type_ $newValue;
+
+  public void perform() {
+    _Type_ oldValue = getSource().get();
+    if (! Comparison.<_Type_>equalsWithNull(oldValue, getNewValue())) {
+      getSource().assign(getSource().safeValueCopy(getNewValue()));
+    }
+    getSource().packageFireChangeEvent(this);
   }
 
   /**
    * @return false;
    */
-  public final boolean addEdit(UndoableEdit anEdit) {
+  public final boolean addEdit(Edit<?, ?> anEdit) {
     return false;
   }
 
   /**
    * @return false;
    */
-  public boolean replaceEdit(UndoableEdit anEdit) {
+  public boolean replaceEdit(Edit<?, ?> anEdit) {
     return false;
   }
 
@@ -89,7 +107,7 @@ public class UndoableOldNewBEvent<_Source_ extends SimplePDB<_Type_, UndoableOld
     if (! canUndo()) {
       throw new CannotUndoException();
     }
-    getSource().set(getOldValue()); // MUDO sends event; ok? I think not????
+//    getSource().set(getOldValue()); // MUDO sends event; ok? I think not????
     // try catch for validation; should not happen
     $done = false;
   }
@@ -98,7 +116,7 @@ public class UndoableOldNewBEvent<_Source_ extends SimplePDB<_Type_, UndoableOld
     if (! canRedo()) {
       throw new CannotRedoException();
     }
-    getSource().set(getNewValue()); // MDUO sends event; ok? I think not????
+//    getSource().set(getNewValue()); // MDUO sends event; ok? I think not????
     // try catch for validation; should not happen
     $done = true;
   }
@@ -110,8 +128,9 @@ public class UndoableOldNewBEvent<_Source_ extends SimplePDB<_Type_, UndoableOld
   private boolean $alive = true;
 
   public final String getPresentationName() {
-    return "Setting XXXX from \"" + getOldValue() + // MUDO
-            "\" to \"" + getNewValue() + "\"";
+    return "EDIT";
+//    return "Setting XXXX from \"" + getOldValue() + // MUDO
+//            "\" to \"" + getNewValue() + "\"";
     // i18n
   }
 

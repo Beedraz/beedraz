@@ -18,9 +18,7 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.property.PropertyBeedSelector;
-import org.beedra_II.property.association.BidirToManyPBeed;
-import org.beedra_II.property.simple.StraightSimplePDB;
+import org.beedra_II.property.simple.Instantiable;
 
 
 /**
@@ -32,20 +30,45 @@ import org.beedra_II.property.simple.StraightSimplePDB;
  */
 public class Project extends AbstractBeanBeed {
 
-  public final StraightSimplePDB<String> name =
-      new StraightSimplePDB<String>(this);
+  public final Instantiable<String, Project> name = new Instantiable<String, Project>(this);
 
-  public final BidirToManyPBeed<Project, Task> tasks =
-      new BidirToManyPBeed<Project, Task>(this);
-
-  public final static PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>> tasksSelector =
-    new PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>>() {
-
-            public BidirToManyPBeed<Project, Task> getPropertyBeed(Project owner) {
-              assert owner != null;
-              return owner.tasks;
-            }
-        };
+//  public final BidirToManyPBeed<Project, Task> tasks =
+//      new BidirToManyPBeed<Project, Task>(this);
+//
+//  public final static PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>> tasksSelector =
+//    new PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>>() {
+//
+//            public BidirToManyPBeed<Project, Task> getPropertyBeed(Project owner) {
+//              assert owner != null;
+//              return owner.tasks;
+//            }
+//        };
+//
+//  private class NameChangedListener implements Listener<UndoableOldNewBEvent<SimpleEditablePB<String>, String>> {
+//
+//    public void beedChanged(UndoableOldNewBEvent<SimpleEditablePB<String>, String> event) {
+//      fireChangeEvent(new BeanEvent(Project.this, event));
+//    }
+//
+//  }
+//
+//  private class TasksChangedListener implements Listener<SetEvent<Task, BidirToManyPBeed<Project, Task>>> {
+//
+//    public void beedChanged(SetEvent<Task, BidirToManyPBeed<Project, Task>> event) {
+//      fireChangeEvent(new BeanEvent(Project.this, event));
+//    }
+//
+//  }
+//
+//  private NameChangedListener $ncl = new NameChangedListener();
+//  {
+//    name.addChangeListener($ncl);
+//  }
+//
+//  private TasksChangedListener $tcl = new TasksChangedListener();
+//  {
+//    tasks.addChangeListener($tcl);
+//  }
 
 }
 

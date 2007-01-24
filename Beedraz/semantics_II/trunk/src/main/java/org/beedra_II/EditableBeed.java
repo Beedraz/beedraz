@@ -17,8 +17,7 @@ limitations under the License.
 package org.beedra_II;
 
 
-import javax.swing.undo.UndoableEdit;
-
+import org.beedra_II.edit.Edit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -35,8 +34,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface DoBeed<_Event_ extends BeedEvent<? extends DoBeed<_Event_>> & UndoableEdit>
-    extends Beed<_Event_> {
+public interface EditableBeed<_EventSource_ extends EditableBeed<_EventSource_, _Edit_>,
+                              _Edit_ extends Edit<_EventSource_, _Edit_>>
+    extends Beed<_EventSource_, _Edit_>{
 
   // NOP
 

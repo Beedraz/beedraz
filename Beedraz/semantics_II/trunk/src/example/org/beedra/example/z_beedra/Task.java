@@ -18,8 +18,7 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.property.association.BidirToOnePDoBeed;
-import org.beedra_II.property.simple.StraightSimplePDB;
+import org.beedra_II.property.simple.Instantiable;
 
 
 /**
@@ -31,11 +30,11 @@ import org.beedra_II.property.simple.StraightSimplePDB;
  */
 public class Task extends AbstractBeanBeed {
 
-  public final StraightSimplePDB<String> name =
-      new StraightSimplePDB<String>(this);
+  public final Instantiable<String, Task> name =
+      new Instantiable<String, Task>(this);
 
-  public final BidirToOnePDoBeed<Project, Task> project =
-      new BidirToOnePDoBeed<Project, Task>(this, Project.tasksSelector);
+//  public final BidirToOnePDoBeed<Project, Task> project =
+//      new BidirToOnePDoBeed<Project, Task>(this, Project.tasksSelector);
 
 }
 

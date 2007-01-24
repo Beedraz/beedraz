@@ -6,10 +6,11 @@ import static org.beedra.util_I.Comparison.equalsWithNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.beedra_II.BeedListener;
+import org.beedra_II.Beed;
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.simple.OldNewBEvent;
+import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -23,24 +24,24 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
-    extends AbstractPropertyBeed<_BeedraBean_, Integer>
-    implements IntegerBeed<_BeedraBean_> {
+public class IntegerSumBeed
+    extends AbstractPropertyBeed<OldNewEvent<? extends IntegerSumBeed, Integer>>
+    implements IntegerBeed {
 
   /**
    * @pre bean != null;
    * @pre Collections.noNull(terms);
    * @post get() == 0;
    */
-  public IntegerSumBeed(_BeedraBean_ bean) {
+  public IntegerSumBeed(Beed<?> bean) {
     super(bean);
   }
 
-  private class Listener implements BeedListener<OldNewBEvent<Integer>> {
+  private class Listener implements Listener<OldNewEvent<? extends IntegerBeed, Integer>> {
 
-    public void propertyChange(OldNewBEvent<Integer> event) {
+    public void beedChanged(OldNewEvent<? extends IntegerBeed, Integer> event) {
       recalculate();
-      // MUDO optimization
+      // TODO Auto-generated method stub
     }
 
   }
@@ -48,7 +49,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
   /**
    * @basic
    */
-  public final boolean isTerm(IntegerBeed<?> term) {
+  public final boolean isTerm(IntegerBeed term) {
     return $terms.keySet().contains(term);
   }
 
@@ -56,7 +57,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
    * @pre term != null;
    * @post isTerm(term);
    */
-  public final void addTerm(IntegerBeed<?> term) {
+  public final void addTerm(IntegerBeed term) {
     assert term != null;
     synchronized (term) { // MUDO is this correct?
       Listener listener = new Listener();
@@ -66,12 +67,12 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
         if (term.get() == null) { // new value is null, and it is a change, because $value was not null
           Integer oldValue = $value;
           $value = null;
-          fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, null));
+          fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, null));
         }
         else { // old value and term not null, there is a new value, and it is old + term
           Integer oldValue = $value;
           $value += term.get();
-          fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, $value));
+          fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, $value));
         }
       }
       // otherwise, there is an existing null term; the new term cannot change null value
@@ -81,7 +82,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
   /**
    * @post ! isTerm(term);
    */
-  public final void removeTerm(IntegerBeed<?> term) {
+  public final void removeTerm(IntegerBeed term) {
     synchronized (term) { // MUDO is this correct?
       Listener listener = $terms.get(term);
       term.removeChangeListener(listener);
@@ -96,7 +97,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
         assert term.get() != null;
         Integer oldValue = $value;
         $value -= term.get();
-        fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, $value));
+        fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, $value));
       }
       /* else, term != null, but $value is null; this means there is another term that is null,
          and removing this term won't change that */
@@ -107,7 +108,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<IntegerBeed<?>, Listener> $terms = new HashMap<IntegerBeed<?>, Listener>();
+  private final Map<IntegerBeed, Listener> $terms = new HashMap<IntegerBeed, Listener>();
 
   public Integer get() {
     return $value;
@@ -115,7 +116,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
 
   private void recalculate() {
     Integer newValue = 0;
-    for (IntegerBeed<?> term : $terms.keySet()) {
+    for (IntegerBeed term : $terms.keySet()) {
       Integer termValue = term.get();
       if (termValue == null) {
         newValue = null;
@@ -125,7 +126,7 @@ public class IntegerSumBeed<_BeedraBean_ extends BeanBeed>
     if (! equalsWithNull(newValue, $value)) {
       Integer oldValue = $value;
       $value = newValue;
-      fireChangeEvent(new OldNewBEvent<Integer>(this, oldValue, newValue));
+      fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, newValue));
     }
   }
 

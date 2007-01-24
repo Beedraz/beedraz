@@ -20,6 +20,8 @@ package org.beedra_II;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -32,27 +34,29 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractBeed<_Event_ extends BeedEvent<? extends Beed<_Event_>>>
-    implements Beed<_Event_> {
+public abstract class AbstractBeed<_EventSource_ extends Beed<_EventSource_, _Event_>,
+                                   _Event_ extends Event<_EventSource_, _Event_>>
+    implements Beed<_EventSource_, _Event_> {
 
-  public final boolean isChangeListener(BeedListener<_Event_> listener) {
+  public final boolean isChangeListener(Listener<_EventSource_, ? super _Event_> listener) {
     return $changeListeners.contains(listener);
   }
 
-  public final void addChangeListener(BeedListener<_Event_> listener) {
+  public final void addChangeListener(Listener<_EventSource_, ? super _Event_> listener) {
     assert listener != null;
     $changeListeners.add(listener);
   }
 
-  public final void removeChangeListener(BeedListener<_Event_> listener) {
+  public final void removeChangeListener(Listener<_EventSource_, ? super _Event_> listener) {
     $changeListeners.remove(listener);
   }
 
   protected final void fireChangeEvent(_Event_ event) {
-    for (BeedListener<_Event_> listener : $changeListeners) {
+    for (Listener<_EventSource_, ? super _Event_> listener : $changeListeners) {
       listener.beedChanged(event);
       // same event, because is immutable
       // MUDO needs Dijkstra implementation !!
+      // mudo unlock event
     }
   }
 
@@ -60,7 +64,7 @@ public abstract class AbstractBeed<_Event_ extends BeedEvent<? extends Beed<_Eve
    * @invar $changeListeners != null;
    * @invar Collections.noNull($changeListeners);
    */
-  private final Set<BeedListener<_Event_>> $changeListeners =
-      new HashSet<BeedListener<_Event_>>();
+  private final Set<Listener<_EventSource_, ? super _Event_>> $changeListeners =
+      new HashSet<Listener<_EventSource_, ? super _Event_>>();
 
 }

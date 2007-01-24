@@ -14,24 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.bean;
+package org.beedra_II.event;
 
 
-import org.beedra_II.event.Event;
+import org.beedra_II.Beed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Event fired by {@link BeanBeed BeanBeeds} when
- * they change.
+ * <p>Events that reports an indirect change, triggered by an event on
+ *   another source. Changes of a beed might propagate to other beeds,
+ *   e.g., if a a component changes, also the aggregate is considered
+ *   changed.</p>
  *
- * @invar getCause() != null;
+ * @author Jan Dockx
+ *
+ * @invar getSource() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BeanEvent extends Event<BeanBeed, BeanEvent> {
+public abstract class DerivedEvent<_Source_ extends Beed<_Source_, _Event_>,
+                                   _Event_ extends Event<_Source_, _Event_>>
+    extends Event<_Source_, _Event_> {
 
   /**
    * @pre source != null;
@@ -39,23 +45,22 @@ public class BeanEvent extends Event<BeanBeed, BeanEvent> {
    * @post getSource() == source;
    * @post getCause() == cause;
    */
-  public BeanEvent(BeanBeed source, Event<?, ?> cause) {
+  public DerivedEvent(_Source_ source, Event<?, ? extends Beed> cause) {
     super(source);
-    assert cause != null;
     $cause = cause;
   }
 
   /**
    * @basic
    */
-  public Event<?, ?> getCause() {
+  public final Event<?, ? extends Beed> getCause() {
     return $cause;
   }
 
   /**
    * @invar $cause != null;
    */
-  private Event<?, ?> $cause;
+  private final Event<?, ? extends Beed> $cause;
 
 }
 

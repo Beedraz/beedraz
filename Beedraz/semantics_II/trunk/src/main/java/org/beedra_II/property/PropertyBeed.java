@@ -19,13 +19,14 @@ package org.beedra_II.property;
 
 import org.beedra_II.Beed;
 import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
  * <p>{@link Beed Beeds} <em>of
  *   another beed</em>. They are <em>owned</em>
- *   (see {@link #getOwnerBeed()}), they do not exist on their own.</p>
+ *   (see {@link #getOwner()}), they do not exist on their own.</p>
  * <p>{@code PropertyBeeds} are like properties
  *   of JavaBeans. The JavaBean is the owner of the
  *   property.</p>
@@ -43,16 +44,26 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeed<_EventSource_ extends PropertyBeed<_EventSource_, _Event_, _Owner_>,
-                              _Event_ extends Event<_EventSource_, _Event_>,
-                              _Owner_ extends Beed<?, ?>>
-    extends Beed<_EventSource_, _Event_> {
+public interface PropertyBeed<_Event_ extends Event>
+    extends Beed<_Event_> {
 
   /**
    * @basic
-   * @mudo _Owner_ extends Beed<?>
    */
-  _Owner_ getOwnerBeed();
+  Beed<?> getOwner();
+
+  /**
+   * This beed will send an event of type {@code _Event_} during listener
+   * registration. This event will carry the current state of the beed as
+   * &quot;new&quot; information, and the &quot;old&quot; information in
+   * the event will be {@code null} or some other form of N/A. If you don't
+   * want initial events, use {@link #addListener(Listener)} instead.
+   *
+   * @pre listener != null;
+   * @post isListener(listener);
+   * @post initialEvent ? exists (_Event_ event) {listener.beedChanged(event)};
+   */
+  void addListenerInitialEvent(Listener<? super _Event_> listener);
 
 }
 

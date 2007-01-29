@@ -20,6 +20,7 @@ package org.beedra_II.property;
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -32,27 +33,42 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPropertyBeed<_EventSource_ extends PropertyBeed<_EventSource_, _Event_, _Owner_>,
-                                           _Event_ extends Event<_EventSource_, _Event_>,
-                                           _Owner_ extends Beed<?, ?>>
-    extends AbstractBeed<_EventSource_, _Event_>
-    implements PropertyBeed<_EventSource_, _Event_, _Owner_> {
+public abstract class AbstractPropertyBeed<_Event_ extends Event>
+    extends AbstractBeed<_Event_>
+    implements PropertyBeed<_Event_> {
 
   /**
-   * @pre ownerBeed != null;
+   * @pre owner != null;
    */
-  protected AbstractPropertyBeed(_Owner_ ownerBeed) {
-    assert ownerBeed != null;
-    $ownerBeed = ownerBeed;
+  protected AbstractPropertyBeed(Beed<?> owner) {
+    assert owner != null;
+    $owner = owner;
   }
 
-  public _Owner_ getOwnerBeed() {
-    return $ownerBeed;
+  public final Beed<?> getOwner() {
+    return $owner;
   }
 
   /**
-   * @invar $ownerBeed != null;
+   * @invar $owner != null;
    */
-  private final _Owner_ $ownerBeed;
+  private final Beed<?> $owner;
+
+  public final void addListenerInitialEvent(Listener<? super _Event_> listener) {
+    assert listener != null;
+    listener.beedChanged(createInitialEvent());
+    addListener(listener);
+  }
+
+  /**
+   * Create a fresh event of type {@code _Event_};
+   * it will be sent to a listener that is registering, and
+   * should carry the current value as new value, and {@code null} or
+   * N/A as old value.
+   *
+   * @return result != null;
+   */
+  protected abstract _Event_ createInitialEvent();
+
 
  }

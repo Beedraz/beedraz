@@ -34,7 +34,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface BeanBeed extends Beed<BeanBeed, BeanEvent> {
+public interface BeanBeed extends Beed<BeanEvent> {
+
+  // NOP
 
 }
 

@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.bean;
 
 
+import org.beedra_II.event.DerivedEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -31,7 +32,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BeanEvent extends Event<BeanBeed, BeanEvent> {
+public class BeanEvent extends DerivedEvent {
 
   /**
    * @pre source != null;
@@ -39,23 +40,9 @@ public class BeanEvent extends Event<BeanBeed, BeanEvent> {
    * @post getSource() == source;
    * @post getCause() == cause;
    */
-  public BeanEvent(BeanBeed source, Event<?, ?> cause) {
-    super(source);
-    assert cause != null;
-    $cause = cause;
+  public BeanEvent(BeanBeed changedBeed, Event cause) {
+    super(changedBeed, cause);
   }
-
-  /**
-   * @basic
-   */
-  public Event<?, ?> getCause() {
-    return $cause;
-  }
-
-  /**
-   * @invar $cause != null;
-   */
-  private Event<?, ?> $cause;
 
 }
 

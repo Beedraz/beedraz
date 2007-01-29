@@ -32,6 +32,27 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   appropriate {@link Edit}, which is then {@link Edit#execute() executed}
  *   at the appropriate time. Beeds should never offer public methods
  *   that allow to change directly the semantic state they hold.</p>
+ * <p>Generic type invocations define the super type of the events they send.
+ *   This static type is defined by the type parameter {@code _Event_}.
+ *   Registered listeners should be able to accept events of type
+ *   {@code _Event_}, its subtypes or its supertypes, but since the type of
+ *   events being send is only guaranteed to be {@code _Event_}, only listeners
+ *   that are content with events of type {@code _Event_} or less specific
+ *   are accepted. The actual type parameter {@code _Event_} in concrete
+ *   generic invocations has to be a subtype of
+ *
+ *   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *
+ *   {@link Event}{@code &lt;? super _This_&gt;}, which means that the event
+ *   type has to declare the static type of the beeds that can send it
+ *   as the generic invocation itself or one of its supertypes.
+ *   In the current type, {@code _This_} is Beed<_Event_>. Subtypes and
+ *   generic invocations can declare a stronger
+ *
+ *   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *
+ *   class of actual event sent > _Event_
+ *
  * <p>Concrete beeds define exactly which type of concrete events they send
  *   via generic parameter {@code _Event_} (and concrete {@code Event events}
  *   define exactly which kind of Beed is their source; the Beed and {@link Event}
@@ -58,25 +79,24 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Beed<_EventSource_ extends Beed<_EventSource_, _Event_>,
-                      _Event_ extends Event<_EventSource_, _Event_>> {
+public interface Beed<_Event_ extends Event> {
 
   /**
    * @basic
-   * @init foreach (Listener&lt;? super _Event_&gt; l) { ! isChangeListener(l)};
+   * @init foreach (Listener&lt;? super _Event_&gt; l) { ! isListener(l)};
    */
-  boolean isChangeListener(Listener<_EventSource_, ? super _Event_> listener);
+  boolean isListener(Listener<? super _Event_> listener);
 
   /**
    * @pre listener != null;
-   * @post isChangeListener(listener);
+   * @post isListener(listener);
    */
-  void addChangeListener(Listener<_EventSource_, ? super _Event_> listener);
+  void addListener(Listener<? super _Event_> listener);
 
   /**
-   * @post ! isChangeListener(listener);
+   * @post ! isListener(listener);
    */
-  void removeChangeListener(Listener<_EventSource_, ? super _Event_> listener);
+  void removeListener(Listener<? super _Event_> listener);
 
 }
 

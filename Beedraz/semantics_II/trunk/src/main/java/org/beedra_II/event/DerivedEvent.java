@@ -22,22 +22,22 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * <p>Events that reports an indirect change, triggered by an event on
+ * <p>Events that report an indirect change, triggered by an event on
  *   another source. Changes of a beed might propagate to other beeds,
- *   e.g., if a a component changes, also the aggregate is considered
+ *   e.g., if a component changes, also the aggregate is considered
  *   changed.</p>
  *
  * @author Jan Dockx
  *
- * @invar getSource() != null;
+ * @invar getCause() != null;
+ * @invar getSource() instanceof Beed<? extends DerivedEvent>;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class DerivedEvent<_Source_ extends Beed<_Source_, _Event_>,
-                                   _Event_ extends Event<_Source_, _Event_>>
-    extends Event<_Source_, _Event_> {
+public abstract class DerivedEvent
+    extends AbstractEvent {
 
   /**
    * @pre source != null;
@@ -45,22 +45,23 @@ public abstract class DerivedEvent<_Source_ extends Beed<_Source_, _Event_>,
    * @post getSource() == source;
    * @post getCause() == cause;
    */
-  public DerivedEvent(_Source_ source, Event<?, ? extends Beed> cause) {
+  protected DerivedEvent(Beed<? extends DerivedEvent> source, Event cause) {
     super(source);
+    assert cause != null;
     $cause = cause;
   }
 
   /**
    * @basic
    */
-  public final Event<?, ? extends Beed> getCause() {
+  public final Event getCause() {
     return $cause;
   }
 
   /**
    * @invar $cause != null;
    */
-  private final Event<?, ? extends Beed> $cause;
+  private final Event $cause;
 
 }
 

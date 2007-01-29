@@ -53,19 +53,34 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   the {@code _Source_} and subtypes.</p>
  *
  * @author Jan Dockx
- *
- * @invar getSource() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Event {
+public abstract class AbstractEvent
+    implements Event {
+
+  /**
+   * @pre source != null;
+   * @post getSource() == source;
+   */
+  protected AbstractEvent(Beed<? extends Event> source) {
+    assert source != null;
+    $source = source;
+  }
 
   /**
    * @basic
    */
-  Beed<?> getSource();
+  public final Beed<? extends Event> getSource() {
+    return $source;
+  }
+
+  /**
+   * @invar $source != null;
+   */
+  private final Beed<? extends Event> $source;
 
 }
 

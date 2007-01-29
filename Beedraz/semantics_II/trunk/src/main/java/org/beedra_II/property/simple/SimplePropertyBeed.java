@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import org.beedra_II.Beed;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.PropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -33,16 +32,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   send {@link OldNewEvent OldNewBeedEvents}.</p>
  *
  * @author Jan Dockx
+ *
+ * @invar getSource() instanceof SimplePropertyBeed<_Type_, GeneralOldNewEvent<_Type_>>;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SimplePropertyBeed<_Type_ extends Object,
-                                    _EventSource_ extends SimplePropertyBeed<_Type_, _EventSource_, _Event_, _Owner_>,
-                                    _Event_ extends Event<_EventSource_, _Event_>,
-                                    _Owner_ extends Beed<?, ?>>
-    extends PropertyBeed<_EventSource_, _Event_, _Owner_> {
+public interface SimplePropertyBeed<_Type_,
+                                    _Event_ extends Event>
+    extends PropertyBeed<_Event_> {
 
   /**
    * @basic

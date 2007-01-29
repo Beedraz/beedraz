@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -32,17 +33,38 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public final class GeneralOldNewEvent<_Type_> extends AbstractEvent
+    implements OldNewEvent<_Type_> {
+
+  /**
+   * @pre source != null;
+   * @post getSource() == sourcel
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   */
+  public GeneralOldNewEvent(SimplePropertyBeed<_Type_, GeneralOldNewEvent<_Type_>> source, _Type_ oldValue, _Type_ newValue) {
+    super(source);
+    $oldValue = oldValue;
+    $newValue = newValue;
+  }
 
   /**
    * @basic
    */
-  _Type_ getOldValue();
+  public final _Type_ getOldValue() {
+    return $oldValue;
+  }
+
+  private final _Type_ $oldValue;
 
   /**
    * @basic
    */
-  _Type_ getNewValue();
+  public final _Type_ getNewValue() {
+    return $newValue;
+  }
+
+  private final _Type_ $newValue;
 
 }
 

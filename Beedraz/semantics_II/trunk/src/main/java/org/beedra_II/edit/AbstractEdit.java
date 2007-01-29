@@ -320,9 +320,12 @@ public abstract class AbstractEdit<_Target_ extends Beed<? extends EditEvent>>
     // NIY
   }
 
-  private void notifyListeners() {
-    getTarget().fireChangeEvent(createEditEvent());
-  }
+  /**
+   * Should be implemented as
+   * {@code getTarget().fireChangeEvent(createEditEvent());}.
+   *
+   */
+  protected abstract void notifyListeners();
 
   /**
    * MUDO docs

@@ -18,7 +18,7 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.property.simple.Instantiable;
+import org.beedra_II.property.simple.SimpleEditablePropertyBeed;
 
 
 /**
@@ -30,8 +30,11 @@ import org.beedra_II.property.simple.Instantiable;
  */
 public class Task extends AbstractBeanBeed {
 
-  public final Instantiable<String, Task> name =
-      new Instantiable<String, Task>(this);
+  public final SimpleEditablePropertyBeed<String> name = new SimpleEditablePropertyBeed<String>(this);
+
+  {
+    registerProperty(name);
+  }
 
 //  public final BidirToOnePDoBeed<Project, Task> project =
 //      new BidirToOnePDoBeed<Project, Task>(this, Project.tasksSelector);

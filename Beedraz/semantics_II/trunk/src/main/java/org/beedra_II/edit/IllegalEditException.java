@@ -14,37 +14,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.edit;
 
 
-import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * Exception thrown by an {@link Edit} during {@link Edit#perform()},
+ * {@link Edit#undo()} or {@link Edit#redo()} of an edit, when the
+ * method cannot complete for semantic reasons (i.e., the edit would
+ * make the beed invalid).
  *
- * @author Jan Dockx
- *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
+ * @author  Jan Dockx
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public class IllegalEditException extends EditException {
+  // MUDO extends SemanticException
 
   /**
-   * @basic
+   * @post Comparison.equalsWithNull(s, getMessage());
+   * @post getCause() == null;
+   * @post getEdit() == e;
    */
-  _Type_ getOldValue();
-
-  /**
-   * @basic
-   */
-  _Type_ getNewValue();
+  public IllegalEditException(Edit<?> e, String s) {
+    super(e, s);
+  }
 
 }
-

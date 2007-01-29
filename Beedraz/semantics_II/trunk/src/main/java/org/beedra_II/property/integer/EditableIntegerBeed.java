@@ -10,14 +10,14 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class IntegerDoBeed
+public class EditableIntegerBeed
     extends SimpleEditablePB<Integer>
     implements IntegerBeed {
 
   /**
    * @pre bean != null;
    */
-  public IntegerDoBeed(Beed<?> bean) {
+  public EditableIntegerBeed(Beed<?> bean) {
     super(bean);
   }
 

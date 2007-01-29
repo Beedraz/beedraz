@@ -14,37 +14,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.edit;
 
 
-import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * MUDO docs
  *
  * @author Jan Dockx
- *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public interface ValidityListener {
 
   /**
-   * @basic
+   * @pre target != null;
    */
-  _Type_ getOldValue();
+  void validityChanged(Edit<?> target, boolean newValidity);
 
   /**
-   * @basic
+   * Tells the listener that he has been removed as a validity listener
+   * from {@code target}. This happens when the {@code target} is
+   * {@link Edit#kill() killed} or {@likn Edit#perform() performed}.
+   *
+   * @pre target != null;
    */
-  _Type_ getNewValue();
+  void listenerRemoved(Edit<?> target);
 
 }
 

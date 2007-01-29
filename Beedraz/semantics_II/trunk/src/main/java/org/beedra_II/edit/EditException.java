@@ -14,37 +14,59 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.edit;
 
 
-import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * Exception thrown by an {@link Edit}.
  *
- * @author Jan Dockx
+ * @author  Jan Dockx
  *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
+ * @invar getEdit() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public abstract class EditException extends Exception {
+
+  /*<construction>*/
+  //-------------------------------------------------------
+
+  /**
+   * @post Comparison.equalsWithNull(s, getMessage());
+   * @post getCause() == null;
+   * @post getEdit() == e;
+   */
+  public EditException(Edit<?> e, String s) {
+    super(s);
+    $edit = e;
+  }
+
+  /*</construction>*/
+
+
+
+  /*<property name="edit">*/
+  //-------------------------------------------------------
 
   /**
    * @basic
    */
-  _Type_ getOldValue();
+  final public Edit<?> getEdit() {
+    return $edit;
+  }
 
   /**
-   * @basic
+   * The edit that triggered this exception.
+   *
+   * @invar	 $edit != null;
    */
-  _Type_ getNewValue();
+  private Edit<?> $edit;
+
+  /*</property>*/
 
 }
-

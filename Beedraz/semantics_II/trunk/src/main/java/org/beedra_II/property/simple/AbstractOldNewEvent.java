@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -27,24 +28,45 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
- *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public abstract class AbstractOldNewEvent<_Type_> extends AbstractEvent
+    implements OldNewEvent<_Type_> {
+
+  /**
+   * @pre source != null;
+   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+   * @post getSource() == sourcel
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   */
+  public AbstractOldNewEvent(SimplePropertyBeed<_Type_, ? extends AbstractOldNewEvent<_Type_>> source, _Type_ oldValue, _Type_ newValue) {
+    super(source);
+    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+    $oldValue = oldValue;
+    $newValue = newValue;
+  }
 
   /**
    * @basic
    */
-  _Type_ getOldValue();
+  public final _Type_ getOldValue() {
+    return $oldValue;
+  }
+
+  private final _Type_ $oldValue;
 
   /**
    * @basic
    */
-  _Type_ getNewValue();
+  public final _Type_ getNewValue() {
+    return $newValue;
+  }
+
+  private final _Type_ $newValue;
 
 }
 

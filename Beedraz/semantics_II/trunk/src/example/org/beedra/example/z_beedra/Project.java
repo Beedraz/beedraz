@@ -18,7 +18,9 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.property.simple.Instantiable;
+import org.beedra_II.property.integer.EditableIntegerBeed;
+import org.beedra_II.property.integer.IntegerSumBeed;
+import org.beedra_II.property.simple.SimpleEditablePropertyBeed;
 
 
 /**
@@ -30,9 +32,34 @@ import org.beedra_II.property.simple.Instantiable;
  */
 public class Project extends AbstractBeanBeed {
 
-  public final Instantiable<String, Project> name = new Instantiable<String, Project>(this);
+  public final SimpleEditablePropertyBeed<String> name = new SimpleEditablePropertyBeed<String>(this);
 
-//  public final BidirToManyPBeed<Project, Task> tasks =
+  {
+    registerProperty(name); // MUDO this should be done in the constructor of the SEPB
+  }
+
+  public final EditableIntegerBeed numberOfDaysAnalysis = new EditableIntegerBeed(this);
+
+  {
+    registerProperty(numberOfDaysAnalysis);
+  }
+
+  public final EditableIntegerBeed numberOfDaysDevelopment = new EditableIntegerBeed(this);
+
+  {
+    registerProperty(numberOfDaysDevelopment);
+  }
+
+  public final IntegerSumBeed numberOfDays = new IntegerSumBeed(this);
+
+  {
+    numberOfDays.addTerm(numberOfDaysAnalysis);
+    numberOfDays.addTerm(numberOfDaysDevelopment);
+    registerProperty(numberOfDays); // problem: bean event must be compound, not 2 different events
+  }
+
+
+  //  public final BidirToManyPBeed<Project, Task> tasks =
 //      new BidirToManyPBeed<Project, Task>(this);
 //
 //  public final static PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>> tasksSelector =
@@ -44,13 +71,6 @@ public class Project extends AbstractBeanBeed {
 //            }
 //        };
 //
-//  private class NameChangedListener implements Listener<UndoableOldNewBEvent<SimpleEditablePB<String>, String>> {
-//
-//    public void beedChanged(UndoableOldNewBEvent<SimpleEditablePB<String>, String> event) {
-//      fireChangeEvent(new BeanEvent(Project.this, event));
-//    }
-//
-//  }
 //
 //  private class TasksChangedListener implements Listener<SetEvent<Task, BidirToManyPBeed<Project, Task>>> {
 //
@@ -60,10 +80,6 @@ public class Project extends AbstractBeanBeed {
 //
 //  }
 //
-//  private NameChangedListener $ncl = new NameChangedListener();
-//  {
-//    name.addChangeListener($ncl);
-//  }
 //
 //  private TasksChangedListener $tcl = new TasksChangedListener();
 //  {

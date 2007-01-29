@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property.string;
 
 
 import org.beedra_II.event.Event;
+import org.beedra_II.property.simple.AbstractOldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -28,23 +29,23 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
+ * @invar getSource() instanceof IntegerBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public final class StringEvent extends AbstractOldNewEvent<String> {
 
   /**
-   * @basic
+   * @pre source != null;
+   * @post getSource() == sourcel
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  _Type_ getOldValue();
-
-  /**
-   * @basic
-   */
-  _Type_ getNewValue();
+  public StringEvent(StringBeed source, String oldValue, String newValue) {
+    super(source, oldValue, newValue);
+  }
 
 }
 

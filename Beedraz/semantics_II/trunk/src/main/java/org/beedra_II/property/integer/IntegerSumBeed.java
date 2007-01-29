@@ -1,16 +1,29 @@
+/*<license>
+Copyright 2007 - $Date$ by the authors mentioned below.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
 package org.beedra_II.property.integer;
 
-
-import static org.beedra.util_I.Comparison.equalsWithNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.beedra_II.Beed;
-import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.simple.OldNewEvent;
+import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -25,23 +38,35 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class IntegerSumBeed
-    extends AbstractPropertyBeed<OldNewEvent<? extends IntegerSumBeed, Integer>>
+    extends AbstractPropertyBeed<IntegerEvent>
     implements IntegerBeed {
 
   /**
-   * @pre bean != null;
-   * @pre Collections.noNull(terms);
+   * @pre source != null;
    * @post get() == 0;
+   * @post (forall IntegerBeed t) {! isTerm(t)};
    */
-  public IntegerSumBeed(Beed<?> bean) {
-    super(bean);
+  public IntegerSumBeed(Beed<?> source) {
+    super(source);
   }
 
-  private class Listener implements Listener<OldNewEvent<? extends IntegerBeed, Integer>> {
+  private class TermListener implements Listener<IntegerEvent> {
 
-    public void beedChanged(OldNewEvent<? extends IntegerBeed, Integer> event) {
-      recalculate();
-      // TODO Auto-generated method stub
+    public void beedChanged(IntegerEvent event) {
+      // recalculate(); optimization
+      Integer oldValue = $value;
+      if ($value !=  null) {
+        assert $value != null;
+        assert event.getOldValue() != null :
+          "event old value must be not null because all old terms were not null," +
+          " because $value != null";
+        $value = (event.getNewValue() == null) ? null : $value + event.getDelta();
+      }
+      else if ((event.getNewValue() != null) && (event.getOldValue() == null)) {
+        recalculate();
+      }
+      // else: NOP
+      fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, null));
     }
 
   }
@@ -49,7 +74,7 @@ public class IntegerSumBeed
   /**
    * @basic
    */
-  public final boolean isTerm(IntegerBeed term) {
+  public final boolean isTerm(SimplePropertyBeed<Integer, ?> term) {
     return $terms.keySet().contains(term);
   }
 
@@ -60,20 +85,14 @@ public class IntegerSumBeed
   public final void addTerm(IntegerBeed term) {
     assert term != null;
     synchronized (term) { // MUDO is this correct?
-      Listener listener = new Listener();
-      $terms.put(term, listener);
+      TermListener termListener = new TermListener();
+      term.addListener(termListener);
+      $terms.put(term, termListener);
       // recalculate(); optimization
       if ($value != null) {
-        if (term.get() == null) { // new value is null, and it is a change, because $value was not null
-          Integer oldValue = $value;
-          $value = null;
-          fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, null));
-        }
-        else { // old value and term not null, there is a new value, and it is old + term
-          Integer oldValue = $value;
-          $value += term.get();
-          fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, $value));
-        }
+        Integer oldValue = $value;
+        $value = (term.get() == null) ? null : $value + term.get(); // MUDO overflow
+        fireChangeEvent(new IntegerEvent(this, oldValue, $value));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
     }
@@ -84,23 +103,26 @@ public class IntegerSumBeed
    */
   public final void removeTerm(IntegerBeed term) {
     synchronized (term) { // MUDO is this correct?
-      Listener listener = $terms.get(term);
-      term.removeChangeListener(listener);
-      $terms.remove(term);
-      // recalculate(); optimization
-      if (term.get() == null) {
-        /* $value was null because of this term, or because there are more terms
-           we can't know, recalculate completely */
-        recalculate();
-      }
-      else if ($value != null) { // old value and term not null, there is a new value, and it is old - term
-        assert term.get() != null;
+      TermListener termListener = $terms.get(term);
+      if (termListener != null) {
+        term.removeListener(termListener);
+        $terms.remove(term);
+        // recalculate(); optimization
         Integer oldValue = $value;
-        $value -= term.get();
-        fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, $value));
+        if (term.get() == null) {
+          /* $value was null because of this term, or because there are more terms
+             we can't know, recalculate completely */
+          recalculate();
+        }
+        else if ($value != null) { // old value and term not null, there is a new value, and it is old - term
+          assert term.get() != null;
+          $value -= term.get();
+        }
+        fireChangeEvent(new IntegerEvent(this, oldValue, $value));
+        /* else, term != null, but $value is null; this means there is another term that is null,
+           and removing this term won't change that */
       }
-      /* else, term != null, but $value is null; this means there is another term that is null,
-         and removing this term won't change that */
+      // else, term was not one of our terms
     }
   }
 
@@ -108,9 +130,9 @@ public class IntegerSumBeed
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<IntegerBeed, Listener> $terms = new HashMap<IntegerBeed, Listener>();
+  private final Map<IntegerBeed, TermListener> $terms = new HashMap<IntegerBeed, TermListener>();
 
-  public Integer get() {
+  public final Integer get() {
     return $value;
   }
 
@@ -120,17 +142,18 @@ public class IntegerSumBeed
       Integer termValue = term.get();
       if (termValue == null) {
         newValue = null;
+        break;
       }
       newValue += termValue; // autoboxing
-    }
-    if (! equalsWithNull(newValue, $value)) {
-      Integer oldValue = $value;
-      $value = newValue;
-      fireChangeEvent(new OldNewEvent<IntegerSumBeed, Integer>(this, oldValue, newValue));
     }
   }
 
   private Integer $value = 0;
+
+  @Override
+  protected final IntegerEvent createInitialEvent() {
+    return new IntegerEvent(this, null, $value);
+  }
 
 }
 

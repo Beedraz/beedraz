@@ -1,8 +1,7 @@
 package org.beedra_II.property.integer;
 
 
-import org.beedra_II.property.simple.OldNewEvent;
-import org.beedra_II.property.simple.SimplePB;
+import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -11,7 +10,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface IntegerBeed
-    extends SimplePB<Integer, OldNewEvent<?extends IntegerBeed, Integer>> {
+    extends SimplePropertyBeed<Integer, IntegerEvent> {
 
   // NOP
 

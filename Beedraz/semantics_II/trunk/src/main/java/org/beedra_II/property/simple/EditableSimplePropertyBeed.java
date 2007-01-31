@@ -98,5 +98,9 @@ public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends Edi
     fireChangeEvent(editEvent);
   }
 
+//  public boolean isAcceptable(_Type_ value) {
+//    return true;
+//  }
+
 }
 

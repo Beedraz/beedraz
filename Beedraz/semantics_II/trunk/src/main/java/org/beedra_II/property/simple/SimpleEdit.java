@@ -62,6 +62,8 @@ public abstract class SimpleEdit<_Type_,
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $goal = goalValue;
+    /* MUDO $valid =  ...
+            if $valid !=  oldValid --> listeners */
   }
 
   private _Type_ $goal;

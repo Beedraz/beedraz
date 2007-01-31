@@ -28,5 +28,15 @@ public class EditableIntegerBeed
     // MUDO PROBLEM!!!!
   }
 
+//  protected void fireEdit(IntegerEdit edit) {
+//    fireChangeEvent(new IntegerEditEvent(edit));
+//  }
+//
+//  @Override
+//  protected void fireEdit(Edit<?> edit) {
+//    fireChangeEvent(new IntegerEditEvent(edit));
+//  }
+//
+
 }
 

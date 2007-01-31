@@ -38,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class SimpleEditEvent<_Type_>
-    extends AbstractEditEvent<SimpleEdit<_Type_>>
+    extends AbstractEditEvent<SimpleEdit<_Type_, ?>>
     implements OldNewEvent<_Type_> {
 
   /**
@@ -47,7 +47,7 @@ public abstract class SimpleEditEvent<_Type_>
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public SimpleEditEvent(SimpleEdit<_Type_> edit) { // MUDO tyoe
+  public SimpleEditEvent(SimpleEdit<_Type_, ?> edit) { // MUDO tyoe
     super(edit);
   }
 

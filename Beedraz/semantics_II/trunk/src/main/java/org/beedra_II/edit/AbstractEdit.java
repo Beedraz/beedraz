@@ -117,33 +117,43 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<?>>
         throw new EditStateException(this, NOT_YET_PERFORMED, $state);
     }
     storeInitialState();
-//    updateValidityWithGoal(); // MUDO OLD COMMENT this is not exactly what we want; it doesn't recalulate enough, but potentially sends validity changed events JDJDJD
-    // MUDO why is this update here? a! the other beed might have changed
-    if (! isValid()) {
-      throw new IllegalEditException(this, null);
+    if (isChange()) {
+  //    updateValidityWithGoal(); // MUDO OLD COMMENT this is not exactly what we want; it doesn't recalulate enough, but potentially sends validity changed events JDJDJD
+      // MUDO why is this update here? a! the other beed might have changed
+      if (! isValid()) {
+        throw new IllegalEditException(this, null);
+      }
+      performance(); // throws IllegalEditException
+      buildChangedObjects(this);
+          /* Building the list of changed objects is done here and not when
+             the edit object is constructed, because the object structure the
+             edit has to work on could have changed in the mean time. The
+             structure will have changed by the time undo (or redo) would be
+             called too, of course, but that is no problem since being changed
+             is symmetric for all edits, and the state of the entire object
+             structure will be the same for redo, and for undo, apart from
+             the edit itself. */
+      $state = DONE;
+      // end of transaction if performance succeeded
+      removeValidityListeners();
+      notifyListeners();
     }
-    performance(); // throws IllegalEditException
-    buildChangedObjects(this);
-        /* Building the list of changed objects is done here and not when
-           the edit object is constructed, because the object structure the
-           edit has to work on could have changed in the mean time. The
-           structure will have changed by the time undo (or redo) would be
-           called too, of course, but that is no problem since being changed
-           is symmetric for all edits, and the state of the entire object
-           structure will be the same for redo, and for undo, apart from
-           the edit itself. */
-    $state = DONE;
-    // end of transaction if performance succeeded
-    removeValidityListeners();
-    notifyListeners();
+    else {
+      $state = DONE;
+    }
   }
-
 
   /**
    * Store the initial state of the beed, the state immediately before the edit
    * was performed, in the edit. This makes undoability possible.
    */
   protected abstract void storeInitialState();
+
+  /**
+   * The goal state is different from the stored
+   * initial state.
+   */
+  protected abstract boolean isChange();
 
   /*</section>*/
 

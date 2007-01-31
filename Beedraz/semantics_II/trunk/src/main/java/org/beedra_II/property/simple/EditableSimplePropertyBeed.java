@@ -34,7 +34,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends EditEvent>
+public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends EditEvent<?>>
     extends AbstractPropertyBeed<_EditEvent_>
     implements SimplePropertyBeed<_Type_, _EditEvent_>,
                EditableBeed<_EditEvent_> {
@@ -92,6 +92,11 @@ public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends Edi
 //  protected OldNewEdit<_Type_> createInitialEvent() {
 //    return new OldNewEdit<_Type_>(this, null, $t); // should be event, and not an edit, but nevermind; set the state to death
 //  }
+
+
+  public void fireEvent(_EditEvent_ editEvent) {
+    fireChangeEvent(editEvent);
+  }
 
 }
 

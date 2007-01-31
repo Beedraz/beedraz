@@ -34,8 +34,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class SimpleEdit<_Type_>
-    extends AbstractEdit<EditableSimplePropertyBeed<_Type_, ? extends SimpleEditEvent<_Type_>>> {
+public abstract class SimpleEdit<_Type_,
+                                 _Target_ extends EditableSimplePropertyBeed<_Type_, ? extends SimpleEditEvent<_Type_>>>
+    extends AbstractEdit<_Target_> {
 
   /**
    * @pre target != null;
@@ -43,7 +44,7 @@ public abstract class SimpleEdit<_Type_>
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public SimpleEdit(EditableSimplePropertyBeed<_Type_, ? extends SimpleEditEvent<_Type_>> target) {
+  public SimpleEdit(_Target_ target) {
     super(target);
   }
 
@@ -56,7 +57,7 @@ public abstract class SimpleEdit<_Type_>
   /**
    * @post Comparison.equalsWithNull(goalValue, getGoalValue());
    */
-  public void setGoal(_Type_ goalValue) throws EditStateException {
+  public final void setGoal(_Type_ goalValue) throws EditStateException {
     if (getState() != NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
@@ -78,15 +79,20 @@ public abstract class SimpleEdit<_Type_>
    * @post Comparison.equalsWithNull(getTarget().get(), getInitial());
    */
   @Override
-  protected void storeInitialState() {
+  protected final void storeInitialState() {
     $initial = getTarget().get();
+  }
+
+  @Override
+  protected final boolean isChange() {
+    return ! Comparison.equalsWithNull(getInitial(), getGoal());
   }
 
   /**
    * @return Comparison.equalsWithNull(getInitial(), getTarget().get());
    */
   @Override
-  protected boolean isInitialStateCurrent() {
+  protected final boolean isInitialStateCurrent() {
     return Comparison.equalsWithNull(getInitial(), getTarget().get());
   }
 
@@ -102,7 +108,7 @@ public abstract class SimpleEdit<_Type_>
    * @return Comparison.equalsWithNull(getGoal(), getTarget().get());
    */
   @Override
-  protected boolean isGoalStateCurrent() {
+  protected final boolean isGoalStateCurrent() {
     return Comparison.equalsWithNull(getGoal(), getTarget().get());
   }
 
@@ -113,14 +119,6 @@ public abstract class SimpleEdit<_Type_>
   protected final void unperformance() {
     getTarget().assign(getInitial());
   }
-
-  @Override
-  protected void notifyListeners() {
-// MUDO
-//    getTarget().fireChangeEvent(createEditEvent());
-  }
-
-  protected abstract SimpleEditEvent<_Type_> createEditEvent();
 
 }
 

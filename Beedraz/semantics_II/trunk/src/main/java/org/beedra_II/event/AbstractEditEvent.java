@@ -60,7 +60,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractEditEvent<_Edit_ extends Edit<?>>
-    implements EditEvent {
+    implements EditEvent<_Edit_> {
 
   /**
    * @pre edit != null;

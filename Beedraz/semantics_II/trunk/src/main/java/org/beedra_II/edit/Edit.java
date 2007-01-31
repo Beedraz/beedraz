@@ -21,7 +21,7 @@ import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.UNDONE;
 
 import org.beedra_II.Beed;
-import org.beedra_II.event.EditEvent;
+import org.beedra_II.EditableBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -42,7 +42,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Edit<_Target_ extends Beed<? extends EditEvent>> {
+public interface Edit<_Target_ extends EditableBeed<?>> {
 
   // MUDO docs
   public static enum State {

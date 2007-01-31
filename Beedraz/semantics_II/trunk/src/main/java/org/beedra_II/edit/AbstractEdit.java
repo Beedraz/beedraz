@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.Beed;
-import org.beedra_II.event.EditEvent;
+import org.beedra_II.EditableBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -40,7 +40,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractEdit<_Target_ extends Beed<? extends EditEvent>>
+public abstract class AbstractEdit<_Target_ extends EditableBeed<?>>
     implements Edit<_Target_> {
 
 
@@ -322,15 +322,10 @@ public abstract class AbstractEdit<_Target_ extends Beed<? extends EditEvent>>
 
   /**
    * Should be implemented as
-   * {@code getTarget().fireChangeEvent(createEditEvent());}.
+   * {@code getTarget().fireChangeEvent(an event);}.
    *
    */
   protected abstract void notifyListeners();
-
-  /**
-   * MUDO docs
-   */
-  protected abstract EditEvent createEditEvent();
 
     //  /**
 //   * @H1 Absorbing other edits

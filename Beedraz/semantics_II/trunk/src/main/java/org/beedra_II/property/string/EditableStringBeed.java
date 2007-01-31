@@ -1,4 +1,4 @@
-package org.beedra_II.property.integer;
+package org.beedra_II.property.string;
 
 
 import org.beedra_II.Beed;
@@ -10,21 +10,21 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class EditableIntegerBeed
-    extends EditableSimplePropertyBeed<Integer, IntegerEditEvent>
-    implements IntegerBeed<IntegerEditEvent> {
+public class EditableStringBeed
+    extends EditableSimplePropertyBeed<String, StringEditEvent>
+    implements StringBeed<StringEditEvent> {
 
   /**
    * @pre owner != null;
    */
-  public EditableIntegerBeed(Beed<?> owner) {
+  public EditableStringBeed(Beed<?> owner) {
     super(owner);
   }
 
   @Override
-  protected IntegerEditEvent createInitialEvent() {
+  protected StringEditEvent createInitialEvent() {
 //    return new FinalIntegerEvent(this, null, get());
-    return new IntegerEditEvent(null);
+    return new StringEditEvent(null);
     // MUDO PROBLEM!!!!
   }
 

@@ -18,7 +18,7 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.property.simple.SimpleEditablePropertyBeed;
+import org.beedra_II.property.string.EditableStringBeed;
 
 
 /**
@@ -30,7 +30,7 @@ import org.beedra_II.property.simple.SimpleEditablePropertyBeed;
  */
 public class Task extends AbstractBeanBeed {
 
-  public final SimpleEditablePropertyBeed<String> name = new SimpleEditablePropertyBeed<String>(this);
+  public final EditableStringBeed name = new EditableStringBeed(this);
 
   {
     registerProperty(name);

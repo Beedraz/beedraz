@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property.integer;
 
 
-import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.simple.AbstractOldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -28,45 +28,36 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
+ *
+ * @invar getSource() instanceof IntegerBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractOldNewEvent<_Type_> extends AbstractEvent
-    implements OldNewEvent<_Type_> {
+public final class FinalIntegerEvent
+    extends AbstractOldNewEvent<Integer>
+    implements IntegerEvent {
 
   /**
    * @pre source != null;
-   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
    * @post getSource() == sourcel
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public AbstractOldNewEvent(SimplePropertyBeed<_Type_, ? extends OldNewEvent<_Type_>> source, _Type_ oldValue, _Type_ newValue) {
-    super(source);
-    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
-    $oldValue = oldValue;
-    $newValue = newValue;
+  public FinalIntegerEvent(IntegerBeed<?> source, Integer oldValue, Integer newValue) {
+    super(source, oldValue, newValue);
+    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
   }
 
   /**
-   * @basic
+   * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
    */
-  public final _Type_ getOldValue() {
-    return $oldValue;
+  public final Integer getDelta() {
+    return $delta;
   }
 
-  private final _Type_ $oldValue;
-
-  /**
-   * @basic
-   */
-  public final _Type_ getNewValue() {
-    return $newValue;
-  }
-
-  private final _Type_ $newValue;
+  private final Integer $delta;
 
 }
 

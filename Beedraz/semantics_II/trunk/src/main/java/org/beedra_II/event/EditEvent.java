@@ -14,32 +14,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II;
+package org.beedra_II.event;
 
 
-import javax.swing.undo.UndoableEdit;
-
-import org.beedra_II.event.EditEvent;
+import org.beedra_II.edit.Edit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * <p>{@link Beed} whose value can changed by the user directly.</p>
- * <p>The events {@code DoBeed DoBeeds} send
- *   must be {@link UndoableEdit UndoableEdits}.</p>
+ * <p>{@link Event} send by {@link EditableBeed EditableBeeds}, that
+ *   carries the event that cause the expressed change.</p>
  *
  * @author Jan Dockx
  *
- * @mudo maybe it doesn't make sense to use the Swing interface
+ * @invar getSource() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface EditableBeed<_Event_ extends EditEvent>
-    extends Beed<_Event_> {
+public interface EditEvent<_Edit_ extends Edit<?>> extends Event {
 
-  // NOP
+  /**
+   * @basic
+   */
+  _Edit_ getEdit(); // MUDO
 
 }
 

@@ -17,7 +17,9 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import org.beedra_II.event.AbstractEvent;
+import static org.beedra_II.edit.Edit.State.DONE;
+
+import org.beedra_II.event.AbstractEditEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -28,45 +30,40 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
+ *
+ * @invar getSource() instanceof IntegerBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractOldNewEvent<_Type_> extends AbstractEvent
+public abstract class SimpleEditEvent<_Type_>
+    extends AbstractEditEvent<SimpleEdit<_Type_>>
     implements OldNewEvent<_Type_> {
 
   /**
    * @pre source != null;
-   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
    * @post getSource() == sourcel
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public AbstractOldNewEvent(SimplePropertyBeed<_Type_, ? extends OldNewEvent<_Type_>> source, _Type_ oldValue, _Type_ newValue) {
-    super(source);
-    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
-    $oldValue = oldValue;
-    $newValue = newValue;
+  public SimpleEditEvent(SimpleEdit<_Type_> edit) { // MUDO tyoe
+    super(edit);
   }
 
   /**
    * @basic
    */
   public final _Type_ getOldValue() {
-    return $oldValue;
+    return getEditState() == DONE ? getEdit().getInitial() : getEdit().getGoal();
   }
-
-  private final _Type_ $oldValue;
 
   /**
    * @basic
    */
   public final _Type_ getNewValue() {
-    return $newValue;
+    return getEditState() == DONE ? getEdit().getGoal() : getEdit().getInitial();
   }
-
-  private final _Type_ $newValue;
 
 }
 

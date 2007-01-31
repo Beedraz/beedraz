@@ -18,7 +18,7 @@ package org.beedra_II.property.integer;
 
 
 import org.beedra_II.event.Event;
-import org.beedra_II.property.simple.AbstractOldNewEvent;
+import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -35,27 +35,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class IntegerEvent extends AbstractOldNewEvent<Integer> {
-
-  /**
-   * @pre source != null;
-   * @post getSource() == sourcel
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
-   */
-  public IntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue) {
-    super(source, oldValue, newValue);
-    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
-  }
+public interface IntegerEvent extends OldNewEvent<Integer> {
 
   /**
    * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
    */
-  public final Integer getDelta() {
-    return $delta;
-  }
-
-  private final Integer $delta;
+  Integer getDelta();
 
 }
 

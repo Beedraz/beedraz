@@ -19,6 +19,7 @@ package org.beedra_II.property.simple;
 
 import org.beedra_II.Beed;
 import org.beedra_II.EditableBeed;
+import org.beedra_II.event.EditEvent;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -33,17 +34,15 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class SimpleEditablePropertyBeed<_Type_,
-                                        _EventSource_ extends SimpleEditablePropertyBeed<_Type_, _EventSource_, _Owner_>,
-                                        _Owner_ extends Beed<?, ?>>
-    extends AbstractPropertyBeed<_EventSource_, OldNewEdit<_Type_, _EventSource_>, _Owner_>
-    implements SimplePropertyBeed<_Type_, _EventSource_, OldNewEdit<_Type_, _EventSource_>, _Owner_>,
-               EditableBeed<_EventSource_, OldNewEdit<_Type_, _EventSource_>> {
+public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends EditEvent>
+    extends AbstractPropertyBeed<_EditEvent_>
+    implements SimplePropertyBeed<_Type_, _EditEvent_>,
+               EditableBeed<_EditEvent_> {
 
   /**
    * @pre ownerBeed != null;
    */
-  public SimpleEditablePropertyBeed(_Owner_ ownerBeed) {
+  public EditableSimplePropertyBeed(Beed<?> ownerBeed) {
     super(ownerBeed);
   }
 
@@ -76,10 +75,6 @@ public class SimpleEditablePropertyBeed<_Type_,
   }
 
 
-  void packageFireChangeEvent(OldNewEdit<_Type_, _EventSource_> edit) {
-    super.fireChangeEvent(edit);
-  }
-
   private _Type_ $t;
 
   /**
@@ -93,6 +88,10 @@ public class SimpleEditablePropertyBeed<_Type_,
   protected _Type_ safeValueCopy(_Type_ original) {
     return original;
   }
+
+//  protected OldNewEdit<_Type_> createInitialEvent() {
+//    return new OldNewEdit<_Type_>(this, null, $t); // should be event, and not an edit, but nevermind; set the state to death
+//  }
 
 }
 

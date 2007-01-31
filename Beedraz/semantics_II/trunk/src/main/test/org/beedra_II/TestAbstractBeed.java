@@ -78,57 +78,57 @@ public class TestAbstractBeed {
 
   @Test
   public void testAddChangeListener() {
-    assertTrue(! $subject.isChangeListener($listener1));
-    assertTrue(! $subject.isChangeListener($listener2));
-    $subject.addChangeListener($listener1);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue(! $subject.isChangeListener($listener2));
-    $subject.addChangeListener($listener2);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue($subject.isChangeListener($listener2));
+    assertTrue(! $subject.isListener($listener1));
+    assertTrue(! $subject.isListener($listener2));
+    $subject.addListener($listener1);
+    assertTrue($subject.isListener($listener1));
+    assertTrue(! $subject.isListener($listener2));
+    $subject.addListener($listener2);
+    assertTrue($subject.isListener($listener1));
+    assertTrue($subject.isListener($listener2));
   }
 
   @Test
   public void testRemoveChangeListener1() {
-    $subject.addChangeListener($listener1);
-    $subject.addChangeListener($listener2);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue($subject.isChangeListener($listener2));
-    $subject.removeChangeListener($listener1);
-    assertTrue(! $subject.isChangeListener($listener1));
-    assertTrue($subject.isChangeListener($listener2));
-    $subject.removeChangeListener($listener2);
-    assertTrue(! $subject.isChangeListener($listener1));
-    assertTrue(! $subject.isChangeListener($listener2));
+    $subject.addListener($listener1);
+    $subject.addListener($listener2);
+    assertTrue($subject.isListener($listener1));
+    assertTrue($subject.isListener($listener2));
+    $subject.removeListener($listener1);
+    assertTrue(! $subject.isListener($listener1));
+    assertTrue($subject.isListener($listener2));
+    $subject.removeListener($listener2);
+    assertTrue(! $subject.isListener($listener1));
+    assertTrue(! $subject.isListener($listener2));
   }
 
   @Test
   public void testRemoveChangeListener2() {
-    $subject.addChangeListener($listener1);
-    $subject.addChangeListener($listener2);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue($subject.isChangeListener($listener2));
-    $subject.removeChangeListener(null);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue($subject.isChangeListener($listener2));
+    $subject.addListener($listener1);
+    $subject.addListener($listener2);
+    assertTrue($subject.isListener($listener1));
+    assertTrue($subject.isListener($listener2));
+    $subject.removeListener(null);
+    assertTrue($subject.isListener($listener1));
+    assertTrue($subject.isListener($listener2));
   }
 
   @Test
   public void testRemoveChangeListener3() {
-    $subject.addChangeListener($listener1);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue(! $subject.isChangeListener($listener2));
-    $subject.removeChangeListener($listener2);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue(! $subject.isChangeListener($listener2));
+    $subject.addListener($listener1);
+    assertTrue($subject.isListener($listener1));
+    assertTrue(! $subject.isListener($listener2));
+    $subject.removeListener($listener2);
+    assertTrue($subject.isListener($listener1));
+    assertTrue(! $subject.isListener($listener2));
   }
 
   @Test
   public void testFireChangeEvent() {
-    $subject.addChangeListener($listener1);
-    $subject.addChangeListener($listener2);
-    assertTrue($subject.isChangeListener($listener1));
-    assertTrue($subject.isChangeListener($listener2));
+    $subject.addListener($listener1);
+    $subject.addListener($listener2);
+    assertTrue($subject.isListener($listener1));
+    assertTrue($subject.isListener($listener2));
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     $subject.fire($event);

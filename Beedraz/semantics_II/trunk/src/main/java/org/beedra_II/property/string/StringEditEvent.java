@@ -14,32 +14,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II;
+package org.beedra_II.property.string;
 
 
-import javax.swing.undo.UndoableEdit;
-
-import org.beedra_II.event.EditEvent;
+import org.beedra_II.event.Event;
+import org.beedra_II.property.simple.SimpleEditEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * <p>{@link Beed} whose value can changed by the user directly.</p>
- * <p>The events {@code DoBeed DoBeeds} send
- *   must be {@link UndoableEdit UndoableEdits}.</p>
+ * {@link Event} that carries a simple old and new value,
+ * expressing the changed that occured in {@link #getSource()}.
+ * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
  *
- * @mudo maybe it doesn't make sense to use the Swing interface
+ * @invar getSource() instanceof StringBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface EditableBeed<_Event_ extends EditEvent>
-    extends Beed<_Event_> {
+public final class StringEditEvent
+    extends SimpleEditEvent<String>
+    implements StringEvent {
 
-  // NOP
+  /**
+   * @pre source != null;
+   * @post getSource() == sourcel
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   */
+  public StringEditEvent(StringEdit edit) { // MUDO tyoe
+    super(edit);
+  }
 
 }
 

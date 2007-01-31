@@ -20,7 +20,7 @@ package org.beedra.example.z_beedra;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerSumBeed;
-import org.beedra_II.property.simple.SimpleEditablePropertyBeed;
+import org.beedra_II.property.string.EditableStringBeed;
 
 
 /**
@@ -32,7 +32,7 @@ import org.beedra_II.property.simple.SimpleEditablePropertyBeed;
  */
 public class Project extends AbstractBeanBeed {
 
-  public final SimpleEditablePropertyBeed<String> name = new SimpleEditablePropertyBeed<String>(this);
+  public final EditableStringBeed name = new EditableStringBeed(this);
 
   {
     registerProperty(name); // MUDO this should be done in the constructor of the SEPB

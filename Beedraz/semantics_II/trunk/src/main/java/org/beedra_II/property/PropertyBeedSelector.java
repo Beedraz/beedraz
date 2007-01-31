@@ -32,12 +32,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeedSelector<_Owner_ extends Beed<?, ?>,
-                                      _PBeed_ extends PropertyBeed<?, ?, _Owner_>> {
+public interface PropertyBeedSelector<_Owner_ extends Beed<?>,
+                                      _PBeed_ extends PropertyBeed<?>> {
 
   /**
    * @basic
    * @pre owner != null;
+   * @result result.getOwner() == owner;
    */
   _PBeed_ getPropertyBeed(_Owner_ owner);
 

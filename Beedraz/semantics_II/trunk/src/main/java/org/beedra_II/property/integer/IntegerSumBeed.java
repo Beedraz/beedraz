@@ -23,7 +23,6 @@ import java.util.Map;
 import org.beedra_II.Beed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -39,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class IntegerSumBeed
     extends AbstractPropertyBeed<IntegerEvent>
-    implements IntegerBeed {
+    implements IntegerBeed<IntegerEvent> {
 
   /**
    * @pre source != null;
@@ -66,7 +65,7 @@ public class IntegerSumBeed
         recalculate();
       }
       // else: NOP
-      fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, null));
+      fireChangeEvent(new FinalIntegerEvent(IntegerSumBeed.this, oldValue, null));
     }
 
   }
@@ -74,7 +73,7 @@ public class IntegerSumBeed
   /**
    * @basic
    */
-  public final boolean isTerm(SimplePropertyBeed<Integer, ?> term) {
+  public final boolean isTerm(IntegerBeed<?> term) {
     return $terms.keySet().contains(term);
   }
 
@@ -82,7 +81,7 @@ public class IntegerSumBeed
    * @pre term != null;
    * @post isTerm(term);
    */
-  public final void addTerm(IntegerBeed term) {
+  public final void addTerm(IntegerBeed<?> term) {
     assert term != null;
     synchronized (term) { // MUDO is this correct?
       TermListener termListener = new TermListener();
@@ -92,7 +91,7 @@ public class IntegerSumBeed
       if ($value != null) {
         Integer oldValue = $value;
         $value = (term.get() == null) ? null : $value + term.get(); // MUDO overflow
-        fireChangeEvent(new IntegerEvent(this, oldValue, $value));
+        fireChangeEvent(new FinalIntegerEvent(this, oldValue, $value));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
     }
@@ -101,7 +100,7 @@ public class IntegerSumBeed
   /**
    * @post ! isTerm(term);
    */
-  public final void removeTerm(IntegerBeed term) {
+  public final void removeTerm(IntegerBeed<?> term) {
     synchronized (term) { // MUDO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
@@ -118,7 +117,7 @@ public class IntegerSumBeed
           assert term.get() != null;
           $value -= term.get();
         }
-        fireChangeEvent(new IntegerEvent(this, oldValue, $value));
+        fireChangeEvent(new FinalIntegerEvent(this, oldValue, $value));
         /* else, term != null, but $value is null; this means there is another term that is null,
            and removing this term won't change that */
       }
@@ -130,7 +129,7 @@ public class IntegerSumBeed
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<IntegerBeed, TermListener> $terms = new HashMap<IntegerBeed, TermListener>();
+  private final Map<IntegerBeed<?>, TermListener> $terms = new HashMap<IntegerBeed<?>, TermListener>();
 
   public final Integer get() {
     return $value;
@@ -138,7 +137,7 @@ public class IntegerSumBeed
 
   private void recalculate() {
     Integer newValue = 0;
-    for (IntegerBeed term : $terms.keySet()) {
+    for (IntegerBeed<?> term : $terms.keySet()) {
       Integer termValue = term.get();
       if (termValue == null) {
         newValue = null;
@@ -152,7 +151,7 @@ public class IntegerSumBeed
 
   @Override
   protected final IntegerEvent createInitialEvent() {
-    return new IntegerEvent(this, null, $value);
+    return new FinalIntegerEvent(this, null, $value);
   }
 
 }

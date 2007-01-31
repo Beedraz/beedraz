@@ -18,7 +18,7 @@ package org.beedra_II.property.string;
 
 
 import org.beedra_II.event.Event;
-import org.beedra_II.property.simple.AbstractOldNewEvent;
+import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -35,17 +35,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class StringEvent extends AbstractOldNewEvent<String> {
+public interface StringEvent extends OldNewEvent<String> {
 
-  /**
-   * @pre source != null;
-   * @post getSource() == sourcel
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
-   */
-  public StringEvent(StringBeed source, String oldValue, String newValue) {
-    super(source, oldValue, newValue);
-  }
+  // NOP
 
 }
 

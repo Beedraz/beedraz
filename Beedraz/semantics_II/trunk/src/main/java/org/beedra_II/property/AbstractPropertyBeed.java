@@ -45,7 +45,15 @@ public abstract class AbstractPropertyBeed<_Event_ extends Event>
     $owner = owner;
   }
 
-  public final Beed<?> getOwner() {
+  /**
+   * {@inheritDoc}
+   *
+   * This method should be final, but it is overwritten in
+   * BidirToManyBeed for a cast. If the owner types
+   * was generic, this would not be necessary, and this
+   * method could be final.
+   */
+  public Beed<?> getOwner() {
     return $owner;
   }
 

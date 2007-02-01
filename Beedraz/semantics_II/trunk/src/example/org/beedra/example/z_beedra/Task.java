@@ -18,6 +18,7 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.property.association.EditableBidirToOneBeed;
 import org.beedra_II.property.string.EditableStringBeed;
 
 
@@ -36,8 +37,12 @@ public class Task extends AbstractBeanBeed {
     registerProperty(name);
   }
 
-//  public final BidirToOnePDoBeed<Project, Task> project =
-//      new BidirToOnePDoBeed<Project, Task>(this, Project.tasksSelector);
+  public final EditableBidirToOneBeed<Project, Task> project =
+      new EditableBidirToOneBeed<Project, Task>(this, Project.tasksSelector);
+
+  {
+    registerProperty(project);
+  }
 
 }
 

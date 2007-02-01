@@ -14,33 +14,39 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property;
+package org.beedra_II.property.association;
 
 
-import org.beedra_II.Beed;
+import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.event.Event;
+import org.beedra_II.property.simple.SimpleEditEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * <p>Selects a {@link PropertyBeed} from a beed owner.</p>
+ * {@link Event} that carries a simple old and new value,
+ * expressing the changed that occured in {@link #getSource()}.
+ * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
  *
- * @mudo both generics in arguments and return type! watch out!
+ * @invar getSource() instanceof StringBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeedSelector<_Owner_ extends Beed<?>,
-                                      _PropertyBeed_ extends PropertyBeed<?>> {
+public final class BidirToOneEditEvent<_One_ extends BeanBeed>
+    extends SimpleEditEvent<_One_>
+    implements BidirToOneEvent<_One_> {
 
   /**
-   * @basic
-   * @pre owner != null;
-   * @result result.getOwner() == owner;
+   * @pre source != null;
+   * @post getSource() == source;
    */
-  _PropertyBeed_ getPropertyBeed(_Owner_ owner);
+  public BidirToOneEditEvent(BidirToOneEdit<_One_, ?, ?> edit) {
+    super(edit);
+  }
 
 }
 

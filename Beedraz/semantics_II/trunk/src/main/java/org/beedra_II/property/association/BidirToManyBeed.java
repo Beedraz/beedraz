@@ -23,8 +23,8 @@ import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.set.SetEvent;
-import org.beedra_II.property.simple.SimplePB;
+import org.beedra_II.property.set.FinalSetEvent;
+import org.beedra_II.property.set.SetBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -35,18 +35,18 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BidirToManyPBeed<_One_ extends BeanBeed,
-                                     _Many_ extends BeanBeed>
-    extends AbstractPropertyBeed<SetEvent<_Many_, BidirToManyPBeed<_One_, _Many_>>>
-    implements SimplePB<Set<_Many_>, SetEvent<_Many_, BidirToManyPBeed<_One_, _Many_>>> {
+public class BidirToManyBeed<_One_ extends BeanBeed,
+                              _Many_ extends BeanBeed>
+    extends AbstractPropertyBeed<FinalSetEvent<_Many_>>
+    implements SetBeed<_Many_, FinalSetEvent<_Many_>> {
 
-  public BidirToManyPBeed(_One_ bean) {
+  public BidirToManyBeed(_One_ bean) {
     super(bean);
   }
 
   @SuppressWarnings("unchecked")
-  public final _One_ getOwnerBeed() {
-    return (_One_)super.getOwnerBeed();
+  public final _One_ getOwner() {
+    return (_One_)super.getOwner();
   }
 
   public final Set<_Many_> get() {
@@ -61,7 +61,7 @@ public class BidirToManyPBeed<_One_ extends BeanBeed,
   void fireAddedEvent(_Many_ many) {
     Set<_Many_> added = new HashSet<_Many_>();
     added.add(many);
-    fireChangeEvent(new SetEvent<_Many_, BidirToManyPBeed<_One_,_Many_>>(this, added, null));
+    fireChangeEvent(new FinalSetEvent<_Many_>(this, added, null));
   }
 
   void remove(_Many_ many) {
@@ -71,10 +71,15 @@ public class BidirToManyPBeed<_One_ extends BeanBeed,
   void fireRemovedEvent(_Many_ many) {
     Set<_Many_> removed = new HashSet<_Many_>();
     removed.add(many);
-    fireChangeEvent(new SetEvent<_Many_, BidirToManyPBeed<_One_,_Many_>>(this, null, removed));
+    fireChangeEvent(new FinalSetEvent<_Many_>(this, null, removed));
   }
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
+
+  @Override
+  protected final FinalSetEvent<_Many_> createInitialEvent() {
+    return new FinalSetEvent<_Many_>(this, null, $many); // event constructor copies set
+  }
 
 }
 

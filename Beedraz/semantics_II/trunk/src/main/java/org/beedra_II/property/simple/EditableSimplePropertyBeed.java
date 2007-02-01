@@ -34,7 +34,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends EditEvent<?>>
+public abstract class EditableSimplePropertyBeed<_Type_,
+                                                 _EditEvent_ extends EditEvent<?>>
     extends AbstractPropertyBeed<_EditEvent_>
     implements SimplePropertyBeed<_Type_, _EditEvent_>,
                EditableBeed<_EditEvent_> {
@@ -59,19 +60,6 @@ public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends Edi
    */
   void assign(_Type_ t) {
     $t = t;
-//    if (! equalsWithNull(t, $t)) {
-//      _Type_ oldValue = $t;
-//      $t = safeValueCopy(t);
-////      _Source_ andI = this;
-////      SimpleEditablePropertyBeed<_Type_, _Source_>  myself = this;
-////      SimpleEditablePropertyBeed<_Type_, SimpleEditablePropertyBeed<_Type_,_Source_>>  me = this;
-////      me = myself;
-////      myself = me;
-//      OldNewEdit<_Type_, _Source_> event = new OldNewEdit<_Type_, _Source_>(this, safeValueCopy(oldValue), safeValueCopy($t));
-////      UndoableOldNewEvent<_Type_, _Source_> event =
-////          new UndoableOldNewEvent<_Type_, _Source_>(this, safeValueCopy(oldValue), safeValueCopy($t));
-//      fireChangeEvent(event);
-//    }
   }
 
 
@@ -94,13 +82,10 @@ public abstract class EditableSimplePropertyBeed<_Type_, _EditEvent_ extends Edi
 //  }
 
 
+  // MUDO should not be public!
   public void fireEvent(_EditEvent_ editEvent) {
     fireChangeEvent(editEvent);
   }
-
-//  public boolean isAcceptable(_Type_ value) {
-//    return true;
-//  }
 
 }
 

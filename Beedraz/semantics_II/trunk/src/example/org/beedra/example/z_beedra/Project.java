@@ -18,6 +18,8 @@ package org.beedra.example.z_beedra;
 
 
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.property.PropertyBeedSelector;
+import org.beedra_II.property.association.BidirToManyBeed;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerSumBeed;
 import org.beedra_II.property.string.EditableStringBeed;
@@ -59,32 +61,20 @@ public class Project extends AbstractBeanBeed {
   }
 
 
-  //  public final BidirToManyPBeed<Project, Task> tasks =
-//      new BidirToManyPBeed<Project, Task>(this);
-//
-//  public final static PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>> tasksSelector =
-//    new PropertyBeedSelector<Project, BidirToManyPBeed<Project, Task>>() {
-//
-//            public BidirToManyPBeed<Project, Task> getPropertyBeed(Project owner) {
-//              assert owner != null;
-//              return owner.tasks;
-//            }
-//        };
-//
-//
-//  private class TasksChangedListener implements Listener<SetEvent<Task, BidirToManyPBeed<Project, Task>>> {
-//
-//    public void beedChanged(SetEvent<Task, BidirToManyPBeed<Project, Task>> event) {
-//      fireChangeEvent(new BeanEvent(Project.this, event));
-//    }
-//
-//  }
-//
-//
-//  private TasksChangedListener $tcl = new TasksChangedListener();
-//  {
-//    tasks.addChangeListener($tcl);
-//  }
+  public final BidirToManyBeed<Project, Task> tasks = new BidirToManyBeed<Project, Task>(this);
+
+  public final static PropertyBeedSelector<Project, BidirToManyBeed<Project, Task>> tasksSelector =
+    new PropertyBeedSelector<Project, BidirToManyBeed<Project, Task>>() {
+
+            public BidirToManyBeed<Project, Task> getPropertyBeed(Project owner) {
+              assert owner != null;
+              return owner.tasks;
+            }
+        };
+
+  {
+    registerProperty(tasks);
+  }
 
 }
 

@@ -102,7 +102,7 @@ public abstract class SimpleEdit<_Type_,
    * @post Comparison.equalsWithNull(getGoal(), getTarget().get());
    */
   @Override
-  protected final void performance() {
+  protected void performance() {
     getTarget().assign(getGoal());
   }
 
@@ -118,7 +118,7 @@ public abstract class SimpleEdit<_Type_,
    * @post Comparison.equalsWithNull(getInitial(), getTarget().get());
    */
   @Override
-  protected final void unperformance() {
+  protected void unperformance() {
     getTarget().assign(getInitial());
   }
 

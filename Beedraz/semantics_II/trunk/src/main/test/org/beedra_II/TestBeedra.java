@@ -28,6 +28,7 @@ import org.beedra.util_I.Comparison;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.BeanEvent;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.EditEvent;
@@ -92,6 +93,16 @@ public class TestBeedra {
 
   }
 
+  class EditListener implements Listener<EditEvent<?>> {
+
+    public void beedChanged(EditEvent<?> event) {
+      $edit = event.getEdit();
+    }
+
+    public Edit<?> $edit;
+
+  }
+
   public final static String name1 = "TEST";
   public final static String name2 = "TEST ANOTHER";
 
@@ -102,43 +113,78 @@ public class TestBeedra {
     project.name.addListener(nameListener);
     BeanListener projectListener = new BeanListener();
     project.addListener(projectListener);
+    EditListener editListener = new EditListener();
+//    project.addListener(editListener); MUDO problem
+    project.name.addListener(editListener);
 
 //    project.name.set(name1);
     StringEdit setter = new StringEdit(project.name);
     setter.setGoal(name1);
     setter.perform();
-    validateNameBeedSet(project, null, name1, nameListener, projectListener);
+    validateNameBeedSet(project, null, name1, setter, nameListener, projectListener, editListener);
+
+    Edit<?> edit = editListener.$edit;
+    editListener.$edit = null;
+    edit.undo();
+    validateNameBeedSet(project, name1, null, setter, nameListener, projectListener, editListener);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    edit.redo();
+    validateNameBeedSet(project, null, name1, setter, nameListener, projectListener, editListener);
 
 //    project.name.set(name1);
     setter = new StringEdit(project.name);
     setter.setGoal(name1);
     setter.perform();
-    validateNameBeedSet(project, name1, name1, nameListener, projectListener);
+    validateNameBeedSet(project, name1, name1, null, nameListener, projectListener, editListener);
 
 //    project.name.set(name2);
     setter = new StringEdit(project.name);
     setter.setGoal(name2);
     setter.perform();
-    validateNameBeedSet(project, name1, name2, nameListener, projectListener);
+    validateNameBeedSet(project, name1, name2, setter, nameListener, projectListener, editListener);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    edit.undo();
+    validateNameBeedSet(project, name2, name1, setter, nameListener, projectListener, editListener);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    edit.redo();
+    validateNameBeedSet(project, name1, name2, setter, nameListener, projectListener, editListener);
 
 //    project.name.set(null);
     setter = new StringEdit(project.name);
     setter.setGoal(null);
     setter.perform();
-    validateNameBeedSet(project, name2, null, nameListener, projectListener);
+    validateNameBeedSet(project, name2, null, setter, nameListener, projectListener, editListener);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    edit.undo();
+    validateNameBeedSet(project, null, name2, setter, nameListener, projectListener, editListener);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    edit.redo();
+    validateNameBeedSet(project, name2, null, setter, nameListener, projectListener, editListener);
 
     //  project.name.set(null);
     setter = new StringEdit(project.name);
     setter.setGoal(null);
     setter.perform();
-    validateNameBeedSet(project, null, null, nameListener, projectListener);
+    validateNameBeedSet(project, null, null, null, nameListener, projectListener, editListener);
   }
 
   private void validateNameBeedSet(Project project,
                                    String expectedOldName,
                                    String expectedNewName,
+                                   Edit<?> expectedEdit,
                                    OldNewListener nameListener,
-                                   BeanListener projectListener) {
+                                   BeanListener projectListener,
+                                   EditListener editListener) {
     if (Comparison.equalsWithNull(expectedOldName, expectedNewName)) {
       assertNull(nameListener.$event);
       assertNull(projectListener.$event);
@@ -151,6 +197,7 @@ public class TestBeedra {
       assertNotNull(projectListener.$event);
       assertEquals(project, projectListener.$event.getSource());
       assertEquals(nameListener.$event, projectListener.$event.getCause());
+      assertEquals(expectedEdit, editListener.$edit);
     }
     assertEquals(expectedNewName, project.name.get());
     nameListener.$event = null;

@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.association;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.SimpleEditEvent;
@@ -47,6 +49,25 @@ public final class BidirToOneEditEvent<_One_ extends BeanBeed,
    */
   public BidirToOneEditEvent(BidirToOneEdit<_One_, _Many_> edit) {
     super(edit);
+  }
+
+  protected void toStringOldNew(StringBuffer sb, int level) {
+    sb.append(indent(level) + "old value:");
+    if (getOldValue() == null) {
+      sb.append(" null\n");
+    }
+    else {
+      sb.append("\n");
+      getOldValue().toString(sb, level + 1);
+    }
+    sb.append(indent(level) + "new value:");
+    if (getNewValue() == null) {
+      sb.append(" null\n");
+    }
+    else {
+      sb.append("\n");
+      getNewValue().toString(sb, level + 1);
+    }
   }
 
 }

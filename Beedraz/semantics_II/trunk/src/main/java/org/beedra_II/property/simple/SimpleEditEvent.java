@@ -74,6 +74,10 @@ public abstract class SimpleEditEvent<_Type_>
 
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
+    toStringOldNew(sb, level + 1);
+  }
+
+  protected void toStringOldNew(StringBuffer sb, int level) {
     sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");
     sb.append(indent(level + 1) + "new value: " + getNewValue() + "\n");
   }

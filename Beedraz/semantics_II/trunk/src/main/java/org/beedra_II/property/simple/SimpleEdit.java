@@ -131,6 +131,10 @@ public abstract class SimpleEdit<_Type_,
 
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
+    toStringGoalInitial(sb, level + 1);
+  }
+
+  protected void toStringGoalInitial(StringBuffer sb, int level) {
     sb.append(indent(level + 1) + "goal: " + getGoal() + "\n");
     sb.append(indent(level + 1) + "initial: " + getInitial() + "\n");
   }

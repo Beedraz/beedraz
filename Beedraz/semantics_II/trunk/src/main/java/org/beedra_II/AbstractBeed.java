@@ -77,7 +77,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
     return "";
   }
 
-  public final void toString(StringBuffer sb, int level) {
+  public void toString(StringBuffer sb, int level) {
     assert sb != null;
     objectToString(this, sb, level);
   }

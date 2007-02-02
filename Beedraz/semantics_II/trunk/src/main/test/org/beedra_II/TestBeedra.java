@@ -280,6 +280,9 @@ public class TestBeedra {
     assertNull(task.project.get());
 
     Project project1 = new Project();
+    StringEdit nameSetter = new StringEdit(project1.name);
+    nameSetter.setGoal("project 1");
+    nameSetter.perform();
     BeanListener project1Listener = new BeanListener();
     project1.addListener(project1Listener);
     project1.addListener(allroundListener);

@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra.example.z_beedra;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.property.PropertyBeedSelector;
 import org.beedra_II.property.association.BidirToManyBeed;
@@ -78,6 +80,11 @@ public class Project extends AbstractBeanBeed {
 
   protected String otherToStringInformation() {
     return ", name: " + name.get();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "name: " + name.get() + "\n");
   }
 
 }

@@ -386,4 +386,16 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<?>>
 //  public boolean replaceEdit(UndoableEdit anEdit);
 //   */
 
+
+  public final String toString() {
+    return getClass().getSimpleName() + //"@" + hashCode() +
+           "[" + otherToStringInformation() + "]";
+  }
+
+  protected String otherToStringInformation() {
+    return "target: " + getTarget() +
+           ", state: " + getState() +
+           ", valid: " + isValid();
+  }
+
 }

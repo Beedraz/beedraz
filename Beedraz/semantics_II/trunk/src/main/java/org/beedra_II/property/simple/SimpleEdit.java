@@ -122,5 +122,11 @@ public abstract class SimpleEdit<_Type_,
     getTarget().assign(getInitial());
   }
 
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", goal: " + getGoal() +
+           ", initial: " + getInitial();
+  }
+
 }
 

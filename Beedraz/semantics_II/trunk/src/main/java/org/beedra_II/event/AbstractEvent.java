@@ -83,7 +83,7 @@ public abstract class AbstractEvent
   private final Beed<? extends Event> $source;
 
   public final String toString() {
-    return super.toString() +
+    return getClass().getSimpleName() + //"@" + hashCode() +
            "[" + otherToStringInformation() + "]";
   }
 

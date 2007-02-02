@@ -76,8 +76,8 @@ public class Project extends AbstractBeanBeed {
     registerProperty(tasks);
   }
 
-  public String toString() {
-    return super.toString() + "[name: " + name.get() + "]";
+  protected String otherToStringInformation() {
+    return ", name: " + name.get();
   }
 
 }

@@ -66,4 +66,13 @@ public abstract class AbstractBeed<_Event_ extends Event>
   private final Set<Listener<? super _Event_>> $changeListeners =
       new HashSet<Listener<? super _Event_>>();
 
+  public final String toString() {
+    return getClass().getSimpleName() + //"@" + hashCode() +
+           "[" + otherToStringInformation() + "]";
+  }
+
+  protected String otherToStringInformation() {
+    return "";
+  }
+
 }

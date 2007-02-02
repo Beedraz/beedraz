@@ -36,7 +36,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class FinalBidirToOneEvent<_One_ extends BeanBeed>
+public final class FinalBidirToOneEvent<_One_ extends BeanBeed,
+                                        _Many_ extends BeanBeed>
     extends AbstractOldNewEvent<_One_>
     implements BidirToOneEvent<_One_> {
 
@@ -46,7 +47,7 @@ public final class FinalBidirToOneEvent<_One_ extends BeanBeed>
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public FinalBidirToOneEvent(EditableBidirToOneBeed<_One_, ?> source, _One_ oldValue, _One_ newValue) {
+  public FinalBidirToOneEvent(EditableBidirToOneBeed<_One_, _Many_> source, _One_ oldValue, _One_ newValue) {
     super(source, oldValue, newValue);
   }
 

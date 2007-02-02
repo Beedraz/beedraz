@@ -20,6 +20,7 @@ package org.beedra_II;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.beedra.example.z_beedra.Project;
 import org.beedra.example.z_beedra.Task;
@@ -32,14 +33,18 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.EditEvent;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
+import org.beedra_II.property.association.BidirToOneEdit;
+import org.beedra_II.property.association.BidirToOneEvent;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.FinalIntegerEvent;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEditEvent;
 import org.beedra_II.property.integer.IntegerEvent;
 import org.beedra_II.property.integer.IntegerSumBeed;
+import org.beedra_II.property.set.SetEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.beedra_II.property.string.StringEdit;
+import org.beedra_II.property.string.StringEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,17 +72,13 @@ public class TestBeedra {
     Task task = new Task();
   }
 
-  /*
-   * problem? I am not interested in undoability. A listener for an BeedEvent should suffice.
-   * ? super XXX?????
-   */
-  class OldNewListener implements Listener<OldNewEvent<String>> {
+  class OldNewListener implements Listener<StringEvent> {
 
-    public void beedChanged(OldNewEvent<String> event) {
+    public void beedChanged(StringEvent event) {
       $event = event;
     }
 
-    public OldNewEvent<String> $event;
+    public StringEvent $event;
 
   }
 
@@ -227,70 +228,81 @@ public class TestBeedra {
     eib.addListener(eel);
   }
 
-//  /*
-//   * problem? I am not interested in undoability. A listener for an BeedEvent should suffice.
-//   * ? super XXX?????
-//   */
-//  class ProjectChangedListener implements Listener<UndoableOldNewBEvent<BidirToOnePDoBeed<Project, Task>, Project>> {
-//
-//    public void beedChanged(UndoableOldNewBEvent<BidirToOnePDoBeed<Project, Task>, Project> event) {
-//      $event = event;
-//    }
-//
-//    public UndoableOldNewBEvent<BidirToOnePDoBeed<Project, Task>, Project> $event;
-//
-//  }
-//
-//  class TasksChangedListener implements Listener<SetEvent<Task, BidirToManyPBeed<Project, Task>>> {
-//
-//    public void beedChanged(SetEvent<Task, BidirToManyPBeed<Project, Task>> event) {
-//      $event = event;
-//    }
-//
-//    public SetEvent<Task, BidirToManyPBeed<Project, Task>> $event;
-//
-//  }
-//
-//  @Test
-//  public void projectWithTask() {
-//
-//    Listener<Event<? extends Beed>> allroundListener = new Listener<Event<? extends Beed>>() {
-//
-//      public void beedChanged(Event<? extends Beed> event) {
-//         System.out.println(event);
-//      }
-//
-//    };
-//
-//
-//    Task task = new Task();
-//    ProjectChangedListener taskProjectListener = new ProjectChangedListener();
-//    task.project.addChangeListener(taskProjectListener);
-//    task.project.addChangeListener(allroundListener);
-//    assertNull(task.project.get());
-//    assertTrue(task.project.isChangeListener(taskProjectListener));
-//
+
+  public class BidirToOneListener implements Listener<BidirToOneEvent> {
+
+    public void beedChanged(BidirToOneEvent event) {
+      $event = event;
+    }
+
+    public BidirToOneEvent $event;
+  }
+
+  public class BidirToManyListener implements Listener<SetEvent> {
+
+    public void beedChanged(SetEvent event) {
+      $event = event;
+    }
+
+    public SetEvent $event;
+  }
+
+  @Test
+  public void projectWithTask() throws EditStateException, IllegalEditException {
+    Listener<Event> allroundListener = new Listener<Event>() {
+
+      public void beedChanged(Event event) {
+        System.out.println(event);
+      }
+
+    };
+    Task task = new Task();
+    BeanListener taskListener = new BeanListener();
+    task.addListener(taskListener);
+    task.addListener(allroundListener);
+    BidirToOneListener taskProjectListener = new BidirToOneListener();
+    task.project.addListener(taskProjectListener);
+    task.project.addListener(allroundListener);
+    assertNull(task.project.get());
+    assertTrue(task.isListener(taskListener));
+    assertTrue(task.isListener(allroundListener));
+    assertTrue(task.project.isListener(taskProjectListener));
+    assertTrue(task.project.isListener(allroundListener));
+
 //    task.project.set(null);
-//    assertNull(taskProjectListener.$event);
-//    assertNull(task.project.get());
-//
-//    Project project1 = new Project();
-//    TasksChangedListener project1TasksListener = new TasksChangedListener();
-//    project1.tasks.addChangeListener(project1TasksListener);
-//    assertNotNull(project1.tasks.get());
-//    assertTrue(project1.tasks.get().isEmpty());
-//    assertTrue(project1.tasks.isChangeListener(project1TasksListener));
-//
-////    BeedEvent<? extends AbstractPropertyBeed<SetEvent<Task, BidirToManyPBeed<Project, Task>>>> betest = new SetEvent<Task, BidirToManyPBeed<Project, Task>>(project1.tasks, null, null);
-//////    betest.setSource();
-////    Beed<?> source = betest.getSource();
-////    System.out.println(source);
-//
+    BidirToOneEdit<Project, Task> edit = new BidirToOneEdit<Project, Task>(task.project);
+    edit.setGoal(null);
+    edit.perform();
+    assertNull(taskListener.$event);
+    assertNull(taskProjectListener.$event);
+    assertNull(task.project.get());
+
+    Project project1 = new Project();
+    BeanListener project1Listener = new BeanListener();
+    project1.addListener(project1Listener);
+    project1.addListener(allroundListener);
+    BidirToManyListener project1TasksListener = new BidirToManyListener();
+    project1.tasks.addListener(project1TasksListener);
+    project1.tasks.addListener(allroundListener);
+    assertNotNull(project1.tasks.get());
+    assertTrue(project1.tasks.get().isEmpty());
+    assertTrue(project1.isListener(project1Listener));
+    assertTrue(project1.isListener(allroundListener));
+    assertTrue(project1.tasks.isListener(project1TasksListener));
+    assertTrue(project1.tasks.isListener(allroundListener));
+
 //    task.project.set(project1);
-//    assertNotNull(taskProjectListener.$event);
-//    assertNotNull(project1TasksListener.$event);
-//    assertEquals(task.project, taskProjectListener.$event.getSource());
-//    assertEquals(project1.tasks, project1TasksListener.$event.getSource());
+    edit = new BidirToOneEdit<Project, Task>(task.project);
+    edit.setGoal(project1);
+    edit.perform();
+    assertNotNull(taskProjectListener.$event);
+    assertNotNull(project1TasksListener.$event);
+    assertNotNull(taskListener.$event);
+    assertNotNull(project1Listener.$event);
+    assertEquals(task.project, taskProjectListener.$event.getSource());
+    assertEquals(project1.tasks, project1TasksListener.$event.getSource());
+    assertEquals(task, taskListener.$event.getSource());
+    assertEquals(project1, project1Listener.$event.getSource());
 //    assertEquals(null, taskProjectListener.$event.getOldValue());
 //    assertEquals(project1, taskProjectListener.$event.getNewValue());
 //    assertNotNull(project1TasksListener.$event.getAddedElements());
@@ -366,9 +378,9 @@ public class TestBeedra {
 //    assertTrue(project1.tasks.get().isEmpty());
 //    assertNotNull(project2.tasks.get());
 //    assertTrue(project2.tasks.get().isEmpty());
-//
-//
-//  }
+
+
+  }
 
 }
 

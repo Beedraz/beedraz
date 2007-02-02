@@ -35,9 +35,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class BidirToOneEdit<_One_ extends BeanBeed,
-                                     _Many_ extends BeanBeed,
-                                     _Target_ extends EditableBidirToOneBeed<_One_, _Many_>>
-    extends SimpleEdit<_One_, _Target_> {
+                            _Many_ extends BeanBeed>
+    extends SimpleEdit<_One_, EditableBidirToOneBeed<_One_, _Many_>> {
 
   /**
    * @pre target != null;
@@ -45,7 +44,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public BidirToOneEdit(_Target_ target) {
+  public BidirToOneEdit(EditableBidirToOneBeed<_One_, _Many_> target) {
     super(target);
   }
 
@@ -83,7 +82,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
 
   @Override
   protected final void notifyListeners() {
-    getTarget().fireEvent(new BidirToOneEditEvent<_One_>(this));
+    getTarget().fireEvent(new BidirToOneEditEvent<_One_, _Many_>(this));
     BidirToManyBeed<_One_, _Many_> initialToMany = getTarget().toManyBeedOfOne(getInitial());
     BidirToManyBeed<_One_, _Many_> goalToMany = getTarget().toManyBeedOfOne(getGoal());
     assert (getState() == DONE) || (getState() == UNDONE);

@@ -36,7 +36,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class BidirToOneEditEvent<_One_ extends BeanBeed>
+public final class BidirToOneEditEvent<_One_ extends BeanBeed,
+                                       _Many_ extends BeanBeed>
     extends SimpleEditEvent<_One_>
     implements BidirToOneEvent<_One_> {
 
@@ -44,7 +45,7 @@ public final class BidirToOneEditEvent<_One_ extends BeanBeed>
    * @pre source != null;
    * @post getSource() == source;
    */
-  public BidirToOneEditEvent(BidirToOneEdit<_One_, ?, ?> edit) {
+  public BidirToOneEditEvent(BidirToOneEdit<_One_, _Many_> edit) {
     super(edit);
   }
 

@@ -82,5 +82,14 @@ public abstract class AbstractEvent
    */
   private final Beed<? extends Event> $source;
 
+  public final String toString() {
+    return super.toString() +
+           "[" + otherToStringInformation() + "]";
+  }
+
+  protected String otherToStringInformation() {
+    return "source: " + getSource();
+  }
+
 }
 

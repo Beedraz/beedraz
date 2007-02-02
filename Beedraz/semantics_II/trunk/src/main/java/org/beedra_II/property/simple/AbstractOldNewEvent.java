@@ -68,5 +68,11 @@ public abstract class AbstractOldNewEvent<_Type_> extends AbstractEvent
 
   private final _Type_ $newValue;
 
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", old value: " + getOldValue() +
+           ", new value: " + getNewValue();
+  }
+
 }
 

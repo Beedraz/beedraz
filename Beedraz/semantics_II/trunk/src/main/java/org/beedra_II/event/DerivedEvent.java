@@ -63,5 +63,10 @@ public abstract class DerivedEvent
    */
   private final Event $cause;
 
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", cause: " + getCause();
+  }
+
 }
 

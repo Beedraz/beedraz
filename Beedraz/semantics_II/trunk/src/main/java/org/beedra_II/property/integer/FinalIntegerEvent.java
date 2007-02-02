@@ -59,5 +59,10 @@ public final class FinalIntegerEvent
 
   private final Integer $delta;
 
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", delta: " + getDelta();
+  }
+
 }
 

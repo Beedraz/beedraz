@@ -101,5 +101,17 @@ public abstract class AbstractEditEvent<_Edit_ extends Edit<?>>
     return $edit.getTarget();
   }
 
+  // MUDO generalize; requires abstract event 1 / 2
+  public final String toString() {
+    return super.toString() +
+           "[" + otherToStringInformation() + "]";
+  }
+
+  protected String otherToStringInformation() {
+    return "source: " + getSource() +
+           ", edit: " + getEdit() +
+           ", edit state: " + getEditState();
+  }
+
 }
 

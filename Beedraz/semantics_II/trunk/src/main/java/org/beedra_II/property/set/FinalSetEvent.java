@@ -83,5 +83,11 @@ public class FinalSetEvent<_Element_>
    */
   private final Set<_Element_> $removedElements;
 
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", added elements: " + getAddedElements() +
+           ", removed elements: " + getRemovedElements();
+  }
+
 }
 

@@ -65,5 +65,11 @@ public abstract class SimpleEditEvent<_Type_>
     return getEditState() == DONE ? getEdit().getGoal() : getEdit().getInitial();
   }
 
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", old value: " + getOldValue() +
+           ", new value: " + getNewValue();
+  }
+
 }
 

@@ -44,5 +44,9 @@ public class Task extends AbstractBeanBeed {
     registerProperty(project);
   }
 
+  public String toString() {
+    return super.toString() + "[name: " + name.get() + "]";
+  }
+
 }
 

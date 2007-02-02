@@ -157,4 +157,13 @@ public interface Edit<_Target_ extends EditableBeed<?>> {
 
   // MUDO absorb / replace
 
+  /**
+   * Multiline instance information.
+   * Use in debugging or logging only.
+   *
+   * @pre sb != null;
+   * @pre level >= 0;
+   */
+  void toString(StringBuffer sb, int i);
+
 }

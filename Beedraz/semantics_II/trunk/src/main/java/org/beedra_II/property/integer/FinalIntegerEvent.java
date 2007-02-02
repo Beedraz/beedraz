@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.AbstractOldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -62,6 +64,11 @@ public final class FinalIntegerEvent
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", delta: " + getDelta();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "delta:" + getDelta() + "\n");
   }
 
 }

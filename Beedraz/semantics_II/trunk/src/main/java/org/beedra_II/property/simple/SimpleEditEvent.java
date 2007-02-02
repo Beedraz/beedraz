@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 
 import org.beedra_II.event.AbstractEditEvent;
@@ -69,6 +70,12 @@ public abstract class SimpleEditEvent<_Type_>
     return super.otherToStringInformation() +
            ", old value: " + getOldValue() +
            ", new value: " + getNewValue();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");
+    sb.append(indent(level + 1) + "new value: " + getNewValue() + "\n");
   }
 
 }

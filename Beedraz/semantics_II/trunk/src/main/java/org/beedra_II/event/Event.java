@@ -67,5 +67,14 @@ public interface Event {
    */
   Beed<?> getSource();
 
+  /**
+   * Multiline instance information.
+   * Use in debugging or logging only.
+   *
+   * @pre sb != null;
+   * @pre level >= 0;
+   */
+  void toString(StringBuffer sb, int i);
+
 }
 

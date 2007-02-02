@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -72,6 +74,12 @@ public abstract class AbstractOldNewEvent<_Type_> extends AbstractEvent
     return super.otherToStringInformation() +
            ", old value: " + getOldValue() +
            ", new value: " + getNewValue();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");
+    sb.append(indent(level + 1) + "new value: " + getNewValue() + "\n");
   }
 
 }

@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.edit;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.objectToString;
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import static org.beedra_II.edit.Edit.State.UNDONE;
@@ -396,6 +398,15 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<?>>
     return "target: " + getTarget() +
            ", state: " + getState() +
            ", valid: " + isValid();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    assert sb != null;
+    objectToString(this, sb, level);
+    sb.append(indent(level + 1) + "targer:\n");
+    getTarget().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "state: " + getState() + "\n");
+    sb.append(indent(level + 1) + "valid: " + isValid() + "\n");
   }
 
 }

@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 
 import org.beedra.util_I.Comparison;
@@ -126,6 +127,12 @@ public abstract class SimpleEdit<_Type_,
     return super.otherToStringInformation() +
            ", goal: " + getGoal() +
            ", initial: " + getInitial();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "goal: " + getGoal() + "\n");
+    sb.append(indent(level + 1) + "initial: " + getInitial() + "\n");
   }
 
 }

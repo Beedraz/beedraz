@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.objectToString;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,6 +75,11 @@ public abstract class AbstractBeed<_Event_ extends Event>
 
   protected String otherToStringInformation() {
     return "";
+  }
+
+  public final void toString(StringBuffer sb, int level) {
+    assert sb != null;
+    objectToString(this, sb, level);
   }
 
 }

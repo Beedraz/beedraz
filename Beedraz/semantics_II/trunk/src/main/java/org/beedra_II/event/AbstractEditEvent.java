@@ -17,6 +17,9 @@ limitations under the License.
 package org.beedra_II.event;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.objectToString;
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.Beed;
 import org.beedra_II.edit.Edit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -111,6 +114,16 @@ public abstract class AbstractEditEvent<_Edit_ extends Edit<?>>
     return "source: " + getSource() +
            ", edit: " + getEdit() +
            ", edit state: " + getEditState();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    assert sb != null;
+    objectToString(this, sb, level);
+    sb.append(indent(level + 1) + "source:\n");
+    getSource().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "edit:\n");
+    getEdit().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "edit state: " + getEditState() + "\n");
   }
 
 }

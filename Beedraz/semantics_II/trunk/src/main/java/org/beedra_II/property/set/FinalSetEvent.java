@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.set;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -87,6 +89,12 @@ public class FinalSetEvent<_Element_>
     return super.otherToStringInformation() +
            ", added elements: " + getAddedElements() +
            ", removed elements: " + getRemovedElements();
+  }
+
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "added elements: " + getAddedElements() + "\n");
+    sb.append(indent(level + 1) + "removed elements: " + getRemovedElements() + "\n");
   }
 
 }

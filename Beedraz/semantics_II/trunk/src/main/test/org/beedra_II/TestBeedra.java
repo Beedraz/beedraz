@@ -252,7 +252,9 @@ public class TestBeedra {
     Listener<Event> allroundListener = new Listener<Event>() {
 
       public void beedChanged(Event event) {
-        System.out.println(event);
+        StringBuffer sb = new StringBuffer();
+        event.toString(sb, 0);
+        System.out.println(sb);
       }
 
     };

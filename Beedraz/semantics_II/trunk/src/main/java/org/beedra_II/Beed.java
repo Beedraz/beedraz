@@ -98,5 +98,14 @@ public interface Beed<_Event_ extends Event> {
    */
   void removeListener(Listener<? super _Event_> listener);
 
+  /**
+   * Multiline instance information. This should be used
+   * purely for debugging and logging.
+   *
+   * @pre sb != null;
+   * @pre level >= 0;
+   */
+  void toString(StringBuffer sb, int i);
+
 }
 

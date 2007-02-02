@@ -34,6 +34,7 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.EditEvent;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
+import org.beedra_II.property.association.BidirToManyBeed;
 import org.beedra_II.property.association.BidirToOneEdit;
 import org.beedra_II.property.association.BidirToOneEvent;
 import org.beedra_II.property.integer.EditableIntegerBeed;
@@ -311,20 +312,22 @@ public class TestBeedra {
     task.addListener(allroundListener);
     BidirToOneListener taskProjectListener = new BidirToOneListener();
     task.project.addListener(taskProjectListener);
+    EditListener editListener = new EditListener();
+    task.project.addListener(editListener);
     task.project.addListener(allroundListener);
     assertNull(task.project.get());
     assertTrue(task.isListener(taskListener));
     assertTrue(task.isListener(allroundListener));
     assertTrue(task.project.isListener(taskProjectListener));
+    assertTrue(task.project.isListener(editListener));
     assertTrue(task.project.isListener(allroundListener));
 
 //    task.project.set(null);
-    BidirToOneEdit<Project, Task> edit = new BidirToOneEdit<Project, Task>(task.project);
-    edit.setGoal(null);
-    edit.perform();
-    assertNull(taskListener.$event);
-    assertNull(taskProjectListener.$event);
-    assertNull(task.project.get());
+    BidirToOneEdit<Project, Task> setter = new BidirToOneEdit<Project, Task>(task.project);
+    setter.setGoal(null);
+    setter.perform();
+    validateNoEvents(taskListener, taskProjectListener, null, null, null, null);
+    validateProjectTaskState(task, null, true, null, false);
 
     Project project1 = new Project();
     StringEdit nameSetter = new StringEdit(project1.name);
@@ -344,47 +347,55 @@ public class TestBeedra {
     assertTrue(project1.tasks.isListener(allroundListener));
 
 //    task.project.set(project1);
-    edit = new BidirToOneEdit<Project, Task>(task.project);
-    edit.setGoal(project1);
-    edit.perform();
-    assertNotNull(taskProjectListener.$event);
-    assertNotNull(project1TasksListener.$event);
-    assertNotNull(taskListener.$event);
-    assertNotNull(project1Listener.$event);
-    assertEquals(task.project, taskProjectListener.$event.getSource());
-    assertEquals(project1.tasks, project1TasksListener.$event.getSource());
-    assertEquals(task, taskListener.$event.getSource());
-    assertEquals(project1, project1Listener.$event.getSource());
-    assertEquals(taskProjectListener.$event, taskListener.$event.getCause());
-    assertEquals(project1TasksListener.$event, project1Listener.$event.getCause());
-    assertEquals(null, taskProjectListener.$event.getOldValue());
-    assertEquals(project1, taskProjectListener.$event.getNewValue());
-    assertNotNull(project1TasksListener.$event.getAddedElements());
-    assertTrue(project1TasksListener.$event.getAddedElements().size() == 1);
-    assertTrue(project1TasksListener.$event.getAddedElements().contains(task));
-    assertNotNull(project1TasksListener.$event.getRemovedElements());
-    assertTrue(project1TasksListener.$event.getRemovedElements().isEmpty());
-    assertEquals(project1, task.project.get());
-    assertNotNull(project1.tasks.get());
-    assertTrue(project1.tasks.get().size() == 1);
-    assertTrue(project1.tasks.get().contains(task));
+    setter = new BidirToOneEdit<Project, Task>(task.project);
+    setter.setGoal(project1);
+    setter.perform();
+    assertNotNull(editListener.$edit);
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project1, project1Listener, project1TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, null, project1);
+    validateTaskAdded(task, project1TasksListener, project1.tasks);
+    validateProjectTaskState(task, project1, true, null, false);
+
+    Edit<?> edit = editListener.$edit;
+    editListener.$edit = null;
+    taskProjectListener.$event = null;
+    project1TasksListener.$event = null;
+    taskListener.$event = null;
+    project1Listener.$event = null;
+    edit.undo();
+    assertNotNull(editListener.$edit);
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project1, project1Listener, project1TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, project1, null);
+    validateTaskRemoved(task, project1TasksListener, project1.tasks);
+    validateProjectTaskState(task, project1, false, null, false);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    taskProjectListener.$event = null;
+    project1TasksListener.$event = null;
+    taskListener.$event = null;
+    project1Listener.$event = null;
+    edit.redo();
+    assertNotNull(editListener.$edit);
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project1, project1Listener, project1TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, null, project1);
+    validateTaskAdded(task, project1TasksListener, project1.tasks);
+    validateProjectTaskState(task, project1, true, null, false);
+
 
     taskProjectListener.$event = null;
     project1TasksListener.$event = null;
     taskListener.$event = null;
     project1Listener.$event = null;
 //    task.project.set(project1);
-    edit = new BidirToOneEdit<Project, Task>(task.project);
-    edit.setGoal(project1);
-    edit.perform();
-    assertNull(taskProjectListener.$event);
-    assertNull(project1TasksListener.$event);
-    assertNull(taskListener.$event);
-    assertNull(project1Listener.$event);
-    assertEquals(project1, task.project.get());
-    assertNotNull(project1.tasks.get());
-    assertTrue(project1.tasks.get().size() == 1);
-    assertTrue(project1.tasks.get().contains(task));
+    setter = new BidirToOneEdit<Project, Task>(task.project);
+    setter.setGoal(project1);
+    setter.perform();
+    validateNoEvents(taskListener, taskProjectListener, project1Listener, project1TasksListener, null, null);
+    validateProjectTaskState(task, project1, true, null, false);
 
     Project project2 = new Project();
     nameSetter = new StringEdit(project2.name);
@@ -410,42 +421,47 @@ public class TestBeedra {
     project1Listener.$event = null;
     project2Listener.$event = null;
 //  task.project.set(project2);
-    edit = new BidirToOneEdit<Project, Task>(task.project);
-    edit.setGoal(project2);
-    edit.perform();
-    assertNotNull(taskProjectListener.$event);
-    assertNotNull(project1TasksListener.$event);
-    assertNotNull(project2TasksListener.$event);
-    assertNotNull(taskListener.$event);
-    assertNotNull(project1Listener.$event);
-    assertNotNull(project2Listener.$event);
-    assertEquals(task.project, taskProjectListener.$event.getSource());
-    assertEquals(project1.tasks, project1TasksListener.$event.getSource());
-    assertEquals(project2.tasks, project2TasksListener.$event.getSource());
-    assertEquals(task, taskListener.$event.getSource());
-    assertEquals(project1, project1Listener.$event.getSource());
-    assertEquals(project2, project2Listener.$event.getSource());
-    assertEquals(taskProjectListener.$event, taskListener.$event.getCause());
-    assertEquals(project1TasksListener.$event, project1Listener.$event.getCause());
-    assertEquals(project2TasksListener.$event, project2Listener.$event.getCause());
-    assertEquals(project1, taskProjectListener.$event.getOldValue());
-    assertEquals(project2, taskProjectListener.$event.getNewValue());
-    assertNotNull(project1TasksListener.$event.getAddedElements());
-    assertTrue(project1TasksListener.$event.getAddedElements().isEmpty());
-    assertNotNull(project1TasksListener.$event.getRemovedElements());
-    assertTrue(project1TasksListener.$event.getRemovedElements().size() == 1);
-    assertTrue(project1TasksListener.$event.getRemovedElements().contains(task));
-    assertNotNull(project2TasksListener.$event.getAddedElements());
-    assertTrue(project2TasksListener.$event.getAddedElements().size() == 1);
-    assertTrue(project2TasksListener.$event.getAddedElements().contains(task));
-    assertNotNull(project2TasksListener.$event.getRemovedElements());
-    assertTrue(project2TasksListener.$event.getRemovedElements().isEmpty());
-    assertEquals(project2, task.project.get());
-    assertNotNull(project1.tasks.get());
-    assertTrue(project1.tasks.get().isEmpty());
-    assertNotNull(project2.tasks.get());
-    assertTrue(project2.tasks.get().size() == 1);
-    assertTrue(project2.tasks.get().contains(task));
+    setter = new BidirToOneEdit<Project, Task>(task.project);
+    setter.setGoal(project2);
+    setter.perform();
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project1, project1Listener, project1TasksListener);
+    validateProjectListener(project2, project2Listener, project2TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, project1, project2);
+    validateTaskRemoved(task, project1TasksListener, project1.tasks);
+    validateTaskAdded(task, project2TasksListener, project2.tasks);
+    validateProjectTaskState(task, project1, false, project2, true);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    taskProjectListener.$event = null;
+    project1TasksListener.$event = null;
+    taskListener.$event = null;
+    project1Listener.$event = null;
+    edit.undo();
+    assertNotNull(editListener.$edit);
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project1, project1Listener, project1TasksListener);
+    validateProjectListener(project2, project2Listener, project2TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, project2, project1);
+    validateTaskAdded(task, project1TasksListener, project1.tasks);
+    validateTaskRemoved(task, project2TasksListener, project2.tasks);
+    validateProjectTaskState(task, project1, true, project2, false);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    taskProjectListener.$event = null;
+    project1TasksListener.$event = null;
+    taskListener.$event = null;
+    project1Listener.$event = null;
+    edit.redo();
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project1, project1Listener, project1TasksListener);
+    validateProjectListener(project2, project2Listener, project2TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, project1, project2);
+    validateTaskRemoved(task, project1TasksListener, project1.tasks);
+    validateTaskAdded(task, project2TasksListener, project2.tasks);
+    validateProjectTaskState(task, project1, false, project2, true);
 
     taskProjectListener.$event = null;
     project1TasksListener.$event = null;
@@ -454,21 +470,11 @@ public class TestBeedra {
     project1Listener.$event = null;
     project2Listener.$event = null;
 //    task.project.set(project2);
-    edit = new BidirToOneEdit<Project, Task>(task.project);
-    edit.setGoal(project2);
-    edit.perform();
-    assertNull(taskProjectListener.$event);
-    assertNull(project1TasksListener.$event);
-    assertNull(project2TasksListener.$event);
-    assertNull(taskListener.$event);
-    assertNull(project1Listener.$event);
-    assertNull(project2Listener.$event);
-    assertEquals(project2, task.project.get());
-    assertNotNull(project1.tasks.get());
-    assertTrue(project1.tasks.get().isEmpty());
-    assertNotNull(project2.tasks.get());
-    assertTrue(project2.tasks.get().size() == 1);
-    assertTrue(project2.tasks.get().contains(task));
+    setter = new BidirToOneEdit<Project, Task>(task.project);
+    setter.setGoal(project2);
+    setter.perform();
+    validateNoEvents(taskListener, taskProjectListener, project1Listener, project1TasksListener, project2Listener, project2TasksListener);
+    validateProjectTaskState(task, project1, false, project2, true);
 
 
     taskProjectListener.$event = null;
@@ -478,34 +484,126 @@ public class TestBeedra {
     project1Listener.$event = null;
     project2Listener.$event = null;
 //  task.project.set(null);
-    edit = new BidirToOneEdit<Project, Task>(task.project);
+    setter = new BidirToOneEdit<Project, Task>(task.project);
 //    edit.setGoal(null);
-    edit.perform();
-    assertNotNull(taskProjectListener.$event);
+    setter.perform();
     assertNull(project1TasksListener.$event);
-    assertNotNull(project2TasksListener.$event);
-    assertNotNull(taskListener.$event);
     assertNull(project1Listener.$event);
-    assertNotNull(project2Listener.$event);
-    assertEquals(task.project, taskProjectListener.$event.getSource());
-    assertEquals(project2.tasks, project2TasksListener.$event.getSource());
-    assertEquals(task, taskListener.$event.getSource());
-    assertEquals(project2, project2Listener.$event.getSource());
-    assertEquals(taskProjectListener.$event, taskListener.$event.getCause());
-    assertEquals(project2TasksListener.$event, project2Listener.$event.getCause());
-    assertEquals(project2, taskProjectListener.$event.getOldValue());
-    assertEquals(null, taskProjectListener.$event.getNewValue());
-    assertNotNull(project2TasksListener.$event.getAddedElements());
-    assertTrue(project2TasksListener.$event.getAddedElements().isEmpty());
-    assertNotNull(project2TasksListener.$event.getRemovedElements());
-    assertTrue(project2TasksListener.$event.getRemovedElements().size() == 1);
-    assertTrue(project2TasksListener.$event.getRemovedElements().contains(task));
-    assertNull(task.project.get());
-    assertNotNull(project1.tasks.get());
-    assertTrue(project1.tasks.get().isEmpty());
-    assertNotNull(project2.tasks.get());
-    assertTrue(project2.tasks.get().isEmpty());
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project2, project2Listener, project2TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, project2, null);
+    validateTaskRemoved(task, project2TasksListener, project2.tasks);
+    validateProjectTaskState(task, project1, false, project2, false);
 
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    taskProjectListener.$event = null;
+    project1TasksListener.$event = null;
+    taskListener.$event = null;
+    project1Listener.$event = null;
+    edit.undo();
+    assertNull(project1TasksListener.$event);
+    assertNull(project1Listener.$event);
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project2, project2Listener, project2TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, null, project2);
+    validateTaskAdded(task, project2TasksListener, project2.tasks);
+    validateProjectTaskState(task, project1, false, project2, true);
+
+    edit = editListener.$edit;
+    editListener.$edit = null;
+    taskProjectListener.$event = null;
+    project1TasksListener.$event = null;
+    taskListener.$event = null;
+    project1Listener.$event = null;
+    edit.redo();
+    assertNull(project1TasksListener.$event);
+    assertNull(project1Listener.$event);
+    validateTaskListener(task, taskListener, taskProjectListener);
+    validateProjectListener(project2, project2Listener, project2TasksListener);
+    validateTaskProjectEvent(task, taskProjectListener, project2, null);
+    validateTaskRemoved(task, project2TasksListener, project2.tasks);
+    validateProjectTaskState(task, project1, false, project2, false);
+}
+
+  private void validateTaskListener(Task task, BeanListener taskListener, BidirToOneListener taskProjectListener) {
+    assertNotNull(taskListener.$event);
+    assertEquals(task, taskListener.$event.getSource());
+    assertEquals(taskProjectListener.$event, taskListener.$event.getCause());
+  }
+
+  private void validateProjectListener(Project project, BeanListener projectListener, BidirToManyListener projectTasksListener) {
+    assertNotNull(projectListener.$event);
+    assertEquals(project, projectListener.$event.getSource());
+    assertEquals(projectTasksListener.$event, projectListener.$event.getCause());
+  }
+
+  private void validateNoEvents(BeanListener taskListener, BidirToOneListener taskProjectListener, BeanListener project1Listener, BidirToManyListener project1TasksListener, BeanListener project2Listener, BidirToManyListener project2TasksListener) {
+    assertNull(taskProjectListener.$event);
+    assertNull(taskListener.$event);
+    if (project1TasksListener != null) {
+      assertNull(project1TasksListener.$event);
+    }
+    if (project1Listener != null) {
+      assertNull(project1Listener.$event);
+    }
+    if (project2TasksListener != null) {
+      assertNull(project2TasksListener.$event);
+    }
+    if (project2Listener != null) {
+      assertNull(project2Listener.$event);
+    }
+  }
+
+  private void validateTaskProjectEvent(Task task, BidirToOneListener taskProjectListener, Project oldValue, Project newValue) {
+    assertNotNull(taskProjectListener.$event);
+    assertEquals(task.project, taskProjectListener.$event.getSource());
+    assertEquals(oldValue, taskProjectListener.$event.getOldValue());
+    assertEquals(newValue, taskProjectListener.$event.getNewValue());
+  }
+
+  private void validateProjectTaskState(Task task, Project project1, boolean taskExpectedIn1, Project project2, boolean taskExpectedIn2) {
+    assertEquals(taskExpectedIn1 ? project1 : taskExpectedIn2 ? project2 : null, task.project.get());
+    if (project1 != null) {
+      assertNotNull(project1.tasks.get());
+    }
+    if (project2 != null) {
+      assertNotNull(project2.tasks.get());
+    }
+    validateTaskInProject(task, project1, taskExpectedIn1);
+    validateTaskInProject(task, project2, taskExpectedIn2);
+  }
+
+  private void validateTaskInProject(Task task, Project project, boolean taskExpected) {
+    if (project != null) {
+      if (taskExpected) {
+        assertTrue(project.tasks.get().size() == 1);
+        assertTrue(project.tasks.get().contains(task));
+      }
+      else {
+        assertTrue(project.tasks.get().isEmpty());
+      }
+    }
+  }
+
+  private void validateTaskAdded(Task task, BidirToManyListener projectTasksListener, BidirToManyBeed<Project, Task> expectedSource) {
+    assertEquals(expectedSource, projectTasksListener.$event.getSource());
+    assertNotNull(projectTasksListener.$event);
+    assertNotNull(projectTasksListener.$event.getAddedElements());
+    assertTrue(projectTasksListener.$event.getAddedElements().size() == 1);
+    assertTrue(projectTasksListener.$event.getAddedElements().contains(task));
+    assertNotNull(projectTasksListener.$event.getRemovedElements());
+    assertTrue(projectTasksListener.$event.getRemovedElements().isEmpty());
+  }
+
+  private void validateTaskRemoved(Task task, BidirToManyListener projectTasksListener, BidirToManyBeed<Project, Task> expectedSource) {
+    assertEquals(expectedSource, projectTasksListener.$event.getSource());
+    assertNotNull(projectTasksListener.$event);
+    assertNotNull(projectTasksListener.$event.getAddedElements());
+    assertTrue(projectTasksListener.$event.getAddedElements().isEmpty());
+    assertNotNull(projectTasksListener.$event.getRemovedElements());
+    assertTrue(projectTasksListener.$event.getRemovedElements().size() == 1);
+    assertTrue(projectTasksListener.$event.getRemovedElements().contains(task));
   }
 
 }

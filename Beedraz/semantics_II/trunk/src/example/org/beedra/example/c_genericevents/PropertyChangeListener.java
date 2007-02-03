@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra.example.c_genericevents;
 
 
-public interface PropertyChangeListener<_ChangeEvent_ extends PropertyChangeEvent> {
+public interface PropertyChangeListener<_ChangeEvent_ extends PropertyChangeEvent<?, ?>> {
 
   /**
    * @pre event != null;

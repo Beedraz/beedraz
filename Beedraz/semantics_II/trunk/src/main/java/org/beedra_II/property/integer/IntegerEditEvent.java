@@ -47,13 +47,43 @@ public final class IntegerEditEvent
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public IntegerEditEvent(IntegerEdit edit) { // MUDO tyoe
+  public IntegerEditEvent(IntegerEdit edit) {
     super(edit);
-    $delta = ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue(); // MUDO overflow
+//    (getNewValue() - getOldValue() < Integer.MIN_VALUE) || (getNewValue() - getOldValue() > Integer.MAX_VALUE)
+//    if ((getOldValue() == null) || (getNewValue() == null)) {
+//      $delta = null;
+//    }
+//    else if (getOldValue() > 0) { // only MIN_VALUE problem is possible
+//      if (getNewValue() < Integer.MIN_VALUE + getOldValue()) {
+//        $delta = getNewValue() - getOldValue(); // ok
+//      }
+//      else {
+//        $delta = null;
+//      }
+//    }
+//    else {
+//      assert getOldValue() <= 0;
+//      // only MAX_VALUE problem is possible
+//      if (getNewValue() > Integer.MAX_VALUE + getOldValue()) {
+//        $delta = getNewValue() - getOldValue(); // ok
+//      }
+//      else {
+//        $delta = null;
+//      }
+//    }
+    $delta = ((getOldValue() == null) || (getNewValue() == null) ||
+              ((getOldValue() > 0) && (getNewValue() >= Integer.MIN_VALUE + getOldValue())) ||
+              ((getOldValue() <= 0) && (getNewValue() <= Integer.MAX_VALUE + getOldValue()))) ?
+               null :
+               getNewValue() - getOldValue();
   }
 
   /**
-   * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
+   * @return ((getOldValue() == null) || (getNewValue() == null) ||
+   *          ((getOldValue() > 0) && (getNewValue() >= Integer.MIN_VALUE + getOldValue())) ||
+   *          ((getOldValue() <= 0) && (getNewValue() <= Integer.MAX_VALUE + getOldValue()))) ?
+   *           null :
+   *           new Integer(getNewValue() - getOldValue());
    */
   public final Integer getDelta() {
     return $delta;
@@ -61,11 +91,13 @@ public final class IntegerEditEvent
 
   private final Integer $delta;
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", delta: " + getDelta();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "delta: " + getDelta() + "\n");

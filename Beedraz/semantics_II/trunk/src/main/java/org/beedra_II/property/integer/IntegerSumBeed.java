@@ -83,7 +83,7 @@ public class IntegerSumBeed
    */
   public final void addTerm(IntegerBeed<?> term) {
     assert term != null;
-    synchronized (term) { // MUDO is this correct?
+    synchronized (term) { // TODO is this correct?
       TermListener termListener = new TermListener();
       term.addListener(termListener);
       $terms.put(term, termListener);
@@ -101,7 +101,7 @@ public class IntegerSumBeed
    * @post ! isTerm(term);
    */
   public final void removeTerm(IntegerBeed<?> term) {
-    synchronized (term) { // MUDO is this correct?
+    synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
         term.removeListener(termListener);

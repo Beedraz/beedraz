@@ -66,12 +66,14 @@ public abstract class SimpleEditEvent<_Type_>
     return getEditState() == DONE ? getEdit().getGoal() : getEdit().getInitial();
   }
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", old value: " + getOldValue() +
            ", new value: " + getNewValue();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     toStringOldNew(sb, level + 1);

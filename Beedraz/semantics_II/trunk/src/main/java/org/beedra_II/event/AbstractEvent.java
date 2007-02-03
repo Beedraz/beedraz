@@ -85,6 +85,7 @@ public abstract class AbstractEvent
    */
   private final Beed<? extends Event> $source;
 
+  @Override
   public final String toString() {
     return getClass().getSimpleName() + //"@" + hashCode() +
            "[" + otherToStringInformation() + "]";

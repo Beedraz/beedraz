@@ -65,11 +65,13 @@ public abstract class DerivedEvent
    */
   private final Event $cause;
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", cause: " + getCause();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "cause:\n");

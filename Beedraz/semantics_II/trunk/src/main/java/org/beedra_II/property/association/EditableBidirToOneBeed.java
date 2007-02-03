@@ -46,6 +46,7 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
     $bidirToManyBeedSelector = bidirToManyBeedSelector;
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public final _Many_ getOwner() {
     return (_Many_)super.getOwner();

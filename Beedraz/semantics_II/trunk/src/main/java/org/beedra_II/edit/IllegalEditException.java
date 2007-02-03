@@ -33,7 +33,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class IllegalEditException extends EditException {
-  // MUDO extends SemanticException
+  // TODO extends SemanticException
 
   /**
    * @post Comparison.equalsWithNull(s, getMessage());

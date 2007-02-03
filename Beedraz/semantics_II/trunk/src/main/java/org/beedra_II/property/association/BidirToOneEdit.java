@@ -97,6 +97,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     }
   }
 
+  @Override
   protected void toStringGoalInitial(StringBuffer sb, int level) {
     sb.append(indent(level) + "goal:");
     if (getGoal() == null) {

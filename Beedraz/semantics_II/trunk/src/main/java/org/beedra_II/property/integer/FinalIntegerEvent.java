@@ -61,11 +61,13 @@ public final class FinalIntegerEvent
 
   private final Integer $delta;
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", delta: " + getDelta();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "delta:" + getDelta() + "\n");

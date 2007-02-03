@@ -11,7 +11,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SetBeed<_Element_, _Event_ extends FinalSetEvent>
+public interface SetBeed<_Element_, _Event_ extends FinalSetEvent<_Element_>>
     extends SimplePropertyBeed<Set<_Element_>, _Event_> {
 
   // NOP

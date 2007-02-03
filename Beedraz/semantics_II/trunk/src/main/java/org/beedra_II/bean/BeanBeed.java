@@ -26,7 +26,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   JavaBean. {@code BeanBeeds} are not owned by
  *   any other {@link Beed}.</p>
  * <p>{@code BeanBeeds} are {@link EventPropagator
- *   EventPropagators}.
+ *   EventPropagators}.</p>
  *
  * @mudo implement event propagation
  */

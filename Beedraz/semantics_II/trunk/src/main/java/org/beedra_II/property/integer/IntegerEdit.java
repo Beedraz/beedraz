@@ -44,14 +44,9 @@ public final class IntegerEdit
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public IntegerEdit(EditableIntegerBeed target) { // MUDO tyoe
+  public IntegerEdit(EditableIntegerBeed target) {
     super(target);
   }
-//
-//  @Override
-//  protected IntegerEditEvent createEditEvent() {
-//    return new IntegerEditEvent(this);
-//  }
 
   @Override
   protected final void notifyListeners() {

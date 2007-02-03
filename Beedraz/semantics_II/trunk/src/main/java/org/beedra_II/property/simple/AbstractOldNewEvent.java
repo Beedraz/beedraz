@@ -70,12 +70,14 @@ public abstract class AbstractOldNewEvent<_Type_> extends AbstractEvent
 
   private final _Type_ $newValue;
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", old value: " + getOldValue() +
            ", new value: " + getNewValue();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");

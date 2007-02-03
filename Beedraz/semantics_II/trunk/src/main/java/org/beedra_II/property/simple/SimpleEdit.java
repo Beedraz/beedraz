@@ -123,12 +123,14 @@ public abstract class SimpleEdit<_Type_,
     getTarget().assign(getInitial());
   }
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", goal: " + getGoal() +
            ", initial: " + getInitial();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     toStringGoalInitial(sb, level + 1);

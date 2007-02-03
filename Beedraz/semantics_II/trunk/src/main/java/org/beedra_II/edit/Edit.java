@@ -47,8 +47,8 @@ public interface Edit<_Target_ extends EditableBeed<?>> {
   // MUDO docs
   public static enum State {
     NOT_YET_PERFORMED,
-    DONE,
-    UNDONE,
+    @SuppressWarnings("hiding") DONE, // warning is bogus, new compiler should make suppress unnecessary
+    @SuppressWarnings("hiding") UNDONE,  // warning is bogus, new compiler should make suppress unnecessary
     DEAD
   }
 

@@ -63,10 +63,12 @@ public class TestAbstractBeed {
 
   @Before
   public void setUp() throws Exception {
+    // NOP
   }
 
   @After
   public void tearDown() throws Exception {
+    // NOP
   }
 
   private StubAbstractBeed $subject = new StubAbstractBeed();

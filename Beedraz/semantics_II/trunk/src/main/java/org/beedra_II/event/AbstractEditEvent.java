@@ -105,6 +105,7 @@ public abstract class AbstractEditEvent<_Edit_ extends Edit<?>>
   }
 
   // MUDO generalize; requires abstract event 1 / 2
+  @Override
   public final String toString() {
     return getClass().getSimpleName() + //"@" + hashCode() +
            "[" + otherToStringInformation() + "]";

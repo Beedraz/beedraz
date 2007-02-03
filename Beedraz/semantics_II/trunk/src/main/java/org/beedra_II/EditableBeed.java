@@ -29,14 +29,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   must be {@link UndoableEdit UndoableEdits}.</p>
  *
  * @author Jan Dockx
- *
- * @mudo maybe it doesn't make sense to use the Swing interface
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface EditableBeed<_Event_ extends EditEvent>
+public interface EditableBeed<_Event_ extends EditEvent<?>>
     extends Beed<_Event_> {
 
   // NOP

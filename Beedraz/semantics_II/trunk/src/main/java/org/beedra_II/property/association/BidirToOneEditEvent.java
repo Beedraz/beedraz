@@ -51,6 +51,7 @@ public final class BidirToOneEditEvent<_One_ extends BeanBeed,
     super(edit);
   }
 
+  @Override
   protected void toStringOldNew(StringBuffer sb, int level) {
     sb.append(indent(level) + "old value:");
     if (getOldValue() == null) {

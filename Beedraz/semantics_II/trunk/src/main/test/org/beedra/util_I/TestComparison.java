@@ -32,10 +32,12 @@ public class TestComparison {
 
   @Before
   public void setUp() throws Exception {
+    // NOP
   }
 
   @After
   public void tearDown() throws Exception {
+    // NOP
   }
 
   @Test

@@ -44,6 +44,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
     super(bean);
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public final _One_ getOwner() {
     return (_One_)super.getOwner();

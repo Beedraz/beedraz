@@ -85,12 +85,14 @@ public class FinalSetEvent<_Element_>
    */
   private final Set<_Element_> $removedElements;
 
+  @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
            ", added elements: " + getAddedElements() +
            ", removed elements: " + getRemovedElements();
   }
 
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "added elements: " + getAddedElements() + "\n");

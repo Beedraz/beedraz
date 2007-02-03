@@ -56,10 +56,12 @@ public class TestBeedra {
 
   @Before
   public void setUp() throws Exception {
+    // NOP
   }
 
   @After
   public void tearDown() throws Exception {
+    // NOP
   }
 
   @Test
@@ -233,8 +235,8 @@ public class TestBeedra {
         System.out.println(event);
       }
     };
-    Listener<EditEvent> eel = new Listener<EditEvent>() {
-      public void beedChanged(EditEvent event) {
+    Listener<EditEvent<?>> eel = new Listener<EditEvent<?>>() {
+      public void beedChanged(EditEvent<?> event) {
         System.out.println(event);
       }
     };
@@ -277,22 +279,22 @@ public class TestBeedra {
   }
 
 
-  public class BidirToOneListener implements Listener<BidirToOneEvent> {
+  public class BidirToOneListener implements Listener<BidirToOneEvent<?>> {
 
-    public void beedChanged(BidirToOneEvent event) {
+    public void beedChanged(BidirToOneEvent<?> event) {
       $event = event;
     }
 
-    public BidirToOneEvent $event;
+    public BidirToOneEvent<?> $event;
   }
 
-  public class BidirToManyListener implements Listener<SetEvent> {
+  public class BidirToManyListener implements Listener<SetEvent<?>> {
 
-    public void beedChanged(SetEvent event) {
+    public void beedChanged(SetEvent<?> event) {
       $event = event;
     }
 
-    public SetEvent $event;
+    public SetEvent<?> $event;
   }
 
   @Test

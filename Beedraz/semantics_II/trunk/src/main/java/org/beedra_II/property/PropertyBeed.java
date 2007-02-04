@@ -18,6 +18,7 @@ package org.beedra_II.property;
 
 
 import org.beedra_II.Beed;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -50,7 +51,7 @@ public interface PropertyBeed<_Event_ extends Event>
   /**
    * @basic
    */
-  Beed<?> getOwner();
+  AggregateBeed getOwner();
 
   /**
    * This beed will send an event of type {@code _Event_} during listener

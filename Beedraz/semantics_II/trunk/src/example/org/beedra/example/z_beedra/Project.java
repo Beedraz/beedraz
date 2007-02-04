@@ -38,28 +38,15 @@ public class Project extends AbstractBeanBeed {
 
   public final EditableStringBeed name = new EditableStringBeed(this);
 
-  {
-    registerProperty(name); // MUDO this should be done in the constructor of the SEPB
-  }
-
   public final EditableIntegerBeed numberOfDaysAnalysis = new EditableIntegerBeed(this);
 
-  {
-    registerProperty(numberOfDaysAnalysis);
-  }
-
   public final EditableIntegerBeed numberOfDaysDevelopment = new EditableIntegerBeed(this);
-
-  {
-    registerProperty(numberOfDaysDevelopment);
-  }
 
   public final IntegerSumBeed numberOfDays = new IntegerSumBeed(this);
 
   {
     numberOfDays.addTerm(numberOfDaysAnalysis);
     numberOfDays.addTerm(numberOfDaysDevelopment);
-    registerProperty(numberOfDays); // problem: bean event must be compound, not 2 different events
   }
 
 
@@ -73,10 +60,6 @@ public class Project extends AbstractBeanBeed {
               return owner.tasks;
             }
         };
-
-  {
-    registerProperty(tasks);
-  }
 
   @Override
   protected String otherToStringInformation() {

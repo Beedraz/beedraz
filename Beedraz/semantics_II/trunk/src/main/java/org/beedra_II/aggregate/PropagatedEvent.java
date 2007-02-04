@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.event;
+package org.beedra_II.aggregate;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
-import org.beedra_II.Beed;
+import org.beedra_II.event.AbstractEvent;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -38,7 +39,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class DerivedEvent
+public final class PropagatedEvent
     extends AbstractEvent {
 
   /**
@@ -47,7 +48,7 @@ public abstract class DerivedEvent
    * @post getSource() == source;
    * @post getCause() == cause;
    */
-  protected DerivedEvent(Beed<? extends DerivedEvent> source, Event cause) {
+  public PropagatedEvent(AggregateBeed source, Event cause) {
     super(source);
     assert cause != null;
     $cause = cause;

@@ -1,7 +1,7 @@
 package org.beedra_II.property.integer;
 
 
-import org.beedra_II.Beed;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -17,7 +17,7 @@ public class EditableIntegerBeed
   /**
    * @pre owner != null;
    */
-  public EditableIntegerBeed(Beed<?> owner) {
+  public EditableIntegerBeed(AggregateBeed owner) {
     super(owner);
   }
 

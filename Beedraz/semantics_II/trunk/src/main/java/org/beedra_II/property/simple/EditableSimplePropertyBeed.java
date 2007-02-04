@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import org.beedra_II.Beed;
 import org.beedra_II.EditableBeed;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.EditEvent;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -43,7 +43,7 @@ public abstract class EditableSimplePropertyBeed<_Type_,
   /**
    * @pre ownerBeed != null;
    */
-  public EditableSimplePropertyBeed(Beed<?> ownerBeed) {
+  public EditableSimplePropertyBeed(AggregateBeed ownerBeed) {
     super(ownerBeed);
   }
 
@@ -76,11 +76,6 @@ public abstract class EditableSimplePropertyBeed<_Type_,
   protected _Type_ safeValueCopy(_Type_ original) {
     return original;
   }
-
-//  protected OldNewEdit<_Type_> createInitialEvent() {
-//    return new OldNewEdit<_Type_>(this, null, $t); // should be event, and not an edit, but nevermind; set the state to death
-//  }
-
 
   // MUDO should not be public!
   public void fireEvent(_EditEvent_ editEvent) {

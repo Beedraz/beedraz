@@ -17,10 +17,7 @@ limitations under the License.
 package org.beedra_II.bean;
 
 
-import org.beedra_II.AbstractBeed;
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
-import org.beedra_II.property.PropertyBeed;
+import org.beedra_II.aggregate.AbstractAggregateBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -32,19 +29,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBeanBeed
-    extends AbstractBeed<BeanEvent>
+    extends AbstractAggregateBeed
     implements BeanBeed {
 
-  private final Listener<Event> $propagationListener = new Listener<Event>() {
-
-    public void beedChanged(Event event) {
-      fireChangeEvent(new BeanEvent(AbstractBeanBeed.this, event));
-    }
-
-  };
-
-  protected final void registerProperty(PropertyBeed<?> pb) {
-    pb.addListener($propagationListener);
-  }
+  // NOP
 
 }

@@ -14,35 +14,43 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.bean;
+package org.beedra_II.aggregate;
 
 
-import org.beedra_II.event.DerivedEvent;
+import org.beedra_II.AbstractBeed;
+import org.beedra_II.Beed;
+import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Event fired by {@link BeanBeed BeanBeeds} when
- * they change.
- *
- * @invar getCause() != null;
+ * Support for implementations of {@link BeanBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BeanEvent extends DerivedEvent {
+public abstract class AbstractAggregateBeed
+    extends AbstractBeed<PropagatedEvent>
+    implements AggregateBeed {
 
-  /**
-   * @pre source != null;
-   * @pre cause != null;
-   * @post getSource() == source;
-   * @post getCause() == cause;
-   */
-  public BeanEvent(BeanBeed changedBeed, Event cause) {
-    super(changedBeed, cause);
+  private final Listener<Event> $propagationListener = new Listener<Event>() {
+
+    public void beedChanged(Event event) {
+      fireChangeEvent(new PropagatedEvent(AbstractAggregateBeed.this, event));
+    }
+
+  };
+
+  public final boolean isAggregateElement(Beed<?> b) {
+    return (b != null) && b.isListener($propagationListener);
+  }
+
+  public final void registerAggregateElement(Beed<?> b) {
+    assert b != null;
+    b.addListener($propagationListener);
   }
 
 }
-

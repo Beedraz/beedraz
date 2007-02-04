@@ -20,7 +20,7 @@ package org.beedra_II.property.integer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.beedra_II.Beed;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -45,7 +45,7 @@ public class IntegerSumBeed
    * @post get() == 0;
    * @post (forall IntegerBeed t) {! isTerm(t)};
    */
-  public IntegerSumBeed(Beed<?> source) {
+  public IntegerSumBeed(AggregateBeed source) {
     super(source);
   }
 

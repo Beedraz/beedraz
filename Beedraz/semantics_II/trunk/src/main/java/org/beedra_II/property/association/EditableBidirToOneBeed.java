@@ -27,6 +27,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @mudo description
  *
  * @invar getProject() != null ? getProject.getTasks().contains(this);
+ *
+ * @mudo implement event propagation to ONE
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

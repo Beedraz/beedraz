@@ -14,28 +14,42 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.bean;
+package org.beedra_II.aggregate;
 
 
 import org.beedra_II.Beed;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * <p>{@link Beed} that acts like an object, a
- *   JavaBean. {@code BeanBeeds} are not owned by
- *   any other {@link Beed}.</p>
- * <p>{@code BeanBeeds} are {@link EventPropagator
- *   EventPropagators}.</p>
+ * <p>Aggregate beeds are considered changed when one of their
+ *   aggregate elements is changed.
+ *   I.e., they listen to changes in their aggregate elements,
+ *   and send {@link PropagatedEvent derived events} themselves:
+ *   changes are propagated.</p>
+ * <p>Most aggregate beeds are bean beeds. Final propagation
+ *   sources are {@ EditableBeed editable beeds}.</p>
+ *
+ * @author Jan Dockx
+ *
+ * @mudo to be added: validation, civilization, propagation
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface BeanBeed extends AggregateBeed {
+public interface AggregateBeed extends Beed<PropagatedEvent> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  boolean isAggregateElement(Beed<?> beed);
+
+  /**
+   * @pre beed != null;
+   * @post isAggregateBeed(beed);
+   */
+  void registerAggregateElement(Beed<?> beed);
 
 }
 

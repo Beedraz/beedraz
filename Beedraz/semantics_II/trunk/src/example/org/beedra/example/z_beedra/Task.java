@@ -35,16 +35,8 @@ public class Task extends AbstractBeanBeed {
 
   public final EditableStringBeed name = new EditableStringBeed(this);
 
-  {
-    registerProperty(name);
-  }
-
   public final EditableBidirToOneBeed<Project, Task> project =
       new EditableBidirToOneBeed<Project, Task>(this, Project.tasksSelector);
-
-  {
-    registerProperty(project);
-  }
 
   @Override
   protected String otherToStringInformation() {

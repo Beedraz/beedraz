@@ -18,7 +18,7 @@ package org.beedra_II.property;
 
 
 import org.beedra_II.AbstractBeed;
-import org.beedra_II.Beed;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -40,9 +40,10 @@ public abstract class AbstractPropertyBeed<_Event_ extends Event>
   /**
    * @pre owner != null;
    */
-  protected AbstractPropertyBeed(Beed<?> owner) {
+  protected AbstractPropertyBeed(AggregateBeed owner) {
     assert owner != null;
     $owner = owner;
+    owner.registerAggregateElement(this);
   }
 
   /**
@@ -53,14 +54,14 @@ public abstract class AbstractPropertyBeed<_Event_ extends Event>
    * was generic, this would not be necessary, and this
    * method could be final.
    */
-  public Beed<?> getOwner() {
+  public AggregateBeed getOwner() {
     return $owner;
   }
 
   /**
    * @invar $owner != null;
    */
-  private final Beed<?> $owner;
+  private final AggregateBeed $owner;
 
   public final void addListenerInitialEvent(Listener<? super _Event_> listener) {
     assert listener != null;

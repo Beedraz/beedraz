@@ -25,9 +25,9 @@ import static org.junit.Assert.assertTrue;
 import org.beedra.example.z_beedra.Project;
 import org.beedra.example.z_beedra.Task;
 import org.beedra.util_I.Comparison;
+import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.bean.BeanEvent;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -86,13 +86,13 @@ public class TestBeedra {
 
   }
 
-  class BeanListener implements Listener<BeanEvent> {
+  class BeanListener implements Listener<PropagatedEvent> {
 
-    public void beedChanged(BeanEvent event) {
+    public void beedChanged(PropagatedEvent event) {
       $event = event;
     }
 
-    public BeanEvent $event;
+    public PropagatedEvent $event;
 
   }
 

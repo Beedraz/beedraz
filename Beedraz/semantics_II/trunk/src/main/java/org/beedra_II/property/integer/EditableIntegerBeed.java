@@ -26,5 +26,10 @@ public class EditableIntegerBeed
     return new IntegerEvent(this, null, get(), null);
   }
 
+//  @Override
+//  protected IntegerEvent createEvent(Edit<?> edit) {
+//    return new IntegerEvent(this, edit.getOldValue(), edit.getNewValue(), edit);
+//  }
+
 }
 

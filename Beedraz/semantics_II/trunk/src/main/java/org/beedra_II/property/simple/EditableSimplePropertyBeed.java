@@ -77,10 +77,15 @@ public abstract class EditableSimplePropertyBeed<_Type_,
     return original;
   }
 
-  // MUDO should not be public!
-  public void fireEvent(_Event_ editEvent) {
+  void fireEvent(_Event_ editEvent) {
     fireChangeEvent(editEvent);
   }
+
+//  void fireEdit(Edit<?> edit) {
+//    fireChangeEvent(createEvent(edit));
+//  }
+//
+//  protected abstract _Event_ createEvent(Edit<?> edit);
 
 }
 

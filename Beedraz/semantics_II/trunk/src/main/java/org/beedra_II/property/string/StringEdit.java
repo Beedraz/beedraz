@@ -36,7 +36,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class StringEdit
-    extends SimpleEdit<String, EditableStringBeed> {
+    extends SimpleEdit<String, EditableStringBeed, StringEvent> {
 
   /**
    * @pre target != null;
@@ -49,9 +49,10 @@ public final class StringEdit
   }
 
   @Override
-  protected final void notifyListeners() {
-    getTarget().fireEvent(new StringEvent(getTarget(), getOldValue(), getNewValue(), this));
+  protected StringEvent createEvent() {
+    return new StringEvent(getTarget(), getOldValue(), getNewValue(), this);
   }
+
 
 }
 

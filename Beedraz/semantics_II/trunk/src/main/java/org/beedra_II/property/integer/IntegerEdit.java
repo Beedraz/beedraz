@@ -36,7 +36,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class IntegerEdit
-    extends SimpleEdit<Integer, EditableIntegerBeed> {
+    extends SimpleEdit<Integer, EditableIntegerBeed, IntegerEvent> {
 
   /**
    * @pre target != null;
@@ -49,8 +49,8 @@ public final class IntegerEdit
   }
 
   @Override
-  protected final void notifyListeners() {
-    getTarget().fireEvent(new IntegerEvent(getTarget(), getOldValue(), getNewValue(), this));
+  protected IntegerEvent createEvent() {
+    return new IntegerEvent(getTarget(), getOldValue(), getNewValue(), this);
   }
 
 }

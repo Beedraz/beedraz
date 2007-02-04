@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.EditableBeed;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -42,7 +43,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractEdit<_Target_ extends EditableBeed<?>>
+public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
+                                   _Event_ extends Event<?>>
     implements Edit<_Target_> {
 
 
@@ -328,16 +330,22 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<?>>
 
 
 
-  private void buildChangedObjects(AbstractEdit<_Target_> name) {
+  private void buildChangedObjects(AbstractEdit<_Target_, _Event_> name) {
     // NIY
   }
 
   /**
    * Should be implemented as
-   * {@code getTarget().fireChangeEvent(an event);}.
-   *
+   * {@code getTarget().fireChangeEvent(<var>an event</var>);}.
    */
-  protected abstract void notifyListeners();
+  protected void notifyListeners() {
+    fireEvent(createEvent());
+  }
+
+  protected abstract void fireEvent(_Event_ event);
+
+  protected abstract _Event_ createEvent();
+
 
     //  /**
 //   * @H1 Absorbing other edits

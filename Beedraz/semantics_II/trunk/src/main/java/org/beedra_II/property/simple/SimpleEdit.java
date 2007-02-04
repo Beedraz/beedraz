@@ -24,6 +24,7 @@ import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import org.beedra.util_I.Comparison;
 import org.beedra_II.edit.AbstractEdit;
 import org.beedra_II.edit.EditStateException;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -37,8 +38,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class SimpleEdit<_Type_,
-                                 _Target_ extends EditableSimplePropertyBeed<_Type_, ?>>
-    extends AbstractEdit<_Target_> {
+                                 _Target_ extends EditableSimplePropertyBeed<_Type_, _Event_>,
+                                 _Event_ extends Event<?>>
+    extends AbstractEdit<_Target_, _Event_> {
 
   /**
    * @pre target != null;
@@ -137,6 +139,16 @@ public abstract class SimpleEdit<_Type_,
   protected void unperformance() {
     getTarget().assign(getInitial());
   }
+
+  @Override
+  protected final void fireEvent(_Event_ event) {
+    getTarget().fireEvent(event);
+  }
+
+//  @Override
+//  protected void notifyListeners() {
+//    getTarget().fireEdit(this);
+//  }
 
   @Override
   protected String otherToStringInformation() {

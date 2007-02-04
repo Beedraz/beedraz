@@ -38,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class IntegerEvent extends OldNewEvent<Integer> {
+public final class IntegerEvent extends OldNewEvent<Integer, IntegerEdit> {
 
   /**
    * @pre source != null;

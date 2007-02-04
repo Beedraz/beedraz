@@ -93,9 +93,9 @@ public class TestBeedra {
 
   }
 
-  class EditListener implements Listener<Event> {
+  class EditListener implements Listener<Event<?>> {
 
-    public void beedChanged(Event event) {
+    public void beedChanged(Event<?> event) {
       $edit = event.getEdit();
     }
 
@@ -206,13 +206,13 @@ public class TestBeedra {
 
   @Test
   public void listenerDemo() {
-    Listener<Event> el = new Listener<Event>() {
-      public void beedChanged(Event event) {
+    Listener<Event<?>> el = new Listener<Event<?>>() {
+      public void beedChanged(Event<?> event) {
         System.out.println(event);
       }
     };
-    Listener<OldNewEvent<Integer>> onel = new Listener<OldNewEvent<Integer>>() {
-      public void beedChanged(OldNewEvent<Integer> event) {
+    Listener<OldNewEvent<Integer, ?>> onel = new Listener<OldNewEvent<Integer, ?>>() {
+      public void beedChanged(OldNewEvent<Integer, ?> event) {
         System.out.println(event);
       }
     };
@@ -232,8 +232,8 @@ public class TestBeedra {
         System.out.println(event);
       }
     };
-    Listener<Event> eel = new Listener<Event>() {
-      public void beedChanged(Event event) {
+    Listener<Event<?>> eel = new Listener<Event<?>>() {
+      public void beedChanged(Event<?> event) {
         System.out.println(event);
       }
     };
@@ -276,29 +276,29 @@ public class TestBeedra {
   }
 
 
-  public class BidirToOneListener implements Listener<BidirToOneEvent<?>> {
+  public class BidirToOneListener implements Listener<BidirToOneEvent<?, ?>> {
 
-    public void beedChanged(BidirToOneEvent<?> event) {
+    public void beedChanged(BidirToOneEvent<?, ?> event) {
       $event = event;
     }
 
-    public BidirToOneEvent<?> $event;
+    public BidirToOneEvent<?, ?> $event;
   }
 
-  public class BidirToManyListener implements Listener<SetEvent<?>> {
+  public class BidirToManyListener implements Listener<SetEvent<?, ?>> {
 
-    public void beedChanged(SetEvent<?> event) {
+    public void beedChanged(SetEvent<?, ?> event) {
       $event = event;
     }
 
-    public SetEvent<?> $event;
+    public SetEvent<?, ?> $event;
   }
 
   @Test
   public void projectWithTask() throws EditStateException, IllegalEditException {
-    Listener<Event> allroundListener = new Listener<Event>() {
+    Listener<Event<?>> allroundListener = new Listener<Event<?>>() {
 
-      public void beedChanged(Event event) {
+      public void beedChanged(Event<?> event) {
         StringBuffer sb = new StringBuffer();
         event.toString(sb, 0);
         System.out.println(sb);

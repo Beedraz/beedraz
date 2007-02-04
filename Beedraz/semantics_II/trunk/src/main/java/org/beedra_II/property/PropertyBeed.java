@@ -45,7 +45,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeed<_Event_ extends Event>
+public interface PropertyBeed<_Event_ extends Event<?>>
     extends Beed<_Event_> {
 
   /**

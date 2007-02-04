@@ -41,8 +41,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class SetEvent<_Element_>
-    extends Event {
+public final class SetEvent<_Element_, _Edit_ extends Edit<?>>
+    extends Event<_Edit_> {
 
   /**
    * @pre source != null;
@@ -54,10 +54,10 @@ public final class SetEvent<_Element_>
    * @post getEdit() == edit;
    * @post getEditState() == edit.getState();
    */
-  public SetEvent(SetBeed<_Element_> source,
+  public SetEvent(SetBeed<_Element_, _Edit_> source,
                   Set<? extends _Element_> addedElements,
                   Set<? extends _Element_> removedElements,
-                  Edit<?> edit) {
+                  _Edit_ edit) {
     super(source, edit);
     $addedElements = addedElements != null ?
                        new HashSet<_Element_>(addedElements) :

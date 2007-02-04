@@ -36,7 +36,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class EditableBidirToOneBeed<_One_ extends BeanBeed,
                                     _Many_ extends BeanBeed>
-    extends EditableSimplePropertyBeed<_One_, BidirToOneEvent<_One_>> {
+    extends EditableSimplePropertyBeed<_One_, BidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre bean != null;
@@ -75,8 +75,8 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
   }
 
   @Override
-  protected BidirToOneEvent<_One_> createInitialEvent() {
-    return new BidirToOneEvent<_One_>(this, null, get(), null);
+  protected BidirToOneEvent<_One_, _Many_> createInitialEvent() {
+    return new BidirToOneEvent<_One_, _Many_>(this, null, get(), null);
   }
 
 }

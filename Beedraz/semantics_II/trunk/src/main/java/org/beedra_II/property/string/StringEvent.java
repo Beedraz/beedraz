@@ -36,7 +36,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class StringEvent extends OldNewEvent<String> {
+public final class StringEvent extends OldNewEvent<String, StringEdit> {
 
   /**
    * @pre source != null;
@@ -46,7 +46,10 @@ public final class StringEvent extends OldNewEvent<String> {
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
    */
-  public StringEvent(StringBeed source, String oldValue, String newValue, StringEdit edit) {
+  public StringEvent(StringBeed source,
+                     String oldValue,
+                     String newValue,
+                     StringEdit edit) {
     super(source, oldValue, newValue, edit);
   }
 

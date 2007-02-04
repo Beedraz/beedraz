@@ -34,7 +34,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface EditableBeed<_Event_ extends Event>
+public interface EditableBeed<_Event_ extends Event<?>>
     extends Beed<_Event_> {
 
   // NOP

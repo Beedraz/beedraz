@@ -114,8 +114,7 @@ public class TestBeedra {
     BeanListener projectListener = new BeanListener();
     project.addListener(projectListener);
     EditListener editListener = new EditListener();
-//    project.addListener(editListener); MUDO problem
-    project.name.addListener(editListener);
+    project.addListener(editListener);
 
 //    project.name.set(name1);
     StringEdit setter = new StringEdit(project.name);

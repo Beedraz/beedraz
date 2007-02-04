@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.association;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
@@ -30,16 +32,51 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar getSource() instanceof IntegerBeed;
+ * @invar getSource() instanceof EditableBidirToOne<_One_, _Many_>;
+ * @invar getEdit() instanceof BidirToOneEdit;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface BidirToOneEvent<_One_ extends BeanBeed>
+public final class BidirToOneEvent<_One_ extends BeanBeed>
     extends OldNewEvent<_One_> {
 
-  // NOP
+  /**
+   * @pre source != null;
+   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @post getSource() == source;
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post getEdit() == edit;
+   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
+   */
+  public BidirToOneEvent(EditableBidirToOneBeed<_One_, ?> source,
+                         _One_ oldValue,
+                         _One_ newValue,
+                         BidirToOneEdit<_One_, ?> edit) {
+    super(source, oldValue, newValue, edit);
+  }
+
+  @Override
+  protected void toStringOldNew(StringBuffer sb, int level) {
+    sb.append(indent(level) + "old value:");
+    if (getOldValue() == null) {
+      sb.append(" null\n");
+    }
+    else {
+      sb.append("\n");
+      getOldValue().toString(sb, level + 1);
+    }
+    sb.append(indent(level) + "new value:");
+    if (getNewValue() == null) {
+      sb.append(" null\n");
+    }
+    else {
+      sb.append("\n");
+      getNewValue().toString(sb, level + 1);
+    }
+  }
 
 }
 

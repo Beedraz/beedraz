@@ -19,7 +19,6 @@ package org.beedra_II.aggregate;
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
-import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -34,23 +33,28 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @invar getCause() != null;
  * @invar getSource() instanceof Beed<? extends DerivedEvent>;
+ * @invar getEdit() != null;
+ * @invar getEdit() == getCause().getEdit();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class PropagatedEvent
-    extends AbstractEvent {
+public class PropagatedEvent
+    extends Event {
 
   /**
    * @pre source != null;
    * @pre cause != null;
+   * @pre cause.getEdit() != null;
+   * @pre (cause.getEdit().getState() == DONE) || (cause.getEdit().getState() == UNDONE)
    * @post getSource() == source;
    * @post getCause() == cause;
+   * @post getEdit() != cause.getEdit();
+   * @post getEditState() == cause.getEdit().getState();
    */
   public PropagatedEvent(AggregateBeed source, Event cause) {
-    super(source);
-    assert cause != null;
+    super(source, cause.getEdit());
     $cause = cause;
   }
 

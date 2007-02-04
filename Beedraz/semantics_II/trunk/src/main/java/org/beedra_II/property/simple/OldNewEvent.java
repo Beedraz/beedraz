@@ -17,6 +17,9 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -34,17 +37,64 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public class OldNewEvent<_Type_>
+    extends Event {
+
+  /**
+   * @pre source != null;
+   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @post getSource() == source;
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post getEdit() == edit;
+   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
+   */
+  public OldNewEvent(SimplePropertyBeed<_Type_, ? extends OldNewEvent<_Type_>> source,
+                     _Type_ oldValue,
+                     _Type_ newValue,
+                     Edit<?> edit) {
+    super(source, edit);
+    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+    $oldValue = oldValue;
+    $newValue = newValue;
+  }
 
   /**
    * @basic
    */
-  _Type_ getOldValue();
+  public final _Type_ getOldValue() {
+    return $oldValue;
+  }
+
+  private final _Type_ $oldValue;
 
   /**
    * @basic
    */
-  _Type_ getNewValue();
+  public final _Type_ getNewValue() {
+    return $newValue;
+  }
+
+  private final _Type_ $newValue;
+
+  @Override
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", old value: " + getOldValue() +
+           ", new value: " + getNewValue();
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    toStringOldNew(sb, level + 1);
+  }
+
+  protected void toStringOldNew(StringBuffer sb, int level) {
+    sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");
+    sb.append(indent(level + 1) + "new value: " + getNewValue() + "\n");
+  }
 
 }
 

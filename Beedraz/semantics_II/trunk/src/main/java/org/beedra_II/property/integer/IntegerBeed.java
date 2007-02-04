@@ -20,8 +20,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface IntegerBeed<_Event_ extends IntegerEvent>
-    extends SimplePropertyBeed<Integer, _Event_> {
+public interface IntegerBeed
+    extends SimplePropertyBeed<Integer, IntegerEvent> {
 
   // NOP
 

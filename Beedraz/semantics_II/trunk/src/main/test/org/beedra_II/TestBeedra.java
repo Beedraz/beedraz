@@ -31,16 +31,13 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.EditEvent;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.association.BidirToManyBeed;
 import org.beedra_II.property.association.BidirToOneEdit;
 import org.beedra_II.property.association.BidirToOneEvent;
 import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.FinalIntegerEvent;
 import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEditEvent;
 import org.beedra_II.property.integer.IntegerEvent;
 import org.beedra_II.property.integer.IntegerSumBeed;
 import org.beedra_II.property.set.SetEvent;
@@ -96,9 +93,9 @@ public class TestBeedra {
 
   }
 
-  class EditListener implements Listener<EditEvent<?>> {
+  class EditListener implements Listener<Event> {
 
-    public void beedChanged(EditEvent<?> event) {
+    public void beedChanged(Event event) {
       $edit = event.getEdit();
     }
 
@@ -225,18 +222,18 @@ public class TestBeedra {
       }
     };
     @SuppressWarnings("unused")
-    Listener<FinalIntegerEvent> fiel = new Listener<FinalIntegerEvent>() {
-      public void beedChanged(FinalIntegerEvent event) {
+    Listener<IntegerEvent> fiel = new Listener<IntegerEvent>() {
+      public void beedChanged(IntegerEvent event) {
         System.out.println(event);
       }
     };
-    Listener<IntegerEditEvent> ieel = new Listener<IntegerEditEvent>() {
-      public void beedChanged(IntegerEditEvent event) {
+    Listener<IntegerEvent> ieel = new Listener<IntegerEvent>() {
+      public void beedChanged(IntegerEvent event) {
         System.out.println(event);
       }
     };
-    Listener<EditEvent<?>> eel = new Listener<EditEvent<?>>() {
-      public void beedChanged(EditEvent<?> event) {
+    Listener<Event> eel = new Listener<Event>() {
+      public void beedChanged(Event event) {
         System.out.println(event);
       }
     };
@@ -245,7 +242,7 @@ public class TestBeedra {
       // NOP
     };
 
-    IntegerBeed<?> ib = new IntegerSumBeed(dummy);
+    IntegerBeed ib = new IntegerSumBeed(dummy);
     ib.addListener(el);
     ib.addListener(onel);
     ib.addListener(iel);

@@ -19,7 +19,7 @@ package org.beedra_II;
 
 import javax.swing.undo.UndoableEdit;
 
-import org.beedra_II.event.EditEvent;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -34,7 +34,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface EditableBeed<_Event_ extends EditEvent<?>>
+public interface EditableBeed<_Event_ extends Event>
     extends Beed<_Event_> {
 
   // NOP

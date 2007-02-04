@@ -38,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class IntegerSumBeed
     extends AbstractPropertyBeed<IntegerEvent>
-    implements IntegerBeed<IntegerEvent> {
+    implements IntegerBeed {
 
   /**
    * @pre source != null;
@@ -65,7 +65,7 @@ public class IntegerSumBeed
         recalculate();
       }
       // else: NOP
-      fireChangeEvent(new FinalIntegerEvent(IntegerSumBeed.this, oldValue, null));
+      fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, null, event.getEdit()));
     }
 
   }
@@ -73,7 +73,7 @@ public class IntegerSumBeed
   /**
    * @basic
    */
-  public final boolean isTerm(IntegerBeed<?> term) {
+  public final boolean isTerm(IntegerBeed term) {
     return $terms.keySet().contains(term);
   }
 
@@ -81,7 +81,7 @@ public class IntegerSumBeed
    * @pre term != null;
    * @post isTerm(term);
    */
-  public final void addTerm(IntegerBeed<?> term) {
+  public final void addTerm(IntegerBeed term) {
     assert term != null;
     synchronized (term) { // TODO is this correct?
       TermListener termListener = new TermListener();
@@ -91,7 +91,7 @@ public class IntegerSumBeed
       if ($value != null) {
         Integer oldValue = $value;
         $value = (term.get() == null) ? null : $value + term.get(); // MUDO overflow
-        fireChangeEvent(new FinalIntegerEvent(this, oldValue, $value));
+        fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
     }
@@ -100,7 +100,7 @@ public class IntegerSumBeed
   /**
    * @post ! isTerm(term);
    */
-  public final void removeTerm(IntegerBeed<?> term) {
+  public final void removeTerm(IntegerBeed term) {
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
@@ -117,7 +117,7 @@ public class IntegerSumBeed
           assert term.get() != null;
           $value -= term.get();
         }
-        fireChangeEvent(new FinalIntegerEvent(this, oldValue, $value));
+        fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
         /* else, term != null, but $value is null; this means there is another term that is null,
            and removing this term won't change that */
       }
@@ -129,7 +129,7 @@ public class IntegerSumBeed
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<IntegerBeed<?>, TermListener> $terms = new HashMap<IntegerBeed<?>, TermListener>();
+  private final Map<IntegerBeed, TermListener> $terms = new HashMap<IntegerBeed, TermListener>();
 
   public final Integer get() {
     return $value;
@@ -137,7 +137,7 @@ public class IntegerSumBeed
 
   private void recalculate() {
     Integer newValue = 0;
-    for (IntegerBeed<?> term : $terms.keySet()) {
+    for (IntegerBeed term : $terms.keySet()) {
       Integer termValue = term.get();
       if (termValue == null) {
         newValue = null;
@@ -151,7 +151,7 @@ public class IntegerSumBeed
 
   @Override
   protected final IntegerEvent createInitialEvent() {
-    return new FinalIntegerEvent(this, null, $value);
+    return new IntegerEvent(this, null, $value, null);
   }
 
 }

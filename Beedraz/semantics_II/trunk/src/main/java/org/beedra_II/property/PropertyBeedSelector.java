@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property;
 
 
-import org.beedra_II.Beed;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -32,7 +32,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeedSelector<_Owner_ extends Beed<?>,
+public interface PropertyBeedSelector<_Owner_ extends AggregateBeed,
                                       _PropertyBeed_ extends PropertyBeed<?>> {
 
   /**

@@ -50,7 +50,7 @@ public final class StringEdit
 
   @Override
   protected final void notifyListeners() {
-    getTarget().fireEvent(new StringEditEvent(this));
+    getTarget().fireEvent(new StringEvent(getTarget(), getOldValue(), getNewValue(), this));
   }
 
 }

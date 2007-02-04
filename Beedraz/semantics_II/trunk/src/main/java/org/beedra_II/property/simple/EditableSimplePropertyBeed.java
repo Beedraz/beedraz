@@ -19,7 +19,7 @@ package org.beedra_II.property.simple;
 
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.EditEvent;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -35,10 +35,10 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class EditableSimplePropertyBeed<_Type_,
-                                                 _EditEvent_ extends EditEvent<?>>
-    extends AbstractPropertyBeed<_EditEvent_>
-    implements SimplePropertyBeed<_Type_, _EditEvent_>,
-               EditableBeed<_EditEvent_> {
+                                                 _Event_ extends Event>
+    extends AbstractPropertyBeed<_Event_>
+    implements SimplePropertyBeed<_Type_, _Event_>,
+               EditableBeed<_Event_> {
 
   /**
    * @pre ownerBeed != null;
@@ -78,7 +78,7 @@ public abstract class EditableSimplePropertyBeed<_Type_,
   }
 
   // MUDO should not be public!
-  public void fireEvent(_EditEvent_ editEvent) {
+  public void fireEvent(_Event_ editEvent) {
     fireChangeEvent(editEvent);
   }
 

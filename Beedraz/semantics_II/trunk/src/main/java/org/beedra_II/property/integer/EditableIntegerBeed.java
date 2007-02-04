@@ -11,8 +11,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableIntegerBeed
-    extends EditableSimplePropertyBeed<Integer, IntegerEditEvent>
-    implements IntegerBeed<IntegerEditEvent> {
+    extends EditableSimplePropertyBeed<Integer, IntegerEvent>
+    implements IntegerBeed {
 
   /**
    * @pre owner != null;
@@ -22,21 +22,9 @@ public class EditableIntegerBeed
   }
 
   @Override
-  protected IntegerEditEvent createInitialEvent() {
-//    return new FinalIntegerEvent(this, null, get());
-    return new IntegerEditEvent(null);
-    // MUDO PROBLEM!!!!
+  protected IntegerEvent createInitialEvent() {
+    return new IntegerEvent(this, null, get(), null);
   }
-
-//  protected void fireEdit(IntegerEdit edit) {
-//    fireChangeEvent(new IntegerEditEvent(edit));
-//  }
-//
-//  @Override
-//  protected void fireEdit(Edit<?> edit) {
-//    fireChangeEvent(new IntegerEditEvent(edit));
-//  }
-//
 
 }
 

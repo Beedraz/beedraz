@@ -17,7 +17,13 @@ limitations under the License.
 package org.beedra_II.event;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.beedra.util_I.MultiLineToStringUtil.objectToString;
+import static org.beedra_II.edit.Edit.State.DONE;
+import static org.beedra_II.edit.Edit.State.UNDONE;
+
 import org.beedra_II.Beed;
+import org.beedra_II.edit.Edit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -51,21 +57,78 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   {@code Event&lt;B&gt;}, which should be {@code final}.</p>
  * <p>A concrete event can eventually be send by {@link Beed Beeds} of type
  *   the {@code _Source_} and subtypes.</p>
+ * <p>The edit is the final cause of this event. This can be {@code null},
+ *   for example when the value of derived beeds changes due to structure
+ *   changes, or for initial events.</p>
  *
  * @author Jan Dockx
  *
  * @invar getSource() != null;
+ * @invar (getEdit() != null) ? getEdit().getState() == DONE || getEdit().getState() == UNDONE;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Event {
+public class Event {
+
+  /**
+   * @pre source != null;
+   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @post getSource() == source;
+   * @post getEdit() == edit;
+   * @post getEditState() == edit.getState();
+   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
+   */
+  public Event(Beed<?> source, Edit<?> edit) {
+    assert source != null;
+    assert (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE) : true;
+    $source = source;
+    $edit = edit;
+    $editState = (edit != null) ? edit.getState() : null;
+  }
 
   /**
    * @basic
    */
-  Beed<?> getSource();
+  public final Beed<?> getSource() {
+    return $source;
+  }
+
+  /**
+   * @invar $source != null;
+   */
+  private final Beed<?> $source;
+
+  /**
+   * @basic
+   */
+  public final Edit<?> getEdit() {
+    return $edit;
+  }
+
+  private final Edit<?> $edit;
+
+  /**
+   * @basic
+   */
+  public Edit.State getEditState() {
+    return $editState;
+  }
+
+  private final Edit.State $editState;
+
+  @Override
+  public final String toString() {
+    return getClass().getSimpleName() + //"@" + hashCode() +
+           "[" + otherToStringInformation() + "]";
+  }
+
+  protected String otherToStringInformation() {
+    return "source: " + getSource() +
+           ", edit: " + getEdit() +
+           ", edit state: " + getEditState();
+  }
 
   /**
    * Multiline instance information.
@@ -74,7 +137,16 @@ public interface Event {
    * @pre sb != null;
    * @pre level >= 0;
    */
-  void toString(StringBuffer sb, int i);
+  public void toString(StringBuffer sb, int level) {
+    assert sb != null;
+    assert level >= 0;
+    objectToString(this, sb, level);
+    sb.append(indent(level + 1) + "source:\n");
+    getSource().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "edit:\n");
+    getEdit().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "edit state: " + getEditState() + "\n");
+  }
 
 }
 

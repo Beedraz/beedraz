@@ -11,8 +11,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableStringBeed
-    extends EditableSimplePropertyBeed<String, StringEditEvent>
-    implements StringBeed<StringEditEvent> {
+    extends EditableSimplePropertyBeed<String, StringEvent>
+    implements StringBeed {
 
   /**
    * @pre owner != null;
@@ -22,10 +22,8 @@ public class EditableStringBeed
   }
 
   @Override
-  protected StringEditEvent createInitialEvent() {
-//    return new FinalIntegerEvent(this, null, get());
-    return new StringEditEvent(null);
-    // MUDO PROBLEM!!!!
+  protected StringEvent createInitialEvent() {
+    return new StringEvent(this, null, get(), null);
   }
 
 }

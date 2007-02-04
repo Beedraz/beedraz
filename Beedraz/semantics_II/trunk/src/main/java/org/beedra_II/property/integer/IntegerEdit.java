@@ -50,7 +50,7 @@ public final class IntegerEdit
 
   @Override
   protected final void notifyListeners() {
-    getTarget().fireEvent(new IntegerEditEvent(this));
+    getTarget().fireEvent(new IntegerEvent(getTarget(), getOldValue(), getNewValue(), this));
   }
 
 }

@@ -18,6 +18,7 @@ package org.beedra_II.property.simple;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 
 import org.beedra.util_I.Comparison;
@@ -36,7 +37,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class SimpleEdit<_Type_,
-                                 _Target_ extends EditableSimplePropertyBeed<_Type_, ? extends SimpleEditEvent<_Type_>>>
+                                 _Target_ extends EditableSimplePropertyBeed<_Type_, ?>>
     extends AbstractEdit<_Target_> {
 
   /**
@@ -77,6 +78,20 @@ public abstract class SimpleEdit<_Type_,
   }
 
   private _Type_ $initial;
+
+  /**
+   * @return return getState() == DONE ? getInitial() : getGoal();
+   */
+  public final _Type_ getOldValue() {
+    return getState() == DONE ? getInitial() : getGoal();
+  }
+
+  /**
+   * @return return getState() == DONE ? getGoal() : getInitial();
+   */
+  public final _Type_ getNewValue() {
+    return getState() == DONE ? getGoal() : getInitial();
+  }
 
   /**
    * @post Comparison.equalsWithNull(getTarget().get(), getInitial());

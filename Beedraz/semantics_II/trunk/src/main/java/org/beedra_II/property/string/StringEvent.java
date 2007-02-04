@@ -30,14 +30,25 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getSource() instanceof IntegerBeed;
+ * @invar getEdit() instanceof IntegerEdit;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface StringEvent extends OldNewEvent<String> {
+public final class StringEvent extends OldNewEvent<String> {
 
-  // NOP
+  /**
+   * @pre source != null;
+   * @pre edit != null;
+   * @post getSource() == sourcel
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post getEdit() == edit;
+   */
+  public StringEvent(StringBeed source, String oldValue, String newValue, StringEdit edit) {
+    super(source, oldValue, newValue, edit);
+  }
 
 }
 

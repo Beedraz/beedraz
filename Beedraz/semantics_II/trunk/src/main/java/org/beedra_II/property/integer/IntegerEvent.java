@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -30,17 +32,48 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getSource() instanceof IntegerBeed;
+ * @invar getEdit() instanceof IntegerEdit;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface IntegerEvent extends OldNewEvent<Integer> {
+public final class IntegerEvent extends OldNewEvent<Integer> {
+
+  /**
+   * @pre source != null;
+   * @pre edit != null;
+   * @post getSource() == sourcel
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post getEdit() == edit;
+   * @post getEditState() == edit.getState();
+   */
+  public IntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, IntegerEdit edit) {
+    super(source, oldValue, newValue, edit);
+    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
+  }
 
   /**
    * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
    */
-  Integer getDelta();
+  public final Integer getDelta() {
+    return $delta;
+  }
+
+  private final Integer $delta;
+
+  @Override
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", delta: " + getDelta();
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "delta:" + getDelta() + "\n");
+  }
 
 }
 

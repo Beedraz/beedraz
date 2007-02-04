@@ -23,8 +23,8 @@ import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.set.FinalSetEvent;
 import org.beedra_II.property.set.SetBeed;
+import org.beedra_II.property.set.SetEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -37,8 +37,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class BidirToManyBeed<_One_ extends BeanBeed,
                               _Many_ extends BeanBeed>
-    extends AbstractPropertyBeed<FinalSetEvent<_Many_>>
-    implements SetBeed<_Many_, FinalSetEvent<_Many_>> {
+    extends AbstractPropertyBeed<SetEvent<_Many_>>
+    implements SetBeed<_Many_> {
 
   public BidirToManyBeed(_One_ bean) {
     super(bean);
@@ -59,27 +59,27 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
     $many.add(many);
   }
 
-  void fireAddedEvent(_Many_ many) {
+  void fireAddedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
     Set<_Many_> added = new HashSet<_Many_>();
     added.add(many);
-    fireChangeEvent(new FinalSetEvent<_Many_>(this, added, null));
+    fireChangeEvent(new SetEvent<_Many_>(this, added, null, edit));
   }
 
   void remove(_Many_ many) {
     $many.remove(many);
   }
 
-  void fireRemovedEvent(_Many_ many) {
+  void fireRemovedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
     Set<_Many_> removed = new HashSet<_Many_>();
     removed.add(many);
-    fireChangeEvent(new FinalSetEvent<_Many_>(this, null, removed));
+    fireChangeEvent(new SetEvent<_Many_>(this, null, removed, edit));
   }
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
 
   @Override
-  protected final FinalSetEvent<_Many_> createInitialEvent() {
-    return new FinalSetEvent<_Many_>(this, null, $many); // event constructor copies set
+  protected final SetEvent<_Many_> createInitialEvent() {
+    return new SetEvent<_Many_>(this, null, $many, null); // event constructor copies set
   }
 
 }

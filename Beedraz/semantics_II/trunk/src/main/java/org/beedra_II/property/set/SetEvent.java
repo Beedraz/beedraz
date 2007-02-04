@@ -17,36 +17,93 @@ limitations under the License.
 package org.beedra_II.property.set;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * Event that notifies of changes in a {@link SetBeed}.
  *
  * @author Jan Dockx
  *
- * @invar getSource() instanceof IntegerBeed;
+ * @invar getSource() instanceof SetBeed
+ * @invar getAddedElements() != null;
+ * @invar getRemovedElements() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SetEvent<_Element_> extends Event {
+public final class SetEvent<_Element_>
+    extends Event {
+
+  /**
+   * @pre source != null;
+   * @pre edit != null;
+   * @pre (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @post getSource() == source;
+   * @post addedElements != null ? getAddedElements().equals(addedElements) : getAddedElements().isEmpty();
+   * @post removedElements != null ? getRemovedElements().equals(removedElements) : getRemovedElements().isEmpty();
+   * @post getEdit() == edit;
+   * @post getEditState() == edit.getState();
+   */
+  public SetEvent(SetBeed<_Element_> source,
+                  Set<? extends _Element_> addedElements,
+                  Set<? extends _Element_> removedElements,
+                  Edit<?> edit) {
+    super(source, edit);
+    $addedElements = addedElements != null ?
+                       new HashSet<_Element_>(addedElements) :
+                       new HashSet<_Element_>();
+    $removedElements = removedElements != null ?
+                         new HashSet<_Element_>(removedElements) :
+                         new HashSet<_Element_>();
+  }
 
   /**
    * @basic
    */
-  Set<_Element_> getAddedElements();
+  public final Set<_Element_> getAddedElements() {
+    return Collections.unmodifiableSet($addedElements);
+  }
+
+  /**
+   * @invar $addedElements != null;
+   */
+  private final Set<_Element_> $addedElements;
 
   /**
    * @basic
    */
-  Set<_Element_> getRemovedElements();
+  public final Set<_Element_> getRemovedElements() {
+    return Collections.unmodifiableSet($removedElements);
+  }
+
+  /**
+   * @invar $removedElements != null;
+   */
+  private final Set<_Element_> $removedElements;
+
+  @Override
+  protected String otherToStringInformation() {
+    return super.otherToStringInformation() +
+           ", added elements: " + getAddedElements() +
+           ", removed elements: " + getRemovedElements();
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "added elements: " + getAddedElements() + "\n");
+    sb.append(indent(level + 1) + "removed elements: " + getRemovedElements() + "\n");
+  }
 
 }
 

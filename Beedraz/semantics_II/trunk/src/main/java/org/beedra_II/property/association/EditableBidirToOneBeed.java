@@ -36,7 +36,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class EditableBidirToOneBeed<_One_ extends BeanBeed,
                                     _Many_ extends BeanBeed>
-    extends EditableSimplePropertyBeed<_One_, BidirToOneEditEvent<_One_, _Many_>> {
+    extends EditableSimplePropertyBeed<_One_, BidirToOneEvent<_One_>> {
 
   /**
    * @pre bean != null;
@@ -75,37 +75,9 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
   }
 
   @Override
-  protected BidirToOneEditEvent<_One_,_Many_> createInitialEvent() {
-//    return new FinalBidirToOneEvent<_One_>(this, null, get());
-    return new BidirToOneEditEvent<_One_, _Many_>(null);
+  protected BidirToOneEvent<_One_> createInitialEvent() {
+    return new BidirToOneEvent<_One_>(this, null, get(), null);
   }
-
-
-//  public final void set(_One_ one) {
-//    if (get() != one) {
-//      if ($toManyRef != null) {
-//        $toManyRef.remove(getOwnerBeed());
-//      }
-//      BidirToManyPBeed<_One_, _Many_> oldManyRef = $toManyRef;
-//      _One_ oldValue = get();
-//      $toManyRef = one == null ? null : getBidirToManyPBeedSelector().getPropertyBeed(one);
-//      if ($toManyRef != null) {
-//        $toManyRef.add(getOwnerBeed());
-//      }
-//      UndoableOldNewBEvent<BidirToOnePDoBeed<_One_, _Many_>, _One_> event =
-//        new UndoableOldNewBEvent<BidirToOnePDoBeed<_One_, _Many_>, _One_>(this, oldValue, get());
-//      fireChangeEvent(event);
-//      // events other side
-//      if (oldManyRef != null) {
-//        oldManyRef.fireRemovedEvent(getOwnerBeed());
-//      }
-//      if ($toManyRef != null) {
-//        $toManyRef.fireAddedEvent(getOwnerBeed());
-//      }
-//    }
-//  }
-
-//  private BidirToManyPBeed<_One_, _Many_> $toManyRef;
 
 }
 

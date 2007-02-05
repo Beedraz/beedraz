@@ -46,8 +46,7 @@ import java.lang.annotation.Target;
          state    = "$State$",
          tag      = "$Name$")
 @SvnInfo(revision = "$Revision$",
-         date     = "$Date$",
-         url      = "$URL$")
+         date     = "$Date$")
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
@@ -62,10 +61,5 @@ public @interface SvnInfo {
    * Source code revision. Fill out with &quot;$Date$&quot;
    */
   String date();
-
-  /**
-   * Source code revision. Fill out with &quot;$URL$&quot;
-   */
-  String url();
 
 }

@@ -37,7 +37,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class EditableSetBeed<_Element_>
+public class EditableSetBeed<_Element_>
     extends AbstractPropertyBeed<SetEvent<_Element_, SetEdit<_Element_>>>
     implements SetBeed<_Element_, SetEdit<_Element_>>,
                EditableBeed<SetEvent<_Element_, SetEdit<_Element_>>> {
@@ -68,6 +68,11 @@ public abstract class EditableSetBeed<_Element_>
 
   void fireEvent(SetEvent<_Element_, SetEdit<_Element_>> event) {
     fireChangeEvent(event);
+  }
+
+  @Override
+  protected SetEvent<_Element_, SetEdit<_Element_>> createInitialEvent() {
+    return new SetEvent<_Element_, SetEdit<_Element_>>(this, get(), null, null);
   }
 
 }

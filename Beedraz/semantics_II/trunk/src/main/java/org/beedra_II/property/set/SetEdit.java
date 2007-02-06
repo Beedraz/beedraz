@@ -18,6 +18,7 @@ package org.beedra_II.property.set;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.beedra.util_I.CollectionUtil.intersection;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 
@@ -161,7 +162,7 @@ public class SetEdit<_Element_>
    */
   @Override
   protected final boolean isInitialStateCurrent() {
-    return intersectionEmpty(getTarget().get(), $elementsToAdd) &&
+    return intersection(getTarget().get(), $elementsToAdd).isEmpty() &&
            getTarget().get().containsAll($elementsToRemove);
   }
 
@@ -181,7 +182,7 @@ public class SetEdit<_Element_>
   @Override
   protected final boolean isGoalStateCurrent() {
     return getTarget().get().containsAll($elementsToAdd) &&
-           intersectionEmpty(getTarget().get(), $elementsToRemove);
+           intersection(getTarget().get(), $elementsToRemove).isEmpty();
   }
 
   /**
@@ -223,14 +224,6 @@ public class SetEdit<_Element_>
   protected void toStringGoalInitial(StringBuffer sb, int level) {
     sb.append(indent(level + 1) + "elements to add: " + getElementsToAdd() + "\n");
     sb.append(indent(level + 1) + "elements to remove: " + getElementsToRemove() + "\n");
-  }
-
-  private static <E> boolean intersectionEmpty(Set<E> s1, Set<E> s2) {
-    assert s1 != null;
-    assert s2 != null;
-    HashSet<E> intersection = new HashSet<E>(s1);
-    intersection.retainAll(s2);
-    return intersection.isEmpty();
   }
 
 }

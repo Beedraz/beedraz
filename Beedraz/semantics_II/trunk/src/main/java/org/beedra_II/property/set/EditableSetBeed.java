@@ -56,11 +56,23 @@ public class EditableSetBeed<_Element_>
     return Collections.unmodifiableSet($set);
   }
 
-  void addElements(Set<_Element_> elements) {
+  /**
+   * @pre elements != null;
+   * @pre Comparison.intersection(get(), elements).isEmpty();
+   */
+  final void addElements(Set<_Element_> elements) {
+    assert elements != null;
+    assert org.beedra.util_I.CollectionUtil.intersection(get(), elements).isEmpty();
     $set.addAll(elements);
   }
 
-  void removeElements(Set<_Element_> elements) {
+  /**
+   * @pre elements != null;
+   * @pre get().containsAll(elements);
+   */
+  final void removeElements(Set<_Element_> elements) {
+    assert elements != null;
+    assert get().containsAll(elements);
     $set.removeAll(elements);
   }
 

@@ -18,7 +18,6 @@ package org.beedra_II.property.association;
 
 
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.property.PropertyBeedSelector;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -36,16 +35,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class EditableBidirToOneBeed<_One_ extends BeanBeed,
                                     _Many_ extends BeanBeed>
-    extends EditableSimplePropertyBeed<_One_, BidirToOneEvent<_One_, _Many_>> {
+    extends EditableSimplePropertyBeed<BidirToManyBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre bean != null;
-   * @pre bidirToManyPBeedSelector != null;
    */
-  public EditableBidirToOneBeed(_Many_ bean, PropertyBeedSelector<_One_, BidirToManyBeed<_One_, _Many_>> bidirToManyBeedSelector) {
+  public EditableBidirToOneBeed(_Many_ bean) {
     super(bean);
-    assert bidirToManyBeedSelector != null;
-    $bidirToManyBeedSelector = bidirToManyBeedSelector;
   }
 
   @Override
@@ -54,24 +50,8 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
     return (_Many_)super.getOwner();
   }
 
-  public final PropertyBeedSelector<_One_, BidirToManyBeed<_One_, _Many_>> getBidirToManyBeedSelector() {
-    return $bidirToManyBeedSelector;
-  }
-
-  private final PropertyBeedSelector<_One_, BidirToManyBeed<_One_, _Many_>> $bidirToManyBeedSelector;
-
-  /**
-   * @return get() == null ? null : getBidirToManyBeedSelector().getPropertyBeed(get());
-   */
-  public final BidirToManyBeed<_One_, _Many_> getBidirToManyBeed() {
-    return toManyBeedOfOne(get());
-  }
-
-  /**
-   * @return oneBean == null ? null : getBidirToManyBeedSelector().getPropertyBeed(oneBean);
-   */
-  final BidirToManyBeed<_One_, _Many_> toManyBeedOfOne(_One_ oneBean) {
-    return oneBean == null ? null : getBidirToManyBeedSelector().getPropertyBeed(oneBean);
+  public final _One_ getOne() {
+    return get().getOwner();
   }
 
   @Override

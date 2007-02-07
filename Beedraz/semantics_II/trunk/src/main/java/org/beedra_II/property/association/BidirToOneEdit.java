@@ -37,7 +37,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class BidirToOneEdit<_One_ extends BeanBeed,
                             _Many_ extends BeanBeed>
-    extends SimpleEdit<_One_, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
+    extends SimpleEdit<BidirToManyBeed<_One_, _Many_>, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre target != null;
@@ -54,14 +54,12 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
    */
   @Override
   protected final void performance() {
-    BidirToManyBeed<_One_, _Many_> initialToMany = getTarget().toManyBeedOfOne(getInitial());
-    if (initialToMany != null) {
-      initialToMany.remove(getTarget().getOwner());
+    if (getInitial() != null) {
+      getInitial().remove(getTarget().getOwner());
     }
     super.performance();
-    BidirToManyBeed<_One_, _Many_> goalToMany = getTarget().toManyBeedOfOne(getGoal());
-    if (goalToMany != null) {
-      goalToMany.add(getTarget().getOwner());
+    if (getGoal() != null) {
+      getGoal().add(getTarget().getOwner());
     }
   }
 
@@ -70,25 +68,21 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
    */
   @Override
   protected final void unperformance() {
-    BidirToManyBeed<_One_, _Many_> goalToMany = getTarget().toManyBeedOfOne(getGoal());
-    if (goalToMany != null) {
-      goalToMany.remove(getTarget().getOwner());
+    if (getGoal() != null) {
+      getGoal().remove(getTarget().getOwner());
     }
     super.unperformance();
-    BidirToManyBeed<_One_, _Many_> initialToMany = getTarget().toManyBeedOfOne(getInitial());
-    if (initialToMany != null) {
-      initialToMany.add(getTarget().getOwner());
+    if (getInitial() != null) {
+      getInitial().add(getTarget().getOwner());
     }
   }
 
   @Override
   protected final void notifyListeners() {
     super.notifyListeners();
-    BidirToManyBeed<_One_, _Many_> initialToMany = getTarget().toManyBeedOfOne(getInitial());
-    BidirToManyBeed<_One_, _Many_> goalToMany = getTarget().toManyBeedOfOne(getGoal());
     assert (getState() == DONE) || (getState() == UNDONE);
-    BidirToManyBeed<_One_, _Many_> oldToMany = (getState() == DONE) ? initialToMany : goalToMany;
-    BidirToManyBeed<_One_, _Many_> newToMany = (getState() == DONE) ? goalToMany : initialToMany;
+    BidirToManyBeed<_One_, _Many_> oldToMany = (getState() == DONE) ? getInitial() : getGoal();
+    BidirToManyBeed<_One_, _Many_> newToMany = (getState() == DONE) ? getGoal() : getInitial();
     if (oldToMany != null) {
       oldToMany.fireRemovedEvent(getTarget().getOwner(), this);
     }
@@ -111,6 +105,8 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     else {
       sb.append("\n");
       getGoal().toString(sb, level + 1);
+      sb.append(indent(level + 1) + "owner:\n");
+      getGoal().getOwner().toString(sb, level + 2);
     }
     sb.append(indent(level) + "initial:");
     if (getInitial() == null) {
@@ -119,6 +115,8 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     else {
       sb.append("\n");
       getInitial().toString(sb, level + 1);
+      sb.append(indent(level + 1) + "owner:\n");
+      getInitial().getOwner().toString(sb, level + 2);
     }
   }
 

@@ -39,8 +39,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class BidirToOneEvent<_One_ extends BeanBeed, _Many_ extends BeanBeed>
-    extends OldNewEvent<_One_, BidirToOneEdit<_One_, _Many_>> {
+public final class BidirToOneEvent<_One_ extends BeanBeed,
+                                   _Many_ extends BeanBeed>
+    extends OldNewEvent<BidirToManyBeed<_One_, _Many_>, BidirToOneEdit<_One_, _Many_>> {
 
   /**
    * @pre source != null;
@@ -52,8 +53,8 @@ public final class BidirToOneEvent<_One_ extends BeanBeed, _Many_ extends BeanBe
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    */
   public BidirToOneEvent(EditableBidirToOneBeed<_One_, _Many_> source,
-                         _One_ oldValue,
-                         _One_ newValue,
+                         BidirToManyBeed<_One_, _Many_> oldValue,
+                         BidirToManyBeed<_One_, _Many_> newValue,
                          BidirToOneEdit<_One_, _Many_> edit) {
     super(source, oldValue, newValue, edit);
   }
@@ -67,6 +68,8 @@ public final class BidirToOneEvent<_One_ extends BeanBeed, _Many_ extends BeanBe
     else {
       sb.append("\n");
       getOldValue().toString(sb, level + 1);
+      sb.append(indent(level + 1) + "owner:\n");
+      getOldValue().getOwner().toString(sb, level + 2);
     }
     sb.append(indent(level) + "new value:");
     if (getNewValue() == null) {
@@ -75,6 +78,8 @@ public final class BidirToOneEvent<_One_ extends BeanBeed, _Many_ extends BeanBe
     else {
       sb.append("\n");
       getNewValue().toString(sb, level + 1);
+      sb.append(indent(level + 1) + "owner:\n");
+      getNewValue().getOwner().toString(sb, level + 2);
     }
   }
 

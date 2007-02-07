@@ -346,7 +346,7 @@ public class TestBeedra {
 
 //    task.project.set(project1);
     setter = new BidirToOneEdit<Project, Task>(task.project);
-    setter.setGoal(project1);
+    setter.setGoal(project1.tasks);
     setter.perform();
     assertNotNull(editListener.$edit);
     validateTaskListener(task, taskListener, taskProjectListener);
@@ -390,7 +390,7 @@ public class TestBeedra {
     project1Listener.$event = null;
 //    task.project.set(project1);
     setter = new BidirToOneEdit<Project, Task>(task.project);
-    setter.setGoal(project1);
+    setter.setGoal(project1.tasks);
     setter.perform();
     validateNoEvents(taskListener, taskProjectListener, project1Listener, project1TasksListener, null, null);
     validateProjectTaskState(task, project1, true, null, false);
@@ -420,7 +420,7 @@ public class TestBeedra {
     project2Listener.$event = null;
 //  task.project.set(project2);
     setter = new BidirToOneEdit<Project, Task>(task.project);
-    setter.setGoal(project2);
+    setter.setGoal(project2.tasks);
     setter.perform();
     validateTaskListener(task, taskListener, taskProjectListener);
     validateProjectListener(project1, project1Listener, project1TasksListener);
@@ -469,7 +469,7 @@ public class TestBeedra {
     project2Listener.$event = null;
 //    task.project.set(project2);
     setter = new BidirToOneEdit<Project, Task>(task.project);
-    setter.setGoal(project2);
+    setter.setGoal(project2.tasks);
     setter.perform();
     validateNoEvents(taskListener, taskProjectListener, project1Listener, project1TasksListener, project2Listener, project2TasksListener);
     validateProjectTaskState(task, project1, false, project2, true);
@@ -556,12 +556,12 @@ public class TestBeedra {
   private void validateTaskProjectEvent(Task task, BidirToOneListener taskProjectListener, Project oldValue, Project newValue) {
     assertNotNull(taskProjectListener.$event);
     assertEquals(task.project, taskProjectListener.$event.getSource());
-    assertEquals(oldValue, taskProjectListener.$event.getOldValue());
-    assertEquals(newValue, taskProjectListener.$event.getNewValue());
+    assertEquals(oldValue != null ? oldValue.tasks : null, taskProjectListener.$event.getOldValue());
+    assertEquals(newValue != null ? newValue.tasks : null, taskProjectListener.$event.getNewValue());
   }
 
   private void validateProjectTaskState(Task task, Project project1, boolean taskExpectedIn1, Project project2, boolean taskExpectedIn2) {
-    assertEquals(taskExpectedIn1 ? project1 : taskExpectedIn2 ? project2 : null, task.project.get());
+    assertEquals(taskExpectedIn1 ? project1 : taskExpectedIn2 ? project2 : null, task.project.get() != null ? task.project.get().getOwner() : null);
     if (project1 != null) {
       assertNotNull(project1.tasks.get());
     }

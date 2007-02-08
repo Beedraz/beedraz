@@ -17,8 +17,11 @@ limitations under the License.
 package org.beedra_II.property.association;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
@@ -80,6 +83,17 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   @Override
   protected final SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>> createInitialEvent() {
     return new SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>(this, null, $many, null); // event constructor copies set
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "elements:\n");
+    Iterator<_Many_> iter = $many.iterator();
+    while (iter.hasNext()) {
+      _Many_ element = iter.next();
+      element.toString(sb, level + 2);
+    }
   }
 
 }

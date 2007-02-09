@@ -179,6 +179,7 @@ public class TestEditableSetBeed {
   public void testCreateInitialEvent2() {
     SetEvent<Integer, SetEdit<Integer>> initialEvent = $editableSetBeed.createInitialEvent();
     assertTrue(initialEvent instanceof SetEvent); // @mudo enough?
+    assertEquals(initialEvent.getSource(), $editableSetBeed);
     assertEquals(initialEvent.getAddedElements(), $editableSetBeed.get());
     assertEquals(initialEvent.getRemovedElements(), new HashSet<Integer>());
     assertEquals(initialEvent.getEdit(), null);

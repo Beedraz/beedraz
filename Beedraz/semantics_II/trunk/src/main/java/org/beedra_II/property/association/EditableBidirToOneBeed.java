@@ -51,7 +51,7 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
   }
 
   public final _One_ getOne() {
-    return get().getOwner();
+    return get() == null ? null : get().getOwner();
   }
 
   @Override

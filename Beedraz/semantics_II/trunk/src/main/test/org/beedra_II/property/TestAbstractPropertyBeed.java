@@ -65,7 +65,7 @@ public class TestAbstractPropertyBeed {
 
   }
 
-  public class MyBeanBead extends AbstractBeanBeed {
+  public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
   }
 
@@ -107,7 +107,7 @@ public class TestAbstractPropertyBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBead();
+  private AggregateBeed $owner = new MyBeanBeed();
   private StubAbstractPropertyBeed $propertyBeed = new StubAbstractPropertyBeed($owner);
   private StubAbstractPropertyBeedEvent $event1 = new StubAbstractPropertyBeedEvent($propertyBeed);
   private PropagatedEventListener $listener1 = new PropagatedEventListener();

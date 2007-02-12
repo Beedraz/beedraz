@@ -34,7 +34,7 @@ import org.junit.Test;
 
 public class TestEditableSetBeed {
 
-  public class MyBeanBead extends AbstractBeanBeed {
+  public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
   }
 
@@ -76,7 +76,7 @@ public class TestEditableSetBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBead();
+  private AggregateBeed $owner = new MyBeanBeed();
   private EditableSetBeed<Integer> $editableSetBeed = new EditableSetBeed<Integer>($owner);
   private Set<Integer> $addedElements = new HashSet<Integer>();
   private Set<Integer> $removedElements = new HashSet<Integer>();

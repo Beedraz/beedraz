@@ -58,7 +58,7 @@ public class TestEditableIntegerBeed {
 
   }
 
-  public class MyBeanBead extends AbstractBeanBeed {
+  public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
   }
 
@@ -72,7 +72,7 @@ public class TestEditableIntegerBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBead();
+  private AggregateBeed $owner = new MyBeanBeed();
   private MyEditableIntegerBeed $editableIntegerBeed = new MyEditableIntegerBeed($owner);
   private IntegerEdit $stringEdit = new IntegerEdit($editableIntegerBeed);
   private IntegerEvent $event1 = new IntegerEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);

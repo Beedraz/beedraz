@@ -281,6 +281,18 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
     return $valid;
   }
 
+  protected final void checkValidity() {
+    boolean oldValidity = $valid;
+    $valid = validity();
+    if ($valid != oldValidity) {
+      fireValidityChange();
+    }
+  }
+
+  protected boolean validity() {
+    return false;
+  }
+
   private boolean $valid = true;
 
   public final boolean isValidityListener(ValidityListener listener) {

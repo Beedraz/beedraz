@@ -77,6 +77,10 @@ public abstract class EditableSimplePropertyBeed<_Type_,
     return original;
   }
 
+  public boolean isValid(_Type_ goal) {
+    return true;
+  }
+
   void fireEvent(_Event_ editEvent) {
     fireChangeEvent(editEvent);
   }

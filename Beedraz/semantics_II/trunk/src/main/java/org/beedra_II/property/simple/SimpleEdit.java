@@ -52,6 +52,7 @@ public abstract class SimpleEdit<_Type_,
     super(target);
   }
 
+
   /**
    * @basic
    */
@@ -66,8 +67,7 @@ public abstract class SimpleEdit<_Type_,
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $goal = goalValue;
-    /* MUDO $valid =  ...
-            if $valid !=  oldValid --> listeners */
+    checkValidity();
   }
 
   private _Type_ $goal;
@@ -93,6 +93,11 @@ public abstract class SimpleEdit<_Type_,
    */
   public final _Type_ getNewValue() {
     return getState() == DONE ? getGoal() : getInitial();
+  }
+
+  @Override
+  protected final boolean validity() {
+    return getTarget().isValid(getGoal());
   }
 
   /**

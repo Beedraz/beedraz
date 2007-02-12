@@ -8,6 +8,13 @@ import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
+/**
+ * @author  Jan Dockx
+ * @author  Nele Smeets
+ * @author  Peopleware n.v.
+ *
+ * @invar   get() != null;
+ */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",

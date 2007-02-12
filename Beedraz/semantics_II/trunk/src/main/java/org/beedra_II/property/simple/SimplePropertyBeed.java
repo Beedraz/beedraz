@@ -32,8 +32,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   send {@link OldNewEvent OldNewBeedEvents}.</p>
  *
  * @author Jan Dockx
- *
- * @invar getSource() instanceof SimplePropertyBeed<_Type_, GeneralOldNewEvent<_Type_>>;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

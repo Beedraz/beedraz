@@ -96,8 +96,8 @@ public abstract class SimpleEdit<_Type_,
   }
 
   @Override
-  protected final boolean validity() {
-    return getTarget().isValid(getGoal());
+  protected final boolean isAcceptable() {
+    return getTarget().isAcceptable(getGoal());
   }
 
   /**

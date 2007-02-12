@@ -122,6 +122,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
     }
     storeInitialState();
     if (isChange()) {
+      checkValidity(); // between setting of the goal and perform, the model might have changed
   //    updateValidityWithGoal(); // MUDO OLD COMMENT this is not exactly what we want; it doesn't recalulate enough, but potentially sends validity changed events JDJDJD
       // MUDO why is this update here? a! the other beed might have changed
       if (! isValid()) {
@@ -186,6 +187,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
       // end of transaction
       throw new IllegalEditException(this, null);
     }
+    // MUDO is this always valid? explain!
     unperformance(); // throws IllegalEditException
     buildChangedObjects(this);
     /* Building the list of changed objects is done here and not when
@@ -235,6 +237,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
       // end of transaction
       throw new IllegalEditException(this, null);
     }
+    // MUDO is this always valid? explain!
     performance(); // throws IllegalEditException
     buildChangedObjects(this);
     /* Building the list of changed objects is done here and not when
@@ -283,13 +286,13 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
 
   protected final void checkValidity() {
     boolean oldValidity = $valid;
-    $valid = validity();
+    $valid = isAcceptable();
     if ($valid != oldValidity) {
       fireValidityChange();
     }
   }
 
-  protected boolean validity() {
+  protected boolean isAcceptable() {
     return false;
   }
 

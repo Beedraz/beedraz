@@ -19,7 +19,11 @@ package org.beedra.example.z_beedra;
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
+import java.util.Set;
+
+import org.beedra.util_I.Comparison;
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.property.association.BidirToManyBeed;
 import org.beedra_II.property.association.EditableBidirToOneBeed;
 import org.beedra_II.property.string.EditableStringBeed;
 
@@ -33,9 +37,36 @@ import org.beedra_II.property.string.EditableStringBeed;
  */
 public class Task extends AbstractBeanBeed {
 
-  public final EditableStringBeed name = new EditableStringBeed(this);
+  private final static String SPACE = " ";
 
-  public final EditableBidirToOneBeed<Project, Task> project = new EditableBidirToOneBeed<Project, Task>(this);
+  public final EditableBidirToOneBeed<Project, Task> project = new EditableBidirToOneBeed<Project, Task>(this) {
+    @Override
+    public boolean isAcceptable(BidirToManyBeed<Project, Task> goal) {
+      return uniqueNameInProject(name.get(), goal == null ? null : goal.getOwner());
+    }
+  };
+
+  public final EditableStringBeed name = new EditableStringBeed(this) {
+    @Override
+    public boolean isAcceptable(String goal) {
+      return ! goal.endsWith(SPACE) && uniqueNameInProject(goal, project.getOne());
+    }
+  };
+
+  private boolean uniqueNameInProject(String nameToVerify, Project p) {
+    if (p == null) {
+      return true;
+    }
+    Set<Task> tasks = p.tasks.get();
+    for (Task task : tasks) {
+      if (Comparison.equalsWithNull(task.name.get(), nameToVerify)) {
+        if (task != this) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 
   @Override
   protected String otherToStringInformation() {

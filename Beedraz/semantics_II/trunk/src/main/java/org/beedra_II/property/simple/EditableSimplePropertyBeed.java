@@ -77,7 +77,7 @@ public abstract class EditableSimplePropertyBeed<_Type_,
     return original;
   }
 
-  public boolean isValid(_Type_ goal) {
+  public boolean isAcceptable(_Type_ goal) {
     return true;
   }
 

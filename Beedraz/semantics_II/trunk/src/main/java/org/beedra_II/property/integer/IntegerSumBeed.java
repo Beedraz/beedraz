@@ -27,10 +27,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * @invar (forall IntegerBeed ib: ! isTerm(ib)) ? get() == 0;
- *        list is empty, then 0 result, not null
- * @invar (exists IntegerBeed ib: isTerm(ib) && ib.get() == null) ? get() == null;
-          null term results in null
+ * @invar getNbOccurrences(null) == 0;
+ * @invar (forall IntegerBeed ib; ; getNbOccurrences(ib) >= 0);
+ * @invar (exists IntegerBeed ib; ; getNbOccurrences(ib) > 0 && ib.get() == null)
+ *            ==> get() == null;
+ *        If one of the terms is null, then the value of the sum beed is null.
+ * @invar (forAll IntegerBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.get() != null)
+ *            ==> get() == sum { ib.get() * getNbOccurrences(ib) | ib instanceof IntegerBeed};
+ *        If all terms are effective, then the value of the sum beed is the
+ *        sum of the value of each term multiplied by the corresponding
+ *        number of occurrences.
+ *        e.g. get() = 3 * 5 + 2 * 11
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -41,15 +48,25 @@ public class IntegerSumBeed
     implements IntegerBeed {
 
   /**
-   * @pre source != null;
-   * @post get() == 0;
-   * @post (forall IntegerBeed t) {! isTerm(t)};
+   * @pre   source != null;
+   * @post  get() == 0;
+   * @post  (forall IntegerBeed ib; ; getNbOccurrences(ib) == 0};
    */
   public IntegerSumBeed(AggregateBeed source) {
     super(source);
   }
 
+  /**
+   * @invar  getNbOccurrences() > 0;
+   */
   private class TermListener implements Listener<IntegerEvent> {
+
+    /**
+     * @post  getNbOccurrences() == 1;
+     */
+    public TermListener() {
+      $nbOccurrences = 1;
+    }
 
     public void beedChanged(IntegerEvent event) {
       // recalculate(); optimization
@@ -59,7 +76,9 @@ public class IntegerSumBeed
         assert event.getOldValue() != null :
           "event old value must be not null because all old terms were not null," +
           " because $value != null";
-        $value = (event.getNewValue() == null) ? null : $value + event.getDelta();
+        $value = (event.getNewValue() == null)
+                     ? null
+                     : $value + (event.getDelta() * getNbOccurrences());
       }
       else if ((event.getNewValue() != null) && (event.getOldValue() == null)) {
         recalculate();
@@ -68,25 +87,60 @@ public class IntegerSumBeed
       fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
     }
 
+    public int getNbOccurrences() {
+      return $nbOccurrences;
+    }
+
+    /**
+     * @pre  nbOccurrences > 0;
+     */
+    public void setNbOccurrences(int nbOccurrences) {
+      assert nbOccurrences > 0;
+      $nbOccurrences = nbOccurrences;
+    }
+
+    public void increaseNbOccurrences() {
+      $nbOccurrences += 1;
+    }
+
+    /**
+     * @pre  nbOccurrences > 1;
+     */
+    public void decreaseNbOccurrences() {
+      assert getNbOccurrences() > 1;
+      $nbOccurrences -= 1;
+    }
+
+    private int $nbOccurrences;
+
   }
 
   /**
    * @basic
    */
-  public final boolean isTerm(IntegerBeed term) {
-    return $terms.keySet().contains(term);
+  public final int getNbOccurrences(IntegerBeed term) {
+    TermListener termListener = $terms.get(term);
+    return termListener != null ? termListener.getNbOccurrences() : 0;
   }
 
   /**
-   * @pre term != null;
-   * @post isTerm(term);
+   * @pre   term != null;
+   * @post  new.getNbOccurrences(term) == getNbOccurrences(term) + 1;
    */
   public final void addTerm(IntegerBeed term) {
     assert term != null;
     synchronized (term) { // TODO is this correct?
-      TermListener termListener = new TermListener();
-      term.addListener(termListener);
-      $terms.put(term, termListener);
+      TermListener termListener = $terms.get(term);
+      if (termListener != null) {
+        assert getNbOccurrences(term) > 0;
+        termListener.increaseNbOccurrences();
+      }
+      else {
+        assert getNbOccurrences(term) == 0;
+        termListener = new TermListener();
+        term.addListener(termListener);
+        $terms.put(term, termListener);
+      }
       // recalculate(); optimization
       if ($value != null) {
         Integer oldValue = $value;
@@ -98,30 +152,50 @@ public class IntegerSumBeed
   }
 
   /**
-   * @post ! isTerm(term);
+   * @post  getNbOccurrences() > 0
+   *          ? new.getNbOccurrences(term) == getNbOccurrences(term) - 1;
+   *          : true;
    */
   public final void removeTerm(IntegerBeed term) {
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
-        term.removeListener(termListener);
-        $terms.remove(term);
+        assert getNbOccurrences(term) > 0;
+        if (getNbOccurrences(term) > 1) {
+          termListener.decreaseNbOccurrences();
+        }
+        else {
+          assert getNbOccurrences(term) == 1;
+          term.removeListener(termListener);
+          $terms.remove(term);
+        }
         // recalculate(); optimization
         Integer oldValue = $value;
-        if (term.get() == null) {
-          /* $value was null because of this term, or because there are more terms
-             we can't know, recalculate completely */
-          recalculate();
+        /**
+         * term.get() == null && getNbOccurrences() == 0  ==>  recalculate
+         * term.get() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+         * term.get() != null && $value != null           ==>  new.$value == old.$value - term.get()
+         * term.get() != null && $value == null           ==>  new.$value == old.$value == null
+         */
+        if (term.get() == null && getNbOccurrences(term) == 0) {
+            /* $value was null because of this term. After the remove,
+             * the value can be null because of another term, or
+             * can be some value: we can't know, recalculate completely
+             */
+           recalculate();
         }
-        else if ($value != null) { // old value and term not null, there is a new value, and it is old - term
+        else if ($value != null) {
+          // since $value is effective, all terms are effective
+          // the new value of the sum beed is the old value minus the value of the removed term
           assert term.get() != null;
           $value -= term.get();
         }
+        // else: in all other cases, the value of $value is null, and stays null
         fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
         /* else, term != null, but $value is null; this means there is another term that is null,
            and removing this term won't change that */
       }
-      // else, term was not one of our terms
+      // else, term was not one of our terms: do nothing
     }
   }
 
@@ -139,9 +213,10 @@ public class IntegerSumBeed
    * The value of $value is recalculated. This is done by iterating over the terms.
    * When there are no terms, the result is zero.
    * When one of the terms is null, the result is null.
-   * When all terms are effective, the result is the sum of the value of the terms.
+   * When all terms are effective, the result is the sum of the value of each term
+   * multiplied by the corresponding number of occurrences.
    */
-  private void recalculate() {
+  public void recalculate() {
     Integer newValue = 0;
     for (IntegerBeed term : $terms.keySet()) {
       Integer termValue = term.get();
@@ -150,7 +225,7 @@ public class IntegerSumBeed
         break;
       }
       else { // termValue != null
-        newValue += termValue; // autoboxing
+        newValue += termValue * getNbOccurrences(term); // autoboxing
       }
     }
     $value = newValue;

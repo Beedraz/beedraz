@@ -65,7 +65,7 @@ public class IntegerSumBeed
         recalculate();
       }
       // else: NOP
-      fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, null, event.getEdit()));
+      fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
     }
 
   }

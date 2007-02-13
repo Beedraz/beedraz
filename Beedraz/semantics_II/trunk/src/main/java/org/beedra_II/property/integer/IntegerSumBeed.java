@@ -135,6 +135,12 @@ public class IntegerSumBeed
     return $value;
   }
 
+  /**
+   * The value of $value is recalculated. This is done by iterating over the terms.
+   * When there are no terms, the result is zero.
+   * When one of the terms is null, the result is null.
+   * When all terms are effective, the result is the sum of the value of the terms.
+   */
   private void recalculate() {
     Integer newValue = 0;
     for (IntegerBeed term : $terms.keySet()) {
@@ -143,8 +149,11 @@ public class IntegerSumBeed
         newValue = null;
         break;
       }
-      newValue += termValue; // autoboxing
+      else { // termValue != null
+        newValue += termValue; // autoboxing
+      }
     }
+    $value = newValue;
   }
 
   private Integer $value = 0;

@@ -44,7 +44,7 @@ public class TestMultipleConcurrentEdits {
   }
 
   @Test
-  public void testConcurrentEdits1() throws EditStateException, IllegalEditException {
+  public void concurrentEdits1() throws EditStateException, IllegalEditException {
     Project p = new Project();
     Task task1 = new Task();
     StringEdit nameSetter = new StringEdit(task1.name);
@@ -87,7 +87,7 @@ public class TestMultipleConcurrentEdits {
   }
 
   @Test
-  public void testConcurrentEdits2() throws EditStateException, IllegalEditException {
+  public void concurrentEdits2() throws EditStateException, IllegalEditException {
     Project p = new Project();
     Task task1 = new Task();
     StringEdit nameSetter = new StringEdit(task1.name);

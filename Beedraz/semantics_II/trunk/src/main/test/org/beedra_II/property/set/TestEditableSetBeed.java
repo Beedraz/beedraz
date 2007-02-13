@@ -89,7 +89,7 @@ public class TestEditableSetBeed {
   private StubEditableSetBeedListener $listener4 = new StubEditableSetBeedListener();
 
   @Test
-  public void testConstructor() {
+  public void constructor() {
     assertEquals($editableSetBeed.getOwner(), $owner);
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
@@ -109,7 +109,7 @@ public class TestEditableSetBeed {
   }
 
   @Test
-  public void testAddElements() {
+  public void addElements() {
     Set<Integer> added1 = new HashSet<Integer>();
     added1.add(new Integer(1));
     added1.add(new Integer(2));
@@ -128,7 +128,7 @@ public class TestEditableSetBeed {
   }
 
   @Test
-  public void testRemoveElements() {
+  public void removeElements() {
     Set<Integer> added = new HashSet<Integer>();
     added.add(new Integer(1));
     added.add(new Integer(2));
@@ -155,7 +155,7 @@ public class TestEditableSetBeed {
   }
 
   @Test
-  public void testFireEvent() {
+  public void fireEvent() {
     // register listeners
     $editableSetBeed.addListener($listener3);
     $editableSetBeed.addListener($listener4);
@@ -169,14 +169,14 @@ public class TestEditableSetBeed {
   }
 
   @Test
-  public void testCreateInitialEvent1() {
+  public void createInitialEvent1() {
     assertTrue("the implementation of this method calls the constructor " +
         "of SetEvent; the last parameter of this constructor should be " +
         "effective according to the documentation", false);
   }
 
   @Test
-  public void testCreateInitialEvent2() {
+  public void createInitialEvent2() {
     SetEvent<Integer, SetEdit<Integer>> initialEvent = $editableSetBeed.createInitialEvent();
     assertTrue(initialEvent instanceof SetEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $editableSetBeed);

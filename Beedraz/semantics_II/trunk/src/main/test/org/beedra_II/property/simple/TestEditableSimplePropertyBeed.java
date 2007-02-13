@@ -107,7 +107,7 @@ public class TestEditableSimplePropertyBeed {
   private StubEditableSimplePropertyBeedListener $listener4 = new StubEditableSimplePropertyBeedListener();
 
   @Test
-  public void testConstructor() {
+  public void constructor() {
     assertEquals($editableSimplePropertyBeed.getOwner(), $owner);
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
@@ -127,21 +127,27 @@ public class TestEditableSimplePropertyBeed {
   }
 
   @Test
-  public void testAssign() {
+  public void assign() {
     Integer newValue = new Integer(5);
     $editableSimplePropertyBeed.assign(newValue);
     assertEquals($editableSimplePropertyBeed.get(), newValue);
   }
 
   @Test
-  public void testSafeValueCopy() {
+  public void safeValueCopy() {
     Integer newValue = new Integer(5);
     Integer copy = $editableSimplePropertyBeed.safeValueCopy(newValue);
     assertTrue(copy == newValue);
   }
 
   @Test
-  public void testFireEvent() {
+  public void isAcceptable() {
+    boolean isAcceptable = $editableSimplePropertyBeed.isAcceptable(new Integer(5));
+    assertEquals(isAcceptable, true);
+  }
+
+  @Test
+  public void fireEvent() {
     // register listeners
     $editableSimplePropertyBeed.addListener($listener3);
     $editableSimplePropertyBeed.addListener($listener4);

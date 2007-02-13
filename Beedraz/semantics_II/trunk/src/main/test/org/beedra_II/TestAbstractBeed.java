@@ -80,7 +80,7 @@ public class TestAbstractBeed {
   private StubBeedEvent $event = new StubBeedEvent($subject);
 
   @Test
-  public void testAddChangeListener() {
+  public void addChangeListener() {
     assertTrue(! $subject.isListener($listener1));
     assertTrue(! $subject.isListener($listener2));
     $subject.addListener($listener1);
@@ -92,7 +92,7 @@ public class TestAbstractBeed {
   }
 
   @Test
-  public void testRemoveChangeListener1() {
+  public void removeChangeListener1() {
     $subject.addListener($listener1);
     $subject.addListener($listener2);
     assertTrue($subject.isListener($listener1));
@@ -106,7 +106,7 @@ public class TestAbstractBeed {
   }
 
   @Test
-  public void testRemoveChangeListener2() {
+  public void removeChangeListener2() {
     $subject.addListener($listener1);
     $subject.addListener($listener2);
     assertTrue($subject.isListener($listener1));
@@ -117,7 +117,7 @@ public class TestAbstractBeed {
   }
 
   @Test
-  public void testRemoveChangeListener3() {
+  public void removeChangeListener3() {
     $subject.addListener($listener1);
     assertTrue($subject.isListener($listener1));
     assertTrue(! $subject.isListener($listener2));
@@ -127,7 +127,7 @@ public class TestAbstractBeed {
   }
 
   @Test
-  public void testFireChangeEvent() {
+  public void fireChangeEvent() {
     $subject.addListener($listener1);
     $subject.addListener($listener2);
     assertTrue($subject.isListener($listener1));

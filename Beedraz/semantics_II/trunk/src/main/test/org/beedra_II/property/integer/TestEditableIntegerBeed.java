@@ -80,7 +80,7 @@ public class TestEditableIntegerBeed {
   private PropagatedEventListener $listener2 = new PropagatedEventListener();
 
   @Test
-  public void testConstructor() {
+  public void constructor() {
     assertEquals($editableIntegerBeed.getOwner(), $owner);
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
@@ -100,14 +100,14 @@ public class TestEditableIntegerBeed {
   }
 
   @Test
-  public void testCreateInitialEvent1() {
+  public void createInitialEvent1() {
     assertTrue("the implementation of this method calls the constructor " +
         "of IntegerEvent; the last parameter of this constructor should be " +
         "effective according to the documentation", false);
   }
 
   @Test
-  public void testCreateInitialEvent2() {
+  public void createInitialEvent2() {
     IntegerEvent initialEvent = $editableIntegerBeed.createInitialEvent();
     assertTrue(initialEvent instanceof IntegerEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $editableIntegerBeed);

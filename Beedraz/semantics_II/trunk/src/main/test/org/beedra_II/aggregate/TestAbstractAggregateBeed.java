@@ -117,12 +117,12 @@ public class TestAbstractAggregateBeed {
   private PropagatedEventListener $listener2 = new PropagatedEventListener();
 
   @Test
-  public void testIsAggregateElement() {
+  public void isAggregateElement() {
     // basic
   }
 
   @Test
-  public void testRegisterAggregateElement() {
+  public void registerAggregateElement() {
     // add listeners to the aggregate beed
     $aggregateBeed1.addListener($listener1);
     $aggregateBeed1.addListener($listener2);

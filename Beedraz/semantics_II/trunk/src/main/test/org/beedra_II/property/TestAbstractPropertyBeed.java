@@ -115,7 +115,7 @@ public class TestAbstractPropertyBeed {
   private StubAbstractPropertyBeedListener $listener3 = new StubAbstractPropertyBeedListener();
 
   @Test
-  public void testConstructor() {
+  public void constructor() {
     assertEquals($propertyBeed.getOwner(), $owner);
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
@@ -135,7 +135,7 @@ public class TestAbstractPropertyBeed {
   }
 
   @Test
-  public void testAddListenerInitialEvent() {
+  public void addListenerInitialEvent() {
     $propertyBeed.addListenerInitialEvent($listener3);
     assertTrue($propertyBeed.isListener($listener3));
     assertNotNull($listener3.$event);

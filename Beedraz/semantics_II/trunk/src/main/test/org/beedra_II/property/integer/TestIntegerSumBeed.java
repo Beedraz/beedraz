@@ -264,6 +264,154 @@ public class TestIntegerSumBeed {
     assertEquals($integerSumBeed.get(), 12);
   }
 
+  @Test
+  public void addTerm3() throws EditStateException, IllegalEditException {
+    // create terms
+    EditableIntegerBeed term1 = createEditableIntegerBeed(1);
+    EditableIntegerBeed term2 = createEditableIntegerBeed(2);
+    EditableIntegerBeed term3 = createEditableIntegerBeed(3);
+    EditableIntegerBeed term4 = createEditableIntegerBeed(4);
+    // create another sum beed
+    IntegerSumBeed integerSumBeed2plus3 = new IntegerSumBeed($owner);
+    integerSumBeed2plus3.addTerm(term2);
+    integerSumBeed2plus3.addTerm(term3);
+    // check (sum = 2 + 3)
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertEquals(integerSumBeed2plus3.get(), 5);
+    // create another sum beed
+    IntegerSumBeed integerSumBeed2plus3plus4 = new IntegerSumBeed($owner);
+    integerSumBeed2plus3plus4.addTerm(integerSumBeed2plus3);
+    integerSumBeed2plus3plus4.addTerm(term4);
+    // check (sum = (2 + 3) + 4)
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertEquals(integerSumBeed2plus3plus4.get(), 9);
+    // add terms
+    $integerSumBeed.addTerm(term1);
+    $integerSumBeed.addTerm(integerSumBeed2plus3plus4);
+    // check (sum = 1 + ((2 + 3) + 4))
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals($integerSumBeed.get(), 10);
+
+    // When one of the terms is changed by an edit, the listeners of that term
+    // are notified (in the perform method of the edit).
+    // One of those listeners is a term listener, defined as inner class of IntegerSumBeed,
+    // associated with the term. This term listener recalculates the sum.
+    // change 1 to null
+    IntegerEdit edit1 = new IntegerEdit(term1);
+    Integer valueNull = null;
+    edit1.setGoal(valueNull);
+    edit1.perform();
+    assertEquals(term1.get(), valueNull);
+    // check (sum = null + ((2 + 3) + 4))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), 5);
+    assertEquals(integerSumBeed2plus3plus4.get(), 9);
+    assertEquals($integerSumBeed.get(), null);
+    // change null back to 1
+    edit1 = new IntegerEdit(term1);
+    Integer value1 = 1;
+    edit1.setGoal(value1);
+    edit1.perform();
+    assertEquals(term1.get(), value1);
+    // check (sum = 1 + ((2 + 3) + 4))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), 5);
+    assertEquals(integerSumBeed2plus3plus4.get(), 9);
+    assertEquals($integerSumBeed.get(), 10);
+    // change 2 to null
+    IntegerEdit edit2 = new IntegerEdit(term2);
+    edit2.setGoal(valueNull);
+    edit2.perform();
+    assertEquals(term2.get(), valueNull);
+    // check (sum = 1 + ((null + 3) + 4))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), null);
+    assertEquals(integerSumBeed2plus3plus4.get(), null);
+    assertEquals($integerSumBeed.get(), null);
+    // change null back to 2
+    edit2 = new IntegerEdit(term2);
+    Integer value2 = 2;
+    edit2.setGoal(value2);
+    edit2.perform();
+    assertEquals(term2.get(), value2);
+    // check (sum = 1 + ((2 + 3) + 4))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), 5);
+    assertEquals(integerSumBeed2plus3plus4.get(), 9);
+    assertEquals($integerSumBeed.get(), 10);
+    // change 4 to null
+    IntegerEdit edit4 = new IntegerEdit(term4);
+    edit4.setGoal(valueNull);
+    edit4.perform();
+    assertEquals(term4.get(), valueNull);
+    // check (sum = 1 + ((2 + 3) + null))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), 5);
+    assertEquals(integerSumBeed2plus3plus4.get(), null);
+    assertEquals($integerSumBeed.get(), null);
+    // change null back to 4
+    edit4 = new IntegerEdit(term4);
+    Integer value4 = 4;
+    edit4.setGoal(value4);
+    edit4.perform();
+    assertEquals(term4.get(), value4);
+    // check (sum = 1 + ((2 + 3) + 4))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), 5);
+    assertEquals(integerSumBeed2plus3plus4.get(), 9);
+    assertEquals($integerSumBeed.get(), 10);
+
+    // change 2 to 11
+    edit2 = new IntegerEdit(term2);
+    Integer value11 = 11;
+    edit2.setGoal(value11);
+    edit2.perform();
+    assertEquals(term2.get(), value11);
+    // check (sum = 1 + ((11 + 3) + 4))
+    assertTrue(integerSumBeed2plus3.isTerm(term2));
+    assertTrue(integerSumBeed2plus3.isTerm(term3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(integerSumBeed2plus3));
+    assertTrue(integerSumBeed2plus3plus4.isTerm(term4));
+    assertTrue($integerSumBeed.isTerm(term1));
+    assertTrue($integerSumBeed.isTerm(integerSumBeed2plus3plus4));
+    assertEquals(integerSumBeed2plus3.get(), 14);
+    assertEquals(integerSumBeed2plus3plus4.get(), 18);
+    assertEquals($integerSumBeed.get(), 19);
+}
+
   private EditableIntegerBeed createEditableIntegerBeed(Integer value) {
     try {
       EditableIntegerBeed editableIntegerBeed = new EditableIntegerBeed($owner);

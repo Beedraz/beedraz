@@ -33,6 +33,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author  Jan Dockx
  *
  * @invar getTarget() != null;
+ * @invar getState() != null;
  * @invar getState() != NOT_YET_PERFORMED ?
  *          forall (ValidityListener vl) {
  *            ! isValidityListener(vl)

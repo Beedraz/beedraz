@@ -302,7 +302,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
     return ($validityListeners != null) && $validityListeners.contains(listener);
   }
 
-  public final void addListener(ValidityListener listener) {
+  public final void addValidityListener(ValidityListener listener) {
     assert listener != null;
     if ($validityListeners != null) {
       $validityListeners.add(listener);

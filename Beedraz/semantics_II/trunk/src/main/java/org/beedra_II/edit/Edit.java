@@ -149,7 +149,7 @@ public interface Edit<_Target_ extends EditableBeed<?>> {
    * @pre listener != null;
    * @post getState() != NOT_YET_PERFORMED ? isValidityListener(listener);
    */
-  void addListener(ValidityListener listener);
+  void addValidityListener(ValidityListener listener);
 
   /**
    * @post ! isValidityListener(listener);

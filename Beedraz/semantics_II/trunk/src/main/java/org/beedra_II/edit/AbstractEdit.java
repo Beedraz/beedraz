@@ -180,7 +180,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
    */
   public final void undo() throws EditStateException, IllegalEditException {
     if ($state != DONE) {
-        throw new EditStateException(this, DONE, $state);
+        throw new EditStateException(this, $state, DONE);
     }
     // start of transaction
     if (! isGoalStateCurrent()) {

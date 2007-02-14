@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -185,6 +186,74 @@ public class TestBidirToManyBeed {
     assertEquals($listener4.$event.getAddedElements().size(), 1);
     assertTrue($listener4.$event.getAddedElements().contains(many2));
     assertTrue($listener4.$event.getRemovedElements().isEmpty());
+    assertEquals($listener4.$event.getEdit(), edit2);
+  }
+
+  @Test
+  public void remove() {
+    ManyBeanBeed many1 = new ManyBeanBeed();
+    ManyBeanBeed many2 = new ManyBeanBeed();
+    $bidirToManyBeed.add(many1);
+    assertTrue($bidirToManyBeed.get().contains(many1));
+    assertFalse($bidirToManyBeed.get().contains(many2));
+    $bidirToManyBeed.add(many2);
+    assertTrue($bidirToManyBeed.get().contains(many1));
+    assertTrue($bidirToManyBeed.get().contains(many2));
+    $bidirToManyBeed.remove(many2);
+    assertTrue($bidirToManyBeed.get().contains(many1));
+    assertFalse($bidirToManyBeed.get().contains(many2));
+    $bidirToManyBeed.remove(many1);
+    assertFalse($bidirToManyBeed.get().contains(many1));
+    assertFalse($bidirToManyBeed.get().contains(many2));
+  }
+
+  @Test
+  public void fireRemovedEvent() {
+    // add listeners to the bidirToManyBeed
+    $bidirToManyBeed.addListener($listener3);
+    $bidirToManyBeed.addListener($listener4);
+    assertNull($listener3.$event);
+    assertNull($listener4.$event);
+    // fire events
+    ManyBeanBeed many1 = new ManyBeanBeed();
+    BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit1 =
+      new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    $bidirToManyBeed.fireRemovedEvent(many1, edit1);
+    assertNotNull($listener3.$event);
+    assertTrue($listener3.$event instanceof SetEvent);
+    assertEquals($listener3.$event.getSource(), $bidirToManyBeed);
+    assertTrue($listener3.$event.getAddedElements().isEmpty());
+    assertEquals($listener3.$event.getRemovedElements().size(), 1);
+    assertTrue($listener3.$event.getRemovedElements().contains(many1));
+    assertEquals($listener3.$event.getEdit(), edit1);
+    assertNotNull($listener4.$event);
+    assertTrue($listener4.$event instanceof SetEvent);
+    assertEquals($listener4.$event.getSource(), $bidirToManyBeed);
+    assertTrue($listener4.$event.getAddedElements().isEmpty());
+    assertEquals($listener4.$event.getRemovedElements().size(), 1);
+    assertTrue($listener4.$event.getRemovedElements().contains(many1));
+    assertEquals($listener4.$event.getEdit(), edit1);
+    // reset
+    $listener3.reset();
+    $listener4.reset();
+    // fire events
+    ManyBeanBeed many2 = new ManyBeanBeed();
+    BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit2 =
+      new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    $bidirToManyBeed.fireRemovedEvent(many2, edit2);
+    assertNotNull($listener3.$event);
+    assertTrue($listener3.$event instanceof SetEvent);
+    assertEquals($listener3.$event.getSource(), $bidirToManyBeed);
+    assertTrue($listener3.$event.getAddedElements().isEmpty());
+    assertEquals($listener3.$event.getRemovedElements().size(), 1);
+    assertTrue($listener3.$event.getRemovedElements().contains(many2));
+    assertEquals($listener3.$event.getEdit(), edit2);
+    assertNotNull($listener4.$event);
+    assertTrue($listener4.$event instanceof SetEvent);
+    assertEquals($listener4.$event.getSource(), $bidirToManyBeed);
+    assertTrue($listener4.$event.getAddedElements().isEmpty());
+    assertEquals($listener4.$event.getRemovedElements().size(), 1);
+    assertTrue($listener4.$event.getRemovedElements().contains(many2));
     assertEquals($listener4.$event.getEdit(), edit2);
   }
 

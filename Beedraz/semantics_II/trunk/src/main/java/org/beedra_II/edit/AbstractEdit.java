@@ -230,7 +230,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
    */
   final public void redo() throws EditStateException, IllegalEditException {
     if ($state != UNDONE) {
-      throw new EditStateException(this, UNDONE, $state);
+      throw new EditStateException(this, $state, UNDONE);
     }
     // start of transaction
     if (! isInitialStateCurrent()) {

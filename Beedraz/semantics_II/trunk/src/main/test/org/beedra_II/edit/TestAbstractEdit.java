@@ -75,8 +75,14 @@ public class TestAbstractEdit {
 
     @Override
     protected boolean isGoalStateCurrent() {
-      return true;
+      return $goalStateCurrent;
     }
+
+    public void setGoalStateCurrent(boolean b) {
+      $goalStateCurrent = b;
+    }
+
+    private boolean $goalStateCurrent = true;
 
     @Override
     protected boolean isInitialStateCurrent() {
@@ -283,7 +289,7 @@ public class TestAbstractEdit {
   }
 
   @Test
-  // correct begin-state, validity listeners should be removed, listeners of the beed are notified
+  // correct begin-state, edit is no change, so validity listeners are not removed, listeners of the beed are not notified
   public void perform6() {
     try {
       $edit.addListener($listener1);
@@ -332,4 +338,131 @@ public class TestAbstractEdit {
     }
   }
 
+  @Test
+  // incorrect begin-state
+  public void undo1() {
+    try {
+      $edit.undo();
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      assertEquals(e.getEdit(), $edit);
+      assertEquals(e.getCurrentState(), $edit.getState());
+      assertEquals(e.getExpectedState(), State.DONE);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // incorrect begin-state
+  public void undo2() {
+    try {
+      $edit.perform();
+      $edit.undo();
+      $edit.undo();
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      assertEquals(e.getEdit(), $edit);
+      assertEquals(e.getCurrentState(), $edit.getState());
+      assertEquals(e.getExpectedState(), State.DONE);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // incorrect begin-state
+  public void undo3() {
+    try {
+      $edit.kill();
+      $edit.undo();
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      assertEquals(e.getEdit(), $edit);
+      assertEquals(e.getCurrentState(), $edit.getState());
+      assertEquals(e.getExpectedState(), State.DONE);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // correct begin-state, check end-state
+  public void undo4() {
+    try {
+      $edit.perform();
+      $edit.undo();
+      assertEquals($edit.getState(), State.UNDONE);
+    }
+    catch (EditStateException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // correct begin-state, so there are no validity listeners, listeners of the beed are notified
+  public void undo5() {
+    try {
+      $edit.addListener($listener1);
+      $edit.addListener($listener2);
+      assertTrue($edit.isValidityListener($listener1));
+      assertTrue($edit.isValidityListener($listener2));
+      // perform
+      $edit.perform();
+      assertFalse($edit.isValidityListener($listener1));
+      assertFalse($edit.isValidityListener($listener2));
+      $edit.undo();
+      // there are no listeners
+      assertFalse($edit.isValidityListener($listener1));
+      assertFalse($edit.isValidityListener($listener2));
+      // listeners of the beed are notified
+      assertNotNull($edit.$event);
+      assertEquals($edit.$event, $edit.getCreatedEvent());
+    }
+    catch (EditStateException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // when the goal state does not match the current state, an exception should be thrown
+  public void undo7() {
+    try {
+      $edit.setGoalStateCurrent(false);
+      $edit.perform();
+      $edit.undo();
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (IllegalEditException e) {
+      assertEquals(e.getEdit(), $edit);
+      assertEquals(e.getMessage(), null);
+    }
+  }
 }

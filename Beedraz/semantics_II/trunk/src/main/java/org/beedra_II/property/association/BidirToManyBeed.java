@@ -32,7 +32,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * @invar getProject() != null ? getProject.getTasks().contains(this);
+ * @invar getOwner() instanceof _One_;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -82,7 +82,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
 
   @Override
   protected final SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>> createInitialEvent() {
-    return new SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>(this, null, $many, null); // event constructor copies set
+    return new SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>(this, $many, null, null); // event constructor copies set
   }
 
   @Override

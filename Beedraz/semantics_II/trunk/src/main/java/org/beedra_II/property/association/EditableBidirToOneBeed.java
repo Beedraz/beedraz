@@ -25,7 +25,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 /**
  * @mudo description
  *
- * @invar getProject() != null ? getProject.getTasks().contains(this);
+ * @invar  getOwner() instanceof _Many_;
  *
  * @mudo implement event propagation to ONE
  */

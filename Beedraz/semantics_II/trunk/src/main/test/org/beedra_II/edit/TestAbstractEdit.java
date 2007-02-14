@@ -57,10 +57,10 @@ public class TestAbstractEdit {
 
     @Override
     protected void fireEvent(IntegerEvent event) {
-      $event = event;
+      $firedEvent = event;
     }
 
-    public IntegerEvent $event;
+    public IntegerEvent $firedEvent;
 
     @Override
     protected boolean isChange() {
@@ -281,8 +281,8 @@ public class TestAbstractEdit {
       assertFalse($edit.isValidityListener($listener1));
       assertFalse($edit.isValidityListener($listener2));
       // listeners of the beed are notified
-      assertNotNull($edit.$event);
-      assertEquals($edit.$event, $edit.getCreatedEvent());
+      assertNotNull($edit.$firedEvent);
+      assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
     }
     catch (EditStateException e) {
       // should not be reached
@@ -309,10 +309,10 @@ public class TestAbstractEdit {
       assertTrue($edit.isValidityListener($listener1));
       assertTrue($edit.isValidityListener($listener2));
       // listeners of the beed are not notified
-      assertNull($edit.$event);
-//      assertTrue("When the edit causes no change, the validity listeners are " +
-//          "not removed and the beed listeners are not notified. The latter is " +
-//          "correct, but what about the first?", false);
+      assertNull($edit.$firedEvent);
+      assertTrue("When the edit causes no change, the validity listeners are " +
+          "not removed and the beed listeners are not notified. The latter is " +
+          "correct, but what about the first?", false);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -439,8 +439,8 @@ public class TestAbstractEdit {
       assertFalse($edit.isValidityListener($listener1));
       assertFalse($edit.isValidityListener($listener2));
       // listeners of the beed are notified
-      assertNotNull($edit.$event);
-      assertEquals($edit.$event, $edit.getCreatedEvent());
+      assertNotNull($edit.$firedEvent);
+      assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
     }
     catch (EditStateException e) {
       // should not be reached
@@ -569,8 +569,8 @@ public class TestAbstractEdit {
       assertFalse($edit.isValidityListener($listener1));
       assertFalse($edit.isValidityListener($listener2));
       // listeners of the beed are notified
-      assertNotNull($edit.$event);
-      assertEquals($edit.$event, $edit.getCreatedEvent());
+      assertNotNull($edit.$firedEvent);
+      assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
     }
     catch (EditStateException e) {
       // should not be reached
@@ -709,4 +709,35 @@ public class TestAbstractEdit {
     assertFalse($edit.isValidityListener($listener1));
     assertFalse($edit.isValidityListener($listener2));
   }
+
+  @Test
+  public void fireValidityChange() {
+    // register listeners
+    $edit.addValidityListener($listener1);
+    $edit.addValidityListener($listener2);
+    assertTrue($edit.isValidityListener($listener1));
+    assertTrue($edit.isValidityListener($listener2));
+    assertTrue($listener1.isEmpty());
+    assertTrue($listener2.isEmpty());
+    // fire
+    $edit.fireValidityChange();
+    // check
+    assertTrue($edit.isValidityListener($listener1));
+    assertTrue($edit.isValidityListener($listener2));
+    assertEquals($listener1.$target, $edit);
+    assertEquals($listener1.$validity, $edit.isValid());
+    assertEquals($listener2.$target, $edit);
+    assertEquals($listener2.$validity, $edit.isValid());
+  }
+
+  @Test
+  public void notifyListeners() {
+    assertNull($edit.$firedEvent);
+    // notify
+    $edit.notifyListeners();
+    // check
+    assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
+  }
+
+
 }

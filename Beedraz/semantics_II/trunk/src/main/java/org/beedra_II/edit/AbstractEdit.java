@@ -118,7 +118,7 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
   public final void perform() throws EditStateException, IllegalEditException {
     // IDEA start of transaction
     if ($state != NOT_YET_PERFORMED) {
-        throw new EditStateException(this, NOT_YET_PERFORMED, $state);
+        throw new EditStateException(this, $state, NOT_YET_PERFORMED);
     }
     storeInitialState();
     if (isChange()) {

@@ -27,6 +27,9 @@ import org.beedra_II.edit.Edit.State;
  * state.
  *
  * @author  Jan Dockx
+ *
+ * @invar   getCurrentState() != null;
+ * @invar   getExpectedState() != null;
  */
 public class EditStateException extends EditException {
   // MUDO extends InternalException, StateException
@@ -36,12 +39,18 @@ public class EditStateException extends EditException {
   //-------------------------------------------------------
 
   /**
-   * @post Comparison.equalsWithNull(s, getMessage());
+   * @pre  currentState != null;
+   * @pre  expectedState != null;
+   * @post Comparison.equalsWithNull(null, getMessage());
    * @post getCause() == null;
    * @post getEdit() == e;
+   * @post getCurrentState() == currentState;
+   * @post getExpectedState() == expectedState;
    */
   public EditStateException(Edit<?> e, State currentState, State expectedState) {
     super(e, null);
+    $currentState = currentState;
+    $expectedState = expectedState;
   }
 
   /*</construction>*/

@@ -17,19 +17,12 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.SimpleEdit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
- *
  * @author Jan Dockx
- *
- * @invar getSource() instanceof StringBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -41,8 +34,6 @@ public final class BooleanEdit
   /**
    * @pre target != null;
    * @post getTarget() == target;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public BooleanEdit(EditableBooleanBeed target) { // MUDO tyoe
     super(target);

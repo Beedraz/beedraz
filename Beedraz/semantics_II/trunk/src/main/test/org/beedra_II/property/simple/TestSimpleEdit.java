@@ -777,5 +777,134 @@ public class TestSimpleEdit {
     assertEquals($listener3.$event, $simpleEdit.getCreatedEvent());
   }
 
+  @Test
+  // incorrect begin-state
+  public void setGoal1() {
+    try {
+      $simpleEdit.setGoal(1);
+      $simpleEdit.perform();
+      $simpleEdit.setGoal(2);
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      assertEquals(e.getEdit(), $simpleEdit);
+      assertEquals(e.getCurrentState(), $simpleEdit.getState());
+      assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
 
+  @Test
+  // incorrect begin-state
+  public void setGoal2() {
+    try {
+      $simpleEdit.setGoal(1);
+      $simpleEdit.perform();
+      $simpleEdit.undo();
+      $simpleEdit.setGoal(2);
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      assertEquals(e.getEdit(), $simpleEdit);
+      assertEquals(e.getCurrentState(), $simpleEdit.getState());
+      assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // incorrect begin-state
+  public void setGoal3() {
+    try {
+      $simpleEdit.setGoal(1);
+      $simpleEdit.perform();
+      $simpleEdit.undo();
+      $simpleEdit.redo();
+      $simpleEdit.setGoal(2);
+      // should not be reached
+      assertTrue(false);
+    }
+    catch (EditStateException e) {
+      assertEquals(e.getEdit(), $simpleEdit);
+      assertEquals(e.getCurrentState(), $simpleEdit.getState());
+      assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
+    }
+    catch (IllegalEditException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
+
+  @Test
+  // correct begin-state, check postconditions
+  public void setGoal4() {
+    try {
+      assertTrue($simpleEdit.isValid());
+      // add validity listeners
+      $simpleEdit.addValidityListener($listener1);
+      $simpleEdit.addValidityListener($listener2);
+      assertTrue($simpleEdit.isValidityListener($listener1));
+      assertTrue($simpleEdit.isValidityListener($listener2));
+      assertTrue($listener1.isEmpty());
+      assertTrue($listener2.isEmpty());
+      // set valid goal
+      Integer goal = 1;
+      $simpleEdit.setGoal(goal);
+      assertEquals($simpleEdit.getGoal(), goal);
+      assertTrue($simpleEdit.isValid());
+      assertTrue($listener1.isEmpty());
+      assertTrue($listener2.isEmpty());
+      // set invalid goal
+      Integer invalidGoal = -1;
+      $simpleEdit.setGoal(invalidGoal);
+      assertEquals($simpleEdit.getGoal(), invalidGoal);
+      assertFalse($simpleEdit.isValid());
+      assertFalse($listener1.isEmpty());
+      assertFalse($listener2.isEmpty());
+      assertEquals($listener1.$target, $simpleEdit);
+      assertEquals($listener1.$validity, $simpleEdit.isValid());
+      assertEquals($listener2.$target, $simpleEdit);
+      assertEquals($listener2.$validity, $simpleEdit.isValid());
+      // set other invalid goal
+      Integer invalidGoal2 = 0;
+      $listener1.reset();
+      $listener2.reset();
+      $simpleEdit.setGoal(invalidGoal2);
+      assertEquals($simpleEdit.getGoal(), invalidGoal2);
+      assertFalse($simpleEdit.isValid());
+      assertTrue($listener1.isEmpty());
+      assertTrue($listener2.isEmpty());
+      // set valid goal
+      $listener1.reset();
+      $listener2.reset();
+      $simpleEdit.setGoal(goal);
+      assertEquals($simpleEdit.getGoal(), goal);
+      assertTrue($simpleEdit.isValid());
+      assertEquals($listener1.$target, $simpleEdit);
+      assertEquals($listener1.$validity, $simpleEdit.isValid());
+      assertEquals($listener2.$target, $simpleEdit);
+      assertEquals($listener2.$validity, $simpleEdit.isValid());
+      // set other valid goal
+      Integer goal2 = 3;
+      $listener1.reset();
+      $listener2.reset();
+      $simpleEdit.setGoal(goal2);
+      assertEquals($simpleEdit.getGoal(), goal2);
+      assertTrue($simpleEdit.isValid());
+      assertTrue($listener1.isEmpty());
+      assertTrue($listener2.isEmpty());
+    }
+    catch (EditStateException e) {
+      // should not be reached
+      assertTrue(false);
+    }
+  }
 }

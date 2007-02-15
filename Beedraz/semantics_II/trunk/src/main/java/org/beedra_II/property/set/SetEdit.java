@@ -80,6 +80,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   of {@code S}, it surely doesn't contain any elements of a subset of {@code S}.</p>
  *
  * @author Jan Dockx
+ *
+ * @invar  getElementsToAdd() != null;
+ * @invar  getElementsToRemove() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -158,6 +161,9 @@ public class SetEdit<_Element_>
   }
 
   /**
+   * Returns true when the following two conditions are true:
+   * - none of the elements we want to add is already present in the target
+   * - all targets we want to remove are present in the beed
    * @return {@code A &cap; ''S = &empty;} and {@code R &sube; ''S}
    */
   @Override
@@ -203,9 +209,31 @@ public class SetEdit<_Element_>
   @Override
   protected SetEvent<_Element_, SetEdit<_Element_>> createEvent() {
     return new SetEvent<_Element_, SetEdit<_Element_>>(getTarget(),
-                                                       (getState() == DONE) ? $elementsToAdd : $elementsToRemove,
-                                                       (getState() == DONE) ? $elementsToRemove : $elementsToAdd,
+                                                       getAddedElements(),
+                                                       getRemovedElements(),
                                                        this);
+  }
+
+  /**
+   * Returns the set of elements that are added during the last
+   * action, i.e. the last perform, undo or redo.
+   * E.g. during a perform, the set {@link #getAddedElements()}
+   * was added, during an undo, the set {@link #getRemovedElements()}
+   * was added.
+   */
+  public Set<_Element_> getAddedElements() {
+    return (getState() == DONE) ? $elementsToAdd : $elementsToRemove;
+  }
+
+  /**
+   * Returns the set of elements that are removed during the last
+   * action, i.e. the last perform, undo or redo.
+   * E.g. during a perform, the set {@link #getRemovedElements()}
+   * was removed, during an undo, the set {@link #getAddedElements()}
+   * was removed.
+   */
+  public Set<_Element_> getRemovedElements() {
+    return (getState() == DONE) ? $elementsToAdd : $elementsToRemove;
   }
 
   @Override

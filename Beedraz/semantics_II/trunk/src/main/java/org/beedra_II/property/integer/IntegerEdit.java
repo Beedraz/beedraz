@@ -17,19 +17,12 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
-import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.SimpleEdit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
- *
  * @author Jan Dockx
- *
- * @invar getSource() instanceof IntegerBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -41,8 +34,6 @@ public final class IntegerEdit
   /**
    * @pre target != null;
    * @post getTarget() == target;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public IntegerEdit(EditableIntegerBeed target) {
     super(target);

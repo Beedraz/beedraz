@@ -107,28 +107,28 @@ public class TestStringEdit {
 
   BeanBeed $beanBeed = new MyBeanBeed();
   MyEditableStringBeed $target = new MyEditableStringBeed($beanBeed);
-  private StringEdit $booleanEdit = new StringEdit($target);
+  private StringEdit $stringEdit = new StringEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
   StubStringListener $listener3 = new StubStringListener();
 
   @Test
   public void constructor() {
-    assertEquals($booleanEdit.getTarget(), $target);
+    assertEquals($stringEdit.getTarget(), $target);
   }
 
   @Test
   // incorrect begin-state
   public void perform1() {
     try {
-      $booleanEdit.perform();
-      $booleanEdit.perform();
+      $stringEdit.perform();
+      $stringEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -141,15 +141,15 @@ public class TestStringEdit {
   // incorrect begin-state
   public void perform2() {
     try {
-      $booleanEdit.perform();
-      $booleanEdit.undo();
-      $booleanEdit.perform();
+      $stringEdit.perform();
+      $stringEdit.undo();
+      $stringEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -162,14 +162,14 @@ public class TestStringEdit {
   // incorrect begin-state
   public void perform3() {
     try {
-      $booleanEdit.kill();
-      $booleanEdit.perform();
+      $stringEdit.kill();
+      $stringEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -182,8 +182,8 @@ public class TestStringEdit {
   // correct begin-state, check end-state
   public void perform4() {
     try {
-      $booleanEdit.perform();
-      assertEquals($booleanEdit.getState(), State.DONE);
+      $stringEdit.perform();
+      assertEquals($stringEdit.getState(), State.DONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -204,20 +204,20 @@ public class TestStringEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $booleanEdit.addValidityListener($listener1);
-      $booleanEdit.addValidityListener($listener2);
-      assertTrue($booleanEdit.isValidityListener($listener1));
-      assertTrue($booleanEdit.isValidityListener($listener2));
+      $stringEdit.addValidityListener($listener1);
+      $stringEdit.addValidityListener($listener2);
+      assertTrue($stringEdit.isValidityListener($listener1));
+      assertTrue($stringEdit.isValidityListener($listener2));
       // perform
       String goal = "row";
-      $booleanEdit.setGoal(goal);
-      $booleanEdit.perform();
+      $stringEdit.setGoal(goal);
+      $stringEdit.perform();
       // listeners should be removed
-      assertFalse($booleanEdit.isValidityListener($listener1));
-      assertFalse($booleanEdit.isValidityListener($listener2));
+      assertFalse($stringEdit.isValidityListener($listener1));
+      assertFalse($stringEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $booleanEdit);
+      assertEquals($listener3.$event.getEdit(), $stringEdit);
       assertEquals($listener3.$event.getOldValue(), null);
       assertEquals($listener3.$event.getNewValue(), goal);
       assertEquals($listener3.$event.getSource(), $target);
@@ -241,16 +241,16 @@ public class TestStringEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $booleanEdit.addValidityListener($listener1);
-      $booleanEdit.addValidityListener($listener2);
-      assertTrue($booleanEdit.isValidityListener($listener1));
-      assertTrue($booleanEdit.isValidityListener($listener2));
+      $stringEdit.addValidityListener($listener1);
+      $stringEdit.addValidityListener($listener2);
+      assertTrue($stringEdit.isValidityListener($listener1));
+      assertTrue($stringEdit.isValidityListener($listener2));
       // perform
-      $booleanEdit.setGoal(null);
-      $booleanEdit.perform();
+      $stringEdit.setGoal(null);
+      $stringEdit.perform();
       // listeners are not removed
-      assertTrue($booleanEdit.isValidityListener($listener1));
-      assertTrue($booleanEdit.isValidityListener($listener2));
+      assertTrue($stringEdit.isValidityListener($listener1));
+      assertTrue($stringEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
     }
@@ -273,8 +273,8 @@ public class TestStringEdit {
       edit.setGoal(goal);
       edit.perform();
       // perform
-      $booleanEdit.setGoal(null);
-      $booleanEdit.perform();
+      $stringEdit.setGoal(null);
+      $stringEdit.perform();
       // should not be reached
       assertTrue(false);
     }
@@ -283,7 +283,7 @@ public class TestStringEdit {
       assertTrue(false);
     }
     catch (IllegalEditException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
+      assertEquals(e.getEdit(), $stringEdit);
       assertEquals(e.getMessage(), null);
     }
   }
@@ -329,8 +329,8 @@ public class TestStringEdit {
     try {
       // perform
       String goal = "row";
-      $booleanEdit.setGoal(goal);
-      $booleanEdit.perform();
+      $stringEdit.setGoal(goal);
+      $stringEdit.perform();
       assertEquals($target.get(), goal);
     }
     catch (EditStateException e) {
@@ -347,13 +347,13 @@ public class TestStringEdit {
   // incorrect begin-state
   public void undo1() {
     try {
-      $booleanEdit.undo();
+      $stringEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -366,15 +366,15 @@ public class TestStringEdit {
   // incorrect begin-state
   public void undo2() {
     try {
-      $booleanEdit.perform();
-      $booleanEdit.undo();
-      $booleanEdit.undo();
+      $stringEdit.perform();
+      $stringEdit.undo();
+      $stringEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -387,14 +387,14 @@ public class TestStringEdit {
   // incorrect begin-state
   public void undo3() {
     try {
-      $booleanEdit.kill();
-      $booleanEdit.undo();
+      $stringEdit.kill();
+      $stringEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -408,10 +408,10 @@ public class TestStringEdit {
   public void undo4() {
     try {
       String goal = "row";
-      $booleanEdit.setGoal(goal);
-      $booleanEdit.perform();
-      $booleanEdit.undo();
-      assertEquals($booleanEdit.getState(), State.UNDONE);
+      $stringEdit.setGoal(goal);
+      $stringEdit.perform();
+      $stringEdit.undo();
+      assertEquals($stringEdit.getState(), State.UNDONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -432,26 +432,26 @@ public class TestStringEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $booleanEdit.addValidityListener($listener1);
-      $booleanEdit.addValidityListener($listener2);
-      assertTrue($booleanEdit.isValidityListener($listener1));
-      assertTrue($booleanEdit.isValidityListener($listener2));
+      $stringEdit.addValidityListener($listener1);
+      $stringEdit.addValidityListener($listener2);
+      assertTrue($stringEdit.isValidityListener($listener1));
+      assertTrue($stringEdit.isValidityListener($listener2));
       // perform
       String goal = "row";
-      $booleanEdit.setGoal(goal);
-      $booleanEdit.perform();
-      assertFalse($booleanEdit.isValidityListener($listener1));
-      assertFalse($booleanEdit.isValidityListener($listener2));
-      $booleanEdit.undo();
+      $stringEdit.setGoal(goal);
+      $stringEdit.perform();
+      assertFalse($stringEdit.isValidityListener($listener1));
+      assertFalse($stringEdit.isValidityListener($listener2));
+      $stringEdit.undo();
       // there are no listeners
-      assertFalse($booleanEdit.isValidityListener($listener1));
-      assertFalse($booleanEdit.isValidityListener($listener2));
+      assertFalse($stringEdit.isValidityListener($listener1));
+      assertFalse($stringEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getSource(), $target);
       assertEquals($listener3.$event.getOldValue(), goal);
       assertEquals($listener3.$event.getNewValue(), null);
-      assertEquals($listener3.$event.getEdit(), $booleanEdit);
+      assertEquals($listener3.$event.getEdit(), $stringEdit);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -504,9 +504,9 @@ public class TestStringEdit {
       edit1.perform();
       // $simpleEdit
       String goal2 = "reason";
-      $booleanEdit.setGoal(goal2);
-      $booleanEdit.perform();
-      $booleanEdit.undo();
+      $stringEdit.setGoal(goal2);
+      $stringEdit.perform();
+      $stringEdit.undo();
       assertEquals($target.get(), goal1);
     }
     catch (EditStateException e) {
@@ -523,13 +523,13 @@ public class TestStringEdit {
   // incorrect begin-state
   public void redo1() {
     try {
-      $booleanEdit.redo();
+      $stringEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -542,14 +542,14 @@ public class TestStringEdit {
   // incorrect begin-state
   public void redo2() {
     try {
-      $booleanEdit.perform();
-      $booleanEdit.redo();
+      $stringEdit.perform();
+      $stringEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -562,14 +562,14 @@ public class TestStringEdit {
   // incorrect begin-state
   public void redo3() {
     try {
-      $booleanEdit.kill();
-      $booleanEdit.redo();
+      $stringEdit.kill();
+      $stringEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $booleanEdit);
-      assertEquals(e.getCurrentState(), $booleanEdit.getState());
+      assertEquals(e.getEdit(), $stringEdit);
+      assertEquals(e.getCurrentState(), $stringEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -582,10 +582,10 @@ public class TestStringEdit {
   // correct begin-state, check end-state
   public void redo4() {
     try {
-      $booleanEdit.perform();
-      $booleanEdit.undo();
-      $booleanEdit.redo();
-      assertEquals($booleanEdit.getState(), State.DONE);
+      $stringEdit.perform();
+      $stringEdit.undo();
+      $stringEdit.redo();
+      assertEquals($stringEdit.getState(), State.DONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -606,24 +606,24 @@ public class TestStringEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $booleanEdit.addValidityListener($listener1);
-      $booleanEdit.addValidityListener($listener2);
-      assertTrue($booleanEdit.isValidityListener($listener1));
-      assertTrue($booleanEdit.isValidityListener($listener2));
+      $stringEdit.addValidityListener($listener1);
+      $stringEdit.addValidityListener($listener2);
+      assertTrue($stringEdit.isValidityListener($listener1));
+      assertTrue($stringEdit.isValidityListener($listener2));
       // perform
       String goal = "row";
-      $booleanEdit.setGoal(goal);
-      $booleanEdit.perform();
-      assertFalse($booleanEdit.isValidityListener($listener1));
-      assertFalse($booleanEdit.isValidityListener($listener2));
-      $booleanEdit.undo();
-      $booleanEdit.redo();
+      $stringEdit.setGoal(goal);
+      $stringEdit.perform();
+      assertFalse($stringEdit.isValidityListener($listener1));
+      assertFalse($stringEdit.isValidityListener($listener2));
+      $stringEdit.undo();
+      $stringEdit.redo();
       // there are no listeners
-      assertFalse($booleanEdit.isValidityListener($listener1));
-      assertFalse($booleanEdit.isValidityListener($listener2));
+      assertFalse($stringEdit.isValidityListener($listener1));
+      assertFalse($stringEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $booleanEdit);
+      assertEquals($listener3.$event.getEdit(), $stringEdit);
       assertEquals($listener3.$event.getOldValue(), null);
       assertEquals($listener3.$event.getNewValue(), goal);
       assertEquals($listener3.$event.getSource(), $target);
@@ -680,10 +680,10 @@ public class TestStringEdit {
       edit1.perform();
       // $simpleEdit
       String goal2 = "reason";
-      $booleanEdit.setGoal(goal2);
-      $booleanEdit.perform();
-      $booleanEdit.undo();
-      $booleanEdit.redo();
+      $stringEdit.setGoal(goal2);
+      $stringEdit.perform();
+      $stringEdit.undo();
+      $stringEdit.redo();
       assertEquals($target.get(), goal2);
     }
     catch (EditStateException e) {
@@ -698,26 +698,26 @@ public class TestStringEdit {
 
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
-    StringEvent createdEvent = $booleanEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $booleanEdit);
+    StringEvent createdEvent = $stringEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $stringEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), null);
     assertEquals(createdEvent.getSource(), $target);
     // perform
     String goal = "row";
-    $booleanEdit.setGoal(goal);
-    $booleanEdit.perform();
+    $stringEdit.setGoal(goal);
+    $stringEdit.perform();
     // create event
-    createdEvent = $booleanEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $booleanEdit);
+    createdEvent = $stringEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $stringEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
     assertEquals(createdEvent.getSource(), $target);
     // undo
-    $booleanEdit.undo();
+    $stringEdit.undo();
     // create event
-    createdEvent = $booleanEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $booleanEdit);
+    createdEvent = $stringEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $stringEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);
     assertEquals(createdEvent.getSource(), $target);

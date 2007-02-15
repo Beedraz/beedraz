@@ -675,7 +675,7 @@ public class TestAbstractEdit {
   }
 
   @Test
-  public void addListener3() throws EditStateException, IllegalEditException {
+  public void addValidityListener3() throws EditStateException, IllegalEditException {
     // the set of listeners is not effective
     $edit.perform();
     $edit.addValidityListener($listener1);

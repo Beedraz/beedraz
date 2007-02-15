@@ -907,4 +907,236 @@ public class TestSimpleEdit {
       assertTrue(false);
     }
   }
+
+  @Test
+  public void getOldValue() throws EditStateException, IllegalEditException {
+    // set value of target
+    Integer init = 3;
+    MySimpleEdit edit = new MySimpleEdit($target);
+    edit.setGoal(init);
+    edit.perform();
+    // check
+    assertEquals($simpleEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($simpleEdit.getGoal(), null);
+    assertEquals($simpleEdit.getInitial(), null);
+    assertEquals($simpleEdit.getOldValue(), null);
+    // set goal
+    Integer goal = 5;
+    $simpleEdit.setGoal(goal);
+    assertEquals($simpleEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), null);
+    assertEquals($simpleEdit.getOldValue(), goal);
+    // perform
+    $simpleEdit.perform();
+    assertEquals($simpleEdit.getState(), State.DONE);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getOldValue(), init);
+    // undo
+    $simpleEdit.undo();
+    assertEquals($simpleEdit.getState(), State.UNDONE);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getOldValue(), goal);
+    // redo
+    $simpleEdit.redo();
+    assertEquals($simpleEdit.getState(), State.DONE);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getOldValue(), init);
+    // kill
+    $simpleEdit.kill();
+    assertEquals($simpleEdit.getState(), State.DEAD);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getOldValue(), goal);
+  }
+
+  @Test
+  public void getNewValue() throws EditStateException, IllegalEditException {
+    // set value of target
+    Integer init = 3;
+    MySimpleEdit edit = new MySimpleEdit($target);
+    edit.setGoal(init);
+    edit.perform();
+    // check
+    assertEquals($simpleEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($simpleEdit.getGoal(), null);
+    assertEquals($simpleEdit.getInitial(), null);
+    assertEquals($simpleEdit.getNewValue(), null);
+    // set goal
+    Integer goal = 5;
+    $simpleEdit.setGoal(goal);
+    assertEquals($simpleEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), null);
+    assertEquals($simpleEdit.getNewValue(), null);
+    // perform
+    $simpleEdit.perform();
+    assertEquals($simpleEdit.getState(), State.DONE);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getNewValue(), goal);
+    // undo
+    $simpleEdit.undo();
+    assertEquals($simpleEdit.getState(), State.UNDONE);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getNewValue(), init);
+    // redo
+    $simpleEdit.redo();
+    assertEquals($simpleEdit.getState(), State.DONE);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getNewValue(), goal);
+    // kill
+    $simpleEdit.kill();
+    assertEquals($simpleEdit.getState(), State.DEAD);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($simpleEdit.getInitial(), init);
+    assertEquals($simpleEdit.getNewValue(), init);
+  }
+
+  @Test
+  public void isAcceptable() throws EditStateException {
+    assertFalse($simpleEdit.isAcceptable());
+    $simpleEdit.setGoal(0);
+    assertFalse($simpleEdit.isAcceptable());
+    $simpleEdit.setGoal(-1);
+    assertFalse($simpleEdit.isAcceptable());
+    $simpleEdit.setGoal(-2);
+    assertFalse($simpleEdit.isAcceptable());
+    $simpleEdit.setGoal(1);
+    assertTrue($simpleEdit.isAcceptable());
+    $simpleEdit.setGoal(2);
+    assertTrue($simpleEdit.isAcceptable());
+  }
+
+  @Test
+  public void storeInitialState() throws EditStateException, IllegalEditException {
+    assertNull($target.get());
+    assertNull($simpleEdit.getInitial());
+    $simpleEdit.storeInitialState();
+    assertNull($simpleEdit.getInitial());
+    // change value of target
+    Integer goal = 5;
+    $simpleEdit.setGoal(goal);
+    $simpleEdit.perform();
+    assertEquals($target.get(), goal);
+    assertNull($simpleEdit.getInitial());
+    $simpleEdit.storeInitialState();
+    assertEquals($simpleEdit.getInitial(), goal);
+  }
+
+  @Test
+  public void isChange() throws EditStateException, IllegalEditException {
+    assertNull($simpleEdit.getInitial());
+    assertNull($simpleEdit.getGoal());
+    assertFalse($simpleEdit.isChange());
+    // change goal
+    Integer goal = 2;
+    $simpleEdit.setGoal(goal);
+    assertNull($simpleEdit.getInitial());
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertTrue($simpleEdit.isChange());
+    // perform
+    $simpleEdit.perform();
+    assertNull($simpleEdit.getInitial());
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertTrue($simpleEdit.isChange());
+    // perform
+    Integer goal2 = goal;
+    MySimpleEdit edit2 = new MySimpleEdit($target);
+    edit2.setGoal(goal2);
+    edit2.perform();
+    assertEquals(edit2.getInitial(), goal);
+    assertEquals(edit2.getGoal(), goal2);
+    assertFalse(edit2.isChange());
+  }
+
+  @Test
+  public void isInitialStateCurrent() throws EditStateException, IllegalEditException {
+    assertNull($simpleEdit.getInitial());
+    assertNull($target.get());
+    assertTrue($simpleEdit.isInitialStateCurrent());
+    // perform
+    Integer goal = 2;
+    $simpleEdit.setGoal(goal);
+    $simpleEdit.perform();
+    assertNull($simpleEdit.getInitial());
+    assertEquals($target.get(), goal);
+    assertFalse($simpleEdit.isInitialStateCurrent());
+    // undo
+    $simpleEdit.undo();
+    assertNull($simpleEdit.getInitial());
+    assertNull($target.get());
+    assertTrue($simpleEdit.isInitialStateCurrent());
+  }
+
+  @Test
+  public void performance() throws EditStateException, IllegalEditException {
+    assertNull($simpleEdit.getGoal());
+    assertNull($target.get());
+    $simpleEdit.performance();
+    assertNull($target.get());
+    // change goal
+    Integer goal = 2;
+    $simpleEdit.setGoal(goal);
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertNull($target.get());
+    $simpleEdit.performance();
+    assertEquals($target.get(), goal);
+  }
+
+  @Test
+  public void isGoalStateCurrent() throws EditStateException, IllegalEditException {
+    assertNull($simpleEdit.getGoal());
+    assertNull($target.get());
+    assertTrue($simpleEdit.isGoalStateCurrent());
+    // perform
+    Integer goal = 2;
+    $simpleEdit.setGoal(goal);
+    $simpleEdit.perform();
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertEquals($target.get(), goal);
+    assertTrue($simpleEdit.isGoalStateCurrent());
+    // undo
+    $simpleEdit.undo();
+    assertEquals($simpleEdit.getGoal(), goal);
+    assertNull($target.get());
+    assertFalse($simpleEdit.isGoalStateCurrent());
+  }
+
+  @Test
+  public void unperformance() throws EditStateException, IllegalEditException {
+    assertNull($simpleEdit.getInitial());
+    assertNull($target.get());
+    $simpleEdit.unperformance();
+    assertNull($target.get());
+    // perform
+    Integer goal = 2;
+    $simpleEdit.setGoal(goal);
+    $simpleEdit.perform();
+    // change initial
+    MySimpleEdit edit = new MySimpleEdit($target);
+    assertNull(edit.getInitial());
+    assertEquals($target.get(), goal);
+    edit.unperformance();
+    assertNull($target.get());
+  }
+
+  @Test
+  public void fireEvent() {
+    // add listener to target
+    $target.addListener($listener3);
+    assertTrue($target.isListener($listener3));
+    assertNull($listener3.$event);
+    // fire
+    IntegerEvent event = new IntegerEvent($target, new Integer(0), new Integer(1), null);
+    $simpleEdit.fireEvent(event);
+    // check listener
+    assertNotNull($listener3.$event);
+    assertEquals($listener3.$event, event);
+  }
 }

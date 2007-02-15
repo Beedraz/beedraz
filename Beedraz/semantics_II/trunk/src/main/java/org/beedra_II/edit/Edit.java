@@ -65,7 +65,7 @@ public interface Edit<_Target_ extends EditableBeed<?>> {
   State getState();
 
   /**
-   * <p>Sets {@link #getState() state} to {#link State#DEATH}. Note that this
+   * <p>Sets {@link #getState() state} to {@link State#DEAD}. Note that this
    *   is a one way operation: dead edits cannot be resurrected. Calling
    *   {@link #perform()}, {@link #undo()} or {@link #redo()} on a a dead edit
    *   results in an exception being thrown.</p>

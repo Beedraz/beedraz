@@ -45,8 +45,6 @@ public abstract class SimpleEdit<_Type_,
   /**
    * @pre target != null;
    * @post getTarget() == target;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public SimpleEdit(_Target_ target) {
     super(target);

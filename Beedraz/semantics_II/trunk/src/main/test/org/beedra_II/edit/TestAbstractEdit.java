@@ -102,8 +102,14 @@ public class TestAbstractEdit {
 
     @Override
     protected void storeInitialState() {
-      // NOP
+      $initialStateStored = true;
     }
+
+    public boolean isInitialStateStored() {
+      return $initialStateStored;
+    }
+
+    private boolean $initialStateStored = false;
 
     @Override
     protected void unperformance() {
@@ -275,8 +281,10 @@ public class TestAbstractEdit {
       assertTrue($edit.isValidityListener($listener1));
       assertTrue($edit.isValidityListener($listener2));
       // perform
+      assertFalse($edit.isInitialStateStored());
       $edit.setChange(true);
       $edit.perform();
+      assertTrue($edit.isInitialStateStored());
       // listeners should be removed
       assertFalse($edit.isValidityListener($listener1));
       assertFalse($edit.isValidityListener($listener2));
@@ -303,8 +311,10 @@ public class TestAbstractEdit {
       assertTrue($edit.isValidityListener($listener1));
       assertTrue($edit.isValidityListener($listener2));
       // perform
+      assertFalse($edit.isInitialStateStored());
       $edit.setChange(false);
       $edit.perform();
+      assertTrue($edit.isInitialStateStored());
       // listeners are not removed
       assertTrue($edit.isValidityListener($listener1));
       assertTrue($edit.isValidityListener($listener2));

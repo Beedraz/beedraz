@@ -329,10 +329,12 @@ public abstract class AbstractEdit<_Target_ extends EditableBeed<_Event_>,
 
   // MUDO docs
   private void removeValidityListeners() {
-    for (ValidityListener listener : $validityListeners) {
-      listener.listenerRemoved(this);
+    if ($validityListeners != null) {
+      for (ValidityListener listener : $validityListeners) {
+        listener.listenerRemoved(this);
+      }
+      $validityListeners = null;
     }
-    $validityListeners = null;
   }
 
   /**

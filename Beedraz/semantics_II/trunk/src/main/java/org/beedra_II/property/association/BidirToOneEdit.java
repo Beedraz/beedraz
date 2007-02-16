@@ -42,8 +42,6 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   /**
    * @pre target != null;
    * @post getTarget() == target;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public BidirToOneEdit(EditableBidirToOneBeed<_One_, _Many_> target) {
     super(target);

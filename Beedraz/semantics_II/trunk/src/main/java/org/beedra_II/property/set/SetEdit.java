@@ -173,10 +173,14 @@ public class SetEdit<_Element_>
   }
 
   /**
+   * @mudo Ontbreekt er geen preconditie bij de performance methode in AbstractEdit
+   *       die zegt dat storeInitialState moet uitgevoerd zijn?
+   * @pre  getTarget().get().contains(getElementsToRemove());
    * @post
    */
   @Override
   protected void performance() {
+    assert getTarget().get().contains(getElementsToRemove());
     // order irrelevant because sets are disjunct
     getTarget().addElements($elementsToAdd);
     getTarget().removeElements($elementsToRemove);
@@ -192,10 +196,13 @@ public class SetEdit<_Element_>
   }
 
   /**
+   * @mudo Ontbreekt er geen preconditie bij de unperformace methode in AbstractEdit?
+   * @pre  getTarget().get().contains(getElementsToAdd());
    * @post
    */
   @Override
   protected void unperformance() {
+    assert getTarget().get().contains(getElementsToAdd());;
     // order irrelevant because sets are disjunct
     getTarget().removeElements($elementsToAdd);
     getTarget().addElements($elementsToRemove);
@@ -233,7 +240,7 @@ public class SetEdit<_Element_>
    * was removed.
    */
   public Set<_Element_> getRemovedElements() {
-    return (getState() == DONE) ? $elementsToAdd : $elementsToRemove;
+    return (getState() == DONE) ? $elementsToRemove : $elementsToAdd;
   }
 
   @Override

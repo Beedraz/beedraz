@@ -87,8 +87,8 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   protected final void notifyListeners() {
     super.notifyListeners();
     assert (getState() == DONE) || (getState() == UNDONE);
-    BidirToManyBeed<_One_, _Many_> oldToMany = (getState() == DONE) ? getInitial() : getGoal();
-    BidirToManyBeed<_One_, _Many_> newToMany = (getState() == DONE) ? getGoal() : getInitial();
+    BidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
+    BidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     if (oldToMany != null) {
       oldToMany.fireRemovedEvent(getTarget().getOwner(), this);
     }

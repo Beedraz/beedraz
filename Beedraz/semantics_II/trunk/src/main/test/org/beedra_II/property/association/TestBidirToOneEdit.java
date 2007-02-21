@@ -58,6 +58,14 @@ public class TestBidirToOneEdit {
     public void notifyListenersPublic() {
       super.notifyListeners();
     }
+
+    /**
+     * Made public for testing reasons
+     *
+     */
+    public void storeInitialStatePublic() {
+      super.storeInitialState();
+    }
   }
 
   public class MyEditableBidirToOneBeed extends EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> {
@@ -820,9 +828,42 @@ public class TestBidirToOneEdit {
     // check
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getEdit(), $bidirToOneEdit);
-    assertEquals($listener3.$event.getOldValue(), null);
+    assertEquals($listener3.$event.getOldValue(), goal);
     assertEquals($listener3.$event.getNewValue(), null);
     assertEquals($listener3.$event.getSource(), $target);
   }
 
+  public void performance() throws EditStateException {
+    // check: old = null, new = null
+    assertEquals($bidirToOneEdit.getInitial(), null);
+    assertEquals($bidirToOneEdit.getGoal(), null);
+    $bidirToOneEdit.performance();
+    assertEquals($target.get(), null);
+    // check: old = null, new = goal1
+    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
+      new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+    $bidirToOneEdit.setGoal(goal1);
+    assertEquals($bidirToOneEdit.getInitial(), null);
+    assertEquals($bidirToOneEdit.getGoal(), goal1);
+    assertTrue(goal1.get().isEmpty());
+    $bidirToOneEdit.performance();
+    assertEquals($target.get(), goal1);
+    assertTrue(goal1.get().size() == 1);
+    assertTrue(goal1.get().contains($target.getOwner()));
+    // check: old = goal1, new = goal2
+    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
+      new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+    $bidirToOneEdit.storeInitialStatePublic();
+    $bidirToOneEdit.setGoal(goal2);
+    assertEquals($bidirToOneEdit.getInitial(), goal1);
+    assertEquals($bidirToOneEdit.getGoal(), goal2);
+    assertTrue(goal1.get().size() == 1);
+    assertTrue(goal1.get().contains($target.getOwner()));
+    assertTrue(goal2.get().isEmpty());
+    $bidirToOneEdit.performance();
+    assertEquals($target.get(), goal1);
+    assertTrue(goal1.get().isEmpty());
+    assertTrue(goal2.get().size() == 1);
+    assertTrue(goal2.get().contains($target.getOwner()));
+  }
 }

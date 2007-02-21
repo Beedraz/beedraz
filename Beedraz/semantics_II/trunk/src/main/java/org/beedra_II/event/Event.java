@@ -77,7 +77,6 @@ public class Event<_Edit_ extends Edit<?>> {
    * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
    * @post getSource() == source;
    * @post getEdit() == edit;
-   * @post getEditState() == edit.getState();
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    */
   public Event(Beed<?> source, _Edit_ edit) {

@@ -24,13 +24,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 /**
  * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
+ * expressing the changed that occurred in {@link #getSource()}.
  * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
  *
- * @invar getSource() instanceof IntegerBeed;
- * @invar getEdit() instanceof IntegerEdit;
+ * @invar getSource() instanceof StringBeed;
+ * @invar getEdit() instanceof StringEdit;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -41,10 +41,11 @@ public final class StringEvent extends OldNewEvent<String, StringEdit> {
   /**
    * @pre source != null;
    * @pre edit != null;
-   * @post getSource() == sourcel
+   * @post getSource() == source;
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
+   * @post getEditState() == edit.getState();
    */
   public StringEvent(StringBeed source,
                      String oldValue,

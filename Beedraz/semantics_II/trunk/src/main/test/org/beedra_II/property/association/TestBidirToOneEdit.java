@@ -867,6 +867,7 @@ public class TestBidirToOneEdit {
     assertEquals($listener3.$event.getSource(), $target);
   }
 
+  @Test
   public void performance() throws EditStateException {
     // check: old = null, new = null
     assertEquals($bidirToOneEdit.getInitial(), null);
@@ -895,9 +896,49 @@ public class TestBidirToOneEdit {
     assertTrue(goal1.get().contains($target.getOwner()));
     assertTrue(goal2.get().isEmpty());
     $bidirToOneEdit.performance();
-    assertEquals($target.get(), goal1);
+    assertEquals($target.get(), goal2);
     assertTrue(goal1.get().isEmpty());
     assertTrue(goal2.get().size() == 1);
     assertTrue(goal2.get().contains($target.getOwner()));
+  }
+
+  @Test
+  public void unperformance() throws EditStateException, IllegalEditException {
+    // check: old = null, new = null
+    assertEquals($bidirToOneEdit.getInitial(), null);
+    assertEquals($bidirToOneEdit.getGoal(), null);
+    $bidirToOneEdit.unperformance();
+    assertEquals($target.get(), null);
+    // check: old = null, new = goal1
+    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
+      new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+    $bidirToOneEdit.setGoal(goal1);
+    $bidirToOneEdit.perform();
+    assertEquals($bidirToOneEdit.getInitial(), null);
+    assertEquals($bidirToOneEdit.getGoal(), goal1);
+    assertTrue(goal1.get().size() == 1);
+    assertTrue(goal1.get().contains($target.getOwner()));
+    $bidirToOneEdit.unperformance();
+    assertEquals($target.get(), null);
+    assertTrue(goal1.get().isEmpty());
+    // check: old = goal1, new = goal2
+    MyBidirToOneEdit bidirToOneEdit1 = new MyBidirToOneEdit($target);
+    bidirToOneEdit1.setGoal(goal1);
+    bidirToOneEdit1.perform();
+    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
+      new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+    MyBidirToOneEdit bidirToOneEdit2 = new MyBidirToOneEdit($target);
+    bidirToOneEdit2.setGoal(goal2);
+    bidirToOneEdit2.perform();
+    assertEquals(bidirToOneEdit2.getInitial(), goal1);
+    assertEquals(bidirToOneEdit2.getGoal(), goal2);
+    assertTrue(goal1.get().isEmpty());
+    assertTrue(goal2.get().size() == 1);
+    assertTrue(goal2.get().contains($target.getOwner()));
+    bidirToOneEdit2.unperformance();
+    assertEquals($target.get(), goal1);
+    assertTrue(goal1.get().size() == 1);
+    assertTrue(goal1.get().contains($target.getOwner()));
+    assertTrue(goal2.get().isEmpty());
   }
 }

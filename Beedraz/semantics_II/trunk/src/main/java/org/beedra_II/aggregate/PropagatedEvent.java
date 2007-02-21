@@ -33,8 +33,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getCause() != null;
- * @invar getSource() instanceof Beed<? extends DerivedEvent>;
- * @invar getEdit() != null;
+ * @invar getCause().getEdit() != null;
+ * @invar getSource() instanceof AggregateBeed;
  * @invar getEdit() == getCause().getEdit();
  */
 @CvsInfo(revision = "$Revision$",

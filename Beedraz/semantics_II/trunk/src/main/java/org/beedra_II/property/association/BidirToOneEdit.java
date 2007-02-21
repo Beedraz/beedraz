@@ -49,6 +49,10 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
 
   /**
    * @post Comparison.equalsWithNull(getGoal(), getTarget().get());
+   * @post getInitial() != null
+   *         ? !getInitial().get().contains(getTarget().getOwner());
+   * @post getGoal() != null
+   *         ? getGoal().get().contains(getTarget().getOwner());
    */
   @Override
   protected final void performance() {

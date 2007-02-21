@@ -32,7 +32,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar getSource() instanceof EditableBidirToOne<_One_, _Many_>;
+ * @invar getSource() instanceof EditableBidirToOneBeed<_One_, _Many_>;
  * @invar getEdit() instanceof BidirToOneEdit;
  */
 @CvsInfo(revision = "$Revision$",

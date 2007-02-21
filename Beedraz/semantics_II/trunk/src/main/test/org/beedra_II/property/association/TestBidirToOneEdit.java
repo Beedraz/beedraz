@@ -289,6 +289,28 @@ public class TestBidirToOneEdit {
       assertTrue($bidirToOneEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
+
+      // another perform
+      BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
+        new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+      MyBidirToOneEdit bidirToOneEdit2 = new MyBidirToOneEdit($target);
+      bidirToOneEdit2.setGoal(goal1);
+      bidirToOneEdit2.perform();
+      $listener3.reset();
+      // repeat this perform, this is no change
+      MyBidirToOneEdit bidirToOneEdit3 = new MyBidirToOneEdit($target);
+      // add validity listeners to edit
+      bidirToOneEdit3.addValidityListener($listener1);
+      bidirToOneEdit3.addValidityListener($listener2);
+      assertTrue(bidirToOneEdit3.isValidityListener($listener1));
+      assertTrue(bidirToOneEdit3.isValidityListener($listener2));
+      bidirToOneEdit3.setGoal(goal1);
+      bidirToOneEdit3.perform();
+      // listeners are not removed
+      assertTrue(bidirToOneEdit3.isValidityListener($listener1));
+      assertTrue(bidirToOneEdit3.isValidityListener($listener2));
+      // listeners of the beed are not notified
+      assertNull($listener3.$event);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -383,11 +405,23 @@ public class TestBidirToOneEdit {
   public void perform9() {
     try {
       // perform
-      BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+      BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
         new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
-      $bidirToOneEdit.setGoal(goal);
+      $bidirToOneEdit.setGoal(goal1);
       $bidirToOneEdit.perform();
-      assertEquals($target.get(), goal);
+      assertEquals($target.get(), goal1);
+      assertTrue(goal1.get().size() == 1);
+      assertTrue(goal1.get().contains($target.getOwner()));
+      // another perform
+      BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
+        new BidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+      MyBidirToOneEdit bidirToOneEdit2 = new MyBidirToOneEdit($target);
+      bidirToOneEdit2.setGoal(goal2);
+      bidirToOneEdit2.perform();
+      assertEquals($target.get(), goal2);
+      assertTrue(goal2.get().size() == 1);
+      assertTrue(goal2.get().contains($target.getOwner()));
+      assertTrue(goal1.get().isEmpty());
     }
     catch (EditStateException e) {
       // should not be reached

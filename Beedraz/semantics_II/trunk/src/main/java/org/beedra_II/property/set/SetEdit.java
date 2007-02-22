@@ -92,7 +92,7 @@ public class SetEdit<_Element_>
     extends AbstractEdit<EditableSetBeed<_Element_>, SetEvent<_Element_, SetEdit<_Element_>>> {
 
   /**
-   * @pre target != null;
+   * @pre  target != null;
    * @post getTarget() == target;
    */
   public SetEdit(EditableSetBeed<_Element_> target) {
@@ -213,6 +213,12 @@ public class SetEdit<_Element_>
     getTarget().fireEvent(event);
   }
 
+  /**
+   * @post  result.getSource() == getTarget();
+   * @post  result.getAddedElements().equals(getAddedElements());
+   * @post  result.getRemovedElements().equals(getRemovedElements());
+   * @post  result.getEdit() == this;
+   */
   @Override
   protected SetEvent<_Element_, SetEdit<_Element_>> createEvent() {
     return new SetEvent<_Element_, SetEdit<_Element_>>(getTarget(),

@@ -32,13 +32,19 @@ public final class BooleanEdit
     extends SimpleEdit<Boolean, EditableBooleanBeed, BooleanEvent> {
 
   /**
-   * @pre target != null;
+   * @pre  target != null;
    * @post getTarget() == target;
    */
   public BooleanEdit(EditableBooleanBeed target) { // MUDO tyoe
     super(target);
   }
 
+  /**
+   * @post  result.getSource() == getTarget();
+   * @post  result.getOldValue() == getOldValue();
+   * @post  result.getNewValue() == getNewValue();
+   * @post  result.getEdit() == this;
+   */
   @Override
   protected BooleanEvent createEvent() {
     return new BooleanEvent(getTarget(), getOldValue(), getNewValue(), this);

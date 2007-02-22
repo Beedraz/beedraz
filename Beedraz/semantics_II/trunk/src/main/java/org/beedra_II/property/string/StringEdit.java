@@ -32,13 +32,19 @@ public final class StringEdit
     extends SimpleEdit<String, EditableStringBeed, StringEvent> {
 
   /**
-   * @pre target != null;
+   * @pre  target != null;
    * @post getTarget() == target;
    */
   public StringEdit(EditableStringBeed target) { // MUDO tyoe
     super(target);
   }
 
+  /**
+   * @post  result.getSource() == getTarget();
+   * @post  result.getOldValue() == getOldValue();
+   * @post  result.getNewValue() == getNewValue();
+   * @post  result.getEdit() == this;
+   */
   @Override
   protected StringEvent createEvent() {
     return new StringEvent(getTarget(), getOldValue(), getNewValue(), this);

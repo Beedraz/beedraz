@@ -32,13 +32,19 @@ public final class IntegerEdit
     extends SimpleEdit<Integer, EditableIntegerBeed, IntegerEvent> {
 
   /**
-   * @pre target != null;
+   * @pre  target != null;
    * @post getTarget() == target;
    */
   public IntegerEdit(EditableIntegerBeed target) {
     super(target);
   }
 
+  /**
+   * @post  result.getSource() == getTarget();
+   * @post  result.getOldValue() == getOldValue();
+   * @post  result.getNewValue() == getNewValue();
+   * @post  result.getEdit() == this;
+   */
   @Override
   protected IntegerEvent createEvent() {
     return new IntegerEvent(getTarget(), getOldValue(), getNewValue(), this);

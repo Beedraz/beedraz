@@ -40,7 +40,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     extends SimpleEdit<BidirToManyBeed<_One_, _Many_>, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
-   * @pre target != null;
+   * @pre  target != null;
    * @post getTarget() == target;
    */
   public BidirToOneEdit(EditableBidirToOneBeed<_One_, _Many_> target) {
@@ -97,6 +97,12 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     }
   }
 
+  /**
+   * @post  result.getSource() == getTarget();
+   * @post  result.getOldValue() == getOldValue();
+   * @post  result.getNewValue() == getNewValue();
+   * @post  result.getEdit() == this;
+   */
   @Override
   protected BidirToOneEvent<_One_, _Many_> createEvent() {
     return new BidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);

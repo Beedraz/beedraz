@@ -227,9 +227,7 @@ public class DoubleSumBeed
         newValue = null;
         break;
       }
-      else { // termValue != null
-        newValue += termValue * getNbOccurrences(term); // autoboxing
-      }
+      newValue += termValue * getNbOccurrences(term); // autoboxing
     }
     $value = newValue;
   }

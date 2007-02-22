@@ -48,12 +48,12 @@ public class IntegerSumBeed
     implements IntegerBeed {
 
   /**
-   * @pre   source != null;
+   * @pre   owner != null;
    * @post  get() == 0;
    * @post  (forall IntegerBeed ib; ; getNbOccurrences(ib) == 0};
    */
-  public IntegerSumBeed(AggregateBeed source) {
-    super(source);
+  public IntegerSumBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /**

@@ -33,7 +33,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getSource() instanceof BooleanBeed;
- * @invar getEdit() instanceof BooleanEdit;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

@@ -30,7 +30,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getSource() instanceof StringBeed;
- * @invar getEdit() instanceof StringEdit;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.beedra_II.edit.AbstractSimpleEdit;
 import org.beedra_II.edit.EditStateException;
-import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -210,8 +209,8 @@ public class SetEdit<_Element_>
   }
 
   @Override
-  protected final void fireEvent(Event<?> event) {
-    getTarget().fireEvent((SetEvent<_Element_, SetEdit<_Element_>>)event);
+  protected final void fireEvent(SetEvent<_Element_, SetEdit<_Element_>> event) {
+    getTarget().fireEvent(event);
   }
 
   /**

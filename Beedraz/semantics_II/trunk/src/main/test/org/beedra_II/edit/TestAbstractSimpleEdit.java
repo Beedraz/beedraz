@@ -27,7 +27,6 @@ import static org.junit.Assert.fail;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
@@ -59,8 +58,8 @@ public class TestAbstractSimpleEdit {
     private IntegerEvent $createdEvent;
 
     @Override
-    protected void fireEvent(Event<?> event) {
-      $firedEvent = (IntegerEvent)event;
+    protected void fireEvent(IntegerEvent event) {
+      $firedEvent = event;
     }
 
     public IntegerEvent $firedEvent;

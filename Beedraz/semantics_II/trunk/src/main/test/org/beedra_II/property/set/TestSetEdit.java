@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -109,7 +110,24 @@ public class TestSetEdit {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $beanBeed = new MyBeanBeed();
+    $target = new EditableSetBeed<Integer>($beanBeed) {
+      @Override
+      public boolean isAcceptable(Set<Integer> elementsToAdd, Set<Integer> elementsToRemove) {
+        // all integers in the set of added elements are positive
+        for (Integer i : elementsToAdd) {
+          if (i == null || i <= 0) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+    };
+    $setEdit = new MySetEdit($target);
+    $listener1 = new StubValidityListener();
+    $listener2 = new StubValidityListener();
+    $listener3 = new StubSetListener();
   }
 
   @After
@@ -117,24 +135,12 @@ public class TestSetEdit {
     // NOP
   }
 
-  BeanBeed $beanBeed = new MyBeanBeed();
-  EditableSetBeed<Integer> $target = new EditableSetBeed<Integer>($beanBeed) {
-    @Override
-    public boolean isAcceptable(Set<Integer> elementsToAdd, Set<Integer> elementsToRemove) {
-      // all integers in the set of added elements are positive
-      for (Integer i : elementsToAdd) {
-        if (i == null || i <= 0) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-  };
-  private MySetEdit $setEdit = new MySetEdit($target);
-  StubValidityListener $listener1 = new StubValidityListener();
-  StubValidityListener $listener2 = new StubValidityListener();
-  StubSetListener $listener3 = new StubSetListener();
+  private BeanBeed $beanBeed;
+  private EditableSetBeed<Integer> $target;
+  private MySetEdit $setEdit;
+  private StubValidityListener $listener1;
+  private StubValidityListener $listener2;
+  private StubSetListener $listener3;
 
   @Test
   public void constructor() {
@@ -262,7 +268,7 @@ public class TestSetEdit {
   }
 
   @Test
-  // correct begin-state, edit is no change, so validity listeners are not removed, listeners of the beed are not notified
+  // correct begin-state, edit is no change, so validity listeners are removed, listeners of the beed are not notified
   public void perform6() {
     try {
       // add listener to beed
@@ -280,9 +286,9 @@ public class TestSetEdit {
       $setEdit.perform();
       assertTrue($setEdit.getElementsToAdd().isEmpty());
       assertTrue($setEdit.getElementsToRemove().isEmpty());
-      // listeners are not removed
-      assertTrue($setEdit.isValidityListener($listener1));
-      assertTrue($setEdit.isValidityListener($listener2));
+      // listeners are removed
+      assertFalse($setEdit.isValidityListener($listener1));
+      assertFalse($setEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
 //    assertTrue("When the edit causes no change, the validity listeners are " +
@@ -757,7 +763,13 @@ public class TestSetEdit {
     assertTrue($listener2.isEmpty());
     // change validity
     $setEdit.addElementToAdd(-1);
-    $setEdit.checkValidityPublic();
+    try {
+      $setEdit.checkValidityPublic();
+      fail();
+    }
+    catch (IllegalEditException ieExc) {
+      // NOP
+    }
     // validity has changed, so validity listeners are notified
     assertFalse($setEdit.isValid());
     assertTrue($setEdit.isValidityListener($listener1));
@@ -782,12 +794,13 @@ public class TestSetEdit {
   }
 
   @Test
-  public void notifyListeners() {
+  public void notifyListeners() throws EditStateException, IllegalEditException {
     // add listener to beed
     $target.addListener($listener3);
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // notify
+    $setEdit.perform();
     $setEdit.notifyListenersPublic();
     // check
     assertNotNull($listener3.$event);
@@ -1389,21 +1402,27 @@ public class TestSetEdit {
 
   @Test
   public void performance() throws EditStateException, IllegalEditException {
-    assertTrue($setEdit.getElementsToAdd().isEmpty());
-    assertTrue($setEdit.getElementsToRemove().isEmpty());
-    assertTrue($target.get().isEmpty());
-    $setEdit.performance();
-    assertTrue($target.get().isEmpty());
-    // change elements to add and remove
     Integer toAdd = 2;
     Integer toRemove = 3;
+    HashSet<Integer> initialElements = new HashSet<Integer>();
+    initialElements.add(toRemove);
+    $target.addElements(initialElements);
+    assertTrue($setEdit.getElementsToAdd().isEmpty());
+    assertTrue($setEdit.getElementsToRemove().isEmpty());
+    assertEquals(1, $target.get().size());
+    assertTrue($target.get().contains(toRemove));
+    $setEdit.performance();
+    assertEquals(1, $target.get().size());
+    assertTrue($target.get().contains(toRemove));
+    // change elements to add and remove
     $setEdit.addElementToAdd(toAdd);
     $setEdit.addElementToRemove(toRemove);
     assertTrue($setEdit.getElementsToAdd().size() == 1);
     assertTrue($setEdit.getElementsToAdd().contains(toAdd));
     assertTrue($setEdit.getElementsToRemove().size() == 1);
     assertTrue($setEdit.getElementsToRemove().contains(toRemove));
-    assertTrue($target.get().isEmpty());
+    assertEquals(1, $target.get().size());
+    assertTrue($target.get().contains(toRemove));
     $setEdit.performance();
     assertTrue($target.get().size() == 1);
     assertTrue($target.get().contains(toAdd));
@@ -1498,11 +1517,12 @@ public class TestSetEdit {
 
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
-    SetEvent<Integer> createdEvent = $setEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $setEdit);
-    assertTrue(createdEvent.getAddedElements().isEmpty());
-    assertTrue(createdEvent.getRemovedElements().isEmpty());
-    assertEquals(createdEvent.getSource(), $target);
+    assertEquals(State.NOT_YET_PERFORMED, $setEdit.getState());
+//    SetEvent<Integer> createdEvent = $setEdit.createEvent();
+//    assertEquals(createdEvent.getEdit(), $setEdit);
+//    assertTrue(createdEvent.getAddedElements().isEmpty());
+//    assertTrue(createdEvent.getRemovedElements().isEmpty());
+//    assertEquals(createdEvent.getSource(), $target);
     // perform
     Integer toAdd = 1;
     Integer toRemove = 2;
@@ -1510,7 +1530,7 @@ public class TestSetEdit {
     $setEdit.addElementToRemove(toRemove);
     $setEdit.perform();
     // create event
-    createdEvent = $setEdit.createEvent();
+    SetEvent<Integer> createdEvent = $setEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $setEdit);
     assertTrue(createdEvent.getAddedElements().size() == 1);
     assertTrue(createdEvent.getAddedElements().contains(toAdd));

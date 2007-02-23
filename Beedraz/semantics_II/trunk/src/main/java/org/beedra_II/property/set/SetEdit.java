@@ -111,6 +111,7 @@ public class SetEdit<_Element_>
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $elementsToAdd.add(element);
+    recalculateValidity();
   }
 
   public final void removeElementToAdd(_Element_ element) throws EditStateException {
@@ -118,6 +119,7 @@ public class SetEdit<_Element_>
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $elementsToAdd.remove(element);
+    recalculateValidity();
   }
 
   private final Set<_Element_> $elementsToAdd = new HashSet<_Element_>();
@@ -134,6 +136,7 @@ public class SetEdit<_Element_>
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $elementsToRemove.add(element);
+    recalculateValidity();
   }
 
   public final void removeElementToRemove(_Element_ element) throws EditStateException {
@@ -141,6 +144,7 @@ public class SetEdit<_Element_>
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $elementsToRemove.remove(element);
+    recalculateValidity();
   }
 
   private final Set<_Element_> $elementsToRemove = new HashSet<_Element_>();

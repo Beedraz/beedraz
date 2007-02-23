@@ -19,6 +19,7 @@ package org.beedra_II.property.integer;
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -37,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class IntegerEvent extends OldNewEvent<Integer, IntegerEdit> {
+public final class IntegerEvent extends OldNewEvent<Integer> {
 
   /**
    * @pre source != null;
@@ -50,7 +51,7 @@ public final class IntegerEvent extends OldNewEvent<Integer, IntegerEdit> {
    * @post getEditState() == edit.getState();
    * @post oldValue == null || newValue == null ? getDelta() == null : getDelta() = newValue - oldValue;
    */
-  public IntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, IntegerEdit edit) {
+  public IntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
     super(source, oldValue, newValue, edit);
     $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
   }

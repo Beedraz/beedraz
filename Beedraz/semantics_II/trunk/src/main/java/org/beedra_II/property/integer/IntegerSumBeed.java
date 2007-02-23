@@ -85,7 +85,9 @@ public class IntegerSumBeed
         recalculate();
       }
       // else: NOP
-      fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
+      if (! Comparison.equalsWithNull(oldValue, $value)) {
+        fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
+      }
     }
 
     public int getNbOccurrences() {

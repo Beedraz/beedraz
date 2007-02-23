@@ -20,6 +20,7 @@ package org.beedra_II.property.association;
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -40,7 +41,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public final class BidirToOneEvent<_One_ extends BeanBeed,
                                    _Many_ extends BeanBeed>
-    extends OldNewEvent<BidirToManyBeed<_One_, _Many_>, BidirToOneEdit<_One_, _Many_>> {
+    extends OldNewEvent<BidirToManyBeed<_One_, _Many_>> {
 
   /**
    * @pre source != null;
@@ -54,7 +55,7 @@ public final class BidirToOneEvent<_One_ extends BeanBeed,
   public BidirToOneEvent(EditableBidirToOneBeed<_One_, _Many_> source,
                          BidirToManyBeed<_One_, _Many_> oldValue,
                          BidirToManyBeed<_One_, _Many_> newValue,
-                         BidirToOneEdit<_One_, _Many_> edit) {
+                         Edit<?> edit) {
     super(source, oldValue, newValue, edit);
   }
 

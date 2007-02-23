@@ -70,7 +70,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class Event<_Edit_ extends Edit<?>> {
+public abstract class Event {
 
   /**
    * @pre source != null;
@@ -79,7 +79,7 @@ public class Event<_Edit_ extends Edit<?>> {
    * @post getEdit() == edit;
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    */
-  public Event(Beed<?> source, _Edit_ edit) {
+  protected Event(Beed<?> source, Edit<?> edit) {
     assert source != null;
     assert (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE) : true;
     $source = source;
@@ -102,11 +102,11 @@ public class Event<_Edit_ extends Edit<?>> {
   /**
    * @basic
    */
-  public final _Edit_ getEdit() {
+  public final Edit<?> getEdit() {
     return $edit;
   }
 
-  private final _Edit_ $edit;
+  private final Edit<?> $edit;
 
   /**
    * @basic

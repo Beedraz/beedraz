@@ -93,9 +93,9 @@ public class TestSetEdit {
 
   }
 
-  public class StubSetListener implements Listener<SetEvent<Integer, SetEdit<Integer>>> {
+  public class StubSetListener implements Listener<SetEvent<Integer>> {
 
-    public void beedChanged(SetEvent<Integer, SetEdit<Integer>> event) {
+    public void beedChanged(SetEvent<Integer> event) {
       $event = event;
     }
 
@@ -103,7 +103,7 @@ public class TestSetEdit {
       $event = null;
     }
 
-    public SetEvent<Integer, SetEdit<Integer>> $event;
+    public SetEvent<Integer> $event;
 
   }
 
@@ -1488,8 +1488,8 @@ public class TestSetEdit {
     addedElements.add(1);
     Set<Integer> removedElements = new HashSet<Integer>();
     removedElements.add(3);
-    SetEvent<Integer, SetEdit<Integer>> event =
-      new SetEvent<Integer, SetEdit<Integer>>($target, addedElements, removedElements, null);
+    SetEvent<Integer> event =
+      new SetEvent<Integer>($target, addedElements, removedElements, null);
     $setEdit.fireEvent(event);
     // check listener
     assertNotNull($listener3.$event);
@@ -1498,7 +1498,7 @@ public class TestSetEdit {
 
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
-    SetEvent<Integer, SetEdit<Integer>> createdEvent = $setEdit.createEvent();
+    SetEvent<Integer> createdEvent = $setEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $setEdit);
     assertTrue(createdEvent.getAddedElements().isEmpty());
     assertTrue(createdEvent.getRemovedElements().isEmpty());

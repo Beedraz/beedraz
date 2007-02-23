@@ -35,7 +35,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class EditableSimplePropertyBeed<_Type_,
-                                                 _Event_ extends Event<?>>
+                                                 _Event_ extends Event>
     extends AbstractPropertyBeed<_Event_>
     implements SimplePropertyBeed<_Type_, _Event_>,
                EditableBeed<_Event_> {

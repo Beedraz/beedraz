@@ -26,7 +26,6 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.set.SetEdit;
 import org.beedra_II.property.set.SetEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -71,9 +70,9 @@ public class TestEditableBidirToOneBeed {
 
   }
 
-  public class StubEditableBidirToOneBeedListener implements Listener<SetEvent<Integer, SetEdit<Integer>>> {
+  public class StubEditableBidirToOneBeedListener implements Listener<SetEvent<Integer>> {
 
-    public void beedChanged(SetEvent<Integer, SetEdit<Integer>> event) {
+    public void beedChanged(SetEvent<Integer> event) {
       $event = event;
     }
 
@@ -81,7 +80,7 @@ public class TestEditableBidirToOneBeed {
       $event = null;
     }
 
-    public SetEvent<Integer, SetEdit<Integer>> $event;
+    public SetEvent<Integer> $event;
 
   }
 

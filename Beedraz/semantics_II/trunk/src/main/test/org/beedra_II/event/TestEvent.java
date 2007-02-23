@@ -22,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.edit.Edit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.integer.EditableIntegerBeed;
@@ -52,7 +51,7 @@ public class TestEvent {
   EditableIntegerBeed $target = new EditableIntegerBeed($owner);
   IntegerEdit $edit = new IntegerEdit($target);
   Beed<?> $source = new EditableStringBeed($owner);
-  Event<Edit<?>> $event;
+  Event $event;
 
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
@@ -61,12 +60,16 @@ public class TestEvent {
     $edit.setGoal(goal);
     $edit.perform();
     // create a new event
-    $event = new Event<Edit<?>>($source, $edit);
+    $event = new Event($source, $edit) {
+      // NOP
+    };
     assertEquals($event.getSource(), $source);
     assertEquals($event.getEdit(), $edit);
     assertEquals($event.getEditState(), $edit.getState());
     // create a new event with an edit that is null
-    $event = new Event<Edit<?>>($source, null);
+    $event = new Event($source, null) {
+      // NOP
+    };
     assertEquals($event.getSource(), $source);
     assertEquals($event.getEdit(), null);
     assertEquals($event.getEditState(), null);

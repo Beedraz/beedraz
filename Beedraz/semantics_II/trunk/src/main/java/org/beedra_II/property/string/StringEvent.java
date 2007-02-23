@@ -35,7 +35,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class StringEvent extends OldNewEvent<String, StringEdit> {
+public final class StringEvent extends OldNewEvent<String> {
 
   /**
    * @pre source != null;

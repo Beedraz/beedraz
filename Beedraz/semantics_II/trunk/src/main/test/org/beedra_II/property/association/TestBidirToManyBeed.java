@@ -45,7 +45,7 @@ public class TestBidirToManyBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>> event) {
+    public void fire(SetEvent<_Many_> event) {
       fireChangeEvent(event);
     }
   }
@@ -72,9 +72,9 @@ public class TestBidirToManyBeed {
 
   }
 
-  public class StubSetEventListener implements Listener<SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>>> {
+  public class StubSetEventListener implements Listener<SetEvent<ManyBeanBeed>> {
 
-    public void beedChanged(SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> event) {
+    public void beedChanged(SetEvent<ManyBeanBeed> event) {
       $event = event;
     }
 
@@ -82,7 +82,7 @@ public class TestBidirToManyBeed {
       $event = null;
     }
 
-    public SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> $event;
+    public SetEvent<ManyBeanBeed> $event;
 
   }
 
@@ -97,8 +97,7 @@ public class TestBidirToManyBeed {
     $bidirToOneEdit =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
     $bidirToOneEdit.perform();
-    $setEvent =
-      new SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed,ManyBeanBeed>>($bidirToManyBeed, null, null, $bidirToOneEdit);
+    $setEvent = new SetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, $bidirToOneEdit);
     $listener1 = new PropagatedEventListener();
     $listener2 = new PropagatedEventListener();
     $listener3 = new StubSetEventListener();
@@ -115,7 +114,7 @@ public class TestBidirToManyBeed {
   private OneBeanBeed $one = new OneBeanBeed();
   private MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed;
   private BidirToOneEdit<OneBeanBeed, ManyBeanBeed> $bidirToOneEdit;
-  private SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> $setEvent;
+  private SetEvent<ManyBeanBeed> $setEvent;
   private PropagatedEventListener $listener1;
   private PropagatedEventListener $listener2;
   private StubSetEventListener $listener3;
@@ -272,7 +271,7 @@ public class TestBidirToManyBeed {
 
   @Test
   public void createInitialEvent2() {
-    SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> initialEvent =
+    SetEvent<ManyBeanBeed> initialEvent =
       $bidirToManyBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $bidirToManyBeed);
     assertEquals(initialEvent.getAddedElements(), $bidirToManyBeed.get());

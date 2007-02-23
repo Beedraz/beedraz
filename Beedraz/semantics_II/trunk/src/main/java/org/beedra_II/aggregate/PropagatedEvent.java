@@ -19,7 +19,6 @@ package org.beedra_II.aggregate;
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
-import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -42,7 +41,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class PropagatedEvent
-    extends Event<Edit<?>> {
+    extends Event {
 
   /**
    * @pre source != null;
@@ -54,7 +53,7 @@ public class PropagatedEvent
    * @post getEdit() != cause.getEdit();
    * @post getEditState() == cause.getEdit().getState();
    */
-  public PropagatedEvent(AggregateBeed source, Event<?> cause) {
+  public PropagatedEvent(AggregateBeed source, Event cause) {
     super(source, cause.getEdit());
     $cause = cause;
   }
@@ -62,14 +61,14 @@ public class PropagatedEvent
   /**
    * @basic
    */
-  public final Event<?> getCause() {
+  public final Event getCause() {
     return $cause;
   }
 
   /**
    * @invar $cause != null;
    */
-  private final Event<?> $cause;
+  private final Event $cause;
 
   @Override
   protected String otherToStringInformation() {

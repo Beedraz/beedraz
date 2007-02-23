@@ -34,7 +34,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractSimpleEdit<_Target_ extends EditableBeed<_Event_>,
-                                         _Event_ extends Event<?>>
+                                         _Event_ extends Event>
     extends AbstractEdit<_Target_, _Event_> {
 
 

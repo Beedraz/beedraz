@@ -40,8 +40,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class BidirToManyBeed<_One_ extends BeanBeed,
                              _Many_ extends BeanBeed>
-    extends AbstractPropertyBeed<SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>>
-    implements SetBeed<_Many_, BidirToOneEdit<_One_, _Many_>> {
+    extends AbstractPropertyBeed<SetEvent<_Many_>>
+    implements SetBeed<_Many_> {
 
   public BidirToManyBeed(_One_ bean) {
     super(bean);
@@ -65,7 +65,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   void fireAddedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
     Set<_Many_> added = new HashSet<_Many_>();
     added.add(many);
-    fireChangeEvent(new SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>(this, added, null, edit));
+    fireChangeEvent(new SetEvent<_Many_>(this, added, null, edit));
   }
 
   void remove(_Many_ many) {
@@ -75,14 +75,14 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   void fireRemovedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
     Set<_Many_> removed = new HashSet<_Many_>();
     removed.add(many);
-    fireChangeEvent(new SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>(this, null, removed, edit));
+    fireChangeEvent(new SetEvent<_Many_>(this, null, removed, edit));
   }
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
 
   @Override
-  protected final SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>> createInitialEvent() {
-    return new SetEvent<_Many_, BidirToOneEdit<_One_, _Many_>>(this, $many, null, null); // event constructor copies set
+  protected final SetEvent<_Many_> createInitialEvent() {
+    return new SetEvent<_Many_>(this, $many, null, null); // event constructor copies set
   }
 
   @Override

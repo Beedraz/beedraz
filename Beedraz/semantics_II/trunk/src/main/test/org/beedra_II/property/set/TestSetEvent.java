@@ -51,7 +51,7 @@ public class TestSetEvent {
   public void constructor() throws EditStateException, IllegalEditException {
     // source
     AggregateBeed owner = new MyBeanBeed();
-    SetBeed<Integer, SetEdit<Integer>> source = new EditableSetBeed<Integer>(owner);
+    SetBeed<Integer> source = new EditableSetBeed<Integer>(owner);
     // old and new value
     Set<Integer> addedElements = null;
     Set<Integer> removedElements = null;
@@ -60,8 +60,8 @@ public class TestSetEvent {
     SetEdit<Integer> edit = new SetEdit<Integer>(target);
     edit.perform();
     // test constructor
-    SetEvent<Integer, SetEdit<Integer>> setEvent =
-      new SetEvent<Integer, SetEdit<Integer>>(source, addedElements, removedElements, edit);
+    SetEvent<Integer> setEvent =
+      new SetEvent<Integer>(source, addedElements, removedElements, edit);
     assertEquals(setEvent.getSource(), source);
     assertTrue(setEvent.getAddedElements().isEmpty());
     assertTrue(setEvent.getRemovedElements().isEmpty());
@@ -77,7 +77,7 @@ public class TestSetEvent {
     removedElements.add(removed1);
     removedElements.add(removed2);
     // test constructor
-    setEvent = new SetEvent<Integer, SetEdit<Integer>>(source, addedElements, removedElements, edit);
+    setEvent = new SetEvent<Integer>(source, addedElements, removedElements, edit);
     assertEquals(setEvent.getSource(), source);
     assertTrue(setEvent.getAddedElements().size() == 1);
     assertTrue(setEvent.getAddedElements().contains(added));

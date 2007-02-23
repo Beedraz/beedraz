@@ -37,8 +37,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class OldNewEvent<_Type_, _Edit_ extends Edit<?>>
-    extends Event<_Edit_> {
+public class OldNewEvent<_Type_>
+    extends Event {
 
   /**
    * @pre source != null;
@@ -50,10 +50,10 @@ public class OldNewEvent<_Type_, _Edit_ extends Edit<?>>
    * @post getEdit() == edit;
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    */
-  public OldNewEvent(SimplePropertyBeed<_Type_, ? extends OldNewEvent<_Type_, _Edit_>> source,
+  public OldNewEvent(SimplePropertyBeed<_Type_, ? extends OldNewEvent<_Type_>> source,
                      _Type_ oldValue,
                      _Type_ newValue,
-                     _Edit_ edit) {
+                     Edit<?> edit) {
     super(source, edit);
     assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
     $oldValue = oldValue;

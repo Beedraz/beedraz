@@ -33,7 +33,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPropertyBeed<_Event_ extends Event<?>>
+public abstract class AbstractPropertyBeed<_Event_ extends Event>
     extends AbstractBeed<_Event_>
     implements PropertyBeed<_Event_> {
 

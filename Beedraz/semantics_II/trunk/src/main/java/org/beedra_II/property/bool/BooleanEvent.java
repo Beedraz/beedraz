@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -38,7 +39,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class BooleanEvent extends OldNewEvent<Boolean, BooleanEdit> {
+public final class BooleanEvent extends OldNewEvent<Boolean> {
 
   /**
    * @pre source != null;
@@ -52,7 +53,7 @@ public final class BooleanEvent extends OldNewEvent<Boolean, BooleanEdit> {
   public BooleanEvent(BooleanBeed source,
                      Boolean oldValue,
                      Boolean newValue,
-                     BooleanEdit edit) {
+                     Edit<?> edit) {
     super(source, oldValue, newValue, edit);
   }
 

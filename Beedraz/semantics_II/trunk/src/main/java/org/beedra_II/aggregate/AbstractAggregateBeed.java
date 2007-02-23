@@ -36,9 +36,9 @@ public abstract class AbstractAggregateBeed
     extends AbstractBeed<PropagatedEvent>
     implements AggregateBeed {
 
-  private final Listener<Event<?>> $propagationListener = new Listener<Event<?>>() {
+  private final Listener<Event> $propagationListener = new Listener<Event>() {
 
-    public void beedChanged(Event<?> event) {
+    public void beedChanged(Event event) {
       fireChangeEvent(new PropagatedEvent(AbstractAggregateBeed.this, event));
     }
 

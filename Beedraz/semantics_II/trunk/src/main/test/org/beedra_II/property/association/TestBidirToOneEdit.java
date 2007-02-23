@@ -130,9 +130,9 @@ public class TestBidirToOneEdit {
 
   }
 
-  public class StubBidirToManyListener implements Listener<SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>>> {
+  public class StubBidirToManyListener implements Listener<SetEvent<ManyBeanBeed>> {
 
-    public void beedChanged(SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> event) {
+    public void beedChanged(SetEvent<ManyBeanBeed> event) {
       $event = event;
     }
 
@@ -140,7 +140,7 @@ public class TestBidirToOneEdit {
       $event = null;
     }
 
-    public SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> $event;
+    public SetEvent<ManyBeanBeed> $event;
 
   }
 

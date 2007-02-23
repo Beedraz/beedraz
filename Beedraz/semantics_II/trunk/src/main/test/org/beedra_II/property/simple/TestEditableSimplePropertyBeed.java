@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.junit.After;
@@ -48,7 +47,7 @@ public class TestEditableSimplePropertyBeed {
     public StubEditableSimplePropertyBeedEvent $initialEvent = new StubEditableSimplePropertyBeedEvent(this);
   }
 
-  public class StubEditableSimplePropertyBeedEvent extends Event<Edit<?>> {
+  public class StubEditableSimplePropertyBeedEvent extends Event {
 
     public StubEditableSimplePropertyBeedEvent(StubEditableSimplePropertyBeed source) {
       super(source, null);

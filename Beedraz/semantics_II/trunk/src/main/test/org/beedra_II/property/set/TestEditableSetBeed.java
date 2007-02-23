@@ -51,9 +51,9 @@ public class TestEditableSetBeed {
 
   }
 
-  public class StubEditableSetBeedListener implements Listener<SetEvent<Integer, SetEdit<Integer>>> {
+  public class StubEditableSetBeedListener implements Listener<SetEvent<Integer>> {
 
-    public void beedChanged(SetEvent<Integer, SetEdit<Integer>> event) {
+    public void beedChanged(SetEvent<Integer> event) {
       $event = event;
     }
 
@@ -61,7 +61,7 @@ public class TestEditableSetBeed {
       $event = null;
     }
 
-    public SetEvent<Integer, SetEdit<Integer>> $event;
+    public SetEvent<Integer> $event;
 
   }
 
@@ -73,8 +73,7 @@ public class TestEditableSetBeed {
     $removedElements = new HashSet<Integer>();
     $setEdit = new SetEdit<Integer>($editableSetBeed);
     $setEdit.perform();
-    $event1 =
-      new SetEvent<Integer, SetEdit<Integer>>($editableSetBeed, $addedElements, $removedElements, $setEdit);
+    $event1 = new SetEvent<Integer>($editableSetBeed, $addedElements, $removedElements, $setEdit);
     $listener1 = new PropagatedEventListener();
     $listener2 = new PropagatedEventListener();
     $listener3 = new StubEditableSetBeedListener();
@@ -91,7 +90,7 @@ public class TestEditableSetBeed {
   private Set<Integer> $addedElements;
   private Set<Integer> $removedElements;
   private SetEdit<Integer> $setEdit;
-  private SetEvent<Integer, SetEdit<Integer>> $event1;
+  private SetEvent<Integer> $event1;
   private PropagatedEventListener $listener1;
   private PropagatedEventListener $listener2;
   private StubEditableSetBeedListener $listener3;
@@ -177,7 +176,7 @@ public class TestEditableSetBeed {
 
   @Test
   public void createInitialEvent() {
-    SetEvent<Integer, SetEdit<Integer>> initialEvent = $editableSetBeed.createInitialEvent();
+    SetEvent<Integer> initialEvent = $editableSetBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableSetBeed);
     assertEquals(initialEvent.getAddedElements(), $editableSetBeed.get());
     assertEquals(initialEvent.getRemovedElements(), new HashSet<Integer>());

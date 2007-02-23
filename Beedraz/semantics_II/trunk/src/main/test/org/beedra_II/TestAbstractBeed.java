@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.junit.After;
@@ -32,7 +31,7 @@ import org.junit.Test;
 
 public class TestAbstractBeed {
 
-  public class StubBeedEvent extends Event<Edit<?>> {
+  public class StubBeedEvent extends Event {
 
     public StubBeedEvent(StubAbstractBeed source) {
       super(source, null);

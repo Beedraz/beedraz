@@ -66,7 +66,7 @@ public class TestPropagatedEvent {
     IntegerEdit edit = new IntegerEdit(target);
     edit.perform();
     // cause
-    Event<?> cause = new IntegerEvent(eventSource, oldValue, newValue, edit);
+    Event cause = new IntegerEvent(eventSource, oldValue, newValue, edit);
     // propagated event source
     AggregateBeed source = new MyBeanBeed();
     // test constructor
@@ -90,7 +90,7 @@ public class TestPropagatedEvent {
     StringEdit edit = new StringEdit(target);
     edit.perform();
     // cause
-    Event<?> cause = new StringEvent(eventSource, oldValue, newValue, edit);
+    Event cause = new StringEvent(eventSource, oldValue, newValue, edit);
     // propagated event source
     AggregateBeed source = new MyBeanBeed();
     // test constructor

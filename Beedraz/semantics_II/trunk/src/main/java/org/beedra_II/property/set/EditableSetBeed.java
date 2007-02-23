@@ -38,9 +38,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableSetBeed<_Element_>
-    extends AbstractPropertyBeed<SetEvent<_Element_, SetEdit<_Element_>>>
-    implements SetBeed<_Element_, SetEdit<_Element_>>,
-               EditableBeed<SetEvent<_Element_, SetEdit<_Element_>>> {
+    extends AbstractPropertyBeed<SetEvent<_Element_>>
+    implements SetBeed<_Element_>,
+               EditableBeed<SetEvent<_Element_>> {
 
   /**
    * @pre ownerBeed != null;
@@ -78,13 +78,13 @@ public class EditableSetBeed<_Element_>
 
   private Set<_Element_> $set = new HashSet<_Element_>();
 
-  void fireEvent(SetEvent<_Element_, SetEdit<_Element_>> event) {
+  void fireEvent(SetEvent<_Element_> event) {
     fireChangeEvent(event);
   }
 
   @Override
-  protected SetEvent<_Element_, SetEdit<_Element_>> createInitialEvent() {
-    return new SetEvent<_Element_, SetEdit<_Element_>>(this, get(), null, null);
+  protected SetEvent<_Element_> createInitialEvent() {
+    return new SetEvent<_Element_>(this, get(), null, null);
   }
 
   public boolean isAcceptable(Set<_Element_> elementsToAdd, Set<_Element_> elementsToRemove) {

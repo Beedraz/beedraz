@@ -728,25 +728,26 @@ public class TestAbstractSimpleEdit {
     assertFalse($edit.isValidityListener($listener2));
   }
 
-  @Test
-  public void fireValidityChange() {
-    // register listeners
-    $edit.addValidityListener($listener1);
-    $edit.addValidityListener($listener2);
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
-    // fire
-    $edit.fireValidityChange();
-    // check
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $edit);
-    assertEquals($listener1.$validity, $edit.isValid());
-    assertEquals($listener2.$target, $edit);
-    assertEquals($listener2.$validity, $edit.isValid());
-  }
+// method is no longer public or protected
+//  @Test
+//  public void fireValidityChange() {
+//    // register listeners
+//    $edit.addValidityListener($listener1);
+//    $edit.addValidityListener($listener2);
+//    assertTrue($edit.isValidityListener($listener1));
+//    assertTrue($edit.isValidityListener($listener2));
+//    assertTrue($listener1.isEmpty());
+//    assertTrue($listener2.isEmpty());
+//    // fire
+//    $edit.fireValidityChange();
+//    // check
+//    assertTrue($edit.isValidityListener($listener1));
+//    assertTrue($edit.isValidityListener($listener2));
+//    assertEquals($listener1.$target, $edit);
+//    assertEquals($listener1.$validity, $edit.isValid());
+//    assertEquals($listener2.$target, $edit);
+//    assertEquals($listener2.$validity, $edit.isValid());
+//  }
 
   @Test
   public void notifyListeners() {

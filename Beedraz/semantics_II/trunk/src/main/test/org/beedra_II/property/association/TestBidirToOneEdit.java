@@ -22,7 +22,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.Edit;
@@ -45,13 +44,13 @@ public class TestBidirToOneEdit {
       super(target);
     }
 
-    /**
-     * Made public for testing reasons
-     * @throws IllegalEditException
-     */
-    public void checkValidityPublic() throws IllegalEditException {
-      super.checkValidity();
-    }
+//    /**
+//     * Made public for testing reasons
+//     * @throws IllegalEditException
+//     */
+//    public void checkValidityPublic() throws IllegalEditException {
+//      super.checkValidity();
+//    }
 
     /**
      * Made public for testing reasons
@@ -811,60 +810,61 @@ public class TestBidirToOneEdit {
     }
   }
 
-  @Test
-  public void checkValidity() throws EditStateException, IllegalEditException {
-    // add validity listeners
-    $bidirToOneEdit.addValidityListener($listener1);
-    $bidirToOneEdit.addValidityListener($listener2);
-    assertTrue($bidirToOneEdit.isValidityListener($listener1));
-    assertTrue($bidirToOneEdit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
-    // check the value of the validity
-    assertTrue($bidirToOneEdit.isValid());
-    // change validity
-    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
-    $bidirToOneEdit.setGoal(goal1);
-    $bidirToOneEdit.checkValidityPublic();
-    // validity is still the same, so validity listeners are not notified
-    assertTrue($bidirToOneEdit.isValid());
-    assertTrue($bidirToOneEdit.isValidityListener($listener1));
-    assertTrue($bidirToOneEdit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
-    // change validity
-    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createUnacceptableGoal();
-    $bidirToOneEdit.setGoal(goal2);
-    try {
-      $bidirToOneEdit.checkValidityPublic();
-      fail();
-    }
-    catch (IllegalEditException ieExc) {
-      // NOP
-    }
-    // validity has changed, so validity listeners are notified
-    assertFalse($bidirToOneEdit.isValid());
-    assertTrue($bidirToOneEdit.isValidityListener($listener1));
-    assertTrue($bidirToOneEdit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $bidirToOneEdit);
-    assertEquals($listener1.$validity, $bidirToOneEdit.isValid());
-    assertEquals($listener2.$target, $bidirToOneEdit);
-    assertEquals($listener2.$validity, $bidirToOneEdit.isValid());
-    // change validity again
-    $listener1.reset();
-    $listener2.reset();
-    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal3 = createAcceptableGoal();
-    $bidirToOneEdit.setGoal(goal3);
-    $bidirToOneEdit.checkValidityPublic();
-    // validity has changed, so validity listeners are notified
-    assertTrue($bidirToOneEdit.isValid());
-    assertTrue($bidirToOneEdit.isValidityListener($listener1));
-    assertTrue($bidirToOneEdit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $bidirToOneEdit);
-    assertEquals($listener1.$validity, $bidirToOneEdit.isValid());
-    assertEquals($listener2.$target, $bidirToOneEdit);
-    assertEquals($listener2.$validity, $bidirToOneEdit.isValid());
-  }
+//  Method no longer accessible
+//  @Test
+//  public void checkValidity() throws EditStateException, IllegalEditException {
+//    // add validity listeners
+//    $bidirToOneEdit.addValidityListener($listener1);
+//    $bidirToOneEdit.addValidityListener($listener2);
+//    assertTrue($bidirToOneEdit.isValidityListener($listener1));
+//    assertTrue($bidirToOneEdit.isValidityListener($listener2));
+//    assertTrue($listener1.isEmpty());
+//    assertTrue($listener2.isEmpty());
+//    // check the value of the validity
+//    assertTrue($bidirToOneEdit.isValid());
+//    // change validity
+//    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+//    $bidirToOneEdit.setGoal(goal1);
+//    $bidirToOneEdit.checkValidityPublic();
+//    // validity is still the same, so validity listeners are not notified
+//    assertTrue($bidirToOneEdit.isValid());
+//    assertTrue($bidirToOneEdit.isValidityListener($listener1));
+//    assertTrue($bidirToOneEdit.isValidityListener($listener2));
+//    assertTrue($listener1.isEmpty());
+//    assertTrue($listener2.isEmpty());
+//    // change validity
+//    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createUnacceptableGoal();
+//    $bidirToOneEdit.setGoal(goal2);
+//    try {
+//      $bidirToOneEdit.checkValidityPublic();
+//      fail();
+//    }
+//    catch (IllegalEditException ieExc) {
+//      // NOP
+//    }
+//    // validity has changed, so validity listeners are notified
+//    assertFalse($bidirToOneEdit.isValid());
+//    assertTrue($bidirToOneEdit.isValidityListener($listener1));
+//    assertTrue($bidirToOneEdit.isValidityListener($listener2));
+//    assertEquals($listener1.$target, $bidirToOneEdit);
+//    assertEquals($listener1.$validity, $bidirToOneEdit.isValid());
+//    assertEquals($listener2.$target, $bidirToOneEdit);
+//    assertEquals($listener2.$validity, $bidirToOneEdit.isValid());
+//    // change validity again
+//    $listener1.reset();
+//    $listener2.reset();
+//    BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal3 = createAcceptableGoal();
+//    $bidirToOneEdit.setGoal(goal3);
+//    $bidirToOneEdit.checkValidityPublic();
+//    // validity has changed, so validity listeners are notified
+//    assertTrue($bidirToOneEdit.isValid());
+//    assertTrue($bidirToOneEdit.isValidityListener($listener1));
+//    assertTrue($bidirToOneEdit.isValidityListener($listener2));
+//    assertEquals($listener1.$target, $bidirToOneEdit);
+//    assertEquals($listener1.$validity, $bidirToOneEdit.isValid());
+//    assertEquals($listener2.$target, $bidirToOneEdit);
+//    assertEquals($listener2.$validity, $bidirToOneEdit.isValid());
+//  }
 
   @Test
   public void notifyListeners() throws EditStateException, IllegalEditException {

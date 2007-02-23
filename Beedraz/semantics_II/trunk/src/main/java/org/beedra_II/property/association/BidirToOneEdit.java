@@ -83,6 +83,9 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     }
   }
 
+  /**
+   * @todo super method should be final; can we fix this with a change listener to the to-one that propagates?
+   */
   @Override
   protected final void notifyListeners() {
     super.notifyListeners();

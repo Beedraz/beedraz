@@ -22,7 +22,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,13 +46,13 @@ public class TestSetEdit {
       super(target);
     }
 
-    /**
-     * Made public for testing reasons.
-     * @throws IllegalEditException
-     */
-    public void checkValidityPublic() throws IllegalEditException {
-      checkValidity();
-    }
+//    /**
+//     * Made public for testing reasons.
+//     * @throws IllegalEditException
+//     */
+//    public void checkValidityPublic() throws IllegalEditException {
+//      checkValidity();
+//    }
 
     /**
      * Made public for testing reasons.
@@ -741,57 +740,58 @@ public class TestSetEdit {
     }
   }
 
-  @Test
-  public void checkValidity() throws EditStateException, IllegalEditException {
-    // add validity listeners
-    $setEdit.addValidityListener($listener1);
-    $setEdit.addValidityListener($listener2);
-    assertTrue($setEdit.isValidityListener($listener1));
-    assertTrue($setEdit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
-    // check the value of the validity
-    assertTrue($setEdit.isValid());
-    // change validity
-    $setEdit.addElementToAdd(5);
-    $setEdit.checkValidityPublic();
-    // validity is still the same, so validity listeners are not notified
-    assertTrue($setEdit.isValid());
-    assertTrue($setEdit.isValidityListener($listener1));
-    assertTrue($setEdit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
-    // change validity
-    $setEdit.addElementToAdd(-1);
-    try {
-      $setEdit.checkValidityPublic();
-      fail();
-    }
-    catch (IllegalEditException ieExc) {
-      // NOP
-    }
-    // validity has changed, so validity listeners are notified
-    assertFalse($setEdit.isValid());
-    assertTrue($setEdit.isValidityListener($listener1));
-    assertTrue($setEdit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $setEdit);
-    assertEquals($listener1.$validity, $setEdit.isValid());
-    assertEquals($listener2.$target, $setEdit);
-    assertEquals($listener2.$validity, $setEdit.isValid());
-    // change validity again
-    $listener1.reset();
-    $listener2.reset();
-    $setEdit.removeElementToAdd(-1);
-    $setEdit.checkValidityPublic();
-    // validity has changed, so validity listeners are notified
-    assertTrue($setEdit.isValid());
-    assertTrue($setEdit.isValidityListener($listener1));
-    assertTrue($setEdit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $setEdit);
-    assertEquals($listener1.$validity, $setEdit.isValid());
-    assertEquals($listener2.$target, $setEdit);
-    assertEquals($listener2.$validity, $setEdit.isValid());
-  }
+// Method no longer accessible
+//  @Test
+//  public void checkValidity() throws EditStateException, IllegalEditException {
+//    // add validity listeners
+//    $setEdit.addValidityListener($listener1);
+//    $setEdit.addValidityListener($listener2);
+//    assertTrue($setEdit.isValidityListener($listener1));
+//    assertTrue($setEdit.isValidityListener($listener2));
+//    assertTrue($listener1.isEmpty());
+//    assertTrue($listener2.isEmpty());
+//    // check the value of the validity
+//    assertTrue($setEdit.isValid());
+//    // change validity
+//    $setEdit.addElementToAdd(5);
+//    $setEdit.checkValidityPublic();
+//    // validity is still the same, so validity listeners are not notified
+//    assertTrue($setEdit.isValid());
+//    assertTrue($setEdit.isValidityListener($listener1));
+//    assertTrue($setEdit.isValidityListener($listener2));
+//    assertTrue($listener1.isEmpty());
+//    assertTrue($listener2.isEmpty());
+//    // change validity
+//    $setEdit.addElementToAdd(-1);
+//    try {
+//      $setEdit.checkValidityPublic();
+//      fail();
+//    }
+//    catch (IllegalEditException ieExc) {
+//      // NOP
+//    }
+//    // validity has changed, so validity listeners are notified
+//    assertFalse($setEdit.isValid());
+//    assertTrue($setEdit.isValidityListener($listener1));
+//    assertTrue($setEdit.isValidityListener($listener2));
+//    assertEquals($listener1.$target, $setEdit);
+//    assertEquals($listener1.$validity, $setEdit.isValid());
+//    assertEquals($listener2.$target, $setEdit);
+//    assertEquals($listener2.$validity, $setEdit.isValid());
+//    // change validity again
+//    $listener1.reset();
+//    $listener2.reset();
+//    $setEdit.removeElementToAdd(-1);
+//    $setEdit.checkValidityPublic();
+//    // validity has changed, so validity listeners are notified
+//    assertTrue($setEdit.isValid());
+//    assertTrue($setEdit.isValidityListener($listener1));
+//    assertTrue($setEdit.isValidityListener($listener2));
+//    assertEquals($listener1.$target, $setEdit);
+//    assertEquals($listener1.$validity, $setEdit.isValid());
+//    assertEquals($listener2.$target, $setEdit);
+//    assertEquals($listener2.$validity, $setEdit.isValid());
+//  }
 
   @Test
   public void notifyListeners() throws EditStateException, IllegalEditException {

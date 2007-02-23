@@ -120,7 +120,7 @@ public class SetEdit<_Element_>
     $elementsToAdd.remove(element);
   }
 
-  private Set<_Element_> $elementsToAdd = new HashSet<_Element_>();
+  private final Set<_Element_> $elementsToAdd = new HashSet<_Element_>();
 
   /**
    * @basic
@@ -143,7 +143,7 @@ public class SetEdit<_Element_>
     $elementsToRemove.remove(element);
   }
 
-  private Set<_Element_> $elementsToRemove = new HashSet<_Element_>();
+  private final Set<_Element_> $elementsToRemove = new HashSet<_Element_>();
 
   /**
    * <p>{@code S &cap; 'A = &empty;} by A' = A \ S</p>
@@ -180,7 +180,7 @@ public class SetEdit<_Element_>
    */
   @Override
   protected void performance() {
-    assert getTarget().get().contains(getElementsToRemove());
+    assert getTarget().get().containsAll(getElementsToRemove());
     // order irrelevant because sets are disjunct
     getTarget().addElements($elementsToAdd);
     getTarget().removeElements($elementsToRemove);
@@ -202,7 +202,7 @@ public class SetEdit<_Element_>
    */
   @Override
   protected void unperformance() {
-    assert getTarget().get().contains(getElementsToAdd());
+    assert getTarget().get().containsAll(getElementsToAdd());
     // order irrelevant because sets are disjunct
     getTarget().removeElements($elementsToAdd);
     getTarget().addElements($elementsToRemove);

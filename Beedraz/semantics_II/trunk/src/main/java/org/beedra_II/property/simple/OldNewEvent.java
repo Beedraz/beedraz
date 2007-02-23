@@ -41,14 +41,17 @@ public class OldNewEvent<_Type_>
     extends Event {
 
   /**
-   * @pre source != null;
-   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
-   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  source != null;
+   * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (oldValue != null) && (newValue != null)
+   *          ? ! oldValue.equals(newValue)
+   *          : true;
+   *
    * @post getSource() == source;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public OldNewEvent(SimplePropertyBeed<_Type_, ? extends OldNewEvent<_Type_>> source,
                      _Type_ oldValue,

@@ -42,13 +42,18 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public final class BooleanEvent extends OldNewEvent<Boolean> {
 
   /**
-   * @pre source != null;
-   * @pre edit != null;
+   * @pre  source != null;
+   * @pre  edit != null;
+   * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (oldValue != null) && (newValue != null)
+   *          ? ! oldValue.equals(newValue)
+   *          : true;
+   *
    * @post getSource() == source;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
    * @post getEditState() == edit.getState();
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public BooleanEvent(BooleanBeed source,
                      Boolean oldValue,

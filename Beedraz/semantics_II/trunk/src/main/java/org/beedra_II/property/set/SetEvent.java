@@ -45,14 +45,19 @@ public final class SetEvent<_Element_>
     extends Event {
 
   /**
-   * @pre source != null;
-   * @pre edit != null;
-   * @pre (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  source != null;
+   * @pre  edit != null;
+   * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   *
    * @post getSource() == source;
-   * @post addedElements != null ? getAddedElements().equals(addedElements) : getAddedElements().isEmpty();
-   * @post removedElements != null ? getRemovedElements().equals(removedElements) : getRemovedElements().isEmpty();
    * @post getEdit() == edit;
    * @post getEditState() == edit.getState();
+   * @post addedElements != null
+   *           ? getAddedElements().equals(addedElements)
+   *           : getAddedElements().isEmpty();
+   * @post removedElements != null
+   *           ? getRemovedElements().equals(removedElements)
+   *           : getRemovedElements().isEmpty();
    */
   public SetEvent(SetBeed<_Element_> source,
                   Set<? extends _Element_> addedElements,

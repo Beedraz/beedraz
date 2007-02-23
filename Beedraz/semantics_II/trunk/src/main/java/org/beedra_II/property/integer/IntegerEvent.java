@@ -41,15 +41,21 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public final class IntegerEvent extends OldNewEvent<Integer> {
 
   /**
-   * @pre source != null;
-   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
-   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  source != null;
+   * @pre  edit != null;
+   * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (oldValue != null) && (newValue != null)
+   *          ? ! oldValue.equals(newValue)
+   *          : true;
+   *
    * @post getSource() == source;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
    * @post getEditState() == edit.getState();
-   * @post oldValue == null || newValue == null ? getDelta() == null : getDelta() = newValue - oldValue;
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post oldValue == null || newValue == null
+   *          ? getDelta() == null
+   *          : getDelta() = newValue - oldValue;
    */
   public IntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
     super(source, oldValue, newValue, edit);

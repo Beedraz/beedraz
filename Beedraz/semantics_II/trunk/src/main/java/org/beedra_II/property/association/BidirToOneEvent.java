@@ -43,14 +43,19 @@ public final class BidirToOneEvent<_One_ extends BeanBeed,
                                    _Many_ extends BeanBeed>
     extends OldNewEvent<BidirToManyBeed<_One_, _Many_>> {
 
+
   /**
-   * @pre source != null;
+   * @pre  source != null;
    * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (oldValue != null) && (newValue != null)
+   *          ? ! oldValue.equals(newValue)
+   *          : true;
+   *
    * @post getSource() == source;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
   public BidirToOneEvent(EditableBidirToOneBeed<_One_, _Many_> source,
                          BidirToManyBeed<_One_, _Many_> oldValue,

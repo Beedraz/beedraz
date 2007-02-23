@@ -42,12 +42,19 @@ public final class DoubleEvent extends OldNewEvent<Double> {
   /**
    * @pre  source != null;
    * @pre  edit != null;
+   * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (oldValue != null) && (newValue != null)
+   *          ? ! oldValue.equals(newValue)
+   *          : true;
+   *
    * @post getSource() == source;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    * @post getEdit() == edit;
    * @post getEditState() == edit.getState();
-   * @post oldValue == null || newValue == null ? getDelta() == null : getDelta() = newValue - oldValue;
+   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
+   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post oldValue == null || newValue == null
+   *          ? getDelta() == null
+   *          : getDelta() = newValue - oldValue;
    */
   public DoubleEvent(DoubleBeed source, Double oldValue, Double newValue, Edit<?> edit) {
     super(source, oldValue, newValue, edit);

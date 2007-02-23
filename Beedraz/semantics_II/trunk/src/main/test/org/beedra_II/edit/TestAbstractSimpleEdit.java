@@ -22,10 +22,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit.State;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
@@ -33,10 +35,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestAbstractEdit {
+
+public class TestAbstractSimpleEdit {
 
   public class MyAbstractEdit
-       extends AbstractEdit<EditableIntegerBeed, IntegerEvent> {
+       extends AbstractSimpleEdit<EditableIntegerBeed, IntegerEvent> {
 
     public MyAbstractEdit(EditableIntegerBeed target) {
       super(target);
@@ -56,14 +59,14 @@ public class TestAbstractEdit {
     private IntegerEvent $createdEvent;
 
     @Override
-    protected void fireEvent(IntegerEvent event) {
-      $firedEvent = event;
+    protected void fireEvent(Event<?> event) {
+      $firedEvent = (IntegerEvent)event;
     }
 
     public IntegerEvent $firedEvent;
 
     @Override
-    protected boolean isChange() {
+    public boolean isChange() {
       return $b;
     }
 
@@ -113,14 +116,17 @@ public class TestAbstractEdit {
 
     @Override
     protected void unperformance() {
+      // NOP
     }
 
+    @Override
     protected boolean isAcceptable() {
       return $acceptable;
     }
 
     public void setAcceptable(boolean b) {
       $acceptable = b;
+      recalculateValidity();
     }
 
     private boolean $acceptable = true;
@@ -303,7 +309,7 @@ public class TestAbstractEdit {
   }
 
   @Test
-  // correct begin-state, edit is no change, so validity listeners are not removed, listeners of the beed are not notified
+  // correct begin-state, edit is no change, so validity listeners are removed, listeners of the beed are not notified
   public void perform6() {
     try {
       $edit.addValidityListener($listener1);
@@ -315,14 +321,11 @@ public class TestAbstractEdit {
       $edit.setChange(false);
       $edit.perform();
       assertTrue($edit.isInitialStateStored());
-      // listeners are not removed
-      assertTrue($edit.isValidityListener($listener1));
-      assertTrue($edit.isValidityListener($listener2));
+      // listeners are removed
+      assertFalse($edit.isValidityListener($listener1));
+      assertFalse($edit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($edit.$firedEvent);
-      assertTrue("When the edit causes no change, the validity listeners are " +
-          "not removed and the beed listeners are not notified. The latter is " +
-          "correct, but what about the first?", false);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -614,7 +617,7 @@ public class TestAbstractEdit {
   }
 
   @Test
-  public void checkValidity() {
+  public void checkValidity() throws IllegalEditException {
     // add validity listeners
     $edit.addValidityListener($listener1);
     $edit.addValidityListener($listener2);
@@ -635,7 +638,13 @@ public class TestAbstractEdit {
     assertTrue($listener2.isEmpty());
     // change validity
     $edit.setAcceptable(false);
-    $edit.checkValidity();
+    try {
+      $edit.checkValidity();
+      fail();
+    }
+    catch (IllegalEditException ieExc) {
+      // NOP
+    }
     // validity has changed, so validity listeners are notified
     assertFalse($edit.isValid());
     assertTrue($edit.isValidityListener($listener1));

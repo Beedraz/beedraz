@@ -21,6 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.edit.EditStateException;
+import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +44,7 @@ public class TestStringEvent {
   }
 
   @Test
-  public void constructor() {
+  public void constructor() throws EditStateException, IllegalEditException {
     // source
     AggregateBeed owner = new MyBeanBeed();
     StringBeed source = new EditableStringBeed(owner);
@@ -52,6 +54,7 @@ public class TestStringEvent {
     // edit
     EditableStringBeed target = new EditableStringBeed(owner);
     StringEdit edit = new StringEdit(target);
+    edit.perform();
     // test constructor
     StringEvent stringEvent = new StringEvent(source, oldValue, newValue, edit);
     assertEquals(stringEvent.getSource(), source);

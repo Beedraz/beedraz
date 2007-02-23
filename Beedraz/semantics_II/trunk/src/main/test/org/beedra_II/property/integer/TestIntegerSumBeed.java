@@ -95,8 +95,6 @@ public class TestIntegerSumBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
     // the value should be 0
@@ -738,16 +736,8 @@ public class TestIntegerSumBeed {
   }
 
   @Test
-  public void createInitialEvent1() {
-    assertTrue("the implementation of this method calls the constructor " +
-        "of IntegerEvent; the last parameter of this constructor should be " +
-        "effective according to the documentation", false);
-  }
-
-  @Test
-  public void createInitialEvent2() {
+  public void createInitialEvent() {
     IntegerEvent initialEvent = $integerSumBeed.createInitialEvent();
-    assertTrue(initialEvent instanceof IntegerEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $integerSumBeed);
     assertEquals(initialEvent.getOldValue(), null);
     assertEquals(initialEvent.getNewValue(), $integerSumBeed.get());

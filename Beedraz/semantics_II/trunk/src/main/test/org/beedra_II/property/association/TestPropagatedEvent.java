@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.edit.EditStateException;
+import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
@@ -52,7 +54,7 @@ public class TestPropagatedEvent {
   }
 
   @Test
-  public void constructor() {
+  public void constructor() throws EditStateException, IllegalEditException {
     // event source
     AggregateBeed owner = new MyBeanBeed();
     IntegerBeed eventSource = new EditableIntegerBeed(owner);
@@ -62,6 +64,7 @@ public class TestPropagatedEvent {
     // edit
     EditableIntegerBeed target = new EditableIntegerBeed(owner);
     IntegerEdit edit = new IntegerEdit(target);
+    edit.perform();
     // cause
     Event<?> cause = new IntegerEvent(eventSource, oldValue, newValue, edit);
     // propagated event source
@@ -75,7 +78,7 @@ public class TestPropagatedEvent {
   }
 
   @Test
-  public void constructor2() {
+  public void constructor2() throws EditStateException, IllegalEditException {
     // event source
     AggregateBeed owner = new MyBeanBeed();
     StringBeed eventSource = new EditableStringBeed(owner);
@@ -85,6 +88,7 @@ public class TestPropagatedEvent {
     // edit
     EditableStringBeed target = new EditableStringBeed(owner);
     StringEdit edit = new StringEdit(target);
+    edit.perform();
     // cause
     Event<?> cause = new StringEvent(eventSource, oldValue, newValue, edit);
     // propagated event source

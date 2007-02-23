@@ -1,25 +1,14 @@
 /*<license>
- Copyright 2007 - $Date$ by the authors mentioned below.
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- </license>*/
+  Copyright 2007, PeopleWare n.v.
+  NO RIGHTS ARE GRANTED FOR THE USE OF THIS SOFTWARE, EXCEPT, IN WRITING,
+  TO SELECTED PARTIES.
+</license>*/
 
 package org.beedra_II.property.integer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
@@ -28,6 +17,8 @@ import org.beedra_II.event.Listener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+
 
 public class TestEditableIntegerBeed {
 
@@ -64,7 +55,13 @@ public class TestEditableIntegerBeed {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $owner = new MyBeanBeed();
+    $editableIntegerBeed = new MyEditableIntegerBeed($owner);
+    $stringEdit = new IntegerEdit($editableIntegerBeed);
+    $stringEdit.perform();
+    $event1 = new IntegerEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
+    $listener1 = new PropagatedEventListener();
+    $listener2 = new PropagatedEventListener();
   }
 
   @After
@@ -72,12 +69,12 @@ public class TestEditableIntegerBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
-  private MyEditableIntegerBeed $editableIntegerBeed = new MyEditableIntegerBeed($owner);
-  private IntegerEdit $stringEdit = new IntegerEdit($editableIntegerBeed);
-  private IntegerEvent $event1 = new IntegerEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
+  private AggregateBeed $owner;
+  private MyEditableIntegerBeed $editableIntegerBeed;
+  private IntegerEdit $stringEdit;
+  private IntegerEvent $event1;
+  private PropagatedEventListener $listener1;
+  private PropagatedEventListener $listener2;
 
   @Test
   public void constructor() {
@@ -93,26 +90,18 @@ public class TestEditableIntegerBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
   }
 
   @Test
-  public void createInitialEvent1() {
-    assertTrue("the implementation of this method calls the constructor " +
-        "of IntegerEvent; the last parameter of this constructor should be " +
-        "effective according to the documentation", false);
-  }
-
-  @Test
-  public void createInitialEvent2() {
+  public void createInitialEvent() {
     IntegerEvent initialEvent = $editableIntegerBeed.createInitialEvent();
-    assertTrue(initialEvent instanceof IntegerEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $editableIntegerBeed);
     assertEquals(initialEvent.getOldValue(), null);
     assertEquals(initialEvent.getNewValue(), $editableIntegerBeed.get());
     assertEquals(initialEvent.getEdit(), null);
   }
+
 }
+

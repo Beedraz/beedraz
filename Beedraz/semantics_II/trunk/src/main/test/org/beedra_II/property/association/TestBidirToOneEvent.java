@@ -20,6 +20,8 @@ package org.beedra_II.property.association;
 import static org.junit.Assert.assertEquals;
 
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.edit.EditStateException;
+import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +47,7 @@ public class TestBidirToOneEvent {
   }
 
   @Test
-  public void constructor() {
+  public void constructor() throws EditStateException, IllegalEditException {
     OneBeanBeed one = new OneBeanBeed();
     ManyBeanBeed many = new ManyBeanBeed();
     // source
@@ -60,6 +62,7 @@ public class TestBidirToOneEvent {
     EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> target =
       new EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(many);
     BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit = new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>(target);
+    edit.perform();
     // test constructor
     BidirToOneEvent<OneBeanBeed, ManyBeanBeed> bidirToOneEvent =
       new BidirToOneEvent<OneBeanBeed, ManyBeanBeed>(source, oldValue, newValue, edit);

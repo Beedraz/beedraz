@@ -46,21 +46,11 @@ public class TestSetEdit {
       super(target);
     }
 
-    @Override
-    protected boolean isAcceptable() {
-      // all integers in the set of added elements are positive
-      for (Integer i : getElementsToAdd()) {
-        if (i == null || i <= 0) {
-          return false;
-        }
-      }
-      return true;
-    }
-
     /**
      * Made public for testing reasons.
+     * @throws IllegalEditException
      */
-    public void checkValidityPublic() {
+    public void checkValidityPublic() throws IllegalEditException {
       checkValidity();
     }
 
@@ -128,7 +118,19 @@ public class TestSetEdit {
   }
 
   BeanBeed $beanBeed = new MyBeanBeed();
-  EditableSetBeed<Integer> $target = new EditableSetBeed<Integer>($beanBeed);
+  EditableSetBeed<Integer> $target = new EditableSetBeed<Integer>($beanBeed) {
+    @Override
+    public boolean isAcceptable(Set<Integer> elementsToAdd, Set<Integer> elementsToRemove) {
+      // all integers in the set of added elements are positive
+      for (Integer i : elementsToAdd) {
+        if (i == null || i <= 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+  };
   private MySetEdit $setEdit = new MySetEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
@@ -734,7 +736,7 @@ public class TestSetEdit {
   }
 
   @Test
-  public void checkValidity() throws EditStateException {
+  public void checkValidity() throws EditStateException, IllegalEditException {
     // add validity listeners
     $setEdit.addValidityListener($listener1);
     $setEdit.addValidityListener($listener2);

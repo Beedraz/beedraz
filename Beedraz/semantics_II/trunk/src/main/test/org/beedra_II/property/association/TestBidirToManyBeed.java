@@ -25,6 +25,8 @@ import static org.junit.Assert.assertFalse;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.edit.EditStateException;
+import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.set.SetEvent;
 import org.junit.After;
@@ -86,7 +88,21 @@ public class TestBidirToManyBeed {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $many = new ManyBeanBeed();
+    $editableBidirToOneBeed =
+      new EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed>($many);
+    $one = new OneBeanBeed();
+    $bidirToManyBeed =
+      new MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed>($one);
+    $bidirToOneEdit =
+      new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    $bidirToOneEdit.perform();
+    $setEvent =
+      new SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed,ManyBeanBeed>>($bidirToManyBeed, null, null, $bidirToOneEdit);
+    $listener1 = new PropagatedEventListener();
+    $listener2 = new PropagatedEventListener();
+    $listener3 = new StubSetEventListener();
+    $listener4 = new StubSetEventListener();
   }
 
   @After
@@ -94,20 +110,16 @@ public class TestBidirToManyBeed {
     // NOP
   }
 
-  private ManyBeanBeed $many = new ManyBeanBeed();
-  private EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> $editableBidirToOneBeed =
-    new EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed>($many);
+  private ManyBeanBeed $many;
+  private EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> $editableBidirToOneBeed;
   private OneBeanBeed $one = new OneBeanBeed();
-  private MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed =
-    new MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed>($one);
-  private BidirToOneEdit<OneBeanBeed, ManyBeanBeed> $bidirToOneEdit =
-    new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
-  private SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> $setEvent =
-    new SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed,ManyBeanBeed>>($bidirToManyBeed, null, null, $bidirToOneEdit);
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
-  private StubSetEventListener $listener3 = new StubSetEventListener();
-  private StubSetEventListener $listener4 = new StubSetEventListener();
+  private MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed;
+  private BidirToOneEdit<OneBeanBeed, ManyBeanBeed> $bidirToOneEdit;
+  private SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> $setEvent;
+  private PropagatedEventListener $listener1;
+  private PropagatedEventListener $listener2;
+  private StubSetEventListener $listener3;
+  private StubSetEventListener $listener4;
 
   @Test
   public void constructor() {
@@ -123,8 +135,6 @@ public class TestBidirToManyBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($setEvent, $listener1.$event.getCause());
     assertEquals($setEvent, $listener1.$event.getCause());
   }
@@ -140,7 +150,7 @@ public class TestBidirToManyBeed {
   }
 
   @Test
-  public void fireAddedEvent() {
+  public void fireAddedEvent() throws EditStateException, IllegalEditException {
     // add listeners to the bidirToManyBeed
     $bidirToManyBeed.addListener($listener3);
     $bidirToManyBeed.addListener($listener4);
@@ -150,16 +160,15 @@ public class TestBidirToManyBeed {
     ManyBeanBeed many1 = new ManyBeanBeed();
     BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit1 =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    edit1.perform();
     $bidirToManyBeed.fireAddedEvent(many1, edit1);
     assertNotNull($listener3.$event);
-    assertTrue($listener3.$event instanceof SetEvent);
     assertEquals($listener3.$event.getSource(), $bidirToManyBeed);
     assertEquals($listener3.$event.getAddedElements().size(), 1);
     assertTrue($listener3.$event.getAddedElements().contains(many1));
     assertTrue($listener3.$event.getRemovedElements().isEmpty());
     assertEquals($listener3.$event.getEdit(), edit1);
     assertNotNull($listener4.$event);
-    assertTrue($listener4.$event instanceof SetEvent);
     assertEquals($listener4.$event.getSource(), $bidirToManyBeed);
     assertEquals($listener4.$event.getAddedElements().size(), 1);
     assertTrue($listener4.$event.getAddedElements().contains(many1));
@@ -172,16 +181,15 @@ public class TestBidirToManyBeed {
     ManyBeanBeed many2 = new ManyBeanBeed();
     BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit2 =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    edit2.perform();
     $bidirToManyBeed.fireAddedEvent(many2, edit2);
     assertNotNull($listener3.$event);
-    assertTrue($listener3.$event instanceof SetEvent);
     assertEquals($listener3.$event.getSource(), $bidirToManyBeed);
     assertEquals($listener3.$event.getAddedElements().size(), 1);
     assertTrue($listener3.$event.getAddedElements().contains(many2));
     assertTrue($listener3.$event.getRemovedElements().isEmpty());
     assertEquals($listener3.$event.getEdit(), edit2);
     assertNotNull($listener4.$event);
-    assertTrue($listener4.$event instanceof SetEvent);
     assertEquals($listener4.$event.getSource(), $bidirToManyBeed);
     assertEquals($listener4.$event.getAddedElements().size(), 1);
     assertTrue($listener4.$event.getAddedElements().contains(many2));
@@ -208,7 +216,7 @@ public class TestBidirToManyBeed {
   }
 
   @Test
-  public void fireRemovedEvent() {
+  public void fireRemovedEvent() throws EditStateException, IllegalEditException {
     // add listeners to the bidirToManyBeed
     $bidirToManyBeed.addListener($listener3);
     $bidirToManyBeed.addListener($listener4);
@@ -218,16 +226,15 @@ public class TestBidirToManyBeed {
     ManyBeanBeed many1 = new ManyBeanBeed();
     BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit1 =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    edit1.perform();
     $bidirToManyBeed.fireRemovedEvent(many1, edit1);
     assertNotNull($listener3.$event);
-    assertTrue($listener3.$event instanceof SetEvent);
     assertEquals($listener3.$event.getSource(), $bidirToManyBeed);
     assertTrue($listener3.$event.getAddedElements().isEmpty());
     assertEquals($listener3.$event.getRemovedElements().size(), 1);
     assertTrue($listener3.$event.getRemovedElements().contains(many1));
     assertEquals($listener3.$event.getEdit(), edit1);
     assertNotNull($listener4.$event);
-    assertTrue($listener4.$event instanceof SetEvent);
     assertEquals($listener4.$event.getSource(), $bidirToManyBeed);
     assertTrue($listener4.$event.getAddedElements().isEmpty());
     assertEquals($listener4.$event.getRemovedElements().size(), 1);
@@ -240,16 +247,15 @@ public class TestBidirToManyBeed {
     ManyBeanBeed many2 = new ManyBeanBeed();
     BidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit2 =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
+    edit2.perform();
     $bidirToManyBeed.fireRemovedEvent(many2, edit2);
     assertNotNull($listener3.$event);
-    assertTrue($listener3.$event instanceof SetEvent);
     assertEquals($listener3.$event.getSource(), $bidirToManyBeed);
     assertTrue($listener3.$event.getAddedElements().isEmpty());
     assertEquals($listener3.$event.getRemovedElements().size(), 1);
     assertTrue($listener3.$event.getRemovedElements().contains(many2));
     assertEquals($listener3.$event.getEdit(), edit2);
     assertNotNull($listener4.$event);
-    assertTrue($listener4.$event instanceof SetEvent);
     assertEquals($listener4.$event.getSource(), $bidirToManyBeed);
     assertTrue($listener4.$event.getAddedElements().isEmpty());
     assertEquals($listener4.$event.getRemovedElements().size(), 1);
@@ -268,7 +274,6 @@ public class TestBidirToManyBeed {
   public void createInitialEvent2() {
     SetEvent<ManyBeanBeed, BidirToOneEdit<OneBeanBeed, ManyBeanBeed>> initialEvent =
       $bidirToManyBeed.createInitialEvent();
-    assertTrue(initialEvent instanceof SetEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $bidirToManyBeed);
     assertEquals(initialEvent.getAddedElements(), $bidirToManyBeed.get());
     assertTrue(initialEvent.getRemovedElements().isEmpty());

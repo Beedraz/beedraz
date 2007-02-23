@@ -25,6 +25,8 @@ import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.edit.EditStateException;
+import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +48,7 @@ public class TestSetEvent {
   }
 
   @Test
-  public void constructor() {
+  public void constructor() throws EditStateException, IllegalEditException {
     // source
     AggregateBeed owner = new MyBeanBeed();
     SetBeed<Integer, SetEdit<Integer>> source = new EditableSetBeed<Integer>(owner);
@@ -56,6 +58,7 @@ public class TestSetEvent {
     // edit
     EditableSetBeed<Integer> target = new EditableSetBeed<Integer>(owner);
     SetEdit<Integer> edit = new SetEdit<Integer>(target);
+    edit.perform();
     // test constructor
     SetEvent<Integer, SetEdit<Integer>> setEvent =
       new SetEvent<Integer, SetEdit<Integer>>(source, addedElements, removedElements, edit);

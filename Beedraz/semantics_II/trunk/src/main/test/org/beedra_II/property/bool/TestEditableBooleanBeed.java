@@ -64,7 +64,13 @@ public class TestEditableBooleanBeed {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $owner = new MyBeanBeed();
+    $editableBooleanBeed = new MyEditableBooleanBeed($owner);
+    $stringEdit = new BooleanEdit($editableBooleanBeed);
+    $stringEdit.perform();
+    $event1 = new BooleanEvent($editableBooleanBeed, Boolean.TRUE, Boolean.FALSE, $stringEdit);
+    $listener1 = new PropagatedEventListener();
+    $listener2 = new PropagatedEventListener();
   }
 
   @After
@@ -72,12 +78,12 @@ public class TestEditableBooleanBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
-  private MyEditableBooleanBeed $editableBooleanBeed = new MyEditableBooleanBeed($owner);
-  private BooleanEdit $stringEdit = new BooleanEdit($editableBooleanBeed);
-  private BooleanEvent $event1 = new BooleanEvent($editableBooleanBeed, Boolean.TRUE, Boolean.FALSE, $stringEdit);
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
+  private AggregateBeed $owner;
+  private MyEditableBooleanBeed $editableBooleanBeed;
+  private BooleanEdit $stringEdit;
+  private BooleanEvent $event1;
+  private PropagatedEventListener $listener1;
+  private PropagatedEventListener $listener2;
 
   @Test
   public void constructor() {
@@ -93,23 +99,13 @@ public class TestEditableBooleanBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
   }
 
   @Test
-  public void createInitialEvent1() {
-    assertTrue("the implementation of this method calls the constructor " +
-        "of BooleanEvent; the last parameter of this constructor should be " +
-        "effective according to the documentation", false);
-  }
-
-  @Test
-  public void createInitialEvent2() {
+  public void createInitialEvent() {
     BooleanEvent initialEvent = $editableBooleanBeed.createInitialEvent();
-    assertTrue(initialEvent instanceof BooleanEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $editableBooleanBeed);
     assertEquals(initialEvent.getOldValue(), null);
     assertEquals(initialEvent.getNewValue(), $editableBooleanBeed.get());

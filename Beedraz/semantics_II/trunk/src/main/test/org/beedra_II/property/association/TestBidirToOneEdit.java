@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.Edit;
@@ -46,9 +47,9 @@ public class TestBidirToOneEdit {
 
     /**
      * Made public for testing reasons
-     *
+     * @throws IllegalEditException
      */
-    public void checkValidityPublic() {
+    public void checkValidityPublic() throws IllegalEditException {
       super.checkValidity();
     }
 
@@ -145,7 +146,15 @@ public class TestBidirToOneEdit {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $manyBeanBeed = new ManyBeanBeed();
+    $target = new MyEditableBidirToOneBeed($manyBeanBeed);
+    $bidirToOneEdit = new MyBidirToOneEdit($target);
+    $oneBeanBeed = new OneBeanBeed();
+    $listener1 = new StubValidityListener();
+    $listener2 = new StubValidityListener();
+    $listener3 = new StubBidirToOneListener();
+    $listener4 = new StubBidirToManyListener();
+    $listener5 = new StubBidirToManyListener();
   }
 
   @After
@@ -153,16 +162,15 @@ public class TestBidirToOneEdit {
     // NOP
   }
 
-  private ManyBeanBeed $manyBeanBeed = new ManyBeanBeed();
-  private MyEditableBidirToOneBeed $target
-    = new MyEditableBidirToOneBeed($manyBeanBeed);
-  private MyBidirToOneEdit $bidirToOneEdit = new MyBidirToOneEdit($target);
-  private OneBeanBeed $oneBeanBeed = new OneBeanBeed();
-  StubValidityListener $listener1 = new StubValidityListener();
-  StubValidityListener $listener2 = new StubValidityListener();
-  StubBidirToOneListener $listener3 = new StubBidirToOneListener();
-  StubBidirToManyListener $listener4 = new StubBidirToManyListener();
-  StubBidirToManyListener $listener5 = new StubBidirToManyListener();
+  private ManyBeanBeed $manyBeanBeed;
+  private MyEditableBidirToOneBeed $target;
+  private MyBidirToOneEdit $bidirToOneEdit;
+  private OneBeanBeed $oneBeanBeed;
+  private StubValidityListener $listener1;
+  private StubValidityListener $listener2;
+  private StubBidirToOneListener $listener3;
+  private StubBidirToManyListener $listener4;
+  private StubBidirToManyListener $listener5;
 
   @Test
   public void constructor() {
@@ -285,7 +293,7 @@ public class TestBidirToOneEdit {
   }
 
   @Test
-  // correct begin-state, edit is no change, so validity listeners are not removed, listeners of the beed are not notified
+  // correct begin-state, edit is no change, so validity listeners are removed, listeners of the beed are not notified
   public void perform6() {
     try {
       // add listener to beed
@@ -300,9 +308,9 @@ public class TestBidirToOneEdit {
       // perform
       $bidirToOneEdit.setGoal(null);
       $bidirToOneEdit.perform();
-      // listeners are not removed
-      assertTrue($bidirToOneEdit.isValidityListener($listener1));
-      assertTrue($bidirToOneEdit.isValidityListener($listener2));
+      // listeners are removed
+      assertFalse($bidirToOneEdit.isValidityListener($listener1));
+      assertFalse($bidirToOneEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
 
@@ -321,9 +329,9 @@ public class TestBidirToOneEdit {
       assertTrue(bidirToOneEdit3.isValidityListener($listener2));
       bidirToOneEdit3.setGoal(goal1);
       bidirToOneEdit3.perform();
-      // listeners are not removed
-      assertTrue(bidirToOneEdit3.isValidityListener($listener1));
-      assertTrue(bidirToOneEdit3.isValidityListener($listener2));
+      // listeners are removed
+      assertFalse(bidirToOneEdit3.isValidityListener($listener1));
+      assertFalse(bidirToOneEdit3.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
     }
@@ -827,7 +835,13 @@ public class TestBidirToOneEdit {
     // change validity
     BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createUnacceptableGoal();
     $bidirToOneEdit.setGoal(goal2);
-    $bidirToOneEdit.checkValidityPublic();
+    try {
+      $bidirToOneEdit.checkValidityPublic();
+      fail();
+    }
+    catch (IllegalEditException ieExc) {
+      // NOP
+    }
     // validity has changed, so validity listeners are notified
     assertFalse($bidirToOneEdit.isValid());
     assertTrue($bidirToOneEdit.isValidityListener($listener1));
@@ -876,26 +890,27 @@ public class TestBidirToOneEdit {
     // notify
     $bidirToOneEdit.setGoal(goal2);
     $bidirToOneEdit.storeInitialStatePublic();
-    $bidirToOneEdit.notifyListenersPublic();
+    $bidirToOneEdit.perform();
+//    $bidirToOneEdit.notifyListenersPublic();
     // check whether the listener of the beed is notified
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getEdit(), $bidirToOneEdit);
-    assertEquals($listener3.$event.getOldValue(), goal2);
-    assertEquals($listener3.$event.getNewValue(), goal1);
+    assertEquals($listener3.$event.getOldValue(), goal1);
+    assertEquals($listener3.$event.getNewValue(), goal2);
     assertEquals($listener3.$event.getSource(), $target);
     // check whether the listener of goal1 is notified
     assertNotNull($listener4.$event);
     assertEquals($listener4.$event.getEdit(), $bidirToOneEdit);
-    assertTrue($listener4.$event.getAddedElements().size() == 1);
-    assertTrue($listener4.$event.getAddedElements().contains($target.getOwner()));
-    assertTrue($listener4.$event.getRemovedElements().isEmpty());
+    assertTrue($listener4.$event.getAddedElements().isEmpty());
+    assertEquals(1, $listener4.$event.getRemovedElements().size());
+    assertTrue($listener4.$event.getRemovedElements().contains($target.getOwner()));
     assertEquals($listener4.$event.getSource(), goal1);
     // check whether the listener of goal2 is notified
     assertNotNull($listener5.$event);
     assertEquals($listener5.$event.getEdit(), $bidirToOneEdit);
-    assertTrue($listener5.$event.getAddedElements().isEmpty());
-    assertTrue($listener5.$event.getRemovedElements().size() == 1);
-    assertTrue($listener5.$event.getRemovedElements().contains($target.getOwner()));
+    assertEquals(1, $listener5.$event.getAddedElements().size());
+    assertTrue($listener5.$event.getAddedElements().contains($target.getOwner()));
+    assertTrue($listener5.$event.getRemovedElements().isEmpty());
     assertEquals($listener5.$event.getSource(), goal2);
   }
 
@@ -972,17 +987,19 @@ public class TestBidirToOneEdit {
 
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
-    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $bidirToOneEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $bidirToOneEdit);
-    assertEquals(createdEvent.getOldValue(), null);
-    assertEquals(createdEvent.getNewValue(), null);
-    assertEquals(createdEvent.getSource(), $target);
+    // can't create event before being performed
+    assertEquals(State.NOT_YET_PERFORMED, $bidirToOneEdit.getState());
+//    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $bidirToOneEdit.createEvent();
+//    assertEquals(createdEvent.getEdit(), $bidirToOneEdit);
+//    assertEquals(createdEvent.getOldValue(), null);
+//    assertEquals(createdEvent.getNewValue(), null);
+//    assertEquals(createdEvent.getSource(), $target);
     // perform
     BidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
     $bidirToOneEdit.setGoal(goal);
     $bidirToOneEdit.perform();
     // create event
-    createdEvent = $bidirToOneEdit.createEvent();
+    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $bidirToOneEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $bidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);

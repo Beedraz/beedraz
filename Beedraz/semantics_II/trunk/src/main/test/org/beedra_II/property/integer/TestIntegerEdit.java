@@ -233,7 +233,7 @@ public class TestIntegerEdit {
   }
 
   @Test
-  // correct begin-state, edit is no change, so validity listeners are not removed, listeners of the beed are not notified
+  // correct begin-state, edit is no change, so validity listeners are removed, listeners of the beed are not notified
   public void perform6() {
     try {
       // add listener to beed
@@ -248,9 +248,9 @@ public class TestIntegerEdit {
       // perform
       $integerEdit.setGoal(null);
       $integerEdit.perform();
-      // listeners are not removed
-      assertTrue($integerEdit.isValidityListener($listener1));
-      assertTrue($integerEdit.isValidityListener($listener2));
+      // listeners are removed
+      assertFalse($integerEdit.isValidityListener($listener1));
+      assertFalse($integerEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
     }
@@ -698,17 +698,18 @@ public class TestIntegerEdit {
 
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
-    IntegerEvent createdEvent = $integerEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $integerEdit);
-    assertEquals(createdEvent.getOldValue(), null);
-    assertEquals(createdEvent.getNewValue(), null);
-    assertEquals(createdEvent.getSource(), $target);
+    assertEquals(State.NOT_YET_PERFORMED, $integerEdit.getState());
+//    IntegerEvent createdEvent = $integerEdit.createEvent();
+//    assertEquals(createdEvent.getEdit(), $integerEdit);
+//    assertEquals(createdEvent.getOldValue(), null);
+//    assertEquals(createdEvent.getNewValue(), null);
+//    assertEquals(createdEvent.getSource(), $target);
     // perform
     Integer goal = 1;
     $integerEdit.setGoal(goal);
     $integerEdit.perform();
     // create event
-    createdEvent = $integerEdit.createEvent();
+    IntegerEvent createdEvent = $integerEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $integerEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);

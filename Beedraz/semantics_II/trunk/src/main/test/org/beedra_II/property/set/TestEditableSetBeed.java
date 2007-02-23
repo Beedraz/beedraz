@@ -68,7 +68,18 @@ public class TestEditableSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $owner = new MyBeanBeed();
+    $editableSetBeed = new EditableSetBeed<Integer>($owner);
+    $addedElements = new HashSet<Integer>();
+    $removedElements = new HashSet<Integer>();
+    $setEdit = new SetEdit<Integer>($editableSetBeed);
+    $setEdit.perform();
+    $event1 =
+      new SetEvent<Integer, SetEdit<Integer>>($editableSetBeed, $addedElements, $removedElements, $setEdit);
+    $listener1 = new PropagatedEventListener();
+    $listener2 = new PropagatedEventListener();
+    $listener3 = new StubEditableSetBeedListener();
+    $listener4 = new StubEditableSetBeedListener();
   }
 
   @After
@@ -76,17 +87,16 @@ public class TestEditableSetBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
-  private EditableSetBeed<Integer> $editableSetBeed = new EditableSetBeed<Integer>($owner);
-  private Set<Integer> $addedElements = new HashSet<Integer>();
-  private Set<Integer> $removedElements = new HashSet<Integer>();
-  private SetEdit<Integer> $setEdit = new SetEdit<Integer>($editableSetBeed);
-  private SetEvent<Integer, SetEdit<Integer>> $event1 =
-    new SetEvent<Integer, SetEdit<Integer>>($editableSetBeed, $addedElements, $removedElements, $setEdit);
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
-  private StubEditableSetBeedListener $listener3 = new StubEditableSetBeedListener();
-  private StubEditableSetBeedListener $listener4 = new StubEditableSetBeedListener();
+  private AggregateBeed $owner;
+  private EditableSetBeed<Integer> $editableSetBeed;
+  private Set<Integer> $addedElements;
+  private Set<Integer> $removedElements;
+  private SetEdit<Integer> $setEdit;
+  private SetEvent<Integer, SetEdit<Integer>> $event1;
+  private PropagatedEventListener $listener1;
+  private PropagatedEventListener $listener2;
+  private StubEditableSetBeedListener $listener3;
+  private StubEditableSetBeedListener $listener4;
 
   @Test
   public void constructor() {
@@ -102,8 +112,6 @@ public class TestEditableSetBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
   }
@@ -169,16 +177,8 @@ public class TestEditableSetBeed {
   }
 
   @Test
-  public void createInitialEvent1() {
-    assertTrue("the implementation of this method calls the constructor " +
-        "of SetEvent; the last parameter of this constructor should be " +
-        "effective according to the documentation", false);
-  }
-
-  @Test
-  public void createInitialEvent2() {
+  public void createInitialEvent() {
     SetEvent<Integer, SetEdit<Integer>> initialEvent = $editableSetBeed.createInitialEvent();
-    assertTrue(initialEvent instanceof SetEvent); // @mudo enough?
     assertEquals(initialEvent.getSource(), $editableSetBeed);
     assertEquals(initialEvent.getAddedElements(), $editableSetBeed.get());
     assertEquals(initialEvent.getRemovedElements(), new HashSet<Integer>());

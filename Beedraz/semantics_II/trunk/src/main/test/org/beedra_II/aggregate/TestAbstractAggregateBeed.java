@@ -20,7 +20,6 @@ package org.beedra_II.aggregate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.integer.EditableIntegerBeed;
@@ -91,7 +90,24 @@ public class TestAbstractAggregateBeed {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $aggregateBeed1 = new StubAbstractAggregateBeed();
+    $aggregateBeed2 = new StubAbstractAggregateBeed();
+
+    $beed1 = new MyEditableIntegerBeed($aggregateBeed1);
+//    $beed2 = new MyIntegerSumBeed($subject);
+    $beed3 = new MyEditableIntegerBeed($aggregateBeed2);
+
+    $edit1 = new IntegerEdit($beed1);
+    $edit1.perform();
+    $event1 = new IntegerEvent($beed1, new Integer(1), new Integer(11), $edit1);
+//    $edit2 = new IntegerEdit($beed2);
+//    $event2 = new IntegerEvent($beed2, new Integer(2), new Integer(22), $edit2);
+    $edit3 = new IntegerEdit($beed3);
+    $edit3.perform();
+    $event3 = new IntegerEvent($beed3, new Integer(3), new Integer(33), $edit3);
+
+    $listener1 = new PropagatedEventListener();
+    $listener2 = new PropagatedEventListener();
   }
 
   @After
@@ -99,22 +115,22 @@ public class TestAbstractAggregateBeed {
     // NOP
   }
 
-  private AbstractAggregateBeed $aggregateBeed1 = new StubAbstractAggregateBeed();
-  private AbstractAggregateBeed $aggregateBeed2 = new StubAbstractAggregateBeed();
+  private AbstractAggregateBeed $aggregateBeed1;
+  private AbstractAggregateBeed $aggregateBeed2;
 
-  private MyEditableIntegerBeed $beed1 = new MyEditableIntegerBeed($aggregateBeed1);
-//  private MyIntegerSumBeed $beed2 = new MyIntegerSumBeed($subject);
-  private MyEditableIntegerBeed $beed3 = new MyEditableIntegerBeed($aggregateBeed2);
+  private MyEditableIntegerBeed $beed1;
+//  private MyIntegerSumBeed $beed2;
+  private MyEditableIntegerBeed $beed3;
 
-  private IntegerEdit $edit1 = new IntegerEdit($beed1);
-  private IntegerEvent $event1 = new IntegerEvent($beed1, new Integer(1), new Integer(11), $edit1);
-//  private IntegerEdit $edit2 = new IntegerEdit($beed2);
-//  private IntegerEvent $event2 = new IntegerEvent($beed2, new Integer(2), new Integer(22), $edit2);
-  private IntegerEdit $edit3 = new IntegerEdit($beed3);
-  private IntegerEvent $event3 = new IntegerEvent($beed3, new Integer(3), new Integer(33), $edit3);
+  private IntegerEdit $edit1;
+  private IntegerEvent $event1;
+//  private IntegerEdit $edit2;
+//  private IntegerEvent $event2;
+  private IntegerEdit $edit3;
+  private IntegerEvent $event3;
 
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
+  private PropagatedEventListener $listener1;
+  private PropagatedEventListener $listener2;
 
   @Test
   public void isAggregateElement() {
@@ -135,8 +151,6 @@ public class TestAbstractAggregateBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
     // reset the listeners
@@ -157,8 +171,6 @@ public class TestAbstractAggregateBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertTrue($listener1.$event instanceof PropagatedEvent);
-    assertTrue($listener2.$event instanceof PropagatedEvent);
     assertEquals($event3, $listener1.$event.getCause());
     assertEquals($event3, $listener1.$event.getCause());
   }

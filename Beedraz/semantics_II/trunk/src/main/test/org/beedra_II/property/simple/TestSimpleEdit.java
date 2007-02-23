@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -42,7 +43,7 @@ import org.junit.Test;
 public class TestSimpleEdit {
 
   public class MySimpleEdit
-       extends SimpleEdit<Integer, MyEditableIntegerBeed, IntegerEvent> {
+       extends SimplePropertyEdit<Integer, MyEditableIntegerBeed, IntegerEvent> {
 
     public MySimpleEdit(MyEditableIntegerBeed target) {
       super(target);
@@ -51,7 +52,7 @@ public class TestSimpleEdit {
     /*
      * Made public for testing reasons.
      */
-    public void checkValidityPublic() {
+    public void checkValidityPublic() throws IllegalEditException {
       super.checkValidity();
     }
 
@@ -268,7 +269,7 @@ public class TestSimpleEdit {
   }
 
   @Test
-  // correct begin-state, edit is no change, so validity listeners are not removed, listeners of the beed are not notified
+  // correct begin-state, edit is no change, so validity listeners are removed, listeners of the beed are not notified
   public void perform6() {
     try {
       // add listener to beed
@@ -283,9 +284,9 @@ public class TestSimpleEdit {
       // perform
       $simpleEdit.setGoal(null);
       $simpleEdit.perform();
-      // listeners are not removed
-      assertTrue($simpleEdit.isValidityListener($listener1));
-      assertTrue($simpleEdit.isValidityListener($listener2));
+      // listeners are removed
+      assertFalse($simpleEdit.isValidityListener($listener1));
+      assertFalse($simpleEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
     }
@@ -719,7 +720,7 @@ public class TestSimpleEdit {
   }
 
   @Test
-  public void checkValidity() throws EditStateException {
+  public void checkValidity() throws EditStateException, IllegalEditException {
     // add validity listeners
     $simpleEdit.addValidityListener($listener1);
     $simpleEdit.addValidityListener($listener2);
@@ -740,7 +741,13 @@ public class TestSimpleEdit {
     assertTrue($listener2.isEmpty());
     // change validity
     $simpleEdit.setGoal(-1);
-    $simpleEdit.checkValidityPublic();
+    try {
+      $simpleEdit.checkValidityPublic();
+      fail();
+    }
+    catch (IllegalEditException ieExc) {
+      // NOP;
+    }
     // validity has changed, so validity listeners are notified
     assertFalse($simpleEdit.isValid());
     assertTrue($simpleEdit.isValidityListener($listener1));

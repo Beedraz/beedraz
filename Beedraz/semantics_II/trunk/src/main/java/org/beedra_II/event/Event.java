@@ -73,8 +73,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public abstract class Event {
 
   /**
-   * @pre source != null;
-   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  source != null;
+   * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   *
    * @post getSource() == source;
    * @post getEdit() == edit;
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;

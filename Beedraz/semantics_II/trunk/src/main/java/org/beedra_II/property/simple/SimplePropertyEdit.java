@@ -22,7 +22,7 @@ import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 
 import org.beedra.util_I.Comparison;
-import org.beedra_II.edit.AbstractEdit;
+import org.beedra_II.edit.AbstractSimpleEdit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -37,16 +37,16 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class SimpleEdit<_Type_,
-                                 _Target_ extends EditableSimplePropertyBeed<_Type_, _Event_>,
-                                 _Event_ extends Event<?>>
-    extends AbstractEdit<_Target_, _Event_> {
+public abstract class SimplePropertyEdit<_Type_,
+                                         _Target_ extends EditableSimplePropertyBeed<_Type_, _Event_>,
+                                         _Event_ extends Event<?>>
+    extends AbstractSimpleEdit<_Target_, _Event_> {
 
   /**
    * @pre target != null;
    * @post getTarget() == target;
    */
-  public SimpleEdit(_Target_ target) {
+  public SimplePropertyEdit(_Target_ target) {
     super(target);
   }
 
@@ -65,7 +65,7 @@ public abstract class SimpleEdit<_Type_,
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $goal = goalValue;
-    checkValidity();
+    recalculateValidity();
   }
 
   private _Type_ $goal;
@@ -93,6 +93,7 @@ public abstract class SimpleEdit<_Type_,
     return getState() == DONE ? getGoal() : getInitial();
   }
 
+  // generalize with event
   @Override
   protected final boolean isAcceptable() {
     return getTarget().isAcceptable(getGoal());
@@ -107,7 +108,7 @@ public abstract class SimpleEdit<_Type_,
   }
 
   @Override
-  protected final boolean isChange() {
+  public final boolean isChange() {
     return ! Comparison.equalsWithNull(getInitial(), getGoal());
   }
 
@@ -144,8 +145,8 @@ public abstract class SimpleEdit<_Type_,
   }
 
   @Override
-  protected final void fireEvent(_Event_ event) {
-    getTarget().fireEvent(event);
+  protected final void fireEvent(Event<?> event) {
+    getTarget().fireEvent((_Event_)event);
   }
 
 //  @Override

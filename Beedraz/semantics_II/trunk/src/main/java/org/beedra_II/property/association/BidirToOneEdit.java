@@ -22,7 +22,7 @@ import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.UNDONE;
 
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.property.simple.SimpleEdit;
+import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -37,7 +37,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class BidirToOneEdit<_One_ extends BeanBeed,
                             _Many_ extends BeanBeed>
-    extends SimpleEdit<BidirToManyBeed<_One_, _Many_>, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
+    extends SimplePropertyEdit<BidirToManyBeed<_One_, _Many_>, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre  target != null;

@@ -87,5 +87,8 @@ public class EditableSetBeed<_Element_>
     return new SetEvent<_Element_, SetEdit<_Element_>>(this, get(), null, null);
   }
 
+  public boolean isAcceptable(Set<_Element_> elementsToAdd, Set<_Element_> elementsToRemove) {
+    return true;
+  }
 }
 

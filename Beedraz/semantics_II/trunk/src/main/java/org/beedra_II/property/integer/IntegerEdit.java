@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
-import org.beedra_II.property.simple.SimpleEdit;
+import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -29,7 +29,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class IntegerEdit
-    extends SimpleEdit<Integer, EditableIntegerBeed, IntegerEvent> {
+    extends SimplePropertyEdit<Integer, EditableIntegerBeed, IntegerEvent> {
 
   /**
    * @pre  target != null;

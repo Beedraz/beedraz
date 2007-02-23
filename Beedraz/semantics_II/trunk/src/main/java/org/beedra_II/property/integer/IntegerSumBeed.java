@@ -20,6 +20,7 @@ package org.beedra_II.property.integer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.beedra.util_I.Comparison;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
@@ -157,46 +158,46 @@ public class IntegerSumBeed
    *          : true;
    */
   public final void removeTerm(IntegerBeed term) {
-    synchronized (term) { // TODO is this correct?
-      TermListener termListener = $terms.get(term);
-      if (termListener != null) {
-        assert getNbOccurrences(term) > 0;
-        if (getNbOccurrences(term) > 1) {
-          termListener.decreaseNbOccurrences();
-        }
-        else {
-          assert getNbOccurrences(term) == 1;
-          term.removeListener(termListener);
-          $terms.remove(term);
-        }
-        // recalculate(); optimization
-        Integer oldValue = $value;
-        /**
-         * term.get() == null && getNbOccurrences() == 0  ==>  recalculate
-         * term.get() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-         * term.get() != null && $value != null           ==>  new.$value == old.$value - term.get()
-         * term.get() != null && $value == null           ==>  new.$value == old.$value == null
-         */
-        if (term.get() == null && getNbOccurrences(term) == 0) {
-            /* $value was null because of this term. After the remove,
-             * the value can be null because of another term, or
-             * can be some value: we can't know, recalculate completely
-             */
-           recalculate();
-        }
-        else if ($value != null) {
-          // since $value is effective, all terms are effective
-          // the new value of the sum beed is the old value minus the value of the removed term
-          assert term.get() != null;
-          $value -= term.get();
-        }
-        // else: in all other cases, the value of $value is null, and stays null
-        fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
-        /* else, term != null, but $value is null; this means there is another term that is null,
-           and removing this term won't change that */
+    TermListener termListener = $terms.get(term);
+    if (termListener != null) {
+      assert getNbOccurrences(term) > 0;
+      if (getNbOccurrences(term) > 1) {
+        termListener.decreaseNbOccurrences();
       }
-      // else, term was not one of our terms: do nothing
+      else {
+        assert getNbOccurrences(term) == 1;
+        term.removeListener(termListener);
+        $terms.remove(term);
+      }
+      // recalculate(); optimization
+      Integer oldValue = $value;
+      /*
+       * term.get() == null && getNbOccurrences() == 0  ==>  recalculate
+       * term.get() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+       * term.get() != null && $value != null           ==>  new.$value == old.$value - term.get()
+       * term.get() != null && $value == null           ==>  new.$value == old.$value == null
+       */
+      if (term.get() == null && getNbOccurrences(term) == 0) {
+          /* $value was null because of this term. After the remove,
+           * the value can be null because of another term, or
+           * can be some value: we can't know, recalculate completely
+           */
+         recalculate();
+      }
+      else if ($value != null) {
+        // since $value is effective, all terms are effective
+        // the new value of the sum beed is the old value minus the value of the removed term
+        assert term.get() != null;
+        $value -= term.get();
+      }
+      // else: in all other cases, the value of $value is null, and stays null
+      if (! Comparison.equalsWithNull(oldValue, $value)) {
+        fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
+      }
+      /* else, term != null, but $value is null; this means there is another term that is null,
+         and removing this term won't change that */
     }
+    // else, term was not one of our terms: do nothing
   }
 
   /**

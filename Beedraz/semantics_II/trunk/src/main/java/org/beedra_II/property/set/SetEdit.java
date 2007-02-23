@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.property.set;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra.util_I.CollectionUtil.intersection;
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 
@@ -26,8 +26,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.beedra_II.edit.AbstractEdit;
+import org.beedra_II.edit.AbstractSimpleEdit;
 import org.beedra_II.edit.EditStateException;
+import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -89,7 +90,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class SetEdit<_Element_>
-    extends AbstractEdit<EditableSetBeed<_Element_>, SetEvent<_Element_, SetEdit<_Element_>>> {
+    extends AbstractSimpleEdit<EditableSetBeed<_Element_>, SetEvent<_Element_, SetEdit<_Element_>>> {
 
   /**
    * @pre  target != null;
@@ -156,7 +157,7 @@ public class SetEdit<_Element_>
   }
 
   @Override
-  protected final boolean isChange() {
+  public final boolean isChange() {
     return ! ($elementsToAdd.isEmpty() && $elementsToRemove.isEmpty());
   }
 
@@ -202,15 +203,15 @@ public class SetEdit<_Element_>
    */
   @Override
   protected void unperformance() {
-    assert getTarget().get().contains(getElementsToAdd());;
+    assert getTarget().get().contains(getElementsToAdd());
     // order irrelevant because sets are disjunct
     getTarget().removeElements($elementsToAdd);
     getTarget().addElements($elementsToRemove);
   }
 
   @Override
-  protected final void fireEvent(SetEvent<_Element_, SetEdit<_Element_>> event) {
-    getTarget().fireEvent(event);
+  protected final void fireEvent(Event<?> event) {
+    getTarget().fireEvent((SetEvent<_Element_, SetEdit<_Element_>>)event);
   }
 
   /**
@@ -265,6 +266,11 @@ public class SetEdit<_Element_>
   protected void toStringGoalInitial(StringBuffer sb, int level) {
     sb.append(indent(level + 1) + "elements to add: " + getElementsToAdd() + "\n");
     sb.append(indent(level + 1) + "elements to remove: " + getElementsToRemove() + "\n");
+  }
+
+  @Override
+  protected final boolean isAcceptable() {
+    return getTarget().isAcceptable($elementsToAdd, $elementsToRemove);
   }
 
 }

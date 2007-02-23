@@ -41,7 +41,8 @@ public final class IntegerEvent extends OldNewEvent<Integer, IntegerEdit> {
 
   /**
    * @pre source != null;
-   * @pre edit != null;
+   * @pre (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+   * @pre (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
    * @post getSource() == source;
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);

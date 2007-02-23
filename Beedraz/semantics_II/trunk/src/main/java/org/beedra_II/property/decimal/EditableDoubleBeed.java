@@ -29,6 +29,14 @@ public class EditableDoubleBeed
     super(owner);
   }
 
+  /**
+   * @post  result != null;
+   * @post  result.getSource() == this;
+   * @post  result.getOldValue() == null;
+   * @post  result.getNewValue() == get();
+   * @post  result.getEdit() == null;
+   * @post  result.getEditState() == null;
+   */
   @Override
   protected DoubleEvent createInitialEvent() {
     return new DoubleEvent(this, null, get(), null);

@@ -80,6 +80,13 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
 
+  /**
+   * @post  result != null;
+   * @post  result.getAddedElements().equals(get());
+   * @post  result.getRemovedElements().isEmpty();
+   * @post  result.getEdit() == null;
+   * @post  result.getEditState() == null;
+   */
   @Override
   protected final SetEvent<_Many_> createInitialEvent() {
     return new SetEvent<_Many_>(this, $many, null, null); // event constructor copies set

@@ -234,9 +234,17 @@ public class DoubleSumBeed
 
   private Double $value = 0.0;
 
+  /**
+   * @post  result != null;
+   * @post  result.getSource() == this;
+   * @post  result.getOldValue() == null;
+   * @post  result.getNewValue() == get();
+   * @post  result.getEdit() == null;
+   * @post  result.getEditState() == null;
+   */
   @Override
   protected final DoubleEvent createInitialEvent() {
-    return new DoubleEvent(this, null, $value, null);
+    return new DoubleEvent(this, null, get(), null);
   }
 
 }

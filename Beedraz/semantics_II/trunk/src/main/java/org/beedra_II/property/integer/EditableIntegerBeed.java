@@ -21,6 +21,14 @@ public class EditableIntegerBeed
     super(owner);
   }
 
+  /**
+   * @post  result != null;
+   * @post  result.getSource() == this;
+   * @post  result.getOldValue() == null;
+   * @post  result.getNewValue() == get();
+   * @post  result.getEdit() == null;
+   * @post  result.getEditState() == null;
+   */
   @Override
   protected IntegerEvent createInitialEvent() {
     return new IntegerEvent(this, null, get(), null);

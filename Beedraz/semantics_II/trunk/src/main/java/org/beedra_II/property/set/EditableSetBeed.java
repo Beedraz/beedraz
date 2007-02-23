@@ -82,6 +82,13 @@ public class EditableSetBeed<_Element_>
     fireChangeEvent(event);
   }
 
+  /**
+   * @post  result != null;
+   * @post  result.getAddedElements().equals(get());
+   * @post  result.getRemovedElements().isEmpty();
+   * @post  result.getEdit() == null;
+   * @post  result.getEditState() == null;
+   */
   @Override
   protected SetEvent<_Element_> createInitialEvent() {
     return new SetEvent<_Element_>(this, get(), null, null);

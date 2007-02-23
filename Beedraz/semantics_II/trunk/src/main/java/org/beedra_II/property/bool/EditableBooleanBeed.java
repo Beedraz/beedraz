@@ -21,6 +21,14 @@ public class EditableBooleanBeed
     super(owner);
   }
 
+  /**
+   * @post  result != null;
+   * @post  result.getSource() == this;
+   * @post  result.getOldValue() == null;
+   * @post  result.getNewValue() == get();
+   * @post  result.getEdit() == null;
+   * @post  result.getEditState() == null;
+   */
   @Override
   protected BooleanEvent createInitialEvent() {
     return new BooleanEvent(this, null, get(), null);

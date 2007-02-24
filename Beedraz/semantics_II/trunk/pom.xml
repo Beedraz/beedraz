@@ -1,12 +1,63 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<!--
+Copyright 2007 - $Date$ by the authors mentioned below.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- The Basics -->
-  <groupId>ppw-libraries</groupId>
-  <artifactId>Beedra</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <properties>
+    <beedra.bareArtifactName>beedra-semantics</beedra.bareArtifactName>
+    <beedra.markVersion>II</beedra.markVersion>
+  </properties>
+
+  <!-- General information -->
+  <groupId>org.beedra</groupId>
+  <artifactId>${beedra.bareArtifactName}-${beedra.markVersion}</artifactId>
   <packaging>jar</packaging>
+
+  <name>Beedra Semantics ${beedra.markVersion}</name>
+  <description>Beedra is a library for easy development of semantic structures.
+    Easy peripheral code is possible with secondary libraries.</description>
+  <inceptionYear>1998</inceptionYear>
+  <organization>
+    <name>beedra.org</name>
+    <url>http://www.beedra.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <url>http://www.beedra.org/${pom.artifactId}/${pom.version}/</url>
+
+  <version>1.0-SNAPSHOT</version>
+
+  <scm>
+    <!-- no anonymous access possible
+    <connection />
+    -->
+    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:Beedra</developerConnection>
+    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/Beedra/</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -24,24 +75,283 @@
 
   <!-- Build Settings -->
   <build>
-    <testSourceDirectory>src/main/test</testSourceDirectory>
+    <!--  also compile resources! needed for test -->
     <resources>
       <resource>
-        <directory>src/conf</directory>
-        <includes>
-          <include>*.properties</include>
-        </includes>
-        <filtering>false</filtering>
+        <directory>src/main/resources</directory>
       </resource>
       <resource>
-        <directory>src/resources</directory>
+        <directory>${ppw.javaSourceDirectory}</directory>
+        <!-- ${project.compileSourceRoots} doesn't work here, probably because that is a list or an array,
+             and not 1 directory -->
+        <includes>
+          <!-- add tlds to taglib jar -->
+          <include>*.tld</include>
+          <!-- add jsp-tags to taglib jar -->
+          <include>**/*.tagx</include>
+          <include>**/*.tag</include>
+          <include>**/*.usage</include>
+          <!-- copy all properties files for inclusion in jar -->
+          <include>**/*.properties</include>
+          <!-- add xml files to jar -->
+          <include>**/*.xml</include>
+          <!-- add betwixt files to jar -->
+          <include>**/*.betwixt</include>
+          <!-- add text files to jar -->
+          <include>**/*.txt</include>
+        </includes>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerVersion>1.5</compilerVersion>
+          <source>1.5</source>
+          <target>1.5</target>
+          <debug>true</debug>
+          <showDeprecation>true</showDeprecation>
+          <showWarnings>true</showWarnings>
+          <optimize>false</optimize>
+          <!-- to make debugging possible;
+               should be set to true for a release with a profile -->
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
+  <!-- Reporting settings -->
   <reporting>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>surefire-report-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <configuration>
+          <multipleLineComments>true</multipleLineComments>
+          <tags>
+            <tag>@mudo</tag>
+            <tag>@todo</tag>
+            <tag>@idea</tag>
+            <tag>MUDO</tag>
+            <tag>TODO</tag>
+            <tag>IDEA</tag>
+            <tag>XXX</tag>
+          </tags>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <!-- currently requires build from source from svn https://svn.codehaus.org/mojo/trunk/mojo/jdepend-maven-plugin;
+              checkout and do <kbd>mvn install</kbd> -->
+        <!-- jdepend-2-dot exists! -->
+        <!-- there is currently no way to provide jdepend with configuration (properties file); for the time being, it
+             is stored in ${basedir}/toolProperties, but not used -->
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changes-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>1.5</source> <!-- necessary to enable assertions -->
+          <author>true</author> <!-- show author tags -->
+          <protected>true</protected> <!-- only show public and protected stuff -->
+          <package>false</package>
+          <private>false</private>
+          <breakiterator>true</breakiterator> <!-- use new algorithm to determine end of first sentence -->
+          <stylesheet>maven</stylesheet>
+          <docfilessubdirs>true</docfilessubdirs> <!-- enable deep copy of all doc-files subdirectories ... -->
+          <excludedocfilessubdir>CVS</excludedocfilessubdir> <!-- ... but don't copy CVS files -->
+          <linksource>true</linksource> <!-- HTML version of each source file -->
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+          </links>
+          <!-- no overview documentation in this project yet
+          <offlineLinks>
+          </offlineLinks>
+          <overview></overview>
+          -->
+          <tags> <!-- order defines order in which tags are shown -->
+            <tag>
+              <name>note</name>
+              <placement>a</placement>
+              <head>Note:</head>
+            </tag>
+            <tag>
+              <name>deprecated</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>protected</name>
+              <placement>a</placement>
+              <head>Information for Subtype Implementors:</head>
+            </tag>
+            <tag>
+              <name>invar</name>
+              <placement>tf</placement>
+              <head>Invariants:</head>
+            </tag>
+            <tag>
+              <name>basic</name>
+              <placement>cm</placement>
+              <head>Basic inspector</head>
+            </tag>
+            <tag>
+              <name>param</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>pre</name>
+              <placement>cm</placement>
+              <head>Preconditions:</head>
+            </tag>
+            <tag>
+              <name>post</name>
+              <placement>cm</placement>
+              <head>Postconditions:</head>
+            </tag>
+            <tag>
+              <name>return</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>result</name>
+              <placement>cm</placement>
+              <head>Result:</head>
+            </tag>
+            <tag>
+              <name>throws</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>except</name>
+              <placement>cm</placement>
+              <head>Also Throws:</head>
+            </tag>
+            <tag>
+              <name>init</name>
+              <placement>m</placement>
+              <head>Initially:</head>
+            </tag>
+            <tag>
+              <name>protected.invar</name>
+              <placement>tf</placement>
+              <head>Protected Invariants:</head>
+            </tag>
+            <tag>
+              <name>protected.post</name>
+              <placement>cm</placement>
+              <head>Protected Postconditions:</head>
+            </tag>
+            <tag>
+              <name>protected.result</name>
+              <placement>cm</placement>
+              <head>Protected Result:</head>
+            </tag>
+            <tag>
+              <name>see</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>author</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>annotation</name>
+              <placement>a</placement>
+              <head>Annotations:</head>
+            </tag>
+            <tag>
+              <name>version</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>since</name>
+              <!-- we want the standard tag here -->
+            </tag>
+            <tag>
+              <name>mudo</name>
+              <placement>a</placement>
+              <head>Must do:</head>
+            </tag>
+            <tag>
+              <name>todo</name>
+              <placement>a</placement>
+              <head>To do:</head>
+            </tag>
+            <tag>
+              <name>idea</name>
+              <placement>a</placement>
+              <head>Idea:</head>
+            </tag>
+          </tags>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <!-- there currently seems to be no way to point pmd to a configuration file -->
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changelog-maven-plugin</artifactId>
+        <!-- can also send announcement mails -->
+        <!-- can also create report from jira -->
+        <reportSets>
+          <reportSet>
+            <id>allReports</id>
+            <configuration>
+              <type>date</type>
+              <dates>
+                <date implementation="java.lang.String">1990-01-01</date>
+                <!-- since before Java exists: show all -->
+              </dates>
+              <dateFormat>yyyy-MM-dd</dateFormat>
+            </configuration>
+            <reports>
+              <report>changelog</report>
+              <report>dev-activity</report>
+              <report>file-activity</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
 <!--
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <+-
+  This plugin is usefull when we have different version to compare, currently
+  we only have 1 version in CVS. This plugin needs to be tested when we have
+  at least 2 version in CVS.
+        <report>maven-jdiff-plugin</report>
+-+>
+    <report>maven-doccheck-plugin</report>
+    <plugins>
+ NullPointerException
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <excludes>**/_Contract_*.java</excludes>
+          <propertiesFile>toolProperties/checkstyle-ppw.xml</propertiesFile>
+          <suppressionsFile>toolProperties/checkstyle-suppressions.xml</suppressionsFile>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>maven</groupId>
         <artifactId>maven-license-plugin</artifactId>
@@ -114,22 +424,6 @@
   </reporting>
 
   <!-- More Project Information -->
-  <name>Beedra</name>
-  <description>Todo</description>
-  <url>http://www.peopleware.be/projects/Java/${pom.artifactId}/</url>
-  <inceptionYear>2007</inceptionYear>
-  <licenses>
-    <license>
-      <name>Copyright PeopleWare n.v.</name>
-      <url>http://www.peopleware.be/licenses/fullCopyright.html</url>
-      <distribution>repo</distribution>
-      <comments></comments>
-    </license>
-  </licenses>
-  <organization>
-    <name>PeopleWare n.v.</name>
-    <url>http://www.peopleware.be</url>
-  </organization>
   <developers>
     <developer>
       <name>Jan Dockx</name>
@@ -158,16 +452,33 @@
   <contributors>
   </contributors>
 
+
+  <repositories>
+    <repository>
+      <id>ppw-missing</id>
+      <name>PeopleWare Repository of Missing Artifacts, via scp</name>
+      <url>https://cvs.peopleware.be/projects/maven/maven2/repository</url>
+    </repository>
+    <repository>
+      <id>ppw-libraries</id>
+      <name>PeopleWare Libraries Repository, via scp</name>
+      <url>https://cvs.peopleware.be/projects/JavaLibraries/maven2-repository</url>
+    </repository>
+  </repositories>
+
+<!--
+  <pluginRepositories>
+    <pluginRepository>
+      <id>pluginSnapshots</id>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+-->
   <!-- Environment Settings -->
 <!--
   <issueManagement>...</issueManagement>
   <ciManagement>...</ciManagement>
   <mailingLists>...</mailingLists>
--->
-  <scm>
-    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/Java/repository:${pom.artifactId}</developerConnection>
-  </scm>
-<!--
   <prerequisites>...</prerequisites>
   <repositories>...</repositories>
   <pluginRepositories>...</pluginRepositories>

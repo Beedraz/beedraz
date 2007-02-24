@@ -81,7 +81,7 @@ limitations under the License.
         <directory>src/main/resources</directory>
       </resource>
       <resource>
-        <directory>${ppw.javaSourceDirectory}</directory>
+        <directory>${beedra.javaSourceDirectory}</directory>
         <!-- ${project.compileSourceRoots} doesn't work here, probably because that is a list or an array,
              and not 1 directory -->
         <includes>
@@ -118,6 +118,25 @@ limitations under the License.
                should be set to true for a release with a profile -->
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.3-SNAPSHOT</version>
+        <configuration>
+          <argLine>-ea</argLine>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+           </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -137,13 +156,13 @@ limitations under the License.
         <configuration>
           <multipleLineComments>true</multipleLineComments>
           <tags>
-            <tag>@mudo</tag>
-            <tag>@todo</tag>
-            <tag>@idea</tag>
             <tag>MUDO</tag>
-            <tag>TODO</tag>
-            <tag>IDEA</tag>
+            <tag>@mudo</tag>
             <tag>XXX</tag>
+            <tag>TODO</tag>
+            <tag>@todo</tag>
+            <tag>IDEA</tag>
+            <tag>@idea</tag>
           </tags>
         </configuration>
       </plugin>
@@ -466,14 +485,22 @@ limitations under the License.
     </repository>
   </repositories>
 
-<!--
   <pluginRepositories>
+    <pluginRepository>
+      <id>ApacheMaven2PluginSnapshots</id>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+<!--
     <pluginRepository>
       <id>pluginSnapshots</id>
       <url>http://snapshots.maven.codehaus.org/maven2</url>
     </pluginRepository>
-  </pluginRepositories>
 -->
+  </pluginRepositories>
+
   <!-- Environment Settings -->
 <!--
   <issueManagement>...</issueManagement>

@@ -17,9 +17,22 @@ limitations under the License.
 package org.beedra_II.bean;
 
 
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+
 public class TestAbstractBeanBeed {
 
-  // NOP
+  /**
+   * This tests is here to make Maven 2 happy:
+   * a class here must have a test. We could also delete the class.
+   *
+   */
+  @Test
+  public void dummyTest() {
+    assertTrue(true);
+  }
 
 }
 

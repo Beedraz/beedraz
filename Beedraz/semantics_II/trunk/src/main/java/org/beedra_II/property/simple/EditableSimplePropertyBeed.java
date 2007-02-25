@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
+import static org.beedra.util_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
@@ -85,11 +87,18 @@ public abstract class EditableSimplePropertyBeed<_Type_,
     fireChangeEvent(editEvent);
   }
 
-//  void fireEdit(Edit<?> edit) {
-//    fireChangeEvent(createEvent(edit));
-//  }
-//
-//  protected abstract _Event_ createEvent(Edit<?> edit);
+  private final static String NULL_STRING = "null";
+
+  @Override
+  protected String otherToStringInformation() {
+    return get() == null ? NULL_STRING : get().toString();
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "value: \"" + otherToStringInformation() + "\"\n");
+  }
 
 }
 

@@ -51,7 +51,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   protected boolean isAcceptable() {
     return super.isAcceptable() &&
            ( getGoal() == null ||
-             getGoal().isAcceptable(getTarget()) );
+             getGoal().isAcceptable(getTarget().getOwner()) );
   }
 
   /**

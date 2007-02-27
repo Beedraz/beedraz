@@ -56,7 +56,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   /**
    * @default  true;
    */
-  public boolean isAcceptable(EditableBidirToOneBeed<_One_, _Many_> goal) {
+  public boolean isAcceptable(_Many_ goal) {
     return true;
   }
 

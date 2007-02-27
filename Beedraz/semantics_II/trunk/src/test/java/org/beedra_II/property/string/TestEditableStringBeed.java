@@ -33,7 +33,6 @@ public class TestEditableStringBeed {
   public class MyEditableStringBeed extends EditableStringBeed {
     public MyEditableStringBeed(AggregateBeed owner) {
       super(owner);
-      // TODO Auto-generated constructor stub
     }
 
     /**

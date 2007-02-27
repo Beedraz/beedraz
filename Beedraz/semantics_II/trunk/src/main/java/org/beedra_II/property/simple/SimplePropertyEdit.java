@@ -95,7 +95,7 @@ public abstract class SimplePropertyEdit<_Type_,
 
   // generalize with event
   @Override
-  protected final boolean isAcceptable() {
+  protected boolean isAcceptable() {
     return getTarget().isAcceptable(getGoal());
   }
 

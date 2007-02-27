@@ -53,6 +53,13 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
     return (_One_)super.getOwner();
   }
 
+  /**
+   * @default  true;
+   */
+  public boolean isAcceptable(EditableBidirToOneBeed<_One_, _Many_> goal) {
+    return true;
+  }
+
   public final Set<_Many_> get() {
     return Collections.unmodifiableSet($many);
   }

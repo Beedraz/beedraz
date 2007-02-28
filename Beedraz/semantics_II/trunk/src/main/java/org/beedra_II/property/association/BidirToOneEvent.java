@@ -21,15 +21,13 @@ import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * {@link OldNewEvent} whose source is a {@link EditableBidirToOneBeed<_One_, _Many_>} and
+ * that carries a simple old and new value of type {@link BidirToManyBeed<_One_, _Many_>}.
  *
  * @author Jan Dockx
  *

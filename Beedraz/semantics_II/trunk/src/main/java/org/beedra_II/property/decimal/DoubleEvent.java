@@ -25,9 +25,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link DoubleBeed},
- * that carries a simple old and new value of type {@link Double},
- * and that references an edit of type {@link DoubleEdit}.
+ * {@link OldNewEvent} whose source is a {@link DoubleBeed} and
+ * that carries a simple old and new value of type {@link Double}.
  *
  * @author  Nele Smeets
  *

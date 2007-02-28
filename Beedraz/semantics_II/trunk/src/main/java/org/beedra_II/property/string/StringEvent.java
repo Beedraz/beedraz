@@ -17,15 +17,14 @@ limitations under the License.
 package org.beedra_II.property.string;
 
 
-import org.beedra_II.event.Event;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occurred in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * {@link OldNewEvent} whose source is a {@link StringBeed} and
+ * that carries a simple old and new value of type {@link String}.
  *
  * @author Jan Dockx
  *
@@ -54,7 +53,7 @@ public final class StringEvent extends OldNewEvent<String> {
   public StringEvent(StringBeed source,
                      String oldValue,
                      String newValue,
-                     StringEdit edit) {
+                     Edit<?> edit) {
     super(source, oldValue, newValue, edit);
   }
 

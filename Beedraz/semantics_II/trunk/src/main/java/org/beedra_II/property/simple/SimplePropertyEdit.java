@@ -103,12 +103,12 @@ public abstract class SimplePropertyEdit<_Type_,
    * @post Comparison.equalsWithNull(getTarget().get(), getInitial());
    */
   @Override
-  protected final void storeInitialState() {
+  protected void storeInitialState() {
     $initial = getTarget().get();
   }
 
   @Override
-  public final boolean isChange() {
+  public boolean isChange() {
     return ! Comparison.equalsWithNull(getInitial(), getGoal());
   }
 
@@ -116,7 +116,7 @@ public abstract class SimplePropertyEdit<_Type_,
    * @return Comparison.equalsWithNull(getInitial(), getTarget().get());
    */
   @Override
-  protected final boolean isInitialStateCurrent() {
+  protected boolean isInitialStateCurrent() {
     return Comparison.equalsWithNull(getInitial(), getTarget().get());
   }
 
@@ -132,7 +132,7 @@ public abstract class SimplePropertyEdit<_Type_,
    * @return Comparison.equalsWithNull(getGoal(), getTarget().get());
    */
   @Override
-  protected final boolean isGoalStateCurrent() {
+  protected boolean isGoalStateCurrent() {
     return Comparison.equalsWithNull(getGoal(), getTarget().get());
   }
 

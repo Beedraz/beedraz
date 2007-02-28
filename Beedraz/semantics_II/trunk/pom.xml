@@ -49,19 +49,6 @@ limitations under the License.
     </dependency>
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>ppw-missing</id>
-      <name>PeopleWare Repository of Missing Artifacts, via scp</name>
-      <url>https://cvs.peopleware.be/projects/maven/maven2/repository</url>
-    </repository>
-    <repository>
-      <id>ppw-libraries</id>
-      <name>PeopleWare Libraries Repository, via scp</name>
-      <url>https://cvs.peopleware.be/projects/JavaLibraries/maven2-repository</url>
-    </repository>
-  </repositories>
-
   <!-- More Project Information -->
   <developers>
     <developer>

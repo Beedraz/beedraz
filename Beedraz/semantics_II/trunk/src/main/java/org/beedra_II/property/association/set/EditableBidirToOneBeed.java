@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.association;
+package org.beedra_II.property.association.set;
 
 
 import org.beedra_II.bean.BeanBeed;

@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.association;
+package org.beedra_II.property.association.set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,6 +28,9 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
+import org.beedra_II.property.association.set.BidirToManyBeed;
+import org.beedra_II.property.association.set.BidirToOneEdit;
+import org.beedra_II.property.association.set.EditableBidirToOneBeed;
 import org.beedra_II.property.set.SetEvent;
 import org.junit.After;
 import org.junit.Before;

@@ -29,6 +29,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * that carries a simple old and new value of type {@link List<_Element_>}.
  *
  * @author  Nele Smeets
+ * @author  Peopleware n.v.
  *
  * @invar getSource() instanceof ListBeed<_Element_>;
  */

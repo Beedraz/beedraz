@@ -62,12 +62,12 @@ limitations under the License.
   <distributionManagement>
     <repository>
       <id>ppw-libraries</id>
-      <url>scp://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/maven2-repository</url>
+      <url>scpexe://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/maven2-repository</url>
       <uniqueVersion>true</uniqueVersion>
     </repository>
     <site>
-       <id>ppw-libraries-site</id>
-      <url>scp://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/${pom.artifactId}/${pom.version}</url>
+      <id>ppw-libraries-site</id>
+      <url>scpexe://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/${pom.artifactId}/${pom.version}</url>
     </site>
   </distributionManagement>
 

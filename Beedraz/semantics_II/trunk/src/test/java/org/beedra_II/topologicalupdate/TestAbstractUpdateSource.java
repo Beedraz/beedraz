@@ -12,7 +12,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.junit.After;
@@ -26,15 +25,13 @@ public class TestAbstractUpdateSource {
 
   private Dependent<Event> $dependent1;
 
-  private UpdateSource $dependentUpdateSource;
-
   private Dependent<Event> $dependent2;
 
   public class StubDependent extends Dependent<Event> {
 
     @Override
     public UpdateSource getDependentUpdateSource() {
-      return $dependentUpdateSource;
+      return null;
     }
 
     @Override
@@ -50,25 +47,6 @@ public class TestAbstractUpdateSource {
 
       public int getMaximumRootUpdateSourceDistance() {
         return 0;
-      }
-
-    };
-    $dependentUpdateSource = new UpdateSource() {
-
-      public void addDependent(Dependent<?> dependent) {
-        // NOP
-      }
-
-      public Set<Dependent<?>> getDependents() {
-        return null;
-      }
-
-      public int getMaximumRootUpdateSourceDistance() {
-        return 0;
-      }
-
-      public void removeDependent(Dependent<?> dependent) {
-        // NOP
       }
 
     };

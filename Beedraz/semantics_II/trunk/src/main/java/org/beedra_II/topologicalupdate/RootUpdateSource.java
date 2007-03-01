@@ -46,31 +46,34 @@ public abstract class RootUpdateSource<_Event_ extends Event>
   }
 
   protected final void updateDependents(_Event_ event) {
-    Map<UpdateSource, Event> events = new HashMap<UpdateSource, Event>();
-    events.put(this, event);
-    PriorityQueue<Dependent<?>> queue =
-      new PriorityQueue<Dependent<?>>(getDependents().size(),
-        new Comparator<Dependent<?>>() {
-              public int compare(Dependent<?> d1, Dependent<?> d2) {
-                assert d1 != null;
-                assert d2 != null;
-                int mfsd1 = d1.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                int mfsd2 = d2.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
-              }
-            });
-    queue.addAll(getDependents());
-    Dependent<?> dependent = queue.poll();
-    while (dependent != null) {
-      Event dependentEvent = dependent.update(Collections.unmodifiableMap(events));
-      if (dependentEvent != null) {
-        events.put(dependent.getDependentUpdateSource(), dependentEvent);
-        Set<Dependent<?>> secondDependents =
-          new HashSet<Dependent<?>>(dependent.getDependentUpdateSource().getDependents());
-        secondDependents.removeAll(queue);
-        queue.addAll(secondDependents);
+    if (getDependents().size() >= 1) {
+      Map<UpdateSource, Event> events = new HashMap<UpdateSource, Event>();
+      events.put(this, event);
+      assert getDependents().size() >= 1 : "initial size of priority queue must be >= 1";
+      PriorityQueue<Dependent<?>> queue =
+        new PriorityQueue<Dependent<?>>(getDependents().size(),
+          new Comparator<Dependent<?>>() {
+                public int compare(Dependent<?> d1, Dependent<?> d2) {
+                  assert d1 != null;
+                  assert d2 != null;
+                  int mfsd1 = d1.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
+                  int mfsd2 = d2.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
+                  return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
+                }
+              });
+      queue.addAll(getDependents());
+      Dependent<?> dependent = queue.poll();
+      while (dependent != null) {
+        Event dependentEvent = dependent.update(Collections.unmodifiableMap(events));
+        if (dependentEvent != null) {
+          events.put(dependent.getDependentUpdateSource(), dependentEvent);
+          Set<Dependent<?>> secondDependents =
+            new HashSet<Dependent<?>>(dependent.getDependentUpdateSource().getDependents());
+          secondDependents.removeAll(queue);
+          queue.addAll(secondDependents);
+        }
+        dependent = queue.poll();
       }
-      dependent = queue.poll();
     }
   }
 

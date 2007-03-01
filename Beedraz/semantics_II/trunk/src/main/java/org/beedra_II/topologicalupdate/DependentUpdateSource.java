@@ -18,6 +18,7 @@ package org.beedra_II.topologicalupdate;
 
 
 import java.util.Map;
+import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -65,5 +66,30 @@ public abstract class DependentUpdateSource<_Event_ extends Event>
     };
 
   protected abstract _Event_ update(Map<UpdateSource, Event> events);
+
+  /**
+   * @basic
+   */
+  protected final Set<UpdateSource> getUpdateSources() {
+    return $dependentDelegate.getUpdateSources();
+  }
+
+  /**
+   * @pre updateSource != null;
+   * @post getUpdateSources().contains(updateSource);
+   * @post updateSource.getDependents().contains(this);
+   */
+  protected final void addUpdateSource(UpdateSource updateSource) {
+    $dependentDelegate.addUpdateSource(updateSource);
+  }
+
+  /**
+   * @pre updateSource != null;
+   * @post ! getUpdateSources().contains(updateSource);
+   * @post ! updateSource.getDependents().contains(this);
+   */
+  protected final void removeUpdateSource(UpdateSource updateSource) {
+    $dependentDelegate.removeUpdateSource(updateSource);
+  }
 
 }

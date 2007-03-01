@@ -32,23 +32,11 @@ public class TestRootUpdateSource {
 //  private Dependent<Event> $dependent2;
 
   private IntegerEvent $event;
-  private IntegerEvent $event3;
-  private IntegerEvent $event4;
-  private IntegerEvent $event5;
-  private IntegerEvent $event6;
-  private IntegerEvent $event7;
-  private IntegerEvent $event8;
-  private IntegerEvent $event9;
+  private IntegerEvent[] $events;
 
   private StubDependentUpdateSource $dNullEvent1;
   private StubDependentUpdateSource $dNullEvent2;
-  private StubDependentUpdateSource $d3;
-  private StubDependentUpdateSource $d4;
-  private StubDependentUpdateSource $d5;
-  private StubDependentUpdateSource $d6;
-  private StubDependentUpdateSource $d7;
-  private StubDependentUpdateSource $d8;
-  private StubDependentUpdateSource $d9;
+  private StubDependentUpdateSource[] $ds;
 
   public class StubDependent extends Dependent<Event> {
 
@@ -89,22 +77,17 @@ public class TestRootUpdateSource {
   public void setUp() throws Exception {
     $subject = new RootUpdateSource<IntegerEvent>() { /* NOP */ };
     $event = createIntegerEvent();
-    $event3 = createIntegerEvent();
-    $event4 = createIntegerEvent();
-    $event5 = createIntegerEvent();
-    $event6 = createIntegerEvent();
-    $event7 = createIntegerEvent();
-    $event8 = createIntegerEvent();
-    $event9 = createIntegerEvent();
     $dNullEvent1 = new StubDependentUpdateSource(null);
     $dNullEvent2 = new StubDependentUpdateSource(null);
-    $d3 = new StubDependentUpdateSource($event3);
-    $d4 = new StubDependentUpdateSource($event4);
-    $d5 = new StubDependentUpdateSource($event5);
-    $d6 = new StubDependentUpdateSource($event6);
-    $d7 = new StubDependentUpdateSource($event7);
-    $d8 = new StubDependentUpdateSource($event8);
-    $d9 = new StubDependentUpdateSource($event9);
+  }
+
+  private void initDs(int n) {
+    $events = new IntegerEvent[n];
+    $ds = new StubDependentUpdateSource[n];
+    for (int i = 0; i < n; i++) {
+      $events[i] = createIntegerEvent();
+      $ds[i] = new StubDependentUpdateSource($events[i]);
+    }
   }
 
   private IntegerEvent createIntegerEvent() {
@@ -189,16 +172,17 @@ public class TestRootUpdateSource {
   /**
    *                      $subject
    *                         |
-   *                        $d3
+   *                       $ds[0]
    */
   @Test
   public void testUpdateDependents5() {
-    $d3.addUpdateSource($subject);
+    initDs(1);
+    $ds[0].addUpdateSource($subject);
     $subject.updateDependents($event);
-    assertEquals(1, $d3.$updated);
-    assertEquals(1, $d3.$events.size());
-    assertTrue($d3.$events.keySet().contains($subject));
-    assertEquals($event, $d3.$events.get($subject));
+    assertEquals(1, $ds[0].$updated);
+    assertEquals(1, $ds[0].$events.size());
+    assertTrue($ds[0].$events.keySet().contains($subject));
+    assertEquals($event, $ds[0].$events.get($subject));
   }
 
   /**
@@ -206,49 +190,51 @@ public class TestRootUpdateSource {
    *                         |
    *                       ------
    *                      |      |
-   *                     $d3    $d4
+   *                    $ds[0] $ds[1]
    */
   @Test
   public void testUpdateDependents6() {
-    $d3.addUpdateSource($subject);
-    $d4.addUpdateSource($subject);
+    initDs(2);
+    $ds[0].addUpdateSource($subject);
+    $ds[1].addUpdateSource($subject);
     $subject.updateDependents($event);
-    assertEquals(1, $d3.$updated);
-    assertTrue($d3.$events.size() >= 1);
-    assertTrue($d3.$events.size() <= 2);
-    assertTrue($d3.$events.keySet().contains($subject));
-    assertEquals($event, $d3.$events.get($subject));
-    assertEquals(1, $d4.$updated);
-    assertTrue($d4.$events.size() >= 1);
-    assertTrue($d4.$events.size() <= 2);
-    assertTrue($d4.$events.keySet().contains($subject));
-    assertEquals($event, $d4.$events.get($subject));
-    assertTrue($d3.$events.keySet().contains($d4) || $d4.$events.keySet().contains($d3));
-    assertTrue($d3.$events.get($d4) == $event4 || $d4.$events.get($d3) == $event3);
+    assertEquals(1, $ds[0].$updated);
+    assertTrue($ds[0].$events.size() >= 1);
+    assertTrue($ds[0].$events.size() <= 2);
+    assertTrue($ds[0].$events.keySet().contains($subject));
+    assertEquals($event, $ds[0].$events.get($subject));
+    assertEquals(1, $ds[1].$updated);
+    assertTrue($ds[1].$events.size() >= 1);
+    assertTrue($ds[1].$events.size() <= 2);
+    assertTrue($ds[1].$events.keySet().contains($subject));
+    assertEquals($event, $ds[1].$events.get($subject));
+    assertTrue($ds[0].$events.keySet().contains($ds[1]) || $ds[1].$events.keySet().contains($ds[0]));
+    assertTrue($ds[0].$events.get($ds[1]) == $events[1] || $ds[1].$events.get($ds[0]) == $events[0]);
   }
 
   /**
    *                      $subject
    *                         |
-   *                        $d3
+   *                       $ds[0]
    *                         |
-   *                        $d4
+   *                       $ds[1]
    */
   @Test
   public void testUpdateDependents7() {
-    $d3.addUpdateSource($subject);
-    $d4.addUpdateSource($d3);
+    initDs(2);
+    $ds[0].addUpdateSource($subject);
+    $ds[1].addUpdateSource($ds[0]);
     $subject.updateDependents($event);
-    assertEquals(1, $d3.$updated);
-    assertEquals(1, $d3.$events.size());
-    assertTrue($d3.$events.keySet().contains($subject));
-    assertEquals($event, $d3.$events.get($subject));
-    assertEquals(1, $d4.$updated);
-    assertEquals(2, $d4.$events.size());
-    assertTrue($d4.$events.keySet().contains($subject));
-    assertEquals($event, $d4.$events.get($subject));
-    assertTrue($d4.$events.keySet().contains($d3));
-    assertEquals($event3, $d4.$events.get($d3));
+    assertEquals(1, $ds[0].$updated);
+    assertEquals(1, $ds[0].$events.size());
+    assertTrue($ds[0].$events.keySet().contains($subject));
+    assertEquals($event, $ds[0].$events.get($subject));
+    assertEquals(1, $ds[1].$updated);
+    assertEquals(2, $ds[1].$events.size());
+    assertTrue($ds[1].$events.keySet().contains($subject));
+    assertEquals($event, $ds[1].$events.get($subject));
+    assertTrue($ds[1].$events.keySet().contains($ds[0]));
+    assertEquals($events[0], $ds[1].$events.get($ds[0]));
   }
 
   /**
@@ -256,32 +242,33 @@ public class TestRootUpdateSource {
    *                          |
    *                   -----------------
    *                  |                 |
-   *                 $d3               $d8
+   *                $ds[0]            $ds[5]
    *                  |                 |
    *            --------------          |
    *           |      |       |         |
-   *          $d4    $d5     $d6        |
+   *         $ds[1] $ds[2]  $ds[3]      |
    *           |      |       |         |
    *            --------------          |
    *                  |                 |
-   *                 $d7                |
+   *                $ds[4]              |
    *                  |                 |
    *                   -----------------
    *                          |
-   *                         $d9
+   *                         $ds[6]
    */
   @Test
   public void testUpdateDependents8a() {
-    $d3.addUpdateSource($subject);
-    $d4.addUpdateSource($d3);
-    $d5.addUpdateSource($d3);
-    $d6.addUpdateSource($d3);
-    $d7.addUpdateSource($d4);
-    $d7.addUpdateSource($d5);
-    $d7.addUpdateSource($d6);
-    $d8.addUpdateSource($subject);
-    $d9.addUpdateSource($d8);
-    $d9.addUpdateSource($d7);
+    initDs(7);
+    $ds[0].addUpdateSource($subject);
+    $ds[1].addUpdateSource($ds[0]);
+    $ds[2].addUpdateSource($ds[0]);
+    $ds[3].addUpdateSource($ds[0]);
+    $ds[4].addUpdateSource($ds[1]);
+    $ds[4].addUpdateSource($ds[2]);
+    $ds[4].addUpdateSource($ds[3]);
+    $ds[5].addUpdateSource($subject);
+    $ds[6].addUpdateSource($ds[5]);
+    $ds[6].addUpdateSource($ds[4]);
     $subject.updateDependents($event);
     checkTopology8();
   }
@@ -291,32 +278,33 @@ public class TestRootUpdateSource {
    *                          |
    *                   -----------------
    *                  |                 |
-   *                 $d3               $d8
+   *                $ds[0]            $ds[5]
    *                  |                 |
    *            --------------          |
    *           |      |       |         |
-   *          $d4    $d5     $d6        |
+   *         $ds[1] $ds[2]  $ds[3]      |
    *           |      |       |         |
    *            --------------          |
    *                  |                 |
-   *                 $d7                |
+   *                $ds[4]              |
    *                  |                 |
    *                   -----------------
    *                          |
-   *                         $d9
+   *                         $ds[6]
    */
   @Test
   public void testUpdateDependents8b() {
-    $d9.addUpdateSource($d7);
-    $d9.addUpdateSource($d8);
-    $d8.addUpdateSource($subject);
-    $d7.addUpdateSource($d6);
-    $d7.addUpdateSource($d5);
-    $d7.addUpdateSource($d4);
-    $d6.addUpdateSource($d3);
-    $d5.addUpdateSource($d3);
-    $d4.addUpdateSource($d3);
-    $d3.addUpdateSource($subject);
+    initDs(7);
+    $ds[6].addUpdateSource($ds[4]);
+    $ds[6].addUpdateSource($ds[5]);
+    $ds[5].addUpdateSource($subject);
+    $ds[4].addUpdateSource($ds[3]);
+    $ds[4].addUpdateSource($ds[2]);
+    $ds[4].addUpdateSource($ds[1]);
+    $ds[3].addUpdateSource($ds[0]);
+    $ds[2].addUpdateSource($ds[0]);
+    $ds[1].addUpdateSource($ds[0]);
+    $ds[0].addUpdateSource($subject);
     $subject.updateDependents($event);
     checkTopology8();
   }
@@ -326,32 +314,33 @@ public class TestRootUpdateSource {
    *                          |
    *                   -----------------
    *                  |                 |
-   *                 $d3               $d8
+   *                $ds[0]            $ds[5]
    *                  |                 |
    *            --------------          |
    *           |      |       |         |
-   *          $d4    $d5     $d6        |
+   *         $ds[1] $ds[2]  $ds[3]      |
    *           |      |       |         |
    *            --------------          |
    *                  |                 |
-   *                 $d7                |
+   *                $ds[4]              |
    *                  |                 |
    *                   -----------------
    *                          |
-   *                         $d9
+   *                         $ds[6]
    */
   @Test
   public void testUpdateDependents8c() {
-    $d5.addUpdateSource($d3);
-    $d9.addUpdateSource($d8);
-    $d7.addUpdateSource($d5);
-    $d7.addUpdateSource($d6);
-    $d3.addUpdateSource($subject);
-    $d7.addUpdateSource($d4);
-    $d9.addUpdateSource($d7);
-    $d4.addUpdateSource($d3);
-    $d8.addUpdateSource($subject);
-    $d6.addUpdateSource($d3);
+    initDs(7);
+    $ds[2].addUpdateSource($ds[0]);
+    $ds[6].addUpdateSource($ds[5]);
+    $ds[4].addUpdateSource($ds[2]);
+    $ds[4].addUpdateSource($ds[3]);
+    $ds[0].addUpdateSource($subject);
+    $ds[4].addUpdateSource($ds[1]);
+    $ds[6].addUpdateSource($ds[4]);
+    $ds[1].addUpdateSource($ds[0]);
+    $ds[5].addUpdateSource($subject);
+    $ds[3].addUpdateSource($ds[0]);
     $subject.updateDependents($event);
     checkTopology8();
   }
@@ -361,19 +350,19 @@ public class TestRootUpdateSource {
     System.out.println("                          |");
     System.out.println("                   -----------------");
     System.out.println("                  |                 |");
-    System.out.println("                 $d3" + mrusd($d3) + "           $d8" + mrusd($d8));
+    System.out.println("                 $ds[0]" + mrusd($ds[0]) + "           $ds[5]" + mrusd($ds[5]));
     System.out.println("                  |                 |");
     System.out.println("            --------------          |");
     System.out.println("           |      |       |         |");
-    System.out.println("          $d4" + mrusd($d4) + "$d5" + mrusd($d5) + " $d6" + mrusd($d6)+ "    |");
+    System.out.println("          $ds[1]" + mrusd($ds[1]) + "$ds[2]" + mrusd($ds[2]) + " $ds[3]" + mrusd($ds[3])+ "    |");
     System.out.println("           |      |       |         |");
     System.out.println("            --------------          |");
     System.out.println("                  |                 |");
-    System.out.println("                 $d7" + mrusd($d7) + "            |");
+    System.out.println("                 $ds[4]" + mrusd($ds[4]) + "            |");
     System.out.println("                  |                 |");
     System.out.println("                   -----------------");
     System.out.println("                          |");
-    System.out.println("                         $d9" + mrusd($d9));
+    System.out.println("                         $ds[6]" + mrusd($ds[6]));
 
   }
 
@@ -383,44 +372,44 @@ public class TestRootUpdateSource {
 
   private void checkTopology8() {
     printMaximumRootUpdateSourceDistance();
-    checkDependent8Level1($d3);
+    checkDependent8Level1($ds[0]);
 
-    checkDependent8Level1($d8);
+    checkDependent8Level1($ds[5]);
 
-    checkDependent8Level2($d4);
-    checkDependent8Level2($d5);
-    checkDependent8Level2($d6);
+    checkDependent8Level2($ds[1]);
+    checkDependent8Level2($ds[2]);
+    checkDependent8Level2($ds[3]);
 
-    assertEquals(1, $d7.$updated);
-    assertTrue($d7.$events.size() >= 5);
-    assertTrue($d7.$events.size() <= 6);
-    assertTrue($d7.$events.keySet().contains($subject));
-    assertEquals($event, $d7.$events.get($subject));
-    assertTrue($d7.$events.keySet().contains($d3));
-    assertEquals($event3, $d7.$events.get($d3));
-    assertTrue($d7.$events.keySet().contains($d4));
-    assertEquals($event4, $d7.$events.get($d4));
-    assertTrue($d7.$events.keySet().contains($d5));
-    assertEquals($event5, $d7.$events.get($d5));
-    assertTrue($d7.$events.keySet().contains($d6));
-    assertEquals($event6, $d7.$events.get($d6));
+    assertEquals(1, $ds[4].$updated);
+    assertTrue($ds[4].$events.size() >= 5);
+    assertTrue($ds[4].$events.size() <= 6);
+    assertTrue($ds[4].$events.keySet().contains($subject));
+    assertEquals($event, $ds[4].$events.get($subject));
+    assertTrue($ds[4].$events.keySet().contains($ds[0]));
+    assertEquals($events[0], $ds[4].$events.get($ds[0]));
+    assertTrue($ds[4].$events.keySet().contains($ds[1]));
+    assertEquals($events[1], $ds[4].$events.get($ds[1]));
+    assertTrue($ds[4].$events.keySet().contains($ds[2]));
+    assertEquals($events[2], $ds[4].$events.get($ds[2]));
+    assertTrue($ds[4].$events.keySet().contains($ds[3]));
+    assertEquals($events[3], $ds[4].$events.get($ds[3]));
 
-    assertEquals(1, $d9.$updated);
-    assertEquals(7, $d9.$events.size());
-    assertTrue($d9.$events.keySet().contains($subject));
-    assertEquals($event, $d9.$events.get($subject));
-    assertTrue($d9.$events.keySet().contains($d3));
-    assertEquals($event3, $d9.$events.get($d3));
-    assertTrue($d9.$events.keySet().contains($d4));
-    assertEquals($event4, $d9.$events.get($d4));
-    assertTrue($d9.$events.keySet().contains($d5));
-    assertEquals($event5, $d9.$events.get($d5));
-    assertTrue($d9.$events.keySet().contains($d6));
-    assertEquals($event6, $d9.$events.get($d6));
-    assertTrue($d9.$events.keySet().contains($d7));
-    assertEquals($event7, $d9.$events.get($d7));
-    assertTrue($d9.$events.keySet().contains($d8));
-    assertEquals($event8, $d9.$events.get($d8));
+    assertEquals(1, $ds[6].$updated);
+    assertEquals(7, $ds[6].$events.size());
+    assertTrue($ds[6].$events.keySet().contains($subject));
+    assertEquals($event, $ds[6].$events.get($subject));
+    assertTrue($ds[6].$events.keySet().contains($ds[0]));
+    assertEquals($events[0], $ds[6].$events.get($ds[0]));
+    assertTrue($ds[6].$events.keySet().contains($ds[1]));
+    assertEquals($events[1], $ds[6].$events.get($ds[1]));
+    assertTrue($ds[6].$events.keySet().contains($ds[2]));
+    assertEquals($events[2], $ds[6].$events.get($ds[2]));
+    assertTrue($ds[6].$events.keySet().contains($ds[3]));
+    assertEquals($events[3], $ds[6].$events.get($ds[3]));
+    assertTrue($ds[6].$events.keySet().contains($ds[4]));
+    assertEquals($events[4], $ds[6].$events.get($ds[4]));
+    assertTrue($ds[6].$events.keySet().contains($ds[5]));
+    assertEquals($events[5], $ds[6].$events.get($ds[5]));
   }
 
   private void checkDependent8Level1(StubDependentUpdateSource dependent) {
@@ -437,39 +426,39 @@ public class TestRootUpdateSource {
     assertTrue(dependent.$events.size() <= 5);
     assertTrue(dependent.$events.keySet().contains($subject));
     assertEquals($event, dependent.$events.get($subject));
-    assertTrue(dependent.$events.keySet().contains($d3));
-    assertEquals($event3, dependent.$events.get($d3));
+    assertTrue(dependent.$events.keySet().contains($ds[0]));
+    assertEquals($events[0], dependent.$events.get($ds[0]));
   }
 
 //  /**
 //   *              $subject          $subject2
 //   *                  |                 |
-//   *               ------              $d3
+//   *               ------              $ds[0]
 //   *              |      |              |
-//   *             $d4    $d5             |
+//   *             $ds[1]    $ds[2]             |
 //   *              |      |              |
 //   *              |    -----            |
 //   *              |   |     |           |
 //   *               ---       -----------
 //   *                |             |
-//   *               $d7           $d6
+//   *               $ds[4]           $ds[3]
 //   *                |             |
 //   *                 -------------
 //   *                       |
-//   *                      $d9
+//   *                      $ds[6]
 //   */
 //  @Test
 //  public void testUpdateDependents9a() {
-//    $d3.addUpdateSource($subject);
-//    $d4.addUpdateSource($d3);
-//    $d5.addUpdateSource($d3);
-//    $d6.addUpdateSource($d3);
-//    $d7.addUpdateSource($d4);
-//    $d7.addUpdateSource($d5);
-//    $d7.addUpdateSource($d6);
-//    $d8.addUpdateSource($subject);
-//    $d9.addUpdateSource($d8);
-//    $d9.addUpdateSource($d7);
+//    $ds[0].addUpdateSource($subject);
+//    $ds[1].addUpdateSource($ds[0]);
+//    $ds[2].addUpdateSource($ds[0]);
+//    $ds[3].addUpdateSource($ds[0]);
+//    $ds[4].addUpdateSource($ds[1]);
+//    $ds[4].addUpdateSource($ds[2]);
+//    $ds[4].addUpdateSource($ds[3]);
+//    $ds[5].addUpdateSource($subject);
+//    $ds[6].addUpdateSource($ds[5]);
+//    $ds[6].addUpdateSource($ds[4]);
 //    $subject.updateDependents($event);
 //    checkTopology8();
 //  }

@@ -56,8 +56,8 @@ public abstract class RootUpdateSource<_Event_ extends Event>
                 public int compare(Dependent<?> d1, Dependent<?> d2) {
                   assert d1 != null;
                   assert d2 != null;
-                  int mfsd1 = d1.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                  int mfsd2 = d2.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
+                  int mfsd1 = d1.getMaximumRootUpdateSourceDistance();
+                  int mfsd2 = d2.getMaximumRootUpdateSourceDistance();
                   return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
                 }
               });
@@ -68,7 +68,7 @@ public abstract class RootUpdateSource<_Event_ extends Event>
         if (dependentEvent != null) {
           events.put(dependent.getDependentUpdateSource(), dependentEvent);
           Set<Dependent<?>> secondDependents =
-            new HashSet<Dependent<?>>(dependent.getDependentUpdateSource().getDependents());
+            new HashSet<Dependent<?>>(dependent.getDependents());
           secondDependents.removeAll(queue);
           queue.addAll(secondDependents);
         }

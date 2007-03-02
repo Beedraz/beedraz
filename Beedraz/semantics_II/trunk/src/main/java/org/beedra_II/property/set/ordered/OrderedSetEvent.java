@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.set.sorted;
+package org.beedra_II.property.set.ordered;
 
 
 import java.util.List;
@@ -25,19 +25,19 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link SortedSetBeed<_Element_>} and
+ * {@link OldNewEvent} whose source is a {@link OrderedSetBeed<_Element_>} and
  * that carries a simple old and new value of type {@link List<_Element_>}.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  *
- * @invar getSource() instanceof SortedSetBeed<_Element_>;
+ * @invar getSource() instanceof OrderedSetBeed<_Element_>;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class SortedSetEvent<_Element_> extends OldNewEvent<List<_Element_>> {
+public final class OrderedSetEvent<_Element_> extends OldNewEvent<List<_Element_>> {
 
   /**
    * @pre  source != null;
@@ -53,7 +53,7 @@ public final class SortedSetEvent<_Element_> extends OldNewEvent<List<_Element_>
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public SortedSetEvent(SortedSetBeed<_Element_> source,
+  public OrderedSetEvent(OrderedSetBeed<_Element_> source,
                    List<_Element_> oldValue,
                    List<_Element_> newValue,
                    Edit<?> edit) {

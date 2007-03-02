@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.association.set.sorted;
+package org.beedra_II.property.association.set.ordered;
 
 
 import static org.junit.Assert.assertEquals;
@@ -31,21 +31,21 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.ValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.association.set.sorted.EditableSortedBidirToOneBeed;
-import org.beedra_II.property.association.set.sorted.SortedBidirToManyBeed;
-import org.beedra_II.property.association.set.sorted.SortedBidirToOneEdit;
-import org.beedra_II.property.association.set.sorted.SortedBidirToOneEvent;
-import org.beedra_II.property.set.sorted.SortedSetEvent;
+import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
+import org.beedra_II.property.association.set.ordered.OrderedBidirToManyBeed;
+import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEdit;
+import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEvent;
+import org.beedra_II.property.set.ordered.OrderedSetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestSortedBidirToOneEdit {
+public class TestOrderedBidirToOneEdit {
 
-  public class MySortedBidirToOneEdit
-       extends SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> {
+  public class MyOrderedBidirToOneEdit
+       extends OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> {
 
-    public MySortedBidirToOneEdit(EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> target) {
+    public MyOrderedBidirToOneEdit(EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> target) {
       super(target);
     }
 
@@ -66,15 +66,15 @@ public class TestSortedBidirToOneEdit {
     }
   }
 
-  public class MyEditableSortedBidirToOneBeed
-      extends EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> {
+  public class MyEditableOrderedBidirToOneBeed
+      extends EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> {
 
-    public MyEditableSortedBidirToOneBeed(ManyBeanBeed bean) {
+    public MyEditableOrderedBidirToOneBeed(ManyBeanBeed bean) {
       super(bean);
     }
 
     @Override
-    public boolean isAcceptable(SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal) {
+    public boolean isAcceptable(OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal) {
       return goal != null && goal.get().size() < 3;
     }
   }
@@ -114,9 +114,9 @@ public class TestSortedBidirToOneEdit {
   }
 
   public class StubBidirToOneListener
-      implements Listener<SortedBidirToOneEvent<OneBeanBeed, ManyBeanBeed>> {
+      implements Listener<OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed>> {
 
-    public void beedChanged(SortedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> event) {
+    public void beedChanged(OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> event) {
       $event = event;
     }
 
@@ -124,14 +124,14 @@ public class TestSortedBidirToOneEdit {
       $event = null;
     }
 
-    public SortedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> $event;
+    public OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> $event;
 
   }
 
-  public class StubSortedBidirToManyListener
-    implements Listener<SortedSetEvent<ManyBeanBeed>> {
+  public class StubOrderedBidirToManyListener
+    implements Listener<OrderedSetEvent<ManyBeanBeed>> {
 
-    public void beedChanged(SortedSetEvent<ManyBeanBeed> event) {
+    public void beedChanged(OrderedSetEvent<ManyBeanBeed> event) {
       $event = event;
     }
 
@@ -139,21 +139,21 @@ public class TestSortedBidirToOneEdit {
       $event = null;
     }
 
-    public SortedSetEvent<ManyBeanBeed> $event;
+    public OrderedSetEvent<ManyBeanBeed> $event;
 
   }
 
   @Before
   public void setUp() throws Exception {
     $manyBeanBeed = new ManyBeanBeed();
-    $target = new MyEditableSortedBidirToOneBeed($manyBeanBeed);
-    $sortedBidirToOneEdit = new MySortedBidirToOneEdit($target);
+    $target = new MyEditableOrderedBidirToOneBeed($manyBeanBeed);
+    $orderedBidirToOneEdit = new MyOrderedBidirToOneEdit($target);
     $oneBeanBeed = new OneBeanBeed();
     $listener1 = new StubValidityListener();
     $listener2 = new StubValidityListener();
     $listener3 = new StubBidirToOneListener();
-    $listener4 = new StubSortedBidirToManyListener();
-    $listener5 = new StubSortedBidirToManyListener();
+    $listener4 = new StubOrderedBidirToManyListener();
+    $listener5 = new StubOrderedBidirToManyListener();
   }
 
   @After
@@ -162,32 +162,32 @@ public class TestSortedBidirToOneEdit {
   }
 
   private ManyBeanBeed $manyBeanBeed;
-  private MyEditableSortedBidirToOneBeed $target;
-  private MySortedBidirToOneEdit $sortedBidirToOneEdit;
+  private MyEditableOrderedBidirToOneBeed $target;
+  private MyOrderedBidirToOneEdit $orderedBidirToOneEdit;
   private OneBeanBeed $oneBeanBeed;
   private StubValidityListener $listener1;
   private StubValidityListener $listener2;
   private StubBidirToOneListener $listener3;
-  private StubSortedBidirToManyListener $listener4;
-  private StubSortedBidirToManyListener $listener5;
+  private StubOrderedBidirToManyListener $listener4;
+  private StubOrderedBidirToManyListener $listener5;
 
   @Test
   public void constructor() {
-    assertEquals($sortedBidirToOneEdit.getTarget(), $target);
+    assertEquals($orderedBidirToOneEdit.getTarget(), $target);
   }
 
   @Test
   // incorrect begin-state
   public void perform1() {
     try {
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -200,15 +200,15 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void perform2() {
     try {
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -221,14 +221,14 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void perform3() {
     try {
-      $sortedBidirToOneEdit.kill();
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.kill();
+      $orderedBidirToOneEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -241,8 +241,8 @@ public class TestSortedBidirToOneEdit {
   // correct begin-state, check end-state
   public void perform4() {
     try {
-      $sortedBidirToOneEdit.perform();
-      assertEquals($sortedBidirToOneEdit.getState(), State.DONE);
+      $orderedBidirToOneEdit.perform();
+      assertEquals($orderedBidirToOneEdit.getState(), State.DONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -263,22 +263,22 @@ public class TestSortedBidirToOneEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $sortedBidirToOneEdit.addValidityListener($listener1);
-      $sortedBidirToOneEdit.addValidityListener($listener2);
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.addValidityListener($listener1);
+      $orderedBidirToOneEdit.addValidityListener($listener2);
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener2));
       // perform
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
       Integer goalPosition = 0;
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      $orderedBidirToOneEdit.perform();
       // listeners should be removed
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener2));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $sortedBidirToOneEdit);
+      assertEquals($listener3.$event.getEdit(), $orderedBidirToOneEdit);
       assertEquals($listener3.$event.getOldValue(), null);
       assertEquals($listener3.$event.getNewValue(), goal);
       assertEquals($listener3.$event.getSource(), $target);
@@ -302,27 +302,27 @@ public class TestSortedBidirToOneEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $sortedBidirToOneEdit.addValidityListener($listener1);
-      $sortedBidirToOneEdit.addValidityListener($listener2);
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.addValidityListener($listener1);
+      $orderedBidirToOneEdit.addValidityListener($listener2);
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener2));
       // perform
-      $sortedBidirToOneEdit.setGoal(null);
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.setGoal(null);
+      $orderedBidirToOneEdit.perform();
       // listeners are removed
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener2));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
 
       // another perform
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = null;
-      MySortedBidirToOneEdit sortedBidirToOneEdit2 = new MySortedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = null;
+      MyOrderedBidirToOneEdit sortedBidirToOneEdit2 = new MyOrderedBidirToOneEdit($target);
       sortedBidirToOneEdit2.setGoal(goal1);
       sortedBidirToOneEdit2.perform();
       $listener3.reset();
       // repeat this perform, this is no change
-      MySortedBidirToOneEdit sortedBidirToOneEdit3 = new MySortedBidirToOneEdit($target);
+      MyOrderedBidirToOneEdit sortedBidirToOneEdit3 = new MyOrderedBidirToOneEdit($target);
       // add validity listeners to edit
       sortedBidirToOneEdit3.addValidityListener($listener1);
       sortedBidirToOneEdit3.addValidityListener($listener2);
@@ -351,13 +351,13 @@ public class TestSortedBidirToOneEdit {
   public void perform7() {
     try {
       // create a BidirToManyBeed that is not acceptable
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
         createUnacceptableGoal();
       Integer goalPosition = 0;
       // perform
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      $orderedBidirToOneEdit.perform();
       // should not be reached
       assertTrue(false);
     }
@@ -366,18 +366,18 @@ public class TestSortedBidirToOneEdit {
       assertTrue(false);
     }
     catch (IllegalEditException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
       assertEquals(e.getMessage(), null);
     }
     try {
       // create a goal position that is not acceptable
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
         createAcceptableGoal();
       Integer goalPosition = 3;
       // perform
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      $orderedBidirToOneEdit.perform();
       // should not be reached
       assertTrue(false);
     }
@@ -386,32 +386,32 @@ public class TestSortedBidirToOneEdit {
       assertTrue(false);
     }
     catch (IllegalEditException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
       assertEquals(e.getMessage(), null);
     }
   }
 
-  private SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> createUnacceptableGoal() throws EditStateException, IllegalEditException {
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> toMany =
-      new SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+  private OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> createUnacceptableGoal() throws EditStateException, IllegalEditException {
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> toMany =
+      new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
     addToOne(toMany);
     addToOne(toMany);
     addToOne(toMany);
     return toMany;
   }
 
-  private SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> createAcceptableGoal() {
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
-      new SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
+  private OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> createAcceptableGoal() {
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+      new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>($oneBeanBeed);
     return goal;
   }
 
-  private void addToOne(SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> toMany) throws EditStateException, IllegalEditException {
+  private void addToOne(OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> toMany) throws EditStateException, IllegalEditException {
     ManyBeanBeed many = new ManyBeanBeed();
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> toOne =
-      new EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(many);
-    SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit =
-      new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(toOne);
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> toOne =
+      new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(many);
+    OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(toOne);
     edit.setGoal(toMany);
     edit.perform();
   }
@@ -421,10 +421,10 @@ public class TestSortedBidirToOneEdit {
   public void perform8() {
     try {
       // perform
-      MySortedBidirToOneEdit edit1 = new MySortedBidirToOneEdit($target);
+      MyOrderedBidirToOneEdit edit1 = new MyOrderedBidirToOneEdit($target);
       assertNull(edit1.getInitial());
       assertNull(edit1.getInitialPosition());
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
       edit1.setGoal(goal1);
       edit1.setGoalPosition(goalPosition1);
@@ -432,10 +432,10 @@ public class TestSortedBidirToOneEdit {
       assertNull(edit1.getInitial());
       assertNull(edit1.getInitialPosition());
       // perform
-      MySortedBidirToOneEdit edit2 = new MySortedBidirToOneEdit($target);
+      MyOrderedBidirToOneEdit edit2 = new MyOrderedBidirToOneEdit($target);
       assertNull(edit2.getInitial());
       assertNull(edit2.getInitialPosition());
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
       Integer goalPosition2 = 0;
       edit2.setGoal(goal2);
       edit2.setGoalPosition(goalPosition2);
@@ -458,18 +458,18 @@ public class TestSortedBidirToOneEdit {
   public void perform9() {
     try {
       // perform
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
-      $sortedBidirToOneEdit.setGoal(goal1);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition1);
-      $sortedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.setGoal(goal1);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition1);
+      $orderedBidirToOneEdit.perform();
       assertEquals($target.get(), goal1);
       assertTrue(goal1.get().size() == 1);
       assertEquals(goal1.get().indexOf($target.getOwner()), goalPosition1);
       // another perform
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
       Integer goalPosition2 = 0;
-      MySortedBidirToOneEdit sortedBidirToOneEdit2 = new MySortedBidirToOneEdit($target);
+      MyOrderedBidirToOneEdit sortedBidirToOneEdit2 = new MyOrderedBidirToOneEdit($target);
       sortedBidirToOneEdit2.setGoal(goal2);
       sortedBidirToOneEdit2.setGoalPosition(goalPosition2);
       sortedBidirToOneEdit2.perform();
@@ -492,13 +492,13 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void undo1() {
     try {
-      $sortedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -511,15 +511,15 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void undo2() {
     try {
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -532,14 +532,14 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void undo3() {
     try {
-      $sortedBidirToOneEdit.kill();
-      $sortedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.kill();
+      $orderedBidirToOneEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -552,13 +552,13 @@ public class TestSortedBidirToOneEdit {
   // correct begin-state, check end-state
   public void undo4() {
     try {
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
       Integer goalPosition = 0;
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      assertEquals($sortedBidirToOneEdit.getState(), State.UNDONE);
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      assertEquals($orderedBidirToOneEdit.getState(), State.UNDONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -579,25 +579,25 @@ public class TestSortedBidirToOneEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $sortedBidirToOneEdit.addValidityListener($listener1);
-      $sortedBidirToOneEdit.addValidityListener($listener2);
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.addValidityListener($listener1);
+      $orderedBidirToOneEdit.addValidityListener($listener2);
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener2));
       // perform
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
       Integer goalPosition = 0;
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      $sortedBidirToOneEdit.perform();
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener2));
-      $sortedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      $orderedBidirToOneEdit.perform();
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.undo();
       // there are no listeners
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener2));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $sortedBidirToOneEdit);
+      assertEquals($listener3.$event.getEdit(), $orderedBidirToOneEdit);
       assertEquals($listener3.$event.getOldValue(), goal);
       assertEquals($listener3.$event.getNewValue(), null);
       assertEquals($listener3.$event.getSource(), $target);
@@ -615,18 +615,18 @@ public class TestSortedBidirToOneEdit {
   @Test
   // when the goal state does not match the current state, an exception should be thrown
   public void undo7() {
-    MySortedBidirToOneEdit edit1 = null;
+    MyOrderedBidirToOneEdit edit1 = null;
     try {
       // edit1
-      edit1 = new MySortedBidirToOneEdit($target);
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      edit1 = new MyOrderedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
       edit1.setGoal(goal1);
       edit1.setGoalPosition(goalPosition1);
       edit1.perform();
       // edit2
-      MySortedBidirToOneEdit edit2 = new MySortedBidirToOneEdit($target);
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+      MyOrderedBidirToOneEdit edit2 = new MyOrderedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
       Integer goalPosition2 = 0;
       edit2.setGoal(goal2);
       edit2.setGoalPosition(goalPosition2);
@@ -651,19 +651,19 @@ public class TestSortedBidirToOneEdit {
   public void undo8() {
     try {
       // edit1
-      MySortedBidirToOneEdit edit1 = new MySortedBidirToOneEdit($target);
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      MyOrderedBidirToOneEdit edit1 = new MyOrderedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
       edit1.setGoal(goal1);
       edit1.setGoalPosition(goalPosition1);
       edit1.perform();
       // $sortedBidirToOneEdit
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
       Integer goalPosition2 = 0;
-      $sortedBidirToOneEdit.setGoal(goal2);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition2);
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.setGoal(goal2);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition2);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
       assertEquals($target.get(), goal1);
     }
     catch (EditStateException e) {
@@ -680,13 +680,13 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void redo1() {
     try {
-      $sortedBidirToOneEdit.redo();
+      $orderedBidirToOneEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -699,14 +699,14 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void redo2() {
     try {
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.redo();
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -719,14 +719,14 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void redo3() {
     try {
-      $sortedBidirToOneEdit.kill();
-      $sortedBidirToOneEdit.redo();
+      $orderedBidirToOneEdit.kill();
+      $orderedBidirToOneEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -739,10 +739,10 @@ public class TestSortedBidirToOneEdit {
   // correct begin-state, check end-state
   public void redo4() {
     try {
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.redo();
-      assertEquals($sortedBidirToOneEdit.getState(), State.DONE);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.redo();
+      assertEquals($orderedBidirToOneEdit.getState(), State.DONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -763,26 +763,26 @@ public class TestSortedBidirToOneEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $sortedBidirToOneEdit.addValidityListener($listener1);
-      $sortedBidirToOneEdit.addValidityListener($listener2);
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.addValidityListener($listener1);
+      $orderedBidirToOneEdit.addValidityListener($listener2);
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener2));
       // perform
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
-      $sortedBidirToOneEdit.setGoal(goal1);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition1);
-      $sortedBidirToOneEdit.perform();
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener2));
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.redo();
+      $orderedBidirToOneEdit.setGoal(goal1);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition1);
+      $orderedBidirToOneEdit.perform();
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.redo();
       // there are no listeners
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertFalse($sortedBidirToOneEdit.isValidityListener($listener2));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertFalse($orderedBidirToOneEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $sortedBidirToOneEdit);
+      assertEquals($listener3.$event.getEdit(), $orderedBidirToOneEdit);
       assertEquals($listener3.$event.getOldValue(), null);
       assertEquals($listener3.$event.getNewValue(), goal1);
       assertEquals($listener3.$event.getSource(), $target);
@@ -800,19 +800,19 @@ public class TestSortedBidirToOneEdit {
   @Test
   // when the goal state does not match the current state, an exception should be thrown
   public void redo7() {
-    MySortedBidirToOneEdit edit1 = null;
+    MyOrderedBidirToOneEdit edit1 = null;
     try {
       // edit1
-      edit1 = new MySortedBidirToOneEdit($target);
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      edit1 = new MyOrderedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
       edit1.setGoal(goal1);
       edit1.setGoalPosition(goalPosition1);
       edit1.perform();
       edit1.undo();
       // edit2
-      MySortedBidirToOneEdit edit2 = new MySortedBidirToOneEdit($target);
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+      MyOrderedBidirToOneEdit edit2 = new MyOrderedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
       Integer goalPosition2 = 0;
       edit2.setGoal(goal2);
       edit2.setGoalPosition(goalPosition2);
@@ -837,20 +837,20 @@ public class TestSortedBidirToOneEdit {
   public void redo8() {
     try {
       // edit1
-      MySortedBidirToOneEdit edit1 = new MySortedBidirToOneEdit($target);
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+      MyOrderedBidirToOneEdit edit1 = new MyOrderedBidirToOneEdit($target);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
       Integer goalPosition1 = 0;
       edit1.setGoal(goal1);
       edit1.setGoalPosition(goalPosition1);
       edit1.perform();
       // $sortedBidirToOneEdit
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
       Integer goalPosition2 = 0;
-      $sortedBidirToOneEdit.setGoal(goal2);
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition2);
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.redo();
+      $orderedBidirToOneEdit.setGoal(goal2);
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition2);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.redo();
       assertEquals($target.get(), goal2);
     }
     catch (EditStateException e) {
@@ -876,7 +876,7 @@ public class TestSortedBidirToOneEdit {
 //    // check the value of the validity
 //    assertTrue($sortedBidirToOneEdit.isValid());
 //    // change validity
-//    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+//    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
 //    $sortedBidirToOneEdit.setGoal(goal1);
 //    $sortedBidirToOneEdit.checkValidityPublic();
 //    // validity is still the same, so validity listeners are not notified
@@ -886,7 +886,7 @@ public class TestSortedBidirToOneEdit {
 //    assertTrue($listener1.isEmpty());
 //    assertTrue($listener2.isEmpty());
 //    // change validity
-//    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createUnacceptableGoal();
+//    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createUnacceptableGoal();
 //    $sortedBidirToOneEdit.setGoal(goal2);
 //    try {
 //      $sortedBidirToOneEdit.checkValidityPublic();
@@ -906,7 +906,7 @@ public class TestSortedBidirToOneEdit {
 //    // change validity again
 //    $listener1.reset();
 //    $listener2.reset();
-//    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal3 = createAcceptableGoal();
+//    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal3 = createAcceptableGoal();
 //    $sortedBidirToOneEdit.setGoal(goal3);
 //    $sortedBidirToOneEdit.checkValidityPublic();
 //    // validity has changed, so validity listeners are notified
@@ -922,13 +922,13 @@ public class TestSortedBidirToOneEdit {
   @Test
   public void notifyListeners1() throws EditStateException, IllegalEditException {
     // add initial goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
-    MySortedBidirToOneEdit sortedBidirToOneEdit = new MySortedBidirToOneEdit($target);
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+    MyOrderedBidirToOneEdit sortedBidirToOneEdit = new MyOrderedBidirToOneEdit($target);
     sortedBidirToOneEdit.setGoal(goal1);
     sortedBidirToOneEdit.perform();
     assertEquals($target.get(), goal1);
     // create second goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
     // add listener to beed
     $target.addListener($listener3);
     assertTrue($target.isListener($listener3));
@@ -941,26 +941,26 @@ public class TestSortedBidirToOneEdit {
     assertNull($listener4.$event);
     assertNull($listener5.$event);
     // notify
-    $sortedBidirToOneEdit.setGoal(goal2);
-    $sortedBidirToOneEdit.storeInitialStatePublic();
-    $sortedBidirToOneEdit.perform();
+    $orderedBidirToOneEdit.setGoal(goal2);
+    $orderedBidirToOneEdit.storeInitialStatePublic();
+    $orderedBidirToOneEdit.perform();
 //  $sortedBidirToOneEdit.notifyListenersPublic();
     // check whether the listener of the beed is notified
     assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener3.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener3.$event.getOldValue(), goal1);
     assertEquals($listener3.$event.getNewValue(), goal2);
     assertEquals($listener3.$event.getSource(), $target);
     // check whether the listener of goal1 is notified
     assertNotNull($listener4.$event);
-    assertEquals($listener4.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener4.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener4.$event.getOldValue().size(), 1);
     assertEquals($listener4.$event.getOldValue().get(0), $target.getOwner());
     assertTrue($listener4.$event.getNewValue().isEmpty());
     assertEquals($listener4.$event.getSource(), goal1);
     // check whether the listener of goal2 is notified
     assertNotNull($listener5.$event);
-    assertEquals($listener5.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener5.$event.getEdit(), $orderedBidirToOneEdit);
     assertTrue($listener5.$event.getOldValue().isEmpty());
     assertEquals($listener5.$event.getNewValue().size(), 1);
     assertEquals($listener5.$event.getNewValue().get(0), $target.getOwner());
@@ -970,13 +970,13 @@ public class TestSortedBidirToOneEdit {
   @Test
   public void notifyListeners2() throws EditStateException, IllegalEditException {
     // add initial goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
-    MySortedBidirToOneEdit sortedBidirToOneEdit = new MySortedBidirToOneEdit($target);
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+    MyOrderedBidirToOneEdit sortedBidirToOneEdit = new MyOrderedBidirToOneEdit($target);
     sortedBidirToOneEdit.setGoal(goal1);
     sortedBidirToOneEdit.perform();
     assertEquals($target.get(), goal1);
     // create second goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
     // add listener to beed
     $target.addListener($listener3);
     assertTrue($target.isListener($listener3));
@@ -989,29 +989,29 @@ public class TestSortedBidirToOneEdit {
     assertNull($listener4.$event);
     assertNull($listener5.$event);
     // notify
-    $sortedBidirToOneEdit.setGoal(goal2);
-    $sortedBidirToOneEdit.storeInitialStatePublic();
-    $sortedBidirToOneEdit.perform();
+    $orderedBidirToOneEdit.setGoal(goal2);
+    $orderedBidirToOneEdit.storeInitialStatePublic();
+    $orderedBidirToOneEdit.perform();
     $listener3.reset();
     $listener4.reset();
     $listener5.reset();
-    $sortedBidirToOneEdit.undo();
+    $orderedBidirToOneEdit.undo();
     // check whether the listener of the beed is notified
     assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener3.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener3.$event.getOldValue(), goal2);
     assertEquals($listener3.$event.getNewValue(), goal1);
     assertEquals($listener3.$event.getSource(), $target);
     // check whether the listener of goal1 is notified
     assertNotNull($listener4.$event);
-    assertEquals($listener4.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener4.$event.getEdit(), $orderedBidirToOneEdit);
     assertTrue($listener4.$event.getOldValue().isEmpty());
     assertEquals($listener4.$event.getNewValue().size(), 1);
     assertEquals($listener4.$event.getNewValue().get(0), $target.getOwner());
     assertEquals($listener4.$event.getSource(), goal1);
     // check whether the listener of goal2 is notified
     assertNotNull($listener5.$event);
-    assertEquals($listener5.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener5.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener5.$event.getOldValue().size(), 1);
     assertEquals($listener5.$event.getOldValue().get(0), $target.getOwner());
     assertTrue($listener5.$event.getNewValue().isEmpty());
@@ -1021,12 +1021,12 @@ public class TestSortedBidirToOneEdit {
   @Test
   public void notifyListeners3() throws EditStateException, IllegalEditException {
     // create initial goal, with 2 children
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child1 = createChild();
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child2 = createChild();
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child1 = createChild();
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child2 = createChild();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
       createAcceptableGoal(child1, child2);
     // add target to this initial goal
-    MySortedBidirToOneEdit sortedBidirToOneEdit = new MySortedBidirToOneEdit($target);
+    MyOrderedBidirToOneEdit sortedBidirToOneEdit = new MyOrderedBidirToOneEdit($target);
     Integer goalPosition1 = 1;
     sortedBidirToOneEdit.setGoal(goal1);
     sortedBidirToOneEdit.setGoalPosition(goalPosition1);
@@ -1037,9 +1037,9 @@ public class TestSortedBidirToOneEdit {
     assertEquals(goal1.indexOf($target.getOwner()), 1);
     assertEquals(goal1.indexOf(child2.getOwner()), 2);
     // create second goal, with two children
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child3 = createChild();
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child4 = createChild();
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child3 = createChild();
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child4 = createChild();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
       createAcceptableGoal(child3, child4);
     assertEquals(goal2.get().size(), 2);
     assertEquals(goal2.indexOf(child3.getOwner()), 0);
@@ -1056,19 +1056,19 @@ public class TestSortedBidirToOneEdit {
     assertNull($listener4.$event);
     assertNull($listener5.$event);
     // notify
-    $sortedBidirToOneEdit.setGoal(goal2);
+    $orderedBidirToOneEdit.setGoal(goal2);
     Integer goalPosition2 = 0;
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition2);
-    $sortedBidirToOneEdit.perform();
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition2);
+    $orderedBidirToOneEdit.perform();
     // check whether the listener of the beed is notified
     assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener3.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener3.$event.getOldValue(), goal1);
     assertEquals($listener3.$event.getNewValue(), goal2);
     assertEquals($listener3.$event.getSource(), $target);
     // check whether the listener of goal1 is notified
     assertNotNull($listener4.$event);
-    assertEquals($listener4.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener4.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener4.$event.getOldValue().size(), 3);
     assertEquals($listener4.$event.getOldValue().indexOf(child1.getOwner()), 0);
     assertEquals($listener4.$event.getOldValue().indexOf($target.getOwner()), 1);
@@ -1079,7 +1079,7 @@ public class TestSortedBidirToOneEdit {
     assertEquals($listener4.$event.getSource(), goal1);
     // check whether the listener of goal2 is notified
     assertNotNull($listener5.$event);
-    assertEquals($listener5.$event.getEdit(), $sortedBidirToOneEdit);
+    assertEquals($listener5.$event.getEdit(), $orderedBidirToOneEdit);
     assertEquals($listener5.$event.getOldValue().size(), 2);
     assertEquals($listener5.$event.getOldValue().indexOf(child3.getOwner()), 0);
     assertEquals($listener5.$event.getOldValue().indexOf(child4.getOwner()), 1);
@@ -1090,77 +1090,77 @@ public class TestSortedBidirToOneEdit {
     assertEquals($listener5.$event.getSource(), goal2);
   }
 
-  private SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> createAcceptableGoal(
-      EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child1,
-      EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child2)
+  private OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> createAcceptableGoal(
+      EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child1,
+      EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child2)
       throws EditStateException, IllegalEditException {
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> many =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> many =
       createAcceptableGoal();
     addChild(child1, many);
     addChild(child2, many);
     return many;
   }
 
-  private void addChild(EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child,
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> parent)
+  private void addChild(EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> child,
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> parent)
         throws EditStateException, IllegalEditException {
-    SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit =
-      new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(child);
+    OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(child);
     edit.setGoal(parent);
     edit.setGoalPosition(null);
     edit.perform();
   }
 
-  private EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> createChild() {
-    return new EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
+  private EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> createChild() {
+    return new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
   }
 
   @Test
   public void performance() throws EditStateException, IllegalEditException {
     // check: old = null, new = null
-    assertEquals($sortedBidirToOneEdit.getInitial(), null);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getGoal(), null);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), null);
-    $sortedBidirToOneEdit.performance();
+    assertEquals($orderedBidirToOneEdit.getInitial(), null);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getGoal(), null);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), null);
+    $orderedBidirToOneEdit.performance();
     assertEquals($target.get(), null);
     // check: old = null, new = goal1
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
     Integer goalPosition1 = 0;
-    $sortedBidirToOneEdit.setGoal(goal1);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition1);
-    assertEquals($sortedBidirToOneEdit.getInitial(), null);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal1);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition1);
+    $orderedBidirToOneEdit.setGoal(goal1);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition1);
+    assertEquals($orderedBidirToOneEdit.getInitial(), null);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal1);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition1);
     assertTrue(goal1.get().isEmpty());
-    $sortedBidirToOneEdit.performance();
+    $orderedBidirToOneEdit.performance();
     assertEquals($target.get(), goal1);
     assertTrue(goal1.get().size() == 1);
     assertEquals(goal1.get().indexOf($target.getOwner()), goalPosition1);
     // check: old = goal1, new = goal2
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
     Integer goalPosition2 = 0;
-    $sortedBidirToOneEdit.storeInitialStatePublic();
-    $sortedBidirToOneEdit.setGoal(goal2);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition2);
-    assertEquals($sortedBidirToOneEdit.getInitial(), goal1);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), goalPosition1);
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal2);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition2);
+    $orderedBidirToOneEdit.storeInitialStatePublic();
+    $orderedBidirToOneEdit.setGoal(goal2);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition2);
+    assertEquals($orderedBidirToOneEdit.getInitial(), goal1);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), goalPosition1);
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal2);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition2);
     assertTrue(goal1.get().size() == 1);
     assertEquals(goal1.get().indexOf($target.getOwner()), goalPosition1);
     assertTrue(goal2.get().isEmpty());
-    $sortedBidirToOneEdit.performance();
+    $orderedBidirToOneEdit.performance();
     assertEquals($target.get(), goal2);
     assertTrue(goal1.get().isEmpty());
     assertTrue(goal2.get().size() == 1);
     assertEquals(goal2.get().indexOf($target.getOwner()),  goalPosition2);
     // add extra element to goal2
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed =
-      new EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
-    SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit =
-      new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed);
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed =
+      new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
+    OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed);
     sbtoEdit.setGoal(goal2);
     sbtoEdit.setGoalPosition(0);
     sbtoEdit.perform();
@@ -1168,39 +1168,39 @@ public class TestSortedBidirToOneEdit {
     assertEquals(goal2.get().indexOf($target.getOwner()), 1);
     assertEquals(goal2.get().indexOf(esbtoBeed.getOwner()), 0);
     // create goal3, having several children
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal3 =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal3 =
       createAcceptableGoal();
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed1 =
-      new EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
-    SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit1 =
-      new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed1);
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed1 =
+      new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
+    OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit1 =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed1);
     sbtoEdit1.setGoal(goal3);
     sbtoEdit1.setGoalPosition(0);
     sbtoEdit1.perform();
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed2 =
-      new EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
-    SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit2 =
-      new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed2);
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed2 =
+      new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
+    OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit2 =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed2);
     sbtoEdit2.setGoal(goal3);
     sbtoEdit2.setGoalPosition(1);
     sbtoEdit2.perform();
     // check: old = goal2, new = goal3
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal4 = goal3;
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal4 = goal3;
     Integer goalPosition4 = null;
-    $sortedBidirToOneEdit.storeInitialStatePublic();
-    $sortedBidirToOneEdit.setGoal(goal4);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition4);
-    assertEquals($sortedBidirToOneEdit.getInitial(), goal2);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), 1);
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal4);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition4);
+    $orderedBidirToOneEdit.storeInitialStatePublic();
+    $orderedBidirToOneEdit.setGoal(goal4);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition4);
+    assertEquals($orderedBidirToOneEdit.getInitial(), goal2);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), 1);
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal4);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition4);
     assertTrue(goal2.get().size() == 2);
     assertEquals(goal2.get().indexOf($target.getOwner()), 1);
     assertEquals(goal2.get().indexOf(esbtoBeed.getOwner()), 0);
     assertTrue(goal4.get().size() == 2);
     assertEquals(goal4.get().indexOf(esbtoBeed1.getOwner()), 0);
     assertEquals(goal4.get().indexOf(esbtoBeed2.getOwner()), 1);
-    $sortedBidirToOneEdit.performance();
+    $orderedBidirToOneEdit.performance();
     assertEquals($target.get(), goal4);
     assertTrue(goal2.get().size() == 1);
     assertEquals(goal2.get().indexOf(esbtoBeed.getOwner()), 0);
@@ -1208,42 +1208,42 @@ public class TestSortedBidirToOneEdit {
     assertEquals(goal4.get().indexOf(esbtoBeed1.getOwner()), 0);
     assertEquals(goal4.get().indexOf(esbtoBeed2.getOwner()), 1);
     assertEquals(goal4.get().indexOf($target.getOwner()), 2);
-    assertNotSame($sortedBidirToOneEdit.getGoalPosition(), goalPosition4);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), 2);
+    assertNotSame($orderedBidirToOneEdit.getGoalPosition(), goalPosition4);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), 2);
   }
 
   @Test
   public void unperformance() throws EditStateException, IllegalEditException {
     // check: old = null, new = null
-    assertEquals($sortedBidirToOneEdit.getInitial(), null);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getGoal(), null);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), null);
-    $sortedBidirToOneEdit.unperformance();
+    assertEquals($orderedBidirToOneEdit.getInitial(), null);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getGoal(), null);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), null);
+    $orderedBidirToOneEdit.unperformance();
     assertEquals($target.get(), null);
     // check: old = null, new = goal1
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 = createAcceptableGoal();
     Integer goalPosition1 = 0;
-    $sortedBidirToOneEdit.setGoal(goal1);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition1);
-    $sortedBidirToOneEdit.perform();
-    assertEquals($sortedBidirToOneEdit.getInitial(), null);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal1);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition1);
+    $orderedBidirToOneEdit.setGoal(goal1);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition1);
+    $orderedBidirToOneEdit.perform();
+    assertEquals($orderedBidirToOneEdit.getInitial(), null);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal1);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition1);
     assertTrue(goal1.get().size() == 1);
     assertEquals(goal1.get().indexOf($target.getOwner()), 0);
-    $sortedBidirToOneEdit.unperformance();
+    $orderedBidirToOneEdit.unperformance();
     assertEquals($target.get(), null);
     assertTrue(goal1.get().isEmpty());
     // check: old = goal1, new = goal2
-    MySortedBidirToOneEdit sortedBidirToOneEdit1 = new MySortedBidirToOneEdit($target);
+    MyOrderedBidirToOneEdit sortedBidirToOneEdit1 = new MyOrderedBidirToOneEdit($target);
     sortedBidirToOneEdit1.setGoal(goal1);
     sortedBidirToOneEdit1.setGoalPosition(goalPosition1);
     sortedBidirToOneEdit1.perform();
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = createAcceptableGoal();
     Integer goalPosition2 = 0;
-    MySortedBidirToOneEdit sortedBidirToOneEdit2 = new MySortedBidirToOneEdit($target);
+    MyOrderedBidirToOneEdit sortedBidirToOneEdit2 = new MyOrderedBidirToOneEdit($target);
     sortedBidirToOneEdit2.setGoal(goal2);
     sortedBidirToOneEdit2.setGoalPosition(goalPosition2);
     sortedBidirToOneEdit2.perform();
@@ -1264,27 +1264,27 @@ public class TestSortedBidirToOneEdit {
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
     // can't create event before being performed
-    assertEquals(State.NOT_YET_PERFORMED, $sortedBidirToOneEdit.getState());
+    assertEquals(State.NOT_YET_PERFORMED, $orderedBidirToOneEdit.getState());
 //    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $sortedBidirToOneEdit.createEvent();
 //    assertEquals(createdEvent.getEdit(), $sortedBidirToOneEdit);
 //    assertEquals(createdEvent.getOldValue(), null);
 //    assertEquals(createdEvent.getNewValue(), null);
 //    assertEquals(createdEvent.getSource(), $target);
     // perform
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
-    $sortedBidirToOneEdit.setGoal(goal);
-    $sortedBidirToOneEdit.perform();
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+    $orderedBidirToOneEdit.setGoal(goal);
+    $orderedBidirToOneEdit.perform();
     // create event
-    SortedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $sortedBidirToOneEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $sortedBidirToOneEdit);
+    OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $orderedBidirToOneEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $orderedBidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
     assertEquals(createdEvent.getSource(), $target);
     // undo
-    $sortedBidirToOneEdit.undo();
+    $orderedBidirToOneEdit.undo();
     // create event
-    createdEvent = $sortedBidirToOneEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $sortedBidirToOneEdit);
+    createdEvent = $orderedBidirToOneEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $orderedBidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);
     assertEquals(createdEvent.getSource(), $target);
@@ -1294,17 +1294,17 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void setGoalPosition1() {
     try {
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(0);
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.setGoalPosition(0);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(0);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.setGoalPosition(0);
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -1317,18 +1317,18 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void setGoalPosition2() {
     try {
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(0);
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.setGoalPosition(0);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(0);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.setGoalPosition(0);
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -1341,19 +1341,19 @@ public class TestSortedBidirToOneEdit {
   // incorrect begin-state
   public void setGoalPosition3() {
     try {
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
-      $sortedBidirToOneEdit.setGoal(goal);
-      $sortedBidirToOneEdit.setGoalPosition(0);
-      $sortedBidirToOneEdit.perform();
-      $sortedBidirToOneEdit.undo();
-      $sortedBidirToOneEdit.redo();
-      $sortedBidirToOneEdit.setGoalPosition(0);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      $orderedBidirToOneEdit.setGoal(goal);
+      $orderedBidirToOneEdit.setGoalPosition(0);
+      $orderedBidirToOneEdit.perform();
+      $orderedBidirToOneEdit.undo();
+      $orderedBidirToOneEdit.redo();
+      $orderedBidirToOneEdit.setGoalPosition(0);
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $sortedBidirToOneEdit);
-      assertEquals(e.getCurrentState(), $sortedBidirToOneEdit.getState());
+      assertEquals(e.getEdit(), $orderedBidirToOneEdit);
+      assertEquals(e.getCurrentState(), $orderedBidirToOneEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -1366,60 +1366,60 @@ public class TestSortedBidirToOneEdit {
   // correct begin-state, check postconditions
   public void setGoalPosition4() {
     try {
-      assertTrue($sortedBidirToOneEdit.isValid());
+      assertTrue($orderedBidirToOneEdit.isValid());
       // add validity listeners
-      $sortedBidirToOneEdit.addValidityListener($listener1);
-      $sortedBidirToOneEdit.addValidityListener($listener2);
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener1));
-      assertTrue($sortedBidirToOneEdit.isValidityListener($listener2));
+      $orderedBidirToOneEdit.addValidityListener($listener1);
+      $orderedBidirToOneEdit.addValidityListener($listener2);
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener1));
+      assertTrue($orderedBidirToOneEdit.isValidityListener($listener2));
       assertTrue($listener1.isEmpty());
       assertTrue($listener2.isEmpty());
       // set valid goal
-      SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
-      $sortedBidirToOneEdit.setGoal(goal);
+      OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal = createAcceptableGoal();
+      $orderedBidirToOneEdit.setGoal(goal);
       Integer goalPosition = 0;
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-      assertTrue($sortedBidirToOneEdit.isValid());
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+      assertTrue($orderedBidirToOneEdit.isValid());
       assertTrue($listener1.isEmpty());
       assertTrue($listener2.isEmpty());
       // set invalid goal
       Integer invalidGoal = -1;
-      $sortedBidirToOneEdit.setGoalPosition(invalidGoal);
-      assertEquals($sortedBidirToOneEdit.getGoalPosition(), invalidGoal);
-      assertFalse($sortedBidirToOneEdit.isValid());
+      $orderedBidirToOneEdit.setGoalPosition(invalidGoal);
+      assertEquals($orderedBidirToOneEdit.getGoalPosition(), invalidGoal);
+      assertFalse($orderedBidirToOneEdit.isValid());
       assertFalse($listener1.isEmpty());
       assertFalse($listener2.isEmpty());
-      assertEquals($listener1.$target, $sortedBidirToOneEdit);
-      assertEquals($listener1.$validity, $sortedBidirToOneEdit.isValid());
-      assertEquals($listener2.$target, $sortedBidirToOneEdit);
-      assertEquals($listener2.$validity, $sortedBidirToOneEdit.isValid());
+      assertEquals($listener1.$target, $orderedBidirToOneEdit);
+      assertEquals($listener1.$validity, $orderedBidirToOneEdit.isValid());
+      assertEquals($listener2.$target, $orderedBidirToOneEdit);
+      assertEquals($listener2.$validity, $orderedBidirToOneEdit.isValid());
       // set other invalid goal
       Integer invalidGoal2 = 5;
       $listener1.reset();
       $listener2.reset();
-      $sortedBidirToOneEdit.setGoalPosition(invalidGoal2);
-      assertEquals($sortedBidirToOneEdit.getGoalPosition(), invalidGoal2);
-      assertFalse($sortedBidirToOneEdit.isValid());
+      $orderedBidirToOneEdit.setGoalPosition(invalidGoal2);
+      assertEquals($orderedBidirToOneEdit.getGoalPosition(), invalidGoal2);
+      assertFalse($orderedBidirToOneEdit.isValid());
       assertTrue($listener1.isEmpty());
       assertTrue($listener2.isEmpty());
       // set valid goal
       $listener1.reset();
       $listener2.reset();
-      $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-      assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-      assertTrue($sortedBidirToOneEdit.isValid());
-      assertEquals($listener1.$target, $sortedBidirToOneEdit);
-      assertEquals($listener1.$validity, $sortedBidirToOneEdit.isValid());
-      assertEquals($listener2.$target, $sortedBidirToOneEdit);
-      assertEquals($listener2.$validity, $sortedBidirToOneEdit.isValid());
+      $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+      assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+      assertTrue($orderedBidirToOneEdit.isValid());
+      assertEquals($listener1.$target, $orderedBidirToOneEdit);
+      assertEquals($listener1.$validity, $orderedBidirToOneEdit.isValid());
+      assertEquals($listener2.$target, $orderedBidirToOneEdit);
+      assertEquals($listener2.$validity, $orderedBidirToOneEdit.isValid());
       // set other valid goal
       Integer goal2 = 0;
       $listener1.reset();
       $listener2.reset();
-      $sortedBidirToOneEdit.setGoalPosition(goal2);
-      assertEquals($sortedBidirToOneEdit.getGoalPosition(), goal2);
-      assertTrue($sortedBidirToOneEdit.isValid());
+      $orderedBidirToOneEdit.setGoalPosition(goal2);
+      assertEquals($orderedBidirToOneEdit.getGoalPosition(), goal2);
+      assertTrue($orderedBidirToOneEdit.isValid());
       assertTrue($listener1.isEmpty());
       assertTrue($listener2.isEmpty());
     }
@@ -1432,159 +1432,159 @@ public class TestSortedBidirToOneEdit {
   @Test
   public void getOldPosition() throws EditStateException, IllegalEditException {
     // set value of target
-    MySortedBidirToOneEdit edit = new MySortedBidirToOneEdit($target);
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> init =
+    MyOrderedBidirToOneEdit edit = new MyOrderedBidirToOneEdit($target);
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> init =
       createAcceptableGoal();
     Integer initPosition = 0;
     edit.setGoal(init);
     edit.setGoalPosition(initPosition);
     edit.perform();
     // check
-    assertEquals($sortedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getOldPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getOldPosition(), null);
     // set goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
       createAcceptableGoal();
     Integer goalPosition = 0;
-    $sortedBidirToOneEdit.setGoal(goal);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-    assertEquals($sortedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getOldPosition(), goalPosition);
+    $orderedBidirToOneEdit.setGoal(goal);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+    assertEquals($orderedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getOldPosition(), goalPosition);
     // perform
-    $sortedBidirToOneEdit.perform();
-    assertEquals($sortedBidirToOneEdit.getState(), State.DONE);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getOldPosition(), initPosition);
+    $orderedBidirToOneEdit.perform();
+    assertEquals($orderedBidirToOneEdit.getState(), State.DONE);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getOldPosition(), initPosition);
     // undo
-    $sortedBidirToOneEdit.undo();
-    assertEquals($sortedBidirToOneEdit.getState(), State.UNDONE);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getOldPosition(), goalPosition);
+    $orderedBidirToOneEdit.undo();
+    assertEquals($orderedBidirToOneEdit.getState(), State.UNDONE);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getOldPosition(), goalPosition);
     // redo
-    $sortedBidirToOneEdit.redo();
-    assertEquals($sortedBidirToOneEdit.getState(), State.DONE);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getOldPosition(), initPosition);
+    $orderedBidirToOneEdit.redo();
+    assertEquals($orderedBidirToOneEdit.getState(), State.DONE);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getOldPosition(), initPosition);
     // kill
-    $sortedBidirToOneEdit.kill();
-    assertEquals($sortedBidirToOneEdit.getState(), State.DEAD);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getOldPosition(), goalPosition);
+    $orderedBidirToOneEdit.kill();
+    assertEquals($orderedBidirToOneEdit.getState(), State.DEAD);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getOldPosition(), goalPosition);
   }
 
   @Test
   public void getNewPosition() throws EditStateException, IllegalEditException {
     // set value of target
-    MySortedBidirToOneEdit edit = new MySortedBidirToOneEdit($target);
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> init =
+    MyOrderedBidirToOneEdit edit = new MyOrderedBidirToOneEdit($target);
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> init =
       createAcceptableGoal();
     Integer initPosition = 0;
     edit.setGoal(init);
     edit.setGoalPosition(initPosition);
     edit.perform();
     // check
-    assertEquals($sortedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getNewPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getNewPosition(), null);
     // set goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
       createAcceptableGoal();
     Integer goalPosition = 0;
-    $sortedBidirToOneEdit.setGoal(goal);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-    assertEquals($sortedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), null);
-    assertEquals($sortedBidirToOneEdit.getNewPosition(), null);
+    $orderedBidirToOneEdit.setGoal(goal);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+    assertEquals($orderedBidirToOneEdit.getState(), State.NOT_YET_PERFORMED);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), null);
+    assertEquals($orderedBidirToOneEdit.getNewPosition(), null);
     // perform
-    $sortedBidirToOneEdit.perform();
-    assertEquals($sortedBidirToOneEdit.getState(), State.DONE);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getNewPosition(), goalPosition);
+    $orderedBidirToOneEdit.perform();
+    assertEquals($orderedBidirToOneEdit.getState(), State.DONE);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getNewPosition(), goalPosition);
     // undo
-    $sortedBidirToOneEdit.undo();
-    assertEquals($sortedBidirToOneEdit.getState(), State.UNDONE);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getNewPosition(), initPosition);
+    $orderedBidirToOneEdit.undo();
+    assertEquals($orderedBidirToOneEdit.getState(), State.UNDONE);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getNewPosition(), initPosition);
     // redo
-    $sortedBidirToOneEdit.redo();
-    assertEquals($sortedBidirToOneEdit.getState(), State.DONE);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getNewPosition(), goalPosition);
+    $orderedBidirToOneEdit.redo();
+    assertEquals($orderedBidirToOneEdit.getState(), State.DONE);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getNewPosition(), goalPosition);
     // kill
-    $sortedBidirToOneEdit.kill();
-    assertEquals($sortedBidirToOneEdit.getState(), State.DEAD);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), initPosition);
-    assertEquals($sortedBidirToOneEdit.getNewPosition(), initPosition);
+    $orderedBidirToOneEdit.kill();
+    assertEquals($orderedBidirToOneEdit.getState(), State.DEAD);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), initPosition);
+    assertEquals($orderedBidirToOneEdit.getNewPosition(), initPosition);
   }
 
   @Test
   public void storeInitialState() throws EditStateException, IllegalEditException {
     assertNull($target.get());
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
-    $sortedBidirToOneEdit.storeInitialState();
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
+    $orderedBidirToOneEdit.storeInitialState();
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
     // change value of target
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
       createAcceptableGoal();
     Integer goalPosition = 0;
-    $sortedBidirToOneEdit.setGoal(goal);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-    $sortedBidirToOneEdit.perform();
+    $orderedBidirToOneEdit.setGoal(goal);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+    $orderedBidirToOneEdit.perform();
     assertEquals($target.get(), goal);
     assertEquals($target.get().indexOf($target.getOwner()), 0);
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
-    $sortedBidirToOneEdit.storeInitialState();
-    assertEquals($sortedBidirToOneEdit.getInitial(), goal);
-    assertEquals($sortedBidirToOneEdit.getInitialPosition(), 0);
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
+    $orderedBidirToOneEdit.storeInitialState();
+    assertEquals($orderedBidirToOneEdit.getInitial(), goal);
+    assertEquals($orderedBidirToOneEdit.getInitialPosition(), 0);
   }
 
   @Test
   public void isChange() throws EditStateException, IllegalEditException {
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
-    assertNull($sortedBidirToOneEdit.getGoal());
-    assertNull($sortedBidirToOneEdit.getGoalPosition());
-    assertFalse($sortedBidirToOneEdit.isChange());
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
+    assertNull($orderedBidirToOneEdit.getGoal());
+    assertNull($orderedBidirToOneEdit.getGoalPosition());
+    assertFalse($orderedBidirToOneEdit.isChange());
     // change goal
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
       createAcceptableGoal();
     Integer goalPosition = 0;
-    $sortedBidirToOneEdit.setGoal(goal);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertTrue($sortedBidirToOneEdit.isChange());
+    $orderedBidirToOneEdit.setGoal(goal);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertTrue($orderedBidirToOneEdit.isChange());
     // perform
-    $sortedBidirToOneEdit.perform();
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition);
-    assertTrue($sortedBidirToOneEdit.isChange());
+    $orderedBidirToOneEdit.perform();
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition);
+    assertTrue($orderedBidirToOneEdit.isChange());
     // perform
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 =
       createAcceptableGoal();
     Integer goalPosition2 = 0;
-    MySortedBidirToOneEdit edit2 = new MySortedBidirToOneEdit($target);
+    MyOrderedBidirToOneEdit edit2 = new MyOrderedBidirToOneEdit($target);
     edit2.setGoal(goal2);
     edit2.setGoalPosition(goalPosition2);
     edit2.perform();
@@ -1599,60 +1599,60 @@ public class TestSortedBidirToOneEdit {
   @Test
   public void isInitialStateCurrent() throws EditStateException, IllegalEditException {
     assertNull($target.get());
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
-    assertTrue($sortedBidirToOneEdit.isInitialStateCurrent());
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
+    assertTrue($orderedBidirToOneEdit.isInitialStateCurrent());
     // perform
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal =
       createAcceptableGoal();
     Integer goalPosition = 0;
-    $sortedBidirToOneEdit.setGoal(goal);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition);
-    $sortedBidirToOneEdit.perform();
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
+    $orderedBidirToOneEdit.setGoal(goal);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition);
+    $orderedBidirToOneEdit.perform();
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
     assertEquals($target.get(), goal);
     assertEquals($target.get().indexOf($target.getOwner()), goalPosition);
-    assertFalse($sortedBidirToOneEdit.isInitialStateCurrent());
+    assertFalse($orderedBidirToOneEdit.isInitialStateCurrent());
     // undo
-    $sortedBidirToOneEdit.undo();
-    assertNull($sortedBidirToOneEdit.getInitial());
-    assertNull($sortedBidirToOneEdit.getInitialPosition());
+    $orderedBidirToOneEdit.undo();
+    assertNull($orderedBidirToOneEdit.getInitial());
+    assertNull($orderedBidirToOneEdit.getInitialPosition());
     assertNull($target.get());
-    assertTrue($sortedBidirToOneEdit.isInitialStateCurrent());
+    assertTrue($orderedBidirToOneEdit.isInitialStateCurrent());
   }
 
   @Test
   public void isGoalStateCurrent() throws EditStateException, IllegalEditException {
-    assertNull($sortedBidirToOneEdit.getGoal());
-    assertNull($sortedBidirToOneEdit.getGoalPosition());
+    assertNull($orderedBidirToOneEdit.getGoal());
+    assertNull($orderedBidirToOneEdit.getGoalPosition());
     assertNull($target.get());
-    assertTrue($sortedBidirToOneEdit.isGoalStateCurrent());
+    assertTrue($orderedBidirToOneEdit.isGoalStateCurrent());
     // perform
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal1 =
       createAcceptableGoal();
     Integer goalPosition1 = 0;
-    $sortedBidirToOneEdit.setGoal(goal1);
-    $sortedBidirToOneEdit.setGoalPosition(goalPosition1);
-    $sortedBidirToOneEdit.perform();
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal1);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition1);
+    $orderedBidirToOneEdit.setGoal(goal1);
+    $orderedBidirToOneEdit.setGoalPosition(goalPosition1);
+    $orderedBidirToOneEdit.perform();
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal1);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition1);
     assertEquals($target.get(), goal1);
     assertEquals($target.get().indexOf($target.getOwner()), goalPosition1);
-    assertTrue($sortedBidirToOneEdit.isGoalStateCurrent());
+    assertTrue($orderedBidirToOneEdit.isGoalStateCurrent());
     // undo
-    $sortedBidirToOneEdit.undo();
-    assertEquals($sortedBidirToOneEdit.getGoal(), goal1);
-    assertEquals($sortedBidirToOneEdit.getGoalPosition(), goalPosition1);
+    $orderedBidirToOneEdit.undo();
+    assertEquals($orderedBidirToOneEdit.getGoal(), goal1);
+    assertEquals($orderedBidirToOneEdit.getGoalPosition(), goalPosition1);
     assertNull($target.get());
-    assertFalse($sortedBidirToOneEdit.isGoalStateCurrent());
+    assertFalse($orderedBidirToOneEdit.isGoalStateCurrent());
     // perform
-    EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed =
-      new EditableSortedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
-    SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = goal1;
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> esbtoBeed =
+      new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
+    OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> goal2 = goal1;
     Integer goalPosition2 = null;
-    SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit =
-      new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed);
+    OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> sbtoEdit =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(esbtoBeed);
     sbtoEdit.setGoal(goal2);
     sbtoEdit.setGoalPosition(goalPosition2);
     int goalSize = goal2.get().size();

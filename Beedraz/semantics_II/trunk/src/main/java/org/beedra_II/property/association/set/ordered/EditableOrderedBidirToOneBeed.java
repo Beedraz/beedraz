@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.association.set.sorted;
+package org.beedra_II.property.association.set.ordered;
 
 
 import org.beedra_II.bean.BeanBeed;
@@ -32,15 +32,15 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class EditableSortedBidirToOneBeed<_One_ extends BeanBeed,
+public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
                                           _Many_ extends BeanBeed>
-    extends EditableSimplePropertyBeed<SortedBidirToManyBeed<_One_, _Many_>,
-                                       SortedBidirToOneEvent<_One_, _Many_>> {
+    extends EditableSimplePropertyBeed<OrderedBidirToManyBeed<_One_, _Many_>,
+                                       OrderedBidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre bean != null;
    */
-  public EditableSortedBidirToOneBeed(_Many_ bean) {
+  public EditableOrderedBidirToOneBeed(_Many_ bean) {
     super(bean);
   }
 
@@ -63,8 +63,8 @@ public class EditableSortedBidirToOneBeed<_One_ extends BeanBeed,
    * @post  result.getEditState() == null;
    */
   @Override
-  protected SortedBidirToOneEvent<_One_, _Many_> createInitialEvent() {
-    return new SortedBidirToOneEvent<_One_, _Many_>(this, null, get(), null);
+  protected OrderedBidirToOneEvent<_One_, _Many_> createInitialEvent() {
+    return new OrderedBidirToOneEvent<_One_, _Many_>(this, null, get(), null);
   }
 
 }

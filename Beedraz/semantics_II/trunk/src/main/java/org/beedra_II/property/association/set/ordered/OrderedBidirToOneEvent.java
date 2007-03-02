@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.association.set.sorted;
+package org.beedra_II.property.association.set.ordered;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
@@ -26,21 +26,21 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link EditableSortedBidirToOneBeed<_One_, _Many_>} and
- * that carries a simple old and new value of type {@link SortedBidirToManyBeed<_One_, _Many_>}.
+ * {@link OldNewEvent} whose source is a {@link EditableOrderedBidirToOneBeed<_One_, _Many_>} and
+ * that carries a simple old and new value of type {@link OrderedBidirToManyBeed<_One_, _Many_>}.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  *
- * @invar getSource() instanceof EditableSortedBidirToOneBeed<_One_, _Many_>;
+ * @invar getSource() instanceof EditableOrderedBidirToOneBeed<_One_, _Many_>;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class SortedBidirToOneEvent<_One_ extends BeanBeed,
+public final class OrderedBidirToOneEvent<_One_ extends BeanBeed,
                                          _Many_ extends BeanBeed>
-    extends OldNewEvent<SortedBidirToManyBeed<_One_, _Many_>> {
+    extends OldNewEvent<OrderedBidirToManyBeed<_One_, _Many_>> {
 
 
   /**
@@ -56,9 +56,9 @@ public final class SortedBidirToOneEvent<_One_ extends BeanBeed,
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public SortedBidirToOneEvent(EditableSortedBidirToOneBeed<_One_, _Many_> source,
-                               SortedBidirToManyBeed<_One_, _Many_> oldValue,
-                               SortedBidirToManyBeed<_One_, _Many_> newValue,
+  public OrderedBidirToOneEvent(EditableOrderedBidirToOneBeed<_One_, _Many_> source,
+                               OrderedBidirToManyBeed<_One_, _Many_> oldValue,
+                               OrderedBidirToManyBeed<_One_, _Many_> newValue,
                                Edit<?> edit) {
     super(source, oldValue, newValue, edit);
   }

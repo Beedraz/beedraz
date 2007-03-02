@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.association.set.sorted;
+package org.beedra_II.property.association.set.ordered;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
@@ -40,17 +40,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class SortedBidirToOneEdit<_One_ extends BeanBeed,
+public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
                                   _Many_ extends BeanBeed>
-    extends SimplePropertyEdit<SortedBidirToManyBeed<_One_, _Many_>,
-                               EditableSortedBidirToOneBeed<_One_, _Many_>,
-                               SortedBidirToOneEvent<_One_, _Many_>> {
+    extends SimplePropertyEdit<OrderedBidirToManyBeed<_One_, _Many_>,
+                               EditableOrderedBidirToOneBeed<_One_, _Many_>,
+                               OrderedBidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre  target != null;
    * @post getTarget() == target;
    */
-  public SortedBidirToOneEdit(EditableSortedBidirToOneBeed<_One_, _Many_> target) {
+  public OrderedBidirToOneEdit(EditableOrderedBidirToOneBeed<_One_, _Many_> target) {
     super(target);
   }
 
@@ -266,9 +266,9 @@ public class SortedBidirToOneEdit<_One_ extends BeanBeed,
   protected final void notifyListeners() {
     super.notifyListeners();
     assert (getState() == DONE) || (getState() == UNDONE);
-    SortedBidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
+    OrderedBidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
     Integer oldPosition = getOldPosition();
-    SortedBidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
+    OrderedBidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     Integer newPosition = getNewPosition();
     if (oldToMany != null) {
       List<_Many_> oldValue = new ArrayList<_Many_>();
@@ -295,8 +295,8 @@ public class SortedBidirToOneEdit<_One_ extends BeanBeed,
    * @post  result.getEdit() == this;
    */
   @Override
-  protected SortedBidirToOneEvent<_One_, _Many_> createEvent() {
-    return new SortedBidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
+  protected OrderedBidirToOneEvent<_One_, _Many_> createEvent() {
+    return new OrderedBidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
   }
 
   @Override

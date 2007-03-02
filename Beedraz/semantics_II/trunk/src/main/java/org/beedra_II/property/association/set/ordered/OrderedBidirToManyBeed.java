@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.association.set.sorted;
+package org.beedra_II.property.association.set.ordered;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
@@ -26,13 +26,13 @@ import java.util.List;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.set.sorted.SortedSetBeed;
-import org.beedra_II.property.set.sorted.SortedSetEvent;
+import org.beedra_II.property.set.ordered.OrderedSetBeed;
+import org.beedra_II.property.set.ordered.OrderedSetEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link SortedSetBeed} that represents the 'many' side of a bidirectional association.
+ * {@link OrderedSetBeed} that represents the 'many' side of a bidirectional association.
  * We assume that the list cannot contain any duplicates.
  *
  * @author  Nele Smeets
@@ -47,12 +47,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class SortedBidirToManyBeed<_One_ extends BeanBeed,
+public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
                                    _Many_ extends BeanBeed>
-    extends AbstractPropertyBeed<SortedSetEvent<_Many_>>
-    implements SortedSetBeed<_Many_> {
+    extends AbstractPropertyBeed<OrderedSetEvent<_Many_>>
+    implements OrderedSetBeed<_Many_> {
 
-  public SortedBidirToManyBeed(_One_ bean) {
+  public OrderedBidirToManyBeed(_One_ bean) {
     super(bean);
   }
 
@@ -102,8 +102,8 @@ public class SortedBidirToManyBeed<_One_ extends BeanBeed,
 
   void fireChangeEvent(List<_Many_> oldValue,
                        List<_Many_> newValue,
-                       SortedBidirToOneEdit<_One_, _Many_> edit) {
-    fireChangeEvent(new SortedSetEvent<_Many_>(this, oldValue, newValue, edit));
+                       OrderedBidirToOneEdit<_One_, _Many_> edit) {
+    fireChangeEvent(new OrderedSetEvent<_Many_>(this, oldValue, newValue, edit));
   }
 
   private final List<_Many_> $many = new ArrayList<_Many_>();
@@ -117,8 +117,8 @@ public class SortedBidirToManyBeed<_One_ extends BeanBeed,
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final SortedSetEvent<_Many_> createInitialEvent() {
-    return new SortedSetEvent<_Many_>(this, null, get(), null);
+  protected final OrderedSetEvent<_Many_> createInitialEvent() {
+    return new OrderedSetEvent<_Many_>(this, null, get(), null);
   }
 
   @Override

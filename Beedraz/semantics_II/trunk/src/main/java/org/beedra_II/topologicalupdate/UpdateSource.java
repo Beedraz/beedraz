@@ -26,6 +26,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() >= 0;
+ *
+ * @mudo no loops
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

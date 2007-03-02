@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.association.sorted;
+package org.beedra_II.property.association.set.sorted;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;

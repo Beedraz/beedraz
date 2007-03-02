@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.association.sorted;
+package org.beedra_II.property.association.set.sorted;
 
 
 import static org.junit.Assert.assertEquals;
@@ -22,6 +22,10 @@ import static org.junit.Assert.assertEquals;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.property.association.set.sorted.EditableSortedBidirToOneBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToManyBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToOneEdit;
+import org.beedra_II.property.association.set.sorted.SortedBidirToOneEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.association.sorted;
+package org.beedra_II.property.association.set.sorted;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +26,11 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.list.ListEvent;
+import org.beedra_II.property.association.set.sorted.EditableSortedBidirToOneBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToManyBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToOneEdit;
+import org.beedra_II.property.association.set.sorted.SortedBidirToOneEvent;
+import org.beedra_II.property.set.sorted.SortedSetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,9 +74,9 @@ public class TestEditableSortedBidirToOneBeed {
 
   }
 
-  public class StubEditableSortedBidirToOneBeedListener implements Listener<ListEvent<Integer>> {
+  public class StubEditableSortedBidirToOneBeedListener implements Listener<SortedSetEvent<Integer>> {
 
-    public void beedChanged(ListEvent<Integer> event) {
+    public void beedChanged(SortedSetEvent<Integer> event) {
       $event = event;
     }
 
@@ -80,7 +84,7 @@ public class TestEditableSortedBidirToOneBeed {
       $event = null;
     }
 
-    public ListEvent<Integer> $event;
+    public SortedSetEvent<Integer> $event;
 
   }
 

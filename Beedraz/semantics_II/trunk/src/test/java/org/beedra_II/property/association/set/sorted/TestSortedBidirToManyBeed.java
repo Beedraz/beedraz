@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.association.sorted;
+package org.beedra_II.property.association.set.sorted;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +31,10 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.list.ListEvent;
+import org.beedra_II.property.association.set.sorted.EditableSortedBidirToOneBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToManyBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToOneEdit;
+import org.beedra_II.property.set.sorted.SortedSetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +51,7 @@ public class TestSortedBidirToManyBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(ListEvent<_Many_> event) {
+    public void fire(SortedSetEvent<_Many_> event) {
       fireChangeEvent(event);
     }
   }
@@ -75,9 +78,9 @@ public class TestSortedBidirToManyBeed {
 
   }
 
-  public class StubListEventListener implements Listener<ListEvent<ManyBeanBeed>> {
+  public class StubSortedSetEventListener implements Listener<SortedSetEvent<ManyBeanBeed>> {
 
-    public void beedChanged(ListEvent<ManyBeanBeed> event) {
+    public void beedChanged(SortedSetEvent<ManyBeanBeed> event) {
       $event = event;
     }
 
@@ -85,7 +88,7 @@ public class TestSortedBidirToManyBeed {
       $event = null;
     }
 
-    public ListEvent<ManyBeanBeed> $event;
+    public SortedSetEvent<ManyBeanBeed> $event;
 
   }
 
@@ -100,11 +103,11 @@ public class TestSortedBidirToManyBeed {
     $sortedBidirToOneEdit =
       new SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableSortedBidirToOneBeed);
     $sortedBidirToOneEdit.perform();
-    $listEvent = new ListEvent<ManyBeanBeed>($sortedBidirToManyBeed, null, null, $sortedBidirToOneEdit);
+    $listEvent = new SortedSetEvent<ManyBeanBeed>($sortedBidirToManyBeed, null, null, $sortedBidirToOneEdit);
     $listener1 = new PropagatedEventListener();
     $listener2 = new PropagatedEventListener();
-    $listener3 = new StubListEventListener();
-    $listener4 = new StubListEventListener();
+    $listener3 = new StubSortedSetEventListener();
+    $listener4 = new StubSortedSetEventListener();
   }
 
   @After
@@ -117,11 +120,11 @@ public class TestSortedBidirToManyBeed {
   private OneBeanBeed $one = new OneBeanBeed();
   private MySortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $sortedBidirToManyBeed;
   private SortedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> $sortedBidirToOneEdit;
-  private ListEvent<ManyBeanBeed> $listEvent;
+  private SortedSetEvent<ManyBeanBeed> $listEvent;
   private PropagatedEventListener $listener1;
   private PropagatedEventListener $listener2;
-  private StubListEventListener $listener3;
-  private StubListEventListener $listener4;
+  private StubSortedSetEventListener $listener3;
+  private StubSortedSetEventListener $listener4;
 
   @Test
   public void constructor() {
@@ -269,7 +272,7 @@ public class TestSortedBidirToManyBeed {
 
   @Test
   public void createInitialEvent2() {
-    ListEvent<ManyBeanBeed> initialEvent =
+    SortedSetEvent<ManyBeanBeed> initialEvent =
       $sortedBidirToManyBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $sortedBidirToManyBeed);
     assertEquals(initialEvent.getOldValue(), null);

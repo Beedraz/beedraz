@@ -8,10 +8,12 @@ package org.beedra_II.topologicalupdate;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -25,8 +27,8 @@ import org.junit.Test;
 
 public class TestRootUpdateSource {
 
-  private RootUpdateSource<IntegerEvent> $subject1;
-  private RootUpdateSource<IntegerEvent> $subject2;
+  private StubRootUpdateSource $subject1;
+  private StubRootUpdateSource $subject2;
 
   private IntegerEvent $event;
   private IntegerEvent[] $events;
@@ -70,10 +72,21 @@ public class TestRootUpdateSource {
 
   }
 
+  public class StubRootUpdateSource extends RootUpdateSource<IntegerEvent> {
+
+    @Override
+    protected void notifyListeners(LinkedHashMap<UpdateSource, Event> events) {
+      $events = new LinkedHashMap<UpdateSource, Event>(events);
+    }
+
+    public Map<UpdateSource, Event> $events;
+
+  }
+
   @Before
   public void setUp() throws Exception {
-    $subject1 = new RootUpdateSource<IntegerEvent>() { /* NOP */ };
-    $subject2 = new RootUpdateSource<IntegerEvent>() { /* NOP */ };
+    $subject1 = new StubRootUpdateSource();
+    $subject2 = new StubRootUpdateSource();
     $event = createIntegerEvent();
     $dNullEvent1 = new StubDependentUpdateSource(null);
     $dNullEvent2 = new StubDependentUpdateSource(null);
@@ -108,6 +121,10 @@ public class TestRootUpdateSource {
   @Test
   public void testUpdateDependents1() {
     $subject1.updateDependents($event);
+    assertNotNull($subject1.$events);
+    assertEquals(1, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
   }
 
   /**
@@ -123,6 +140,10 @@ public class TestRootUpdateSource {
     assertEquals(1, $dNullEvent1.$events.size());
     assertTrue($dNullEvent1.$events.keySet().contains($subject1));
     assertEquals($event, $dNullEvent1.$events.get($subject1));
+    assertNotNull($subject1.$events);
+    assertEquals(1, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
   }
 
   /**
@@ -145,6 +166,10 @@ public class TestRootUpdateSource {
     assertEquals(1, $dNullEvent2.$events.size());
     assertTrue($dNullEvent2.$events.keySet().contains($subject1));
     assertEquals($event, $dNullEvent2.$events.get($subject1));
+    assertNotNull($subject1.$events);
+    assertEquals(1, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
   }
 
   /**
@@ -165,6 +190,10 @@ public class TestRootUpdateSource {
     assertEquals($event, $dNullEvent1.$events.get($subject1));
     assertEquals(0, $dNullEvent2.$updated);
     assertNull($dNullEvent2.$events);
+    assertNotNull($subject1.$events);
+    assertEquals(1, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
   }
 
   /**
@@ -181,6 +210,12 @@ public class TestRootUpdateSource {
     assertEquals(1, $ds[0].$events.size());
     assertTrue($ds[0].$events.keySet().contains($subject1));
     assertEquals($event, $ds[0].$events.get($subject1));
+    assertNotNull($subject1.$events);
+    assertEquals(2, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    assertTrue($subject1.$events.containsKey($ds[0]));
+    assertEquals($events[0], $subject1.$events.get($ds[0]));
   }
 
   /**
@@ -208,6 +243,14 @@ public class TestRootUpdateSource {
     assertEquals($event, $ds[1].$events.get($subject1));
     assertTrue($ds[0].$events.keySet().contains($ds[1]) || $ds[1].$events.keySet().contains($ds[0]));
     assertTrue($ds[0].$events.get($ds[1]) == $events[1] || $ds[1].$events.get($ds[0]) == $events[0]);
+    assertNotNull($subject1.$events);
+    assertEquals(3, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    for (int i = 0; i <= 1; i++) {
+      assertTrue($subject1.$events.containsKey($ds[i]));
+      assertEquals($events[i], $subject1.$events.get($ds[i]));
+    }
   }
 
   /**
@@ -233,6 +276,14 @@ public class TestRootUpdateSource {
     assertEquals($event, $ds[1].$events.get($subject1));
     assertTrue($ds[1].$events.keySet().contains($ds[0]));
     assertEquals($events[0], $ds[1].$events.get($ds[0]));
+    assertNotNull($subject1.$events);
+    assertEquals(3, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    for (int i = 0; i <= 1; i++) {
+      assertTrue($subject1.$events.containsKey($ds[i]));
+      assertEquals($events[i], $subject1.$events.get($ds[i]));
+    }
   }
 
   /**
@@ -408,6 +459,15 @@ public class TestRootUpdateSource {
     assertEquals($events[4], $ds[6].$events.get($ds[4]));
     assertTrue($ds[6].$events.keySet().contains($ds[5]));
     assertEquals($events[5], $ds[6].$events.get($ds[5]));
+
+    assertNotNull($subject1.$events);
+    assertEquals(8, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    for (int i = 0; i <= 6; i++) {
+      assertTrue($subject1.$events.containsKey($ds[i]));
+      assertEquals($events[i], $subject1.$events.get($ds[i]));
+    }
   }
 
   private void checkDependent8Level1(StubDependentUpdateSource dependent) {
@@ -550,6 +610,15 @@ public class TestRootUpdateSource {
       assertTrue($ds[5].$events.keySet().contains($ds[i]));
       assertEquals($events[i], $ds[5].$events.get($ds[i]));
     }
+
+    assertNotNull($subject1.$events);
+    assertEquals(6, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    for (int i = 1; i <= 5; i++) {
+      assertTrue($subject1.$events.containsKey($ds[i]));
+      assertEquals($events[i], $subject1.$events.get($ds[i]));
+    }
   }
 
   private void checkDependent9Level1(StubDependentUpdateSource dependent) {
@@ -635,6 +704,15 @@ public class TestRootUpdateSource {
       assertTrue($ds[5].$events.keySet().contains($ds[i]));
       assertEquals($events[i], $ds[5].$events.get($ds[i]));
     }
+
+    assertNotNull($subject1.$events);
+    assertEquals(6, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    for (int i = 1; i <= 5; i++) {
+      assertTrue($subject1.$events.containsKey($ds[i]));
+      assertEquals($events[i], $subject1.$events.get($ds[i]));
+    }
   }
 
   /**
@@ -714,6 +792,16 @@ public class TestRootUpdateSource {
         assertTrue($ds[5].$events.keySet().contains($ds[i]));
         assertEquals($events[i], $ds[5].$events.get($ds[i]));
       }
+    }
+
+
+    assertNotNull($subject1.$events);
+    assertEquals(201, $subject1.$events.size());
+    assertTrue($subject1.$events.containsKey($subject1));
+    assertEquals($event, $subject1.$events.get($subject1));
+    for (int i = 1; i <= 200; i++) {
+      assertTrue($subject1.$events.containsKey($ds[i]));
+      assertEquals($events[i], $subject1.$events.get($ds[i]));
     }
   }
 

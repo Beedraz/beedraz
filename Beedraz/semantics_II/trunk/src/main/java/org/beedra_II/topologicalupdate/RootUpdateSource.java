@@ -19,9 +19,8 @@ package org.beedra_II.topologicalupdate;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -46,9 +45,10 @@ public abstract class RootUpdateSource<_Event_ extends Event>
   }
 
   protected final void updateDependents(_Event_ event) {
+    LinkedHashMap<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>();
+    // LinkedHashMap to remember topol order for event listener notification
+    events.put(this, event);
     if (getDependents().size() >= 1) {
-      Map<UpdateSource, Event> events = new HashMap<UpdateSource, Event>();
-      events.put(this, event);
       assert getDependents().size() >= 1 : "initial size of priority queue must be >= 1";
       PriorityQueue<Dependent<?>> queue =
         new PriorityQueue<Dependent<?>>(getDependents().size(),
@@ -75,6 +75,15 @@ public abstract class RootUpdateSource<_Event_ extends Event>
         dependent = queue.poll();
       }
     }
+    notifyListeners(events);
   }
+
+  protected abstract void notifyListeners(LinkedHashMap<UpdateSource, Event> events);
+//    for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
+//      UpdateSource dependentUpdateSource = entry.getKey();
+//      Event dependentUpdateSourceEvent = entry.getValue();
+//      dependentUpdateSource.notifyListeners(dependentUpdateSourceEvent);
+//    }
+//  }
 
 }

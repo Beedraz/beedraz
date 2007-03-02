@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.association.set;
+package org.beedra_II.aggregate;
 
 
 import static org.junit.Assert.assertEquals;

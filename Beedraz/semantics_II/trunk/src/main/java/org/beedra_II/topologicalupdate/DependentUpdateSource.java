@@ -17,22 +17,12 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
-import java.util.Map;
-import java.util.Set;
-
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Due to the limitation to single inheritance, most
- * actual dependent update sources
- * will not extend this type, but will delegate to {@link DependentDelegate}.
- * The important algorithms are then reused through delegation
- * instead of inheritance. This class is mainly intended
- * to demonstrate how to do this. If the actual
- * dependent update source is not limited by inheritance to extend
- * this type, please do so.
+ * Tagging interface.
  *
  * @author Jan Dockx
  */
@@ -40,56 +30,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class DependentUpdateSource<_Event_ extends Event>
-    extends AbstractUpdateSource {
+public interface DependentUpdateSource<_Event_ extends Event>
+    extends UpdateSource {
 
-  /**
-   * @basic
-   */
-  public int getMaximumRootUpdateSourceDistance() {
-    return $dependentDelegate.getMaximumRootUpdateSourceDistance();
-  }
-
-  private final Dependent<_Event_> $dependentDelegate
-    = new Dependent<_Event_>() {
-
-      @Override
-      public UpdateSource getDependentUpdateSource() {
-        return DependentUpdateSource.this;
-      }
-
-      @Override
-      public _Event_ update(Map<UpdateSource, Event> events) {
-        return DependentUpdateSource.this.update(events);
-      }
-
-    };
-
-  protected abstract _Event_ update(Map<UpdateSource, Event> events);
-
-  /**
-   * @basic
-   */
-  protected final Set<UpdateSource> getUpdateSources() {
-    return $dependentDelegate.getUpdateSources();
-  }
-
-  /**
-   * @pre updateSource != null;
-   * @post getUpdateSources().contains(updateSource);
-   * @post updateSource.getDependents().contains(this);
-   */
-  protected final void addUpdateSource(UpdateSource updateSource) {
-    $dependentDelegate.addUpdateSource(updateSource);
-  }
-
-  /**
-   * @pre updateSource != null;
-   * @post ! getUpdateSources().contains(updateSource);
-   * @post ! updateSource.getDependents().contains(this);
-   */
-  protected final void removeUpdateSource(UpdateSource updateSource) {
-    $dependentDelegate.removeUpdateSource(updateSource);
-  }
+  // NOP
 
 }

@@ -61,7 +61,7 @@ public class TestRootUpdateSource {
 
   }
 
-  public class StubDependentUpdateSource extends DependentUpdateSource<IntegerEvent> {
+  public class StubDependentUpdateSource extends AbstractDependentUpdateSource<IntegerEvent> {
 
     public StubDependentUpdateSource(IntegerEvent event) {
       $event = event;
@@ -82,7 +82,7 @@ public class TestRootUpdateSource {
 
   }
 
-  public class StubRootUpdateSource extends RootUpdateSource<IntegerEvent> {
+  public class StubRootUpdateSource extends AbstractRootUpdateSource {
 
     @Override
     protected void notifyListeners(LinkedHashMap<UpdateSource, Event> events) {

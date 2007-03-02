@@ -30,7 +30,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() > 0;
- * @invar for (UpdateSource us : getUpdateSources()) {};
+ * @invar for (UpdateSource us : getUpdateSources()) {
+ *          us.getMaximalRootUpdateSourceDistance() < getMaximalRootUpdateSourceDistance()
+ *        };
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -104,7 +106,11 @@ public abstract class Dependent<_Event_ extends Event> {
     return $maximumRootUpdateSourceDistance;
   }
 
+  /**
+   * @pre newSourceMaximumFinalSourceDistance < Integer.MAX_VALUE
+   */
   public void updateMaximumRootUpdateSourceDistanceUp(int newSourceMaximumFinalSourceDistance) {
+    assert newSourceMaximumFinalSourceDistance < Integer.MAX_VALUE;
     int potentialNewMaxDistance = newSourceMaximumFinalSourceDistance + 1;
     if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {
       $maximumRootUpdateSourceDistance = potentialNewMaxDistance;
@@ -116,10 +122,12 @@ public abstract class Dependent<_Event_ extends Event> {
 
   public void updateMaximumRootUpdateSourceDistanceDown(int oldSourceMaximumFinalSourceDistance) {
     if ($maximumRootUpdateSourceDistance == oldSourceMaximumFinalSourceDistance + 1) {
+        // no overflow problem in if
       int oldMaximumFinalSourceDistance = $maximumRootUpdateSourceDistance;
       $maximumRootUpdateSourceDistance = 0;
-      for (UpdateSource otherIUpdateSource : getUpdateSources()) {
-        int potentialNewMaxDistance = otherIUpdateSource.getMaximumRootUpdateSourceDistance() + 1;
+      for (UpdateSource otherUpdateSource : getUpdateSources()) {
+        int potentialNewMaxDistance = otherUpdateSource.getMaximumRootUpdateSourceDistance() + 1;
+          // no overflow problem due to invariant
         if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {
           $maximumRootUpdateSourceDistance = potentialNewMaxDistance;
         }

@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.list;
+package org.beedra_II.property.set.sorted;
 
 
 import static org.junit.Assert.assertEquals;
@@ -25,14 +25,16 @@ import java.util.List;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.property.association.sorted.SortedBidirToManyBeed;
+import org.beedra_II.property.association.set.sorted.SortedBidirToManyBeed;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.set.sorted.SortedSetBeed;
+import org.beedra_II.property.set.sorted.SortedSetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestListEvent {
+public class TestSortedSetEvent {
 
   public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
@@ -60,7 +62,7 @@ public class TestListEvent {
   public void constructor() throws EditStateException, IllegalEditException {
     // source
     OneBeanBeed owner = new OneBeanBeed();
-    ListBeed<ManyBeanBeed> source =
+    SortedSetBeed<ManyBeanBeed> source =
       new SortedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>(owner);
     // old and new value
     List<ManyBeanBeed> oldValue = new ArrayList<ManyBeanBeed>();
@@ -73,8 +75,8 @@ public class TestListEvent {
     IntegerEdit edit = new IntegerEdit(target);
     edit.perform();
     // test constructor
-    ListEvent<ManyBeanBeed> listEvent =
-      new ListEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
+    SortedSetEvent<ManyBeanBeed> listEvent =
+      new SortedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
     assertEquals(listEvent.getSource(), source);
     assertEquals(listEvent.getOldValue(), oldValue);
     assertEquals(listEvent.getNewValue(), newValue);
@@ -86,7 +88,7 @@ public class TestListEvent {
     newValue.add(new ManyBeanBeed());
     newValue.add(new ManyBeanBeed());
     // test constructor
-    listEvent = new ListEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
+    listEvent = new SortedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
     assertEquals(listEvent.getSource(), source);
     assertEquals(listEvent.getOldValue(), null);
     assertEquals(listEvent.getNewValue(), newValue);

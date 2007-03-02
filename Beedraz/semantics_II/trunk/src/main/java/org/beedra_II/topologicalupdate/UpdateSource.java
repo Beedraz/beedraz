@@ -26,8 +26,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() >= 0;
- *
- * @mudo no loops
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -35,12 +33,29 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public interface UpdateSource {
 
-  void addDependent(Dependent<?> dependent);
-
-  void removeDependent(Dependent<?> dependent);
-
+  /**
+   * @basic
+   */
   Set<Dependent<?>> getDependents();
 
+  Set<Dependent<?>> getDependentsTransitiveClosure();
+
+  /**
+   * @pre dependent != null;
+   * @pre ! dependent.getDependentsTransitiveClosure().contains(this);
+   *      no loops
+   * @post getDependents().contains(dependent);
+   */
+  void addDependent(Dependent<?> dependent);
+
+  /**
+   * @post ! getDependents().contains(dependent);
+   */
+  void removeDependent(Dependent<?> dependent);
+
+  /**
+   * #basic
+   */
   int getMaximumRootUpdateSourceDistance();
 
 }

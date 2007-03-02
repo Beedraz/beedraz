@@ -33,27 +33,37 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractUpdateSource implements UpdateSource {
 
-  /**
-   * @pre dependent != null;
-   * @post getDependents().contains(dependent);
-   */
+  public final Set<Dependent<?>> getDependents() {
+    return Collections.unmodifiableSet($dependents);
+  }
+
+  public final Set<Dependent<?>> getDependentsTransitiveClosure() {
+    Set<Dependent<?>> dtc = new HashSet<Dependent<?>>();
+    dtc.addAll($dependents);
+    for (Dependent<?> dependent : $dependents) {
+      dependentsTransitiveClosure(dependent, dtc);
+    }
+    return dtc;
+  }
+
+  private final void dependentsTransitiveClosure(Dependent<?> dependent, Set<Dependent<?>> acc) {
+    assert acc.contains(dependent);
+    for (Dependent<?> secondDependent : dependent.getDependents()) {
+      if (! acc.contains(secondDependent)) {
+        acc.add(secondDependent);
+        dependentsTransitiveClosure(secondDependent, acc);
+      }
+    }
+  }
+
   public final void addDependent(Dependent<?> dependent) {
     assert dependent != null;
+    assert ! dependent.getDependentsTransitiveClosure().contains(this);
     $dependents.add(dependent);
   }
 
-  /**
-   * @post ! getDependents().contains(dependent);
-   */
   public final void removeDependent(Dependent<?> dependent) {
     $dependents.remove(dependent);
-  }
-
-  /**
-   * @basic
-   */
-  public final Set<Dependent<?>> getDependents() {
-    return Collections.unmodifiableSet($dependents);
   }
 
   /**

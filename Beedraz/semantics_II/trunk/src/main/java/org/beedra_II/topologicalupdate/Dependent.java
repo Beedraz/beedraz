@@ -40,7 +40,22 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class Dependent<_Event_ extends Event> {
 
+  /**
+   * Should not be, but can be, {@code null}.
+   */
   public abstract UpdateSource getDependentUpdateSource();
+
+  public final Set<Dependent<?>> getDependents() {
+    return getDependentUpdateSource() == null ?
+             Collections.<Dependent<?>>emptySet() :
+             getDependentUpdateSource().getDependents();
+  }
+
+  public final Set<Dependent<?>> getDependentsTransitiveClosure() {
+    return getDependentUpdateSource() == null ?
+             Collections.<Dependent<?>>emptySet() :
+             getDependentUpdateSource().getDependentsTransitiveClosure();
+  }
 
   /**
    * Return {@code null} if this dependent didn't change its value
@@ -64,11 +79,14 @@ public abstract class Dependent<_Event_ extends Event> {
 
   /**
    * @pre updateSource != null;
+   * @pre ! getDependentsTransitiveClosure().contains(updateSource);
+   *      no loops
    * @post getUpdateSources().contains(updateSource);
    * @post updateSource.getDependents().contains(this);
    */
   public final void addUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
+    assert ! getDependentsTransitiveClosure().contains(updateSource);
     $updateSources.add(updateSource);
     updateSource.addDependent(this);
     updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
@@ -114,7 +132,7 @@ public abstract class Dependent<_Event_ extends Event> {
     int potentialNewMaxDistance = newSourceMaximumFinalSourceDistance + 1;
     if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {
       $maximumRootUpdateSourceDistance = potentialNewMaxDistance;
-      for (Dependent<?> dependent : getDependentUpdateSource().getDependents()) {
+      for (Dependent<?> dependent : getDependents()) {
         dependent.updateMaximumRootUpdateSourceDistanceUp($maximumRootUpdateSourceDistance);
       }
     }
@@ -133,7 +151,7 @@ public abstract class Dependent<_Event_ extends Event> {
         }
       }
       if (oldMaximumFinalSourceDistance != $maximumRootUpdateSourceDistance) {
-        for (Dependent<?> dependent : getDependentUpdateSource().getDependents()) {
+        for (Dependent<?> dependent : getDependents()) {
           dependent.updateMaximumRootUpdateSourceDistanceDown(oldMaximumFinalSourceDistance);
         }
       }

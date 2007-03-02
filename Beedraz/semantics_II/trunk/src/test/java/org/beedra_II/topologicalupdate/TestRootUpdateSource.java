@@ -404,33 +404,33 @@ public class TestRootUpdateSource {
     checkTopology8();
   }
 
-  private void printMaximumRootUpdateSourceDistance() {
-    System.out.println("                      $subject" + mrusd($subject1));
-    System.out.println("                          |");
-    System.out.println("                   -----------------");
-    System.out.println("                  |                 |");
-    System.out.println("                 $ds[0]" + mrusd($ds[0]) + "           $ds[5]" + mrusd($ds[5]));
-    System.out.println("                  |                 |");
-    System.out.println("            --------------          |");
-    System.out.println("           |      |       |         |");
-    System.out.println("          $ds[1]" + mrusd($ds[1]) + "$ds[2]" + mrusd($ds[2]) + " $ds[3]" + mrusd($ds[3])+ "    |");
-    System.out.println("           |      |       |         |");
-    System.out.println("            --------------          |");
-    System.out.println("                  |                 |");
-    System.out.println("                 $ds[4]" + mrusd($ds[4]) + "            |");
-    System.out.println("                  |                 |");
-    System.out.println("                   -----------------");
-    System.out.println("                          |");
-    System.out.println("                         $ds[6]" + mrusd($ds[6]));
+//  private void printMaximumRootUpdateSourceDistance() {
+//    System.out.println("                      $subject" + mrusd($subject1));
+//    System.out.println("                          |");
+//    System.out.println("                   -----------------");
+//    System.out.println("                  |                 |");
+//    System.out.println("                 $ds[0]" + mrusd($ds[0]) + "           $ds[5]" + mrusd($ds[5]));
+//    System.out.println("                  |                 |");
+//    System.out.println("            --------------          |");
+//    System.out.println("           |      |       |         |");
+//    System.out.println("          $ds[1]" + mrusd($ds[1]) + "$ds[2]" + mrusd($ds[2]) + " $ds[3]" + mrusd($ds[3])+ "    |");
+//    System.out.println("           |      |       |         |");
+//    System.out.println("            --------------          |");
+//    System.out.println("                  |                 |");
+//    System.out.println("                 $ds[4]" + mrusd($ds[4]) + "            |");
+//    System.out.println("                  |                 |");
+//    System.out.println("                   -----------------");
+//    System.out.println("                          |");
+//    System.out.println("                         $ds[6]" + mrusd($ds[6]));
+//
+//  }
 
-  }
-
-  private String mrusd(UpdateSource us) {
-    return " (" + us.getMaximumRootUpdateSourceDistance() + ")";
-  }
+//  private String mrusd(UpdateSource us) {
+//    return " (" + us.getMaximumRootUpdateSourceDistance() + ")";
+//  }
 
   private void checkTopology8() {
-    printMaximumRootUpdateSourceDistance();
+//    printMaximumRootUpdateSourceDistance();
     checkDependent8Level1($ds[0]);
 
     checkDependent8Level1($ds[5]);
@@ -598,10 +598,10 @@ public class TestRootUpdateSource {
   }
 
   private void checkTopology9() {
-    System.out.println();
-    for (int i = 0; i < 6; i++) {
-      System.out.println("$ds[" + i + "] = " + $ds[i].getMaximumRootUpdateSourceDistance());
-    }
+//    System.out.println();
+//    for (int i = 0; i < 6; i++) {
+//      System.out.println("$ds[" + i + "] = " + $ds[i].getMaximumRootUpdateSourceDistance());
+//    }
 
     assertEquals(0, $ds[0].$updated);
     assertNull($ds[0].$events);
@@ -689,10 +689,10 @@ public class TestRootUpdateSource {
   }
 
   private void checkTopology10() {
-    System.out.println();
-    for (int i = 0; i < 201; i++) {
-      System.out.println("$ds[" + i + "] = " + $ds[i].getMaximumRootUpdateSourceDistance());
-    }
+//    System.out.println();
+//    for (int i = 0; i < 201; i++) {
+//      System.out.println("$ds[" + i + "] = " + $ds[i].getMaximumRootUpdateSourceDistance());
+//    }
 
     assertEquals(0, $ds[0].$updated);
     assertNull($ds[0].$events);
@@ -767,10 +767,10 @@ public class TestRootUpdateSource {
   }
 
   private void checkTopology11() {
-    System.out.println();
-    for (int i = 0; i < 201; i++) {
-      System.out.println("$ds[" + i + "] = " + $ds[i].getMaximumRootUpdateSourceDistance());
-    }
+//    System.out.println();
+//    for (int i = 0; i < 201; i++) {
+//      System.out.println("$ds[" + i + "] = " + $ds[i].getMaximumRootUpdateSourceDistance());
+//    }
 
     assertEquals(0, $ds[0].$updated);
     assertNull($ds[0].$events);

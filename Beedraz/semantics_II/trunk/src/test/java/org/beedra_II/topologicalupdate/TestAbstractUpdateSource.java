@@ -33,11 +33,11 @@ public class TestAbstractUpdateSource {
 
   private AbstractUpdateSource $subject;
 
-  private Dependent<Event> $dependent1;
+  private Dependent<AbstractUpdateSource> $dependent1;
 
-  private Dependent<Event> $dependent2;
+  private Dependent<AbstractUpdateSource> $dependent2;
 
-  public class StubDependent extends Dependent<Event> {
+  public class StubDependent extends Dependent<AbstractUpdateSource> {
 
     @Override
     public UpdateSource getDependentUpdateSource() {

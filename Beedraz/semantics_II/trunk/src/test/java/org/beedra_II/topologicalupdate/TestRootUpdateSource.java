@@ -47,7 +47,7 @@ public class TestRootUpdateSource {
   private StubDependentUpdateSource $dNullEvent2;
   private StubDependentUpdateSource[] $ds;
 
-  public class StubDependent extends Dependent<Event> {
+  public class StubDependent extends Dependent<AbstractUpdateSource> {
 
     @Override
     public UpdateSource getDependentUpdateSource() {
@@ -61,7 +61,7 @@ public class TestRootUpdateSource {
 
   }
 
-  public class StubDependentUpdateSource extends AbstractDependentUpdateSource<IntegerEvent> {
+  public class StubDependentUpdateSource extends AbstractDependentUpdateSource<IntegerEvent, AbstractUpdateSource> {
 
     public StubDependentUpdateSource(IntegerEvent event) {
       $event = event;

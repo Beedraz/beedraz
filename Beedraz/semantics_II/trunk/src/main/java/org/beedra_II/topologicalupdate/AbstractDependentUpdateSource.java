@@ -40,7 +40,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractDependentUpdateSource<_Event_ extends Event>
+public abstract class AbstractDependentUpdateSource<_Event_ extends Event, _UpdateSource_ extends UpdateSource>
     extends AbstractUpdateSource {
 
   /**
@@ -50,8 +50,8 @@ public abstract class AbstractDependentUpdateSource<_Event_ extends Event>
     return $dependentDelegate.getMaximumRootUpdateSourceDistance();
   }
 
-  private final Dependent<_Event_> $dependentDelegate
-    = new Dependent<_Event_>() {
+  private final Dependent<_UpdateSource_> $dependentDelegate
+    = new Dependent<_UpdateSource_>() {
 
       @Override
       public UpdateSource getDependentUpdateSource() {
@@ -70,7 +70,7 @@ public abstract class AbstractDependentUpdateSource<_Event_ extends Event>
   /**
    * @basic
    */
-  protected final Set<UpdateSource> getUpdateSources() {
+  protected final Set<_UpdateSource_> getUpdateSources() {
     return $dependentDelegate.getUpdateSources();
   }
 
@@ -79,7 +79,7 @@ public abstract class AbstractDependentUpdateSource<_Event_ extends Event>
    * @post getUpdateSources().contains(updateSource);
    * @post updateSource.getDependents().contains(this);
    */
-  protected final void addUpdateSource(UpdateSource updateSource) {
+  protected final void addUpdateSource(_UpdateSource_ updateSource) {
     $dependentDelegate.addUpdateSource(updateSource);
   }
 
@@ -88,7 +88,7 @@ public abstract class AbstractDependentUpdateSource<_Event_ extends Event>
    * @post ! getUpdateSources().contains(updateSource);
    * @post ! updateSource.getDependents().contains(this);
    */
-  protected final void removeUpdateSource(UpdateSource updateSource) {
+  protected final void removeUpdateSource(_UpdateSource_ updateSource) {
     $dependentDelegate.removeUpdateSource(updateSource);
   }
 

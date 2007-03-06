@@ -30,7 +30,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() > 0;
- * @invar for (UpdateSource us : getUpdateSources()) {
+ * @invar for (_UpdateSource_ us : getUpdateSources()) {
  *          us.getMaximalRootUpdateSourceDistance() < getMaximalRootUpdateSourceDistance()
  *        };
  */
@@ -38,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class Dependent<_Event_ extends Event> {
+public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
 
   /**
    * Should not be, but can be, {@code null}.
@@ -64,7 +64,7 @@ public abstract class Dependent<_Event_ extends Event> {
    *
    * @pre events != null;
    */
-  public abstract _Event_ update(Map<UpdateSource, Event> events);
+  public abstract Event update(Map<UpdateSource, Event> events);
 
 
   /*<section name="update sources">*/
@@ -73,7 +73,7 @@ public abstract class Dependent<_Event_ extends Event> {
   /**
    * @basic
    */
-  public final Set<UpdateSource> getUpdateSources() {
+  public final Set<_UpdateSource_> getUpdateSources() {
     return Collections.unmodifiableSet($updateSources);
   }
 
@@ -84,7 +84,7 @@ public abstract class Dependent<_Event_ extends Event> {
    * @post getUpdateSources().contains(updateSource);
    * @post updateSource.getDependents().contains(this);
    */
-  public final void addUpdateSource(UpdateSource updateSource) {
+  public final void addUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
     assert ! getDependentsTransitiveClosure().contains(updateSource);
     $updateSources.add(updateSource);
@@ -97,7 +97,7 @@ public abstract class Dependent<_Event_ extends Event> {
    * @post ! getUpdateSources().contains(updateSource);
    * @post ! updateSource.getDependents().contains(this);
    */
-  public final void removeUpdateSource(UpdateSource updateSource) {
+  public final void removeUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
     updateSource.removeDependent(this);
     $updateSources.remove(updateSource);
@@ -108,7 +108,7 @@ public abstract class Dependent<_Event_ extends Event> {
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
    */
-  private final Set<UpdateSource> $updateSources = new HashSet<UpdateSource>();
+  private final Set<_UpdateSource_> $updateSources = new HashSet<_UpdateSource_>();
 
   /*</section>*/
 
@@ -143,7 +143,7 @@ public abstract class Dependent<_Event_ extends Event> {
         // no overflow problem in if
       int oldMaximumFinalSourceDistance = $maximumRootUpdateSourceDistance;
       $maximumRootUpdateSourceDistance = 0;
-      for (UpdateSource otherUpdateSource : getUpdateSources()) {
+      for (_UpdateSource_ otherUpdateSource : getUpdateSources()) {
         int potentialNewMaxDistance = otherUpdateSource.getMaximumRootUpdateSourceDistance() + 1;
           // no overflow problem due to invariant
         if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {

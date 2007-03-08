@@ -207,11 +207,11 @@ public class TestMappedSetBeed {
     Iterator<IntegerBeed> iteratorCq = result.iterator();
     Iterator<WellBeanBeed> iteratorWell = $run.wells.get().iterator();
     assertTrue(iteratorCq.hasNext());
-    assertEquals(iteratorCq.next(), ((WellBeanBeed)iteratorWell.next()).cq);
+    assertEquals(iteratorCq.next(), iteratorWell.next().cq);
     assertTrue(iteratorCq.hasNext());
-    assertEquals(iteratorCq.next(), ((WellBeanBeed)iteratorWell.next()).cq);
+    assertEquals(iteratorCq.next(), iteratorWell.next().cq);
     assertTrue(iteratorCq.hasNext());
-    assertEquals(iteratorCq.next(), ((WellBeanBeed)iteratorWell.next()).cq);
+    assertEquals(iteratorCq.next(), iteratorWell.next().cq);
     assertFalse(iteratorCq.hasNext());
     try {
       iteratorCq.next();

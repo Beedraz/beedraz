@@ -251,10 +251,10 @@ public class TestFilteredSetBeed {
     assertTrue(result.contains($well1));
     assertTrue(result.contains($well3));
     iterator = result.iterator();
+    assertTrue(iterator.hasNext()); // we do not know the order
+    iterator.next();
     assertTrue(iterator.hasNext());
-    assertEquals(iterator.next(), $well1);
-    assertTrue(iterator.hasNext());
-    assertEquals(iterator.next(), $well3);
+    iterator.next();
     assertFalse(iterator.hasNext());
     try {
       iterator.next();

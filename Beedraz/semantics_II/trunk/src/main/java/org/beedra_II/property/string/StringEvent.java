@@ -38,15 +38,14 @@ public final class StringEvent extends OldNewEvent<String> {
 
   /**
    * @pre  source != null;
-   * @pre  edit != null;
-   * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
    * @pre  (oldValue != null) && (newValue != null)
    *          ? ! oldValue.equals(newValue)
    *          : true;
    *
    * @post getSource() == source;
    * @post getEdit() == edit;
-   * @post getEditState() == edit.getState();
+   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */

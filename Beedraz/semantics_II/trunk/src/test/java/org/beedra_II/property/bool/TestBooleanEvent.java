@@ -72,6 +72,15 @@ public class TestBooleanEvent {
     assertEquals(booleanEvent.getNewValue(), null);
     assertEquals(booleanEvent.getEdit(), edit);
     assertEquals(booleanEvent.getEditState(), edit.getState());
-  }
+    // edit is null
+    edit = null;
+    // test constructor
+    booleanEvent = new BooleanEvent(source, oldValue, newValue, edit);
+    assertEquals(booleanEvent.getSource(), source);
+    assertEquals(booleanEvent.getOldValue(), null);
+    assertEquals(booleanEvent.getNewValue(), null);
+    assertEquals(booleanEvent.getEdit(), null);
+    assertEquals(booleanEvent.getEditState(), null);
+ }
 
 }

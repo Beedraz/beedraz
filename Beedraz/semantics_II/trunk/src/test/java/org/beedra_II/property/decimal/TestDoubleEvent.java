@@ -74,6 +74,15 @@ public class TestDoubleEvent {
     assertEquals(doubleEvent.getEdit(), edit);
     assertEquals(doubleEvent.getEditState(), edit.getState());
     assertEquals(doubleEvent.getDelta(), null);
+    // edit is null
+    edit = null;
+    // test constructor
+    doubleEvent = new DoubleEvent(source, oldValue, newValue, edit);
+    assertEquals(doubleEvent.getSource(), source);
+    assertEquals(doubleEvent.getOldValue(), null);
+    assertEquals(doubleEvent.getNewValue(), newValue);
+    assertEquals(doubleEvent.getEdit(), null);
+    assertEquals(doubleEvent.getEditState(), null);
   }
 
 }

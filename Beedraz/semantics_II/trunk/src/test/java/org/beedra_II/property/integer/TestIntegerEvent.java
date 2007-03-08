@@ -74,6 +74,15 @@ public class TestIntegerEvent {
     assertEquals(integerEvent.getEdit(), edit);
     assertEquals(integerEvent.getEditState(), edit.getState());
     assertEquals(integerEvent.getDelta(), null);
+    // edit is null
+    edit = null;
+    // test constructor
+    integerEvent = new IntegerEvent(source, oldValue, newValue, edit);
+    assertEquals(integerEvent.getSource(), source);
+    assertEquals(integerEvent.getOldValue(), null);
+    assertEquals(integerEvent.getNewValue(), 4);
+    assertEquals(integerEvent.getEdit(), null);
+    assertEquals(integerEvent.getEditState(), null);
   }
 
 }

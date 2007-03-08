@@ -62,7 +62,7 @@ public class TestStringEvent {
     assertEquals(stringEvent.getNewValue(), newValue);
     assertEquals(stringEvent.getEdit(), edit);
     assertEquals(stringEvent.getEditState(), edit.getState());
-    // old and new value
+    // old and new value are null
     oldValue = null;
     newValue = null;
     // test constructor
@@ -72,6 +72,15 @@ public class TestStringEvent {
     assertEquals(stringEvent.getNewValue(), null);
     assertEquals(stringEvent.getEdit(), edit);
     assertEquals(stringEvent.getEditState(), edit.getState());
+    // edit is null
+    edit = null;
+    // test constructor
+    stringEvent = new StringEvent(source, oldValue, newValue, edit);
+    assertEquals(stringEvent.getSource(), source);
+    assertEquals(stringEvent.getOldValue(), null);
+    assertEquals(stringEvent.getNewValue(), null);
+    assertEquals(stringEvent.getEdit(), null);
+    assertEquals(stringEvent.getEditState(), null);
   }
 
 }

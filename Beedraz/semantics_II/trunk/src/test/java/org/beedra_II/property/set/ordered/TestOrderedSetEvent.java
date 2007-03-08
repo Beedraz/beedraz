@@ -28,8 +28,6 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToManyBeed;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerEdit;
-import org.beedra_II.property.set.ordered.OrderedSetBeed;
-import org.beedra_II.property.set.ordered.OrderedSetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -94,6 +92,15 @@ public class TestOrderedSetEvent {
     assertEquals(listEvent.getNewValue(), newValue);
     assertEquals(listEvent.getEdit(), edit);
     assertEquals(listEvent.getEditState(), edit.getState());
+    // edit is null
+    edit = null;
+    // test constructor
+    listEvent = new OrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
+    assertEquals(listEvent.getSource(), source);
+    assertEquals(listEvent.getOldValue(), null);
+    assertEquals(listEvent.getNewValue(), newValue);
+    assertEquals(listEvent.getEdit(), null);
+    assertEquals(listEvent.getEditState(), null);
   }
 
 }

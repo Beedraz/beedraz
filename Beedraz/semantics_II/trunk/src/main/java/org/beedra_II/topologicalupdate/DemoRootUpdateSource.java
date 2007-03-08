@@ -41,10 +41,10 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractRootUpdateSource
-    extends AbstractUpdateSource
-    implements RootUpdateSource {
+public abstract class DemoRootUpdateSource
+    extends UpdateSource {
 
+  @Override
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
   }
@@ -52,13 +52,13 @@ public abstract class AbstractRootUpdateSource
   private RootUpdateSourceDelegate $rootUpdateSourceDelegate = new RootUpdateSourceDelegate() {
 
     @Override
-    public RootUpdateSource getRootUpdateSource() {
-      return AbstractRootUpdateSource.this;
+    public UpdateSource getRootUpdateSource() {
+      return DemoRootUpdateSource.this;
     }
 
     @Override
     protected void notifyListeners(LinkedHashMap<UpdateSource, Event> events) {
-      AbstractRootUpdateSource.this.notifyListeners(events);
+      DemoRootUpdateSource.this.notifyListeners(events);
     }
 
   };

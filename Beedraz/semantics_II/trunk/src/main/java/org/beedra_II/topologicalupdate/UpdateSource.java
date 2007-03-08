@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -31,14 +33,33 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface UpdateSource {
+public abstract class UpdateSource {
 
   /**
    * @basic
    */
-  Set<Dependent<?>> getDependents();
+  public final Set<Dependent<?>> getDependents() {
+    return Collections.unmodifiableSet($dependents);
+  }
 
-  Set<Dependent<?>> getDependentsTransitiveClosure();
+  public final Set<Dependent<?>> getDependentsTransitiveClosure() {
+    Set<Dependent<?>> dtc = new HashSet<Dependent<?>>();
+    dtc.addAll($dependents);
+    for (Dependent<?> dependent : $dependents) {
+      dependentsTransitiveClosure(dependent, dtc);
+    }
+    return dtc;
+  }
+
+  private final void dependentsTransitiveClosure(Dependent<?> dependent, Set<Dependent<?>> acc) {
+    assert acc.contains(dependent);
+    for (Dependent<?> secondDependent : dependent.getDependents()) {
+      if (! acc.contains(secondDependent)) {
+        acc.add(secondDependent);
+        dependentsTransitiveClosure(secondDependent, acc);
+      }
+    }
+  }
 
   /**
    * @pre dependent != null;
@@ -46,16 +67,28 @@ public interface UpdateSource {
    *      no loops
    * @post getDependents().contains(dependent);
    */
-  void addDependent(Dependent<?> dependent);
+  final void addDependent(Dependent<?> dependent) {
+    assert dependent != null;
+    assert ! dependent.getDependentsTransitiveClosure().contains(this);
+    $dependents.add(dependent);
+  }
 
   /**
    * @post ! getDependents().contains(dependent);
    */
-  void removeDependent(Dependent<?> dependent);
+  final void removeDependent(Dependent<?> dependent) {
+    $dependents.remove(dependent);
+  }
 
   /**
-   * #basic
+   * @invar $dependents != null;
+   * @invar Collections.noNull($dependents);
    */
-  int getMaximumRootUpdateSourceDistance();
+  private final Set<Dependent<?>> $dependents = new HashSet<Dependent<?>>();
+
+  /**
+   * @basic
+   */
+  public abstract int getMaximumRootUpdateSourceDistance();
 
 }

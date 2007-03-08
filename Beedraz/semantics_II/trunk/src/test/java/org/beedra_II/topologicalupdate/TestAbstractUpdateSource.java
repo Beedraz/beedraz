@@ -31,13 +31,13 @@ import org.junit.Test;
 
 public class TestAbstractUpdateSource {
 
-  private AbstractUpdateSource $subject;
+  private UpdateSource $subject;
 
-  private Dependent<AbstractUpdateSource> $dependent1;
+  private Dependent<UpdateSource> $dependent1;
 
-  private Dependent<AbstractUpdateSource> $dependent2;
+  private Dependent<UpdateSource> $dependent2;
 
-  public class StubDependent extends Dependent<AbstractUpdateSource> {
+  public class StubDependent extends Dependent<UpdateSource> {
 
     @Override
     public UpdateSource getDependentUpdateSource() {
@@ -53,8 +53,9 @@ public class TestAbstractUpdateSource {
 
   @Before
   public void setUp() throws Exception {
-    $subject = new AbstractUpdateSource() {
+    $subject = new UpdateSource() {
 
+      @Override
       public int getMaximumRootUpdateSourceDistance() {
         return 0;
       }

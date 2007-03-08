@@ -40,12 +40,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractDependentUpdateSource<_Event_ extends Event, _UpdateSource_ extends UpdateSource>
-    extends AbstractUpdateSource {
+public abstract class DemoDependentUpdateSource<_Event_ extends Event, _UpdateSource_ extends UpdateSource>
+    extends UpdateSource {
 
   /**
    * @basic
    */
+  @Override
   public int getMaximumRootUpdateSourceDistance() {
     return $dependentDelegate.getMaximumRootUpdateSourceDistance();
   }
@@ -55,12 +56,12 @@ public abstract class AbstractDependentUpdateSource<_Event_ extends Event, _Upda
 
       @Override
       public UpdateSource getDependentUpdateSource() {
-        return AbstractDependentUpdateSource.this;
+        return DemoDependentUpdateSource.this;
       }
 
       @Override
       public _Event_ update(Map<UpdateSource, Event> events) {
-        return AbstractDependentUpdateSource.this.update(events);
+        return DemoDependentUpdateSource.this.update(events);
       }
 
     };

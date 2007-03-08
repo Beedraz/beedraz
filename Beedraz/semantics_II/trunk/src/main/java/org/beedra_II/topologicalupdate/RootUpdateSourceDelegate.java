@@ -32,6 +32,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() >= 0;
+ * @invar getRootUpdateSource() != null;
+ * @invar getRootUpdateSource().getMaximumRootUpdateSourceDistance() == 0;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -39,7 +41,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class RootUpdateSourceDelegate {
 
-  public abstract RootUpdateSource getRootUpdateSource();
+  public abstract UpdateSource getRootUpdateSource();
 
   public final void updateDependents(Event event) {
     LinkedHashMap<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>();

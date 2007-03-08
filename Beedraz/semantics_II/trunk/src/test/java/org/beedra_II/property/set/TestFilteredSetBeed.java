@@ -224,9 +224,11 @@ public class TestFilteredSetBeed {
     assertTrue(result.contains($well2));
     Iterator<WellBeanBeed> iterator = result.iterator();
     assertTrue(iterator.hasNext());
-    assertEquals(iterator.next(), $well0);
+    WellBeanBeed next = iterator.next();
+    assertTrue(next == $well0 || next == $well2);
     assertTrue(iterator.hasNext());
-    assertEquals(iterator.next(), $well2);
+    next = iterator.next();
+    assertTrue(next == $well0 || next == $well2);
     assertFalse(iterator.hasNext());
     try {
       iterator.next();

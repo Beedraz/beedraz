@@ -138,12 +138,10 @@ public class MappedSetBeed<_From_, _To_>
            * When the source is not effetive, a NoSuchElementException is thrown.
            */
           public _To_ next() {
-            if (iteratorFrom != null) {
-              return getMapping().map(iteratorFrom.next());
-            }
-            else {
+            if (iteratorFrom == null) {
               throw new NoSuchElementException();
             }
+            return getMapping().map(iteratorFrom.next());
           }
 
           /**

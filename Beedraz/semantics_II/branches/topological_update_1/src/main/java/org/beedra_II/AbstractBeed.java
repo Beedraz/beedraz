@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
+import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -37,6 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBeed<_Event_ extends Event>
+    extends AbstractUpdateSource
     implements Beed<_Event_> {
 
   public final boolean isListener(Listener<? super _Event_> listener) {

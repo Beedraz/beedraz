@@ -22,8 +22,11 @@ import java.util.Map;
 
 import org.beedra.util_I.Comparison;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Listener;
+import org.beedra_II.edit.Edit;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.topologicalupdate.Dependent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -58,9 +61,60 @@ public class IntegerSumBeed
   }
 
   /**
+   * @basic
+   */
+  public int getMaximumRootUpdateSourceDistance() {
+    return $dependentDelegate.getMaximumRootUpdateSourceDistance();
+  }
+
+  private final Dependent $dependentDelegate
+    = new Dependent() {
+
+      @Override
+      public UpdateSource getDependentUpdateSource() {
+        return IntegerSumBeed.this;
+      }
+
+      @Override
+      public IntegerEvent update(Map<UpdateSource, Event> events) {
+        Integer oldValue = $value;
+        Edit<?> edit = null;
+//      first attempt at optimization with events, but too difficult for now
+//        Iterator<Map.Entry<UpdateSource, Event>> iter = events.entrySet().iterator();
+//        while (iter.hasNext()) {
+//          Map.Entry<UpdateSource, Event> entry = iter.next();
+//          TermListener tl = $terms.get(entry.getKey());
+//          if (tl != null) {
+//            IntegerEvent event = (IntegerEvent)entry.getValue();
+//            assert event.getEdit() != null;
+//            assert edit == null || edit == event.getEdit() : "edit in all events is the same";
+//            edit = event.getEdit();
+//            tl.update(event);
+//          }
+//        }
+        recalculate();
+        for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
+          if (getUpdateSources().contains(entry.getKey())) {
+            Event event = entry.getValue();
+            edit = event.getEdit(); // the edit of all events is the same
+            break;
+          }
+        }
+        assert edit != null;
+        if (! Comparison.equalsWithNull(oldValue, $value)) {
+          return new IntegerEvent(IntegerSumBeed.this, oldValue, $value, edit);
+        }
+        else {
+          return null;
+        }
+      }
+
+    };
+
+  /**
    * @invar  getNbOccurrences() > 0;
    */
-  private class TermListener implements Listener<IntegerEvent> {
+  private class TermListener {
 
     /**
      * @post  getNbOccurrences() == 1;
@@ -69,26 +123,21 @@ public class IntegerSumBeed
       $nbOccurrences = 1;
     }
 
-    public void beedChanged(IntegerEvent event) {
-      // recalculate(); optimization
-      Integer oldValue = $value;
-      if ($value !=  null) {
-        assert $value != null;
-        assert event.getOldValue() != null :
-          "event old value must be not null because all old terms were not null," +
-          " because $value != null";
-        $value = (event.getNewValue() == null)
-                     ? null
-                     : $value + (event.getDelta() * getNbOccurrences());
-      }
-      else if ((event.getNewValue() != null) && (event.getOldValue() == null)) {
-        recalculate();
-      }
-      // else: NOP
-      if (! Comparison.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
-      }
-    }
+//    public void update(IntegerEvent event) {
+//      // recalculate(); optimization
+//      if ($value !=  null) {
+//        assert $value != null;
+//        assert event.getOldValue() != null :
+//          "event old value must be not null because all old terms were not null," +
+//          " because $value != null";
+//        $value = (event.getNewValue() == null)
+//                     ? null
+//                     : $value + (event.getDelta() * getNbOccurrences());
+//      }
+//      else if ((event.getNewValue() != null) && (event.getOldValue() == null)) {
+//        recalculate();
+//      }
+//    }
 
     public int getNbOccurrences() {
       return $nbOccurrences;
@@ -141,7 +190,7 @@ public class IntegerSumBeed
       else {
         assert getNbOccurrences(term) == 0;
         termListener = new TermListener();
-        term.addListener(termListener);
+        term.addDependent($dependentDelegate);
         $terms.put(term, termListener);
       }
       // recalculate(); optimization
@@ -168,7 +217,7 @@ public class IntegerSumBeed
       }
       else {
         assert getNbOccurrences(term) == 1;
-        term.removeListener(termListener);
+        term.removeDependent($dependentDelegate);
         $terms.remove(term);
       }
       // recalculate(); optimization

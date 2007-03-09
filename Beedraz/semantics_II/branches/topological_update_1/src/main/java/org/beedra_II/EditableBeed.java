@@ -29,6 +29,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   must be {@link UndoableEdit UndoableEdits}.</p>
  *
  * @author Jan Dockx
+ *
+ * getMaximumRootUpdateSourceDistance() == 0;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

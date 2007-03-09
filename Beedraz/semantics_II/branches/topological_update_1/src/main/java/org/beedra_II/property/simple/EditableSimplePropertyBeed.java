@@ -19,10 +19,14 @@ package org.beedra_II.property.simple;
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
+import java.util.LinkedHashMap;
+
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.topologicalupdate.RootUpdateSourceDelegate;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -47,6 +51,33 @@ public abstract class EditableSimplePropertyBeed<_Type_,
    */
   public EditableSimplePropertyBeed(AggregateBeed ownerBeed) {
     super(ownerBeed);
+  }
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    return 0;
+  }
+
+  private RootUpdateSourceDelegate $rootUpdateSourceDelegate = new RootUpdateSourceDelegate() {
+
+    @Override
+    public UpdateSource getRootUpdateSource() {
+      return EditableSimplePropertyBeed.this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void notifyListeners(LinkedHashMap<UpdateSource, Event> events) {
+      Event event = events.get(EditableSimplePropertyBeed.this);
+      fireEvent((_Event_)event);
+    }
+
+  };
+
+  /**
+   * Make the method visible
+   */
+  private void fireEvent(_Event_ event) {
+    fireChangeEvent(event);
   }
 
   /**
@@ -83,8 +114,8 @@ public abstract class EditableSimplePropertyBeed<_Type_,
     return true;
   }
 
-  void fireEvent(_Event_ editEvent) {
-    fireChangeEvent(editEvent);
+  void updateDependents(_Event_ editEvent) {
+    $rootUpdateSourceDelegate.updateDependents(editEvent);
   }
 
   private final static String NULL_STRING = "null";

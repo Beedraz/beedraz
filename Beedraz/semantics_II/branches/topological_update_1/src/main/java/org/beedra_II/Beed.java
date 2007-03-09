@@ -19,6 +19,7 @@ package org.beedra_II;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -79,7 +80,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Beed<_Event_ extends Event> {
+public interface Beed<_Event_ extends Event> extends UpdateSource {
 
   /**
    * @basic

@@ -145,8 +145,8 @@ public abstract class SimplePropertyEdit<_Type_,
   }
 
   @Override
-  protected final void fireEvent(_Event_ event) {
-    getTarget().fireEvent(event);
+  protected final void updateDependents(_Event_ event) {
+    getTarget().updateDependents(event);
   }
 
 //  @Override

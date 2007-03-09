@@ -68,10 +68,10 @@ public abstract class AbstractEdit<_Target_ extends Beed<?>,
    */
   @Override
   protected void notifyListeners() {
-    fireEvent(createEvent());
+    updateDependents(createEvent());
   }
 
-  protected abstract void fireEvent(_Event_ event);
+  protected abstract void updateDependents(_Event_ event);
 
   protected abstract _Event_ createEvent();
 

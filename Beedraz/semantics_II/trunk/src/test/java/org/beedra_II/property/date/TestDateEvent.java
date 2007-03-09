@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Date;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
@@ -30,10 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestDateEvent {
-
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -48,11 +44,11 @@ public class TestDateEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    AggregateBeed owner = new MyBeanBeed();
+    AggregateBeed owner = new StubBeanBeed();
     DateBeed source = new EditableDateBeed(owner);
     // old and new value
     Date oldValue = Util.createDate(12, 10, 1973);
-    Date newValue = Util.createDate(1, 11, 1979);;
+    Date newValue = Util.createDate(1, 11, 1979);
     // edit
     EditableDateBeed target = new EditableDateBeed(owner);
     DateEdit edit = new DateEdit(target);

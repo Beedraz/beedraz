@@ -114,9 +114,11 @@ public class TestRootUpdateSource {
   private IntegerEvent createIntegerEvent() {
     return new IntegerEvent(new EditableIntegerBeed(new AbstractBeanBeed() {
 
-      public int getMaximumRootUpdateSourceDistance() {
-        return 0;
-      } /* NOP */ }), null, null, null);
+//      public int getMaximumRootUpdateSourceDistance() {
+//        return 0;
+//      }
+
+    }), null, null, null);
   }
 
   @After

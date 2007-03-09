@@ -222,7 +222,7 @@ public class TestFilteredSetBeed {
     assertEquals(result.size(), 2);
     assertTrue(result.contains($well0));
     assertTrue(result.contains($well2));
-    Iterator<WellBeanBeed> iterator = result.iterator();
+    Iterator<WellBeanBeed> iterator = result.iterator(); // we do not know the order
     assertTrue(iterator.hasNext());
     WellBeanBeed next = iterator.next();
     assertTrue(next == $well0 || next == $well2);

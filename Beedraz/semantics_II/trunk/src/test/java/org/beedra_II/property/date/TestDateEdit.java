@@ -23,9 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -291,9 +289,7 @@ public class TestDateEdit {
       assertEquals(e.getMessage(), null);
     }
     try {
-      GregorianCalendar futureDate = new GregorianCalendar();
-      futureDate.add(Calendar.MONTH, 2);
-      Date goal = futureDate.getTime();
+      Date goal = Util.createFutureDate();
       $dateEdit.setGoal(goal);
       $dateEdit.perform();
       // should not be reached

@@ -28,6 +28,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
+ * A beed that is the sum of zero or more other beeds of type
+ * {@link IntegerBeed}.
+ *
  * @invar getNbOccurrences(null) == 0;
  * @invar (forall IntegerBeed ib; ; getNbOccurrences(ib) >= 0);
  * @invar (exists IntegerBeed ib; ; getNbOccurrences(ib) > 0 && ib.get() == null)

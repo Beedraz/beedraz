@@ -20,18 +20,15 @@ package org.beedra_II.property.integer;
 import static org.junit.Assert.assertEquals;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestIntegerEvent {
 
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
+public class TestIntegerEvent {
 
   @Before
   public void setUp() throws Exception {
@@ -46,7 +43,7 @@ public class TestIntegerEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    AggregateBeed owner = new MyBeanBeed();
+    AggregateBeed owner = new StubAggregateBeed();
     IntegerBeed source = new EditableIntegerBeed(owner);
     // old and new value
     Integer oldValue = 0;

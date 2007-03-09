@@ -22,44 +22,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubEvent;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class TestAbstractBeed {
-
-  public class StubBeedEvent extends Event {
-
-    public StubBeedEvent(StubAbstractBeed source) {
-      super(source, null);
-    }
-
-  }
-
-  public class StubAbstractBeed extends AbstractBeed<StubBeedEvent> {
-
-    public void fire(StubBeedEvent event) {
-      fireChangeEvent(event);
-    }
-
-  }
-
-  public class StubBeedListener implements Listener<StubBeedEvent> {
-
-    public void beedChanged(StubBeedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public StubBeedEvent $event;
-
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -71,12 +41,12 @@ public class TestAbstractBeed {
     // NOP
   }
 
-  private StubAbstractBeed $subject = new StubAbstractBeed();
+  private StubBeed $subject = new StubBeed();
 
-  private StubBeedListener $listener1 = new StubBeedListener();
-  private StubBeedListener $listener2 = new StubBeedListener();
+  private StubListener<StubEvent> $listener1 = new StubListener<StubEvent>();
+  private StubListener<StubEvent> $listener2 = new StubListener<StubEvent>();
 
-  private StubBeedEvent $event = new StubBeedEvent($subject);
+  private StubEvent $event = new StubEvent($subject);
 
   @Test
   public void addChangeListener() {

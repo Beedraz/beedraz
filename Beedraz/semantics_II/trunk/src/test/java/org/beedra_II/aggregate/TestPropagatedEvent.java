@@ -19,9 +19,6 @@ package org.beedra_II.aggregate;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
-import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Event;
@@ -39,10 +36,6 @@ import org.junit.Test;
 
 public class TestPropagatedEvent {
 
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -56,7 +49,7 @@ public class TestPropagatedEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new MyBeanBeed();
+    AggregateBeed owner = new StubAggregateBeed();
     IntegerBeed eventSource = new EditableIntegerBeed(owner);
     // old and new value
     Integer oldValue = 0;
@@ -68,7 +61,7 @@ public class TestPropagatedEvent {
     // cause
     Event cause = new IntegerEvent(eventSource, oldValue, newValue, edit);
     // propagated event source
-    AggregateBeed source = new MyBeanBeed();
+    AggregateBeed source = new StubAggregateBeed();
     // test constructor
     PropagatedEvent propagatedEvent = new PropagatedEvent(source, cause);
     assertEquals(propagatedEvent.getSource(), source);
@@ -80,7 +73,7 @@ public class TestPropagatedEvent {
   @Test
   public void constructor2() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new MyBeanBeed();
+    AggregateBeed owner = new StubAggregateBeed();
     StringBeed eventSource = new EditableStringBeed(owner);
     // old and new value
     String oldValue = "0";
@@ -92,7 +85,7 @@ public class TestPropagatedEvent {
     // cause
     Event cause = new StringEvent(eventSource, oldValue, newValue, edit);
     // propagated event source
-    AggregateBeed source = new MyBeanBeed();
+    AggregateBeed source = new StubAggregateBeed();
     // test constructor
     PropagatedEvent propagatedEvent = new PropagatedEvent(source, cause);
     assertEquals(propagatedEvent.getSource(), source);

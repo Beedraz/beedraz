@@ -24,12 +24,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEvent;
+import org.beedra_II.property.simple.StubEditableSimplePropertyBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,130 +35,7 @@ import org.junit.Test;
 
 public class TestAbstractSimpleEdit {
 
-  public class MyAbstractEdit
-       extends AbstractSimpleEdit<EditableIntegerBeed, IntegerEvent> {
 
-    public MyAbstractEdit(EditableIntegerBeed target) {
-      super(target);
-    }
-
-    @Override
-    protected IntegerEvent createEvent() {
-      IntegerBeed source = new EditableIntegerBeed(new MyBeanBeed());
-      $createdEvent = new IntegerEvent(source, new Integer(0), new Integer(1), null);
-      return $createdEvent;
-    }
-
-    public IntegerEvent getCreatedEvent() {
-      return $createdEvent;
-    }
-
-    private IntegerEvent $createdEvent;
-
-    @Override
-    protected void fireEvent(IntegerEvent event) {
-      $firedEvent = event;
-    }
-
-    public IntegerEvent $firedEvent;
-
-    @Override
-    public boolean isChange() {
-      return $b;
-    }
-
-    public void setChange(boolean b) {
-      $b = b;
-    }
-
-    private boolean $b = true;
-
-    @Override
-    protected boolean isGoalStateCurrent() {
-      return $goalStateCurrent;
-    }
-
-    public void setGoalStateCurrent(boolean b) {
-      $goalStateCurrent = b;
-    }
-
-    private boolean $goalStateCurrent = true;
-
-    @Override
-    protected boolean isInitialStateCurrent() {
-      return $initialStateCurrent;
-    }
-
-    public void setInitialStateCurrent(boolean b) {
-      $initialStateCurrent = b;
-    }
-
-    private boolean $initialStateCurrent = true;
-
-    @Override
-    protected void performance() {
-      // NOP
-    }
-
-    @Override
-    protected void storeInitialState() {
-      $initialStateStored = true;
-    }
-
-    public boolean isInitialStateStored() {
-      return $initialStateStored;
-    }
-
-    private boolean $initialStateStored = false;
-
-    @Override
-    protected void unperformance() {
-      // NOP
-    }
-
-    @Override
-    protected boolean isAcceptable() {
-      return $acceptable;
-    }
-
-    public void setAcceptable(boolean b) {
-      $acceptable = b;
-      recalculateValidity();
-    }
-
-    private boolean $acceptable = true;
-
-  }
-
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
-  public class StubValidityListener implements ValidityListener {
-
-    public void listenerRemoved(Edit<?> target) {
-      $target = target;
-    }
-
-    public void validityChanged(Edit<?> target, boolean newValidity) {
-      $target = target;
-      $validity = newValidity;
-    }
-
-    public void reset() {
-      $target = null;
-      $validity = null;
-    }
-
-    public boolean isEmpty() {
-      return $target == null && $validity == null;
-    }
-
-    public Edit<?> $target;
-
-    public Boolean $validity;
-
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -172,10 +47,10 @@ public class TestAbstractSimpleEdit {
     // NOP
   }
 
-  BeanBeed $beanBeed = new MyBeanBeed();
-  EditableIntegerBeed $target = new EditableIntegerBeed($beanBeed);
-  private MyAbstractEdit $edit =
-      new MyAbstractEdit($target);
+  BeanBeed $beanBeed = new StubBeanBeed();
+  StubEditableSimplePropertyBeed $target = new StubEditableSimplePropertyBeed($beanBeed);
+  private StubEdit $edit =
+      new StubEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
 

@@ -16,6 +16,7 @@
 
 package org.beedra_II.property.integer;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -23,13 +24,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
-import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class TestIntegerSumBeed {
 
@@ -46,24 +48,6 @@ public class TestIntegerSumBeed {
     }
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -74,12 +58,12 @@ public class TestIntegerSumBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
+  private AggregateBeed $owner = new StubBeanBeed();
   private MyIntegerSumBeed $integerSumBeed = new MyIntegerSumBeed($owner);
   private IntegerEvent $event1 = new IntegerEvent($integerSumBeed, new Integer(0), new Integer(1), null);
       // @mudo Laatste argument mag niet null zijn??
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
+  private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
+  private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
 
   @Test
   public void constructor() {

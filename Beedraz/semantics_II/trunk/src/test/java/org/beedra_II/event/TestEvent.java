@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.integer.EditableIntegerBeed;
@@ -33,10 +33,6 @@ import org.junit.Test;
 
 public class TestEvent {
 
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -47,7 +43,7 @@ public class TestEvent {
     // NOP
   }
 
-  AggregateBeed $owner = new MyBeanBeed();
+  AggregateBeed $owner = new StubBeanBeed();
   EditableIntegerBeed $target = new EditableIntegerBeed($owner);
   IntegerEdit $edit = new IntegerEdit($target);
   Beed<?> $source = new EditableStringBeed($owner);

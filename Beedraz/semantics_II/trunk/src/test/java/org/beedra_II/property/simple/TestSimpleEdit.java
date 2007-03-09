@@ -24,14 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.edit.Edit;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.edit.ValidityListener;
+import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
@@ -64,7 +63,7 @@ public class TestSimpleEdit {
 
     @Override
     protected IntegerEvent createEvent() {
-      IntegerBeed source = new EditableIntegerBeed(new MyBeanBeed());
+      IntegerBeed source = new EditableIntegerBeed(new StubBeanBeed());
       $createdEvent = new IntegerEvent(source, new Integer(0), new Integer(1), null);
       return $createdEvent;
     }
@@ -90,50 +89,6 @@ public class TestSimpleEdit {
 
   }
 
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
-  public class StubValidityListener implements ValidityListener {
-
-    public void listenerRemoved(Edit<?> target) {
-      $target = target;
-    }
-
-    public void validityChanged(Edit<?> target, boolean newValidity) {
-      $target = target;
-      $validity = newValidity;
-    }
-
-    public void reset() {
-      $target = null;
-      $validity = null;
-    }
-
-    public boolean isEmpty() {
-      return $target == null && $validity == null;
-    }
-
-    public Edit<?> $target;
-
-    public Boolean $validity;
-
-  }
-
-  public class StubIntegerListener implements Listener<IntegerEvent> {
-
-    public void beedChanged(IntegerEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public IntegerEvent $event;
-
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -144,12 +99,12 @@ public class TestSimpleEdit {
     // NOP
   }
 
-  BeanBeed $beanBeed = new MyBeanBeed();
+  BeanBeed $beanBeed = new StubBeanBeed();
   MyEditableIntegerBeed $target = new MyEditableIntegerBeed($beanBeed);
   private MySimpleEdit $simpleEdit = new MySimpleEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
-  StubIntegerListener $listener3 = new StubIntegerListener();
+  StubListener<IntegerEvent> $listener3 = new StubListener<IntegerEvent>();
 
   @Test
   public void constructor() {

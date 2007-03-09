@@ -19,73 +19,17 @@ package org.beedra_II.property.simple;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
-import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
+import org.beedra_II.bean.StubBeanBeed;
+import org.beedra_II.event.StubEvent;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestEditableSimplePropertyBeed {
-
-  public class StubEditableSimplePropertyBeed extends
-      EditableSimplePropertyBeed<Integer, StubEditableSimplePropertyBeedEvent> {
-
-    protected StubEditableSimplePropertyBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    @Override
-    protected StubEditableSimplePropertyBeedEvent createInitialEvent() {
-      return $initialEvent;
-    }
-
-    public StubEditableSimplePropertyBeedEvent $initialEvent = new StubEditableSimplePropertyBeedEvent(this);
-  }
-
-  public class StubEditableSimplePropertyBeedEvent extends Event {
-
-    public StubEditableSimplePropertyBeedEvent(StubEditableSimplePropertyBeed source) {
-      super(source, null);
-    }
-
-  }
-
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
-  public class StubEditableSimplePropertyBeedListener implements Listener<StubEditableSimplePropertyBeedEvent> {
-
-    public void beedChanged(StubEditableSimplePropertyBeedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public StubEditableSimplePropertyBeedEvent $event;
-
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -97,13 +41,13 @@ public class TestEditableSimplePropertyBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
+  private AggregateBeed $owner = new StubBeanBeed();
   private StubEditableSimplePropertyBeed $editableSimplePropertyBeed = new StubEditableSimplePropertyBeed($owner);
-  private StubEditableSimplePropertyBeedEvent $event1 = new StubEditableSimplePropertyBeedEvent($editableSimplePropertyBeed);
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
-  private StubEditableSimplePropertyBeedListener $listener3 = new StubEditableSimplePropertyBeedListener();
-  private StubEditableSimplePropertyBeedListener $listener4 = new StubEditableSimplePropertyBeedListener();
+  private StubEvent $event1 = new StubEvent($editableSimplePropertyBeed);
+  private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
+  private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
+  private StubListener<StubEvent> $listener3 = new StubListener<StubEvent>();
+  private StubListener<StubEvent> $listener4 = new StubListener<StubEvent>();
 
   @Test
   public void constructor() {
@@ -132,9 +76,9 @@ public class TestEditableSimplePropertyBeed {
 
   @Test
   public void safeValueCopy() {
-    Integer newValue = new Integer(5);
-    Integer copy = $editableSimplePropertyBeed.safeValueCopy(newValue);
-    assertTrue(copy == newValue);
+    Object newValue = new Object();
+    Object copy = $editableSimplePropertyBeed.publicSafeValueCopy(newValue);
+    assertEquals(newValue, copy);
   }
 
   @Test

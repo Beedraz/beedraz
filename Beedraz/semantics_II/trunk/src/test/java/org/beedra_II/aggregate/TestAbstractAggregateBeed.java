@@ -21,11 +21,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.event.Listener;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
-import org.beedra_II.property.integer.IntegerEvent;
-import org.beedra_II.property.integer.IntegerSumBeed;
+import org.beedra_II.edit.StubEdit;
+import org.beedra_II.event.StubEvent;
+import org.beedra_II.event.StubListener;
+import org.beedra_II.property.simple.StubEditableSimplePropertyBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,81 +32,26 @@ import org.junit.Test;
 
 public class TestAbstractAggregateBeed {
 
-  public class StubAbstractAggregateBeed extends AbstractAggregateBeed {
-    /**
-     * Makes the fireChangeEvent method public for testing reasons.
-     * @param event
-     */
-    public void fire(PropagatedEvent event) {
-      fireChangeEvent(event);
-    }
-  }
-
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
-  public class MyEditableIntegerBeed extends EditableIntegerBeed {
-
-    public MyEditableIntegerBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    /**
-     * Makes the fireChangeEvent method public for testing reasons.
-     * @param event
-     */
-    public void fire(IntegerEvent event) {
-      fireChangeEvent(event);
-    }
-  }
-
-  public class MyIntegerSumBeed extends IntegerSumBeed {
-
-    public MyIntegerSumBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    /**
-     * Makes the fireChangeEvent method public for testing reasons.
-     * @param event
-     */
-    public void fire(IntegerEvent event) {
-      fireChangeEvent(event);
-    }
-  }
-
   @Before
   public void setUp() throws Exception {
-    $aggregateBeed1 = new StubAbstractAggregateBeed();
-    $aggregateBeed2 = new StubAbstractAggregateBeed();
+    $aggregateBeed1 = new StubAggregateBeed();
+    $aggregateBeed2 = new StubAggregateBeed();
 
-    $beed1 = new MyEditableIntegerBeed($aggregateBeed1);
+    $beed1 = new StubEditableSimplePropertyBeed($aggregateBeed1);
 //    $beed2 = new MyIntegerSumBeed($subject);
-    $beed3 = new MyEditableIntegerBeed($aggregateBeed2);
+    $beed3 = new StubEditableSimplePropertyBeed($aggregateBeed2);
 
-    $edit1 = new IntegerEdit($beed1);
+    $edit1 = new StubEdit($beed1);
     $edit1.perform();
-    $event1 = new IntegerEvent($beed1, new Integer(1), new Integer(11), $edit1);
+    $event1 = new StubEvent($beed1);
 //    $edit2 = new IntegerEdit($beed2);
 //    $event2 = new IntegerEvent($beed2, new Integer(2), new Integer(22), $edit2);
-    $edit3 = new IntegerEdit($beed3);
+    $edit3 = new StubEdit($beed3);
     $edit3.perform();
-    $event3 = new IntegerEvent($beed3, new Integer(3), new Integer(33), $edit3);
+    $event3 = new StubEvent($beed3);
 
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
   }
 
   @After
@@ -115,22 +59,22 @@ public class TestAbstractAggregateBeed {
     // NOP
   }
 
-  private AbstractAggregateBeed $aggregateBeed1;
-  private AbstractAggregateBeed $aggregateBeed2;
+  private StubAggregateBeed $aggregateBeed1;
+  private StubAggregateBeed $aggregateBeed2;
 
-  private MyEditableIntegerBeed $beed1;
+  private StubEditableSimplePropertyBeed $beed1;
 //  private MyIntegerSumBeed $beed2;
-  private MyEditableIntegerBeed $beed3;
+  private StubEditableSimplePropertyBeed $beed3;
 
-  private IntegerEdit $edit1;
-  private IntegerEvent $event1;
+  private StubEdit $edit1;
+  private StubEvent $event1;
 //  private IntegerEdit $edit2;
 //  private IntegerEvent $event2;
-  private IntegerEdit $edit3;
-  private IntegerEvent $event3;
+  private StubEdit $edit3;
+  private StubEvent $event3;
 
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
 
   @Test
   public void isAggregateElement() {

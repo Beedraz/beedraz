@@ -23,78 +23,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
-import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
+import org.beedra_II.bean.StubBeanBeed;
+import org.beedra_II.event.StubEvent;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestAbstractPropertyBeed {
-
-  public class StubAbstractPropertyBeed extends
-      AbstractPropertyBeed<StubAbstractPropertyBeedEvent> {
-
-    protected StubAbstractPropertyBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    /**
-     * Makes the fireChangeEvent method public for testing reasons.
-     *
-     * @param event
-     */
-    public void fire(StubAbstractPropertyBeedEvent event) {
-      fireChangeEvent(event);
-    }
-
-    @Override
-    protected StubAbstractPropertyBeedEvent createInitialEvent() {
-      return $initialEvent;
-    }
-
-    public StubAbstractPropertyBeedEvent $initialEvent = new StubAbstractPropertyBeedEvent(this);
-  }
-
-  public class StubAbstractPropertyBeedEvent extends Event {
-
-    public StubAbstractPropertyBeedEvent(StubAbstractPropertyBeed source) {
-      super(source, null);
-    }
-
-  }
-
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
-  public class StubAbstractPropertyBeedListener implements Listener<StubAbstractPropertyBeedEvent> {
-
-    public void beedChanged(StubAbstractPropertyBeedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public StubAbstractPropertyBeedEvent $event;
-
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -106,12 +42,12 @@ public class TestAbstractPropertyBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
-  private StubAbstractPropertyBeed $propertyBeed = new StubAbstractPropertyBeed($owner);
-  private StubAbstractPropertyBeedEvent $event1 = new StubAbstractPropertyBeedEvent($propertyBeed);
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
-  private StubAbstractPropertyBeedListener $listener3 = new StubAbstractPropertyBeedListener();
+  private AggregateBeed $owner = new StubBeanBeed();
+  private StubPropertyBeed $propertyBeed = new StubPropertyBeed($owner);
+  private StubEvent $event1 = new StubEvent($propertyBeed);
+  private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
+  private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
+  private StubListener<StubEvent> $listener3 = new StubListener<StubEvent>();
 
   @Test
   public void constructor() {

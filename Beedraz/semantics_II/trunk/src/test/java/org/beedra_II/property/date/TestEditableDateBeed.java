@@ -23,23 +23,10 @@ import org.junit.Test;
 
 public class TestEditableDateBeed {
 
-  public class MyEditableDateBeed extends EditableDateBeed {
-    public MyEditableDateBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    /**
-     * fireChangeEvent is made public for testing reasons
-     */
-    public void fire(DateEvent event) {
-      fireChangeEvent(event);
-    }
-  }
-
   @Before
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
-    $editableDateBeed = new MyEditableDateBeed($owner);
+    $editableDateBeed = new StubEditableDateBeed($owner);
     $stringEdit = new DateEdit($editableDateBeed);
     $stringEdit.perform();
     $event1 = new DateEvent($editableDateBeed, Util.createDate(1, 1, 1901), Util.createDate(2, 2, 1902), $stringEdit);
@@ -53,7 +40,7 @@ public class TestEditableDateBeed {
   }
 
   private AggregateBeed $owner;
-  private MyEditableDateBeed $editableDateBeed;
+  private StubEditableDateBeed $editableDateBeed;
   private DateEdit $stringEdit;
   private DateEvent $event1;
   private StubListener<PropagatedEvent> $listener1;

@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -39,19 +38,6 @@ import org.junit.Test;
 
 public class TestDateEdit {
 
-  public class MyEditableDateBeed extends EditableDateBeed {
-
-    public MyEditableDateBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    @Override
-    public boolean isAcceptable(Date goal) {
-      return goal != null && goal.before(new Date()) ;
-    }
-
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -63,7 +49,7 @@ public class TestDateEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  MyEditableDateBeed $target = new MyEditableDateBeed($beanBeed);
+  StubEditableDateBeed $target = new StubEditableDateBeed($beanBeed);
   private DateEdit $dateEdit = new DateEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

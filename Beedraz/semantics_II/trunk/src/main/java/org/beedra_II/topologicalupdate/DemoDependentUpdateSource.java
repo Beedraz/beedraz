@@ -41,18 +41,17 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class DemoDependentUpdateSource<_Event_ extends Event, _UpdateSource_ extends UpdateSource>
-    extends UpdateSource {
+    extends AbstractUpdateSource {
 
   /**
    * @basic
    */
-  @Override
   public int getMaximumRootUpdateSourceDistance() {
     return $dependentDelegate.getMaximumRootUpdateSourceDistance();
   }
 
-  private final Dependent<_UpdateSource_> $dependentDelegate
-    = new Dependent<_UpdateSource_>() {
+  private final Dependent $dependentDelegate
+    = new Dependent() {
 
       @Override
       public UpdateSource getDependentUpdateSource() {
@@ -69,10 +68,14 @@ public abstract class DemoDependentUpdateSource<_Event_ extends Event, _UpdateSo
   protected abstract _Event_ update(Map<UpdateSource, Event> events);
 
   /**
+   * @note There is no way that the author can see to avoid the downcast
+   *       that is used here. This method is unchecked.
+   *
    * @basic
    */
+  @SuppressWarnings("unchecked")
   protected final Set<_UpdateSource_> getUpdateSources() {
-    return $dependentDelegate.getUpdateSources();
+    return (Set<_UpdateSource_>)$dependentDelegate.getUpdateSources();
   }
 
   /**
@@ -81,7 +84,7 @@ public abstract class DemoDependentUpdateSource<_Event_ extends Event, _UpdateSo
    * @post updateSource.getDependents().contains(this);
    */
   protected final void addUpdateSource(_UpdateSource_ updateSource) {
-    $dependentDelegate.addUpdateSource(updateSource);
+    updateSource.addDependent($dependentDelegate);
   }
 
   /**
@@ -90,7 +93,7 @@ public abstract class DemoDependentUpdateSource<_Event_ extends Event, _UpdateSo
    * @post ! updateSource.getDependents().contains(this);
    */
   protected final void removeUpdateSource(_UpdateSource_ updateSource) {
-    $dependentDelegate.removeUpdateSource(updateSource);
+    updateSource.removeDependent($dependentDelegate);
   }
 
 }

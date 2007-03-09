@@ -42,9 +42,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class DemoRootUpdateSource
-    extends UpdateSource {
+    extends AbstractUpdateSource {
 
-  @Override
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
   }

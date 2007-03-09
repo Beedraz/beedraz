@@ -47,7 +47,7 @@ public class TestRootUpdateSource {
   private StubDependentUpdateSource $dNullEvent2;
   private StubDependentUpdateSource[] $ds;
 
-  public class StubDependent extends Dependent<UpdateSource> {
+  public class StubDependent extends Dependent {
 
     @Override
     public UpdateSource getDependentUpdateSource() {
@@ -112,7 +112,11 @@ public class TestRootUpdateSource {
   }
 
   private IntegerEvent createIntegerEvent() {
-    return new IntegerEvent(new EditableIntegerBeed(new AbstractBeanBeed() { /* NOP */ }), null, null, null);
+    return new IntegerEvent(new EditableIntegerBeed(new AbstractBeanBeed() {
+
+      public int getMaximumRootUpdateSourceDistance() {
+        return 0;
+      } /* NOP */ }), null, null, null);
   }
 
   @After

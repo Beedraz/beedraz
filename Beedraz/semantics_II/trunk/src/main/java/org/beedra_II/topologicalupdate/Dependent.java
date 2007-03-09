@@ -27,6 +27,15 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
+ * @note Because the control for the bidirectional association between update sources
+ *       and dependents must lie with the update sources (because the add and remove
+ *       methods must be public there, because {@link UpdateSource} must be an interface),
+ *       {@link #addUpdateSource(UpdateSource)) and {@link #removeUpdateSource(UpdateSource)}
+ *       must accept any {@link UpdateSource} instance. Therefor, {@link #getUpdateSources()}
+ *       can only return a {@code Set<UpdateSource>}, and we can not restrict this here, e.g.,
+ *       with a generic type parameter to the more appropriate {@code Set<UpdateSource>}
+ *       where {@code UpdateSource extends UpdateSource}.
+ *
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() > 0;
@@ -38,22 +47,22 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
+public abstract class Dependent {
 
   /**
    * Should not be, but can be, {@code null}.
    */
   public abstract UpdateSource getDependentUpdateSource();
 
-  public final Set<Dependent<?>> getDependents() {
+  public final Set<Dependent> getDependents() {
     return getDependentUpdateSource() == null ?
-             Collections.<Dependent<?>>emptySet() :
+             Collections.<Dependent>emptySet() :
              getDependentUpdateSource().getDependents();
   }
 
-  public final Set<Dependent<?>> getDependentsTransitiveClosure() {
+  public final Set<Dependent> getDependentsTransitiveClosure() {
     return getDependentUpdateSource() == null ?
-             Collections.<Dependent<?>>emptySet() :
+             Collections.<Dependent>emptySet() :
              getDependentUpdateSource().getDependentsTransitiveClosure();
   }
 
@@ -73,7 +82,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
   /**
    * @basic
    */
-  public final Set<_UpdateSource_> getUpdateSources() {
+  public final Set<UpdateSource> getUpdateSources() {
     return Collections.unmodifiableSet($updateSources);
   }
 
@@ -84,11 +93,10 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @post getUpdateSources().contains(updateSource);
    * @post updateSource.getDependents().contains(this);
    */
-  public final void addUpdateSource(_UpdateSource_ updateSource) {
+  final void addUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
     assert ! getDependentsTransitiveClosure().contains(updateSource);
     $updateSources.add(updateSource);
-    updateSource.addDependent(this);
     updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
   }
 
@@ -97,9 +105,8 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @post ! getUpdateSources().contains(updateSource);
    * @post ! updateSource.getDependents().contains(this);
    */
-  public final void removeUpdateSource(_UpdateSource_ updateSource) {
+  final void removeUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
-    updateSource.removeDependent(this);
     $updateSources.remove(updateSource);
     updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
   }
@@ -108,7 +115,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
    */
-  private final Set<_UpdateSource_> $updateSources = new HashSet<_UpdateSource_>();
+  private final Set<UpdateSource> $updateSources = new HashSet<UpdateSource>();
 
   /*</section>*/
 
@@ -132,7 +139,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
     int potentialNewMaxDistance = newSourceMaximumFinalSourceDistance + 1;
     if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {
       $maximumRootUpdateSourceDistance = potentialNewMaxDistance;
-      for (Dependent<?> dependent : getDependents()) {
+      for (Dependent dependent : getDependents()) {
         dependent.updateMaximumRootUpdateSourceDistanceUp($maximumRootUpdateSourceDistance);
       }
     }
@@ -151,7 +158,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
         }
       }
       if (oldMaximumFinalSourceDistance != $maximumRootUpdateSourceDistance) {
-        for (Dependent<?> dependent : getDependents()) {
+        for (Dependent dependent : getDependents()) {
           dependent.updateMaximumRootUpdateSourceDistanceDown(oldMaximumFinalSourceDistance);
         }
       }

@@ -33,11 +33,11 @@ public class TestAbstractUpdateSource {
 
   private UpdateSource $subject;
 
-  private Dependent<UpdateSource> $dependent1;
+  private Dependent $dependent1;
 
-  private Dependent<UpdateSource> $dependent2;
+  private StubDependent $dependent2;
 
-  public class StubDependent extends Dependent<UpdateSource> {
+  public class StubDependent extends Dependent {
 
     @Override
     public UpdateSource getDependentUpdateSource() {
@@ -53,9 +53,8 @@ public class TestAbstractUpdateSource {
 
   @Before
   public void setUp() throws Exception {
-    $subject = new UpdateSource() {
+    $subject = new AbstractUpdateSource() {
 
-      @Override
       public int getMaximumRootUpdateSourceDistance() {
         return 0;
       }
@@ -71,13 +70,32 @@ public class TestAbstractUpdateSource {
   }
 
   @Test
-  public void testAddDependent() {
+  public void testAddDependent1() {
+    assertTrue($subject.getDependents().isEmpty());
+    assertTrue($dependent1.getUpdateSources().isEmpty());
+    assertTrue($dependent2.getUpdateSources().isEmpty());
+    assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
+    assertEquals(0, $dependent1.getMaximumRootUpdateSourceDistance());
+    assertEquals(0, $dependent2.getMaximumRootUpdateSourceDistance());
     $subject.addDependent($dependent1);
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
+    assertEquals(1, $dependent1.getUpdateSources().size());
+    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent2.getUpdateSources().isEmpty());
+    assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
+    assertEquals(1, $dependent1.getMaximumRootUpdateSourceDistance());
+    assertEquals(0, $dependent2.getMaximumRootUpdateSourceDistance());
     $subject.addDependent($dependent2);
     assertTrue($subject.getDependents().contains($dependent2));
     assertEquals(2, $subject.getDependents().size());
+    assertEquals(1, $dependent1.getUpdateSources().size());
+    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertEquals(1, $dependent2.getUpdateSources().size());
+    assertTrue($dependent2.getUpdateSources().contains($subject));
+    assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
+    assertEquals(1, $dependent1.getMaximumRootUpdateSourceDistance());
+    assertEquals(1, $dependent2.getMaximumRootUpdateSourceDistance());
   }
 
   @Test
@@ -85,35 +103,49 @@ public class TestAbstractUpdateSource {
     $subject.addDependent($dependent1);
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
+    assertEquals(1, $dependent1.getUpdateSources().size());
+    assertTrue($dependent1.getUpdateSources().contains($subject));
     $subject.removeDependent($dependent1);
     assertFalse($subject.getDependents().contains($dependent1));
     assertTrue($subject.getDependents().isEmpty());
+    assertFalse($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent1.getUpdateSources().isEmpty());
+    // MUDO test for getMaximumRootUpdateSourceDistance
   }
 
-  @Test
-  public void testRemoveDependent2() {
-    $subject.addDependent($dependent1);
-    assertEquals(1, $subject.getDependents().size());
-    assertTrue($subject.getDependents().contains($dependent1));
-    $subject.removeDependent(null);
-    assertEquals(1, $subject.getDependents().size());
-    assertTrue($subject.getDependents().contains($dependent1));
-  }
+//  barred by precondition
+//  @Test
+//  public void testRemoveDependent2() {
+//    $subject.addDependent($dependent1);
+//    assertEquals(1, $subject.getDependents().size());
+//    assertTrue($subject.getDependents().contains($dependent1));
+//    $subject.removeDependent(null);
+//    assertEquals(1, $subject.getDependents().size());
+//    assertTrue($subject.getDependents().contains($dependent1));
+//  }
 
   @Test
   public void testRemoveDependent3() {
     $subject.addDependent($dependent1);
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
+    assertEquals(1, $dependent1.getUpdateSources().size());
+    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent2.getUpdateSources().isEmpty());
     $subject.removeDependent($dependent2);
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
+    assertEquals(1, $dependent1.getUpdateSources().size());
+    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent2.getUpdateSources().isEmpty());
   }
 
   @Test
   public void testRemoveDependent4() {
+    assertTrue($dependent2.getUpdateSources().isEmpty());
     $subject.removeDependent($dependent2);
     assertTrue($subject.getDependents().isEmpty());
+    assertTrue($dependent2.getUpdateSources().isEmpty());
   }
 
 }

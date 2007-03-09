@@ -17,8 +17,6 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -33,62 +31,31 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class UpdateSource {
+public interface UpdateSource {
 
   /**
    * @basic
    */
-  public final Set<Dependent<?>> getDependents() {
-    return Collections.unmodifiableSet($dependents);
-  }
+  Set<Dependent> getDependents();
 
-  public final Set<Dependent<?>> getDependentsTransitiveClosure() {
-    Set<Dependent<?>> dtc = new HashSet<Dependent<?>>();
-    dtc.addAll($dependents);
-    for (Dependent<?> dependent : $dependents) {
-      dependentsTransitiveClosure(dependent, dtc);
-    }
-    return dtc;
-  }
-
-  private final void dependentsTransitiveClosure(Dependent<?> dependent, Set<Dependent<?>> acc) {
-    assert acc.contains(dependent);
-    for (Dependent<?> secondDependent : dependent.getDependents()) {
-      if (! acc.contains(secondDependent)) {
-        acc.add(secondDependent);
-        dependentsTransitiveClosure(secondDependent, acc);
-      }
-    }
-  }
+  Set<Dependent> getDependentsTransitiveClosure();
 
   /**
    * @pre dependent != null;
    * @pre ! dependent.getDependentsTransitiveClosure().contains(this);
    *      no loops
    * @post getDependents().contains(dependent);
+   * @post dependent.getUpdateSources().contains(this);
    */
-  final void addDependent(Dependent<?> dependent) {
-    assert dependent != null;
-    assert ! dependent.getDependentsTransitiveClosure().contains(this);
-    $dependents.add(dependent);
-  }
+  void addDependent(Dependent dependent);
 
   /**
+   * @pre dependent != null;
    * @post ! getDependents().contains(dependent);
+   * @post ! dependent.getUpdateSources().contains(this);
    */
-  final void removeDependent(Dependent<?> dependent) {
-    $dependents.remove(dependent);
-  }
+  void removeDependent(Dependent dependent);
 
-  /**
-   * @invar $dependents != null;
-   * @invar Collections.noNull($dependents);
-   */
-  private final Set<Dependent<?>> $dependents = new HashSet<Dependent<?>>();
-
-  /**
-   * @basic
-   */
-  public abstract int getMaximumRootUpdateSourceDistance();
+  int getMaximumRootUpdateSourceDistance();
 
 }

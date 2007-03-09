@@ -49,10 +49,10 @@ public abstract class RootUpdateSourceDelegate {
     events.put(getRootUpdateSource(), event);
     if (getRootUpdateSource().getDependents().size() >= 1) {
       assert getRootUpdateSource().getDependents().size() >= 1 : "initial size of priority queue must be >= 1";
-      PriorityQueue<Dependent<?>> queue =
-        new PriorityQueue<Dependent<?>>(getRootUpdateSource().getDependents().size(),
-          new Comparator<Dependent<?>>() {
-                public int compare(Dependent<?> d1, Dependent<?> d2) {
+      PriorityQueue<Dependent> queue =
+        new PriorityQueue<Dependent>(getRootUpdateSource().getDependents().size(),
+          new Comparator<Dependent>() {
+                public int compare(Dependent d1, Dependent d2) {
                   assert d1 != null;
                   assert d2 != null;
                   int mfsd1 = d1.getMaximumRootUpdateSourceDistance();
@@ -61,13 +61,13 @@ public abstract class RootUpdateSourceDelegate {
                 }
               });
       queue.addAll(getRootUpdateSource().getDependents());
-      Dependent<?> dependent = queue.poll();
+      Dependent dependent = queue.poll();
       while (dependent != null) {
         Event dependentEvent = dependent.update(Collections.unmodifiableMap(events));
         if (dependentEvent != null) {
           events.put(dependent.getDependentUpdateSource(), dependentEvent);
-          Set<Dependent<?>> secondDependents =
-            new HashSet<Dependent<?>>(dependent.getDependents());
+          Set<Dependent> secondDependents =
+            new HashSet<Dependent>(dependent.getDependents());
           secondDependents.removeAll(queue);
           queue.addAll(secondDependents);
         }

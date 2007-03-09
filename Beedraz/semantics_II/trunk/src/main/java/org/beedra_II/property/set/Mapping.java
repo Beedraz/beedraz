@@ -38,5 +38,6 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 public interface Mapping<_From_, _To_> {
 
   _To_ map(_From_ from);
+
 }
 

@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -37,19 +36,6 @@ import org.junit.Test;
 
 public class TestStringEdit {
 
-  public class MyEditableStringBeed extends EditableStringBeed {
-
-    public MyEditableStringBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    @Override
-    public boolean isAcceptable(String goal) {
-      return goal != null && goal.startsWith("r");
-    }
-
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -61,7 +47,7 @@ public class TestStringEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  MyEditableStringBeed $target = new MyEditableStringBeed($beanBeed);
+  StubEditableStringBeed $target = new StubEditableStringBeed($beanBeed);
   private StringEdit $stringEdit = new StringEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

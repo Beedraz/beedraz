@@ -32,23 +32,10 @@ import org.junit.Test;
 
 public class TestEditableStringBeed {
 
-  public class MyEditableStringBeed extends EditableStringBeed {
-    public MyEditableStringBeed(AggregateBeed owner) {
-      super(owner);
-    }
-
-    /**
-     * fireChangeEvent is made public for testing reasons
-     */
-    public void fire(StringEvent event) {
-      fireChangeEvent(event);
-    }
-  }
-
   @Before
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
-    $editableStringBeed = new MyEditableStringBeed($owner);
+    $editableStringBeed = new StubEditableStringBeed($owner);
     $stringEdit = new StringEdit($editableStringBeed);
     $stringEdit.perform();
     $event1 = new StringEvent($editableStringBeed, "old", "event", $stringEdit);
@@ -62,7 +49,7 @@ public class TestEditableStringBeed {
   }
 
   private AggregateBeed $owner;
-  private MyEditableStringBeed $editableStringBeed;
+  private StubEditableStringBeed $editableStringBeed;
   private StringEdit $stringEdit;
   private StringEvent $event1;
   private StubListener<PropagatedEvent> $listener1;

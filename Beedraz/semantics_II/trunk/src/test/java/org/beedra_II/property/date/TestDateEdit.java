@@ -26,14 +26,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.edit.Edit;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.edit.ValidityListener;
+import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,50 +52,6 @@ public class TestDateEdit {
 
   }
 
-  public class MyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
-  public class StubValidityListener implements ValidityListener {
-
-    public void listenerRemoved(Edit<?> target) {
-      $target = target;
-    }
-
-    public void validityChanged(Edit<?> target, boolean newValidity) {
-      $target = target;
-      $validity = newValidity;
-    }
-
-    public void reset() {
-      $target = null;
-      $validity = null;
-    }
-
-    public boolean isEmpty() {
-      return $target == null && $validity == null;
-    }
-
-    public Edit<?> $target;
-
-    public Boolean $validity;
-
-  }
-
-  public class StubDateListener implements Listener<DateEvent> {
-
-    public void beedChanged(DateEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public DateEvent $event;
-
-  }
-
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -107,12 +62,12 @@ public class TestDateEdit {
     // NOP
   }
 
-  BeanBeed $beanBeed = new MyBeanBeed();
+  BeanBeed $beanBeed = new StubBeanBeed();
   MyEditableDateBeed $target = new MyEditableDateBeed($beanBeed);
   private DateEdit $dateEdit = new DateEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
-  StubDateListener $listener3 = new StubDateListener();
+  StubListener<DateEvent> $listener3 = new StubListener<DateEvent>();
 
   @Test
   public void constructor() {

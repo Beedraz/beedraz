@@ -32,12 +32,12 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * {@link DoubleBeed}.
  *
  * @invar getNbOccurrences(null) == 0;
- * @invar (forall DoubleBeed ib; ; getNbOccurrences(ib) >= 0);
- * @invar (exists DoubleBeed ib; ; getNbOccurrences(ib) > 0 && ib.get() == null)
+ * @invar (forall DoubleBeed db; ; getNbOccurrences(db) >= 0);
+ * @invar (exists DoubleBeed db; ; getNbOccurrences(db) > 0 && db.get() == null)
  *            ==> get() == null;
  *        If one of the terms is null, then the value of the sum beed is null.
- * @invar (forAll DoubleBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.get() != null)
- *            ==> get() == sum { ib.get() * getNbOccurrences(ib) | ib instanceof DoubleBeed};
+ * @invar (forAll DoubleBeed db; ; getNbOccurrences(db) > 0 ==> db.get() != null)
+ *            ==> get() == sum { db.get() * getNbOccurrences(db) | db instanceof DoubleBeed};
  *        If all terms are effective, then the value of the sum beed is the
  *        sum of the value of each term multiplied by the corresponding
  *        number of occurrences.
@@ -54,7 +54,7 @@ public class DoubleSumBeed
   /**
    * @pre   owner != null;
    * @post  get() == 0;
-   * @post  (forall DoubleBeed ib; ; getNbOccurrences(ib) == 0};
+   * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    */
   public DoubleSumBeed(AggregateBeed owner) {
     super(owner);
@@ -88,7 +88,9 @@ public class DoubleSumBeed
         recalculate();
       }
       // else: NOP
-      fireChangeEvent(new DoubleEvent(DoubleSumBeed.this, oldValue, $value, event.getEdit()));
+      if (! Comparison.equalsWithNull(oldValue, $value)) {
+        fireChangeEvent(new DoubleEvent(DoubleSumBeed.this, oldValue, $value, event.getEdit()));
+      }
     }
 
     public int getNbOccurrences() {

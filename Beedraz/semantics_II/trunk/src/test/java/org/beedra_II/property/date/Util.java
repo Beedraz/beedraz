@@ -17,6 +17,7 @@
 package org.beedra_II.property.date;
 
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -26,6 +27,12 @@ public class Util {
   public static Date createDate(int day, int month, int year) {
     GregorianCalendar calendar = new GregorianCalendar(year, month, day);
     return calendar.getTime();
+  }
+
+  public static Date createFutureDate() {
+    GregorianCalendar futureDate = new GregorianCalendar(); // now
+    futureDate.add(Calendar.MONTH, 2);
+    return futureDate.getTime();
   }
 
 }

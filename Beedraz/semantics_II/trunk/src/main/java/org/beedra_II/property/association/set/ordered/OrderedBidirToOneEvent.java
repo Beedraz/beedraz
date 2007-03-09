@@ -26,8 +26,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link EditableOrderedBidirToOneBeed<_One_, _Many_>} and
- * that carries a simple old and new value of type {@link OrderedBidirToManyBeed<_One_, _Many_>}.
+ * {@link OldNewEvent} whose source is a {@link EditableOrderedBidirToOneBeed} and
+ * that carries a simple old and new value of type {@link OrderedBidirToManyBeed}.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.

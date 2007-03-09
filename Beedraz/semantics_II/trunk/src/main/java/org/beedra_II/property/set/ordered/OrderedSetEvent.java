@@ -25,8 +25,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link OrderedSetBeed<_Element_>} and
- * that carries a simple old and new value of type {@link List<_Element_>}.
+ * {@link OldNewEvent} whose source is a {@link OrderedSetBeed} and
+ * that carries a simple old and new value of type {@link List}.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.

@@ -28,7 +28,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *   and send {@link PropagatedEvent derived events} themselves:
  *   changes are propagated.</p>
  * <p>Most aggregate beeds are bean beeds. Final propagation
- *   sources are {@ EditableBeed editable beeds}.</p>
+ *   sources are {@link EditableBeed editable beeds}.</p>
  *
  * @author Jan Dockx
  *

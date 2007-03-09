@@ -30,7 +30,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @note Because the control for the bidirectional association between update sources
  *       and dependents must lie with the update sources (because the add and remove
  *       methods must be public there, because {@link UpdateSource} must be an interface),
- *       {@link #addUpdateSource(UpdateSource)) and {@link #removeUpdateSource(UpdateSource)}
+ *       {@link #addUpdateSource(UpdateSource)} and {@link #removeUpdateSource(UpdateSource)}
  *       must accept any {@link UpdateSource} instance. Therefor, {@link #getUpdateSources()}
  *       can only return a {@code Set<UpdateSource>}, and we can not restrict this here, e.g.,
  *       with a generic type parameter to the more appropriate {@code Set<UpdateSource>}

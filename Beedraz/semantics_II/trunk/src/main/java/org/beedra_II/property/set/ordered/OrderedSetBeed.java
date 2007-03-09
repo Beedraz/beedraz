@@ -8,8 +8,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * A {@link SimplePropertyBeed} whose value is of type {@link List<_Element_>}
- * and that sends events of type {@link OrderedSetEvent<_Element_>}
+ * A {@link SimplePropertyBeed} whose value is of type {@link List}
+ * and that sends events of type {@link OrderedSetEvent}
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.

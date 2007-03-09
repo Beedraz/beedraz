@@ -42,10 +42,16 @@ public class StubEdit extends AbstractSimpleEdit<StubEditableSimplePropertyBeed,
 
   private StubEvent $createdEvent;
 
+
   @Override
-  protected void updateDependents(StubEvent event) {
+  protected void fireEvent(StubEvent event) {
     $firedEvent = event;
   }
+
+//  @Override
+//  protected void updateDependents(StubEvent event) {
+//    $firedEvent = event;
+//  }
 
   public StubEvent $firedEvent;
 

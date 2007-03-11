@@ -17,9 +17,7 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
-
-import org.beedra_II.edit.Edit;
+import org.beedra_II.property.decimal.DoubleEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -36,49 +34,36 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class IntegerEvent extends OldNewEvent<Integer> {
+public interface IntegerEvent extends DoubleEvent {
 
   /**
-   * @pre  source != null;
-   * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
-   * @pre  (oldValue != null) && (newValue != null)
-   *          ? ! oldValue.equals(newValue)
-   *          : true;
-   *
-   * @post getSource() == source;
-   * @post getEdit() == edit;
-   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
-   * @post oldValue == null || newValue == null
-   *          ? getDelta() == null
-   *          : getDelta() = newValue - oldValue;
+   * @return getNewValue();
    */
-  public IntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
-    super(source, oldValue, newValue, edit);
-    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
-  }
+  Integer getNewInteger();
+
+  /**
+   * @result MathUtil.equalValue(getNewInteger(), result);
+   */
+  Double getNewDouble();
+
+  /**
+   * @return getOldValue();
+   */
+  Integer getOldInteger();
+  /**
+   * @result MathUtil.equalValue(getOldInteger(), result);
+   */
+  Double getOldDouble();
 
   /**
    * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
    */
-  public final Integer getDelta() {
-    return $delta;
-  }
+  Integer getIntegerDelta();
 
-  private final Integer $delta;
-
-  @Override
-  protected String otherToStringInformation() {
-    return super.otherToStringInformation() +
-           ", delta: " + getDelta();
-  }
-
-  @Override
-  public void toString(StringBuffer sb, int level) {
-    super.toString(sb, level);
-    sb.append(indent(level + 1) + "delta:" + getDelta() + "\n");
-  }
+  /**
+   * @result MathUtil.equalValue(getIntegerDelta(), result);
+   */
+  Double getDoubleDelta();
 
 }
 

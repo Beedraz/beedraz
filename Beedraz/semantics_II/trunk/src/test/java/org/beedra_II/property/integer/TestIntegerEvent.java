@@ -53,31 +53,31 @@ public class TestIntegerEvent {
     IntegerEdit edit = new IntegerEdit(target);
     edit.perform();
     // test constructor
-    IntegerEvent integerEvent = new IntegerEvent(source, oldValue, newValue, edit);
+    IntegerEvent integerEvent = new ActualIntegerEvent(source, oldValue, newValue, edit);
     assertEquals(integerEvent.getSource(), source);
-    assertEquals(integerEvent.getOldValue(), oldValue);
-    assertEquals(integerEvent.getNewValue(), newValue);
+    assertEquals(integerEvent.getOldInteger(), oldValue);
+    assertEquals(integerEvent.getNewInteger(), newValue);
     assertEquals(integerEvent.getEdit(), edit);
     assertEquals(integerEvent.getEditState(), edit.getState());
-    assertEquals(integerEvent.getDelta(), newValue - oldValue);
+    assertEquals(integerEvent.getIntegerDelta(), newValue - oldValue);
     // old and new value
     oldValue = null;
     newValue = 4;
     // test constructor
-    integerEvent = new IntegerEvent(source, oldValue, newValue, edit);
+    integerEvent = new ActualIntegerEvent(source, oldValue, newValue, edit);
     assertEquals(integerEvent.getSource(), source);
-    assertEquals(integerEvent.getOldValue(), null);
-    assertEquals(integerEvent.getNewValue(), 4);
+    assertEquals(integerEvent.getOldInteger(), null);
+    assertEquals(integerEvent.getNewInteger(), 4);
     assertEquals(integerEvent.getEdit(), edit);
     assertEquals(integerEvent.getEditState(), edit.getState());
-    assertEquals(integerEvent.getDelta(), null);
+    assertEquals(integerEvent.getIntegerDelta(), null);
     // edit is null
     edit = null;
     // test constructor
-    integerEvent = new IntegerEvent(source, oldValue, newValue, edit);
+    integerEvent = new ActualIntegerEvent(source, oldValue, newValue, edit);
     assertEquals(integerEvent.getSource(), source);
-    assertEquals(integerEvent.getOldValue(), null);
-    assertEquals(integerEvent.getNewValue(), 4);
+    assertEquals(integerEvent.getOldInteger(), null);
+    assertEquals(integerEvent.getNewInteger(), 4);
     assertEquals(integerEvent.getEdit(), null);
     assertEquals(integerEvent.getEditState(), null);
   }

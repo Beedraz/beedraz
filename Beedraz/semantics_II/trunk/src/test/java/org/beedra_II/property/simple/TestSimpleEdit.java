@@ -31,6 +31,7 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.integer.ActualIntegerEvent;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
@@ -64,7 +65,7 @@ public class TestSimpleEdit {
     @Override
     protected IntegerEvent createEvent() {
       IntegerBeed source = new EditableIntegerBeed(new StubBeanBeed());
-      $createdEvent = new IntegerEvent(source, new Integer(0), new Integer(1), null);
+      $createdEvent = new ActualIntegerEvent(source, new Integer(0), new Integer(1), null);
       return $createdEvent;
     }
 
@@ -1095,7 +1096,7 @@ public class TestSimpleEdit {
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // fire
-    IntegerEvent event = new IntegerEvent($target, new Integer(0), new Integer(1), null);
+    IntegerEvent event = new ActualIntegerEvent($target, new Integer(0), new Integer(1), null);
     $simpleEdit.fireEvent(event);
     // check listener
     assertNotNull($listener3.$event);

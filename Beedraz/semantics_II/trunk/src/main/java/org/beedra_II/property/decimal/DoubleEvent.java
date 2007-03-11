@@ -17,9 +17,7 @@ limitations under the License.
 package org.beedra_II.property.decimal;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
-
-import org.beedra_II.edit.Edit;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -36,51 +34,24 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class DoubleEvent extends OldNewEvent<Double> {
+public interface DoubleEvent extends Event {
 
   /**
-   * @pre  source != null;
-   * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
-   * @pre  (oldValue != null) && (newValue != null)
-   *          ? ! oldValue.equals(newValue)
-   *          : true;
-   *
-   * @post getSource() == source;
-   * @post getEdit() == edit;
-   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
-   * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
-   * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
-   * @post oldValue == null || newValue == null
-   *          ? getDelta() == null
-   *          : getDelta() = newValue - oldValue;
+   * @basic
    */
-  public DoubleEvent(DoubleBeed source, Double oldValue, Double newValue, Edit<?> edit) {
-    super(source, oldValue, newValue, edit);
-    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
-  }
+  Double getOldDouble();
+
+  /**
+   * @basic
+   */
+  Double getNewDouble();
 
   /**
    * @return (getOldValue() == null) || (getNewValue() == null)
    *             ? null
    *             : getNewValue() - getOldValue();
    */
-  public final Double getDelta() {
-    return $delta;
-  }
-
-  private final Double $delta;
-
-  @Override
-  protected String otherToStringInformation() {
-    return super.otherToStringInformation() +
-           ", delta: " + getDelta();
-  }
-
-  @Override
-  public void toString(StringBuffer sb, int level) {
-    super.toString(sb, level);
-    sb.append(indent(level + 1) + "delta:" + getDelta() + "\n");
-  }
+  Double getDoubleDelta();
 
 }
 

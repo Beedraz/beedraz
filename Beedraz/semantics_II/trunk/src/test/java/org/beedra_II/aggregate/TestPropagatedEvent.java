@@ -22,10 +22,10 @@ import static org.junit.Assert.assertEquals;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.integer.ActualIntegerEvent;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEdit;
-import org.beedra_II.property.integer.IntegerEvent;
 import org.beedra_II.property.string.EditableStringBeed;
 import org.beedra_II.property.string.StringBeed;
 import org.beedra_II.property.string.StringEdit;
@@ -59,7 +59,7 @@ public class TestPropagatedEvent {
     IntegerEdit edit = new IntegerEdit(target);
     edit.perform();
     // cause
-    Event cause = new IntegerEvent(eventSource, oldValue, newValue, edit);
+    Event cause = new ActualIntegerEvent(eventSource, oldValue, newValue, edit);
     // propagated event source
     AggregateBeed source = new StubAggregateBeed();
     // test constructor

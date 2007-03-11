@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.integer.ActualIntegerEvent;
 import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
 import org.junit.After;
@@ -112,7 +113,7 @@ public class TestRootUpdateSource {
   }
 
   private IntegerEvent createIntegerEvent() {
-    return new IntegerEvent(new EditableIntegerBeed(new AbstractBeanBeed() {
+    return new ActualIntegerEvent(new EditableIntegerBeed(new AbstractBeanBeed() {
 
 //      public int getMaximumRootUpdateSourceDistance() {
 //        return 0;

@@ -14,33 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property.integer;
 
 
+import static org.beedra.util_I.MathUtil.castToDouble;
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.AbstractEvent;
-import org.beedra_II.event.Event;
-import org.beedra_II.property.PropertyBeed;
+import org.beedra_II.property.decimal.DoubleBeed;
+import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
+ * This is the event that is actually send by actual Double beeds.
+ * Users should probably use the interface {@link DoubleBeed}.
  *
  * @author Jan Dockx
  *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
+ * @mudo should be package accesible; only public because it is used in a number of tests
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class OldNewEvent<_Type_>
-    extends AbstractEvent {
+public final class ActualIntegerEvent
+    extends OldNewEvent<Integer>
+    implements IntegerEvent {
 
   /**
    * @pre  source != null;
@@ -54,51 +54,51 @@ public class OldNewEvent<_Type_>
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
+   * @post oldValue == null || newValue == null
+   *          ? getDelta() == null
+   *          : getDelta() = newValue - oldValue;
    */
-  public OldNewEvent(PropertyBeed<?> source,
-                     _Type_ oldValue,
-                     _Type_ newValue,
-                     Edit<?> edit) {
-    super(source, edit);
-    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
-    $oldValue = oldValue;
-    $newValue = newValue;
+  public ActualIntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
+    super(source, oldValue, newValue, edit);
+    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
   }
 
-  /**
-   * @basic
-   */
-  public final _Type_ getOldValue() {
-    return $oldValue;
+  public Integer getNewInteger() {
+    return getNewValue();
   }
 
-  private final _Type_ $oldValue;
-
-  /**
-   * @basic
-   */
-  public final _Type_ getNewValue() {
-    return $newValue;
+  public Double getNewDouble() {
+    return castToDouble(getNewInteger());
   }
 
-  private final _Type_ $newValue;
+  public Integer getOldInteger() {
+    return getOldValue();
+  }
+
+  public Double getOldDouble() {
+    return castToDouble(getOldInteger());
+  }
+
+  public final Integer getIntegerDelta() {
+    return $delta;
+  }
+
+  public Double getDoubleDelta() {
+    return castToDouble(getIntegerDelta());
+  }
+
+  private final Integer $delta;
 
   @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
-           ", old value: " + getOldValue() +
-           ", new value: " + getNewValue();
+           ", delta: " + getIntegerDelta();
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
-    toStringOldNew(sb, level + 1);
-  }
-
-  protected void toStringOldNew(StringBuffer sb, int level) {
-    sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");
-    sb.append(indent(level + 1) + "new value: " + getNewValue() + "\n");
+    sb.append(indent(level + 1) + "delta:" + getIntegerDelta() + "\n");
   }
 
 }

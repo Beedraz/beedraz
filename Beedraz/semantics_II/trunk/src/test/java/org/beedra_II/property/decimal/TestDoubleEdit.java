@@ -218,8 +218,8 @@ public class TestDoubleEdit {
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getEdit(), $doubleEdit);
-      assertEquals($listener3.$event.getOldValue(), null);
-      assertEquals($listener3.$event.getNewValue(), goal);
+      assertEquals($listener3.$event.getOldDouble(), null);
+      assertEquals($listener3.$event.getNewDouble(), goal);
       assertEquals($listener3.$event.getSource(), $target);
     }
     catch (EditStateException e) {
@@ -449,8 +449,8 @@ public class TestDoubleEdit {
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getSource(), $target);
-      assertEquals($listener3.$event.getOldValue(), goal);
-      assertEquals($listener3.$event.getNewValue(), null);
+      assertEquals($listener3.$event.getOldDouble(), goal);
+      assertEquals($listener3.$event.getNewDouble(), null);
       assertEquals($listener3.$event.getEdit(), $doubleEdit);
     }
     catch (EditStateException e) {
@@ -624,8 +624,8 @@ public class TestDoubleEdit {
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getEdit(), $doubleEdit);
-      assertEquals($listener3.$event.getOldValue(), null);
-      assertEquals($listener3.$event.getNewValue(), goal);
+      assertEquals($listener3.$event.getOldDouble(), null);
+      assertEquals($listener3.$event.getNewDouble(), goal);
       assertEquals($listener3.$event.getSource(), $target);
     }
     catch (EditStateException e) {
@@ -711,16 +711,16 @@ public class TestDoubleEdit {
     // create event
     DoubleEvent createdEvent = $doubleEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $doubleEdit);
-    assertEquals(createdEvent.getOldValue(), null);
-    assertEquals(createdEvent.getNewValue(), goal);
+    assertEquals(createdEvent.getOldDouble(), null);
+    assertEquals(createdEvent.getNewDouble(), goal);
     assertEquals(createdEvent.getSource(), $target);
     // undo
     $doubleEdit.undo();
     // create event
     createdEvent = $doubleEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $doubleEdit);
-    assertEquals(createdEvent.getOldValue(), goal);
-    assertEquals(createdEvent.getNewValue(), null);
+    assertEquals(createdEvent.getOldDouble(), goal);
+    assertEquals(createdEvent.getNewDouble(), null);
     assertEquals(createdEvent.getSource(), $target);
   }
 

@@ -59,7 +59,7 @@ public class TestEditableDoubleBeed {
     $editableDoubleBeed = new MyEditableDoubleBeed($owner);
     $stringEdit = new DoubleEdit($editableDoubleBeed);
     $stringEdit.perform();
-    $event1 = new DoubleEvent($editableDoubleBeed, new Double(0), new Double(1), $stringEdit);
+    $event1 = new ActualDoubleEvent($editableDoubleBeed, new Double(0), new Double(1), $stringEdit);
     $listener1 = new PropagatedEventListener();
     $listener2 = new PropagatedEventListener();
   }
@@ -98,8 +98,8 @@ public class TestEditableDoubleBeed {
   public void createInitialEvent() {
     DoubleEvent initialEvent = $editableDoubleBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableDoubleBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $editableDoubleBeed.get());
+    assertEquals(initialEvent.getOldDouble(), null);
+    assertEquals(initialEvent.getNewDouble(), $editableDoubleBeed.get());
     assertEquals(initialEvent.getEdit(), null);
   }
 

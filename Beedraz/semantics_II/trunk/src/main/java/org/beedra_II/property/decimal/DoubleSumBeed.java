@@ -49,7 +49,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class DoubleSumBeed
     extends AbstractPropertyBeed<DoubleEvent>
-    implements DoubleBeed {
+    implements DoubleBeed<DoubleEvent> {
 
   /**
    * @pre   owner != null;
@@ -77,19 +77,19 @@ public class DoubleSumBeed
       Double oldValue = $value;
       if ($value !=  null) {
         assert $value != null;
-        assert event.getOldValue() != null :
+        assert event.getOldDouble() != null :
           "event old value must be not null because all old terms were not null," +
           " because $value != null";
-        $value = (event.getNewValue() == null)
+        $value = (event.getNewDouble() == null)
                      ? null
-                     : $value + (event.getDelta() * getNbOccurrences());
+                     : $value + (event.getDoubleDelta() * getNbOccurrences());
       }
-      else if ((event.getNewValue() != null) && (event.getOldValue() == null)) {
+      else if ((event.getNewDouble() != null) && (event.getOldDouble() == null)) {
         recalculate();
       }
       // else: NOP
       if (! Comparison.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new DoubleEvent(DoubleSumBeed.this, oldValue, $value, event.getEdit()));
+        fireChangeEvent(new ActualDoubleEvent(DoubleSumBeed.this, oldValue, $value, event.getEdit()));
       }
     }
 
@@ -124,7 +124,7 @@ public class DoubleSumBeed
   /**
    * @basic
    */
-  public final int getNbOccurrences(DoubleBeed term) {
+  public final int getNbOccurrences(DoubleBeed<?> term) {
     TermListener termListener = $terms.get(term);
     return termListener != null ? termListener.getNbOccurrences() : 0;
   }
@@ -133,7 +133,7 @@ public class DoubleSumBeed
    * @pre   term != null;
    * @post  new.getNbOccurrences(term) == getNbOccurrences(term) + 1;
    */
-  public final void addTerm(DoubleBeed term) {
+  public final void addTerm(DoubleBeed<?> term) {
     assert term != null;
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
@@ -150,8 +150,8 @@ public class DoubleSumBeed
       // recalculate(); optimization
       if ($value != null) {
         Double oldValue = $value;
-        $value = (term.get() == null) ? null : $value + term.get(); // MUDO overflow
-        fireChangeEvent(new DoubleEvent(this, oldValue, $value, null));
+        $value = (term.getDouble() == null) ? null : $value + term.getDouble(); // MUDO overflow
+        fireChangeEvent(new ActualDoubleEvent(this, oldValue, $value, null));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
     }
@@ -162,7 +162,7 @@ public class DoubleSumBeed
    *          ? new.getNbOccurrences(term) == getNbOccurrences(term) - 1;
    *          : true;
    */
-  public final void removeTerm(DoubleBeed term) {
+  public final void removeTerm(DoubleBeed<?> term) {
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
@@ -183,7 +183,7 @@ public class DoubleSumBeed
          * term.get() != null && $value != null           ==>  new.$value == old.$value - term.get()
          * term.get() != null && $value == null           ==>  new.$value == old.$value == null
          */
-        if (term.get() == null && getNbOccurrences(term) == 0) {
+        if (term.getDouble() == null && getNbOccurrences(term) == 0) {
             /* $value was null because of this term. After the remove,
              * the value can be null because of another term, or
              * can be some value: we can't know, recalculate completely
@@ -193,12 +193,12 @@ public class DoubleSumBeed
         else if ($value != null) {
           // since $value is effective, all terms are effective
           // the new value of the sum beed is the old value minus the value of the removed term
-          assert term.get() != null;
-          $value -= term.get();
+          assert term.getDouble() != null;
+          $value -= term.getDouble();
         }
         // else: in all other cases, the value of $value is null, and stays null
         if (! Comparison.equalsWithNull(oldValue, $value)) {
-          fireChangeEvent(new DoubleEvent(this, oldValue, $value, null));
+          fireChangeEvent(new ActualDoubleEvent(this, oldValue, $value, null));
         }
         /* else, term != null, but $value is null; this means there is another term that is null,
            and removing this term won't change that */
@@ -211,9 +211,10 @@ public class DoubleSumBeed
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<DoubleBeed, TermListener> $terms = new HashMap<DoubleBeed, TermListener>();
+  private final Map<DoubleBeed<?>, TermListener> $terms =
+        new HashMap<DoubleBeed<?>, TermListener>();
 
-  public final Double get() {
+  public final Double getDouble() {
     return $value;
   }
 
@@ -226,8 +227,8 @@ public class DoubleSumBeed
    */
   public void recalculate() {
     Double newValue = 0.0;
-    for (DoubleBeed term : $terms.keySet()) {
-      Double termValue = term.get();
+    for (DoubleBeed<?> term : $terms.keySet()) {
+      Double termValue = term.getDouble();
       if (termValue == null) {
         newValue = null;
         break;
@@ -249,7 +250,7 @@ public class DoubleSumBeed
    */
   @Override
   protected final DoubleEvent createInitialEvent() {
-    return new DoubleEvent(this, null, get(), null);
+    return new ActualDoubleEvent(this, null, getDouble(), null);
   }
 
 }

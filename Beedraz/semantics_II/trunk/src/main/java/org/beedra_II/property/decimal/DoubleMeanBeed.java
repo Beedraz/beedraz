@@ -51,7 +51,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public class DoubleMeanBeed
     extends AbstractPropertyBeed<DoubleEvent>
-    implements DoubleBeed {
+    implements DoubleBeed<DoubleEvent> {
 
 
   /**
@@ -70,7 +70,7 @@ public class DoubleMeanBeed
   /**
    * @basic
    */
-  public final SetBeed<DoubleBeed> getSource() {
+  public final SetBeed<DoubleBeed<DoubleEvent>> getSource() {
     return $source;
   }
 
@@ -84,14 +84,14 @@ public class DoubleMeanBeed
    *          notified (and then recalculate) when one of the DoubleBeeds changes.)
    * @post    The listeners of this beed are notified when the value changes.
    */
-  public final void setSource(SetBeed<DoubleBeed> source) {
+  public final void setSource(SetBeed<DoubleBeed<DoubleEvent>> source) {
     // set the source
     $source = source;
     if (source != null) {
       // register the DoubleMeanBeed as listener of the given SetBeed
       source.addListener($sourceListener);
       // register the DoubleMeanBeed as listener of all DoubleBeeds in the given SetBeed
-      for (DoubleBeed beed : source.get()) {
+      for (DoubleBeed<DoubleEvent> beed : source.get()) {
         beed.addListener($beedListener);
       }
     }
@@ -99,11 +99,11 @@ public class DoubleMeanBeed
     Double oldValue = $value;
     recalculate();
     if (! Comparison.equalsWithNull(oldValue, $value)) {
-      fireChangeEvent(new DoubleEvent(DoubleMeanBeed.this, oldValue, $value, null)); // edit = null
+      fireChangeEvent(new ActualDoubleEvent(DoubleMeanBeed.this, oldValue, $value, null)); // edit = null
     }
   }
 
-  private SetBeed<DoubleBeed> $source;
+  private SetBeed<DoubleBeed<DoubleEvent>> $source;
 
   /*</property>*/
 
@@ -111,7 +111,8 @@ public class DoubleMeanBeed
   /**
    * A listener that will be registered as listener of the {@link #getSource()}.
    */
-  private final Listener<SetEvent<DoubleBeed>> $sourceListener = new Listener<SetEvent<DoubleBeed>>() {
+  private final Listener<SetEvent<DoubleBeed<DoubleEvent>>> $sourceListener =
+        new Listener<SetEvent<DoubleBeed<DoubleEvent>>>() {
 
     /**
      * @post    The DoubleMeanBeed is registered as a listener of all DoubleBeeds
@@ -121,17 +122,17 @@ public class DoubleMeanBeed
      * @post    get() == the mean of the given source
      * @post    The listeners of this beed are notified when the value changes.
      */
-    public void beedChanged(SetEvent<DoubleBeed> event) {
+    public void beedChanged(SetEvent<DoubleBeed<DoubleEvent>> event) {
       // add the DoubleMeanBeed as listener of all DoubleBeeds that are added to the SetBeed by the given event
-      Set<DoubleBeed> added = event.getAddedElements();
-      for (DoubleBeed beed : added) {
+      Set<DoubleBeed<DoubleEvent>> added = event.getAddedElements();
+      for (DoubleBeed<DoubleEvent> beed : added) {
         beed.addListener($beedListener);
       }
       // recalculate and notify the listeners if the value has changed
       Double oldValue = $value;
       recalculate();
       if (! Comparison.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new DoubleEvent(DoubleMeanBeed.this, oldValue, $value, event.getEdit()));
+        fireChangeEvent(new ActualDoubleEvent(DoubleMeanBeed.this, oldValue, $value, event.getEdit()));
       }
     }
 
@@ -149,14 +150,14 @@ public class DoubleMeanBeed
       Double oldValue = $value;
       recalculate();
       if (! Comparison.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new DoubleEvent(DoubleMeanBeed.this, oldValue, $value, event.getEdit()));
+        fireChangeEvent(new ActualDoubleEvent(DoubleMeanBeed.this, oldValue, $value, event.getEdit()));
       }
     }
 
   };
 
 
-  public final Double get() {
+  public final Double getDouble() {
     return $value;
   }
 
@@ -181,8 +182,8 @@ public class DoubleMeanBeed
       assert getSource() != null;
       assert getSource().get().size() > 0;
       newValue = 0.0;
-      for (DoubleBeed beed : getSource().get()) {
-        Double beedValue = beed.get();
+      for (DoubleBeed<DoubleEvent> beed : getSource().get()) {
+        Double beedValue = beed.getDouble();
         if (beedValue == null) {
           newValue = null;
           break;
@@ -210,7 +211,7 @@ public class DoubleMeanBeed
    */
   @Override
   protected final DoubleEvent createInitialEvent() {
-    return new DoubleEvent(this, null, get(), null);
+    return new ActualDoubleEvent(this, null, getDouble(), null);
   }
 
 }

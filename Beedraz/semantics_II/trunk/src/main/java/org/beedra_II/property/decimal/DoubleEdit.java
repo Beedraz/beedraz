@@ -51,7 +51,7 @@ public final class DoubleEdit
    */
   @Override
   protected DoubleEvent createEvent() {
-    return new DoubleEvent(getTarget(), getOldValue(), getNewValue(), this);
+    return new ActualDoubleEvent(getTarget(), getOldValue(), getNewValue(), this);
   }
 
 }

@@ -253,14 +253,14 @@ public class TestMappedSetBeed {
     $mappedSetBeed.setSource($run.wells);
     Integer sum = 0;
     for (IntegerBeed cq : $mappedSetBeed.get()) {
-      sum += cq.get();
+      sum += cq.getInteger();
     }
     assertEquals(sum, 6);
     // test2
     $mappedSetBeed.setSource(null);
     sum = 0;
     for (IntegerBeed cq : $mappedSetBeed.get()) {
-      sum += cq.get();
+      sum += cq.getInteger();
     }
     assertEquals(sum, 0);
   }

@@ -159,8 +159,8 @@ public class TestIntegerEdit {
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getEdit(), $integerEdit);
-      assertEquals($listener3.$event.getOldValue(), null);
-      assertEquals($listener3.$event.getNewValue(), goal);
+      assertEquals($listener3.$event.getOldInteger(), null);
+      assertEquals($listener3.$event.getNewInteger(), goal);
       assertEquals($listener3.$event.getSource(), $target);
     }
     catch (EditStateException e) {
@@ -390,8 +390,8 @@ public class TestIntegerEdit {
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getSource(), $target);
-      assertEquals($listener3.$event.getOldValue(), goal);
-      assertEquals($listener3.$event.getNewValue(), null);
+      assertEquals($listener3.$event.getOldInteger(), goal);
+      assertEquals($listener3.$event.getNewInteger(), null);
       assertEquals($listener3.$event.getEdit(), $integerEdit);
     }
     catch (EditStateException e) {
@@ -565,8 +565,8 @@ public class TestIntegerEdit {
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getEdit(), $integerEdit);
-      assertEquals($listener3.$event.getOldValue(), null);
-      assertEquals($listener3.$event.getNewValue(), goal);
+      assertEquals($listener3.$event.getOldInteger(), null);
+      assertEquals($listener3.$event.getNewInteger(), goal);
       assertEquals($listener3.$event.getSource(), $target);
     }
     catch (EditStateException e) {
@@ -652,16 +652,16 @@ public class TestIntegerEdit {
     // create event
     IntegerEvent createdEvent = $integerEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $integerEdit);
-    assertEquals(createdEvent.getOldValue(), null);
-    assertEquals(createdEvent.getNewValue(), goal);
+    assertEquals(createdEvent.getOldInteger(), null);
+    assertEquals(createdEvent.getNewInteger(), goal);
     assertEquals(createdEvent.getSource(), $target);
     // undo
     $integerEdit.undo();
     // create event
     createdEvent = $integerEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $integerEdit);
-    assertEquals(createdEvent.getOldValue(), goal);
-    assertEquals(createdEvent.getNewValue(), null);
+    assertEquals(createdEvent.getOldInteger(), goal);
+    assertEquals(createdEvent.getNewInteger(), null);
     assertEquals(createdEvent.getSource(), $target);
   }
 

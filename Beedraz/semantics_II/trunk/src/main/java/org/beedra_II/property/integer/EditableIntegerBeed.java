@@ -1,6 +1,8 @@
 package org.beedra_II.property.integer;
 
 
+import static org.beedra.util_I.MathUtil.castToDouble;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
@@ -31,13 +33,16 @@ public class EditableIntegerBeed
    */
   @Override
   protected IntegerEvent createInitialEvent() {
-    return new IntegerEvent(this, null, get(), null);
+    return new ActualIntegerEvent(this, null, get(), null);
   }
 
-//  @Override
-//  protected IntegerEvent createEvent(Edit<?> edit) {
-//    return new IntegerEvent(this, edit.getOldValue(), edit.getNewValue(), edit);
-//  }
+  public Double getDouble() {
+    return castToDouble(getInteger());
+  }
+
+  public Integer getInteger() {
+    return get();
+  }
 
 }
 

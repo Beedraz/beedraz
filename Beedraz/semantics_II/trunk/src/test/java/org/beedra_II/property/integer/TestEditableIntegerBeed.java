@@ -28,7 +28,7 @@ public class TestEditableIntegerBeed {
     $editableIntegerBeed = new StubEditableIntegerBeed($owner);
     $stringEdit = new IntegerEdit($editableIntegerBeed);
     $stringEdit.perform();
-    $event1 = new IntegerEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
+    $event1 = new ActualIntegerEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
   }
@@ -67,8 +67,8 @@ public class TestEditableIntegerBeed {
   public void createInitialEvent() {
     IntegerEvent initialEvent = $editableIntegerBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableIntegerBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $editableIntegerBeed.get());
+    assertEquals(initialEvent.getOldInteger(), null);
+    assertEquals(initialEvent.getNewInteger(), $editableIntegerBeed.get());
     assertEquals(initialEvent.getEdit(), null);
   }
 

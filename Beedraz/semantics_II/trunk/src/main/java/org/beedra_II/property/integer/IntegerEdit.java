@@ -47,7 +47,7 @@ public final class IntegerEdit
    */
   @Override
   protected IntegerEvent createEvent() {
-    return new IntegerEvent(getTarget(), getOldValue(), getNewValue(), this);
+    return new ActualIntegerEvent(getTarget(), getOldValue(), getNewValue(), this);
   }
 
 }

@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
+import static org.beedra.util_I.MathUtil.castToDouble;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,19 +79,19 @@ public class IntegerSumBeed
       Integer oldValue = $value;
       if ($value !=  null) {
         assert $value != null;
-        assert event.getOldValue() != null :
+        assert event.getOldInteger() != null :
           "event old value must be not null because all old terms were not null," +
           " because $value != null";
-        $value = (event.getNewValue() == null)
+        $value = (event.getNewInteger() == null)
                      ? null
-                     : $value + (event.getDelta() * getNbOccurrences());
+                     : $value + (event.getIntegerDelta() * getNbOccurrences());
       }
-      else if ((event.getNewValue() != null) && (event.getOldValue() == null)) {
+      else if ((event.getNewInteger() != null) && (event.getOldInteger() == null)) {
         recalculate();
       }
       // else: NOP
       if (! Comparison.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new IntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
+        fireChangeEvent(new ActualIntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
       }
     }
 
@@ -150,8 +152,8 @@ public class IntegerSumBeed
       // recalculate(); optimization
       if ($value != null) {
         Integer oldValue = $value;
-        $value = (term.get() == null) ? null : $value + term.get(); // MUDO overflow
-        fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
+        $value = (term.getInteger() == null) ? null : $value + term.getInteger(); // MUDO overflow
+        fireChangeEvent(new ActualIntegerEvent(this, oldValue, $value, null));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
     }
@@ -178,12 +180,12 @@ public class IntegerSumBeed
         // recalculate(); optimization
         Integer oldValue = $value;
         /*
-         * term.get() == null && getNbOccurrences() == 0  ==>  recalculate
-         * term.get() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-         * term.get() != null && $value != null           ==>  new.$value == old.$value - term.get()
-         * term.get() != null && $value == null           ==>  new.$value == old.$value == null
+         * term.getInteger() == null && getNbOccurrences() == 0  ==>  recalculate
+         * term.getInteger() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+         * term.getInteger() != null && $value != null           ==>  new.$value == old.$value - term.getInteger()
+         * term.getInteger() != null && $value == null           ==>  new.$value == old.$value == null
          */
-        if (term.get() == null && getNbOccurrences(term) == 0) {
+        if (term.getInteger() == null && getNbOccurrences(term) == 0) {
             /* $value was null because of this term. After the remove,
              * the value can be null because of another term, or
              * can be some value: we can't know, recalculate completely
@@ -193,12 +195,12 @@ public class IntegerSumBeed
         else if ($value != null) {
           // since $value is effective, all terms are effective
           // the new value of the sum beed is the old value minus the value of the removed term
-          assert term.get() != null;
-          $value -= term.get();
+          assert term.getInteger() != null;
+          $value -= term.getInteger();
         }
         // else: in all other cases, the value of $value is null, and stays null
         if (! Comparison.equalsWithNull(oldValue, $value)) {
-          fireChangeEvent(new IntegerEvent(this, oldValue, $value, null));
+          fireChangeEvent(new ActualIntegerEvent(this, oldValue, $value, null));
         }
         /* else, term != null, but $value is null; this means there is another term that is null,
            and removing this term won't change that */
@@ -213,7 +215,11 @@ public class IntegerSumBeed
    */
   private final Map<IntegerBeed, TermListener> $terms = new HashMap<IntegerBeed, TermListener>();
 
-  public final Integer get() {
+  public final Double getDouble() {
+    return castToDouble(getInteger());
+  }
+
+  public final Integer getInteger() {
     return $value;
   }
 
@@ -227,7 +233,7 @@ public class IntegerSumBeed
   public void recalculate() {
     Integer newValue = 0;
     for (IntegerBeed term : $terms.keySet()) {
-      Integer termValue = term.get();
+      Integer termValue = term.getInteger();
       if (termValue == null) {
         newValue = null;
         break;
@@ -249,7 +255,7 @@ public class IntegerSumBeed
    */
   @Override
   protected final IntegerEvent createInitialEvent() {
-    return new IntegerEvent(this, null, get(), null);
+    return new ActualIntegerEvent(this, null, getInteger(), null);
   }
 
 }

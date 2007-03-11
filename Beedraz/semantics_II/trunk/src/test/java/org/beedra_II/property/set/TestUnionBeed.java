@@ -410,7 +410,7 @@ public class TestUnionBeed {
     mappedSetBeed.setSource($unionBeed);
     Integer sum = 0;
     for (IntegerBeed cq : mappedSetBeed.get()) {
-      sum += cq.get();
+      sum += cq.getInteger();
     }
     assertEquals(sum, 0+1+2+3+4+5+6+7+8);
   }

@@ -17,6 +17,7 @@
 package org.beedra_II.property.integer;
 
 
+import static org.beedra.util_I.MathUtil.equalValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -60,7 +61,7 @@ public class TestIntegerSumBeed {
 
   private AggregateBeed $owner = new StubBeanBeed();
   private MyIntegerSumBeed $integerSumBeed = new MyIntegerSumBeed($owner);
-  private IntegerEvent $event1 = new IntegerEvent($integerSumBeed, new Integer(0), new Integer(1), null);
+  private IntegerEvent $event1 = new ActualIntegerEvent($integerSumBeed, new Integer(0), new Integer(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
   private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
@@ -82,7 +83,8 @@ public class TestIntegerSumBeed {
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
     // the value should be 0
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // no terms registered (cannot be tested)
   }
 
@@ -102,20 +104,23 @@ public class TestIntegerSumBeed {
     $integerSumBeed.addTerm(term5);
     // check (sum = 5)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
-    assertEquals($integerSumBeed.get(), 5);
+    assertEquals($integerSumBeed.getInteger(), 5);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term30
     $integerSumBeed.addTerm(term30);
     // check (sum = 5 + 30)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), 35);
+    assertEquals($integerSumBeed.getInteger(), 35);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add termNull
     $integerSumBeed.addTerm(termNull);
     // check (sum = 5 + 30 + null)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove terms
     $integerSumBeed.removeTerm(term5);
     $integerSumBeed.removeTerm(term30);
@@ -124,25 +129,29 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 0);
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add termNull
     $integerSumBeed.addTerm(termNull);
     // check (sum = null)
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term
     $integerSumBeed.addTerm(term5);
     // check (sum = null + 5)
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term
     $integerSumBeed.addTerm(term30);
     // check (sum = null + 5 + 30)
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 
     // When one of the terms is changed by an edit, the listeners of that term
     // are notified (in the perform method of the edit).
@@ -158,7 +167,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), 42);
+    assertEquals($integerSumBeed.getInteger(), 42);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change 30 to 3
     IntegerEdit edit30 = new IntegerEdit(term30);
     Integer value3 = 3;
@@ -169,7 +179,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), 15);
+    assertEquals($integerSumBeed.getInteger(), 15);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   @Test
@@ -183,28 +194,33 @@ public class TestIntegerSumBeed {
     $integerSumBeed.addTerm(term5);
     // check (sum = 5)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
-    assertEquals($integerSumBeed.get(), 5);
+    assertEquals($integerSumBeed.getInteger(), 5);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // create another sum beed
     IntegerSumBeed integerSumBeed2 = new IntegerSumBeed($owner);
     // check (sum has no terms)
-    assertEquals(integerSumBeed2.get(), 0);
+    assertEquals(integerSumBeed2.getInteger(), 0);
+    assertTrue(equalValue(integerSumBeed2.getDouble(), integerSumBeed2.getInteger()));
     // add term30
     integerSumBeed2.addTerm(term30);
     // check (sum = 30)
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
-    assertEquals(integerSumBeed2.get(), 30);
+    assertEquals(integerSumBeed2.getInteger(), 30);
+    assertTrue(equalValue(integerSumBeed2.getDouble(), integerSumBeed2.getInteger()));
     // add termNull
     integerSumBeed2.addTerm(termNull);
     // check (sum = 30 + null)
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 1);
-    assertEquals(integerSumBeed2.get(), null);
+    assertEquals(integerSumBeed2.getInteger(), null);
+    assertTrue(equalValue(integerSumBeed2.getDouble(), integerSumBeed2.getInteger()));
     // add integerSumBeed2
     $integerSumBeed.addTerm(integerSumBeed2);
     // check (sum = 5 + (30 + null))
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 
     // When one of the terms is changed by an edit, the listeners of that term
     // are notified (in the perform method of the edit).
@@ -219,10 +235,12 @@ public class TestIntegerSumBeed {
     // check (sum = 2 + (30 + null))
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 1);
-    assertEquals(integerSumBeed2.get(), null);
+    assertEquals(integerSumBeed2.getInteger(), null);
+    assertTrue(equalValue(integerSumBeed2.getDouble(), integerSumBeed2.getInteger()));
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change null to 7
     IntegerEdit editNull = new IntegerEdit(termNull);
     Integer value7 = 7;
@@ -232,10 +250,12 @@ public class TestIntegerSumBeed {
     // check (sum = 2 + (30 + 7))
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 1);
-    assertEquals(integerSumBeed2.get(), 37);
+    assertEquals(integerSumBeed2.getInteger(), 37);
+    assertTrue(equalValue(integerSumBeed2.getDouble(), integerSumBeed2.getInteger()));
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
-    assertEquals($integerSumBeed.get(), 39);
+    assertEquals($integerSumBeed.getInteger(), 39);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change 30 to 3
     IntegerEdit edit30 = new IntegerEdit(term30);
     Integer value3 = 3;
@@ -245,7 +265,8 @@ public class TestIntegerSumBeed {
     // check (sum = 2 + (3 + 7))
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
-    assertEquals($integerSumBeed.get(), 12);
+    assertEquals($integerSumBeed.getInteger(), 12);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   //@Test
@@ -263,7 +284,8 @@ public class TestIntegerSumBeed {
     // check (sum = 2 + 3)
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term2) == 1);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term3) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 5);
+    assertEquals(integerSumBeed2plus3.getInteger(), 5);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
     // create another sum beed
     IntegerSumBeed integerSumBeed2plus3plus4 = new IntegerSumBeed($owner);
     integerSumBeed2plus3plus4.addTerm(integerSumBeed2plus3);
@@ -271,14 +293,16 @@ public class TestIntegerSumBeed {
     // check (sum = (2 + 3) + 4)
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(integerSumBeed2plus3) == 1);
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
-    assertEquals(integerSumBeed2plus3plus4.get(), 9);
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), 9);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
     // add terms
     $integerSumBeed.addTerm(term1);
     $integerSumBeed.addTerm(integerSumBeed2plus3plus4);
     // check (sum = 1 + ((2 + 3) + 4))
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 
     // When one of the terms is changed by an edit, the listeners of that term
     // are notified (in the perform method of the edit).
@@ -297,9 +321,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 5);
-    assertEquals(integerSumBeed2plus3plus4.get(), 9);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals(integerSumBeed2plus3.getInteger(), 5);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), 9);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change null back to 1
     edit1 = new IntegerEdit(term1);
     Integer value1 = 1;
@@ -313,9 +340,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 5);
-    assertEquals(integerSumBeed2plus3plus4.get(), 9);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals(integerSumBeed2plus3.getInteger(), 5);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), 9);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change 2 to null
     IntegerEdit edit2 = new IntegerEdit(term2);
     edit2.setGoal(valueNull);
@@ -328,9 +358,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), null);
-    assertEquals(integerSumBeed2plus3plus4.get(), null);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals(integerSumBeed2plus3.getInteger(), null);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), null);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change null back to 2
     edit2 = new IntegerEdit(term2);
     Integer value2 = 2;
@@ -344,9 +377,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 5);
-    assertEquals(integerSumBeed2plus3plus4.get(), 9);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals(integerSumBeed2plus3.getInteger(), 5);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), 9);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change 4 to null
     IntegerEdit edit4 = new IntegerEdit(term4);
     edit4.setGoal(valueNull);
@@ -359,9 +395,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 5);
-    assertEquals(integerSumBeed2plus3plus4.get(), null);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals(integerSumBeed2plus3.getInteger(), 5);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), null);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change null back to 4
     edit4 = new IntegerEdit(term4);
     Integer value4 = 4;
@@ -375,9 +414,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 5);
-    assertEquals(integerSumBeed2plus3plus4.get(), 9);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals(integerSumBeed2plus3.getInteger(), 5);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), 9);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 
     // change 2 to 11
     edit2 = new IntegerEdit(term2);
@@ -392,9 +434,12 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
-    assertEquals(integerSumBeed2plus3.get(), 14);
-    assertEquals(integerSumBeed2plus3plus4.get(), 18);
-    assertEquals($integerSumBeed.get(), 19);
+    assertEquals(integerSumBeed2plus3.getInteger(), 14);
+    assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getInteger()));
+    assertEquals(integerSumBeed2plus3plus4.getInteger(), 18);
+    assertTrue(equalValue(integerSumBeed2plus3plus4.getDouble(), integerSumBeed2plus3plus4.getInteger()));
+    assertEquals($integerSumBeed.getInteger(), 19);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   @Test
@@ -406,12 +451,14 @@ public class TestIntegerSumBeed {
     $integerSumBeed.addTerm(term5);
     // check (sum = 5)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 1);
-    assertEquals($integerSumBeed.get(), 5);
+    assertEquals($integerSumBeed.getInteger(), 5);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term5
     $integerSumBeed.addTerm(term5);
     // check (sum = 5 + 5)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 2);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 
     // When one of the terms is changed by an edit, the listeners of that term
     // are notified (in the perform method of the edit).
@@ -425,7 +472,8 @@ public class TestIntegerSumBeed {
     assertEquals(term5.get(), value7);
     // check (sum = 7 + 7)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 2);
-    assertEquals($integerSumBeed.get(), 14);
+    assertEquals($integerSumBeed.getInteger(), 14);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change 7 to 11
     edit5 = new IntegerEdit(term5);
     Integer value11 = 11;
@@ -434,7 +482,8 @@ public class TestIntegerSumBeed {
     assertEquals(term5.get(), value11);
     // check (sum = 11 + 11)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 2);
-    assertEquals($integerSumBeed.get(), 22);
+    assertEquals($integerSumBeed.getInteger(), 22);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // change 11 to null
     edit5 = new IntegerEdit(term5);
     Integer valueNull = null;
@@ -443,7 +492,8 @@ public class TestIntegerSumBeed {
     assertEquals(term5.get(), valueNull);
     // check (sum = null + null)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 2);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 
     edit5 = new IntegerEdit(term5);
     edit5.setGoal(value7);
@@ -451,7 +501,8 @@ public class TestIntegerSumBeed {
     assertEquals(term5.get(), value7);
     // check (sum = 7 + 7)
     assertTrue($integerSumBeed.getNbOccurrences(term5) == 2);
-    assertEquals($integerSumBeed.get(), 14);
+    assertEquals($integerSumBeed.getInteger(), 14);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
 }
 
   private EditableIntegerBeed createEditableIntegerBeed(Integer value) {
@@ -493,7 +544,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 2);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 11 (not in the sum)
     $integerSumBeed.removeTerm(term11);
     // check (sum = 5 + 5 + 5 + null + null + 30)
@@ -501,7 +553,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 2);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 5
     $integerSumBeed.removeTerm(term5);
     // check (sum = 5 + 5 + null + null + 30)
@@ -509,7 +562,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 2);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove null
     $integerSumBeed.removeTerm(termNull);
     // check (sum = 5 + 5 + null + 30)
@@ -517,7 +571,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove null
     $integerSumBeed.removeTerm(termNull);
     // check (sum = 5 + 5 + 30)
@@ -525,7 +580,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), 40);
+    assertEquals($integerSumBeed.getInteger(), 40);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 30
     $integerSumBeed.removeTerm(term30);
     // check (sum = 5 + 5)
@@ -533,7 +589,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 5
     $integerSumBeed.removeTerm(term5);
     // check (sum = 5)
@@ -541,7 +598,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), 5);
+    assertEquals($integerSumBeed.getInteger(), 5);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 5
     $integerSumBeed.removeTerm(term5);
     // check (sum = no items)
@@ -549,7 +607,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 5 (not in sum)
     $integerSumBeed.removeTerm(term5);
     // check (sum = no items)
@@ -557,7 +616,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(termNull) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term30) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(term11) == 0);
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   @Test
@@ -578,7 +638,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove null
     integerSumBeed2.removeTerm(termNull);
     // check (sum = 5 + (30))
@@ -586,7 +647,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 0);
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), 35);
+    assertEquals($integerSumBeed.getInteger(), 35);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 5
     $integerSumBeed.removeTerm(term5);
     // check (sum = (30))
@@ -594,7 +656,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 0);
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 1);
-    assertEquals($integerSumBeed.get(), 30);
+    assertEquals($integerSumBeed.getInteger(), 30);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 30
     integerSumBeed2.removeTerm(term30);
     // check (sum = (no items))
@@ -602,7 +665,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 1);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 0);
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 0);
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove sum beed
     $integerSumBeed.removeTerm(integerSumBeed2);
     // check (sum = no items)
@@ -610,7 +674,8 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2) == 0);
     assertTrue(integerSumBeed2.getNbOccurrences(termNull) == 0);
     assertTrue(integerSumBeed2.getNbOccurrences(term30) == 0);
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   //@Test
@@ -637,7 +702,8 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term2) == 1);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term3) == 1);
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 2
     integerSumBeed2plus3.removeTerm(term2);
     // check (sum = 1 + ((3) + 4))
@@ -647,7 +713,8 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 1);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term2) == 0);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term3) == 1);
-    assertEquals($integerSumBeed.get(), 8);
+    assertEquals($integerSumBeed.getInteger(), 8);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 4
     integerSumBeed2plus3plus4.removeTerm(term4);
     // check (sum = 1 + ((3)))
@@ -657,7 +724,8 @@ public class TestIntegerSumBeed {
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 0);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term2) == 0);
     assertTrue(integerSumBeed2plus3.getNbOccurrences(term3) == 1);
-    assertEquals($integerSumBeed.get(), 4);
+    assertEquals($integerSumBeed.getInteger(), 4);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove integerSumBeed2plus3
     integerSumBeed2plus3plus4.removeTerm(integerSumBeed2plus3);
     // check (sum = 1 + (no terms))
@@ -665,19 +733,22 @@ public class TestIntegerSumBeed {
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 1);
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(integerSumBeed2plus3) == 0);
     assertTrue(integerSumBeed2plus3plus4.getNbOccurrences(term4) == 0);
-    assertEquals($integerSumBeed.get(), 1);
+    assertEquals($integerSumBeed.getInteger(), 1);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove integerSumBeed2plus3plus4
     $integerSumBeed.removeTerm(integerSumBeed2plus3plus4);
     // check (sum = 1)
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 1);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 0);
-    assertEquals($integerSumBeed.get(), 1);
+    assertEquals($integerSumBeed.getInteger(), 1);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // remove 1
     $integerSumBeed.removeTerm(term1);
     // check (sum = no terms)
     assertTrue($integerSumBeed.getNbOccurrences(term1) == 0);
     assertTrue($integerSumBeed.getNbOccurrences(integerSumBeed2plus3plus4) == 0);
-    assertEquals($integerSumBeed.get(), 0);
+    assertEquals($integerSumBeed.getInteger(), 0);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   @Test
@@ -693,38 +764,44 @@ public class TestIntegerSumBeed {
     $integerSumBeed.addTerm(term2);
     // recalculate
     $integerSumBeed.recalculate();
-    assertEquals($integerSumBeed.get(), 3);
+    assertEquals($integerSumBeed.getInteger(), 3);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // recalculate
     $integerSumBeed.recalculate();
-    assertEquals($integerSumBeed.get(), 3);
+    assertEquals($integerSumBeed.getInteger(), 3);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term
     $integerSumBeed.addTerm(term3);
     // recalculate
     $integerSumBeed.recalculate();
-    assertEquals($integerSumBeed.get(), 6);
+    assertEquals($integerSumBeed.getInteger(), 6);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term
     $integerSumBeed.addTerm(term4);
     // recalculate
     $integerSumBeed.recalculate();
-    assertEquals($integerSumBeed.get(), 10);
+    assertEquals($integerSumBeed.getInteger(), 10);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term
     $integerSumBeed.addTerm(termNull);
     // recalculate
     $integerSumBeed.recalculate();
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
     // add term
     $integerSumBeed.addTerm(termNull);
     // recalculate
     $integerSumBeed.recalculate();
-    assertEquals($integerSumBeed.get(), null);
+    assertEquals($integerSumBeed.getInteger(), null);
+    assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getInteger()));
   }
 
   @Test
   public void createInitialEvent() {
     IntegerEvent initialEvent = $integerSumBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $integerSumBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $integerSumBeed.get());
+    assertEquals(initialEvent.getOldInteger(), null);
+    assertEquals(initialEvent.getNewInteger(), $integerSumBeed.getInteger());
     assertEquals(initialEvent.getEdit(), null);
   }
 

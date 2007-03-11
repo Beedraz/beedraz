@@ -19,6 +19,7 @@ package org.beedra_II.aggregate;
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
+import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -41,7 +42,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class PropagatedEvent
-    extends Event {
+    extends AbstractEvent {
 
   /**
    * @pre source != null;

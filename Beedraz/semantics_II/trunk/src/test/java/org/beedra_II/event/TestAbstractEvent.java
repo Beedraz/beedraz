@@ -31,7 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestEvent {
+public class TestAbstractEvent {
 
   @Before
   public void setUp() throws Exception {
@@ -56,14 +56,14 @@ public class TestEvent {
     $edit.setGoal(goal);
     $edit.perform();
     // create a new event
-    $event = new Event($source, $edit) {
+    $event = new AbstractEvent($source, $edit) {
       // NOP
     };
     assertEquals($event.getSource(), $source);
     assertEquals($event.getEdit(), $edit);
     assertEquals($event.getEditState(), $edit.getState());
     // create a new event with an edit that is null
-    $event = new Event($source, null) {
+    $event = new AbstractEvent($source, null) {
       // NOP
     };
     assertEquals($event.getSource(), $source);

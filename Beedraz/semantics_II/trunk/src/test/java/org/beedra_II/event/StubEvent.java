@@ -20,7 +20,7 @@ package org.beedra_II.event;
 import org.beedra_II.Beed;
 
 
-public class StubEvent extends Event {
+public class StubEvent extends AbstractEvent {
 
   public StubEvent(Beed<?> source) {
     super(source, null);

@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Event;
+import org.beedra_II.event.AbstractEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -42,7 +42,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class SetEvent<_Element_>
-    extends Event {
+    extends AbstractEvent {
 
   /**
    * @pre  source != null;

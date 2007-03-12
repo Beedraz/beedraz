@@ -33,15 +33,15 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @invar getNbOccurrences(null) == 0;
  * @invar (forall DoubleBeed db; ; getNbOccurrences(db) >= 0);
- * @invar (exists DoubleBeed db; ; getNbOccurrences(db) > 0 && db.get() == null)
- *            ==> get() == null;
+ * @invar (exists DoubleBeed db; ; getNbOccurrences(db) > 0 && db.getDouble() == null)
+ *            ==> getDouble() == null;
  *        If one of the terms is null, then the value of the sum beed is null.
- * @invar (forAll DoubleBeed db; ; getNbOccurrences(db) > 0 ==> db.get() != null)
- *            ==> get() == sum { db.get() * getNbOccurrences(db) | db instanceof DoubleBeed};
+ * @invar (forAll DoubleBeed db; ; getNbOccurrences(db) > 0 ==> db.getDouble() != null)
+ *            ==> getDouble() == sum { db.getDouble() * getNbOccurrences(db) | db instanceof DoubleBeed};
  *        If all terms are effective, then the value of the sum beed is the
  *        sum of the value of each term multiplied by the corresponding
  *        number of occurrences.
- *        e.g. get() = 3 * 5.2 + 2 * 11.3
+ *        e.g. getDouble() = 3 * 5.2 + 2 * 11.3
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -53,7 +53,7 @@ public class DoubleSumBeed
 
   /**
    * @pre   owner != null;
-   * @post  get() == 0;
+   * @post  getDouble() == 0;
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    */
   public DoubleSumBeed(AggregateBeed owner) {
@@ -178,10 +178,10 @@ public class DoubleSumBeed
         // recalculate(); optimization
         Double oldValue = $value;
         /**
-         * term.get() == null && getNbOccurrences() == 0  ==>  recalculate
-         * term.get() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-         * term.get() != null && $value != null           ==>  new.$value == old.$value - term.get()
-         * term.get() != null && $value == null           ==>  new.$value == old.$value == null
+         * term.getDouble() == null && getNbOccurrences() == 0  ==>  recalculate
+         * term.getDouble() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+         * term.getDouble() != null && $value != null           ==>  new.$value == old.$value - term.getDouble()
+         * term.getDouble() != null && $value == null           ==>  new.$value == old.$value == null
          */
         if (term.getDouble() == null && getNbOccurrences(term) == 0) {
             /* $value was null because of this term. After the remove,
@@ -243,8 +243,8 @@ public class DoubleSumBeed
   /**
    * @post  result != null;
    * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
+   * @post  result.getOldDouble() == null;
+   * @post  result.getNewDouble() == getDouble();
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

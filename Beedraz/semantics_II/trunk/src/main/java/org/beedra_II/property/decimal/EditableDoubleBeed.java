@@ -48,8 +48,8 @@ public class EditableDoubleBeed
   /**
    * @post  result != null;
    * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
+   * @post  result.getOldDouble() == null;
+   * @post  result.getNewDouble() == get();
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

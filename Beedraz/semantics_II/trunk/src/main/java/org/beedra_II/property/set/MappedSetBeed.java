@@ -18,18 +18,23 @@ package org.beedra_II.property.set;
 
 
 import java.util.AbstractSet;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.beedra.util_I.Comparison;
+import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * A {@link SetBeed} that mappes a given {@link SetBeed}
- * to another {@link Set} using a {@link Mapping}.
+ * A {@link SetBeed} that mappes the {@link Beed beeds} in
+ * a given {@link SetBeed} to a set of other elements using
+ * a {@link Mapping}.
  *
  * @mudo We veronderstellen hier dat een mapping injectief is, dwz dat twee
  *       verschillende waarden nooit gemapt worden op hetzelfde beeld
@@ -39,6 +44,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @mudo De bron van een MappedSetBeed definieren we hier als een SetBeed. Dit
  *       kan echter ook een OrderedSetBeed zijn. Dit betekent dat deze beeds in
  *       een hierarchie moeten geplaatst worden.
+ * @remark  The value of a SetBeed is always effective (this is an invariant of
+ *          the SetBeed class). So, when the source is null, the resulting
+ *          mapped set is an effective, empty set.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.
@@ -56,7 +64,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class MappedSetBeed<_From_, _To_>
+public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends Event, _To_>
     extends AbstractPropertyBeed<SetEvent<_To_>>
     implements SetBeed<_To_> {
 
@@ -66,6 +74,8 @@ public class MappedSetBeed<_From_, _To_>
    * @post  getOwner() == owner;
    * @post  getMapping() == mapping;
    * @post  getSource() == null;
+   * @post  get() != null;
+   * @post  get().isEmpty();
    */
   public MappedSetBeed(Mapping<_From_, _To_> mapping, AggregateBeed owner) {
     super(owner);
@@ -99,16 +109,107 @@ public class MappedSetBeed<_From_, _To_>
   }
 
   /**
-   * @param  source
-   * @post   getSource() == source;
+   * @param   source
+   * @post    getSource() == source;
+   * @post    get() == the result of mapping the given source
+   * @post    The MappedSetBeed is registered as a listener of the given SetBeed.
+   * @post    The MappedSetBeed is registered as a listener of all beeds in
+   *          the given source. (The reason is that the MappedSetBeed should be
+   *          notified (and then recalculate) when one of the beeds in the source
+   *          changes.)
+   * @post    The listeners of this beed are notified when the value changes.
    */
   public final void setSource(SetBeed<_From_> source) {
     $source = source;
+    if (source != null) {
+      // register the DoubleMeanBeed as listener of the given SetBeed
+      source.addListener($sourceListener);
+      // register the DoubleMeanBeed as listener of all DoubleBeeds in the given SetBeed
+      for (_From_ beed : source.get()) {
+        beed.addListener($beedListener);
+      }
+    }
+    // recalculate and notify the listeners if the value has changed
+    Set<_To_> oldValue = $mappedSet;
+    recalculate();
+    if (! Comparison.equalsWithNull(oldValue, $mappedSet)) {
+      fireChangeEvent(
+        new SetEvent<_To_>(
+          MappedSetBeed.this, $mappedSet,  oldValue, null));
+    }
   }
 
   private SetBeed<_From_> $source;
 
   /*</property>*/
+
+
+  /**
+   * A listener that will be registered as listener of the {@link #getSource()}.
+   */
+  private final Listener<SetEvent<_From_>> $sourceListener =
+        new Listener<SetEvent<_From_>>() {
+
+    /**
+     * @post    The MappedSetBeed is registered as a listener of all beeds
+     *          that are added to the source by the given event. (The reason is that
+     *          the MappedSetBeed should be notified (and then recalculate) when one
+     *          of the beeds changes.)
+     * @post    The MappedSetBeed is removed as listener of all beeds
+     *          that are removed from the source by the given event.
+     * @post    get() == the result of mapping the elements of the given source
+     * @post    The listeners of this beed are notified when the set changes.
+     */
+    public void beedChanged(SetEvent<_From_> event) {
+      // add the MappedSetBeed as listener of all beeds that are added to the source by the given event
+      Set<_From_> added = event.getAddedElements();
+      Set<_To_> addedMapped = new HashSet<_To_>();
+      for (_From_ beed : added) {
+        beed.addListener($beedListener);
+        addedMapped.add(getMapping().map(beed));
+      }
+      // remove the MappedSetBeed as listener from all beeds that are removed from the source by the given event
+      Set<_From_> removed = event.getRemovedElements();
+      Set<_To_> removedMapped = new HashSet<_To_>();
+      for (_From_ beed : removed) {
+        beed.removeListener($beedListener);
+        removedMapped.add(getMapping().map(beed));
+      }
+
+      // recalculate and notify the listeners if the value has changed
+      Set<_To_> oldValue = $mappedSet;
+      recalculate();
+      if (! Comparison.equalsWithNull(oldValue, $mappedSet)) {
+        fireChangeEvent(
+          new SetEvent<_To_>(
+            MappedSetBeed.this, addedMapped, removedMapped, event.getEdit()));
+      }
+    }
+
+  };
+
+
+  private final Listener<_FromEvent_> $beedListener = new Listener<_FromEvent_>() {
+
+    /**
+     * @post    get() == the result of mapping the elements of the given source
+     * @post    The listeners of this beed are notified.
+     */
+    public void beedChanged(_FromEvent_ event) {
+      // recalculate and notify the listeners if the value has changed
+      Set<_To_> oldValue = $mappedSet;
+      recalculate();
+      if (! Comparison.equalsWithNull(oldValue, $mappedSet)) {
+        fireChangeEvent(new SetEvent<_To_>(MappedSetBeed.this, null, null, event.getEdit()));
+      }
+    }
+
+  };
+
+  /**
+   * @invar  $mappedSet != null;
+   */
+  private Set<_To_> $mappedSet = new HashSet<_To_>();
 
   /**
    * @basic
@@ -118,40 +219,7 @@ public class MappedSetBeed<_From_, _To_>
 
       @Override
       public Iterator<_To_> iterator() {
-        final Iterator<_From_> iteratorFrom = iteratorFrom();
-        return new Iterator<_To_>() {
-
-          /**
-           * When the source is effective, we return true iff the
-           * iterator over the source set returns true.
-           * When the source is not effective, we return false.
-           */
-          public boolean hasNext() {
-            return iteratorFrom != null
-                     ? iteratorFrom.hasNext()
-                     : false;
-          }
-
-          /**
-           * When the source is effective, we return the mapping of the
-           * next element in the iterator over the source set.
-           * When the source is not effetive, a NoSuchElementException is thrown.
-           */
-          public _To_ next() {
-            if (iteratorFrom == null) {
-              throw new NoSuchElementException();
-            }
-            return getMapping().map(iteratorFrom.next());
-          }
-
-          /**
-           * optional operation
-           */
-          public void remove() {
-            // NOP
-          }
-
-        };
+        return $mappedSet.iterator();
       }
 
       /**
@@ -160,31 +228,28 @@ public class MappedSetBeed<_From_, _To_>
        */
       @Override
       public int size() {
-        return getSource() != null
-                 ? getSource().get().size()
-                 : 0;
-      }
-
-      /**
-       * The set that will be mapped.
-       */
-      private Set<_From_> setFrom() {
-        return getSource() != null
-                 ? getSource().get()
-                 : null;
-      }
-
-      /**
-       * An iterator on the set that will be mapped.
-       */
-      private Iterator<_From_> iteratorFrom() {
-        return setFrom() != null
-                 ? setFrom().iterator()
-                 : null;
+        return $mappedSet.size();
       }
 
     };
   }
+
+
+  /**
+   * The value of $mappedSet is recalculated. This is done by iterating over the beeds
+   * in the source set beed.
+   * When the source is null, the result is an empty set.
+   * When the source contains zero beeds, the result is an empty set.
+   * Otherwise, the resulting set contains the maps of all beeds in the given set.
+   */
+  public void recalculate() {
+    $mappedSet = new HashSet<_To_>();
+    Set<_From_> fromSet = getSource() != null? getSource().get(): new HashSet<_From_>();
+    for (_From_ from : fromSet) {
+      $mappedSet.add(getMapping().map(from));
+    }
+  }
+
 
   /**
    * @post  result != null;

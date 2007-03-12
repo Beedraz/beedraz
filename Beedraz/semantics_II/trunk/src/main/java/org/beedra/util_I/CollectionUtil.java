@@ -17,8 +17,14 @@ limitations under the License.
 package org.beedra.util_I;
 
 
+import java.io.Serializable;
+import java.util.AbstractSet;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedSet;
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -41,6 +47,85 @@ public abstract class CollectionUtil {
     HashSet<E> intersection = new HashSet<E>(s1);
     intersection.retainAll(s2);
     return intersection;
+  }
+
+
+  /**
+   * Raw type empty sorted set. Use {@link #emptySortedSet()} for a generic, typed
+   * equivalent.
+   */
+  @SuppressWarnings("unchecked")
+  public final static SortedSet EMPTY_SORTED_SET = new EmptySortedSet();
+
+  @SuppressWarnings("unchecked")
+  public static final <T> SortedSet<T> emptySortedSet() {
+    return EMPTY_SORTED_SET;
+  }
+
+  /**
+   * Based on java.util.Collections.EmptySet.
+   */
+  private static class EmptySortedSet
+      extends AbstractSet<Object>
+      implements Serializable, SortedSet<Object> {
+
+    @Override
+    public final Iterator<Object> iterator() {
+      return new Iterator<Object>() {
+        public boolean hasNext() {
+          return false;
+        }
+        public Object next() {
+          throw new NoSuchElementException();
+        }
+        public void remove() {
+          throw new UnsupportedOperationException();
+        }
+      };
+    }
+
+    @Override
+    public final int size() {
+      return 0;
+    }
+
+    @Override
+    public boolean contains(Object obj) {
+      return false;
+    }
+
+    // Preserves singleton property
+    private Object readResolve() {
+      return EMPTY_SORTED_SET;
+    }
+
+    public Comparator<? super Object> comparator() {
+      return null;
+    }
+
+    public Object first() throws NoSuchElementException {
+      throw new NoSuchElementException();
+    }
+
+    public Object last() throws NoSuchElementException {
+      throw new NoSuchElementException();
+    }
+
+    @SuppressWarnings("unchecked")
+    public SortedSet<Object> subSet(Object fromElement, Object toElement) {
+      return EMPTY_SORTED_SET;
+    }
+
+    @SuppressWarnings("unchecked")
+    public SortedSet<Object> headSet(Object toElement) {
+      return EMPTY_SORTED_SET;
+    }
+
+    @SuppressWarnings("unchecked")
+    public SortedSet<Object> tailSet(Object fromElement) {
+      return EMPTY_SORTED_SET;
+    }
+
   }
 
 }

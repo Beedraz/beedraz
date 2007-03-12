@@ -21,6 +21,7 @@ import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -40,7 +41,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          tag      = "$Name$")
 public final class OrderedBidirToOneEvent<_One_ extends BeanBeed,
                                          _Many_ extends BeanBeed>
-    extends OldNewEvent<OrderedBidirToManyBeed<_One_, _Many_>> {
+    extends ActualOldNewEvent<OrderedBidirToManyBeed<_One_, _Many_>> {
 
 
   /**

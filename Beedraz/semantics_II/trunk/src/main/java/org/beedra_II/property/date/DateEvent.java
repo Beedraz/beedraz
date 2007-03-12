@@ -20,6 +20,7 @@ package org.beedra_II.property.date;
 import java.util.Date;
 
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -36,7 +37,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class DateEvent extends OldNewEvent<Date> {
+public final class DateEvent extends ActualOldNewEvent<Date> {
 
   /**
    * @pre  source != null;

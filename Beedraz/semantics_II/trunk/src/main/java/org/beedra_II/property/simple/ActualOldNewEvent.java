@@ -14,34 +14,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.decimal;
+package org.beedra_II.property.simple;
 
 
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.ActualOldNewEvent;
+import org.beedra_II.event.AbstractEvent;
+import org.beedra_II.event.Event;
+import org.beedra_II.property.PropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * This is the event that is actually send by actual Double beeds.
- * Users should probably use the interface {@link DoubleBeed}.
+ * {@link Event} that carries a simple old and new value,
+ * expressing the changed that occured in {@link #getSource()}.
+ * The {@link #getSource() source} must be a {@link SimplePB}.
  *
- * @author  Jan Dockx
- * @author  Nele Smeets
- * @author  PeopleWare n.v.
+ * @author Jan Dockx
  *
- *
- * @invar getSource() instanceof DoubleBeed;
+ * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-final class ActualDoubleEvent
-    extends ActualOldNewEvent<Double>
-    implements DoubleEvent {
+public class ActualOldNewEvent<_Type_>
+    extends AbstractEvent
+    implements OldNewEvent<_Type_> {
 
   /**
    * @pre  source != null;
@@ -55,45 +55,51 @@ final class ActualDoubleEvent
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
-   * @post oldValue == null || newValue == null
-   *          ? getDelta() == null
-   *          : getDelta() = newValue - oldValue;
    */
-  public ActualDoubleEvent(DoubleBeed<?> source, Double oldValue, Double newValue, Edit<?> edit) {
-    super(source, oldValue, newValue, edit);
-    $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
-  }
-
-
-  public final Double getNewDouble() {
-    return getNewValue();
-  }
-
-  public final Double getOldDouble() {
-    return getOldValue();
+  public ActualOldNewEvent(PropertyBeed<?> source,
+                     _Type_ oldValue,
+                     _Type_ newValue,
+                     Edit<?> edit) {
+    super(source, edit);
+    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+    $oldValue = oldValue;
+    $newValue = newValue;
   }
 
   /**
-   * @return (getOldValue() == null) || (getNewValue() == null)
-   *             ? null
-   *             : getNewValue() - getOldValue();
+   * @basic
    */
-  public final Double getDoubleDelta() {
-    return $delta;
+  public final _Type_ getOldValue() {
+    return $oldValue;
   }
 
-  private final Double $delta;
+  private final _Type_ $oldValue;
+
+  /**
+   * @basic
+   */
+  public final _Type_ getNewValue() {
+    return $newValue;
+  }
+
+  private final _Type_ $newValue;
 
   @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
-           ", delta: " + getDoubleDelta();
+           ", old value: " + getOldValue() +
+           ", new value: " + getNewValue();
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
-    sb.append(indent(level + 1) + "delta:" + getDoubleDelta() + "\n");
+    toStringOldNew(sb, level + 1);
+  }
+
+  protected void toStringOldNew(StringBuffer sb, int level) {
+    sb.append(indent(level + 1) + "old value: " + getOldValue() + "\n");
+    sb.append(indent(level + 1) + "new value: " + getNewValue() + "\n");
   }
 
 }

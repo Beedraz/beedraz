@@ -20,6 +20,7 @@ package org.beedra_II.property.set.ordered;
 import java.util.List;
 
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -37,7 +38,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class OrderedSetEvent<_Element_> extends OldNewEvent<List<_Element_>> {
+public final class OrderedSetEvent<_Element_> extends ActualOldNewEvent<List<_Element_>> {
 
   /**
    * @pre  source != null;

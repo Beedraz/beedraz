@@ -18,7 +18,7 @@ package org.beedra_II.property.bool;
 
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.OldNewEvent;
+import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -37,7 +37,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class BooleanEvent extends OldNewEvent<Boolean> {
+public final class BooleanEvent extends ActualOldNewEvent<Boolean> {
 
   /**
    * @pre  source != null;

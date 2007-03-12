@@ -22,7 +22,7 @@ import static org.beedra.util_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.decimal.DoubleBeed;
-import org.beedra_II.property.simple.OldNewEvent;
+import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -39,7 +39,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class ActualIntegerEvent
-    extends OldNewEvent<Integer>
+    extends ActualOldNewEvent<Integer>
     implements IntegerEvent {
 
   /**

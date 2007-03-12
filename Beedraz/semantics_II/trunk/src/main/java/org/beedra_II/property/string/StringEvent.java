@@ -18,6 +18,7 @@ package org.beedra_II.property.string;
 
 
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -34,7 +35,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class StringEvent extends OldNewEvent<String> {
+public final class StringEvent extends ActualOldNewEvent<String> {
 
   /**
    * @pre  source != null;

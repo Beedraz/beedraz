@@ -14,38 +14,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property.collection.set.ordered;
 
 
-import org.beedra_II.event.Event;
+import java.util.List;
+import java.util.Set;
+
+import org.beedra_II.property.collection.list.ListEvent;
+import org.beedra_II.property.collection.set.SetEvent;
+import org.beedra_II.property.set.SetBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} is often a {@link SimplePropertyBeed},
- * but not necessarily.
+ * Event that notifies of changes in a {@link SetBeed}.
  *
  * @author Jan Dockx
  *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
+ * @invar getSource() instanceof CollectionBeed
+ * @invar getAddedElements() != null;
+ * @invar getRemovedElements() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public interface OrderedSetEvent<_Element_, _OrderedSet_ extends Set<_Element_> & List<_Element_>>
+    extends SetEvent<_Element_, _OrderedSet_>, ListEvent<_Element_, _OrderedSet_> {
 
-  /**
-   * @basic
-   */
-  _Type_ getOldValue();
-
-  /**
-   * @basic
-   */
-  _Type_ getNewValue();
+  // NOP
 
 }
 

@@ -14,38 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property.collection;
 
 
-import org.beedra_II.event.Event;
+import java.util.Collection;
+
+import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * {@link Event} that carries a simple old and new value,
- * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} is often a {@link SimplePropertyBeed},
- * but not necessarily.
- *
- * @author Jan Dockx
- *
- * @invar (getOldValue() != null) && (getNewValue() != null) ? ! getOldValue().equals(getNewValue());
+ * @author  Jan Dockx
+ * @author  Peopleware n.v.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OldNewEvent<_Type_> extends Event {
+public interface CollectionBeed<_Element_,
+                                _Event_ extends CollectionEvent<_Element_, ?>>
+    extends SimplePropertyBeed<Collection<_Element_>, _Event_> {
 
-  /**
-   * @basic
-   */
-  _Type_ getOldValue();
-
-  /**
-   * @basic
-   */
-  _Type_ getNewValue();
+  // NOP
 
 }
 

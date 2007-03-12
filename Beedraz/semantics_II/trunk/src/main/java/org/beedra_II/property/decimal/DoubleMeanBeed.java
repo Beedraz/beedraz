@@ -31,19 +31,19 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
 /**
  * A beed that computes the mean of a given set of beeds of type {@link DoubleBeed}.
  *
- * @invar getSource() == null ==> get() == null;
+ * @invar getSource() == null ==> getDouble() == null;
  * @invar getSource() != null ==>
- *        (exists DoubleBeed db; getSource().get().contains(db); db.get() == null)
- *            ==> get() == null;
+ *        (exists DoubleBeed db; getSource().get().contains(db); db.getDouble() == null)
+ *            ==> getDouble() == null;
  *        If the value of one of the beeds in the given set is null,
  *        then the value of the mean beed is null.
  * @invar getSource() != null ==>
- *        (forAll DoubleBeed db; getSource().get().contains(db); db.get() != null)
- *            ==> get() == avg { db.get() | getSource().get().contains(db)};
+ *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
+ *            ==> getDouble() == avg { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective,
  *        then the value of the mean beed is the mean of the values of all beeds in the
  *        given set. The mean of an empty set is null.
- *        e.g. get() = (5.1 + 3.2 + 4.9) / 3
+ *        e.g. getDouble() = (5.1 + 3.2 + 4.9) / 3
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -57,7 +57,7 @@ public class DoubleMeanBeed
   /**
    * @pre   owner != null;
    * @post  getSource() == null;
-   * @post  get() == null;
+   * @post  getDouble() == null;
    */
   public DoubleMeanBeed(AggregateBeed owner) {
     super(owner);
@@ -77,7 +77,7 @@ public class DoubleMeanBeed
   /**
    * @param   source
    * @post    getSource() == source;
-   * @post    get() == the mean of the given source
+   * @post    getDouble() == the mean of the given source
    * @post    The DoubleMeanBeed is registered as a listener of the given SetBeed.
    * @post    The DoubleMeanBeed is registered as a listener of all DoubleBeeds in
    *          the given SetBeed. (The reason is that the DoubleMeanBeed should be
@@ -119,7 +119,9 @@ public class DoubleMeanBeed
      *          that are added to the SetBeed by the given event. (The reason is that
      *          the DoubleMeanBeed should be notified (and then recalculate) when one
      *          of the DoubleBeeds changes.)
-     * @post    get() == the mean of the given source
+     * @post    The DoubleMeanBeed is removed as listener of all DoubleBeeds
+     *          that are removed from the SetBeed by the given event.
+     * @post    getDouble() == the mean of the given source
      * @post    The listeners of this beed are notified when the value changes.
      */
     public void beedChanged(SetEvent<DoubleBeed<DoubleEvent>> event) {
@@ -127,6 +129,11 @@ public class DoubleMeanBeed
       Set<DoubleBeed<DoubleEvent>> added = event.getAddedElements();
       for (DoubleBeed<DoubleEvent> beed : added) {
         beed.addListener($beedListener);
+      }
+      // remove the DoubleMeanBeed as listener from all DoubleBeeds that are removed from the SetBeed by the given event
+      Set<DoubleBeed<DoubleEvent>> removed = event.getRemovedElements();
+      for (DoubleBeed<DoubleEvent> beed : removed) {
+        beed.removeListener($beedListener);
       }
       // recalculate and notify the listeners if the value has changed
       Double oldValue = $value;
@@ -142,7 +149,7 @@ public class DoubleMeanBeed
   private final Listener<DoubleEvent> $beedListener = new Listener<DoubleEvent>() {
 
     /**
-     * @post    get() == the mean of the given source
+     * @post    getDouble() == the mean of the given source
      * @post    The listeners of this beed are notified when the value changes.
      */
     public void beedChanged(DoubleEvent event) {
@@ -204,8 +211,8 @@ public class DoubleMeanBeed
   /**
    * @post  result != null;
    * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
+   * @post  result.getOldDouble() == null;
+   * @post  result.getNewDouble() == getDouble();
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

@@ -26,8 +26,8 @@ public class EditableIntegerBeed
   /**
    * @post  result != null;
    * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
+   * @post  result.getOldInteger() == null;
+   * @post  result.getNewInteger() == get();
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

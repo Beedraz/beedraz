@@ -35,15 +35,15 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  *
  * @invar getNbOccurrences(null) == 0;
  * @invar (forall IntegerBeed ib; ; getNbOccurrences(ib) >= 0);
- * @invar (exists IntegerBeed ib; ; getNbOccurrences(ib) > 0 && ib.get() == null)
- *            ==> get() == null;
+ * @invar (exists IntegerBeed ib; ; getNbOccurrences(ib) > 0 && ib.getInteger() == null)
+ *            ==> getInteger() == null;
  *        If one of the terms is null, then the value of the sum beed is null.
- * @invar (forAll IntegerBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.get() != null)
- *            ==> get() == sum { ib.get() * getNbOccurrences(ib) | ib instanceof IntegerBeed};
+ * @invar (forAll IntegerBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.getInteger() != null)
+ *            ==> getInteger() == sum { ib.getInteger() * getNbOccurrences(ib) | ib instanceof IntegerBeed};
  *        If all terms are effective, then the value of the sum beed is the
  *        sum of the value of each term multiplied by the corresponding
  *        number of occurrences.
- *        e.g. get() = 3 * 5 + 2 * 11
+ *        e.g. getInteger() = 3 * 5 + 2 * 11
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -55,7 +55,7 @@ public class IntegerSumBeed
 
   /**
    * @pre   owner != null;
-   * @post  get() == 0;
+   * @post  getInteger() == 0;
    * @post  (forall IntegerBeed ib; ; getNbOccurrences(ib) == 0};
    */
   public IntegerSumBeed(AggregateBeed owner) {
@@ -248,8 +248,8 @@ public class IntegerSumBeed
   /**
    * @post  result != null;
    * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
+   * @post  result.getOldInteger() == null;
+   * @post  result.getNewInteger() == getInteger();
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

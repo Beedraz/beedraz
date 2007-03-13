@@ -114,7 +114,6 @@ public class TestFilteredSetBeed {
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
-    $listener4 = new StubListener<PropagatedEvent>();
     $event = new SetEvent<WellBeanBeed>($filteredSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
@@ -173,7 +172,6 @@ public class TestFilteredSetBeed {
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
-  private StubListener<PropagatedEvent> $listener4;
   private SetEvent<WellBeanBeed> $event;
 
   @Test
@@ -228,7 +226,7 @@ public class TestFilteredSetBeed {
     assertEquals($filteredSetBeed.getSource(), source);
     assertEquals($filteredSetBeed.get().size(), 1);
     assertTrue($filteredSetBeed.get().contains($well2));
-    // value has changed, so the listeners of the mean beed are notified
+    // value has changed, so the listeners of the filtered set beed are notified
     Set<WellBeanBeed> added = new HashSet<WellBeanBeed>();
     added.add($well2);
     Set<WellBeanBeed> removed = new HashSet<WellBeanBeed>();
@@ -288,8 +286,6 @@ public class TestFilteredSetBeed {
     assertEquals($filteredSetBeed.get().size(), 2);
     assertTrue($filteredSetBeed.get().contains($well2));
     assertTrue($filteredSetBeed.get().contains(well4));
-    // When a new beed is added to the source, the DoubleMeanBeed is added as a listener
-    // of that beed. See setSource3.
 
     // When a beed is removed from the source, the FilteredSetBeed is removed as listener
     // of that beed.
@@ -314,28 +310,24 @@ public class TestFilteredSetBeed {
     integerEdit = new IntegerEdit(well4.cq);
     integerEdit.setGoal(7);
     integerEdit.perform();
-    assertNull($listener3.$event); // the DoubleMeanBeed is NOT notified
+    assertNull($listener3.$event); // the FilteredSetBeed is NOT notified
     // and the value of the filtered set beed is correct
     assertEquals($filteredSetBeed.get().size(), 1);
     assertTrue($filteredSetBeed.get().contains($well2));
   }
 
   @Test
-  public void get() {
+  public void get() throws EditStateException, IllegalEditException {
     // filter the even wells
-    SetBeed<WellBeanBeed> source = $run.wells;
+    SetBeed<WellBeanBeed> source = createSource();
     $filteredSetBeed.setSource(source);
     Set<WellBeanBeed> result = $filteredSetBeed.get();
-    assertEquals(result.size(), 2);
-    assertTrue(result.contains($well0));
+    assertEquals(result.size(), 1);
     assertTrue(result.contains($well2));
     Iterator<WellBeanBeed> iterator = result.iterator(); // we do not know the order
     assertTrue(iterator.hasNext());
     WellBeanBeed next = iterator.next();
-    assertTrue(next == $well0 || next == $well2);
-    assertTrue(iterator.hasNext());
-    next = iterator.next();
-    assertTrue(next == $well0 || next == $well2);
+    assertTrue(next == $well2);
     assertFalse(iterator.hasNext());
     try {
       iterator.next();
@@ -362,9 +354,11 @@ public class TestFilteredSetBeed {
     assertTrue(result.contains($well3));
     iterator = result.iterator();
     assertTrue(iterator.hasNext()); // we do not know the order
-    iterator.next();
+    next = iterator.next();
+    assertTrue(next == $well1 || next == $well3);
     assertTrue(iterator.hasNext());
-    iterator.next();
+    next = iterator.next();
+    assertTrue(next == $well1 || next == $well3);
     assertFalse(iterator.hasNext());
     try {
       iterator.next();
@@ -416,6 +410,53 @@ public class TestFilteredSetBeed {
     }
   }
 
+
+  @Test
+  public void recalculate() throws EditStateException, IllegalEditException {
+    // double mean beed has no source
+    $filteredSetBeed.recalculate();
+    assertTrue($filteredSetBeed.get().isEmpty());
+    // create source
+    EditableSetBeed<WellBeanBeed> source =
+      new EditableSetBeed<WellBeanBeed>($owner);
+    // add source to mean beed
+    $filteredSetBeed.setSource(source);
+    // recalculate (setBeed contains no elements)
+    $filteredSetBeed.recalculate();
+    assertTrue($filteredSetBeed.get().isEmpty());
+    // add beed
+    SetEdit<WellBeanBeed> setEdit =
+      new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToAdd($well1);
+    setEdit.perform();
+    // recalculate (setBeed contains beed 1)
+    $filteredSetBeed.recalculate();
+    assertEquals($filteredSetBeed.get().size(), 0);
+    // recalculate (setBeed contains beed 1)
+    $filteredSetBeed.recalculate();
+    assertEquals($filteredSetBeed.get().size(), 0);
+    // add beed
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToAdd($well2);
+    setEdit.perform();
+    // recalculate (setBeed contains beed 1 and 2)
+    $filteredSetBeed.recalculate();
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well2));
+    // recalculate (setBeed contains beed 1 and 2)
+    $filteredSetBeed.recalculate();
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well2));
+    // add beed
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToAdd($well3);
+    setEdit.perform();
+    // recalculate (setBeed contains beed 1, 2 and 3)
+    $filteredSetBeed.recalculate();
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well2));
+  }
+
   @Test
   public void createInitialEvent() {
     SetEvent<WellBeanBeed> initialEvent = $filteredSetBeed.createInitialEvent();
@@ -438,6 +479,9 @@ public class TestFilteredSetBeed {
     setEdit.perform();
     setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well3);
+    setEdit.perform();
+    setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($wellNull);
     setEdit.perform();
     return setBeed;
   }

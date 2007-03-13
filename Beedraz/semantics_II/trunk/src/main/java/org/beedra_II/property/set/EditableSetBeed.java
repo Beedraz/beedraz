@@ -24,7 +24,7 @@ import java.util.Set;
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
@@ -62,7 +62,7 @@ public class EditableSetBeed<_Element_>
    */
   final void addElements(Set<_Element_> elements) {
     assert elements != null;
-    assert org.ppeew.collection.CollectionUtil.intersection(get(), elements).isEmpty();
+    assert org.ppeew.collection_I.CollectionUtil.intersection(get(), elements).isEmpty();
     $set.addAll(elements);
   }
 

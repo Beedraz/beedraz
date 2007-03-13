@@ -19,7 +19,7 @@ package org.beedra_II.bean;
 
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

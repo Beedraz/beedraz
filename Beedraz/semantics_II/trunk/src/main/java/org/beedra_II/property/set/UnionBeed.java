@@ -25,7 +25,7 @@ import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

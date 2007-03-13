@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppeew.smallfries;
+package org.ppeew.smallfries_I;
 
 
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 @CvsInfo(revision = "$Revision$",

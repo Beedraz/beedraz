@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppeew.annotations.vcs;
+package org.ppeew.annotations_I.vcs;
 
 
 import java.lang.annotation.Documented;
@@ -25,19 +25,18 @@ import java.lang.annotation.Target;
 
 
 /**
- * Annotation for CVS meta-data. By using this annotation,
- * the CVS data about the source revision the compiled code is based on,
+ * Annotation for Subversion meta-data. By using this annotation,
+ * the Subversion data about the source revision the compiled code is based on,
  * is available in the code.
  *
  * Usage pattern:
  * <pre>
- * ATCvsInfo(revision = &quot;$Revision$&quot;,
+ * ATSvnInfo(revision = &quot;$Revision$&quot;,
  *           date     = &quot;$Date$&quot;,
- *           state    = &quot;$State$&quot;,
- *           tag      = &quot;$Name$&quot;)
+ *           url      = &quot;$URL$&quot;)
  * public class ... {
  *  ...
- *  }
+ * }
  * </pre>
  *
  * @author    Jan Dockx
@@ -46,10 +45,12 @@ import java.lang.annotation.Target;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface CvsInfo {
+public @interface SvnInfo {
 
   /**
    * Source code revision. Fill out with &quot;$Revision$&quot;
@@ -60,15 +61,5 @@ public @interface CvsInfo {
    * Source code revision. Fill out with &quot;$Date$&quot;
    */
   String date();
-
-  /**
-   * Source code revision. Fill out with &quot;$State$&quot;
-   */
-  String state();
-
-  /**
-   * Source code revision. Fill out with &quot;$Name$&quot;
-   */
-  String tag();
 
 }

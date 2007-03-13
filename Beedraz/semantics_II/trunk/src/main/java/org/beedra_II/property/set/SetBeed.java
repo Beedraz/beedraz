@@ -20,7 +20,7 @@ package org.beedra_II.property.set;
 import java.util.Set;
 
 import org.beedra_II.property.simple.SimplePropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

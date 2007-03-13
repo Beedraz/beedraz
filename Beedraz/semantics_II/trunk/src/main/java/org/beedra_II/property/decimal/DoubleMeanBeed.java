@@ -24,8 +24,8 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.set.SetBeed;
 import org.beedra_II.property.set.SetEvent;
-import org.ppeew.annotations.vcs.CvsInfo;
-import org.ppeew.smallfries.ComparisonUtil;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**

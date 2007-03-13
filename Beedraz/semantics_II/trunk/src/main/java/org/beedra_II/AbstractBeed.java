@@ -17,14 +17,14 @@ limitations under the License.
 package org.beedra_II;
 
 
-import static org.ppeew.smallfries.MultiLineToStringUtil.objectToString;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

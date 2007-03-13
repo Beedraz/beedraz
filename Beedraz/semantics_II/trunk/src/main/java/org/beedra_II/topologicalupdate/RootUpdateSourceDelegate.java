@@ -25,7 +25,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import org.beedra_II.event.Event;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

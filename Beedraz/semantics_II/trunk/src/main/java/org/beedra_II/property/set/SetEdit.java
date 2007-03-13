@@ -19,8 +19,8 @@ package org.beedra_II.property.set;
 
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
-import static org.ppeew.collection.CollectionUtil.intersection;
-import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
+import static org.ppeew.collection_I.CollectionUtil.intersection;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import java.util.Set;
 
 import org.beedra_II.edit.AbstractSimpleEdit;
 import org.beedra_II.edit.EditStateException;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

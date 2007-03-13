@@ -1,11 +1,11 @@
 package org.beedra_II.property.integer;
 
 
-import static org.ppeew.smallfries.MathUtil.castToDouble;
+import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 @CvsInfo(revision = "$Revision$",

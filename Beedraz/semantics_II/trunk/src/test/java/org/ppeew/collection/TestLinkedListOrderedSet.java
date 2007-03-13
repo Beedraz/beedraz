@@ -17,7 +17,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.collection.LinkedListOrderedSet;
+import org.ppeew.collection_I.LinkedListOrderedSet;
 
 
 

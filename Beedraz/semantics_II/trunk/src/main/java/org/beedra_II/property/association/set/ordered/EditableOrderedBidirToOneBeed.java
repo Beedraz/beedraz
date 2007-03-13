@@ -19,7 +19,7 @@ package org.beedra_II.property.association.set.ordered;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

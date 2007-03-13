@@ -19,12 +19,12 @@ package org.beedra_II.event;
 
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.UNDONE;
-import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
-import static org.ppeew.smallfries.MultiLineToStringUtil.objectToString;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
 import org.beedra_II.Beed;
 import org.beedra_II.edit.Edit;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

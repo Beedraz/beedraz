@@ -19,7 +19,7 @@ package org.beedra_II.property.string;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 @CvsInfo(revision = "$Revision$",

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppeew.collection;
+package org.ppeew.collection_I;
 
 
 import java.util.AbstractSet;
@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.ppeew.smallfries.ComparisonUtil;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**

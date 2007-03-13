@@ -17,14 +17,14 @@ limitations under the License.
 package org.beedra_II.property.collection.set.ordered;
 
 
-import static org.ppeew.collection.CollectionUtil.unmodifiableOrderedSet;
+import static org.ppeew.collection_I.CollectionUtil.unmodifiableOrderedSet;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.collection.AbstractOrderedCollectionEvent;
 import org.beedra_II.property.collection.list.ListBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
-import org.ppeew.collection.LinkedListOrderedSet;
-import org.ppeew.collection.OrderedSet;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.LinkedListOrderedSet;
+import org.ppeew.collection_I.OrderedSet;
 
 
 /**

@@ -19,7 +19,7 @@ package org.beedra_II;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

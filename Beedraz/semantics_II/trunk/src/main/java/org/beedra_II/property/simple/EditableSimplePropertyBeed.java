@@ -17,13 +17,13 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

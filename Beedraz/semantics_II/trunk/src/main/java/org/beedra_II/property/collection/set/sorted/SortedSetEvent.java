@@ -20,7 +20,7 @@ package org.beedra_II.property.collection.set.sorted;
 import java.util.SortedSet;
 
 import org.beedra_II.property.collection.set.SetEvent;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

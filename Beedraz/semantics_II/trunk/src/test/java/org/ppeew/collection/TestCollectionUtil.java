@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.ppeew.collection.CollectionUtil.intersection;
+import static org.ppeew.collection_I.CollectionUtil.intersection;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,9 +23,9 @@ import java.util.TreeSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.collection.CollectionUtil;
-import org.ppeew.collection.LinkedListOrderedSet;
-import org.ppeew.collection.OrderedSet;
+import org.ppeew.collection_I.CollectionUtil;
+import org.ppeew.collection_I.LinkedListOrderedSet;
+import org.ppeew.collection_I.OrderedSet;
 
 
 

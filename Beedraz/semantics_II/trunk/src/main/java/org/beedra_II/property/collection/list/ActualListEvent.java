@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.collection.AbstractOrderedCollectionEvent;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

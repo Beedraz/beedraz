@@ -21,7 +21,7 @@ import java.util.Date;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

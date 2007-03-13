@@ -21,7 +21,7 @@ import org.beedra_II.AbstractBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

@@ -23,8 +23,8 @@ import java.util.Map;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
-import org.ppeew.smallfries.ComparisonUtil;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**

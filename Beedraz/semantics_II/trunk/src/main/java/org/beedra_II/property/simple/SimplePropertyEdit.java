@@ -19,13 +19,13 @@ package org.beedra_II.property.simple;
 
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
-import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.edit.AbstractSimpleEdit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.event.Event;
-import org.ppeew.annotations.vcs.CvsInfo;
-import org.ppeew.smallfries.ComparisonUtil;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**

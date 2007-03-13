@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppeew.collection;
+package org.ppeew.collection_I;
 
 
 import java.io.Serializable;
@@ -27,8 +27,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 
-import org.ppeew.annotations.vcs.CvsInfo;
-import org.ppeew.collection.AbstractUnmodifiableSet;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.AbstractUnmodifiableSet;
 
 
 @CvsInfo(revision = "$Revision$",

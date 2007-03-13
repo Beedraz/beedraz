@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.set;
 
 
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

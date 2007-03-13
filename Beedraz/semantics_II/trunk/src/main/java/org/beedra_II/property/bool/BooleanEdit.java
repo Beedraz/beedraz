@@ -18,7 +18,7 @@ package org.beedra_II.property.bool;
 
 
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

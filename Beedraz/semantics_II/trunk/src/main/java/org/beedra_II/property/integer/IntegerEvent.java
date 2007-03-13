@@ -19,7 +19,7 @@ package org.beedra_II.property.integer;
 
 import org.beedra_II.property.decimal.DoubleEvent;
 import org.beedra_II.property.simple.OldNewEvent;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

@@ -20,7 +20,7 @@ package org.beedra_II.property.string;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.beedra_II.property.simple.OldNewEvent;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

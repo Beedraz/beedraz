@@ -18,7 +18,7 @@ package org.beedra_II.property.decimal;
 
 
 import org.beedra_II.property.PropertyBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

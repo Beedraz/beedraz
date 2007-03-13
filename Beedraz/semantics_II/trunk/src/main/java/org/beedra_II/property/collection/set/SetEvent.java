@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.beedra_II.property.collection.CollectionEvent;
 import org.beedra_II.property.set.SetBeed;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

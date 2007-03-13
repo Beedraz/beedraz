@@ -20,7 +20,7 @@ package org.beedra_II.property.collection;
 import java.util.Collection;
 
 import org.beedra_II.property.simple.OldNewEvent;
-import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**

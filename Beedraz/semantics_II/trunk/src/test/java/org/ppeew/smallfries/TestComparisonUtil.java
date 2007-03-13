@@ -26,7 +26,7 @@ import java.util.GregorianCalendar;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.smallfries.ComparisonUtil;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 public class TestComparisonUtil {

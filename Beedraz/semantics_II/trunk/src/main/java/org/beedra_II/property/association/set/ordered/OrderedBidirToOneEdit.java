@@ -20,7 +20,7 @@ package org.beedra_II.property.association.set.ordered;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import static org.beedra_II.edit.Edit.State.UNDONE;
-import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,8 @@ import java.util.List;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.ppeew.annotations.vcs.CvsInfo;
-import org.ppeew.smallfries.ComparisonUtil;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**

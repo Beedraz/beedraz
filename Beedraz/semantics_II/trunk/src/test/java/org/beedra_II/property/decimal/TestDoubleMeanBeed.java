@@ -28,9 +28,9 @@ import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.set.EditableSetBeed;
-import org.beedra_II.property.set.SetBeed;
-import org.beedra_II.property.set.SetEdit;
+import org.beedra_II.property.collection.set.EditableSetBeed;
+import org.beedra_II.property.collection.set.SetBeed;
+import org.beedra_II.property.collection.set.SetEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,7 +99,7 @@ public class TestDoubleMeanBeed {
     $doubleMeanBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
-    SetBeed<DoubleBeed<DoubleEvent>> source = null;
+    SetBeed<DoubleBeed<DoubleEvent>, ?> source = null;
     $doubleMeanBeed.setSource(source);
     assertEquals($doubleMeanBeed.getSource(), source);
     assertEquals($doubleMeanBeed.getDouble(), null);

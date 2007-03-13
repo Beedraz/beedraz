@@ -4,14 +4,14 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedra.util_I;
+package org.ppeew.smallfries;
 
-import static org.beedra.util_I.MathUtil.castToDouble;
-import static org.beedra.util_I.MathUtil.castToFloat;
-import static org.beedra.util_I.MathUtil.castToLong;
-import static org.beedra.util_I.MathUtil.equalValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.ppeew.smallfries.MathUtil.castToDouble;
+import static org.ppeew.smallfries.MathUtil.castToFloat;
+import static org.ppeew.smallfries.MathUtil.castToLong;
+import static org.ppeew.smallfries.MathUtil.equalValue;
 
 import java.util.LinkedList;
 import java.util.List;

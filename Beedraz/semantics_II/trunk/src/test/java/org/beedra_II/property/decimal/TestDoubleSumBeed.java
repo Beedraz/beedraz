@@ -16,11 +16,11 @@
 
 package org.beedra_II.property.decimal;
 
-import static org.beedra.util_I.MathUtil.equalValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.ppeew.smallfries.MathUtil.equalValue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;

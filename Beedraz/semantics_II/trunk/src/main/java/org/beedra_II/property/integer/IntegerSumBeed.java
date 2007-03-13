@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
-import static org.beedra.util_I.MathUtil.castToDouble;
+import static org.ppeew.smallfries.MathUtil.castToDouble;
 
 import java.util.HashMap;
 import java.util.Map;

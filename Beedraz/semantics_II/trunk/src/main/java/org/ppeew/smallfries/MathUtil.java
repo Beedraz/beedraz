@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra.util_I;
+package org.ppeew.smallfries;
 
 
 import org.toryt.util_I.annotations.vcs.CvsInfo;

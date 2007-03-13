@@ -1,7 +1,7 @@
 package org.beedra_II.property.integer;
 
 
-import static org.beedra.util_I.MathUtil.castToDouble;
+import static org.ppeew.smallfries.MathUtil.castToDouble;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;

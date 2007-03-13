@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.property.integer;
 
 
-import static org.beedra.util_I.MathUtil.castToDouble;
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries.MathUtil.castToDouble;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.decimal.DoubleBeed;

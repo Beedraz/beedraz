@@ -33,9 +33,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface SortedSetBeed<_Element_>
-    extends SetBeed<_Element_, SortedSetEvent<_Element_>, SortedSet<_Element_>> {
+    extends SetBeed<_Element_, SortedSetEvent<_Element_>> {
 
+  /**
+   * @basic
+   */
   Comparator<_Element_> getComparator();
+
+  /**
+   * @basic
+   */
+  SortedSet<_Element_> get();
 
 }
 

@@ -41,7 +41,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Collection<_Element_>>
     extends AbstractEvent
-    implements CollectionEvent<_Element_, _Collection_> {
+    implements CollectionEvent<_Element_> {
 
   /**
    * @pre  source != null;
@@ -62,7 +62,7 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
    *           ? getRemovedElements().equals(removedElements)
    *           : getRemovedElements().isEmpty();
    */
-  protected AbstractCollectionEvent(CollectionBeed<_Element_, ?, _Collection_> source,
+  protected AbstractCollectionEvent(CollectionBeed<_Element_, ?> source,
                                     _Collection_ addedElements,
                                     _Collection_ removedElements,
                                     Edit<?> edit) {

@@ -34,9 +34,12 @@ import org.ppeew.collection_I.OrderedSet;
          tag      = "$Name$")
 public interface OrderedSetBeed<_Element_,
                                 _Event_ extends OrderedSetEvent<_Element_>>
-    extends SetBeed<_Element_, _Event_, OrderedSet<_Element_>> {
+    extends SetBeed<_Element_, _Event_> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  OrderedSet<_Element_> get();
 
 }
 

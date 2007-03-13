@@ -89,7 +89,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class SetEdit<_Element_>
-    extends AbstractSimpleEdit<EditableSetBeed<_Element_>, SetEvent<_Element_, ?>> {
+    extends AbstractSimpleEdit<EditableSetBeed<_Element_>, SetEvent<_Element_>> {
 
   /**
    * @pre  target != null;
@@ -213,7 +213,7 @@ public class SetEdit<_Element_>
   }
 
   @Override
-  protected final void fireEvent(SetEvent<_Element_, ?> event) {
+  protected final void fireEvent(SetEvent<_Element_> event) {
     getTarget().fireEvent(event);
   }
 
@@ -224,7 +224,7 @@ public class SetEdit<_Element_>
    * @post  result.getEdit() == this;
    */
   @Override
-  protected SetEvent<_Element_, ?> createEvent() {
+  protected SetEvent<_Element_> createEvent() {
     return new ActualSetEvent<_Element_>(getTarget(),
                                          getAddedElements(),
                                          getRemovedElements(),

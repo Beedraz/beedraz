@@ -37,9 +37,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-final class ActualSetEvent<_Element_>
+public final class ActualSetEvent<_Element_>
     extends AbstractCollectionEvent<_Element_, Set<_Element_>>
-    implements SetEvent<_Element_, Set<_Element_>> {
+    implements SetEvent<_Element_> {
 
   /**
    * @pre  source != null;
@@ -56,7 +56,7 @@ final class ActualSetEvent<_Element_>
    *           ? getRemovedElements().equals(removedElements)
    *           : getRemovedElements().isEmpty();
    */
-  public ActualSetEvent(SetBeed<_Element_, ?, Set<_Element_>> source,
+  public ActualSetEvent(SetBeed<_Element_, ?> source,
                         Set<_Element_> addedElements,
                         Set<_Element_> removedElements,
                         Edit<?> edit) {

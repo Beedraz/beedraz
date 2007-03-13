@@ -51,10 +51,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SetEvent<_Element_, _Set_ extends Set<_Element_>>
-    extends CollectionEvent<_Element_, _Set_> {
+public interface SetEvent<_Element_> extends CollectionEvent<_Element_> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  Set<_Element_> getAddedElements();
+
+  /**
+   * @basic
+   */
+  Set<_Element_> getRemovedElements();
 
 }
 

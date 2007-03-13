@@ -46,10 +46,18 @@ import org.ppeew.collection_I.OrderedSet;
          state    = "$State$",
          tag      = "$Name$")
 public interface OrderedSetEvent<_Element_>
-    extends SetEvent<_Element_, OrderedSet<_Element_>>,
+    extends SetEvent<_Element_>,
             OrderedCollectionEvent<_Element_, OrderedSet<_Element_>> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  OrderedSet<_Element_> getAddedElements();
+
+  /**
+   * @basic
+   */
+  OrderedSet<_Element_> getRemovedElements();
 
 }
 

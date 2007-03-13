@@ -51,7 +51,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public interface OrderedCollectionEvent<_Element_,
                                         _Collection_ extends Collection<_Element_>>
-    extends CollectionEvent<_Element_, _Collection_>,
+    extends CollectionEvent<_Element_>,
             OldNewEvent<_Collection_> {
 
   // NOP

@@ -32,11 +32,13 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface CollectionBeed<_Element_,
-                                _Event_ extends CollectionEvent<_Element_, ?>,
-                                _Collection_ extends Collection<_Element_>>
-    extends SimplePropertyBeed<_Collection_, _Event_> {
+                                _Event_ extends CollectionEvent<_Element_>>
+    extends SimplePropertyBeed<Collection<_Element_>, _Event_> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  Collection<_Element_> get();
 
 }
 

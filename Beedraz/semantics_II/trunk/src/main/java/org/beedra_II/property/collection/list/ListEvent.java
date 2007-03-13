@@ -48,7 +48,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public interface ListEvent<_Element_>
     extends OrderedCollectionEvent<_Element_, List<_Element_>> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  List<_Element_> getAddedElements();
+
+  /**
+   * @basic
+   */
+  List<_Element_> getRemovedElements();
 
 }
 

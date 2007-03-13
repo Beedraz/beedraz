@@ -48,10 +48,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SortedSetEvent<_Element_>
-    extends SetEvent<_Element_, SortedSet<_Element_>> {
+public interface SortedSetEvent<_Element_> extends SetEvent<_Element_> {
 
-  // NOP
+  /**
+   * @basic
+   */
+  SortedSet<_Element_> getAddedElements();
+
+  /**
+   * @basic
+   */
+  SortedSet<_Element_> getRemovedElements();
 
 }
 

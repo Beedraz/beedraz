@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public abstract class AbstractOrderedCollectionEvent<_Element_,
                                                      _Collection_ extends Collection<_Element_>>
     extends ActualOldNewEvent<_Collection_>
-    implements CollectionEvent<_Element_, _Collection_> {
+    implements CollectionEvent<_Element_> {
 
   /**
    * @pre  source != null;
@@ -49,7 +49,7 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
    * @post getOldValue().equals(oldValue);
    * @post getNewValue().equals(newValue);
    */
-  protected AbstractOrderedCollectionEvent(CollectionBeed<_Element_, ?, _Collection_> source,
+  protected AbstractOrderedCollectionEvent(CollectionBeed<_Element_, ?> source,
                                            _Collection_ oldValue,
                                            _Collection_ newValue,
                                            Edit<?> edit) {

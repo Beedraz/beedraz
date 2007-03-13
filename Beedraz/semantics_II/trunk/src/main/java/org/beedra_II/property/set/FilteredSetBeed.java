@@ -39,9 +39,9 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  *
- * @invar  getFilters() != null;
+ * @invar  getFilter() != null;
  * @invar  get() == {element : getSource().get().contains(element) &&
- *                             getFilter().filter()};
+ *                             getFilter().filter(element)};
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

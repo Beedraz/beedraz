@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.set;
+package org.beedra_II.property.collection.set;
 
 
 import static org.junit.Assert.assertEquals;
@@ -43,6 +43,7 @@ import org.beedra_II.property.integer.IntegerEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.smallfries_I.Filter;
 
 public class TestFilteredSetBeed {
 
@@ -114,7 +115,7 @@ public class TestFilteredSetBeed {
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
-    $event = new SetEvent<WellBeanBeed>($filteredSetBeed, null, null, null);
+    $event = new ActualSetEvent<WellBeanBeed>($filteredSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($wellNull.run);
@@ -204,7 +205,7 @@ public class TestFilteredSetBeed {
     $filteredSetBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
-    SetBeed<WellBeanBeed> source = null;
+    SetBeed<WellBeanBeed, ?> source = null;
     $filteredSetBeed.setSource(source);
     assertEquals($filteredSetBeed.getSource(), source);
     assertTrue($filteredSetBeed.get().isEmpty());
@@ -319,7 +320,7 @@ public class TestFilteredSetBeed {
   @Test
   public void get() throws EditStateException, IllegalEditException {
     // filter the even wells
-    SetBeed<WellBeanBeed> source = createSource();
+    SetBeed<WellBeanBeed, ?> source = createSource();
     $filteredSetBeed.setSource(source);
     Set<WellBeanBeed> result = $filteredSetBeed.get();
     assertEquals(result.size(), 1);

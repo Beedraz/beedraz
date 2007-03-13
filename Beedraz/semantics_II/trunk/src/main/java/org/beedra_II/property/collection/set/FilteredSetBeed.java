@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.set;
+package org.beedra_II.property.collection.set;
 
 
 import java.util.AbstractSet;
@@ -29,16 +29,13 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
+import org.ppeew.smallfries_I.Filter;
 
 
 /**
  * A {@link SetBeed} that returns a filtered subset of a given {@link SetBeed}
  * using a {@link Filter}. Only the elements that meet the filter criterion
  * are in the resulting set.
- *
- * @mudo De bron van een FilterSetBeed definieren we hier als een SetBeed. Dit
- *       kan echter ook een OrderedSetBeed zijn. Dit betekent dat deze beeds in
- *       een hierarchie moeten geplaatst worden.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.
@@ -55,7 +52,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          tag      = "$Name$")
 public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Event>
     extends AbstractPropertyBeed<SetEvent<_Element_>>
-    implements SetBeed<_Element_> {
+    implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
    * @pre   owner != null;
@@ -92,7 +89,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
   /**
    * @basic
    */
-  public final SetBeed<_Element_> getSource() {
+  public final SetBeed<_Element_, ?> getSource() {
     return $source;
   }
 
@@ -107,7 +104,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    *          changes.)
    * @post    The listeners of this beed are notified when the value changes.
    */
-  public final void setSource(SetBeed<_Element_> source) {
+  public final void setSource(SetBeed<_Element_, ?> source) {
     $source = source;
     if (source != null) {
       // register the FilteredSetBeed as listener of the given source
@@ -122,12 +119,12 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     recalculate();
     if (! ComparisonUtil.equalsWithNull(oldValue, $filteredSet)) {
       fireChangeEvent(
-        new SetEvent<_Element_>(
+        new ActualSetEvent<_Element_>(
           FilteredSetBeed.this, $filteredSet, oldValue, null));
     }
   }
 
-  private SetBeed<_Element_> $source;
+  private SetBeed<_Element_, ?> $source;
 
   /*</property>*/
 
@@ -178,7 +175,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
       // notify the listeners if a beed has been added or removed
       if (!validAdded.isEmpty() || !validRemoved.isEmpty()) {
         fireChangeEvent(
-          new SetEvent<_Element_>(
+          new ActualSetEvent<_Element_>(
             FilteredSetBeed.this, validAdded, validRemoved, event.getEdit()));
       }
     }
@@ -204,7 +201,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
           $filteredSet.add(element);
           added.add(element);
           fireChangeEvent(
-              new SetEvent<_Element_>(
+              new ActualSetEvent<_Element_>(
                   FilteredSetBeed.this, added, removed, event.getEdit()));
         }
       }
@@ -214,7 +211,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
           $filteredSet.remove(element);
           removed.add(element);
           fireChangeEvent(
-              new SetEvent<_Element_>(
+              new ActualSetEvent<_Element_>(
                   FilteredSetBeed.this, added, removed, event.getEdit()));
         }
       }
@@ -308,7 +305,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    */
   @Override
   protected SetEvent<_Element_> createInitialEvent() {
-    return new SetEvent<_Element_>(this, get(), null, null);
+    return new ActualSetEvent<_Element_>(this, get(), null, null);
   }
 
 }

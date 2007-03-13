@@ -122,9 +122,9 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
   public final void setSource(SetBeed<_From_> source) {
     $source = source;
     if (source != null) {
-      // register the DoubleMeanBeed as listener of the given SetBeed
+      // register the MappedSetBeed as listener of the given source
       source.addListener($sourceListener);
-      // register the DoubleMeanBeed as listener of all DoubleBeeds in the given SetBeed
+      // register the MappedSetBeed as listener of all beeds in the given source
       for (_From_ beed : source.get()) {
         beed.addListener($beedListener);
       }

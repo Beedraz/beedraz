@@ -14,34 +14,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property;
+package org.ppeew.smallfries_I;
 
 
-import org.beedra_II.BeedMapping;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Selects a {@link PropertyBeed} from a beed owner.</p>
+ * A mapping maps a given element of type _From_ to an
+ * element of type _To_.
  *
- * @author Jan Dockx
+ * @author  Nele Smeets
+ * @author  Peopleware n.v.
+ *
+ * @invar   (forAll _From_ from1; ;
+ *             (forAll _From_ from2; ;)
+ *               from1 != from2 ==> map(from1) != map(from2));
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface PropertyBeedSelector<_Owner_ extends AggregateBeed,
-                                      _PropertyBeed_ extends PropertyBeed<?>>
-    extends BeedMapping<_Owner_, PropagatedEvent, _PropertyBeed_> {
+public interface Mapping<_From_, _To_> {
 
   /**
    * @basic
-   * @pre owner != null;
-   * @result result.getOwner() == owner;
+   * @pre from != null;
    */
-  _PropertyBeed_ map(_Owner_ owner);
+  _To_ map(_From_ from);
 
 }
 

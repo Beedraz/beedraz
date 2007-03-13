@@ -108,7 +108,7 @@ public class TestFilteredSetBeed {
     $filterCriterionFactory = new FilterCriterionFactory<WellBeanBeed>() {
 
         public FilterCriterion<WellBeanBeed> createFilterCriterion(WellBeanBeed element) {
-          return new AbstractFilterCriterion<WellBeanBeed>(element) {
+          return new FilterCriterion<WellBeanBeed>(element) {
 
             /**
              * The cq value should be effective and even.
@@ -255,7 +255,7 @@ public class TestFilteredSetBeed {
       new FilterCriterionFactory<WellBeanBeed>() {
 
         public FilterCriterion<WellBeanBeed> createFilterCriterion(WellBeanBeed element) {
-          return new AbstractFilterCriterion<WellBeanBeed>(element) {
+          return new FilterCriterion<WellBeanBeed>(element) {
 
             public boolean isValid() {
               return getElement().cq.get() != null &&
@@ -290,7 +290,7 @@ public class TestFilteredSetBeed {
     factory = new FilterCriterionFactory<WellBeanBeed>() {
 
       public FilterCriterion<WellBeanBeed> createFilterCriterion(WellBeanBeed element) {
-        return new AbstractFilterCriterion<WellBeanBeed>(element) {
+        return new FilterCriterion<WellBeanBeed>(element) {
 
           public boolean isValid() {
             return getElement().cq.get() == null;

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.set;
+package org.ppeew.smallfries_I;
 
 
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -70,5 +70,6 @@ public abstract class FilterCriterion<_Element_> {
    * @basic
    */
   public abstract boolean isValid();
+
 }
 

@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.decimal;
 
 
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -251,6 +253,18 @@ public class DoubleSumBeed
   @Override
   protected final DoubleEvent createInitialEvent() {
     return new ActualDoubleEvent(this, null, getDouble(), null);
+  }
+
+  @Override
+  protected String otherToStringInformation() {
+    return getDouble() + " (# " + $terms.size() + ")";
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
+    sb.append(indent(level + 1) + "number of terms:" + $terms.size() + "\n");
   }
 
 }

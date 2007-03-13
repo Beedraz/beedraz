@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.collection.set;
 
 
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+
 import java.util.AbstractSet;
 import java.util.Collections;
 import java.util.HashSet;
@@ -264,6 +266,24 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
   @Override
   protected SetEvent<_To_> createInitialEvent() {
     return new ActualSetEvent<_To_>(this, get(), null, null);
+  }
+
+
+  @Override
+  protected String otherToStringInformation() {
+    return "hashCode: " + hashCode() +
+           "; #: " + get().size();
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "elements:\n");
+    Iterator<_To_> iter = get().iterator();
+    while (iter.hasNext()) {
+      _To_ element = iter.next();
+      sb.append(indent(level + 2) + element.toString() + "\n");
+    }
   }
 
 }

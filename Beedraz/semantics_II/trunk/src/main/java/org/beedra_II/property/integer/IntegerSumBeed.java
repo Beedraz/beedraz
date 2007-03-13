@@ -18,6 +18,7 @@ package org.beedra_II.property.integer;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -256,6 +257,19 @@ public class IntegerSumBeed
   @Override
   protected final IntegerEvent createInitialEvent() {
     return new ActualIntegerEvent(this, null, getInteger(), null);
+  }
+
+
+  @Override
+  protected String otherToStringInformation() {
+    return getInteger() + " (# " + $terms.size() + ")";
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "value:" + getInteger() + "\n");
+    sb.append(indent(level + 1) + "number of terms:" + $terms.size() + "\n");
   }
 
 }

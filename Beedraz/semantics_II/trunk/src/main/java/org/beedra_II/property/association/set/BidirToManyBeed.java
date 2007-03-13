@@ -101,6 +101,12 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   }
 
   @Override
+  protected String otherToStringInformation() {
+    return "hashCode: " + hashCode() +
+           "; #: " + get().size();
+  }
+
+  @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "elements:\n");

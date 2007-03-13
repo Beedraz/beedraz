@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.bean;
 
 
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.aggregate.AbstractAggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -32,6 +34,15 @@ public abstract class AbstractBeanBeed
     extends AbstractAggregateBeed
     implements BeanBeed {
 
-  // NOP
+  @Override
+  protected String otherToStringInformation() {
+    return "hashCode: " + hashCode();
+  }
+
+  @Override
+  public void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "hashCode: " + hashCode() + "\n");
+  }
 
 }

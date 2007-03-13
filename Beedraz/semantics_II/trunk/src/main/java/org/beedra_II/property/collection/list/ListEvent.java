@@ -19,20 +19,14 @@ package org.beedra_II.property.collection.list;
 
 import java.util.List;
 
-import org.beedra_II.property.collection.CollectionEvent;
-import org.beedra_II.property.simple.OldNewEvent;
+import org.beedra_II.property.collection.OrderedCollectionEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
  * <p>Event that notifies of changes in a {@link ListBeed}.
  *   The changes are represented by the list before the change {@link #getOldValue()}
- *   and {@link #getNewValue()}. The lists returned by {@link #getAddedElements()}
- *   and {@link #getRemovedElements()} are provided to be compatible with the super
- *   type {@link CollectionEvent}, but do not express the complete change. From these
- *   2 lists, it is impossible to know at which position elements where added or
- *   removed in the source. Still, these 2 delta-lists might be more interesting for
- *   receiving listeners than the old and the new list.</p>
+ *   and {@link #getNewValue()}.</p>
  *
  * @note In contrast to supertypes, the collection type is not generic in this
  *       class, since there are no more subtypes defined in the Java Collection
@@ -46,17 +40,13 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getSource() instanceof ListBeed
- * @invar getOldValue() != null;
- * @invar getNewValue() != null;
- * @invar getAddedElements().equals(getNewValue().removeAll(getOldValue()));
- * @invar getRemovedElements().equals(getOldValue().removeAll(getNewValue()));
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public interface ListEvent<_Element_>
-    extends CollectionEvent<_Element_, List<_Element_>>, OldNewEvent<List<_Element_>> {
+    extends OrderedCollectionEvent<_Element_, List<_Element_>> {
 
   // NOP
 

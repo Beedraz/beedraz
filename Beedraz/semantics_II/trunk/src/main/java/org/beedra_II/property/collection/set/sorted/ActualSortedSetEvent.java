@@ -22,9 +22,9 @@ import static java.util.Collections.unmodifiableSortedSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.beedra.util_I.CollectionUtil;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.collection.AbstractCollectionEvent;
+import org.ppeew.collection.CollectionUtil;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -58,7 +58,7 @@ public final class ActualSortedSetEvent<_Element_>
    *           ? getRemovedElements().equals(removedElements)
    *           : getRemovedElements().isEmpty();
    */
-  public ActualSortedSetEvent(SortedSetBeed<_Element_, ?> source,
+  public ActualSortedSetEvent(SortedSetBeed<_Element_> source,
                               SortedSet<_Element_> addedElements,
                               SortedSet<_Element_> removedElements,
                               Edit<?> edit) {

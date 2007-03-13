@@ -17,30 +17,37 @@ limitations under the License.
 package org.beedra_II.property.collection.set.ordered;
 
 
-import java.util.List;
-import java.util.Set;
-
-import org.beedra_II.property.collection.list.ListEvent;
+import org.beedra_II.property.collection.OrderedCollectionEvent;
 import org.beedra_II.property.collection.set.SetEvent;
-import org.beedra_II.property.set.SetBeed;
+import org.ppeew.collection.OrderedSet;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Event that notifies of changes in a {@link SetBeed}.
+ * <p>Event that notifies of changes in a {@link OrderedSetBeed}.
+ *   The changes are represented by the ordered set before the change ({@link #getOldValue()})
+ *   and after the change ({@link #getNewValue()}).</p>
+ *
+ * @note In contrast to supertypes, the collection type is not generic in this
+ *       class, since there are no more subtypes defined in the Java Collection
+ *       API or our code below {@link OrderedSet}. When this should change, this
+ *       class should be made generic with respect to the collection type too.</p>
+ *
+ * @package
+ * <p>Actual {@link OrderedSetBeed} instances will send instances of
+ *   {@link ActualOrderedSetEvent} as events, but that is hidden for the user.</p>
  *
  * @author Jan Dockx
  *
- * @invar getSource() instanceof CollectionBeed
- * @invar getAddedElements() != null;
- * @invar getRemovedElements() != null;
+ * @invar getSource() instanceof OrderedSetBeed
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface OrderedSetEvent<_Element_, _OrderedSet_ extends Set<_Element_> & List<_Element_>>
-    extends SetEvent<_Element_, _OrderedSet_>, ListEvent<_Element_, _OrderedSet_> {
+public interface OrderedSetEvent<_Element_>
+    extends SetEvent<_Element_, OrderedSet<_Element_>>,
+            OrderedCollectionEvent<_Element_, OrderedSet<_Element_>> {
 
   // NOP
 

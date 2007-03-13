@@ -31,9 +31,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface SortedSetBeed<_Element_,
-                               _Event_ extends SortedSetEvent<_Element_>>
-    extends SetBeed<_Element_, _Event_> {
+public interface SortedSetBeed<_Element_>
+    extends SetBeed<_Element_, SortedSetEvent<_Element_>> {
 
   Comparator<_Element_> getComparator();
 

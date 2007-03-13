@@ -17,59 +17,56 @@ limitations under the License.
 package org.beedra_II.property.collection.list;
 
 
-import java.util.Collections;
 import static java.util.Collections.unmodifiableList;
+
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.collection.AbstractCollectionEvent;
-import org.beedra_II.property.collection.CollectionBeed;
-import org.beedra_II.property.collection.set.SetBeed;
+import org.beedra_II.property.collection.AbstractOrderedCollectionEvent;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**
- * Event that notifies of changes in a {@link CollectionBeed}.
+ * Event that notifies of changes in an actual {@link ListBeed}.
  *
  * @author Jan Dockx
- *
- * @invar getSource() instanceof CollectionBeed
- * @invar getAddedElements() != null;
- * @invar getRemovedElements() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public final class ActualListEvent<_Element_>
-    extends AbstractCollectionEvent<_Element_, List<_Element_>>
-    implements ListEvent<_Element_, List<_Element_>> {
+    extends AbstractOrderedCollectionEvent<_Element_, List<_Element_>>
+    implements ListEvent<_Element_> {
+
+
 
   /**
+   */
+  /**
    * @pre  source != null;
-   * @pre  edit != null;
-   * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre  oldValue != null;
+   * @pre  newValue != null;
+   * @pre  ! oldValue.equals(newValue);;
    *
    * @post getSource() == source;
    * @post getEdit() == edit;
-   * @post getEditState() == edit.getState();
-   * @post addedElements != null
-   *           ? getAddedElements().equals(addedElements)
-   *           : getAddedElements().isEmpty();
-   * @post removedElements != null
-   *           ? getRemovedElements().equals(removedElements)
-   *           : getRemovedElements().isEmpty();
+   * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
+   * @post getOldValue().equals(oldValue);
+   * @post getNewValue().equals(newValue);
    */
-  public ActualListEvent(SetBeed<_Element_, ?> source,
-                        Set<_Element_> addedElements,
-                        Set<_Element_> removedElements,
-                        Edit<?> edit) {
-    super(source,
-          addedElements == null ? Collections.<_Element_>emptyList() : new LinkedList<_Element_>(addedElements),
-          removedElements == null ? Collections.<_Element_>emptyList() : new LinkedList<_Element_>(removedElements),
-          edit);
+  public ActualListEvent(ListBeed<_Element_> source,
+                         List<_Element_> oldValue,
+                         List<_Element_> newValue,
+                         Edit<?> edit) {
+    super(source, oldValue, newValue, edit);
+  }
+
+  @Override
+  protected List<_Element_> copyOf(List<_Element_> c) {
+    return new LinkedList<_Element_>(c);
   }
 
   @Override

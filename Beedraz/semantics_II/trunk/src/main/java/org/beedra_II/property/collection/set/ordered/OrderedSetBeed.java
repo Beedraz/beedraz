@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.collection.set.ordered;
 
 
-import org.beedra_II.property.collection.list.ListBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -33,8 +32,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface OrderedSetBeed<_Element_,
-                                _Event_ extends OrderedSetEvent<_Element_, ?>>
-    extends SetBeed<_Element_, _Event_>, ListBeed<_Element_, _Event_> {
+                                _Event_ extends OrderedSetEvent<_Element_>>
+    extends SetBeed<_Element_, _Event_> {
 
   // NOP
 

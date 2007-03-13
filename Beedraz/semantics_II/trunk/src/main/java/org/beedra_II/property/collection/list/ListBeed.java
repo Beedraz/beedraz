@@ -31,9 +31,8 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface ListBeed<_Element_,
-                          _Event_ extends ListEvent<_Element_, ?>>
-    extends CollectionBeed<_Element_, _Event_> {
+public interface ListBeed<_Element_>
+    extends CollectionBeed<_Element_, ListEvent<_Element_>> {
 
   // NOP
 

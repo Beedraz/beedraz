@@ -33,7 +33,7 @@ import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
@@ -90,20 +90,6 @@ public class TestUnionBeed {
     // NOP
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
   @Before
   public void setUp() throws Exception {
     $owner = new MyBeanBeed();
@@ -129,8 +115,8 @@ public class TestUnionBeed {
     $cqC2 = new Integer(6);
     $cqC3 = new Integer(7);
     $cqC4 = new Integer(8);
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
     $event = new SetEvent<WellBeanBeed>($unionBeed, null, null, null);
     // add the wells to the runs
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
@@ -219,8 +205,8 @@ public class TestUnionBeed {
   private Integer $cqC4;
   private MyUnionBeed $unionBeed;
   private MyBeanBeed $owner;
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
   private SetEvent<WellBeanBeed> $event;
 
   @Test

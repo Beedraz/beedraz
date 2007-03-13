@@ -17,10 +17,10 @@
 package org.beedra_II.property.association.set.ordered;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +31,7 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
-import org.beedra_II.property.association.set.ordered.OrderedBidirToManyBeed;
-import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEdit;
+import org.beedra_II.event.StubListener;
 import org.beedra_II.property.set.ordered.OrderedSetEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -64,20 +62,6 @@ public class TestOrderedBidirToManyBeed {
     // NOP
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
   public class StubOrderedSetEventListener implements Listener<OrderedSetEvent<ManyBeanBeed>> {
 
     public void beedChanged(OrderedSetEvent<ManyBeanBeed> event) {
@@ -104,8 +88,8 @@ public class TestOrderedBidirToManyBeed {
       new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed);
     $orderedBidirToOneEdit.perform();
     $listEvent = new OrderedSetEvent<ManyBeanBeed>($orderedBidirToManyBeed, null, null, $orderedBidirToOneEdit);
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubOrderedSetEventListener();
     $listener4 = new StubOrderedSetEventListener();
   }
@@ -121,8 +105,8 @@ public class TestOrderedBidirToManyBeed {
   private MyOrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $orderedBidirToManyBeed;
   private OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> $orderedBidirToOneEdit;
   private OrderedSetEvent<ManyBeanBeed> $listEvent;
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
   private StubOrderedSetEventListener $listener3;
   private StubOrderedSetEventListener $listener4;
 

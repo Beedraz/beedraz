@@ -26,6 +26,7 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToManyBeed;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEdit;
@@ -60,20 +61,6 @@ public class TestEditableOrderedBidirToOneBeed {
     // NOP
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
   public class StubEditableOrderedBidirToOneBeedListener implements Listener<OrderedSetEvent<Integer>> {
 
     public void beedChanged(OrderedSetEvent<Integer> event) {
@@ -101,8 +88,8 @@ public class TestEditableOrderedBidirToOneBeed {
     $OrderedBidirToOneEdit.perform();
     $OrderedBidirToOneEvent =
       new OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed, null, $OrderedBidirToManyBeed, $OrderedBidirToOneEdit);
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
 //  $listener3 = new StubEditableOrderedBidirToOneBeedListener();
 //  $listener4 = new StubEditableOrderedBidirToOneBeedListener();
   }
@@ -118,8 +105,8 @@ public class TestEditableOrderedBidirToOneBeed {
   private OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $OrderedBidirToManyBeed;
   private OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> $OrderedBidirToOneEdit;
   private OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> $OrderedBidirToOneEvent;
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
 //  private StubEditableOrderedBidirToOneBeedListener $listener3;
 //  private StubEditableOrderedBidirToOneBeedListener $listener4;
 

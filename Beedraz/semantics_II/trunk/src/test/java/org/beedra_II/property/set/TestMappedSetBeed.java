@@ -92,20 +92,6 @@ public class TestMappedSetBeed {
     // NOP
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
   @Before
   public void setUp() throws Exception {
     $owner = new MyBeanBeed();

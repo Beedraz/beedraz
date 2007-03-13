@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNull;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,20 +43,6 @@ public class TestEditableBooleanBeed {
     }
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
   public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
   }
@@ -68,8 +54,8 @@ public class TestEditableBooleanBeed {
     $stringEdit = new BooleanEdit($editableBooleanBeed);
     $stringEdit.perform();
     $event1 = new BooleanEvent($editableBooleanBeed, Boolean.TRUE, Boolean.FALSE, $stringEdit);
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
   }
 
   @After
@@ -81,8 +67,8 @@ public class TestEditableBooleanBeed {
   private MyEditableBooleanBeed $editableBooleanBeed;
   private BooleanEdit $stringEdit;
   private BooleanEvent $event1;
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
 
   @Test
   public void constructor() {

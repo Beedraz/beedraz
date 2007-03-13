@@ -27,6 +27,7 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.event.Listener;
+import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,20 +36,6 @@ public class TestEditableSetBeed {
 
   public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
-  }
-
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
   }
 
   public class StubEditableSetBeedListener implements Listener<SetEvent<Integer>> {
@@ -74,8 +61,8 @@ public class TestEditableSetBeed {
     $setEdit = new SetEdit<Integer>($editableSetBeed);
     $setEdit.perform();
     $event1 = new SetEvent<Integer>($editableSetBeed, $addedElements, $removedElements, $setEdit);
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubEditableSetBeedListener();
     $listener4 = new StubEditableSetBeedListener();
   }
@@ -91,8 +78,8 @@ public class TestEditableSetBeed {
   private Set<Integer> $removedElements;
   private SetEdit<Integer> $setEdit;
   private SetEvent<Integer> $event1;
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
   private StubEditableSetBeedListener $listener3;
   private StubEditableSetBeedListener $listener4;
 

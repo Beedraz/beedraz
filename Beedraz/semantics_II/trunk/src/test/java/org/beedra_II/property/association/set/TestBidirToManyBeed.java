@@ -17,10 +17,10 @@
 package org.beedra_II.property.association.set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -28,9 +28,7 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.association.set.BidirToManyBeed;
-import org.beedra_II.property.association.set.BidirToOneEdit;
-import org.beedra_II.property.association.set.EditableBidirToOneBeed;
+import org.beedra_II.event.StubListener;
 import org.beedra_II.property.set.SetEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -61,20 +59,6 @@ public class TestBidirToManyBeed {
     // NOP
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
-
-    public void beedChanged(PropagatedEvent event) {
-      $event = event;
-    }
-
-    public void reset() {
-      $event = null;
-    }
-
-    public PropagatedEvent $event;
-
-  }
-
   public class StubSetEventListener implements Listener<SetEvent<ManyBeanBeed>> {
 
     public void beedChanged(SetEvent<ManyBeanBeed> event) {
@@ -101,8 +85,8 @@ public class TestBidirToManyBeed {
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
     $bidirToOneEdit.perform();
     $setEvent = new SetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, $bidirToOneEdit);
-    $listener1 = new PropagatedEventListener();
-    $listener2 = new PropagatedEventListener();
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubSetEventListener();
     $listener4 = new StubSetEventListener();
   }
@@ -118,8 +102,8 @@ public class TestBidirToManyBeed {
   private MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed;
   private BidirToOneEdit<OneBeanBeed, ManyBeanBeed> $bidirToOneEdit;
   private SetEvent<ManyBeanBeed> $setEvent;
-  private PropagatedEventListener $listener1;
-  private PropagatedEventListener $listener2;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
   private StubSetEventListener $listener3;
   private StubSetEventListener $listener4;
 

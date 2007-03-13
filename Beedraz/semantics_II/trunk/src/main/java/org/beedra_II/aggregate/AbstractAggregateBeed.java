@@ -22,7 +22,7 @@ import org.beedra_II.Beed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

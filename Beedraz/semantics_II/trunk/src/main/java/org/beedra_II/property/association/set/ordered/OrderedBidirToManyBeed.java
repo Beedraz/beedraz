@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.association.set.ordered;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +28,7 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.set.ordered.OrderedSetBeed;
 import org.beedra_II.property.set.ordered.OrderedSetEvent;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

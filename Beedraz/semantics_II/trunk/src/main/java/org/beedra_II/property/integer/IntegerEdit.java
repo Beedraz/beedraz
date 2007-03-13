@@ -18,7 +18,7 @@ package org.beedra_II.property.integer;
 
 
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

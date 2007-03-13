@@ -17,18 +17,18 @@ limitations under the License.
 package org.beedra_II.edit;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
-import static org.beedra.util_I.MultiLineToStringUtil.objectToString;
 import static org.beedra_II.edit.Edit.State.DEAD;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import static org.beedra_II.edit.Edit.State.UNDONE;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries.MultiLineToStringUtil.objectToString;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.Beed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

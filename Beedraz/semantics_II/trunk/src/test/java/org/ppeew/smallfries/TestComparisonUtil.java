@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra.util_I;
+package org.ppeew.smallfries;
 
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +26,10 @@ import java.util.GregorianCalendar;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
-public class TestComparison {
+public class TestComparisonUtil {
 
   @Before
   public void setUp() throws Exception {
@@ -185,7 +186,7 @@ public class TestComparison {
   }
 
   private <_Value_> void equalsWithNull(_Value_ a, _Value_ b) {
-    boolean result = Comparison.equalsWithNull(a, b);
+    boolean result = ComparisonUtil.equalsWithNull(a, b);
     assertEquals(a == b ? true : result, result);
     assertEquals(a != b && a == null ? false : result, result);
     assertEquals(a != b && b == null ? false : result, result);

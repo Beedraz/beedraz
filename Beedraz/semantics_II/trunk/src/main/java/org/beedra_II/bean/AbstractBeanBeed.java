@@ -18,7 +18,7 @@ package org.beedra_II.bean;
 
 
 import org.beedra_II.aggregate.AbstractAggregateBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.edit;
 
 
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**
@@ -37,7 +37,7 @@ public abstract class EditException extends Exception {
   //-------------------------------------------------------
 
   /**
-   * @post Comparison.equalsWithNull(s, getMessage());
+   * @post ComparisonUtil.equalsWithNull(s, getMessage());
    * @post getCause() == null;
    * @post getEdit() == e;
    */

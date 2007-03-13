@@ -21,7 +21,7 @@ import java.util.Date;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**
@@ -51,7 +51,7 @@ public class EditableDateBeed
    * @post  result != null;
    * @post  result.getSource() == this;
    * @post  result.getOldValue() == null;
-   * @post  Comparison.equalsWithNull(result.getNewValue(), get());
+   * @post  ComparisonUtil.equalsWithNull(result.getNewValue(), get());
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

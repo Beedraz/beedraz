@@ -19,8 +19,8 @@ package org.beedra_II.property.collection.set.ordered;
 
 import org.beedra_II.property.collection.OrderedCollectionEvent;
 import org.beedra_II.property.collection.set.SetEvent;
+import org.ppeew.annotations.vcs.CvsInfo;
 import org.ppeew.collection.OrderedSet;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**

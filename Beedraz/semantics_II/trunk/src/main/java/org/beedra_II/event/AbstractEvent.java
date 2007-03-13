@@ -17,14 +17,14 @@ limitations under the License.
 package org.beedra_II.event;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
-import static org.beedra.util_I.MultiLineToStringUtil.objectToString;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.UNDONE;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries.MultiLineToStringUtil.objectToString;
 
 import org.beedra_II.Beed;
 import org.beedra_II.edit.Edit;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

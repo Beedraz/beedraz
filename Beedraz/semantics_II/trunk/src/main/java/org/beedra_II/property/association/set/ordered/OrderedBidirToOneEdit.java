@@ -17,19 +17,19 @@ limitations under the License.
 package org.beedra_II.property.association.set.ordered;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import static org.beedra_II.edit.Edit.State.UNDONE;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.beedra.util_I.Comparison;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -66,7 +66,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @post Comparison.equalsWithNull(goalValue, getGoalValue());
+   * @post ComparisonUtil.equalsWithNull(goalValue, getGoalValue());
    */
   public final void setGoalPosition(Integer goalPosition) throws EditStateException {
     if (getState() != NOT_YET_PERFORMED) {
@@ -122,8 +122,8 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @post Comparison.equalsWithNull(getInitial(), getTarget().get());
-   * @post Comparison.equalsWithNull(
+   * @post ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(
    *           getInitialPosition(),
    *           getTarget().get() != null
    *             ? getTarget().get().indexOf(getTarget().getOwner()))
@@ -139,18 +139,18 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @return  ! Comparison.equalsWithNull(getInitial(), getGoal()) ||
-   *          ! Comparison.equalsWithNull(getInitialPosition(), getGoalPosition());
+   * @return  ! ComparisonUtil.equalsWithNull(getInitial(), getGoal()) ||
+   *          ! ComparisonUtil.equalsWithNull(getInitialPosition(), getGoalPosition());
    */
   @Override
   public final boolean isChange() {
     return super.isChange() ||
-           ! Comparison.equalsWithNull(getInitialPosition(), getGoalPosition());
+           ! ComparisonUtil.equalsWithNull(getInitialPosition(), getGoalPosition());
   }
 
   /**
-   * @return Comparison.equalsWithNull(getInitial(), getTarget().get()) &&
-   *         Comparison.equalsWithNull(
+   * @return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get()) &&
+   *         ComparisonUtil.equalsWithNull(
    *             getInitialPosition(),
    *             getTarget().get() != null
    *               ? getTarget().get().indexOf(getTarget().getOwner())
@@ -159,7 +159,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   @Override
   protected final boolean isInitialStateCurrent() {
     return super.isInitialStateCurrent() &&
-           Comparison.equalsWithNull(
+           ComparisonUtil.equalsWithNull(
                getInitialPosition(),
                getTarget().get() != null
                  ? getTarget().get().indexOf(getTarget().getOwner())
@@ -167,7 +167,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @post Comparison.equalsWithNull(getGoal(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
    * @post getInitial() != null
    *         ==> !getInitial().get().contains(getTarget().getOwner());
    * @post let
@@ -214,9 +214,9 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
 
 
   /**
-   * @return Comparison.equalsWithNull(getGoal(), getTarget().get()) &&
+   * @return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get()) &&
    *         (  getTarget().get() == null ||
-   *            Comparison.equalsWithNull(
+   *            ComparisonUtil.equalsWithNull(
    *               getGoalPosition() != null
    *                 ? getGoalPosition()
    *                 : getTarget().get().get().size() - 1,
@@ -226,7 +226,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   protected final boolean isGoalStateCurrent() {
     return super.isGoalStateCurrent() &&
            (getTarget().get() == null ||
-            Comparison.equalsWithNull(
+            ComparisonUtil.equalsWithNull(
                 getGoalPosition() != null
                   ? getGoalPosition()
                   : getTarget().get().get().size() - 1,
@@ -234,7 +234,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @post Comparison.equalsWithNull(getInitial(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
    * @post let
    *         new_position = getInitialPosition() == null
    *                          ? getInitial().get().size()

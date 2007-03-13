@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.beedra.util_I.Comparison;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -125,7 +125,7 @@ public class LinkedListOrderedSet<E>
     ListIterator<E> iter = $backingList.listIterator();
     while (iter.hasNext()) {
       E e = iter.next();
-      if (Comparison.equalsWithNull(e, object)) {
+      if (ComparisonUtil.equalsWithNull(e, object)) {
         iter.remove();
       }
     }
@@ -168,7 +168,7 @@ public class LinkedListOrderedSet<E>
     }
     while (iter.hasNext() && (! (added && (removed >= 0)))) {
       E e = iter.next();
-      if (Comparison.equalsWithNull(e, object)) {
+      if (ComparisonUtil.equalsWithNull(e, object)) {
         removed = iter.previousIndex();
         iter.remove();
       }

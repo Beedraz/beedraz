@@ -27,8 +27,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.ppeew.annotations.vcs.CvsInfo;
 import org.ppeew.collection.AbstractUnmodifiableSet;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 @CvsInfo(revision = "$Revision$",

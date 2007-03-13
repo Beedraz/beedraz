@@ -22,11 +22,11 @@ import static org.ppeew.smallfries.MathUtil.castToDouble;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.beedra.util_I.Comparison;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -90,7 +90,7 @@ public class IntegerSumBeed
         recalculate();
       }
       // else: NOP
-      if (! Comparison.equalsWithNull(oldValue, $value)) {
+      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
         fireChangeEvent(new ActualIntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
       }
     }
@@ -199,7 +199,7 @@ public class IntegerSumBeed
           $value -= term.getInteger();
         }
         // else: in all other cases, the value of $value is null, and stays null
-        if (! Comparison.equalsWithNull(oldValue, $value)) {
+        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
           fireChangeEvent(new ActualIntegerEvent(this, oldValue, $value, null));
         }
         /* else, term != null, but $value is null; this means there is another term that is null,

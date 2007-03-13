@@ -17,11 +17,11 @@ limitations under the License.
 package org.beedra_II.aggregate;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
 
 import org.beedra_II.event.AbstractEvent;
 import org.beedra_II.event.Event;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

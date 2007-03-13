@@ -20,7 +20,7 @@ package org.beedra_II.topologicalupdate;
 import java.util.LinkedHashMap;
 
 import org.beedra_II.event.Event;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

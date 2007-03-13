@@ -41,7 +41,7 @@ public class EditStateException extends EditException {
   /**
    * @pre  currentState != null;
    * @pre  expectedState != null;
-   * @post Comparison.equalsWithNull(null, getMessage());
+   * @post ComparisonUtil.equalsWithNull(null, getMessage());
    * @post getCause() == null;
    * @post getEdit() == e;
    * @post getCurrentState() == currentState;

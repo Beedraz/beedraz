@@ -20,7 +20,7 @@ package org.beedra_II.property.collection.list;
 import java.util.List;
 
 import org.beedra_II.property.collection.OrderedCollectionEvent;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

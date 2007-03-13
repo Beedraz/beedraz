@@ -21,7 +21,7 @@ import java.util.Date;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**
@@ -48,8 +48,8 @@ public final class DateEdit
 
   /**
    * @post  result.getSource() == getTarget();
-   * @post  Comparison.equalsWithNull(result.getOldValue(), getOldValue());
-   * @post  Comparison.equalsWithNull(result.getNewValue(), getNewValue());
+   * @post  ComparisonUtil.equalsWithNull(result.getOldValue(), getOldValue());
+   * @post  ComparisonUtil.equalsWithNull(result.getNewValue(), getNewValue());
    * @post  result.getEdit() == this;
    */
   @Override

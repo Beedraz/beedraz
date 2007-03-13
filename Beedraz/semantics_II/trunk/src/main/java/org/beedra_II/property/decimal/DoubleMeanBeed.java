@@ -19,13 +19,13 @@ package org.beedra_II.property.decimal;
 
 import java.util.Set;
 
-import org.beedra.util_I.Comparison;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.set.SetBeed;
 import org.beedra_II.property.set.SetEvent;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -98,7 +98,7 @@ public class DoubleMeanBeed
     // recalculate and notify the listeners if the value has changed
     Double oldValue = $value;
     recalculate();
-    if (! Comparison.equalsWithNull(oldValue, $value)) {
+    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
       fireChangeEvent(new ActualDoubleEvent(DoubleMeanBeed.this, oldValue, $value, null)); // edit = null
     }
   }
@@ -138,7 +138,7 @@ public class DoubleMeanBeed
       // recalculate and notify the listeners if the value has changed
       Double oldValue = $value;
       recalculate();
-      if (! Comparison.equalsWithNull(oldValue, $value)) {
+      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
         fireChangeEvent(new ActualDoubleEvent(DoubleMeanBeed.this, oldValue, $value, event.getEdit()));
       }
     }
@@ -156,7 +156,7 @@ public class DoubleMeanBeed
       // recalculate and notify the listeners if the value has changed
       Double oldValue = $value;
       recalculate();
-      if (! Comparison.equalsWithNull(oldValue, $value)) {
+      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
         fireChangeEvent(new ActualDoubleEvent(DoubleMeanBeed.this, oldValue, $value, event.getEdit()));
       }
     }

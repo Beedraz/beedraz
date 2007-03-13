@@ -19,7 +19,7 @@ package org.beedra_II.edit;
 
 import org.beedra_II.Beed;
 import org.beedra_II.event.Event;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

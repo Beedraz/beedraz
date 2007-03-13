@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.toryt.util_I.annotations.vcs;
+package org.ppeew.annotations.vcs;
 
 
 import java.lang.annotation.Documented;

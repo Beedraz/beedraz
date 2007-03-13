@@ -17,13 +17,13 @@ limitations under the License.
 package org.beedra_II.property.association.set;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.UNDONE;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.simple.SimplePropertyEdit;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**
@@ -55,7 +55,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @post Comparison.equalsWithNull(getGoal(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
    * @post getInitial() != null
    *         ? !getInitial().get().contains(getTarget().getOwner());
    * @post getGoal() != null
@@ -73,7 +73,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @post Comparison.equalsWithNull(getInitial(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
    * @post getInitial() != null
    *         ? getInitial().get().contains(getTarget().getOwner());
    * @post getGoal() != null

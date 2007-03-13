@@ -22,13 +22,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.beedra.util_I.Comparison;
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -132,7 +132,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
     // recalculate and notify the listeners if the value has changed
     Set<_To_> oldValue = $mappedSet;
     recalculate();
-    if (! Comparison.equalsWithNull(oldValue, $mappedSet)) {
+    if (! ComparisonUtil.equalsWithNull(oldValue, $mappedSet)) {
       fireChangeEvent(
         new SetEvent<_To_>(
           MappedSetBeed.this, $mappedSet,  oldValue, null));
@@ -179,7 +179,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
       // recalculate and notify the listeners if the value has changed
       Set<_To_> oldValue = $mappedSet;
       recalculate();
-      if (! Comparison.equalsWithNull(oldValue, $mappedSet)) {
+      if (! ComparisonUtil.equalsWithNull(oldValue, $mappedSet)) {
         fireChangeEvent(
           new SetEvent<_To_>(
             MappedSetBeed.this, addedMapped, removedMapped, event.getEdit()));
@@ -199,7 +199,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
       // recalculate and notify the listeners if the value has changed
       Set<_To_> oldValue = $mappedSet;
       recalculate();
-      if (! Comparison.equalsWithNull(oldValue, $mappedSet)) {
+      if (! ComparisonUtil.equalsWithNull(oldValue, $mappedSet)) {
         fireChangeEvent(new SetEvent<_To_>(MappedSetBeed.this, null, null, event.getEdit()));
       }
     }

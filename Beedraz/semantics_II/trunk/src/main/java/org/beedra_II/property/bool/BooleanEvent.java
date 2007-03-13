@@ -19,7 +19,7 @@ package org.beedra_II.property.bool;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.simple.ActualOldNewEvent;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

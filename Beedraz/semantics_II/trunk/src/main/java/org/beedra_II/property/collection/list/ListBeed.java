@@ -18,7 +18,7 @@ package org.beedra_II.property.collection.list;
 
 
 import org.beedra_II.property.collection.CollectionBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

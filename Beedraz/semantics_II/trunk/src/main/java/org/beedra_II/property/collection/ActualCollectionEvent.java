@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import org.beedra_II.edit.Edit;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

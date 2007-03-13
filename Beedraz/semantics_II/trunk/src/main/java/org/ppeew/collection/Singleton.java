@@ -20,7 +20,7 @@ package org.ppeew.collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 @CvsInfo(revision = "$Revision$",

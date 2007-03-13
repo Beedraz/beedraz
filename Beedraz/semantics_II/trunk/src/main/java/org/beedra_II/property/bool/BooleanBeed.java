@@ -18,7 +18,7 @@ package org.beedra_II.property.bool;
 
 
 import org.beedra_II.property.simple.SimplePropertyBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 @CvsInfo(revision = "$Revision$",

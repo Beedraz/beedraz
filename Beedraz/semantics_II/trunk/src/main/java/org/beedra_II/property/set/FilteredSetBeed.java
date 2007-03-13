@@ -22,13 +22,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.beedra.util_I.Comparison;
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -120,7 +120,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     // recalculate and notify the listeners if the value has changed
     Set<_Element_> oldValue = $filteredSet;
     recalculate();
-    if (! Comparison.equalsWithNull(oldValue, $filteredSet)) {
+    if (! ComparisonUtil.equalsWithNull(oldValue, $filteredSet)) {
       fireChangeEvent(
         new SetEvent<_Element_>(
           FilteredSetBeed.this, $filteredSet, oldValue, null));

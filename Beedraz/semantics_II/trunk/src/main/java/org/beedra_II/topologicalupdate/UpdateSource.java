@@ -19,7 +19,7 @@ package org.beedra_II.topologicalupdate;
 
 import java.util.Set;
 
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
 
 
 /**

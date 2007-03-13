@@ -17,15 +17,15 @@ limitations under the License.
 package org.beedra_II.property.simple;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
+import static org.ppeew.smallfries.MultiLineToStringUtil.indent;
 
-import org.beedra.util_I.Comparison;
 import org.beedra_II.edit.AbstractSimpleEdit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.event.Event;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
+import org.ppeew.annotations.vcs.CvsInfo;
+import org.ppeew.smallfries.ComparisonUtil;
 
 
 /**
@@ -58,7 +58,7 @@ public abstract class SimplePropertyEdit<_Type_,
     return $goal;
   }
   /**
-   * @post Comparison.equalsWithNull(goalValue, getGoalValue());
+   * @post ComparisonUtil.equalsWithNull(goalValue, getGoalValue());
    */
   public final void setGoal(_Type_ goalValue) throws EditStateException {
     if (getState() != NOT_YET_PERFORMED) {
@@ -100,7 +100,7 @@ public abstract class SimplePropertyEdit<_Type_,
   }
 
   /**
-   * @post Comparison.equalsWithNull(getTarget().get(), getInitial());
+   * @post ComparisonUtil.equalsWithNull(getTarget().get(), getInitial());
    */
   @Override
   protected void storeInitialState() {
@@ -109,19 +109,19 @@ public abstract class SimplePropertyEdit<_Type_,
 
   @Override
   public boolean isChange() {
-    return ! Comparison.equalsWithNull(getInitial(), getGoal());
+    return ! ComparisonUtil.equalsWithNull(getInitial(), getGoal());
   }
 
   /**
-   * @return Comparison.equalsWithNull(getInitial(), getTarget().get());
+   * @return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
    */
   @Override
   protected boolean isInitialStateCurrent() {
-    return Comparison.equalsWithNull(getInitial(), getTarget().get());
+    return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
   }
 
   /**
-   * @post Comparison.equalsWithNull(getGoal(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
    */
   @Override
   protected void performance() {
@@ -129,15 +129,15 @@ public abstract class SimplePropertyEdit<_Type_,
   }
 
   /**
-   * @return Comparison.equalsWithNull(getGoal(), getTarget().get());
+   * @return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
    */
   @Override
   protected boolean isGoalStateCurrent() {
-    return Comparison.equalsWithNull(getGoal(), getTarget().get());
+    return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
   }
 
   /**
-   * @post Comparison.equalsWithNull(getInitial(), getTarget().get());
+   * @post ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
    */
   @Override
   protected void unperformance() {

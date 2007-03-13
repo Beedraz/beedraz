@@ -24,8 +24,8 @@ import java.util.TreeSet;
 
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.collection.AbstractCollectionEvent;
+import org.ppeew.annotations.vcs.CvsInfo;
 import org.ppeew.collection.CollectionUtil;
-import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
 /**

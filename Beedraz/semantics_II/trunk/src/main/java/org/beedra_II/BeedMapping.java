@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II;
 
 
-import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.Mapping;
 
@@ -33,8 +32,7 @@ import org.ppeew.smallfries_I.Mapping;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface BeedMapping<_From_ extends Beed<_FromEvent_>,
-                             _FromEvent_ extends Event,
+public interface BeedMapping<_From_ extends Beed<?>,
                              _To_>
     extends Mapping<_From_, _To_> {
 

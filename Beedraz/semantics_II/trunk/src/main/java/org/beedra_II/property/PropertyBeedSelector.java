@@ -19,7 +19,6 @@ package org.beedra_II.property;
 
 import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -34,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public interface PropertyBeedSelector<_Owner_ extends AggregateBeed,
                                       _PropertyBeed_ extends PropertyBeed<?>>
-    extends BeedMapping<_Owner_, PropagatedEvent, _PropertyBeed_> {
+    extends BeedMapping<_Owner_, _PropertyBeed_> {
 
   /**
    * @basic

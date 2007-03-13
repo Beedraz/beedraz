@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -49,7 +50,7 @@ public class TestMappedSetBeed {
 
   public class MyMappedSetBeed extends MappedSetBeed<WellBeanBeed, PropagatedEvent, IntegerBeed> {
 
-    public MyMappedSetBeed(Mapping<WellBeanBeed, IntegerBeed> mapping, AggregateBeed owner) {
+    public MyMappedSetBeed(BeedMapping<WellBeanBeed, IntegerBeed> mapping, AggregateBeed owner) {
       super(mapping, owner);
     }
 
@@ -94,7 +95,7 @@ public class TestMappedSetBeed {
   @Before
   public void setUp() throws Exception {
     $owner = new MyBeanBeed();
-    $mapping = new Mapping<WellBeanBeed, IntegerBeed>() {
+    $mapping = new BeedMapping<WellBeanBeed, IntegerBeed>() {
         public IntegerBeed map(WellBeanBeed from) {
           return from.cq;
         }
@@ -149,7 +150,7 @@ public class TestMappedSetBeed {
   private Integer $cq1;
   private Integer $cq2;
   private Integer $cq3;
-  private Mapping<WellBeanBeed, IntegerBeed> $mapping;
+  private BeedMapping<WellBeanBeed, IntegerBeed> $mapping;
   private MyMappedSetBeed $mappedSetBeed;
   private MyBeanBeed $owner;
   private StubListener<PropagatedEvent> $listener1;
@@ -291,7 +292,7 @@ public class TestMappedSetBeed {
   public void setSource3() throws EditStateException, IllegalEditException {
     // define a new mapping
     // @remark this mapping is only injective for certain source sets!
-    Mapping<WellBeanBeed, Integer> mapping = new Mapping<WellBeanBeed, Integer>() {
+    BeedMapping<WellBeanBeed, Integer> mapping = new BeedMapping<WellBeanBeed, Integer>() {
       public Integer map(WellBeanBeed from) {
         return from.cq.get();
       }

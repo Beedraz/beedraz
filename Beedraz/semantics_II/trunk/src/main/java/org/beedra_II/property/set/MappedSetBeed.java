@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.beedra_II.Beed;
+import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
@@ -34,11 +35,11 @@ import org.ppeew.smallfries_I.ComparisonUtil;
 /**
  * A {@link SetBeed} that mappes the {@link Beed beeds} in
  * a given {@link SetBeed} to a set of other elements using
- * a {@link Mapping}.
+ * a {@link BeedMapping}.
  *
- * @mudo We veronderstellen hier dat een mapping injectief is, dwz dat twee
+ * @mudo We veronderstellen hier dat een BeedMapping injectief is, dwz dat twee
  *       verschillende waarden nooit gemapt worden op hetzelfde beeld
- *       (zie invariant in {@link Mapping}).
+ *       (zie invariant in {@link BeedMapping}).
  *       Indien dit niet het geval is, moeten we immers een MappedCollectionBeed
  *       maken, die dubbels toelaat.
  * @mudo De bron van een MappedSetBeed definieren we hier als een SetBeed. Dit
@@ -51,14 +52,14 @@ import org.ppeew.smallfries_I.ComparisonUtil;
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  *
- * @invar  getMapping() != null;
+ * @invar  getBeedMapping() != null;
  * @invar  get().size() ==
  *           getSource() != null
  *             ? getSource().get().size()
  *             : 0;
  * @invar  (forAll _From_ from;
  *            getSource().contains(from);
- *            get().contains(getMapping().map(from)));
+ *            get().contains(getBeedMapping().map(from)));
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -70,30 +71,30 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
 
   /**
    * @pre   owner != null;
-   * @pre   mapping != null;
+   * @pre   BeedMapping != null;
    * @post  getOwner() == owner;
-   * @post  getMapping() == mapping;
+   * @post  getBeedMapping() == BeedMapping;
    * @post  getSource() == null;
    * @post  get() != null;
    * @post  get().isEmpty();
    */
-  public MappedSetBeed(Mapping<_From_, _To_> mapping, AggregateBeed owner) {
+  public MappedSetBeed(BeedMapping<_From_, _To_> mapping, AggregateBeed owner) {
     super(owner);
     $mapping = mapping;
   }
 
 
-  /*<property name="mapping">*/
+  /*<property name="BeedMapping">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Mapping<_From_, _To_> getMapping() {
+  public final BeedMapping<_From_, _To_> getMapping() {
     return $mapping;
   }
 
-  private Mapping<_From_, _To_> $mapping;
+  private BeedMapping<_From_, _To_> $mapping;
 
   /*</property>*/
 
@@ -111,7 +112,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
   /**
    * @param   source
    * @post    getSource() == source;
-   * @post    get() == the result of mapping the given source
+   * @post    get() == the result of BeedMapping the given source
    * @post    The MappedSetBeed is registered as a listener of the given SetBeed.
    * @post    The MappedSetBeed is registered as a listener of all beeds in
    *          the given source. (The reason is that the MappedSetBeed should be
@@ -157,7 +158,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
      *          of the beeds changes.)
      * @post    The MappedSetBeed is removed as listener of all beeds
      *          that are removed from the source by the given event.
-     * @post    get() == the result of mapping the elements of the given source
+     * @post    get() == the result of BeedMapping the elements of the given source
      * @post    The listeners of this beed are notified when the set changes.
      */
     public void beedChanged(SetEvent<_From_> event) {
@@ -192,7 +193,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
   private final Listener<_FromEvent_> $beedListener = new Listener<_FromEvent_>() {
 
     /**
-     * @post    get() == the result of mapping the elements of the given source
+     * @post    get() == the result of BeedMapping the elements of the given source
      * @post    The listeners of this beed are notified.
      */
     public void beedChanged(_FromEvent_ event) {

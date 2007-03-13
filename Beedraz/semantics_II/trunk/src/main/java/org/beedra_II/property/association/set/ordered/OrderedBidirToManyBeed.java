@@ -19,16 +19,17 @@ package org.beedra_II.property.association.set.ordered;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.set.ordered.OrderedSetBeed;
-import org.beedra_II.property.set.ordered.OrderedSetEvent;
+import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
+import org.beedra_II.property.collection.set.ordered.OrderedSetBeed;
+import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.CollectionUtil;
+import org.ppeew.collection_I.LinkedListOrderedSet;
+import org.ppeew.collection_I.OrderedSet;
 
 
 /**
@@ -50,7 +51,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
                                    _Many_ extends BeanBeed>
     extends AbstractPropertyBeed<OrderedSetEvent<_Many_>>
-    implements OrderedSetBeed<_Many_> {
+    implements OrderedSetBeed<_Many_, OrderedSetEvent<_Many_>> {
 
   public OrderedBidirToManyBeed(_One_ bean) {
     super(bean);
@@ -75,8 +76,8 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
                  position <= get().size()));
   }
 
-  public final List<_Many_> get() {
-    return Collections.unmodifiableList($many);
+  public final OrderedSet<_Many_> get() {
+    return CollectionUtil.unmodifiableOrderedSet($many);
   }
 
   /**
@@ -100,13 +101,13 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
     $many.remove(many);
   }
 
-  void fireChangeEvent(List<_Many_> oldValue,
-                       List<_Many_> newValue,
+  void fireChangeEvent(OrderedSet<_Many_> oldValue,
+                       OrderedSet<_Many_> newValue,
                        OrderedBidirToOneEdit<_One_, _Many_> edit) {
-    fireChangeEvent(new OrderedSetEvent<_Many_>(this, oldValue, newValue, edit));
+    fireChangeEvent(new ActualOrderedSetEvent<_Many_>(this, oldValue, newValue, edit));
   }
 
-  private final List<_Many_> $many = new ArrayList<_Many_>();
+  private final OrderedSet<_Many_> $many = new LinkedListOrderedSet<_Many_>();
 
   /**
    * @post  result != null;
@@ -118,7 +119,7 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
    */
   @Override
   protected final OrderedSetEvent<_Many_> createInitialEvent() {
-    return new OrderedSetEvent<_Many_>(this, null, get(), null);
+    return new ActualOrderedSetEvent<_Many_>(this, null, get(), null);
   }
 
   @Override

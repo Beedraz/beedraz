@@ -14,13 +14,10 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.set.ordered;
+package org.beedra_II.property.collection.set.ordered;
 
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -31,6 +28,8 @@ import org.beedra_II.property.integer.IntegerEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.collection_I.LinkedListOrderedSet;
+import org.ppeew.collection_I.OrderedSet;
 
 public class TestOrderedSetEvent {
 
@@ -60,12 +59,12 @@ public class TestOrderedSetEvent {
   public void constructor() throws EditStateException, IllegalEditException {
     // source
     OneBeanBeed owner = new OneBeanBeed();
-    OrderedSetBeed<ManyBeanBeed> source =
+    OrderedSetBeed<ManyBeanBeed, ?> source =
       new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>(owner);
     // old and new value
-    List<ManyBeanBeed> oldValue = new ArrayList<ManyBeanBeed>();
+    OrderedSet<ManyBeanBeed> oldValue = new LinkedListOrderedSet<ManyBeanBeed>();
     oldValue.add(new ManyBeanBeed());
-    List<ManyBeanBeed> newValue = new ArrayList<ManyBeanBeed>();
+    OrderedSet<ManyBeanBeed> newValue = new LinkedListOrderedSet<ManyBeanBeed>();
     newValue.add(new ManyBeanBeed());
     newValue.add(new ManyBeanBeed());
     // edit
@@ -74,7 +73,7 @@ public class TestOrderedSetEvent {
     edit.perform();
     // test constructor
     OrderedSetEvent<ManyBeanBeed> listEvent =
-      new OrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
+      new ActualOrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
     assertEquals(listEvent.getSource(), source);
     assertEquals(listEvent.getOldValue(), oldValue);
     assertEquals(listEvent.getNewValue(), newValue);
@@ -82,11 +81,11 @@ public class TestOrderedSetEvent {
     assertEquals(listEvent.getEditState(), edit.getState());
     // old and new value
     oldValue = null;
-    newValue = new ArrayList<ManyBeanBeed>();
+    newValue = new LinkedListOrderedSet<ManyBeanBeed>();
     newValue.add(new ManyBeanBeed());
     newValue.add(new ManyBeanBeed());
     // test constructor
-    listEvent = new OrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
+    listEvent = new ActualOrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
     assertEquals(listEvent.getSource(), source);
     assertEquals(listEvent.getOldValue(), null);
     assertEquals(listEvent.getNewValue(), newValue);
@@ -95,7 +94,7 @@ public class TestOrderedSetEvent {
     // edit is null
     edit = null;
     // test constructor
-    listEvent = new OrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
+    listEvent = new ActualOrderedSetEvent<ManyBeanBeed>(source, oldValue, newValue, edit);
     assertEquals(listEvent.getSource(), source);
     assertEquals(listEvent.getOldValue(), null);
     assertEquals(listEvent.getNewValue(), newValue);

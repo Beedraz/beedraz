@@ -39,14 +39,13 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
   /**
    * @pre  source != null;
    * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
-   * @pre  oldValue != null;
    * @pre  newValue != null;
    * @pre  ! oldValue.equals(newValue);;
    *
    * @post getSource() == source;
    * @post getEdit() == edit;
    * @post (edit != null) ? getEditState() == edit.getState() : getEditState() == null;
-   * @post getOldValue().equals(oldValue);
+   * @post ComparisonUtil.equalsWithNull(getOldValue(), oldValue);
    * @post getNewValue().equals(newValue);
    */
   protected AbstractOrderedCollectionEvent(CollectionBeed<_Element_, ?> source,
@@ -54,9 +53,7 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
                                            _Collection_ newValue,
                                            Edit<?> edit) {
     super(source, oldValue, newValue, edit);
-    assert oldValue != null;
     assert newValue != null;
-    assert ! oldValue.equals(newValue);
   }
 
   /**
@@ -68,7 +65,9 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
   public final _Collection_ getAddedElements() {
     if ($addedElements == null) {
       _Collection_ acc = copyOf(getNewValue());
-      acc.removeAll(getOldValue());
+      if (getOldValue() != null) {
+        acc.removeAll(getOldValue());
+      }
       $addedElements = unmodifiable(acc);
     }
     return $addedElements;
@@ -83,7 +82,7 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
    * @result result.equals(getOldValue().removeAll(getNewValue()));
    */
   public final _Collection_ getRemovedElements() {
-    if ($removedElements == null) {
+    if ($removedElements == null && (getOldValue() != null)) {
       _Collection_ acc = copyOf(getOldValue());
       acc.removeAll(getNewValue());
       $removedElements = unmodifiable(acc);

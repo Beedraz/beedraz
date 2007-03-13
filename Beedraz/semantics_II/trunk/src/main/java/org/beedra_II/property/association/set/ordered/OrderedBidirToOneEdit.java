@@ -22,13 +22,12 @@ import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import static org.beedra_II.edit.Edit.State.UNDONE;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.LinkedListOrderedSet;
+import org.ppeew.collection_I.OrderedSet;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
 
@@ -271,18 +270,18 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
     OrderedBidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     Integer newPosition = getNewPosition();
     if (oldToMany != null) {
-      List<_Many_> oldValue = new ArrayList<_Many_>();
+      OrderedSet<_Many_> oldValue = new LinkedListOrderedSet<_Many_>();
       oldValue.addAll(oldToMany.get());
       oldValue.add(oldPosition, getTarget().getOwner());
-      List<_Many_> newValue = new ArrayList<_Many_>();
+      OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
       newValue.addAll(oldToMany.get());
       oldToMany.fireChangeEvent(oldValue, newValue, this);
     }
     if (newToMany != null) {
-      List<_Many_> oldValue = new ArrayList<_Many_>();
+      OrderedSet<_Many_> oldValue = new LinkedListOrderedSet<_Many_>();
       oldValue.addAll(newToMany.get());
       oldValue.remove(newPosition.intValue());
-      List<_Many_> newValue = new ArrayList<_Many_>();
+      OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
       newValue.addAll(newToMany.get());
       newToMany.fireChangeEvent(oldValue, newValue, this);
     }

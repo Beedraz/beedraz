@@ -22,9 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
@@ -32,10 +29,14 @@ import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.set.ordered.OrderedSetEvent;
+import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
+import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.collection_I.CollectionUtil;
+import org.ppeew.collection_I.LinkedListOrderedSet;
+import org.ppeew.collection_I.OrderedSet;
 
 public class TestOrderedBidirToManyBeed {
 
@@ -87,7 +88,10 @@ public class TestOrderedBidirToManyBeed {
     $orderedBidirToOneEdit =
       new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed);
     $orderedBidirToOneEdit.perform();
-    $listEvent = new OrderedSetEvent<ManyBeanBeed>($orderedBidirToManyBeed, null, null, $orderedBidirToOneEdit);
+    OrderedSet<ManyBeanBeed> oldS = CollectionUtil.emptyOrderedSet();
+    OrderedSet<ManyBeanBeed> newS = new LinkedListOrderedSet<ManyBeanBeed>();
+    newS.add($many);
+    $listEvent = new ActualOrderedSetEvent<ManyBeanBeed>($orderedBidirToManyBeed, oldS, newS, $orderedBidirToOneEdit);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubOrderedSetEventListener();
@@ -220,9 +224,9 @@ public class TestOrderedBidirToManyBeed {
     ManyBeanBeed m1 = new ManyBeanBeed();
     ManyBeanBeed m2 = new ManyBeanBeed();
     ManyBeanBeed m3 = new ManyBeanBeed();
-    List<ManyBeanBeed> oldValue = new ArrayList<ManyBeanBeed>();
+    OrderedSet<ManyBeanBeed> oldValue = new LinkedListOrderedSet<ManyBeanBeed>();
     oldValue.add(m1);
-    List<ManyBeanBeed> newValue = new ArrayList<ManyBeanBeed>();
+    OrderedSet<ManyBeanBeed> newValue = new LinkedListOrderedSet<ManyBeanBeed>();
     newValue.add(m2);
     newValue.add(m3);
     OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit1 =

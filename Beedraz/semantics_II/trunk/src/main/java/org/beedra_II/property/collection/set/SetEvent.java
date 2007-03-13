@@ -20,7 +20,6 @@ package org.beedra_II.property.collection.set;
 import java.util.Set;
 
 import org.beedra_II.property.collection.CollectionEvent;
-import org.beedra_II.property.set.SetBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

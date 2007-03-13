@@ -56,7 +56,7 @@ final class ActualSetEvent<_Element_>
    *           ? getRemovedElements().equals(removedElements)
    *           : getRemovedElements().isEmpty();
    */
-  public ActualSetEvent(SetBeed<_Element_, ?> source,
+  public ActualSetEvent(SetBeed<_Element_, ?, Set<_Element_>> source,
                         Set<_Element_> addedElements,
                         Set<_Element_> removedElements,
                         Edit<?> edit) {

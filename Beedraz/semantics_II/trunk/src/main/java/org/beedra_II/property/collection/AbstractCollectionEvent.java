@@ -62,7 +62,7 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
    *           ? getRemovedElements().equals(removedElements)
    *           : getRemovedElements().isEmpty();
    */
-  protected AbstractCollectionEvent(CollectionBeed<_Element_, ?> source,
+  protected AbstractCollectionEvent(CollectionBeed<_Element_, ?, _Collection_> source,
                                     _Collection_ addedElements,
                                     _Collection_ removedElements,
                                     Edit<?> edit) {

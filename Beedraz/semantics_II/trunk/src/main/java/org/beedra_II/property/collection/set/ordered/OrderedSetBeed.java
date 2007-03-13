@@ -19,6 +19,7 @@ package org.beedra_II.property.collection.set.ordered;
 
 import org.beedra_II.property.collection.set.SetBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.OrderedSet;
 
 
 /**
@@ -33,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public interface OrderedSetBeed<_Element_,
                                 _Event_ extends OrderedSetEvent<_Element_>>
-    extends SetBeed<_Element_, _Event_> {
+    extends SetBeed<_Element_, _Event_, OrderedSet<_Element_>> {
 
   // NOP
 

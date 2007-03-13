@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.collection.set;
 
 
+import java.util.Set;
+
 import org.beedra_II.property.collection.CollectionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -30,8 +32,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface SetBeed<_Element_,
-                         _Event_ extends SetEvent<_Element_, ?>>
-    extends CollectionBeed<_Element_, _Event_> {
+                         _Event_ extends SetEvent<_Element_, ?>,
+                         _Set_ extends Set<_Element_>>
+    extends CollectionBeed<_Element_, _Event_, _Set_> {
 
   // NOP
 

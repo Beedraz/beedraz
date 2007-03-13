@@ -55,7 +55,7 @@ final class ActualCollectionEvent<_Element_>
    *           ? getRemovedElements().equals(removedElements)
    *           : getRemovedElements().isEmpty();
    */
-  public ActualCollectionEvent(CollectionBeed<_Element_, ?> source,
+  public ActualCollectionEvent(CollectionBeed<_Element_, ?, Collection<_Element_>> source,
                                Collection<_Element_> addedElements,
                                Collection<_Element_> removedElements,
                                Edit<?> edit) {

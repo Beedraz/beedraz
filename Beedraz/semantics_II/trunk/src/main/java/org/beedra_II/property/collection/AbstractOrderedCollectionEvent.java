@@ -49,7 +49,7 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
    * @post getOldValue().equals(oldValue);
    * @post getNewValue().equals(newValue);
    */
-  protected AbstractOrderedCollectionEvent(CollectionBeed<_Element_, ?> source,
+  protected AbstractOrderedCollectionEvent(CollectionBeed<_Element_, ?, _Collection_> source,
                                            _Collection_ oldValue,
                                            _Collection_ newValue,
                                            Edit<?> edit) {

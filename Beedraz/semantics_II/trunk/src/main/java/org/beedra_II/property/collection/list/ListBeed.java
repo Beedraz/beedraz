@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.collection.list;
 
 
+import java.util.List;
+
 import org.beedra_II.property.collection.CollectionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -32,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface ListBeed<_Element_>
-    extends CollectionBeed<_Element_, ListEvent<_Element_>> {
+    extends CollectionBeed<_Element_, ListEvent<_Element_>, List<_Element_>> {
 
   // NOP
 

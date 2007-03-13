@@ -117,6 +117,7 @@ public class TestUnionBeed {
     $cqC4 = new Integer(8);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
+    $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
     $event = new SetEvent<WellBeanBeed>($unionBeed, null, null, null);
     // add the wells to the runs
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
@@ -207,11 +208,14 @@ public class TestUnionBeed {
   private MyBeanBeed $owner;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
+  private StubListener<SetEvent<WellBeanBeed>> $listener3;
   private SetEvent<WellBeanBeed> $event;
 
   @Test
   public void constructor() {
     assertEquals($unionBeed.getOwner(), $owner);
+    assertTrue($unionBeed.getSources().isEmpty());
+    assertTrue($unionBeed.get().isEmpty());
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);
@@ -228,28 +232,99 @@ public class TestUnionBeed {
   }
 
   @Test
-  public void addSource() {
+  public void addSource1() {
     assertEquals($unionBeed.getSources().size(), 0);
+    assertEquals($unionBeed.get().size(), 0);
     $unionBeed.addSource($runA.wells);
     assertEquals($unionBeed.getSources().size(), 1);
     assertTrue($unionBeed.getSources().contains($runA.wells));
+    assertEquals($unionBeed.get().size(), 3);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
     $unionBeed.addSource($runB.wells);
     assertEquals($unionBeed.getSources().size(), 2);
     assertTrue($unionBeed.getSources().contains($runA.wells));
     assertTrue($unionBeed.getSources().contains($runB.wells));
+    assertEquals($unionBeed.get().size(), 5);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
     $unionBeed.addSource($runA.wells); // add the same again
     assertEquals($unionBeed.getSources().size(), 2);
     assertTrue($unionBeed.getSources().contains($runA.wells));
     assertTrue($unionBeed.getSources().contains($runB.wells));
+    assertEquals($unionBeed.get().size(), 5);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
     $unionBeed.addSource($runC.wells);
     assertEquals($unionBeed.getSources().size(), 3);
     assertTrue($unionBeed.getSources().contains($runA.wells));
     assertTrue($unionBeed.getSources().contains($runB.wells));
     assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 9);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+  }
+
+  /**
+   * The union beed should be a listener of each source
+   * @throws IllegalEditException
+   * @throws EditStateException
+   *
+   */
+  @Test
+  public void addSource2() throws EditStateException, IllegalEditException {
+    assertEquals($unionBeed.getSources().size(), 0);
+    assertEquals($unionBeed.get().size(), 0);
+    $unionBeed.addSource($runA.wells);
+    assertEquals($unionBeed.getSources().size(), 1);
+    assertTrue($unionBeed.getSources().contains($runA.wells));
+    assertEquals($unionBeed.get().size(), 3);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    // add listener to the union beed
+    $unionBeed.addListener($listener3);
+    assertNull($listener3.$event);
+    // change the source
+    WellBeanBeed well = new WellBeanBeed();
+    BidirToOneEdit<RunBeanBeed, WellBeanBeed> runEdit =
+      new BidirToOneEdit<RunBeanBeed, WellBeanBeed>(well.run);
+    runEdit.setGoal($runA.wells);
+    runEdit.perform();
+    // the listener should be notified
+    Set<WellBeanBeed> added = new HashSet<WellBeanBeed>();
+    added.add(well);
+    Set<WellBeanBeed> removed = new HashSet<WellBeanBeed>();
+    assertNotNull($listener3.$event);
+    assertEquals($listener3.$event.getSource(), $unionBeed);
+    assertEquals($listener3.$event.getAddedElements(), added);
+    assertEquals($listener3.$event.getRemovedElements(), removed);
+    assertEquals($listener3.$event.getEdit(), runEdit);
+    assertEquals($unionBeed.getSources().size(), 1);
+    assertTrue($unionBeed.getSources().contains($runA.wells));
+    assertEquals($unionBeed.get().size(), 4);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    assertTrue($unionBeed.get().contains(well));
   }
 
   @Test
-  public void removeSource() {
+  public void removeSource1() {
     $unionBeed.addSource($runA.wells);
     $unionBeed.addSource($runB.wells);
     $unionBeed.addSource($runC.wells);
@@ -257,19 +332,132 @@ public class TestUnionBeed {
     assertTrue($unionBeed.getSources().contains($runA.wells));
     assertTrue($unionBeed.getSources().contains($runB.wells));
     assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 9);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
     $unionBeed.removeSource($runA.wells);
     assertEquals($unionBeed.getSources().size(), 2);
     assertTrue($unionBeed.getSources().contains($runB.wells));
     assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 6);
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
     $unionBeed.removeSource($runB.wells);
     assertEquals($unionBeed.getSources().size(), 1);
     assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 4);
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
     $unionBeed.removeSource($runA.wells); // remove source that is not in getSources
     assertEquals($unionBeed.getSources().size(), 1);
     assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 4);
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
     $unionBeed.removeSource($runC.wells);
     assertEquals($unionBeed.getSources().size(), 0);
+    assertEquals($unionBeed.get().size(), 0);
   }
+
+  /**
+   * The union beed should be removed as listener.
+   * @throws IllegalEditException
+   * @throws EditStateException
+   */
+  @Test
+  public void removeSource2() throws EditStateException, IllegalEditException {
+    $unionBeed.addSource($runA.wells);
+    $unionBeed.addSource($runB.wells);
+    $unionBeed.addSource($runC.wells);
+    assertEquals($unionBeed.getSources().size(), 3);
+    assertTrue($unionBeed.getSources().contains($runA.wells));
+    assertTrue($unionBeed.getSources().contains($runB.wells));
+    assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 9);
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    assertTrue($unionBeed.get().contains($wellA3));
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    $unionBeed.removeSource($runA.wells);
+    assertEquals($unionBeed.getSources().size(), 2);
+    assertTrue($unionBeed.getSources().contains($runB.wells));
+    assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 6);
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    // add a listener to the union beed
+    $unionBeed.addListener($listener3);
+    assertNull($listener3.$event);
+    // change source A
+    WellBeanBeed well = new WellBeanBeed();
+    BidirToOneEdit<RunBeanBeed, WellBeanBeed> runEdit =
+      new BidirToOneEdit<RunBeanBeed, WellBeanBeed>(well.run);
+    runEdit.setGoal($runA.wells);
+    runEdit.perform();
+    // the listener should not be notified
+    assertNull($listener3.$event);
+    assertEquals($unionBeed.getSources().size(), 2);
+    assertTrue($unionBeed.getSources().contains($runB.wells));
+    assertTrue($unionBeed.getSources().contains($runC.wells));
+    assertEquals($unionBeed.get().size(), 6);
+    assertTrue($unionBeed.get().contains($wellB1));
+    assertTrue($unionBeed.get().contains($wellB2));
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+  }
+
+  @Test
+  public void contains() {
+    Set<SetBeed<WellBeanBeed>> sources = new HashSet<SetBeed<WellBeanBeed>>();
+    assertFalse($unionBeed.contains(sources, $wellA1));
+    assertFalse($unionBeed.contains(sources, $wellB1));
+    assertFalse($unionBeed.contains(sources, $wellC1));
+    sources.add($runA.wells);
+    assertTrue($unionBeed.contains(sources, $wellA1));
+    assertTrue($unionBeed.contains(sources, $wellA2));
+    assertTrue($unionBeed.contains(sources, $wellA3));
+    assertFalse($unionBeed.contains(sources, $wellB1));
+    assertFalse($unionBeed.contains(sources, $wellC1));
+    sources.add($runB.wells);
+    assertTrue($unionBeed.contains(sources, $wellA1));
+    assertTrue($unionBeed.contains(sources, $wellA2));
+    assertTrue($unionBeed.contains(sources, $wellA3));
+    assertTrue($unionBeed.contains(sources, $wellB1));
+    assertTrue($unionBeed.contains(sources, $wellB2));
+    assertFalse($unionBeed.contains(sources, $wellC1));
+    sources.remove($runA.wells);
+    assertFalse($unionBeed.contains(sources, $wellA1));
+    assertTrue($unionBeed.contains(sources, $wellB1));
+    assertTrue($unionBeed.contains(sources, $wellB2));
+    assertFalse($unionBeed.contains(sources, $wellC1));
+  }
+
 
   /**
    * All sets are disjunct.
@@ -373,6 +561,148 @@ public class TestUnionBeed {
     assertEquals(initialEvent.getAddedElements(), $unionBeed.get());
     assertEquals(initialEvent.getRemovedElements(), new HashSet<WellBeanBeed>());
     assertEquals(initialEvent.getEdit(), null);
+  }
+
+  @Test
+  public void testSetBeedListener() throws EditStateException, IllegalEditException {
+    // create two set beeds whose sets overlap
+    EditableSetBeed<WellBeanBeed> setBeed1 = new EditableSetBeed<WellBeanBeed>($owner);
+    SetEdit<WellBeanBeed> setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToAdd($wellC1);
+    setEdit1.addElementToAdd($wellC2);
+    setEdit1.addElementToAdd($wellC3);
+    setEdit1.perform();
+    EditableSetBeed<WellBeanBeed> setBeed2 = new EditableSetBeed<WellBeanBeed>($owner);
+    SetEdit<WellBeanBeed> setEdit2 = new SetEdit<WellBeanBeed>(setBeed2);
+    setEdit2.addElementToAdd($wellC3);
+    setEdit2.addElementToAdd($wellC4);
+    setEdit2.perform();
+    // add the sources to the union beed
+    $unionBeed.addSource(setBeed1);
+    $unionBeed.addSource(setBeed2);
+    assertEquals($unionBeed.get().size(), 4);
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    // add a listener to the union beed
+    $unionBeed.addListener($listener3);
+    assertNull($listener3.$event);
+    // add a beed to setBeed1 that is not in the union
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToAdd($wellA1);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    Set<WellBeanBeed> added = new HashSet<WellBeanBeed>();
+    added.add($wellA1);
+    Set<WellBeanBeed> removed = new HashSet<WellBeanBeed>();
+    assertNotNull($listener3.$event);
+    assertEquals($listener3.$event.getSource(), $unionBeed);
+    assertEquals($listener3.$event.getAddedElements(), added);
+    assertEquals($listener3.$event.getRemovedElements(), removed);
+    assertEquals($listener3.$event.getEdit(), setEdit1);
+    assertEquals($unionBeed.get().size(), 5);
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    assertTrue($unionBeed.get().contains($wellA1));
+    // add a beed to setBeed1 that is already in the union
+    $listener3.reset();
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToAdd($wellC4);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    assertNull($listener3.$event);
+    assertEquals($unionBeed.get().size(), 5);
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    assertTrue($unionBeed.get().contains($wellA1));
+    // add a beed to setBeed1 that is already in the union and another one
+    // that is not in the union
+    $listener3.reset();
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToAdd($wellA2);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    added = new HashSet<WellBeanBeed>();
+    added.add($wellA2);
+    removed = new HashSet<WellBeanBeed>();
+    assertNotNull($listener3.$event);
+    assertEquals($listener3.$event.getSource(), $unionBeed);
+    assertEquals($listener3.$event.getAddedElements(), added);
+    assertEquals($listener3.$event.getRemovedElements(), removed);
+    assertEquals($listener3.$event.getEdit(), setEdit1);
+    assertEquals($unionBeed.get().size(), 6);
+    assertTrue($unionBeed.get().contains($wellC1));
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    // add a beed to setBeed1 that is already in that beed
+    $listener3.reset();
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToAdd($wellC1);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    assertNull($listener3.$event);
+    // remove a beed from setBeed1 that is not in the other source
+    $listener3.reset();
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToRemove($wellC1);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    added = new HashSet<WellBeanBeed>();
+    removed = new HashSet<WellBeanBeed>();
+    removed.add($wellC1);
+    assertNotNull($listener3.$event);
+    assertEquals($listener3.$event.getSource(), $unionBeed);
+    assertEquals($listener3.$event.getAddedElements(), added);
+    assertEquals($listener3.$event.getRemovedElements(), removed);
+    assertEquals($listener3.$event.getEdit(), setEdit1);
+    assertEquals($unionBeed.get().size(), 5);
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    // remove a beed from setBeed1 that is also in the other source
+    $listener3.reset();
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToRemove($wellC3);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    assertNull($listener3.$event);
+    assertEquals($unionBeed.get().size(), 5);
+    assertTrue($unionBeed.get().contains($wellC2));
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
+    // remove a beed from setBeed1 that is also in the other source
+    // and remove a beed that is not
+    $listener3.reset();
+    setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
+    setEdit1.addElementToRemove($wellC3);
+    setEdit1.addElementToRemove($wellC2);
+    setEdit1.perform();
+    // check the listener and the value of the union beed
+    added = new HashSet<WellBeanBeed>();
+    removed = new HashSet<WellBeanBeed>();
+    removed.add($wellC2);
+    assertNotNull($listener3.$event);
+    assertEquals($listener3.$event.getSource(), $unionBeed);
+    assertEquals($listener3.$event.getAddedElements(), added);
+    assertEquals($listener3.$event.getRemovedElements(), removed);
+    assertEquals($listener3.$event.getEdit(), setEdit1);
+    assertEquals($unionBeed.get().size(), 4);
+    assertTrue($unionBeed.get().contains($wellC3));
+    assertTrue($unionBeed.get().contains($wellC4));
+    assertTrue($unionBeed.get().contains($wellA1));
+    assertTrue($unionBeed.get().contains($wellA2));
   }
 
   @Test

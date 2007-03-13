@@ -47,7 +47,7 @@ limitations under the License.
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <url>http://cvs.peopleware.be/projects/JavaLibraries/${pom.artifactId}/${pom.version}/</url>
+  <url>http://cvs.peopleware.be/projects/JavaLibraries/${beedra.bareArtifactName}/</url>
 
   <version>1.0.0-SNAPSHOT</version>
 
@@ -67,7 +67,7 @@ limitations under the License.
     </repository>
     <site>
        <id>ppw-libraries-site</id>
-      <url>scpexe://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/${pom.artifactId}/${pom.version}</url>
+      <url>scpexe://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/${beedra.bareArtifactName}/${beedra.markVersion}/${pom.version}</url>
     </site>
   </distributionManagement>
 
@@ -176,6 +176,8 @@ limitations under the License.
           <tags>
             <tag>MUDO</tag>
             <tag>@mudo</tag>
+            <tag>NIY</tag>
+            <tag>@niy</tag>
             <tag>XXX</tag>
             <tag>TODO</tag>
             <tag>@todo</tag>

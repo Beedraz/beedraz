@@ -193,7 +193,8 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
      * @post    The listeners of this beed are notified.
      */
     public void beedChanged(_Event_ event) {
-      _Element_ element = (_Element_) event.getSource();
+      @SuppressWarnings("unchecked")
+      _Element_ element = (_Element_)event.getSource(); // MUDO can we proof that this cast is save?
       // check whether the validity of the beed has changed
       Set<_Element_> added = new HashSet<_Element_>();
       Set<_Element_> removed = new HashSet<_Element_>();

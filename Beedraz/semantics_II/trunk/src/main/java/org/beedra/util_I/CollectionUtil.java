@@ -18,14 +18,18 @@ package org.beedra.util_I;
 
 
 import java.io.Serializable;
-import java.util.AbstractSet;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.beedra.util_I.collection.AbstractUnmodifiableSet;
+import org.beedra.util_I.collection.OrderedSet;
+import org.beedra.util_I.collection.UnmodifiableOrderedSet;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 
@@ -49,37 +53,21 @@ public abstract class CollectionUtil {
     return intersection;
   }
 
-
-  /**
-   * Raw type empty sorted set. Use {@link #emptySortedSet()} for a generic, typed
-   * equivalent.
-   */
-  @SuppressWarnings("unchecked")
-  public final static SortedSet EMPTY_SORTED_SET = new EmptySortedSet();
-
-  @SuppressWarnings("unchecked")
-  public static final <T> SortedSet<T> emptySortedSet() {
-    return EMPTY_SORTED_SET;
-  }
-
   /**
    * Based on java.util.Collections.EmptySet.
    */
-  private static class EmptySortedSet
-      extends AbstractSet<Object>
-      implements Serializable, SortedSet<Object> {
+  private static class EmptySet
+      extends AbstractUnmodifiableSet<Object>
+      implements Serializable, Set<Object> {
 
     @Override
     public final Iterator<Object> iterator() {
-      return new Iterator<Object>() {
+      return new AbstractUnmodifiableIterator() {
         public boolean hasNext() {
           return false;
         }
         public Object next() {
           throw new NoSuchElementException();
-        }
-        public void remove() {
-          throw new UnsupportedOperationException();
         }
       };
     }
@@ -90,9 +78,27 @@ public abstract class CollectionUtil {
     }
 
     @Override
-    public boolean contains(Object obj) {
+    public final boolean contains(Object obj) {
       return false;
     }
+
+  }
+
+  /**
+   * Raw type empty sorted set. Use {@link #emptySortedSet()} for a generic, typed
+   * equivalent.
+   */
+  @SuppressWarnings("unchecked")
+  public final static SortedSet EMPTY_SORTED_SET = new EmptySortedSet();
+
+  @SuppressWarnings("unchecked")
+  public static <T> SortedSet<T> emptySortedSet() {
+    return EMPTY_SORTED_SET;
+  }
+
+  private static class EmptySortedSet
+      extends EmptySet
+      implements Serializable, SortedSet<Object> {
 
     // Preserves singleton property
     private Object readResolve() {
@@ -126,6 +132,59 @@ public abstract class CollectionUtil {
       return EMPTY_SORTED_SET;
     }
 
+  }
+
+  /**
+   * Raw type empty ordered set. Use {@link #emptyOrderedSet()} for a generic, typed
+   * equivalent.
+   */
+  @SuppressWarnings("unchecked")
+  public final static OrderedSet EMPTY_ORDERED_SET = new EmptyOrderedSet();
+
+  @SuppressWarnings("unchecked")
+  public static <T> OrderedSet<T> emptyOrderedSet() {
+    return EMPTY_ORDERED_SET;
+  }
+
+  /**
+   * Based on java.util.Collections.EmptySet.
+   */
+  private static class EmptyOrderedSet
+      extends EmptySet
+      implements Serializable, OrderedSet<Object> {
+
+    // Preserves singleton property
+    private Object readResolve() {
+      return EMPTY_SORTED_SET;
+    }
+
+    public boolean add(int index, Object object) throws UnsupportedOperationException {
+      throw new UnsupportedOperationException();
+    }
+
+    public List<? extends Object> asList() {
+      return Collections.emptyList();
+    }
+
+    public Object get(int index) throws IndexOutOfBoundsException {
+      throw new IndexOutOfBoundsException();
+    }
+
+    public int indexOf(Object object) {
+      return -1;
+    }
+
+    public Object remove(int index) throws UnsupportedOperationException {
+      throw new UnsupportedOperationException();
+    }
+
+  }
+
+  public static <T> OrderedSet<T> unmodifiableOrderedSet(OrderedSet<T> ss) throws NullPointerException {
+    if (ss == null) {
+      throw new NullPointerException();
+    }
+    return new UnmodifiableOrderedSet<T>(ss);
   }
 
 }

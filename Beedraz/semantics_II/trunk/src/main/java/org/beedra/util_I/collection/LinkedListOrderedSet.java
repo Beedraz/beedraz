@@ -18,6 +18,7 @@ package org.beedra.util_I.collection;
 
 
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,10 +37,32 @@ public class LinkedListOrderedSet<E>
     extends AbstractSet<E>
     implements OrderedSet<E> {
 
+  public LinkedListOrderedSet() {
+    $backingList = new LinkedList<E>();
+  }
+
+  public LinkedListOrderedSet(Collection<? extends E> coll) {
+    if ((coll != null) && (coll instanceof LinkedListOrderedSet)) {
+      LinkedListOrderedSet<E> argL = (LinkedListOrderedSet<E>)coll;
+      LinkedList<E> argBl = argL.$backingList;
+      @SuppressWarnings("unchecked")
+      LinkedList<E> l = (LinkedList<E>)argBl.clone();
+      $backingList = l;
+    }
+    else {
+      $backingList = new LinkedList<E>();
+      if (coll != null) {
+        for (E e: coll) {
+          add(e);
+        }
+      }
+    }
+  }
+
   /**
    * @invar $backingList != null;
    */
-  private final List<E> $backingList = new LinkedList<E>();
+  private final LinkedList<E> $backingList;
 
   /**
    * @basic
@@ -63,7 +86,7 @@ public class LinkedListOrderedSet<E>
    * @result result >= 0 ?? get(result).equals(object);
    * @result result == -1 ?? ! contains(object);
    */
-  public final int indexOf(E object) {
+  public final int indexOf(Object object) {
     return $backingList.indexOf(object);
   }
 

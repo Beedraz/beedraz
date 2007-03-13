@@ -20,6 +20,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.beedra.util_I.collection.LinkedListOrderedSet;
+import org.beedra.util_I.collection.OrderedSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +60,12 @@ public class TestCollectionUtil {
     $s2.add("popo");
     $e1 = Collections.emptySet();
     $e2 = Collections.emptySet();
+    $os = new LinkedListOrderedSet<String>();
+    $os.add("kaka");
+    $os.add("keke");
+    $os.add("kiki");
+    $os.add("koko");
+    $os.add("kuku");
   }
 
   @After
@@ -66,12 +74,14 @@ public class TestCollectionUtil {
     $s2 = null;
     $e1 = null;
     $e2 = null;
+    $os = null;
   }
 
   private Set<String> $s1;
   private Set<String> $s2;
   private Set<String> $e1;
   private Set<String> $e2;
+  private OrderedSet<String> $os;
 
   @Test
   public void testIntersection1() {
@@ -137,6 +147,129 @@ public class TestCollectionUtil {
     assertEquals(ssstr1, ssstr1.headSet("dada"));
     assertEquals(ssstr1, ssstr1.tailSet("dodo"));
     assertEquals(ssstr1, ssstr1.subSet("aaaa", "zzzz"));
+  }
+
+  @Test
+  public void testEmptyOrderedSet() {
+    OrderedSet<String> osstr1 = CollectionUtil.emptyOrderedSet();
+    OrderedSet<String> osstr2 = CollectionUtil.emptyOrderedSet();
+    assertTrue(osstr1 == osstr2);
+    assertTrue(osstr1.isEmpty());
+    assertEquals(0, osstr1.size());
+    assertTrue(! osstr1.contains("DODO"));
+    assertEquals(-1, osstr1.indexOf("JOS"));
+    assertEquals(-1, osstr1.indexOf(null));
+    try {
+      osstr1.add(5, "TRIING");
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr1.get(0);
+      fail();
+    }
+    catch (IndexOutOfBoundsException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr1.remove(0);
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    assertEquals(Collections.emptyList(), osstr1.asList());
+  }
+
+  @Test
+  public void testUnmodifiableOrderedSet1() {
+    OrderedSet<String> osstr = CollectionUtil.unmodifiableOrderedSet($os);
+    assertNotNull(osstr);
+    assertEquals($os, osstr);
+    unmodifiable(osstr);
+  }
+
+  @Test
+  public void testUnmodifiableOrderedSet2() {
+    OrderedSet<String> osstr = CollectionUtil.unmodifiableOrderedSet(
+          CollectionUtil.<String>emptyOrderedSet());
+    assertNotNull(osstr);
+    assertTrue(osstr.isEmpty());
+    unmodifiable(osstr);
+  }
+
+  private void unmodifiable(OrderedSet<String> osstr) {
+    try {
+      osstr.add("TRIING");
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr.add(5, "TRIING");
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr.remove("TRIING");
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr.remove(5);
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr.addAll($e1);
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
+    try {
+      osstr.removeAll($e1);
+      fail();
+    }
+    catch (UnsupportedOperationException nseExc) {
+      // we need to get here
+    }
+    catch (Throwable t) {
+      fail();
+    }
   }
 
 }

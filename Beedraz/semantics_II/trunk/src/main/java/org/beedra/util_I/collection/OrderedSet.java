@@ -58,11 +58,11 @@ public interface OrderedSet<E> extends Set<E> {
      *
      * @return an unmodifiable list view
      */
-    List<E> asList();
+    List<? extends E> asList();
 
     E get(int index);
 
-    int indexOf(E object);
+    int indexOf(Object object);
 
     boolean add(int index, E object);
 

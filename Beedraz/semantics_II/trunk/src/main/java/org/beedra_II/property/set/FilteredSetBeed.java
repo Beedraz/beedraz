@@ -22,9 +22,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.beedra.util_I.Comparison;
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
@@ -52,7 +54,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class FilteredSetBeed<_Element_ extends Beed<_FromEvent_>, _FromEvent_ extends Event>
+public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Event>
     extends AbstractPropertyBeed<SetEvent<_Element_>>
     implements SetBeed<_Element_> {
 
@@ -101,12 +103,121 @@ public class FilteredSetBeed<_Element_ extends Beed<_FromEvent_>, _FromEvent_ ex
    */
   public final void setSource(SetBeed<_Element_> source) {
     $source = source;
+    if (source != null) {
+      // register the FilteredSetBeed as listener of the given source
+      source.addListener($sourceListener);
+      // register the FilteredSetBeed as listener of all beeds in the given source
+      for (_Element_ beed : source.get()) {
+        beed.addListener($beedListener);
+      }
+    }
+    // recalculate and notify the listeners if the value has changed
+    Set<_Element_> oldValue = get();
     recalculate();
+    if (! Comparison.equalsWithNull(oldValue, get())) {
+      fireChangeEvent(
+        new SetEvent<_Element_>(
+          FilteredSetBeed.this, get(), oldValue, null));
+    }
   }
 
   private SetBeed<_Element_> $source;
 
   /*</property>*/
+
+
+  /**
+   * A listener that will be registered as listener of the {@link #getSource()}.
+   */
+  private final Listener<SetEvent<_Element_>> $sourceListener =
+        new Listener<SetEvent<_Element_>>() {
+
+    /**
+     * @post    The FilteredSetBeed is registered as a listener of all beeds
+     *          that are added to the source by the given event. (The reason is that
+     *          the FilteredSetBeed should be notified (and then recalculate) when one
+     *          of the beeds changes.)
+     * @post    The FilteredSetBeed is removed as listener of all beeds
+     *          that are removed from the source by the given event.
+     * @post    get() == the result of mapping the elements of the given source
+     * @post    The listeners of this beed are notified when the set changes.
+     */
+    public void beedChanged(SetEvent<_Element_> event) {
+      // add the FilteredSetBeed as listener of all beeds that are added to the source by the given event
+      // add a criterion for each added beed
+      Set<_Element_> added = event.getAddedElements();
+      Set<_Element_> addedFiltered = new HashSet<_Element_>();
+      for (_Element_ beed : added) {
+        // add the FilteredSetBeed as listener of the added beed
+        beed.addListener($beedListener);
+        // add a criterion for the added beed
+        FilterCriterion<_Element_> criterion =
+          getFilterCriterionFactory().createFilterCriterion(beed);
+        $filterCriterionSet.add(criterion);
+        // check whether the beed will be in the resulting set
+        if (criterion.isValid()) {
+          addedFiltered.add(beed);
+          $nbValidElements++;
+        }
+      }
+      // remove the FilteredSetBeed as listener from all beeds that are removed from the source by the given event
+      // remove the criterion of each removed beed
+      Set<_Element_> removed = event.getRemovedElements();
+      Set<_Element_> removedFiltered = new HashSet<_Element_>();
+      for (_Element_ beed : removed) {
+        // remove the FilteredSetBeed as listener of the removed beed
+        beed.removeListener($beedListener);
+        // remove the criterion of the removed beed
+        FilterCriterion<_Element_> criterion = findFilterCriterion(beed);
+        $filterCriterionSet.remove(criterion);
+        // check whether the beed was in the resulting set
+        if (criterion.isValid()) {
+          removedFiltered.add(beed);
+          $nbValidElements--;
+        }
+      }
+      // notify the listeners if a beed has been added or removed
+      if (!addedFiltered.isEmpty() || !removedFiltered.isEmpty()) {
+        fireChangeEvent(
+          new SetEvent<_Element_>(
+            FilteredSetBeed.this,
+            addedFiltered,
+            removedFiltered,
+            event.getEdit()));
+      }
+    }
+
+  };
+
+
+  private final Listener<_Event_> $beedListener = new Listener<_Event_>() {
+
+    /**
+     * @post    get() == the result of filtering the elements of the given source
+     * @post    The listeners of this beed are notified.
+     */
+    public void beedChanged(_Event_ event) {
+//      // check whether the validity of the beed has changed
+//      Beed<?> element = event.getSource();
+//      FilterCriterion<_Element_> criterion = findFilterCriterion(element);
+//      Set<_Element_> added = new HashSet<_Element_>();
+//      Set<_Element_> removed = new HashSet<_Element_>();
+//      if (criterion.oldValue != criterion.newValue) {
+//        if (criterion.newValue) {
+//          $nbValidElements++;
+//          added.add(beed);
+//        }
+//        else {
+//          $nbValidElements--;
+//          removed.add(beed);
+//        }
+//        // notify the listeners if the value has changed
+//        fireChangeEvent(new SetEvent<_Element_>(FilteredSetBeed.this, added, removed, event.getEdit()));
+//      }
+    }
+
+  };
+
 
   /**
    * The filter criterions that correspond to the elements in
@@ -117,6 +228,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_FromEvent_>, _FromEvent_ ex
   private Set<FilterCriterion<_Element_>> $filterCriterionSet =
     new HashSet<FilterCriterion<_Element_>>();
 
+
   /**
    * The number of elements in {@link #$filterCriterionSet} that
    * is valid.
@@ -125,16 +237,38 @@ public class FilteredSetBeed<_Element_ extends Beed<_FromEvent_>, _FromEvent_ ex
    */
   private int $nbValidElements = 0;
 
+
   /**
    * @basic
    */
   public final Set<_Element_> get() {
+    return filterElements($filterCriterionSet, $nbValidElements);
+  }
+
+
+  /**
+   * Returns a set containing all elements of the {@link FilterCriterion criterions}
+   * in the given set that are valid.
+   *
+   * @param   filterCriterionSet
+   * @param   nbValidElements
+   * @pre     filterCriterionSet != null;
+   * @pre     (forAll FilterCriterion criterion; filterCriterionSet.contains(criterion); criterion != null);
+   * @pre     nbValidElements == card{element : filterCriterionSet.contains(element) &&
+   *                                           criterion.isValid()};
+   * @return  result == {criterion.getElement() : filterCriterionSet.contains(criterion) &&
+   *                                              criterion.isValid()};
+   */
+  private Set<_Element_> filterElements(
+      final Set<FilterCriterion<_Element_>> filterCriterionSet,
+      final int nbValidElements) {
+
     return new AbstractSet<_Element_>() {
 
       @Override
       public Iterator<_Element_> iterator() {
         final Iterator<FilterCriterion<_Element_>> filteredCriterionIterator =
-          $filterCriterionSet.iterator();
+          filterCriterionSet.iterator();
         return new Iterator<_Element_>() {
 
           private int $nbVisited = 0;
@@ -143,7 +277,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_FromEvent_>, _FromEvent_ ex
            * Delegation.
            */
           public boolean hasNext() {
-            return $nbVisited < $nbValidElements;
+            return $nbVisited < nbValidElements;
           }
 
           /**
@@ -173,10 +307,23 @@ public class FilteredSetBeed<_Element_ extends Beed<_FromEvent_>, _FromEvent_ ex
        */
       @Override
       public int size() {
-        return $nbValidElements;
+        return nbValidElements;
       }
 
     };
+
+  }
+
+  /**
+   * Remove the given element from the set of filter criterions.
+   */
+  private FilterCriterion<_Element_> findFilterCriterion(_Element_ element) {
+    for (FilterCriterion<_Element_> criterion : $filterCriterionSet) {
+      if (criterion.getElement().equals(element)) {
+        return criterion;
+      }
+    }
+    return null;
   }
 
   /**

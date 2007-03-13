@@ -76,7 +76,7 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
   /**
    * @basic
    */
-  public final _Collection_ getAddedElements() {
+  public _Collection_ getAddedElements() {
     return unmodifiable($addedElements);
   }
 
@@ -88,7 +88,7 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
   /**
    * @basic
    */
-  public final _Collection_ getRemovedElements() {
+  public _Collection_ getRemovedElements() {
     return unmodifiable($removedElements);
   }
 

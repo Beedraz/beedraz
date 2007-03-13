@@ -62,7 +62,7 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
    *
    * @result result.equals(getNewValue().removeAll(getOldValue()));
    */
-  public final _Collection_ getAddedElements() {
+  public _Collection_ getAddedElements() {
     if ($addedElements == null) {
       _Collection_ acc = copyOf(getNewValue());
       if (getOldValue() != null) {
@@ -81,7 +81,7 @@ public abstract class AbstractOrderedCollectionEvent<_Element_,
    *
    * @result result.equals(getOldValue().removeAll(getNewValue()));
    */
-  public final _Collection_ getRemovedElements() {
+  public _Collection_ getRemovedElements() {
     if ($removedElements == null && (getOldValue() != null)) {
       _Collection_ acc = copyOf(getOldValue());
       acc.removeAll(getNewValue());

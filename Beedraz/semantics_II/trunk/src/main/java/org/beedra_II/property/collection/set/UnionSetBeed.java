@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.set;
+package org.beedra_II.property.collection.set;
 
 
 import java.util.AbstractSet;
@@ -32,9 +32,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A union beed is a derived beed that returns the union of a given
  * set of {@link SetBeed set beeds}.
- *
- * @mudo Zelfde opmerking als bij MappedSetBeed: de bron(nen) van een UnionBeed
- *       kunnen SetBeed of OrderSetBeed zijn.
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.
@@ -54,9 +51,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class UnionBeed<_Element_>
+public class UnionSetBeed<_Element_>
     extends AbstractPropertyBeed<SetEvent<_Element_>>
-    implements SetBeed<_Element_> {
+    implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
    * @pre   owner != null;
@@ -64,7 +61,7 @@ public class UnionBeed<_Element_>
    * @post  getSources().isEmpty();
    * @post  get().isEmpty();
    */
-  public UnionBeed(AggregateBeed owner) {
+  public UnionSetBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -75,7 +72,7 @@ public class UnionBeed<_Element_>
   /**
    * @basic
    */
-  public final Set<SetBeed<_Element_>> getSources() {
+  public final Set<SetBeed<_Element_, ?>> getSources() {
     return Collections.unmodifiableSet($sources);
   }
 
@@ -86,7 +83,7 @@ public class UnionBeed<_Element_>
    * @post   get() = the union of the sources
    * @post   The UnionBeed is added as listener of the given source.
    */
-  public final void addSource(SetBeed<_Element_> source) {
+  public final void addSource(SetBeed<_Element_, ?> source) {
     assert source != null;
     // add the source
     $sources.add(source);
@@ -98,27 +95,27 @@ public class UnionBeed<_Element_>
 
   /**
    * @param  source
-   * @pre    getSources().contains(source);
    * @post   !getSources().contains(source);
    * @post   get() = the union of the sources
    * @post   The UnionBeed is removed as listener of the given source.
    */
-  public final void removeSource(SetBeed<_Element_> source) {
-    assert getSources().contains(source);
-    // remove the source
-    $sources.remove(source);
-    // remove this UnionBeed as listener of the given source
-    source.removeListener($setBeedListener);
-    // remove the elements of the given source from the union
-    for (_Element_ element : source.get()) {
-      if (!contains(getSources(), element)) {
-        $union.remove(element);
+  public final void removeSource(SetBeed<_Element_, ?> source) {
+    if ($sources.contains(source)) {
+      // remove the source
+      $sources.remove(source);
+      // remove this UnionBeed as listener of the given source
+      source.removeListener($setBeedListener);
+      // remove the elements of the given source from the union
+      for (_Element_ element : source.get()) {
+        if (!contains(getSources(), element)) {
+          $union.remove(element);
+        }
       }
     }
   }
 
-  boolean contains(Set<SetBeed<_Element_>> sources, _Element_ element) {
-    for (SetBeed<_Element_> source : sources) {
+  boolean contains(Set<SetBeed<_Element_, ?>> sources, _Element_ element) {
+    for (SetBeed<_Element_, ?> source : sources) {
       if (source.get().contains(element)) {
         return true;
       }
@@ -126,7 +123,7 @@ public class UnionBeed<_Element_>
     return false;
   }
 
-  private Set<SetBeed<_Element_>> $sources = new HashSet<SetBeed<_Element_>>();
+  private Set<SetBeed<_Element_, ?>> $sources = new HashSet<SetBeed<_Element_, ?>>();
 
   /*</property>*/
 
@@ -159,8 +156,8 @@ public class UnionBeed<_Element_>
       }
       // consider all beeds that are removed by the given event: remove them from the union
       // (but only when they are not contained in one of the other sources)
-      SetBeed<_Element_> source = (SetBeed<_Element_>) event.getSource();
-      Set<SetBeed<_Element_>> otherSources = new HashSet<SetBeed<_Element_>>();
+      SetBeed<_Element_, ?> source = (SetBeed<_Element_, ?>) event.getSource();
+      Set<SetBeed<_Element_, ?>> otherSources = new HashSet<SetBeed<_Element_, ?>>();
       otherSources.addAll(getSources());
       otherSources.remove(source);
       Set<_Element_> removed = event.getRemovedElements();
@@ -175,8 +172,8 @@ public class UnionBeed<_Element_>
       // notify the listeners if elements are added or removed
       if (!reallyAdded.isEmpty() || !reallyRemoved.isEmpty()) {
         fireChangeEvent(
-          new SetEvent<_Element_>(
-            UnionBeed.this, reallyAdded, reallyRemoved, event.getEdit()));
+          new ActualSetEvent<_Element_>(
+            UnionSetBeed.this, reallyAdded, reallyRemoved, event.getEdit()));
       }
     }
 
@@ -237,7 +234,7 @@ public class UnionBeed<_Element_>
    */
   @Override
   protected SetEvent<_Element_> createInitialEvent() {
-    return new SetEvent<_Element_>(this, get(), null, null);
+    return new ActualSetEvent<_Element_>(this, get(), null, null);
   }
 
 }

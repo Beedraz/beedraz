@@ -18,7 +18,8 @@ package org.beedra.util_I.collection.org.apache.commons.collections.iterators;
 
 import java.util.ListIterator;
 
-import org.apache.commons.collections.Unmodifiable;
+import org.beedra.util_I.collection.org.apache.commons.collections.Unmodifiable;
+
 
 /**
  * Decorates a list iterator such that it cannot be modified.

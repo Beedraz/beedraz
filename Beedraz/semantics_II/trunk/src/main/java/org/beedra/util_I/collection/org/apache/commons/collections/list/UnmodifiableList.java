@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.apache.commons.collections.Unmodifiable;
+import org.beedra.util_I.collection.org.apache.commons.collections.Unmodifiable;
 import org.beedra.util_I.collection.org.apache.commons.collections.iterators.UnmodifiableIterator;
 import org.beedra.util_I.collection.org.apache.commons.collections.iterators.UnmodifiableListIterator;
 

@@ -18,7 +18,7 @@ package org.beedra.util_I.collection.org.apache.commons.collections.iterators;
 
 import java.util.Iterator;
 
-import org.apache.commons.collections.Unmodifiable;
+import org.beedra.util_I.collection.org.apache.commons.collections.Unmodifiable;
 
 /**
  * Decorates an iterator such that it cannot be modified.

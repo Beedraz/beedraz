@@ -25,10 +25,29 @@ import java.util.Set;
 /**
  * @mudo doc
  *
- * <p>Based on <a href="http://svn.apache.org/viewvc/jakarta/commons/proper/collections/branches/collections_jdk5_branch/src/java/org/apache/commons/collections/set/AbstractSerializableSetDecorator.java?view=markup">Apache Jakarta Commons SVN repository d.d. 2007/3/12</a>.</p>
+ * <p>Based on <a href="http://svn.apache.org/viewvc/jakarta/commons/proper/collections/branches/collections_jdk5_branch/src/java/org/apache/commons/collections/set/AbstractSerializableSetDecorator.java?view=markup">Apache Jakarta Commons SVN repository d.d. 2007/3/12</a>,
+ *   by Stephen Colebourne and Henning P. Schmiedehausen.</p>
  *
- * @author Stephen Colebourne
- * @author Henning P. Schmiedehausen
+ * @note This cannot be a {@link List}, sadly, for the dubious reason that the
+ *       {@link List} contract says that {@link List#add(Object)} always returns
+ *       {@code true}, and the {@link Collection} contract says that
+ *       {@link Collection#add(Object)} returns {@code true} if the collection has
+ *       changed. In a list, every {@code add} has a change effect (the element is
+ *       added at the end of the list, possibly as a duplicate). In a list with
+ *       set behavior, if the element is already in the list, it would move. This
+ *       is also a change, except when the element to be added is already at the end:
+ *       then nothing changes (no extra element and no move), so we need to return
+ *       {@code false}. Arguably, the contract of {@code List} is too strong. The
+ *       same reasoning applies to {@link #add(int, Object)}, {@link #addAll(int, Collection)}
+ *       and {@link #addAll(Collection)}.
+ *
+ * @note A method {@code boolean addAll(int index, Collection<? extends E> coll)}
+ *       has no meaningful semantics in an ordered set or set list. Suppose we take
+ *       the ordered set {1, 2, 3}, and we ask to add {1, 2, 3, 4, 5, 6} at index 3?
+ *       The result would have to something like {x, x, x, 1, 2, 3, 4, 5, 6}, but we
+ *       can't set any elements at the x's. Throwing an {@link IndexOutOfBoundsException}
+ *       here is not the correct semantics either, or very difficult for the user
+ *       to understand.
  *
  * @author Jan Dockx
  */
@@ -45,9 +64,9 @@ public interface OrderedSet<E> extends Set<E> {
 
     int indexOf(E object);
 
-    void add(int index, E object);
+    boolean add(int index, E object);
 
-    boolean addAll(int index, Collection<?> coll);
+//    boolean addAll(int index, Collection<? extends E> coll);
 
     E remove(int index);
 

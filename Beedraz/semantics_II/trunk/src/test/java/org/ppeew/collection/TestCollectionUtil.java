@@ -4,14 +4,14 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedra.util_I;
+package org.ppeew.collection;
 
-import static org.beedra.util_I.CollectionUtil.intersection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.ppeew.collection.CollectionUtil.intersection;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,11 +20,12 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.beedra.util_I.collection.LinkedListOrderedSet;
-import org.beedra.util_I.collection.OrderedSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.collection.CollectionUtil;
+import org.ppeew.collection.LinkedListOrderedSet;
+import org.ppeew.collection.OrderedSet;
 
 
 

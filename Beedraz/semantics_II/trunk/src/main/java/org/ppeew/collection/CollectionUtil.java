@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra.util_I;
+package org.ppeew.collection;
 
 
 import java.io.Serializable;
@@ -27,9 +27,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 
-import org.beedra.util_I.collection.AbstractUnmodifiableSet;
-import org.beedra.util_I.collection.OrderedSet;
-import org.beedra.util_I.collection.UnmodifiableOrderedSet;
+import org.ppeew.collection.AbstractUnmodifiableSet;
 import org.toryt.util_I.annotations.vcs.CvsInfo;
 
 

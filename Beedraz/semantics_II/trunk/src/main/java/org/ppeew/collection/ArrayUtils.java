@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.toryt.util_I.collections;
+package org.ppeew.collection;
 
 
 import java.lang.reflect.Array;

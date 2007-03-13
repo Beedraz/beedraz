@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra.util_I;
+package org.ppeew.collection;
 
 
-import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -28,7 +27,7 @@ import org.toryt.util_I.annotations.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class Singleton<_Element_> extends AbstractSet<_Element_> {
+public class Singleton<_Element_> extends AbstractUnmodifiableSet<_Element_> {
 
   /**
    * @post getElement() == element;

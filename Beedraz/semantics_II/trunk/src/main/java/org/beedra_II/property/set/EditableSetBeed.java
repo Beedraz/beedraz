@@ -62,7 +62,7 @@ public class EditableSetBeed<_Element_>
    */
   final void addElements(Set<_Element_> elements) {
     assert elements != null;
-    assert org.beedra.util_I.CollectionUtil.intersection(get(), elements).isEmpty();
+    assert org.ppeew.collection.CollectionUtil.intersection(get(), elements).isEmpty();
     $set.addAll(elements);
   }
 

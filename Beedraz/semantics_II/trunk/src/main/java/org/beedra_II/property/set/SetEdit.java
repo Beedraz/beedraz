@@ -17,10 +17,10 @@ limitations under the License.
 package org.beedra_II.property.set;
 
 
-import static org.beedra.util_I.CollectionUtil.intersection;
 import static org.beedra.util_I.MultiLineToStringUtil.indent;
 import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
+import static org.ppeew.collection.CollectionUtil.intersection;
 
 import java.util.Collections;
 import java.util.HashSet;

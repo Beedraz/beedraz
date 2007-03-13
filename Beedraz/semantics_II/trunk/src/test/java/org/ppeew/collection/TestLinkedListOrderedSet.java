@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedra.util_I.collection;
+package org.ppeew.collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,6 +17,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.collection.LinkedListOrderedSet;
 
 
 

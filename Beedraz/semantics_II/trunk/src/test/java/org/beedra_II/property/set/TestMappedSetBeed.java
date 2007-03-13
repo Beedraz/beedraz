@@ -33,7 +33,6 @@ import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;

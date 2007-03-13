@@ -169,16 +169,19 @@ public class TestOrderedBidirToManyBeed {
   public void add() {
     ManyBeanBeed many1 = new ManyBeanBeed();
     $orderedBidirToManyBeed.add(0, many1);
+//    System.out.println($orderedBidirToManyBeed);
     assertTrue($orderedBidirToManyBeed.get().contains(many1));
     assertEquals($orderedBidirToManyBeed.get().get(0), many1);
     ManyBeanBeed many2 = new ManyBeanBeed();
     $orderedBidirToManyBeed.add(1, many2);
+//    System.out.println($orderedBidirToManyBeed);
     assertTrue($orderedBidirToManyBeed.get().contains(many1));
     assertTrue($orderedBidirToManyBeed.get().contains(many2));
     assertEquals($orderedBidirToManyBeed.get().get(0), many1);
     assertEquals($orderedBidirToManyBeed.get().get(1), many2);
     ManyBeanBeed many3 = new ManyBeanBeed();
     $orderedBidirToManyBeed.add(0, many3);
+//    System.out.println($orderedBidirToManyBeed);
     assertTrue($orderedBidirToManyBeed.get().contains(many1));
     assertTrue($orderedBidirToManyBeed.get().contains(many2));
     assertTrue($orderedBidirToManyBeed.get().contains(many3));
@@ -186,13 +189,13 @@ public class TestOrderedBidirToManyBeed {
     assertEquals($orderedBidirToManyBeed.get().get(1), many1);
     assertEquals($orderedBidirToManyBeed.get().get(2), many2);
     $orderedBidirToManyBeed.add(2, many3);
+//    System.out.println($orderedBidirToManyBeed);
     assertTrue($orderedBidirToManyBeed.get().contains(many1));
     assertTrue($orderedBidirToManyBeed.get().contains(many2));
     assertTrue($orderedBidirToManyBeed.get().contains(many3));
-    assertEquals($orderedBidirToManyBeed.get().get(0), many3);
-    assertEquals($orderedBidirToManyBeed.get().get(1), many1);
+    assertEquals($orderedBidirToManyBeed.get().get(0), many1);
+    assertEquals($orderedBidirToManyBeed.get().get(1), many2);
     assertEquals($orderedBidirToManyBeed.get().get(2), many3);
-    assertEquals($orderedBidirToManyBeed.get().get(3), many2);
   }
 
   @Test

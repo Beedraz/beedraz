@@ -27,7 +27,7 @@ import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.set.SetEvent;
+import org.beedra_II.property.collection.set.SetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

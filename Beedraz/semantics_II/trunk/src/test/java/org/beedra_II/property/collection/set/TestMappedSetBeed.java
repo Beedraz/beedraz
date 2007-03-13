@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.set;
+package org.beedra_II.property.collection.set;
 
 
 import static org.junit.Assert.assertEquals;
@@ -35,6 +35,7 @@ import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
+//import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
@@ -112,7 +113,7 @@ public class TestMappedSetBeed {
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<IntegerBeed>>();
     $listener4 = new StubListener<SetEvent<Integer>>();
-    $event = new SetEvent<IntegerBeed>($mappedSetBeed, null, null, null);
+    $event = new ActualSetEvent<IntegerBeed>($mappedSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit1 =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well1.run);
@@ -190,7 +191,7 @@ public class TestMappedSetBeed {
     $mappedSetBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
-    SetBeed<WellBeanBeed> source = null;
+    SetBeed<WellBeanBeed, ?> source = null;
     $mappedSetBeed.setSource(source);
     assertEquals($mappedSetBeed.getSource(), source);
     assertTrue($mappedSetBeed.get().isEmpty());
@@ -344,7 +345,7 @@ public class TestMappedSetBeed {
 
   @Test
   public void get() {
-    SetBeed<WellBeanBeed> source = $run.wells;
+    SetBeed<WellBeanBeed, ?> source = $run.wells;
     $mappedSetBeed.setSource(source);
     Set<IntegerBeed> result = $mappedSetBeed.get();
     assertEquals(result.size(), source.get().size());

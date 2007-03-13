@@ -26,8 +26,9 @@ import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.set.SetBeed;
-import org.beedra_II.property.set.SetEvent;
+import org.beedra_II.property.collection.set.SetBeed;
+import org.beedra_II.property.collection.set.SetEvent;
+import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -41,7 +42,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BidirToManyBeed<_One_ extends BeanBeed,
                              _Many_ extends BeanBeed>
     extends AbstractPropertyBeed<SetEvent<_Many_>>
-    implements SetBeed<_Many_> {
+    implements SetBeed<_Many_, SetEvent<_Many_>> {
 
   public BidirToManyBeed(_One_ bean) {
     super(bean);
@@ -72,7 +73,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   void fireAddedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
     Set<_Many_> added = new HashSet<_Many_>();
     added.add(many);
-    fireChangeEvent(new SetEvent<_Many_>(this, added, null, edit));
+    fireChangeEvent(new ActualSetEvent<_Many_>(this, added, null, edit));
   }
 
   void remove(_Many_ many) {
@@ -82,7 +83,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   void fireRemovedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
     Set<_Many_> removed = new HashSet<_Many_>();
     removed.add(many);
-    fireChangeEvent(new SetEvent<_Many_>(this, null, removed, edit));
+    fireChangeEvent(new ActualSetEvent<_Many_>(this, null, removed, edit));
   }
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
@@ -96,7 +97,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
    */
   @Override
   protected final SetEvent<_Many_> createInitialEvent() {
-    return new SetEvent<_Many_>(this, $many, null, null); // event constructor copies set
+    return new ActualSetEvent<_Many_>(this, $many, null, null); // event constructor copies set
   }
 
   @Override

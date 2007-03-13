@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.set;
+package org.beedra_II.property.collection.set;
 
 
 import java.util.AbstractSet;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -65,9 +66,10 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends Event, _To_>
+public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
+                           _FromEvent_ extends Event, _To_>
     extends AbstractPropertyBeed<SetEvent<_To_>>
-    implements SetBeed<_To_> {
+    implements SetBeed<_To_, SetEvent<_To_>> {
 
   /**
    * @pre   owner != null;
@@ -105,7 +107,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
   /**
    * @basic
    */
-  public final SetBeed<_From_> getSource() {
+  public final SetBeed<_From_, ?> getSource() {
     return $source;
   }
 
@@ -120,7 +122,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
    *          changes.)
    * @post    The listeners of this beed are notified when the value changes.
    */
-  public final void setSource(SetBeed<_From_> source) {
+  public final void setSource(SetBeed<_From_, ?> source) {
     $source = source;
     if (source != null) {
       // register the MappedSetBeed as listener of the given source
@@ -135,12 +137,12 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
     recalculate();
     if (! ComparisonUtil.equalsWithNull(oldValue, $mappedSet)) {
       fireChangeEvent(
-        new SetEvent<_To_>(
+        new ActualSetEvent<_To_>(
           MappedSetBeed.this, $mappedSet,  oldValue, null));
     }
   }
 
-  private SetBeed<_From_> $source;
+  private SetBeed<_From_, ?> $source;
 
   /*</property>*/
 
@@ -182,7 +184,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
       recalculate();
       if (! ComparisonUtil.equalsWithNull(oldValue, $mappedSet)) {
         fireChangeEvent(
-          new SetEvent<_To_>(
+          new ActualSetEvent<_To_>(
             MappedSetBeed.this, addedMapped, removedMapped, event.getEdit()));
       }
     }
@@ -201,7 +203,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
       Set<_To_> oldValue = $mappedSet;
       recalculate();
       if (! ComparisonUtil.equalsWithNull(oldValue, $mappedSet)) {
-        fireChangeEvent(new SetEvent<_To_>(MappedSetBeed.this, null, null, event.getEdit()));
+        fireChangeEvent(new ActualSetEvent<_To_>(MappedSetBeed.this, null, null, event.getEdit()));
       }
     }
 
@@ -245,7 +247,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
    */
   public void recalculate() {
     $mappedSet = new HashSet<_To_>();
-    Set<_From_> fromSet = getSource() != null? getSource().get(): new HashSet<_From_>();
+    Set<_From_> fromSet = getSource() != null? getSource().get(): Collections.<_From_>emptySet();
     for (_From_ from : fromSet) {
       $mappedSet.add(getMapping().map(from));
     }
@@ -261,7 +263,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>, _FromEvent_ extends
    */
   @Override
   protected SetEvent<_To_> createInitialEvent() {
-    return new SetEvent<_To_>(this, get(), null, null);
+    return new ActualSetEvent<_To_>(this, get(), null, null);
   }
 
 }

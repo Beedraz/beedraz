@@ -29,7 +29,8 @@ import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.set.SetEvent;
+import org.beedra_II.property.collection.set.ActualSetEvent;
+import org.beedra_II.property.collection.set.SetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +85,7 @@ public class TestBidirToManyBeed {
     $bidirToOneEdit =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
     $bidirToOneEdit.perform();
-    $setEvent = new SetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, $bidirToOneEdit);
+    $setEvent = new ActualSetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, $bidirToOneEdit);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubSetEventListener();

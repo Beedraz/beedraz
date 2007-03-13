@@ -34,7 +34,7 @@ import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.BidirToOneEvent;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
-import org.beedra_II.property.set.SetEvent;
+import org.beedra_II.property.collection.set.SetEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

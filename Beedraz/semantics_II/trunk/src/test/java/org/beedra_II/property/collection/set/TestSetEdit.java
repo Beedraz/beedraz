@@ -94,9 +94,9 @@ public class TestSetEdit {
 
   }
 
-  public class StubSetListener implements Listener<SetEvent<Integer, ?>> {
+  public class StubSetListener implements Listener<SetEvent<Integer>> {
 
-    public void beedChanged(SetEvent<Integer, ?> event) {
+    public void beedChanged(SetEvent<Integer> event) {
       $event = event;
     }
 
@@ -104,7 +104,7 @@ public class TestSetEdit {
       $event = null;
     }
 
-    public SetEvent<Integer, ?> $event;
+    public SetEvent<Integer> $event;
 
   }
 
@@ -1508,7 +1508,7 @@ public class TestSetEdit {
     addedElements.add(1);
     Set<Integer> removedElements = new HashSet<Integer>();
     removedElements.add(3);
-    SetEvent<Integer, ?> event =
+    SetEvent<Integer> event =
       new ActualSetEvent<Integer>($target, addedElements, removedElements, null);
     $setEdit.fireEvent(event);
     // check listener
@@ -1531,7 +1531,7 @@ public class TestSetEdit {
     $setEdit.addElementToRemove(toRemove);
     $setEdit.perform();
     // create event
-    SetEvent<Integer, ?> createdEvent = $setEdit.createEvent();
+    SetEvent<Integer> createdEvent = $setEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $setEdit);
     assertTrue(createdEvent.getAddedElements().size() == 1);
     assertTrue(createdEvent.getAddedElements().contains(toAdd));

@@ -38,9 +38,9 @@ public class TestEditableSetBeed {
     // NOP
   }
 
-  public class StubEditableSetBeedListener implements Listener<SetEvent<Integer, ?>> {
+  public class StubEditableSetBeedListener implements Listener<SetEvent<Integer>> {
 
-    public void beedChanged(SetEvent<Integer, ?> event) {
+    public void beedChanged(SetEvent<Integer> event) {
       $event = event;
     }
 
@@ -48,7 +48,7 @@ public class TestEditableSetBeed {
       $event = null;
     }
 
-    public SetEvent<Integer, ?> $event;
+    public SetEvent<Integer> $event;
 
   }
 
@@ -77,7 +77,7 @@ public class TestEditableSetBeed {
   private Set<Integer> $addedElements;
   private Set<Integer> $removedElements;
   private SetEdit<Integer> $setEdit;
-  private SetEvent<Integer, ?> $event1;
+  private SetEvent<Integer> $event1;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
   private StubEditableSetBeedListener $listener3;
@@ -163,7 +163,7 @@ public class TestEditableSetBeed {
 
   @Test
   public void createInitialEvent() {
-    SetEvent<Integer, ?> initialEvent = $editableSetBeed.createInitialEvent();
+    SetEvent<Integer> initialEvent = $editableSetBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableSetBeed);
     assertEquals(initialEvent.getAddedElements(), $editableSetBeed.get());
     assertEquals(initialEvent.getRemovedElements(), new HashSet<Integer>());

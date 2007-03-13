@@ -22,8 +22,8 @@ import java.util.Set;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.set.SetBeed;
-import org.beedra_II.property.set.SetEvent;
+import org.beedra_II.property.collection.set.SetBeed;
+import org.beedra_II.property.collection.set.SetEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -70,7 +70,7 @@ public class DoubleMeanBeed
   /**
    * @basic
    */
-  public final SetBeed<DoubleBeed<DoubleEvent>> getSource() {
+  public final SetBeed<DoubleBeed<DoubleEvent>, ?> getSource() {
     return $source;
   }
 
@@ -84,7 +84,7 @@ public class DoubleMeanBeed
    *          notified (and then recalculate) when one of the DoubleBeeds changes.)
    * @post    The listeners of this beed are notified when the value changes.
    */
-  public final void setSource(SetBeed<DoubleBeed<DoubleEvent>> source) {
+  public final void setSource(SetBeed<DoubleBeed<DoubleEvent>, ?> source) {
     // set the source
     $source = source;
     if (source != null) {
@@ -103,7 +103,7 @@ public class DoubleMeanBeed
     }
   }
 
-  private SetBeed<DoubleBeed<DoubleEvent>> $source;
+  private SetBeed<DoubleBeed<DoubleEvent>, ?> $source;
 
   /*</property>*/
 

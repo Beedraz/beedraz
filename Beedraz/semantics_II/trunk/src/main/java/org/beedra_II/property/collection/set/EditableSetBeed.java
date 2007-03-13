@@ -38,9 +38,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableSetBeed<_Element_>
-    extends AbstractPropertyBeed<SetEvent<_Element_, ?>>
-    implements SetBeed<_Element_, SetEvent<_Element_, ?>, Set<_Element_>>,
-               EditableBeed<SetEvent<_Element_, ?>> {
+    extends AbstractPropertyBeed<SetEvent<_Element_>>
+    implements SetBeed<_Element_, SetEvent<_Element_>>,
+               EditableBeed<SetEvent<_Element_>> {
 
   /**
    * @pre ownerBeed != null;
@@ -78,7 +78,7 @@ public class EditableSetBeed<_Element_>
 
   private Set<_Element_> $set = new HashSet<_Element_>();
 
-  void fireEvent(SetEvent<_Element_, ?> event) {
+  void fireEvent(SetEvent<_Element_> event) {
     fireChangeEvent(event);
   }
 
@@ -90,7 +90,7 @@ public class EditableSetBeed<_Element_>
    * @post  result.getEditState() == null;
    */
   @Override
-  protected SetEvent<_Element_, ?> createInitialEvent() {
+  protected SetEvent<_Element_> createInitialEvent() {
     return new ActualSetEvent<_Element_>(this, get(), null, null);
   }
 

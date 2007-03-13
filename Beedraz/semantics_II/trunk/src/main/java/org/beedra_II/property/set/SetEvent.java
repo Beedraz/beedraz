@@ -36,7 +36,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar getSource() instanceof SetBeed
  * @invar getAddedElements() != null;
  * @invar getRemovedElements() != null;
+ *
+ * @deprecated
  */
+@Deprecated
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",

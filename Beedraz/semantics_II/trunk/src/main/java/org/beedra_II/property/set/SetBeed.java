@@ -29,7 +29,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author  Peopleware n.v.
  *
  * @invar   get() != null;
+ * @deprecated
  */
+@Deprecated
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",

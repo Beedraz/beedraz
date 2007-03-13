@@ -36,8 +36,8 @@ public interface FilterCriterionFactory<_Element_> {
   /**
    * Create a filter criterion for the given element.
    *
-   * @return  result != null;
-   * @return  result.getElement() == element;
+   * @result  result != null;
+   * @result  result.getElement() == element;
    */
   FilterCriterion<_Element_> createFilterCriterion(_Element_ element);
 }

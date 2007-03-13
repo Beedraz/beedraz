@@ -44,10 +44,10 @@ import org.junit.Test;
 
 public class TestFilteredSetBeed {
 
-  public class MyFilteredSetBeed extends FilteredSetBeed<WellBeanBeed> {
+  public class MyFilteredSetBeed extends FilteredSetBeed<WellBeanBeed, PropagatedEvent> {
 
-    public MyFilteredSetBeed(Filter<WellBeanBeed> filter, AggregateBeed owner) {
-      super(filter, owner);
+    public MyFilteredSetBeed(FilterCriterionFactory<WellBeanBeed> filterCriterionFactory, AggregateBeed owner) {
+      super(filterCriterionFactory, owner);
     }
 
     /**
@@ -105,12 +105,23 @@ public class TestFilteredSetBeed {
   @Before
   public void setUp() throws Exception {
     $owner = new MyBeanBeed();
-    $filter = new Filter<WellBeanBeed>() {
-        public boolean filter(WellBeanBeed from) {
-          return from.cq.get() != null && from.cq.get().intValue() % 2 == 0;
+    $filterCriterionFactory = new FilterCriterionFactory<WellBeanBeed>() {
+
+        public FilterCriterion<WellBeanBeed> createFilterCriterion(WellBeanBeed element) {
+          return new AbstractFilterCriterion<WellBeanBeed>(element) {
+
+            /**
+             * The cq value should be effective and even.
+             */
+            public boolean isValid() {
+              return getElement().cq.get() != null &&
+                     getElement().cq.get().intValue() % 2 == 0;
+            }
+
+          };
         }
     };
-    $filteredSetBeed = new MyFilteredSetBeed($filter, $owner);
+    $filteredSetBeed = new MyFilteredSetBeed($filterCriterionFactory, $owner);
     $run = new RunBeanBeed();
     $wellNull = new WellBeanBeed();
     $well0 = new WellBeanBeed();
@@ -176,7 +187,7 @@ public class TestFilteredSetBeed {
   private Integer $cq1;
   private Integer $cq2;
   private Integer $cq3;
-  private Filter<WellBeanBeed> $filter;
+  private FilterCriterionFactory<WellBeanBeed> $filterCriterionFactory;
   private MyFilteredSetBeed $filteredSetBeed;
   private MyBeanBeed $owner;
   private PropagatedEventListener $listener1;
@@ -186,8 +197,9 @@ public class TestFilteredSetBeed {
   @Test
   public void constructor() {
     assertEquals($filteredSetBeed.getOwner(), $owner);
-    assertEquals($filteredSetBeed.getFilter(), $filter);
+    assertEquals($filteredSetBeed.getFilterCriterionFactory(), $filterCriterionFactory);
     assertEquals($filteredSetBeed.getSource(), null);
+    assertTrue($filteredSetBeed.get().isEmpty());
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);
@@ -239,14 +251,22 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // filter the odd wells
-    Filter<WellBeanBeed> filter = new Filter<WellBeanBeed>() {
+    FilterCriterionFactory<WellBeanBeed> factory =
+      new FilterCriterionFactory<WellBeanBeed>() {
 
-      public boolean filter(WellBeanBeed element) {
-        return element.cq.get() != null && element.cq.get().intValue() % 2 ==1;
-      }
+        public FilterCriterion<WellBeanBeed> createFilterCriterion(WellBeanBeed element) {
+          return new AbstractFilterCriterion<WellBeanBeed>(element) {
+
+            public boolean isValid() {
+              return getElement().cq.get() != null &&
+                     getElement().cq.get().intValue() % 2 == 1;
+            }
+
+          };
+        }
 
     };
-    $filteredSetBeed = new MyFilteredSetBeed(filter, $owner);
+    $filteredSetBeed = new MyFilteredSetBeed(factory, $owner);
     $filteredSetBeed.setSource(source);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 2);
@@ -267,14 +287,20 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // filter the wells whose cq value is empty
-    filter = new Filter<WellBeanBeed>() {
+    factory = new FilterCriterionFactory<WellBeanBeed>() {
 
-      public boolean filter(WellBeanBeed element) {
-        return element.cq.get() == null;
+      public FilterCriterion<WellBeanBeed> createFilterCriterion(WellBeanBeed element) {
+        return new AbstractFilterCriterion<WellBeanBeed>(element) {
+
+          public boolean isValid() {
+            return getElement().cq.get() == null;
+          }
+
+        };
       }
 
     };
-    $filteredSetBeed = new MyFilteredSetBeed(filter, $owner);
+    $filteredSetBeed = new MyFilteredSetBeed(factory, $owner);
     $filteredSetBeed.setSource(source);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 1);

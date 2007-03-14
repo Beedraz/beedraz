@@ -17,14 +17,8 @@ limitations under the License.
 package org.beedra_II.property.number.integer;
 
 
-import static org.ppeew.smallfries_I.MathUtil.castToDouble;
-
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.edit.Edit;
-import org.beedra_II.property.integer.ActualIntegerEvent;
 import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEvent;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -41,8 +35,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class IntegerNegativeBeed
-    extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>
-    implements IntegerBeed {
+    extends AbstractIntegerUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;
@@ -53,14 +46,6 @@ public class IntegerNegativeBeed
     super(owner);
   }
 
-  public final Double getDouble() {
-    return castToDouble(getInteger());
-  }
-
-  public final Integer getInteger() {
-    return get();
-  }
-
   /**
    * @pre argumentValue != null;
    */
@@ -68,34 +53,6 @@ public class IntegerNegativeBeed
   protected Integer calculateValue(Integer argumentValue) {
     assert argumentValue != null;
     return -argumentValue;
-  }
-
-  /**
-   * @post  result != null;
-   * @post  result.getArgument() == this;
-   * @post  result.getOldInteger() == null;
-   * @post  result.getNewInteger() == getInteger();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final IntegerEvent createInitialEvent() {
-    return new ActualIntegerEvent(this, null, getInteger(), null);
-  }
-
-  @Override
-  protected IntegerEvent createNewEvent(Integer oldValue, Integer newValue, Edit<?> edit) {
-    return new ActualIntegerEvent(this, oldValue, newValue, edit);
-  }
-
-  @Override
-  protected Integer newValueFrom(IntegerEvent event) {
-    return event.getNewInteger();
-  }
-
-  @Override
-  protected Integer valueFrom(IntegerBeed beed) {
-    return beed.getInteger();
   }
 
 }

@@ -39,7 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-final class ActualDoubleEvent
+public final class ActualDoubleEvent
     extends ActualOldNewEvent<Double>
     implements DoubleEvent {
 

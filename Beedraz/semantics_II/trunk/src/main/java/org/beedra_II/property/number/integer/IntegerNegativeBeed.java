@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -23,6 +23,9 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.integer.ActualIntegerEvent;
+import org.beedra_II.property.integer.IntegerBeed;
+import org.beedra_II.property.integer.IntegerEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 

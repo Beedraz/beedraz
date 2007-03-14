@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer;
 
 
 import static org.junit.Assert.assertEquals;
@@ -28,6 +28,10 @@ import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.integer.EditableIntegerBeed;
+import org.beedra_II.property.integer.IntegerBeed;
+import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.integer.IntegerEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;

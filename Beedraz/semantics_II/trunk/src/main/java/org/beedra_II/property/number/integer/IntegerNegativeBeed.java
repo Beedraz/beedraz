@@ -18,16 +18,14 @@ package org.beedra_II.property.number.integer;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Listener;
-import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.property.integer.ActualIntegerEvent;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
+import org.beedra_II.property.number.AbstractNegativeBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**
@@ -43,7 +41,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          state    = "$State$",
          tag      = "$Name$")
 public class IntegerNegativeBeed
-    extends AbstractPropertyBeed<IntegerEvent>
+    extends AbstractNegativeBeed<Integer, IntegerBeed, IntegerEvent>
     implements IntegerBeed {
 
   /**
@@ -55,78 +53,22 @@ public class IntegerNegativeBeed
     super(owner);
   }
 
-  /*<property name="argument">*/
-  //-----------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  public final IntegerBeed getArgument() {
-    return $argument;
-  }
-
-  /**
-   * @post getArgument() == argument;
-   */
-  public final void setArgument(IntegerBeed argument) {
-    Integer oldValue = $value;
-    if ($argument != null) {
-      $argument.removeListener($argumentListener);
-    }
-    $argument = argument;
-    if ($argument != null) {
-      $value = calculateValueInternal($argument.getInteger());
-      $argument.addListener($argumentListener);
-    }
-    else {
-      $value = null;
-    }
-    fireEvent(oldValue);
-  }
-
-  private void fireEvent(Integer oldValue) {
-    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-      fireChangeEvent(new ActualIntegerEvent(this, oldValue, $value, null));
-    }
-  }
-
-  private IntegerBeed $argument;
-
-  private Listener<IntegerEvent> $argumentListener = new Listener<IntegerEvent>() {
-
-    public void beedChanged(IntegerEvent event) {
-      Integer oldValue = $value;
-      $value = calculateValueInternal(event.getNewInteger());
-      fireEvent(oldValue);
-    }
-
-  };
-
-  /*</property>*/
-
-
-
   public final Double getDouble() {
     return castToDouble(getInteger());
   }
 
   public final Integer getInteger() {
-    return $value;
-  }
-
-  private Integer calculateValueInternal(Integer argumentValue) {
-    return argumentValue == null ? null : calculateValue(argumentValue);
+    return get();
   }
 
   /**
    * @pre argumentValue != null;
    */
+  @Override
   protected Integer calculateValue(Integer argumentValue) {
     assert argumentValue != null;
     return -argumentValue;
   }
-
-  private Integer $value;
 
   /**
    * @post  result != null;
@@ -141,16 +83,19 @@ public class IntegerNegativeBeed
     return new ActualIntegerEvent(this, null, getInteger(), null);
   }
 
-
   @Override
-  protected String otherToStringInformation() {
-    return getInteger() == null ? "null" : getInteger().toString();
+  protected IntegerEvent createNewEvent(Integer oldValue, Integer newValue, Edit<?> edit) {
+    return new ActualIntegerEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  public void toString(StringBuffer sb, int level) {
-    super.toString(sb, level);
-    sb.append(indent(level + 1) + "value:" + getInteger() + "\n");
+  protected Integer newValueFrom(IntegerEvent event) {
+    return event.getNewInteger();
+  }
+
+  @Override
+  protected Integer valueFrom(IntegerBeed beed) {
+    return beed.getInteger();
   }
 
 }

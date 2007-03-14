@@ -34,9 +34,12 @@ import org.beedra_II.property.collection.set.SetEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 public class TestDoubleStandardErrorBeed {
+
+  private static final double DOUBLE_ERROR = 0.0001;
 
   public class MyDoubleStandardErrorBeed extends DoubleStandardErrorBeed {
     public MyDoubleStandardErrorBeed(AggregateBeed owner) {
@@ -120,12 +123,12 @@ public class TestDoubleStandardErrorBeed {
     $doubleStandardErrorBeed.setSource(source);
     assertEquals($doubleStandardErrorBeed.getSource(), source);
     Double standardError1 = computeStandardError(1.0, 2.0, 3.0, 4.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError1);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError1, DOUBLE_ERROR));
     // value has changed, so the listeners of the standard error beed are notified
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
     assertEquals($listener3.$event.getOldDouble(), null);
-    assertEquals($listener3.$event.getNewDouble(), standardError1);
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getNewDouble(), standardError1, DOUBLE_ERROR));
     assertEquals($listener3.$event.getEdit(), null);
     // The DoubleStandardErrorBeed is registered as listener of the source, so when
     // the source changes, the beed should be notified
@@ -138,8 +141,8 @@ public class TestDoubleStandardErrorBeed {
     Double standardError2 = computeStandardError(1.0, 2.0, 3.0, 4.0, 5.0);
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
-    assertEquals($listener3.$event.getOldDouble(), standardError1);
-    assertEquals($listener3.$event.getNewDouble(), standardError2);
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getOldDouble(), standardError1, DOUBLE_ERROR));
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getNewDouble(), standardError2, DOUBLE_ERROR));
     assertEquals($listener3.$event.getEdit(), setEdit);
     // The DoubleStandardErrorBeed is registered as listener of all double beeds in the source,
     // so when one of them changes, the beed should be notified
@@ -151,8 +154,8 @@ public class TestDoubleStandardErrorBeed {
     Double standardError3 = computeStandardError(1.0, 2.0, 3.0, 4.0, 6.0);
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
-    assertEquals($listener3.$event.getOldDouble(), standardError2);
-    assertEquals($listener3.$event.getNewDouble(), standardError3);
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getOldDouble(), standardError2, DOUBLE_ERROR));
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getNewDouble(), standardError3, DOUBLE_ERROR));
     assertEquals($listener3.$event.getEdit(), doubleEdit);
     // When a new beed is added to the source, the DoubleStandardErrorBeed is added as a listener
     // of that beed. See above.
@@ -167,8 +170,8 @@ public class TestDoubleStandardErrorBeed {
     Double standardError4 = computeStandardError(1.0, 2.0, 3.0, 4.0);
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
-    assertEquals($listener3.$event.getOldDouble(), standardError3);
-    assertEquals($listener3.$event.getNewDouble(), standardError4);
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getOldDouble(), standardError3, DOUBLE_ERROR));
+    assertTrue(ComparisonUtil.assertEquals($listener3.$event.getNewDouble(), standardError4, DOUBLE_ERROR));
     assertEquals($listener3.$event.getEdit(), setEdit);
     $listener3.reset();
     assertNull($listener3.$event);
@@ -176,7 +179,7 @@ public class TestDoubleStandardErrorBeed {
     doubleEdit.setGoal(7.0);
     doubleEdit.perform();
     assertNull($listener3.$event); // the DoubleStandardErrorBeed is NOT notified
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError4);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError4, DOUBLE_ERROR));
 
   }
 
@@ -238,10 +241,10 @@ public class TestDoubleStandardErrorBeed {
     // recalculate (setBeed contains beed 1 and 2)
     $doubleStandardErrorBeed.recalculate();
     double standardError = computeStandardError(1.0, 2.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     // recalculate (setBeed contains beed 1 and 2)
     $doubleStandardErrorBeed.recalculate();
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beed3);
@@ -249,7 +252,7 @@ public class TestDoubleStandardErrorBeed {
     // recalculate (setBeed contains beed 1, 2 and 3)
     $doubleStandardErrorBeed.recalculate();
     standardError = computeStandardError(1.0, 2.0, 3.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beed4);
@@ -257,7 +260,7 @@ public class TestDoubleStandardErrorBeed {
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
     $doubleStandardErrorBeed.recalculate();
     standardError = computeStandardError(1.0, 2.0, 3.0, 4.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beedNull);
@@ -304,32 +307,32 @@ public class TestDoubleStandardErrorBeed {
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     double standardError = computeStandardError(1.0, 2.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     standardError = computeStandardError(1.0, 2.0, 3.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     standardError = computeStandardError(1.0, 2.0, 3.0, 4.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed); // add an element that is already there
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     standardError = computeStandardError(1.0, 2.0, 3.0, 4.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed1);
     setEdit.perform();
     standardError = computeStandardError(2.0, 3.0, 4.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed2);
     setEdit.perform();
     standardError = computeStandardError(3.0, 4.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed3);
     setEdit.perform();
@@ -352,43 +355,43 @@ public class TestDoubleStandardErrorBeed {
     setEdit.perform();
     $doubleStandardErrorBeed.setSource(setBeed);
     standardError = computeStandardError(1.0, 2.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     DoubleEdit doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.5);
     doubleEdit.perform();
     standardError = computeStandardError(1.5, 2.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     doubleEdit = new DoubleEdit(beed2);
     doubleEdit.setGoal(2.5);
     doubleEdit.perform();
     standardError = computeStandardError(1.5, 2.5);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.0);
     doubleEdit.perform();
     standardError = computeStandardError(1.0, 2.5);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     doubleEdit = new DoubleEdit(beed2);
     doubleEdit.setGoal(2.0);
     doubleEdit.perform();
     standardError = computeStandardError(1.0, 2.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     // change beeds that are added later to the source
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     standardError = computeStandardError(1.0, 2.0, 3.0);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     doubleEdit = new DoubleEdit(beed3);
     doubleEdit.setGoal(3.5);
     doubleEdit.perform();
     standardError = computeStandardError(1.0, 2.0, 3.5);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
     doubleEdit = new DoubleEdit(beed3);
     doubleEdit.setGoal(3.7);
     doubleEdit.perform();
     standardError = computeStandardError(1.0, 2.0, 3.7);
-    assertEquals($doubleStandardErrorBeed.getDouble(), standardError);
+    assertTrue(ComparisonUtil.assertEquals($doubleStandardErrorBeed.getDouble(), standardError, DOUBLE_ERROR));
   }
 
   private EditableSetBeed<DoubleBeed<DoubleEvent>> createSource() throws EditStateException, IllegalEditException {

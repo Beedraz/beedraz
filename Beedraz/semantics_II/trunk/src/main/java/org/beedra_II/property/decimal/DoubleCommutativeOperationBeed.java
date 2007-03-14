@@ -260,7 +260,7 @@ public abstract class DoubleCommutativeOperationBeed
    * When all terms are effective, the result is dependent on the specific subclass.
    */
   public void recalculate() {
-    Double newValue = 0.0;
+    Double newValue = initialValue();
     for (DoubleBeed<?> argument : $arguments.keySet()) {
       Double argumentValue = argument.getDouble();
       if (argumentValue == null) {

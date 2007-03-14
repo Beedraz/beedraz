@@ -77,34 +77,18 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
       assert getSource() != null;
       assert getSource().get().size() > 1;
       // compute the average
-      Double average = 0.0;
-      for (DoubleBeed<DoubleEvent> beed : getSource().get()) {
-        Double beedValue = beed.getDouble();
-        if (beedValue == null) {
-          average = null;
-          break;
-        }
-        average += beedValue; // autoboxing
-      }
+      Double average = DoubleMeanBeed.mean(getSource());
       if (average != null) {
-        average = average / getSource().get().size(); // divisor is not zero (see if-condition)!
-      }
-      // compute the standard error
-      if (average != null) {
+        // we know here that the values of all beeds are effective, so we do not need
+        // to check this
         standardError = 0.0;
         for (DoubleBeed<DoubleEvent> beed : getSource().get()) {
           Double beedValue = beed.getDouble();
-          if (beedValue == null) {
-            standardError = null;
-            break;
-          }
           standardError += Math.pow(beedValue - average, 2); // autoboxing
         }
-        if (standardError != null) {
-          int size = getSource().get().size();
-          standardError = standardError / (size * (size - 1)); // divisor is not zero (see if-condition)!
-          standardError = Math.sqrt(standardError);
-        }
+        int size = getSource().get().size();
+        standardError = standardError / (size * (size - 1)); // divisor is not zero (see if-condition)!
+        standardError = Math.sqrt(standardError);
       }
       else {
         standardError = null;

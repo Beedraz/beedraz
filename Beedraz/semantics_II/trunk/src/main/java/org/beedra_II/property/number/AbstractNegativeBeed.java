@@ -42,8 +42,8 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractNegativeBeed<_NumberType_ extends Number,
-                                           _NumberBeed_ extends DoubleBeed<_NumberEvent_>,
+public abstract class AbstractNegativeBeed<_Number_ extends Number,
+                                           _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
                                            _NumberEvent_ extends DoubleEvent>
     extends AbstractPropertyBeed<_NumberEvent_>
     implements DoubleBeed<_NumberEvent_> {
@@ -63,15 +63,15 @@ public abstract class AbstractNegativeBeed<_NumberType_ extends Number,
   /**
    * @basic
    */
-  public final _NumberBeed_ getArgument() {
+  public final _ArgumentBeed_ getArgument() {
     return $argument;
   }
 
   /**
    * @post getArgument() == argument;
    */
-  public final void setArgument(_NumberBeed_ argument) {
-    _NumberType_ oldValue = $value;
+  public final void setArgument(_ArgumentBeed_ argument) {
+    _Number_ oldValue = $value;
     if ($argument != null) {
       $argument.removeListener($argumentListener);
     }
@@ -89,27 +89,27 @@ public abstract class AbstractNegativeBeed<_NumberType_ extends Number,
   /**
    * @pre beed != null;
    */
-  protected abstract _NumberType_ valueFrom(_NumberBeed_ beed);
+  protected abstract _Number_ valueFrom(_ArgumentBeed_ beed);
 
   /**
    * @pre event != null;
    */
-  protected abstract _NumberType_ newValueFrom(_NumberEvent_ event);
+  protected abstract _Number_ newValueFrom(_NumberEvent_ event);
 
-  private void fireEvent(_NumberType_ oldValue, Edit<?> edit) {
+  private void fireEvent(_Number_ oldValue, Edit<?> edit) {
     if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
       fireChangeEvent(createNewEvent(oldValue, $value, edit));
     }
   }
 
-  protected abstract _NumberEvent_ createNewEvent(_NumberType_ oldValue, _NumberType_ newValue, Edit<?> edit);
+  protected abstract _NumberEvent_ createNewEvent(_Number_ oldValue, _Number_ newValue, Edit<?> edit);
 
-  private _NumberBeed_ $argument;
+  private _ArgumentBeed_ $argument;
 
   private Listener<_NumberEvent_> $argumentListener = new Listener<_NumberEvent_>() {
 
     public void beedChanged(_NumberEvent_ event) {
-      _NumberType_ oldValue = $value;
+      _Number_ oldValue = $value;
       $value = calculateValueInternal(newValueFrom(event));
       fireEvent(oldValue, event.getEdit());
     }
@@ -119,20 +119,20 @@ public abstract class AbstractNegativeBeed<_NumberType_ extends Number,
   /*</property>*/
 
 
-  public final _NumberType_ get() {
+  public final _Number_ get() {
     return $value;
   }
 
-  private _NumberType_ calculateValueInternal(_NumberType_ argumentValue) {
+  private _Number_ calculateValueInternal(_Number_ argumentValue) {
     return argumentValue == null ? null : calculateValue(argumentValue);
   }
 
   /**
    * @pre argumentValue != null;
    */
-  protected abstract _NumberType_ calculateValue(_NumberType_ argumentValue);
+  protected abstract _Number_ calculateValue(_Number_ argumentValue);
 
-  private _NumberType_ $value;
+  private _Number_ $value;
 
   @Override
   protected final String otherToStringInformation() {

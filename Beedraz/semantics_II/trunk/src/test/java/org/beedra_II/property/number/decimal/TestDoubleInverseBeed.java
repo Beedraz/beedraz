@@ -25,12 +25,12 @@ import org.junit.Test;
 
 
 
-public class TestDoubleNegativeBeed
-    extends AbstractTestDoubleUnaryExpressionBeed<DoubleNegativeBeed> {
+public class TestDoubleInverseBeed
+    extends AbstractTestDoubleUnaryExpressionBeed<DoubleInverseBeed> {
 
   @Test
   public void testConstructor() {
-    DoubleNegativeBeed inb = new DoubleNegativeBeed($aggregateBeed);
+    DoubleInverseBeed inb = new DoubleInverseBeed($aggregateBeed);
     assertEquals($aggregateBeed, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getDouble());
@@ -39,12 +39,12 @@ public class TestDoubleNegativeBeed
 
   @Override
   protected Double expectedValue(Double argumentValue) {
-    return - argumentValue;
+    return 1 / argumentValue;
   }
 
   @Override
-  protected DoubleNegativeBeed createSubject(AggregateBeed owner) {
-    return new DoubleNegativeBeed(owner);
+  protected DoubleInverseBeed createSubject(AggregateBeed owner) {
+    return new DoubleInverseBeed(owner);
   }
 
 }

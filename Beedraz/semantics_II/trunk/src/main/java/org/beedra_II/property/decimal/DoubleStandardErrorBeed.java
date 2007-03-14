@@ -64,6 +64,7 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
    * When all terms are effective, the result is the standard error of the values
    * of the beeds.
    */
+  @Override
   public void recalculate() {
     Double standardError;
     if (getSource() == null) {

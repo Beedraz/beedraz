@@ -179,5 +179,30 @@ public class MathUtil {
     }
   }
 
+  /**
+   * @pre  doubles != null;
+   * @pre  doubles.length > 0;
+   */
+  public static double mean(double... doubles) {
+    double mean = 0.0;
+    for (double value : doubles) {
+      mean += value;
+    }
+    return mean / doubles.length;
+  }
+
+  /**
+   * @pre  doubles != null;
+   * @pre  doubles.length > 1;
+   */
+  public static double standardError(double... doubles) {
+    double mean = mean(doubles);
+    double standardError = 0.0;
+    for (double value : doubles) {
+      standardError += Math.pow(value - mean, 2);
+    }
+    standardError = standardError / (doubles.length * (doubles.length - 1));
+    return Math.sqrt(standardError);
+  }
 }
 

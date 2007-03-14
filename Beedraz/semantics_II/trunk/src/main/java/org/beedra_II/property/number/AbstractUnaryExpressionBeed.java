@@ -42,7 +42,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractNegativeBeed<_Number_ extends Number,
+public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
                                            _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
                                            _NumberEvent_ extends DoubleEvent>
     extends AbstractPropertyBeed<_NumberEvent_>
@@ -53,7 +53,7 @@ public abstract class AbstractNegativeBeed<_Number_ extends Number,
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public AbstractNegativeBeed(AggregateBeed owner) {
+  public AbstractUnaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 

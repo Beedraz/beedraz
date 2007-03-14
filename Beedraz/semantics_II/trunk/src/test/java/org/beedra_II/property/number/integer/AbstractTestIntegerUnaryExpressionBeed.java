@@ -22,12 +22,12 @@ import org.beedra_II.property.integer.EditableIntegerBeed;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEdit;
 import org.beedra_II.property.integer.IntegerEvent;
-import org.beedra_II.property.number.AbstractNegativeBeed;
+import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestIntegerUnaryExpressionBeed<_UEB_ extends AbstractNegativeBeed<Integer, IntegerBeed, IntegerEvent>>
+public abstract class AbstractTestIntegerUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>>
     extends AbstractTestUnaryExpressionBeed<Integer,
                                             IntegerBeed,
                                             IntegerEvent,

@@ -24,7 +24,7 @@ import org.beedra_II.edit.Edit;
 import org.beedra_II.property.integer.ActualIntegerEvent;
 import org.beedra_II.property.integer.IntegerBeed;
 import org.beedra_II.property.integer.IntegerEvent;
-import org.beedra_II.property.number.AbstractNegativeBeed;
+import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -41,7 +41,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class IntegerNegativeBeed
-    extends AbstractNegativeBeed<Integer, IntegerBeed, IntegerEvent>
+    extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>
     implements IntegerBeed {
 
   /**

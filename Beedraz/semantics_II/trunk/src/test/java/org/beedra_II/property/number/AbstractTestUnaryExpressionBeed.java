@@ -30,7 +30,7 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.property.decimal.DoubleBeed;
 import org.beedra_II.property.decimal.DoubleEvent;
-import org.beedra_II.property.number.AbstractNegativeBeed;
+import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ import org.ppeew.smallfries_I.MathUtil;
 public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
                                                             _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
                                                             _NumberEvent_ extends DoubleEvent,
-                                                            _UEB_ extends AbstractNegativeBeed<_Number_, _ArgumentBeed_, _NumberEvent_>,
+                                                            _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, _NumberEvent_>,
                                                             _EAB_ extends _ArgumentBeed_> {
 
   @Before
@@ -126,10 +126,10 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     validateEvent(null, $goal1);
     changeArgument($argumentDoubleBeed, $goal2);
     validateSubjectFromArgument($argumentDoubleBeed);
-//    System.out.println("$goal1: " + $goal1);
-//    System.out.println("ln($goal1): " + Math.log((Double)$goal1));
-//    System.out.println("$goal2: " + $goal2);
-//    System.out.println("ln($goal2): " + Math.log((Double)$goal2));
+  //    System.out.println("$goal1: " + $goal1);
+  //    System.out.println("ln($goal1): " + Math.log((Double)$goal1));
+  //    System.out.println("$goal2: " + $goal2);
+  //    System.out.println("ln($goal2): " + Math.log((Double)$goal2));
     validateEvent($goal1, $goal2);
     changeArgument($argumentDoubleBeed, $goal2);
     validateSubjectFromArgument($argumentDoubleBeed);

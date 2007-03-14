@@ -22,12 +22,12 @@ import org.beedra_II.property.decimal.DoubleBeed;
 import org.beedra_II.property.decimal.DoubleEdit;
 import org.beedra_II.property.decimal.DoubleEvent;
 import org.beedra_II.property.decimal.EditableDoubleBeed;
-import org.beedra_II.property.number.AbstractNegativeBeed;
+import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractNegativeBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>>
+public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>>
     extends AbstractTestUnaryExpressionBeed<Double,
                                             DoubleBeed<DoubleEvent>,
                                             DoubleEvent,

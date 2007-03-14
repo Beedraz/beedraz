@@ -22,7 +22,7 @@ import org.beedra_II.edit.Edit;
 import org.beedra_II.property.decimal.ActualDoubleEvent;
 import org.beedra_II.property.decimal.DoubleBeed;
 import org.beedra_II.property.decimal.DoubleEvent;
-import org.beedra_II.property.number.AbstractNegativeBeed;
+import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -36,7 +36,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class DoubleNegativeBeed
-    extends AbstractNegativeBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>
+    extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>
     implements DoubleBeed<DoubleEvent> {
 
   /**

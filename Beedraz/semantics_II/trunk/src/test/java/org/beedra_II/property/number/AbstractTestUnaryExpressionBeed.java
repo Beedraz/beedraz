@@ -178,7 +178,7 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
       }
       else {
         assertNotNull($subject.getDouble());
-        assertEquals(expectedValue(argumentValue), $subject.getDouble());
+        assertEquals(expectedValue(argumentValue), valueFromSubject($subject));
       }
       equalsWithNull($subject.getDouble(), $subject.getDouble());
     }
@@ -223,6 +223,8 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   protected abstract void changeArgument(_EAB_ editableArgumentBeed, _Number_ newValue);
 
   protected abstract _Number_ expectedValue(_Number_ argumentValue);
+
+  protected abstract _Number_ valueFromSubject(_UEB_ argumentBeed);
 
   protected abstract _Number_ valueFrom(_ArgumentBeed_ argumentBeed);
 

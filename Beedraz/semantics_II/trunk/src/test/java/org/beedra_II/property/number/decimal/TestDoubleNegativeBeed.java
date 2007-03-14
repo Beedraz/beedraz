@@ -47,4 +47,9 @@ public class TestDoubleNegativeBeed
     return new DoubleNegativeBeed(owner);
   }
 
+  @Override
+  protected Double valueFromSubject(DoubleNegativeBeed argumentBeed) {
+    return argumentBeed.getDouble();
+  }
+
 }

@@ -38,7 +38,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleUnaryExpressionBeed
+public abstract class AbstractDoubleUnaryExpressionBeed
     extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>
     implements DoubleBeed<DoubleEvent> {
 
@@ -47,21 +47,12 @@ public class DoubleUnaryExpressionBeed
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public DoubleUnaryExpressionBeed(AggregateBeed owner) {
+  protected AbstractDoubleUnaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 
   public final Double getDouble() {
     return get();
-  }
-
-  /**
-   * @pre argumentValue != null;
-   */
-  @Override
-  protected final Double calculateValue(Double argumentValue) {
-    assert argumentValue != null;
-    return 1.0d / argumentValue;
   }
 
   /**
@@ -78,17 +69,17 @@ public class DoubleUnaryExpressionBeed
   }
 
   @Override
-  protected DoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
+  protected final DoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
     return new ActualDoubleEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  protected Double valueFrom(DoubleBeed<DoubleEvent> beed) {
+  protected final Double valueFrom(DoubleBeed<DoubleEvent> beed) {
     return beed.getDouble();
   }
 
   @Override
-  protected Double newValueFrom(DoubleEvent event) {
+  protected final Double newValueFrom(DoubleEvent event) {
     return event.getNewDouble();
   }
 

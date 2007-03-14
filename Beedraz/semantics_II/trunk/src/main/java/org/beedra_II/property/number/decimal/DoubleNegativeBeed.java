@@ -18,11 +18,7 @@ package org.beedra_II.property.number.decimal;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.edit.Edit;
-import org.beedra_II.property.decimal.ActualDoubleEvent;
 import org.beedra_II.property.decimal.DoubleBeed;
-import org.beedra_II.property.decimal.DoubleEvent;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -36,8 +32,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class DoubleNegativeBeed
-    extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>
-    implements DoubleBeed<DoubleEvent> {
+    extends AbstractDoubleUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;
@@ -48,10 +43,6 @@ public class DoubleNegativeBeed
     super(owner);
   }
 
-  public final Double getDouble() {
-    return get();
-  }
-
   /**
    * @pre argumentValue != null;
    */
@@ -59,34 +50,6 @@ public class DoubleNegativeBeed
   protected final Double calculateValue(Double argumentValue) {
     assert argumentValue != null;
     return -argumentValue;
-  }
-
-  /**
-   * @post  result != null;
-   * @post  result.getArgument() == this;
-   * @post  result.getOldInteger() == null;
-   * @post  result.getNewInteger() == getInteger();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final DoubleEvent createInitialEvent() {
-    return new ActualDoubleEvent(this, null, get(), null);
-  }
-
-  @Override
-  protected DoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
-    return new ActualDoubleEvent(this, oldValue, newValue, edit);
-  }
-
-  @Override
-  protected Double valueFrom(DoubleBeed<DoubleEvent> beed) {
-    return beed.getDouble();
-  }
-
-  @Override
-  protected Double newValueFrom(DoubleEvent event) {
-    return event.getNewDouble();
   }
 
 }

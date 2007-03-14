@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *        If the values of all beeds in the given set are effective,
  *        then the value of the standard error beed is the standard error of the values of
  *        all beeds in the given set. The standard error of an empty set or of a set containing
- *        only one element is null.
+ *        only one element is NaN.
  *        e.g. when  getSource() = {1, 2, 3, 4}
  *             then  getDouble() = Math.sqrt(dividend/divisor)
  *             where divisor = 4*3
@@ -59,7 +59,7 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
    * The value of $value is recalculated. This is done by iterating over the beeds
    * in the source set beed.
    * When the source is null, the result is null.
-   * When the source contains zero or one beeds, the result is null.
+   * When the source contains zero or one beeds, the result is Double.NaN.
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is the standard error of the values
    * of the beeds.
@@ -71,7 +71,7 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
     }
     else if (getSource().get().size() == 0 ||
              getSource().get().size() == 1) {
-      standardError = null;
+      standardError = Double.NaN;
     }
     else {
       assert getSource() != null;

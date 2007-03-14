@@ -52,7 +52,7 @@ public abstract class ComparisonUtil {
    * @return  result == Math.abs(d1-d2) < error;
    */
   public static boolean assertEquals(Double d1, Double d2, Double error) {
-    return Math.abs(d1-d2) < error;
+    return Math.abs(d1-d2) <= error;
   }
 
 }

@@ -75,9 +75,9 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
 
   /**
    * @pre   owner != null;
-   * @pre   BeedMapping != null;
+   * @pre   mapping != null;
    * @post  getOwner() == owner;
-   * @post  getBeedMapping() == BeedMapping;
+   * @post  getBeedMapping() == mapping;
    * @post  getSource() == null;
    * @post  get() != null;
    * @post  get().isEmpty();
@@ -88,7 +88,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
   }
 
 
-  /*<property name="BeedMapping">*/
+  /*<property name="mapping">*/
   //------------------------------------------------------------------
 
   /**
@@ -116,7 +116,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
   /**
    * @param   source
    * @post    getSource() == source;
-   * @post    get() == the result of BeedMapping the given source
+   * @post    get() == the result of mapping the given source
    * @post    The MappedSetBeed is registered as a listener of the given SetBeed.
    * @post    The MappedSetBeed is registered as a listener of all beeds in
    *          the given source. (The reason is that the MappedSetBeed should be
@@ -162,7 +162,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
      *          of the beeds changes.)
      * @post    The MappedSetBeed is removed as listener of all beeds
      *          that are removed from the source by the given event.
-     * @post    get() == the result of BeedMapping the elements of the given source
+     * @post    get() == the result of mapping the elements of the given source
      * @post    The listeners of this beed are notified when the set changes.
      */
     public void beedChanged(SetEvent<_From_> event) {
@@ -197,7 +197,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
   private final Listener<_FromEvent_> $beedListener = new Listener<_FromEvent_>() {
 
     /**
-     * @post    get() == the result of BeedMapping the elements of the given source
+     * @post    get() == the result of mapping the elements of the given source
      * @post    The listeners of this beed are notified.
      */
     public void beedChanged(_FromEvent_ event) {

@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *            ==> getDouble() == avg { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective,
  *        then the value of the mean beed is the mean of the values of all beeds in the
- *        given set. The mean of an empty set is null.
+ *        given set. The mean of an empty set is NaN.
  *        e.g. getDouble() = (5.1 + 3.2 + 4.9) / 3
  */
 @CvsInfo(revision = "$Revision$",
@@ -63,7 +63,7 @@ public class DoubleMeanBeed extends DoubleSetComputationBeed {
    * Compute the mean of the values of the double beeds in the given set beed.
    * This is done by iterating over the beeds in the source set beed.
    * When the source is null, the result is null.
-   * When the source contains zero beeds, the result is null.
+   * When the source contains zero beeds, the result is {@link Double.NaN}.
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is the average of the values of the beeds.
    */
@@ -73,7 +73,7 @@ public class DoubleMeanBeed extends DoubleSetComputationBeed {
       mean = null;
     }
     else if (source.get().size() == 0) {
-      mean = null;
+      mean = Double.NaN;
     }
     else {
       // assert source != null;

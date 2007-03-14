@@ -125,7 +125,7 @@ public class TestDoubleMeanBeed {
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleMeanBeed);
     assertEquals($listener3.$event.getOldDouble(), null);
-    assertEquals($listener3.$event.getNewDouble(), 10.0/4);
+    assertEquals($listener3.$event.getNewDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
     assertEquals($listener3.$event.getEdit(), null);
     // The DoubleMeanBeed is registered as listener of the source, so when
     // the source changes, the beed should be notified
@@ -137,8 +137,8 @@ public class TestDoubleMeanBeed {
     setEdit.perform();
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleMeanBeed);
-    assertEquals($listener3.$event.getOldDouble(), 10.0/4);
-    assertEquals($listener3.$event.getNewDouble(), 15.0/5);
+    assertEquals($listener3.$event.getOldDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
+    assertEquals($listener3.$event.getNewDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0, 5.0));
     assertEquals($listener3.$event.getEdit(), setEdit);
     // The DoubleMeanBeed is registered as listener of all double beeds in the source,
     // so when one of them changes, the beed should be notified
@@ -216,7 +216,7 @@ public class TestDoubleMeanBeed {
     $doubleMeanBeed.setSource(source);
     // recalculate (setBeed contains no elements)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), null);
+    assertEquals($doubleMeanBeed.getDouble(), Double.NaN);
     // add beed
     SetEdit<DoubleBeed<DoubleEvent>> setEdit =
       new SetEdit<DoubleBeed<DoubleEvent>>(source);
@@ -288,7 +288,7 @@ public class TestDoubleMeanBeed {
     // add set beed to mean beed
     $doubleMeanBeed.setSource(setBeed);
     // add beed
-    assertEquals($doubleMeanBeed.getDouble(), null);
+    assertEquals($doubleMeanBeed.getDouble(), Double.NaN);
     SetEdit<DoubleBeed<DoubleEvent>> setEdit =
       new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed1);
@@ -325,11 +325,11 @@ public class TestDoubleMeanBeed {
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed4);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), null);
+    assertEquals($doubleMeanBeed.getDouble(), Double.NaN);
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed4); // remove an element that is not there
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), null);
+    assertEquals($doubleMeanBeed.getDouble(), Double.NaN);
     // change beeds of the source
     setBeed = new EditableSetBeed<DoubleBeed<DoubleEvent>>($owner);
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);

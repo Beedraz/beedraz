@@ -34,6 +34,7 @@ import org.beedra_II.property.number.AbstractNegativeBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
@@ -79,14 +80,14 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   public void testSetArgument_1() {
     $subject.setArgument(null);
     validateSubjectFromArgument(null);
-    validateEvent(false, null, null);
+    validateEvent(null, null);
   }
 
   @Test
   public void testSetArgument_2() {
     $subject.setArgument($argumentDoubleBeed);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(false, null, null);
+    validateEvent(null, null);
   }
 
   @Test
@@ -95,24 +96,24 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     $subject.addListener($listener);
     $subject.setArgument($argumentDoubleBeed);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, null, $goal1);
+    validateEvent(null, $goal1);
     $subject.setArgument($argumentDoubleBeed);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(false, null, null);
+    validateEvent(null, null);
     $subject.setArgument(null);
     validateSubjectFromArgument(null);
-    validateEvent(true, $goal1, null);
+    validateEvent($goal1, null);
     $subject.setArgument($argumentDoubleBeed);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, null, $goal1);
+    validateEvent(null, $goal1);
     changeArgument($argumentDoubleBeed2, $goal2);
     $subject.setArgument($argumentDoubleBeed2);
     validateSubjectFromArgument($argumentDoubleBeed2);
-    validateEvent(true, $goal1, $goal2);
+    validateEvent($goal1, $goal2);
     changeArgument($argumentDoubleBeed, $goal2);
     $subject.setArgument($argumentDoubleBeed);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(false, null, null);
+    validateEvent(null, null);
   }
 
   @Test
@@ -122,29 +123,35 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     changeArgument($argumentDoubleBeed, $goal1);
     $subject.setArgument($argumentDoubleBeed);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, null, $goal1);
+    validateEvent(null, $goal1);
     changeArgument($argumentDoubleBeed, $goal2);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, $goal1, $goal2);
+//    System.out.println("$goal1: " + $goal1);
+//    System.out.println("ln($goal1): " + Math.log((Double)$goal1));
+//    System.out.println("$goal2: " + $goal2);
+//    System.out.println("ln($goal2): " + Math.log((Double)$goal2));
+    validateEvent($goal1, $goal2);
     changeArgument($argumentDoubleBeed, $goal2);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(false, null, null);
+    validateEvent(null, null);
     changeArgument($argumentDoubleBeed, null);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, $goal2, null);
+    validateEvent($goal2, null);
     changeArgument($argumentDoubleBeed, null);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(false, null, null);
+    validateEvent(null, null);
     changeArgument($argumentDoubleBeed, $goalMIN);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, null, $goalMIN);
+    validateEvent(null, $goalMIN);
     changeArgument($argumentDoubleBeed, $goalMAX);
     validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(true, $goalMIN, $goalMAX);
+    validateEvent($goalMIN, $goalMAX);
   }
 
-  private void validateEvent(boolean eventSent, _Number_ oldV, _Number_ newV) {
-    if (eventSent) {
+  private void validateEvent(_Number_ oldV, _Number_ newV) {
+    _Number_ expectedOldValue = oldV == null ? null : expectedValue(oldV);
+    _Number_ expectedNewValue = newV == null ? null : expectedValue(newV);
+    if (! MathUtil.equalValue(expectedOldValue, expectedNewValue)) {
       assertNotNull($listener.$event);
       if (oldV == null) {
         assertNull(oldValueFrom($listener.$event));

@@ -33,6 +33,32 @@ public class MathUtil {
   /**
    * NaN's are equal.
    */
+  public static boolean equalValue(Number n1, Number n2) {
+    if (n1 instanceof Double) {
+      return equalValue((Double)n1, n2);
+    }
+    else if (n1 instanceof Float) {
+      return equalValue((Float)n1, n2);
+    }
+    else if (n1 instanceof Long) {
+      return equalValue((Long)n1, n2);
+    }
+    else {
+      if (n1 == null) {
+        return n2 == null;
+      }
+      else if (n2 == null) {
+        return false;
+      }
+      else {
+        return n1.equals(n2);
+      }
+    }
+  }
+
+  /**
+   * NaN's are equal.
+   */
   public static boolean equalValue(Double d, Number n) {
     if (d == null) {
       return n == null;
@@ -187,7 +213,7 @@ public class MathUtil {
     double mean = 0.0;
     for (double value : doubles) {
       mean += value;
-    }
+}
     return mean / doubles.length;
   }
 
@@ -205,4 +231,3 @@ public class MathUtil {
     return Math.sqrt(standardError);
   }
 }
-

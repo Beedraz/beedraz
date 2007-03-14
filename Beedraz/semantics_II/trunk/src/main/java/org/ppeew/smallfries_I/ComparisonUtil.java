@@ -42,5 +42,18 @@ public abstract class ComparisonUtil {
      */
   }
 
+  /**
+   * Returns true when the difference between the two given numbers is
+   * smaller than the given error.
+   *
+   * @pre     d1 != null;
+   * @pre     d2 != null;
+   * @pre     error != null;
+   * @return  result == Math.abs(d1-d2) < error;
+   */
+  public static boolean assertEquals(Double d1, Double d2, Double error) {
+    return Math.abs(d1-d2) < error;
+  }
+
 }
 

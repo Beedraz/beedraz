@@ -27,12 +27,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>A beed that is the inverse of an {@link #getArgument() argument}
- *   {@link DoubleBeed}.</p>
- * <p><strong>Warning: division reduces the number of meaningful numbers in the quotient
- *   to a large degree.</strong> {@code 1 / (1 / x) != x} with floating point arithmetic.
- *
- * @mudo overflow: -MIN_VALUE == MIN_VALUE
+ * <p>General code for Double implementations of {@link AbstractUnaryExpressionBeed}.</p>
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

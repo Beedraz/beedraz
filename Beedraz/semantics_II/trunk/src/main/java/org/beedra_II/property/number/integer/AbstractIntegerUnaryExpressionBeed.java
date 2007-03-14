@@ -29,12 +29,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the negative of a {@link #getArgument() argument} {@link IntegerBeed}.
- *
- * @invar getArgument() == null ? getInteger() == null;
- * @invar getArgument() != null ? getInteger() == - getArgument().getInteger();
- *
- * @mudo overflow: -MIN_VALUE == MIN_VALUE
+ * <p>General code for Intger implementations of {@link AbstractUnaryExpressionBeed}.</p>
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

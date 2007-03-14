@@ -34,6 +34,7 @@ import org.beedra_II.property.collection.set.SetEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 public class TestDoubleMeanBeed {
@@ -119,7 +120,7 @@ public class TestDoubleMeanBeed {
     EditableSetBeed<DoubleBeed<DoubleEvent>> source = createSource();
     $doubleMeanBeed.setSource(source);
     assertEquals($doubleMeanBeed.getSource(), source);
-    assertEquals($doubleMeanBeed.getDouble(), 10.0/4);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
     // value has changed, so the listeners of the mean beed are notified
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleMeanBeed);
@@ -172,7 +173,7 @@ public class TestDoubleMeanBeed {
     doubleEdit.setGoal(7.0);
     doubleEdit.perform();
     assertNull($listener3.$event); // the DoubleMeanBeed is NOT notified
-    assertEquals($doubleMeanBeed.getDouble(), 10.0/4);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
 
   }
 
@@ -223,34 +224,34 @@ public class TestDoubleMeanBeed {
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), 1.0);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0));
     // recalculate (setBeed contains beed 1)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), 1.0);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), 3.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0));
     // recalculate (setBeed contains beed 1 and 2)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), 3.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), 6.0/3);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
     $doubleMeanBeed.recalculate();
-    assertEquals($doubleMeanBeed.getDouble(), 10.0/4);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
     // add beed
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
     setEdit.addElementToAdd(beedNull);
@@ -292,35 +293,35 @@ public class TestDoubleMeanBeed {
       new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 1.0);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 3.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 6.0/3);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 10.0/4);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed); // add an element that is already there
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 10.0/4);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0, 4.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed1);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 9.0/3);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(2.0, 3.0, 4.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed2);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 7.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(3.0, 4.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed3);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 4.0/1);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(4.0));
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToRemove(beed4);
     setEdit.perform();
@@ -338,36 +339,36 @@ public class TestDoubleMeanBeed {
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     $doubleMeanBeed.setSource(setBeed);
-    assertEquals($doubleMeanBeed.getDouble(), 3.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0));
     DoubleEdit doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.5);
     doubleEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 3.5/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.5, 2.0));
     doubleEdit = new DoubleEdit(beed2);
     doubleEdit.setGoal(2.5);
     doubleEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 4.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.5, 2.5));
     doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.0);
     doubleEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 3.5/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.5));
     doubleEdit = new DoubleEdit(beed2);
     doubleEdit.setGoal(2.0);
     doubleEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 3.0/2);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0));
     // change beeds that are added later to the source
     setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 6.0/3);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.0));
     doubleEdit = new DoubleEdit(beed3);
     doubleEdit.setGoal(3.5);
     doubleEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 6.5/3);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.5));
     doubleEdit = new DoubleEdit(beed3);
     doubleEdit.setGoal(3.7);
     doubleEdit.perform();
-    assertEquals($doubleMeanBeed.getDouble(), 6.7/3);
+    assertEquals($doubleMeanBeed.getDouble(), MathUtil.mean(1.0, 2.0, 3.7));
   }
 
   private EditableSetBeed<DoubleBeed<DoubleEvent>> createSource() throws EditStateException, IllegalEditException {

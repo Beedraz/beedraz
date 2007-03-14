@@ -18,6 +18,7 @@ package org.beedra_II.property.decimal;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.collection.set.SetBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -50,39 +51,47 @@ public class DoubleMeanBeed extends DoubleSetComputationBeed {
   }
 
   /**
-   * The value of $value is recalculated. This is done by iterating over the beeds
-   * in the source set beed.
+   * The value of this beed is recalculated.
+   * See {@link #mean(SetBeed)}.
+   */
+  @Override
+  public void recalculate() {
+    setValue(mean(getSource()));
+  }
+
+  /**
+   * Compute the mean of the values of the double beeds in the given set beed.
+   * This is done by iterating over the beeds in the source set beed.
    * When the source is null, the result is null.
    * When the source contains zero beeds, the result is null.
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is the average of the values of the beeds.
    */
-  @Override
-  public void recalculate() {
-    Double newValue;
-    if (getSource() == null) {
-      newValue = null;
+  public static Double mean(final SetBeed<DoubleBeed<DoubleEvent>, ?> source) {
+    Double mean;
+    if (source == null) {
+      mean = null;
     }
-    else if (getSource().get().size() == 0) {
-      newValue = null;
+    else if (source.get().size() == 0) {
+      mean = null;
     }
     else {
-      assert getSource() != null;
-      assert getSource().get().size() > 0;
-      newValue = 0.0;
-      for (DoubleBeed<DoubleEvent> beed : getSource().get()) {
-        Double beedValue = beed.getDouble();
-        if (beedValue == null) {
-          newValue = null;
+      // assert source != null;
+      assert source.get().size() > 0;
+      mean = 0.0;
+      for (DoubleBeed<DoubleEvent> doubleBeed : source.get()) {
+        Double value = doubleBeed.getDouble();
+        if (value == null) {
+          mean = null;
           break;
         }
-        newValue += beedValue; // autoboxing
+        mean += value; // autoboxing
       }
-      if (newValue != null) {
-        newValue = newValue / getSource().get().size(); // divisor is not zero (see if-condition)!
+      if (mean != null) {
+        mean = mean / source.get().size(); // divisor is not zero (see if-condition)!
       }
     }
-    setValue(newValue);
+    return mean;
   }
 
 }

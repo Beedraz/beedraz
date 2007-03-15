@@ -23,22 +23,22 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that computes the mean of a given set of beeds of type
+ * A beed that computes the arithmetic mean of a given set of beeds of type
  * {@link DoubleBeed}.
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
  *            ==> getDouble() == avg { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective,
- *        then the value of the mean beed is the mean of the values of all beeds in the
- *        given set. The mean of an empty set is NaN.
+ *        then the value of the arithmetic mean beed is the arithmetic mean of
+ *        the values of all beeds in the given set. The mean of an empty set is NaN.
  *        e.g. getDouble() = (5.1 + 3.2 + 4.9) / 3
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleMeanBeed extends DoubleSetComputationBeed {
+public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
 
 
   /**
@@ -46,7 +46,7 @@ public class DoubleMeanBeed extends DoubleSetComputationBeed {
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleMeanBeed(AggregateBeed owner) {
+  public DoubleArithmeticMeanBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -60,7 +60,8 @@ public class DoubleMeanBeed extends DoubleSetComputationBeed {
   }
 
   /**
-   * Compute the mean of the values of the double beeds in the given set beed.
+   * Compute the arithmetic mean of the values of the double beeds in the given
+   * set beed.
    * This is done by iterating over the beeds in the source set beed.
    * When the source is null, the result is null.
    * When the source contains zero beeds, the result is {@link Double.NaN}.

@@ -78,7 +78,7 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
       assert getSource() != null;
       assert getSource().get().size() > 1;
       // compute the average
-      Double average = DoubleMeanBeed.mean(getSource());
+      Double average = DoubleArithmeticMeanBeed.mean(getSource());
       if (average != null) {
         // we know here that the values of all beeds are effective, so we do not need
         // to check this

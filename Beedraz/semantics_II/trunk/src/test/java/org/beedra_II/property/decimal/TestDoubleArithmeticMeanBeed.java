@@ -149,8 +149,8 @@ public class TestDoubleArithmeticMeanBeed {
     doubleEdit.perform();
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleArithmeticMeanBeed);
-    assertEquals($listener3.$event.getOldDouble(), 15.0/5);
-    assertEquals($listener3.$event.getNewDouble(), 16.0/5);
+    assertEquals($listener3.$event.getOldDouble(), MathUtil.arithmeticMean(1.0, 2.0, 3.0, 4.0, 5.0));
+    assertEquals($listener3.$event.getNewDouble(), MathUtil.arithmeticMean(1.0, 2.0, 3.0, 4.0, 6.0));
     assertEquals($listener3.$event.getEdit(), doubleEdit);
     // When a new beed is added to the source, the DoubleArithmeticMeanBeed is added as a listener
     // of that beed. See above.
@@ -164,8 +164,8 @@ public class TestDoubleArithmeticMeanBeed {
     setEdit.perform();
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleArithmeticMeanBeed);
-    assertEquals($listener3.$event.getOldDouble(), 16.0/5);
-    assertEquals($listener3.$event.getNewDouble(), 10.0/4);
+    assertEquals($listener3.$event.getOldDouble(), MathUtil.arithmeticMean(1.0, 2.0, 3.0, 4.0, 6.0));
+    assertEquals($listener3.$event.getNewDouble(), MathUtil.arithmeticMean(1.0, 2.0, 3.0, 4.0));
     assertEquals($listener3.$event.getEdit(), setEdit);
     $listener3.reset();
     assertNull($listener3.$event);

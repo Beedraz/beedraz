@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2007 - $Date$ by PeopleWare n.v..
+Copyright 2007 - $Date$ by PeopleWare n.v.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,35 +14,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppeew.annotations_I.vcs;
+package org.ppeew.annotations_I;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * Annotation for CVS meta-data. By using this annotation,
- * the CVS data about the source revision the compiled code is based on,
- * is available in the code.
+ * Annotation for copyright information. By using this annotation,
+ * the copyright information is available in the code.
  *
  * Usage pattern:
  * <pre>
- * ATCvsInfo(revision = &quot;$Revision$&quot;,
- *           date     = &quot;$Date$&quot;,
- *           state    = &quot;$State$&quot;,
- *           tag      = &quot;$Name$&quot;)
+ * ATCopyright(&quot;2007 - $Date$, PeopleWare n.v.&quot;)
  * public class ... {
  *  ...
- *  }
+ * }
  * </pre>
  *
  * @author    Jan Dockx
@@ -56,26 +50,13 @@ import org.ppeew.annotations_I.License;
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface CvsInfo {
+public @interface Copyright {
 
   /**
-   * Source code revision. Fill out with &quot;$Revision$&quot;
+   * The copyright notice. This should start with the period in which the contents
+   * (the authored expression) if the file was created (e.g., <var>start year - end year</var>),
+   * and the name of the copyright holder.
    */
-  String revision();
-
-  /**
-   * Source code revision. Fill out with &quot;$Date$&quot;
-   */
-  String date();
-
-  /**
-   * Source code revision. Fill out with &quot;$State$&quot;
-   */
-  String state();
-
-  /**
-   * Source code revision. Fill out with &quot;$Name$&quot;
-   */
-  String tag();
+  String value();
 
 }

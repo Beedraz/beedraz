@@ -95,7 +95,8 @@ public class MathUtil {
         else {
           delta = Math.abs(dv - nv);
         }
-        return delta <= ulp(dv);
+        double ulp2 = 2 * ulp(dv);
+        return delta <= ulp2;
       }
     }
   }
@@ -158,7 +159,7 @@ public class MathUtil {
         else {
           delta = Math.abs(fv - nv);
         }
-        return delta <= ulp(fv);
+        return delta <= 2 * ulp(fv);
       }
     }
   }
@@ -257,7 +258,7 @@ public class MathUtil {
     double mean = 0.0;
     for (double value : doubles) {
       mean += value;
-    }
+}
     return mean / doubles.length;
   }
 

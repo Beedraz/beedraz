@@ -77,12 +77,14 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       $leftArgument.removeListener($leftArgumentListener);
     }
     $leftArgument = leftArgument;
-    if ($leftArgument != null) {
+    if (($leftArgument != null) && ($rightArgument != null)) {
       assignValue(calculateValueInternal(valueFromLeft($leftArgument), valueFromRight($rightArgument)));
-      $leftArgument.addListener($leftArgumentListener);
     }
     else {
       assignValue(null);
+    }
+    if ($leftArgument != null) {
+      $leftArgument.addListener($leftArgumentListener);
     }
     fireEvent(oldValue, null);
   }
@@ -97,9 +99,11 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
   private Listener<_NumberEvent_> $leftArgumentListener = new Listener<_NumberEvent_>() {
 
     public void beedChanged(_NumberEvent_ event) {
-      _Number_ oldValue = get();
-      assignValue(calculateValueInternal(newValueFrom(event), valueFromRight($rightArgument)));
-      fireEvent(oldValue, event.getEdit());
+      if ($rightArgument != null) {
+        _Number_ oldValue = get();
+        assignValue(calculateValueInternal(newValueFrom(event), valueFromRight($rightArgument)));
+        fireEvent(oldValue, event.getEdit());
+      }
     }
 
   };
@@ -126,12 +130,14 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       $rightArgument.removeListener($rightArgumentListener);
     }
     $rightArgument = rightArgument;
-    if ($rightArgument != null) {
+    if (($leftArgument != null) && ($rightArgument != null)) {
       assignValue(calculateValueInternal(valueFromLeft($leftArgument), valueFromRight($rightArgument)));
-      $rightArgument.addListener($rightArgumentListener);
     }
     else {
       assignValue(null);
+    }
+    if ($rightArgument != null) {
+      $rightArgument.addListener($rightArgumentListener);
     }
     fireEvent(oldValue, null);
   }
@@ -146,9 +152,11 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
   private Listener<_NumberEvent_> $rightArgumentListener = new Listener<_NumberEvent_>() {
 
     public void beedChanged(_NumberEvent_ event) {
-      _Number_ oldValue = get();
-      assignValue(calculateValueInternal(valueFromLeft($leftArgument), newValueFrom(event)));
-      fireEvent(oldValue, event.getEdit());
+      if ($leftArgument != null) {
+        _Number_ oldValue = get();
+        assignValue(calculateValueInternal(valueFromLeft($leftArgument), newValueFrom(event)));
+        fireEvent(oldValue, event.getEdit());
+      }
     }
 
   };

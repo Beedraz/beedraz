@@ -61,7 +61,7 @@ public class DoubleExponentBeed
   /**
    * @basic
    */
-  public final DoubleBeed<?> getExponent() {
+  public final DoubleBeed<DoubleEvent> getExponent() {
     return getRightArgument();
   }
 

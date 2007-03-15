@@ -174,7 +174,7 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   }
 
   private void validateSubjectFromArgument(_EAB_ argument) {
-    System.out.println("argument: " + argument + "  ##  $subject: "+ $subject);
+//    System.out.println("argument: " + argument + "  ##  $subject: "+ $subject);
     assertEquals(argument, $subject.getArgument());
     if (argument != null) {
       assertNotNull($subject.getArgument());

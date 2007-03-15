@@ -61,7 +61,8 @@ public class ActualOldNewEvent<_Type_>
                      _Type_ newValue,
                      Edit<?> edit) {
     super(source, edit);
-    assert (oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true;
+    assert ((oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true) :
+           "oldValue: " + oldValue + "; newValue: " + newValue;
     $oldValue = oldValue;
     $newValue = newValue;
   }

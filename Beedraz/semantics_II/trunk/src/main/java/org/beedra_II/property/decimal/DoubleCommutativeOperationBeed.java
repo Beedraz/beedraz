@@ -27,6 +27,7 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -165,7 +166,9 @@ public abstract class DoubleCommutativeOperationBeed
         $value = (argument.getDouble() == null)
                    ? null
                    : recalculateValueAdded($value, argument.getDouble(), 1);
-        fireChangeEvent(new ActualDoubleEvent(this, oldValue, $value, null));
+        if (! MathUtil.equalValue(oldValue, $value)) {
+          fireChangeEvent(new ActualDoubleEvent(this, oldValue, $value, null));
+        }
       }
       // otherwise, there is an existing null argument; the new argument cannot change null value
     }

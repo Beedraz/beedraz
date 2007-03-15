@@ -33,7 +33,6 @@ import org.beedra_II.property.integer.IntegerEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.smallfries_I.ComparisonUtil;
 
 public class TestDoubleProductBeed {
 
@@ -552,7 +551,7 @@ public class TestDoubleProductBeed {
     assertEquals(factor5.get(), value7);
     // check (product = 7 * 7 * 7)
     assertTrue($doubleProductBeed.getNbOccurrences(factor5) == 3);
-    assertTrue(ComparisonUtil.assertEquals($doubleProductBeed.getDouble(), 343.0, Util.DOUBLE_ABSOLUTE_ERROR));
+    assertTrue(equalValue($doubleProductBeed.getDouble(), 343.0));
     // change 7 to 11
     edit5 = new DoubleEdit(factor5);
     Double value11 = 11.0;
@@ -561,7 +560,7 @@ public class TestDoubleProductBeed {
     assertEquals(factor5.get(), value11);
     // check (product = 11 * 11 * 11)
     assertTrue($doubleProductBeed.getNbOccurrences(factor5) == 3);
-    assertTrue(ComparisonUtil.assertEquals($doubleProductBeed.getDouble(), 1331.0, Util.DOUBLE_ABSOLUTE_ERROR));
+    assertTrue(equalValue($doubleProductBeed.getDouble(), 1331.0));
     // change 11 to null
     edit5 = new DoubleEdit(factor5);
     Double valueNull = null;

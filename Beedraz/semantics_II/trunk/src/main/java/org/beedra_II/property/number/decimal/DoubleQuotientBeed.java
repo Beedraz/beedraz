@@ -61,7 +61,7 @@ public class DoubleQuotientBeed
   /**
    * @basic
    */
-  public final DoubleBeed<?> getDenominator() {
+  public final DoubleBeed<DoubleEvent> getDenominator() {
     return getRightArgument();
   }
 

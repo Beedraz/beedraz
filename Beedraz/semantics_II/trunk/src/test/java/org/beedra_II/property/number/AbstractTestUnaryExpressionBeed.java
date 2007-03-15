@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.ppeew.smallfries_I.ComparisonUtil.equalsWithNull;
+import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.StubAggregateBeed;
@@ -30,7 +30,6 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.property.decimal.DoubleBeed;
 import org.beedra_II.property.decimal.DoubleEvent;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -158,14 +157,14 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
       }
       else {
         assertNotNull($listener.$event.getOldDouble());
-        assertEquals(expectedValue(oldV), oldValueFrom($listener.$event));
+        assertTrue(equalValue(expectedValue(oldV), oldValueFrom($listener.$event)));
       }
       if (newV == null) {
         assertNull(newValueFrom($listener.$event));
       }
       else {
         assertNotNull(newValueFrom($listener.$event));
-        assertEquals(expectedValue(newV), newValueFrom($listener.$event));
+        assertTrue(equalValue(expectedValue(newV), newValueFrom($listener.$event)));
       }
     }
     else {
@@ -185,9 +184,9 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
       }
       else {
         assertNotNull($subject.getDouble());
-        assertEquals(expectedValue(argumentValue), valueFromSubject($subject));
+        assertTrue(equalValue(expectedValue(argumentValue), valueFromSubject($subject)));
       }
-      equalsWithNull($subject.getDouble(), $subject.getDouble());
+//      equalsWithNull($subject.getDouble(), $subject.getDouble());
     }
     else {
       assertNull($subject.getArgument());

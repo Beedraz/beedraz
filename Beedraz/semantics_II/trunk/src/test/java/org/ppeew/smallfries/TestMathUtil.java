@@ -163,10 +163,10 @@ public class TestMathUtil {
                          (Double.isInfinite(nValue) && (Math.signum(dValue) == Math.signum(nValue))) ?
                            0 :
                            Double.POSITIVE_INFINITY;
-        if (delta <= ulp(dValue) != result) {
+        if (delta <= 2 * ulp(dValue) != result) {
           System.out.println("d = " + d + "; n = " + n + "; result = " + result + "; ulp: " + ulp(dValue) + "; delta: " + delta + "; delta <= ulp(dValue): " + (delta <= ulp(dValue)));
         }
-        assertEquals(delta <= ulp(dValue), result);
+        assertEquals(delta <= 2 * ulp(dValue), result);
       }
     }
   }
@@ -235,10 +235,10 @@ public class TestMathUtil {
                          (Float.isInfinite(nValue) && (Math.signum(fValue) == Math.signum(nValue))) ?
                            0 :
                            Float.POSITIVE_INFINITY;
-        if (delta <= ulp(fValue) != result) {
+        if (delta <= 2 * ulp(fValue) != result) {
           System.out.println("f = " + f + "; n = " + n + "; result = " + result + "; ulp: " + ulp(fValue) + "; delta: " + delta + "; delta <= ulp(fValue): " + (delta <= ulp(fValue)));
         }
-        assertEquals(delta <= ulp(fValue), result);
+        assertEquals(delta <= 2 * ulp(fValue), result);
       }
     }
   }

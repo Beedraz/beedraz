@@ -252,7 +252,7 @@ public class TestMappedSetBeed {
     // This cannot be tested with this mapping, because the cq beed cannot be changed.
     // See setSource3
 
-    // When a new beed is added to the source, the DoubleMeanBeed is added as a listener
+    // When a new beed is added to the source, the MappedSetBeed is added as a listener
     // of that beed. See setSource3.
 
     // When a beed is removed from the source, the MappedSetBeed is removed as listener
@@ -276,7 +276,7 @@ public class TestMappedSetBeed {
     IntegerEdit integerEdit = new IntegerEdit(goal.cq);
     integerEdit.setGoal(7);
     integerEdit.perform();
-    assertNull($listener3.$event); // the DoubleMeanBeed is NOT notified
+    assertNull($listener3.$event); // the MappedSetBeed is NOT notified
     // and the value of the mapped set beed is correct
     Set<IntegerBeed> result = new HashSet<IntegerBeed>();
     result.add($well1.cq);
@@ -339,7 +339,7 @@ public class TestMappedSetBeed {
     assertTrue(mappedSetBeed.get().contains($well2.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well3.cq.get()));
     assertTrue(mappedSetBeed.get().contains(goal.cq.get()));
-    // When a new beed is added to the source, the DoubleMeanBeed is added as a listener
+    // When a new beed is added to the source, the MappedSetBeed is added as a listener
     // of that beed. See above.
   }
 

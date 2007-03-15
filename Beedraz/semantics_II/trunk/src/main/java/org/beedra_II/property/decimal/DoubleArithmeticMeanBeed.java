@@ -66,7 +66,8 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
    * When the source is null, the result is null.
    * When the source contains zero beeds, the result is {@link Double.NaN}.
    * When one of the terms is null, the result is null.
-   * When all terms are effective, the result is the average of the values of the beeds.
+   * When all terms are effective, the result is the arithmetic mean
+   * of the values of the beeds.
    */
   public static Double mean(final SetBeed<DoubleBeed<DoubleEvent>, ?> source) {
     Double mean;

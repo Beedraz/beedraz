@@ -6,12 +6,14 @@
 
 package org.ppeew.smallfries;
 
+import static java.lang.Math.abs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import static org.ppeew.smallfries_I.MathUtil.castToFloat;
 import static org.ppeew.smallfries_I.MathUtil.castToLong;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
+import static org.ppeew.smallfries_I.MathUtil.ulp;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -156,7 +158,15 @@ public class TestMathUtil {
       else {
         double dValue = d.doubleValue();
         double nValue = n.doubleValue();
-        assertEquals(dValue == nValue, result);
+        double delta = ! Double.isInfinite(dValue) ?
+                         abs(dValue - nValue) :
+                         (Double.isInfinite(nValue) && (Math.signum(dValue) == Math.signum(nValue))) ?
+                           0 :
+                           Double.POSITIVE_INFINITY;
+        if (delta <= ulp(dValue) != result) {
+          System.out.println("d = " + d + "; n = " + n + "; result = " + result + "; ulp: " + ulp(dValue) + "; delta: " + delta + "; delta <= ulp(dValue): " + (delta <= ulp(dValue)));
+        }
+        assertEquals(delta <= ulp(dValue), result);
       }
     }
   }
@@ -220,7 +230,15 @@ public class TestMathUtil {
       else {
         float fValue = f.floatValue();
         float nValue = n.floatValue();
-        assertEquals(fValue == nValue, result);
+        float delta = ! Float.isInfinite(fValue) ?
+                         abs(fValue - nValue) :
+                         (Float.isInfinite(nValue) && (Math.signum(fValue) == Math.signum(nValue))) ?
+                           0 :
+                           Float.POSITIVE_INFINITY;
+        if (delta <= ulp(fValue) != result) {
+          System.out.println("f = " + f + "; n = " + n + "; result = " + result + "; ulp: " + ulp(fValue) + "; delta: " + delta + "; delta <= ulp(fValue): " + (delta <= ulp(fValue)));
+        }
+        assertEquals(delta <= ulp(fValue), result);
       }
     }
   }
@@ -252,7 +270,6 @@ public class TestMathUtil {
   public void testCastToDoubleFloat() {
     for (Float f : fs) {
       Double result = castToDouble(f);
-      System.out.println(f + " --> " + result);
       assertTrue(equalValue(result, f));
     }
   }

@@ -17,6 +17,10 @@ limitations under the License.
 package org.ppeew.smallfries_I;
 
 
+
+
+import static java.lang.Math.signum;
+
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -57,7 +61,8 @@ public class MathUtil {
   }
 
   /**
-   * NaN's are equal.
+   * NaN's are equal. Serious doubles are compared, taking
+   * into account the {@link Math#ulp(double)}.
    */
   public static boolean equalValue(Double d, Number n) {
     if (d == null) {
@@ -68,7 +73,7 @@ public class MathUtil {
     }
     else {
 //      assert d != null;
-//      assert f != null;
+//      assert n != null;
       if (d.isNaN()) {
         return isNaN(n);
       }
@@ -76,9 +81,31 @@ public class MathUtil {
         return false;
       }
       else {
-        return d.doubleValue() == n.doubleValue();
+        double dv = d.doubleValue();
+        double nv = n.doubleValue();
+        double delta;
+        if (Double.isInfinite(dv)) {
+          if (Double.isInfinite(nv) && signum(dv) == signum(nv)) {
+            delta = 0;
+          }
+          else {
+            delta = Double.POSITIVE_INFINITY;
+          }
+        }
+        else {
+          delta = Math.abs(dv - nv);
+        }
+        return delta <= ulp(dv);
       }
     }
+  }
+
+  public static double ulp(double d) {
+    return Double.isInfinite(d) ? 0 : Math.ulp(d);
+  }
+
+  public static double ulp(float d) {
+    return Double.isInfinite(d) ? 0 : Math.ulp(d);
   }
 
   public static boolean isNaN(Number n) {
@@ -97,7 +124,8 @@ public class MathUtil {
   }
 
   /**
-   * NaN's are equal.
+   * NaN's are equal. Serious floats are compared, taking
+   * into account the {@link Math#ulp(float)}.
    */
   public static boolean equalValue(Float f, Number n) {
     if (f == null) {
@@ -116,7 +144,21 @@ public class MathUtil {
         return false;
       }
       else {
-        return f.floatValue() == n.floatValue();
+        float fv = f.floatValue();
+        float nv = n.floatValue();
+        float delta;
+        if (Float.isInfinite(fv)) {
+          if (Float.isInfinite(nv) && signum(fv) == signum(nv)) {
+            delta = 0;
+          }
+          else {
+            delta = Float.POSITIVE_INFINITY;
+          }
+        }
+        else {
+          delta = Math.abs(fv - nv);
+        }
+        return delta <= ulp(fv);
       }
     }
   }

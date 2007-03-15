@@ -272,10 +272,6 @@ public abstract class DoubleCommutativeOperationBeed
     $value = newValue;
   }
 
-  protected void setValue(Double value) {
-    $value = value;
-  }
-
   private Double $value = initialValue();
 
   /**

@@ -251,7 +251,7 @@ public class MathUtil {
    * @pre  doubles != null;
    * @pre  doubles.length > 0;
    */
-  public static double mean(double... doubles) {
+  public static double arithmeticMean(double... doubles) {
     double mean = 0.0;
     for (double value : doubles) {
       mean += value;
@@ -264,7 +264,7 @@ public class MathUtil {
    * @pre  doubles.length > 1;
    */
   public static double standardError(double... doubles) {
-    double mean = mean(doubles);
+    double mean = arithmeticMean(doubles);
     double standardError = 0.0;
     for (double value : doubles) {
       standardError += Math.pow(value - mean, 2);

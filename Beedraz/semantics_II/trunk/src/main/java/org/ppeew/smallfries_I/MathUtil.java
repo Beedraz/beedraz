@@ -252,11 +252,27 @@ public class MathUtil {
    * @pre  doubles.length > 0;
    */
   public static double arithmeticMean(double... doubles) {
+    assert doubles != null;
+    assert doubles.length > 0;
     double mean = 0.0;
     for (double value : doubles) {
       mean += value;
-}
+    }
     return mean / doubles.length;
+  }
+
+  /**
+   * @pre  doubles != null;
+   * @pre  doubles.length > 0;
+   */
+  public static double geometricMean(double... doubles) {
+    assert doubles != null;
+    assert doubles.length > 0;
+    double mean = 1.0;
+    for (double value : doubles) {
+      mean *= value;
+    }
+    return Math.pow(mean, 1.0 / doubles.length);
   }
 
   /**
@@ -264,6 +280,8 @@ public class MathUtil {
    * @pre  doubles.length > 1;
    */
   public static double standardError(double... doubles) {
+    assert doubles != null;
+    assert doubles.length > 1;
     double mean = arithmeticMean(doubles);
     double standardError = 0.0;
     for (double value : doubles) {

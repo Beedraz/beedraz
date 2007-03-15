@@ -213,7 +213,6 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     $subject.toString(stub, 1);
     changeArgument($argumentDoubleBeed, $goal1);
     $subject.toString(stub, 1);
-    validateSubjectFromArgument($argumentDoubleBeed);
     changeArgument($argumentDoubleBeed, $goal2);
     $subject.toString(stub, 1);
   }

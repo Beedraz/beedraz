@@ -50,10 +50,7 @@ public class DoubleRootBeed
   protected final Double calculateValue(Double argumentValue) {
     assert argumentValue != null;
     double root = getConstant();
-    if (root == 0) {
-      return Double.NaN;
-    }
-    else if (root == 1) {
+    if (root == 1) {
       return argumentValue;
     }
     else if (root == 2) {

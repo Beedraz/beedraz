@@ -31,6 +31,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar   (forAll _From_ from1; ;
  *             (forAll _From_ from2; ;)
  *               from1 != from2 ==> map(from1) != map(from2));
+ *
+ * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

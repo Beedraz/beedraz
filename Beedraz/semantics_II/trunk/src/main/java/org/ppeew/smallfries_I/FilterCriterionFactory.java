@@ -27,6 +27,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A filter criterion factory creates a {@link FilterCriterion}
  * for a given element.
+ *
+ * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

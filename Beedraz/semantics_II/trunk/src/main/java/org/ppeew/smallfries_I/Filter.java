@@ -28,6 +28,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * A filter defines a filter criterion.
  * Using the filter, we can check whether a given element meets this
  * criterion or not.
+ *
+ * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

@@ -26,6 +26,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Support for multi-line toString implementation, notably indentation.
+ *
+ * @author Jan Dockx
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

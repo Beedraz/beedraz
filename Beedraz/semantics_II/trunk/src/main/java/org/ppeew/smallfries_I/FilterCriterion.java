@@ -29,6 +29,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * this element meets the filter criterion or not.
  *
  * @invar   getElement() != null;
+ *
+ * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

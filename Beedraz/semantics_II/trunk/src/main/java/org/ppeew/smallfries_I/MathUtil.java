@@ -27,6 +27,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * General math utility methods, missing from {@link Math}.
+ *
+ * @author Jan Dockx
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

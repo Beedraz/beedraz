@@ -17,41 +17,37 @@ limitations under the License.
 package org.beedra_II.property.number;
 
 
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
-
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.decimal.DoubleBeed;
 import org.beedra_II.property.decimal.DoubleEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**
- * Abstract implementation of number beeds that represent the the negative
- * of an {@link #getArgument() argument}.
+ * Abstract implementation of unary expression number beeds, represent the a value derived
+ * from an {@link #getArgument() argument}.
  *
- * @invar getArgument() == null ? getInteger() == null;
- * @invar getArgument() != null ? getInteger() == - getArgument().getInteger();
+ * @invar getArgument() == null ? get() == null;
  *
- * @mudo overflow: -MIN_VALUE == MIN_VALUE
+ * @protected
+ * @invar getArgument() != null && valueFrom(getArgument()) == null ? get() == null;
+ * @invar getArgument() != null && ! valueFrom(getArgument()) != null ?
+ *              get().equals(calculateValue(valueFrom(getArgument())));
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
-                                           _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
-                                           _NumberEvent_ extends DoubleEvent>
-    extends AbstractPropertyBeed<_NumberEvent_>
-    implements DoubleBeed<_NumberEvent_> {
+                                                  _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
+                                                  _NumberEvent_ extends DoubleEvent>
+    extends AbstractExpressionBeed<_Number_, _NumberEvent_>  {
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
    * @post  getArgument() == null;
+   * @post  get() == null;
    */
   public AbstractUnaryExpressionBeed(AggregateBeed owner) {
     super(owner);
@@ -71,17 +67,17 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
    * @post getArgument() == argument;
    */
   public final void setArgument(_ArgumentBeed_ argument) {
-    _Number_ oldValue = $value;
+    _Number_ oldValue = get();
     if ($argument != null) {
       $argument.removeListener($argumentListener);
     }
     $argument = argument;
     if ($argument != null) {
-      $value = calculateValueInternal(valueFrom($argument));
+      assignValue(calculateValueInternal(valueFrom($argument)));
       $argument.addListener($argumentListener);
     }
     else {
-      $value = null;
+      assignValue(null);
     }
     fireEvent(oldValue, null);
   }
@@ -91,26 +87,13 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
    */
   protected abstract _Number_ valueFrom(_ArgumentBeed_ beed);
 
-  /**
-   * @pre event != null;
-   */
-  protected abstract _Number_ newValueFrom(_NumberEvent_ event);
-
-  private void fireEvent(_Number_ oldValue, Edit<?> edit) {
-    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-      fireChangeEvent(createNewEvent(oldValue, $value, edit));
-    }
-  }
-
-  protected abstract _NumberEvent_ createNewEvent(_Number_ oldValue, _Number_ newValue, Edit<?> edit);
-
   private _ArgumentBeed_ $argument;
 
   private Listener<_NumberEvent_> $argumentListener = new Listener<_NumberEvent_>() {
 
     public void beedChanged(_NumberEvent_ event) {
-      _Number_ oldValue = $value;
-      $value = calculateValueInternal(newValueFrom(event));
+      _Number_ oldValue = get();
+      assignValue(calculateValueInternal(newValueFrom(event)));
       fireEvent(oldValue, event.getEdit());
     }
 
@@ -118,10 +101,6 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
 
   /*</property>*/
 
-
-  public final _Number_ get() {
-    return $value;
-  }
 
   private _Number_ calculateValueInternal(_Number_ argumentValue) {
     return argumentValue == null ? null : calculateValue(argumentValue);
@@ -131,19 +110,6 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
    * @pre argumentValue != null;
    */
   protected abstract _Number_ calculateValue(_Number_ argumentValue);
-
-  private _Number_ $value;
-
-  @Override
-  protected final String otherToStringInformation() {
-    return get() == null ? "null" : get().toString();
-  }
-
-  @Override
-  public final void toString(StringBuffer sb, int level) {
-    super.toString(sb, level);
-    sb.append(indent(level + 1) + "value:" + get() + "\n");
-  }
 
 }
 

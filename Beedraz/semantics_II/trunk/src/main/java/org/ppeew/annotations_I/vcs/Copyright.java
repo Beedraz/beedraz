@@ -9,19 +9,17 @@ import java.lang.annotation.Target;
 
 
 /**
- * Annotation for CVS meta-data. By using this annotation,
- * the CVS data about the source revision the compiled code is based on,
- * is available in the code.
+ * Annotation for copyright information. By using this annotation,
+ * the copyright information is available in the code.
  *
  * Usage pattern:
  * <pre>
- * ATCvsInfo(revision = &quot;$Revision$&quot;,
- *           date     = &quot;$Date$&quot;,
- *           state    = &quot;$State$&quot;,
- *           tag      = &quot;$Name$&quot;)
+ * ATCopyright(copyright={&quot;Jan Dockx&quot;, &quot;PeopleWare n.v.&quot;},
+ *             from=&quot;2007&quot;,
+ *             until=&quot;$Date$&quot;)
  * public class ... {
  *  ...
- *  }
+ * }
  * </pre>
  *
  * @author    Jan Dockx
@@ -44,26 +42,23 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface CvsInfo {
+public @interface Copyright {
 
   /**
-   * Source code revision. Fill out with &quot;$Revision$&quot;
+   * List of copyright holders of the contents (the authored expression) of the file.
    */
-  String revision();
+  String[] copyright();
 
   /**
-   * Source code revision. Fill out with &quot;$Date$&quot;
+   * The year of first publication of the contents (the authored expression) of the file.
    */
-  String date();
+  String from();
 
   /**
-   * Source code revision. Fill out with &quot;$State$&quot;
+   * The year of the most recent change of the contents (the authored expression) of the file.
+   * It makes good sense to use the $Date$ tag here, which is supported by both
+   * CVS and Subversion.
    */
-  String state();
-
-  /**
-   * Source code revision. Fill out with &quot;$Name$&quot;
-   */
-  String tag();
+  String until();
 
 }

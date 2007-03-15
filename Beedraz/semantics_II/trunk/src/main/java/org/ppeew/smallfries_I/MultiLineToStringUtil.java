@@ -1,23 +1,34 @@
-/*<license>
-Copyright 2007 - $Date$ by the authors mentioned below.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-</license>*/
-
 package org.ppeew.smallfries_I;
 
 
-public class MultiLineToStringUtil {
+import org.ppeew.annotations_I.vcs.Copyright;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.License;
+
+
+/**
+ * Support for multi-line toString implementation, notably indentation.
+ */
+@Copyright(copyright = {"Jan Dockx", "PeopleWare n.v."}, from = "2007", until = "$Revision$")
+@License(license     = "Apache2",
+         notice      = {"Licensed under the Apache License, Version 2.0 (the \"License\")",
+                        "you may not use this file except in compliance with the License.",
+                        "You may obtain a copy of the License at",
+                        "    http://www.apache.org/licenses/LICENSE-2.0",
+                        "Unless required by applicable law or agreed to in writing, software",
+                        "distributed under the License is distributed on an \"AS IS\" BASIS,",
+                        "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.",
+                        "See the License for the specific language governing permissions and",
+                        "limitations under the License."})
+@CvsInfo(revision    = "$Revision$",
+         date        = "$Date$",
+         state       = "$State$",
+         tag         = "$Name$")
+public final class MultiLineToStringUtil {
+
+  private MultiLineToStringUtil() {
+    // NOP
+  }
 
   public static String EMPTY = "";
   public static String INDENT_1 = "  ";
@@ -26,6 +37,9 @@ public class MultiLineToStringUtil {
   public static String INDENT_4 = "        ";
   public static String INDENT_5 = "          ";
 
+  /**
+   * {@code level}-times 2 spaces: the indentation of level {@code level}.
+   */
   public static String indent(int level) {
     switch (level) {
       case 0:
@@ -45,6 +59,10 @@ public class MultiLineToStringUtil {
     }
   }
 
+  /**
+   * Multi-line version of {@link Object#toString()}, showing the class
+   * name and the hash code.
+   */
   public static void objectToString(Object o, StringBuffer sb, int level) {
     sb.append(indent(level) + o.getClass().getName() + "\n");
     sb.append(indent(level + 1) + "hash code: " + o.hashCode() + "\n");

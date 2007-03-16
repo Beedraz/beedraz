@@ -305,6 +305,9 @@ public abstract class DoubleCommutativeOperationBeed
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
     sb.append(indent(level + 1) + "number of " + argumentsToString() + ":" + $arguments.size() + "\n");
+    for (DoubleBeed<?> argument : $arguments.keySet()) {
+      argument.toString(sb, level + 2);
+    }
   }
 
   /**

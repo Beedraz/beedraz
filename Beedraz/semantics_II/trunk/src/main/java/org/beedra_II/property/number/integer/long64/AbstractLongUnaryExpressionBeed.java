@@ -33,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractLongUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Long, LongBeed, LongEvent>
+    extends AbstractUnaryExpressionBeed<Long, LongBeed, LongEvent, LongEvent>
     implements LongBeed {
 
   /**

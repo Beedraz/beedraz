@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>
+    extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent, DoubleEvent>
     implements DoubleBeed<DoubleEvent> {
 
   /**

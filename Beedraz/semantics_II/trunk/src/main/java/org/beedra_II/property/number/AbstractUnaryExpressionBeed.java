@@ -42,9 +42,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
-                                                  _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
-                                                  _NumberEvent_ extends DoubleEvent>
-    extends AbstractExpressionBeed<_Number_, _NumberEvent_>  {
+                                                  _ArgumentBeed_ extends DoubleBeed<_ArgumentEvent_>,
+                                                  _ArgumentEvent_ extends DoubleEvent,
+                                                  _SendingEvent_ extends DoubleEvent>
+    extends AbstractExpressionBeed<_Number_, _SendingEvent_>  {
 
   /**
    * @pre   owner != null;
@@ -91,15 +92,20 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
 
   private _ArgumentBeed_ $argument;
 
-  private Listener<_NumberEvent_> $argumentListener = new Listener<_NumberEvent_>() {
+  private Listener<_ArgumentEvent_> $argumentListener = new Listener<_ArgumentEvent_>() {
 
-    public void beedChanged(_NumberEvent_ event) {
+    public void beedChanged(_ArgumentEvent_ event) {
       _Number_ oldValue = get();
       assignValue(calculateValueInternal(newValueFrom(event)));
       fireEvent(oldValue, event.getEdit());
     }
 
   };
+
+  /**
+   * @pre event != null;
+   */
+  protected abstract _Number_ newValueFrom(_ArgumentEvent_ event);
 
   /*</property>*/
 

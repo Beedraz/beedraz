@@ -23,7 +23,7 @@ import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent>>
+public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, ?, DoubleEvent>>
     extends AbstractTestUnaryExpressionBeed<Double,
                                             DoubleBeed<DoubleEvent>,
                                             DoubleEvent,

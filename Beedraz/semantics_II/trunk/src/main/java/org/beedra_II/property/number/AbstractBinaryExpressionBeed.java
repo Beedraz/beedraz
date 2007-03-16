@@ -44,8 +44,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
-                                                   _LeftArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
-                                                   _RightArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
+                                                   _LeftArgumentBeed_ extends DoubleBeed<_LeftArgumentEvent_>,
+                                                   _LeftArgumentEvent_ extends DoubleEvent,
+                                                   _RightArgumentBeed_ extends DoubleBeed<_RightArgumentEvent_>,
+                                                   _RightArgumentEvent_ extends DoubleEvent,
                                                    _NumberEvent_ extends DoubleEvent>
     extends AbstractExpressionBeed<_Number_, _NumberEvent_>  {
 
@@ -96,17 +98,19 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
 
   private _LeftArgumentBeed_ $leftArgument;
 
-  private Listener<_NumberEvent_> $leftArgumentListener = new Listener<_NumberEvent_>() {
+  private Listener<_LeftArgumentEvent_> $leftArgumentListener = new Listener<_LeftArgumentEvent_>() {
 
-    public void beedChanged(_NumberEvent_ event) {
+    public void beedChanged(_LeftArgumentEvent_ event) {
       if ($rightArgument != null) {
         _Number_ oldValue = get();
-        assignValue(calculateValueInternal(newValueFrom(event), valueFromRight($rightArgument)));
+        assignValue(calculateValueInternal(newValueFromLeft(event), valueFromRight($rightArgument)));
         fireEvent(oldValue, event.getEdit());
       }
     }
 
   };
+
+  protected abstract _Number_ newValueFromLeft(_LeftArgumentEvent_ event);
 
   /*</property>*/
 
@@ -149,17 +153,19 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
 
   private _RightArgumentBeed_ $rightArgument;
 
-  private Listener<_NumberEvent_> $rightArgumentListener = new Listener<_NumberEvent_>() {
+  private Listener<_RightArgumentEvent_> $rightArgumentListener = new Listener<_RightArgumentEvent_>() {
 
-    public void beedChanged(_NumberEvent_ event) {
+    public void beedChanged(_RightArgumentEvent_ event) {
       if ($leftArgument != null) {
         _Number_ oldValue = get();
-        assignValue(calculateValueInternal(valueFromLeft($leftArgument), newValueFrom(event)));
+        assignValue(calculateValueInternal(valueFromLeft($leftArgument), newValueFromRight(event)));
         fireEvent(oldValue, event.getEdit());
       }
     }
 
   };
+
+  protected abstract _Number_ newValueFromRight(_RightArgumentEvent_ event);
 
   /*</property>*/
 

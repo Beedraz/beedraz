@@ -48,11 +48,6 @@ public abstract class AbstractExpressionBeed<_Number_ extends Number,
     super(owner);
   }
 
-  /**
-   * @pre event != null;
-   */
-  protected abstract _Number_ newValueFrom(_NumberEvent_ event);
-
   protected final void fireEvent(_Number_ oldValue, Edit<?> edit) {
     if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
       fireChangeEvent(createNewEvent(oldValue, $value, edit));

@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleBinaryExpressionBeed
-    extends AbstractBinaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleBeed<DoubleEvent>, DoubleEvent>
+    extends AbstractBinaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent, DoubleBeed<DoubleEvent>, DoubleEvent, DoubleEvent>
     implements DoubleBeed<DoubleEvent> {
 
   /**
@@ -76,7 +76,12 @@ public abstract class AbstractDoubleBinaryExpressionBeed
   }
 
   @Override
-  protected final Double newValueFrom(DoubleEvent event) {
+  protected final Double newValueFromLeft(DoubleEvent event) {
+    return event.getNewDouble();
+  }
+
+  @Override
+  protected final Double newValueFromRight(DoubleEvent event) {
     return event.getNewDouble();
   }
 

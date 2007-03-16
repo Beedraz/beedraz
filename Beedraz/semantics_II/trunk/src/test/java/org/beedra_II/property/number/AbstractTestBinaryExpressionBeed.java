@@ -40,7 +40,7 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
                                                        _LeftArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
                                                        _RightArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
                                                        _NumberEvent_ extends DoubleEvent,
-                                                       _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _LeftArgumentBeed_, _RightArgumentBeed_, _NumberEvent_>,
+                                                       _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _LeftArgumentBeed_, ?, _RightArgumentBeed_, ?, _NumberEvent_>,
                                                        _LeftEAB_ extends _LeftArgumentBeed_,
                                                        _RightEAB_ extends _RightArgumentBeed_> {
 

@@ -37,9 +37,9 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
-                                                            _ArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
+                                                            _ArgumentBeed_ extends DoubleBeed<?>,
                                                             _NumberEvent_ extends DoubleEvent,
-                                                            _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, _NumberEvent_>,
+                                                            _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, ?, _NumberEvent_>,
                                                             _EAB_ extends _ArgumentBeed_> {
 
   @Before

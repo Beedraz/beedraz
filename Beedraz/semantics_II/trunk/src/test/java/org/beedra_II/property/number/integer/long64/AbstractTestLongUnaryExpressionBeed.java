@@ -27,7 +27,7 @@ import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Long, LongBeed, LongEvent>>
+public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Long, LongBeed, ?, LongEvent>>
     extends AbstractTestUnaryExpressionBeed<Long,
                                             LongBeed,
                                             LongEvent,

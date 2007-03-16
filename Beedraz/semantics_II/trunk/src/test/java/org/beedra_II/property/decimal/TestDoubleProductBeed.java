@@ -129,7 +129,6 @@ public class TestDoubleProductBeed {
     editNull.setGoal(value7);
     editNull.perform();
     assertEquals(factorNull.get(), value7);
-    System.out.println($doubleProductBeed.getDouble());
     // check (product = 7 * 5 * 30)
     assertTrue($doubleProductBeed.getNbOccurrences(factorNull) == 1);
     assertTrue($doubleProductBeed.getNbOccurrences(factor5) == 1);

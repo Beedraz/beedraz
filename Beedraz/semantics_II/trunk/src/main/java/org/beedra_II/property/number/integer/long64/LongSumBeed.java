@@ -30,6 +30,7 @@ import java.util.Map;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
@@ -132,7 +133,7 @@ public class LongSumBeed
   /**
    * @basic
    */
-  public final int getNbOccurrences(LongBeed term) {
+  public final int getNbOccurrences(IntegerBeed<?> term) {
     TermListener termListener = $terms.get(term);
     return termListener != null ? termListener.getNbOccurrences() : 0;
   }
@@ -141,7 +142,7 @@ public class LongSumBeed
    * @pre   term != null;
    * @post  new.getNbOccurrences(term) == getNbOccurrences(term) + 1;
    */
-  public final void addTerm(LongBeed term) {
+  public final void addTerm(IntegerBeed<?> term) {
     assert term != null;
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
@@ -170,7 +171,7 @@ public class LongSumBeed
    *          ? new.getNbOccurrences(term) == getNbOccurrences(term) - 1;
    *          : true;
    */
-  public final void removeTerm(LongBeed term) {
+  public final void removeTerm(IntegerBeed<?> term) {
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
@@ -219,7 +220,7 @@ public class LongSumBeed
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<LongBeed, TermListener> $terms = new HashMap<LongBeed, TermListener>();
+  private final Map<IntegerBeed<?>, TermListener> $terms = new HashMap<IntegerBeed<?>, TermListener>();
 
   public final Double getDouble() {
     return castToDouble(getLong());
@@ -238,7 +239,7 @@ public class LongSumBeed
    */
   public void recalculate() {
     Long newValue = 0L;
-    for (LongBeed term : $terms.keySet()) {
+    for (IntegerBeed<?> term : $terms.keySet()) {
       Long termValue = term.getLong();
       if (termValue == null) {
         newValue = null;

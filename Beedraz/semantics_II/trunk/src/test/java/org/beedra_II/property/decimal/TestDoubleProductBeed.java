@@ -28,8 +28,8 @@ import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -151,9 +151,9 @@ public class TestDoubleProductBeed {
   // one-level product
   public void addProduct1i() throws EditStateException, IllegalEditException {
     // create factors
-    EditableIntegerBeed factor5 = createEditableIntegerBeed(5);
-    EditableIntegerBeed factorNull = createEditableIntegerBeed(null);
-    EditableIntegerBeed factor30 = createEditableIntegerBeed(30);
+    EditableLongBeed factor5 = createEditableIntegerBeed(5);
+    EditableLongBeed factorNull = createEditableIntegerBeed(null);
+    EditableLongBeed factor30 = createEditableIntegerBeed(30);
     addProduct1_A(factor5, factorNull, factor30);
 
     // When one of the factors is changed by an edit, the listeners of that factor
@@ -161,7 +161,7 @@ public class TestDoubleProductBeed {
     // One of those listeners is a factor listener, defined as inner class of DoubleProductBeed,
     // associated with the factor. This factor listener recalculates the product.
     // change null to 7
-    IntegerEdit editNull = new IntegerEdit(factorNull);
+    LongEdit editNull = new LongEdit(factorNull);
     Integer value7 = 7;
     editNull.setGoal(value7);
     editNull.perform();
@@ -172,7 +172,7 @@ public class TestDoubleProductBeed {
     assertTrue($doubleProductBeed.getNbOccurrences(factor30) == 1);
     assertEquals($doubleProductBeed.getDouble(), 1050.0);
     // change 30 to 3
-    IntegerEdit edit30 = new IntegerEdit(factor30);
+    LongEdit edit30 = new LongEdit(factor30);
     Integer value3 = 3;
     edit30.setGoal(value3);
     edit30.perform();
@@ -290,10 +290,10 @@ public class TestDoubleProductBeed {
   public void addProduct2i() throws EditStateException, IllegalEditException {
     // create factors
     Integer goal5 = 5;
-    EditableIntegerBeed factor5 = createEditableIntegerBeed(goal5);
-    EditableIntegerBeed factorNull = createEditableIntegerBeed(null);
+    EditableLongBeed factor5 = createEditableIntegerBeed(goal5);
+    EditableLongBeed factorNull = createEditableIntegerBeed(null);
     Integer goal30 = 30;
-    EditableIntegerBeed factor30 = createEditableIntegerBeed(goal30);
+    EditableLongBeed factor30 = createEditableIntegerBeed(goal30);
     DoubleProductBeed doubleProductBeed2 = addProduct2_A(goal5, factor5, factorNull, goal30, factor30);
 
     // When one of the factors is changed by an edit, the listeners of that factor
@@ -301,7 +301,7 @@ public class TestDoubleProductBeed {
     // One of those listeners is a factor listener, defined as inner class of DoubleProductBeed,
     // associated with the factor. This factor listener recalculates the product.
     // change 5 to 2
-    IntegerEdit edit5 = new IntegerEdit(factor5);
+    LongEdit edit5 = new LongEdit(factor5);
     Integer value2 = 2;
     edit5.setGoal(value2);
     edit5.perform();
@@ -314,7 +314,7 @@ public class TestDoubleProductBeed {
     assertTrue($doubleProductBeed.getNbOccurrences(doubleProductBeed2) == 1);
     assertEquals($doubleProductBeed.getDouble(), null);
     // change null to 7
-    IntegerEdit editNull = new IntegerEdit(factorNull);
+    LongEdit editNull = new LongEdit(factorNull);
     Integer value7 = 7;
     editNull.setGoal(value7);
     editNull.perform();
@@ -327,7 +327,7 @@ public class TestDoubleProductBeed {
     assertTrue($doubleProductBeed.getNbOccurrences(doubleProductBeed2) == 1);
     assertEquals($doubleProductBeed.getDouble(), 420.0);
     // change 30 to 3
-    IntegerEdit edit30 = new IntegerEdit(factor30);
+    LongEdit edit30 = new LongEdit(factor30);
     Integer value3 = 3;
     edit30.setGoal(value3);
     edit30.perform();
@@ -598,14 +598,14 @@ public class TestDoubleProductBeed {
     }
   }
 
-  private EditableIntegerBeed createEditableIntegerBeed(Integer value) {
+  private EditableLongBeed createEditableIntegerBeed(Integer value) {
     try {
-      EditableIntegerBeed editableIntegerBeed = new EditableIntegerBeed($owner);
-      IntegerEdit edit = new IntegerEdit(editableIntegerBeed);
+      EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
+      LongEdit edit = new LongEdit(editableLongBeed);
       edit.setGoal(value);
       edit.perform();
-      assertEquals(editableIntegerBeed.get(), value);
-      return editableIntegerBeed;
+      assertEquals(editableLongBeed.get(), value);
+      return editableLongBeed;
     }
     catch (EditStateException e) {
       assertTrue(false);

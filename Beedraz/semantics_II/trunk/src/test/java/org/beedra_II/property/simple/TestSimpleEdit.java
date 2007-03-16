@@ -31,10 +31,10 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.integer.ActualIntegerEvent;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEvent;
+import org.beedra_II.property.number.integer.long64.ActualLongEvent;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongBeed;
+import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +42,7 @@ import org.junit.Test;
 public class TestSimpleEdit {
 
   public class MySimpleEdit
-       extends SimplePropertyEdit<Integer, MyEditableIntegerBeed, IntegerEvent> {
+       extends SimplePropertyEdit<Integer, MyEditableIntegerBeed, LongEvent> {
 
     public MySimpleEdit(MyEditableIntegerBeed target) {
       super(target);
@@ -63,21 +63,21 @@ public class TestSimpleEdit {
     }
 
     @Override
-    protected IntegerEvent createEvent() {
-      IntegerBeed source = new EditableIntegerBeed(new StubBeanBeed());
-      $createdEvent = new ActualIntegerEvent(source, new Integer(0), new Integer(1), null);
+    protected LongEvent createEvent() {
+      LongBeed source = new EditableLongBeed(new StubBeanBeed());
+      $createdEvent = new ActualLongEvent(source, new Integer(0), new Integer(1), null);
       return $createdEvent;
     }
 
-    public IntegerEvent getCreatedEvent() {
+    public LongEvent getCreatedEvent() {
       return $createdEvent;
     }
 
-    private IntegerEvent $createdEvent;
+    private LongEvent $createdEvent;
 
   }
 
-  public class MyEditableIntegerBeed extends EditableIntegerBeed {
+  public class MyEditableIntegerBeed extends EditableLongBeed {
 
     public MyEditableIntegerBeed(AggregateBeed owner) {
       super(owner);
@@ -105,7 +105,7 @@ public class TestSimpleEdit {
   private MySimpleEdit $simpleEdit = new MySimpleEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
-  StubListener<IntegerEvent> $listener3 = new StubListener<IntegerEvent>();
+  StubListener<LongEvent> $listener3 = new StubListener<LongEvent>();
 
   @Test
   public void constructor() {
@@ -1096,7 +1096,7 @@ public class TestSimpleEdit {
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // fire
-    IntegerEvent event = new ActualIntegerEvent($target, new Integer(0), new Integer(1), null);
+    LongEvent event = new ActualLongEvent($target, new Integer(0), new Integer(1), null);
     $simpleEdit.fireEvent(event);
     // check listener
     assertNotNull($listener3.$event);

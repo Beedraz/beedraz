@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import static org.junit.Assert.assertEquals;
@@ -15,20 +15,23 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.integer.long64.ActualLongEvent;
+import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class TestEditableIntegerBeed {
+public class TestEditableLongBeed {
 
   @Before
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
-    $editableIntegerBeed = new StubEditableIntegerBeed($owner);
-    $stringEdit = new IntegerEdit($editableIntegerBeed);
+    $editableIntegerBeed = new StubEditableLongBeed($owner);
+    $stringEdit = new LongEdit($editableIntegerBeed);
     $stringEdit.perform();
-    $event1 = new ActualIntegerEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
+    $event1 = new ActualLongEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
   }
@@ -39,9 +42,9 @@ public class TestEditableIntegerBeed {
   }
 
   private AggregateBeed $owner;
-  private StubEditableIntegerBeed $editableIntegerBeed;
-  private IntegerEdit $stringEdit;
-  private IntegerEvent $event1;
+  private StubEditableLongBeed $editableIntegerBeed;
+  private LongEdit $stringEdit;
+  private LongEvent $event1;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
 
@@ -65,7 +68,7 @@ public class TestEditableIntegerBeed {
 
   @Test
   public void createInitialEvent() {
-    IntegerEvent initialEvent = $editableIntegerBeed.createInitialEvent();
+    LongEvent initialEvent = $editableIntegerBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableIntegerBeed);
     assertEquals(initialEvent.getOldInteger(), null);
     assertEquals(initialEvent.getNewInteger(), $editableIntegerBeed.get());

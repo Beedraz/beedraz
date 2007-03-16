@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import static org.junit.Assert.assertEquals;
@@ -30,11 +30,13 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestIntegerEdit {
+public class TestLongEdit {
 
   @Before
   public void setUp() throws Exception {
@@ -47,29 +49,29 @@ public class TestIntegerEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableIntegerBeed $target = new StubEditableIntegerBeed($beanBeed);
-  private IntegerEdit $integerEdit = new IntegerEdit($target);
+  StubEditableLongBeed $target = new StubEditableLongBeed($beanBeed);
+  private LongEdit $longEdit = new LongEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
-  StubListener<IntegerEvent> $listener3 = new StubListener<IntegerEvent>();
+  StubListener<LongEvent> $listener3 = new StubListener<LongEvent>();
 
   @Test
   public void constructor() {
-    assertEquals($integerEdit.getTarget(), $target);
+    assertEquals($longEdit.getTarget(), $target);
   }
 
   @Test
   // incorrect begin-state
   public void perform1() {
     try {
-      $integerEdit.perform();
-      $integerEdit.perform();
+      $longEdit.perform();
+      $longEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -82,15 +84,15 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void perform2() {
     try {
-      $integerEdit.perform();
-      $integerEdit.undo();
-      $integerEdit.perform();
+      $longEdit.perform();
+      $longEdit.undo();
+      $longEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -103,14 +105,14 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void perform3() {
     try {
-      $integerEdit.kill();
-      $integerEdit.perform();
+      $longEdit.kill();
+      $longEdit.perform();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.NOT_YET_PERFORMED);
     }
     catch (IllegalEditException e) {
@@ -123,8 +125,8 @@ public class TestIntegerEdit {
   // correct begin-state, check end-state
   public void perform4() {
     try {
-      $integerEdit.perform();
-      assertEquals($integerEdit.getState(), State.DONE);
+      $longEdit.perform();
+      assertEquals($longEdit.getState(), State.DONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -145,20 +147,20 @@ public class TestIntegerEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $integerEdit.addValidityListener($listener1);
-      $integerEdit.addValidityListener($listener2);
-      assertTrue($integerEdit.isValidityListener($listener1));
-      assertTrue($integerEdit.isValidityListener($listener2));
+      $longEdit.addValidityListener($listener1);
+      $longEdit.addValidityListener($listener2);
+      assertTrue($longEdit.isValidityListener($listener1));
+      assertTrue($longEdit.isValidityListener($listener2));
       // perform
       Integer goal = 1;
-      $integerEdit.setGoal(goal);
-      $integerEdit.perform();
+      $longEdit.setGoal(goal);
+      $longEdit.perform();
       // listeners should be removed
-      assertFalse($integerEdit.isValidityListener($listener1));
-      assertFalse($integerEdit.isValidityListener($listener2));
+      assertFalse($longEdit.isValidityListener($listener1));
+      assertFalse($longEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $integerEdit);
+      assertEquals($listener3.$event.getEdit(), $longEdit);
       assertEquals($listener3.$event.getOldInteger(), null);
       assertEquals($listener3.$event.getNewInteger(), goal);
       assertEquals($listener3.$event.getSource(), $target);
@@ -182,16 +184,16 @@ public class TestIntegerEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $integerEdit.addValidityListener($listener1);
-      $integerEdit.addValidityListener($listener2);
-      assertTrue($integerEdit.isValidityListener($listener1));
-      assertTrue($integerEdit.isValidityListener($listener2));
+      $longEdit.addValidityListener($listener1);
+      $longEdit.addValidityListener($listener2);
+      assertTrue($longEdit.isValidityListener($listener1));
+      assertTrue($longEdit.isValidityListener($listener2));
       // perform
-      $integerEdit.setGoal(null);
-      $integerEdit.perform();
+      $longEdit.setGoal(null);
+      $longEdit.perform();
       // listeners are removed
-      assertFalse($integerEdit.isValidityListener($listener1));
-      assertFalse($integerEdit.isValidityListener($listener2));
+      assertFalse($longEdit.isValidityListener($listener1));
+      assertFalse($longEdit.isValidityListener($listener2));
       // listeners of the beed are not notified
       assertNull($listener3.$event);
     }
@@ -209,13 +211,13 @@ public class TestIntegerEdit {
   // when the edit is not valid, an exception should be thrown
   public void perform7() {
     try {
-      IntegerEdit edit = new IntegerEdit($target);
+      LongEdit edit = new LongEdit($target);
       Integer goal = 1;
       edit.setGoal(goal);
       edit.perform();
       // perform
-      $integerEdit.setGoal(null);
-      $integerEdit.perform();
+      $longEdit.setGoal(null);
+      $longEdit.perform();
       // should not be reached
       assertTrue(false);
     }
@@ -224,7 +226,7 @@ public class TestIntegerEdit {
       assertTrue(false);
     }
     catch (IllegalEditException e) {
-      assertEquals(e.getEdit(), $integerEdit);
+      assertEquals(e.getEdit(), $longEdit);
       assertEquals(e.getMessage(), null);
     }
   }
@@ -234,21 +236,21 @@ public class TestIntegerEdit {
   public void perform8() {
     try {
       // perform
-      IntegerEdit edit1 = new IntegerEdit($target);
+      LongEdit edit1 = new LongEdit($target);
       assertNull(edit1.getInitial());
       Integer goal1 = 1;
       edit1.setGoal(goal1);
       edit1.perform();
       assertNull(edit1.getInitial());
       // perform
-      IntegerEdit edit2 = new IntegerEdit($target);
+      LongEdit edit2 = new LongEdit($target);
       assertNull(edit2.getInitial());
       Integer goal2 = 2;
       edit2.setGoal(goal2);
       edit2.perform();
       assertEquals(edit2.getInitial(), goal1);
       // perform - no change
-      IntegerEdit edit3 = new IntegerEdit($target);
+      LongEdit edit3 = new LongEdit($target);
       assertNull(edit3.getInitial());
       edit3.setGoal(goal2);
       edit3.perform();
@@ -270,8 +272,8 @@ public class TestIntegerEdit {
     try {
       // perform
       Integer goal = 1;
-      $integerEdit.setGoal(goal);
-      $integerEdit.perform();
+      $longEdit.setGoal(goal);
+      $longEdit.perform();
       assertEquals($target.get(), goal);
     }
     catch (EditStateException e) {
@@ -288,13 +290,13 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void undo1() {
     try {
-      $integerEdit.undo();
+      $longEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -307,15 +309,15 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void undo2() {
     try {
-      $integerEdit.perform();
-      $integerEdit.undo();
-      $integerEdit.undo();
+      $longEdit.perform();
+      $longEdit.undo();
+      $longEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -328,14 +330,14 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void undo3() {
     try {
-      $integerEdit.kill();
-      $integerEdit.undo();
+      $longEdit.kill();
+      $longEdit.undo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.DONE);
     }
     catch (IllegalEditException e) {
@@ -349,10 +351,10 @@ public class TestIntegerEdit {
   public void undo4() {
     try {
       Integer goal = 1;
-      $integerEdit.setGoal(goal);
-      $integerEdit.perform();
-      $integerEdit.undo();
-      assertEquals($integerEdit.getState(), State.UNDONE);
+      $longEdit.setGoal(goal);
+      $longEdit.perform();
+      $longEdit.undo();
+      assertEquals($longEdit.getState(), State.UNDONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -373,26 +375,26 @@ public class TestIntegerEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $integerEdit.addValidityListener($listener1);
-      $integerEdit.addValidityListener($listener2);
-      assertTrue($integerEdit.isValidityListener($listener1));
-      assertTrue($integerEdit.isValidityListener($listener2));
+      $longEdit.addValidityListener($listener1);
+      $longEdit.addValidityListener($listener2);
+      assertTrue($longEdit.isValidityListener($listener1));
+      assertTrue($longEdit.isValidityListener($listener2));
       // perform
       Integer goal = 1;
-      $integerEdit.setGoal(goal);
-      $integerEdit.perform();
-      assertFalse($integerEdit.isValidityListener($listener1));
-      assertFalse($integerEdit.isValidityListener($listener2));
-      $integerEdit.undo();
+      $longEdit.setGoal(goal);
+      $longEdit.perform();
+      assertFalse($longEdit.isValidityListener($listener1));
+      assertFalse($longEdit.isValidityListener($listener2));
+      $longEdit.undo();
       // there are no listeners
-      assertFalse($integerEdit.isValidityListener($listener1));
-      assertFalse($integerEdit.isValidityListener($listener2));
+      assertFalse($longEdit.isValidityListener($listener1));
+      assertFalse($longEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
       assertEquals($listener3.$event.getSource(), $target);
       assertEquals($listener3.$event.getOldInteger(), goal);
       assertEquals($listener3.$event.getNewInteger(), null);
-      assertEquals($listener3.$event.getEdit(), $integerEdit);
+      assertEquals($listener3.$event.getEdit(), $longEdit);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -407,15 +409,15 @@ public class TestIntegerEdit {
   @Test
   // when the goal state does not match the current state, an exception should be thrown
   public void undo7() {
-    IntegerEdit edit1 = null;
+    LongEdit edit1 = null;
     try {
       // edit1
-      edit1 = new IntegerEdit($target);
+      edit1 = new LongEdit($target);
       Integer goal1 = 1;
       edit1.setGoal(goal1);
       edit1.perform();
       // edit2
-      IntegerEdit edit2 = new IntegerEdit($target);
+      LongEdit edit2 = new LongEdit($target);
       Integer goal2 = 2;
       edit2.setGoal(goal2);
       edit2.perform();
@@ -439,15 +441,15 @@ public class TestIntegerEdit {
   public void undo8() {
     try {
       // edit1
-      IntegerEdit edit1 = new IntegerEdit($target);
+      LongEdit edit1 = new LongEdit($target);
       Integer goal1 = 1;
       edit1.setGoal(goal1);
       edit1.perform();
       // $simpleEdit
       Integer goal2 = 2;
-      $integerEdit.setGoal(goal2);
-      $integerEdit.perform();
-      $integerEdit.undo();
+      $longEdit.setGoal(goal2);
+      $longEdit.perform();
+      $longEdit.undo();
       assertEquals($target.get(), goal1);
     }
     catch (EditStateException e) {
@@ -464,13 +466,13 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void redo1() {
     try {
-      $integerEdit.redo();
+      $longEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -483,14 +485,14 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void redo2() {
     try {
-      $integerEdit.perform();
-      $integerEdit.redo();
+      $longEdit.perform();
+      $longEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -503,14 +505,14 @@ public class TestIntegerEdit {
   // incorrect begin-state
   public void redo3() {
     try {
-      $integerEdit.kill();
-      $integerEdit.redo();
+      $longEdit.kill();
+      $longEdit.redo();
       // should not be reached
       assertTrue(false);
     }
     catch (EditStateException e) {
-      assertEquals(e.getEdit(), $integerEdit);
-      assertEquals(e.getCurrentState(), $integerEdit.getState());
+      assertEquals(e.getEdit(), $longEdit);
+      assertEquals(e.getCurrentState(), $longEdit.getState());
       assertEquals(e.getExpectedState(), State.UNDONE);
     }
     catch (IllegalEditException e) {
@@ -523,10 +525,10 @@ public class TestIntegerEdit {
   // correct begin-state, check end-state
   public void redo4() {
     try {
-      $integerEdit.perform();
-      $integerEdit.undo();
-      $integerEdit.redo();
-      assertEquals($integerEdit.getState(), State.DONE);
+      $longEdit.perform();
+      $longEdit.undo();
+      $longEdit.redo();
+      assertEquals($longEdit.getState(), State.DONE);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -547,24 +549,24 @@ public class TestIntegerEdit {
       assertTrue($target.isListener($listener3));
       assertNull($listener3.$event);
       // add validity listeners to edit
-      $integerEdit.addValidityListener($listener1);
-      $integerEdit.addValidityListener($listener2);
-      assertTrue($integerEdit.isValidityListener($listener1));
-      assertTrue($integerEdit.isValidityListener($listener2));
+      $longEdit.addValidityListener($listener1);
+      $longEdit.addValidityListener($listener2);
+      assertTrue($longEdit.isValidityListener($listener1));
+      assertTrue($longEdit.isValidityListener($listener2));
       // perform
       Integer goal = 1;
-      $integerEdit.setGoal(goal);
-      $integerEdit.perform();
-      assertFalse($integerEdit.isValidityListener($listener1));
-      assertFalse($integerEdit.isValidityListener($listener2));
-      $integerEdit.undo();
-      $integerEdit.redo();
+      $longEdit.setGoal(goal);
+      $longEdit.perform();
+      assertFalse($longEdit.isValidityListener($listener1));
+      assertFalse($longEdit.isValidityListener($listener2));
+      $longEdit.undo();
+      $longEdit.redo();
       // there are no listeners
-      assertFalse($integerEdit.isValidityListener($listener1));
-      assertFalse($integerEdit.isValidityListener($listener2));
+      assertFalse($longEdit.isValidityListener($listener1));
+      assertFalse($longEdit.isValidityListener($listener2));
       // listeners of the beed are notified
       assertNotNull($listener3.$event);
-      assertEquals($listener3.$event.getEdit(), $integerEdit);
+      assertEquals($listener3.$event.getEdit(), $longEdit);
       assertEquals($listener3.$event.getOldInteger(), null);
       assertEquals($listener3.$event.getNewInteger(), goal);
       assertEquals($listener3.$event.getSource(), $target);
@@ -582,16 +584,16 @@ public class TestIntegerEdit {
   @Test
   // when the goal state does not match the current state, an exception should be thrown
   public void redo7() {
-    IntegerEdit edit1 = null;
+    LongEdit edit1 = null;
     try {
       // edit1
-      edit1 = new IntegerEdit($target);
+      edit1 = new LongEdit($target);
       Integer goal1 = 1;
       edit1.setGoal(goal1);
       edit1.perform();
       edit1.undo();
       // edit2
-      IntegerEdit edit2 = new IntegerEdit($target);
+      LongEdit edit2 = new LongEdit($target);
       Integer goal2 = 2;
       edit2.setGoal(goal2);
       edit2.perform();
@@ -615,16 +617,16 @@ public class TestIntegerEdit {
   public void redo8() {
     try {
       // edit1
-      IntegerEdit edit1 = new IntegerEdit($target);
+      LongEdit edit1 = new LongEdit($target);
       Integer goal1 = 1;
       edit1.setGoal(goal1);
       edit1.perform();
       // $simpleEdit
       Integer goal2 = 2;
-      $integerEdit.setGoal(goal2);
-      $integerEdit.perform();
-      $integerEdit.undo();
-      $integerEdit.redo();
+      $longEdit.setGoal(goal2);
+      $longEdit.perform();
+      $longEdit.undo();
+      $longEdit.redo();
       assertEquals($target.get(), goal2);
     }
     catch (EditStateException e) {
@@ -639,27 +641,27 @@ public class TestIntegerEdit {
 
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
-    assertEquals(State.NOT_YET_PERFORMED, $integerEdit.getState());
-//    IntegerEvent createdEvent = $integerEdit.createEvent();
-//    assertEquals(createdEvent.getEdit(), $integerEdit);
+    assertEquals(State.NOT_YET_PERFORMED, $longEdit.getState());
+//    LongEvent createdEvent = $longEdit.createEvent();
+//    assertEquals(createdEvent.getEdit(), $longEdit);
 //    assertEquals(createdEvent.getOldValue(), null);
 //    assertEquals(createdEvent.getNewValue(), null);
 //    assertEquals(createdEvent.getSource(), $target);
     // perform
     Integer goal = 1;
-    $integerEdit.setGoal(goal);
-    $integerEdit.perform();
+    $longEdit.setGoal(goal);
+    $longEdit.perform();
     // create event
-    IntegerEvent createdEvent = $integerEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $integerEdit);
+    LongEvent createdEvent = $longEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $longEdit);
     assertEquals(createdEvent.getOldInteger(), null);
     assertEquals(createdEvent.getNewInteger(), goal);
     assertEquals(createdEvent.getSource(), $target);
     // undo
-    $integerEdit.undo();
+    $longEdit.undo();
     // create event
-    createdEvent = $integerEdit.createEvent();
-    assertEquals(createdEvent.getEdit(), $integerEdit);
+    createdEvent = $longEdit.createEvent();
+    assertEquals(createdEvent.getEdit(), $longEdit);
     assertEquals(createdEvent.getOldInteger(), goal);
     assertEquals(createdEvent.getNewInteger(), null);
     assertEquals(createdEvent.getSource(), $target);

@@ -4,22 +4,24 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongEvent;
 
 
-public class StubEditableIntegerBeed extends EditableIntegerBeed {
+public class StubEditableLongBeed extends EditableLongBeed {
 
-  public StubEditableIntegerBeed(AggregateBeed owner) {
+  public StubEditableLongBeed(AggregateBeed owner) {
     super(owner);
   }
 
   /**
    * fireChangeEvent is made public for testing reasons
    */
-  public void fire(IntegerEvent event) {
+  public void fire(LongEvent event) {
     fireChangeEvent(event);
   }
 

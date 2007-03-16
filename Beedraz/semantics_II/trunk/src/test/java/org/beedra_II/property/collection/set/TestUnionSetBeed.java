@@ -38,9 +38,9 @@ import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,8 +82,8 @@ public class TestUnionSetBeed {
     /**
      * The Cq value of the well.
      */
-    public final EditableIntegerBeed cq =
-      new EditableIntegerBeed(this);
+    public final EditableLongBeed cq =
+      new EditableLongBeed(this);
 
   }
 
@@ -150,33 +150,33 @@ public class TestUnionSetBeed {
     edit.setGoal($runC.wells);
     edit.perform();
     // set the cq values
-    IntegerEdit integerEdit = new IntegerEdit($wellA1.cq);
-    integerEdit.setGoal($cqA1);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellA2.cq);
-    integerEdit.setGoal($cqA2);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellA3.cq);
-    integerEdit.setGoal($cqA3);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellB1.cq);
-    integerEdit.setGoal($cqB1);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellB2.cq);
-    integerEdit.setGoal($cqB2);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellC1.cq);
-    integerEdit.setGoal($cqC1);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellC2.cq);
-    integerEdit.setGoal($cqC2);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellC3.cq);
-    integerEdit.setGoal($cqC3);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($wellC4.cq);
-    integerEdit.setGoal($cqC4);
-    integerEdit.perform();
+    LongEdit longEdit = new LongEdit($wellA1.cq);
+    longEdit.setGoal($cqA1);
+    longEdit.perform();
+    longEdit = new LongEdit($wellA2.cq);
+    longEdit.setGoal($cqA2);
+    longEdit.perform();
+    longEdit = new LongEdit($wellA3.cq);
+    longEdit.setGoal($cqA3);
+    longEdit.perform();
+    longEdit = new LongEdit($wellB1.cq);
+    longEdit.setGoal($cqB1);
+    longEdit.perform();
+    longEdit = new LongEdit($wellB2.cq);
+    longEdit.setGoal($cqB2);
+    longEdit.perform();
+    longEdit = new LongEdit($wellC1.cq);
+    longEdit.setGoal($cqC1);
+    longEdit.perform();
+    longEdit = new LongEdit($wellC2.cq);
+    longEdit.setGoal($cqC2);
+    longEdit.perform();
+    longEdit = new LongEdit($wellC3.cq);
+    longEdit.setGoal($cqC3);
+    longEdit.perform();
+    longEdit = new LongEdit($wellC4.cq);
+    longEdit.setGoal($cqC4);
+    longEdit.perform();
   }
 
   @After
@@ -711,22 +711,22 @@ public class TestUnionSetBeed {
     $unionSetBeed.addSource($runA.wells);
     $unionSetBeed.addSource($runB.wells);
     $unionSetBeed.addSource($runC.wells);
-    BeedMapping<WellBeanBeed, IntegerBeed> mapping =
-      new BeedMapping<WellBeanBeed, IntegerBeed>() {
+    BeedMapping<WellBeanBeed, LongBeed> mapping =
+      new BeedMapping<WellBeanBeed, LongBeed>() {
 
         /**
          * @pre  from != null;
          */
-        public IntegerBeed map(WellBeanBeed from) {
+        public LongBeed map(WellBeanBeed from) {
           return from.cq;
         }
 
     };
-    MappedSetBeed<WellBeanBeed, PropagatedEvent, IntegerBeed> mappedSetBeed =
-      new MappedSetBeed<WellBeanBeed, PropagatedEvent, IntegerBeed>(mapping, $owner);
+    MappedSetBeed<WellBeanBeed, PropagatedEvent, LongBeed> mappedSetBeed =
+      new MappedSetBeed<WellBeanBeed, PropagatedEvent, LongBeed>(mapping, $owner);
     mappedSetBeed.setSource($unionSetBeed);
     Integer sum = 0;
-    for (IntegerBeed cq : mappedSetBeed.get()) {
+    for (LongBeed cq : mappedSetBeed.get()) {
       sum += cq.getInteger();
     }
     assertEquals(sum, 0+1+2+3+4+5+6+7+8);

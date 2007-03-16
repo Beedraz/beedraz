@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import org.beedra_II.property.decimal.DoubleEvent;
@@ -23,18 +23,18 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link IntegerBeed} and
+ * {@link OldNewEvent} whose source is a {@link LongBeed} and
  * that carries a simple old and new value of type {@link Integer}.
  *
  * @author Jan Dockx
  *
- * @invar getSource() instanceof IntegerBeed;
+ * @invar getSource() instanceof LongBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface IntegerEvent extends DoubleEvent {
+public interface LongEvent extends DoubleEvent {
 
   /**
    * @return getNewValue();

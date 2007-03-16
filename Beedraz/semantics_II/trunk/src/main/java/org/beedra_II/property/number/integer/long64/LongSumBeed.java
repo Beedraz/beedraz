@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -32,15 +32,15 @@ import org.ppeew.smallfries_I.ComparisonUtil;
 
 /**
  * A beed that is the sum of zero or more other beeds of type
- * {@link IntegerBeed}.
+ * {@link LongBeed}.
  *
  * @invar getNbOccurrences(null) == 0;
- * @invar (forall IntegerBeed ib; ; getNbOccurrences(ib) >= 0);
- * @invar (exists IntegerBeed ib; ; getNbOccurrences(ib) > 0 && ib.getInteger() == null)
+ * @invar (forall LongBeed ib; ; getNbOccurrences(ib) >= 0);
+ * @invar (exists LongBeed ib; ; getNbOccurrences(ib) > 0 && ib.getInteger() == null)
  *            ==> getInteger() == null;
  *        If one of the terms is null, then the value of the sum beed is null.
- * @invar (forAll IntegerBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.getInteger() != null)
- *            ==> getInteger() == sum { ib.getInteger() * getNbOccurrences(ib) | ib instanceof IntegerBeed};
+ * @invar (forAll LongBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.getInteger() != null)
+ *            ==> getInteger() == sum { ib.getInteger() * getNbOccurrences(ib) | ib instanceof LongBeed};
  *        If all terms are effective, then the value of the sum beed is the
  *        sum of the value of each term multiplied by the corresponding
  *        number of occurrences.
@@ -50,23 +50,23 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class IntegerSumBeed
-    extends AbstractPropertyBeed<IntegerEvent>
-    implements IntegerBeed {
+public class LongSumBeed
+    extends AbstractPropertyBeed<LongEvent>
+    implements LongBeed {
 
   /**
    * @pre   owner != null;
    * @post  getInteger() == 0;
-   * @post  (forall IntegerBeed ib; ; getNbOccurrences(ib) == 0};
+   * @post  (forall LongBeed ib; ; getNbOccurrences(ib) == 0};
    */
-  public IntegerSumBeed(AggregateBeed owner) {
+  public LongSumBeed(AggregateBeed owner) {
     super(owner);
   }
 
   /**
    * @invar  getNbOccurrences() > 0;
    */
-  private class TermListener implements Listener<IntegerEvent> {
+  private class TermListener implements Listener<LongEvent> {
 
     /**
      * @post  getNbOccurrences() == 1;
@@ -75,7 +75,7 @@ public class IntegerSumBeed
       $nbOccurrences = 1;
     }
 
-    public void beedChanged(IntegerEvent event) {
+    public void beedChanged(LongEvent event) {
       // recalculate(); optimization
       Integer oldValue = $value;
       if ($value !=  null) {
@@ -92,7 +92,7 @@ public class IntegerSumBeed
       }
       // else: NOP
       if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new ActualIntegerEvent(IntegerSumBeed.this, oldValue, $value, event.getEdit()));
+        fireChangeEvent(new ActualLongEvent(LongSumBeed.this, oldValue, $value, event.getEdit()));
       }
     }
 
@@ -127,7 +127,7 @@ public class IntegerSumBeed
   /**
    * @basic
    */
-  public final int getNbOccurrences(IntegerBeed term) {
+  public final int getNbOccurrences(LongBeed term) {
     TermListener termListener = $terms.get(term);
     return termListener != null ? termListener.getNbOccurrences() : 0;
   }
@@ -136,7 +136,7 @@ public class IntegerSumBeed
    * @pre   term != null;
    * @post  new.getNbOccurrences(term) == getNbOccurrences(term) + 1;
    */
-  public final void addTerm(IntegerBeed term) {
+  public final void addTerm(LongBeed term) {
     assert term != null;
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
@@ -154,7 +154,7 @@ public class IntegerSumBeed
       if ($value != null) {
         Integer oldValue = $value;
         $value = (term.getInteger() == null) ? null : $value + term.getInteger(); // MUDO overflow
-        fireChangeEvent(new ActualIntegerEvent(this, oldValue, $value, null));
+        fireChangeEvent(new ActualLongEvent(this, oldValue, $value, null));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
     }
@@ -165,7 +165,7 @@ public class IntegerSumBeed
    *          ? new.getNbOccurrences(term) == getNbOccurrences(term) - 1;
    *          : true;
    */
-  public final void removeTerm(IntegerBeed term) {
+  public final void removeTerm(LongBeed term) {
     synchronized (term) { // TODO is this correct?
       TermListener termListener = $terms.get(term);
       if (termListener != null) {
@@ -201,7 +201,7 @@ public class IntegerSumBeed
         }
         // else: in all other cases, the value of $value is null, and stays null
         if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-          fireChangeEvent(new ActualIntegerEvent(this, oldValue, $value, null));
+          fireChangeEvent(new ActualLongEvent(this, oldValue, $value, null));
         }
         /* else, term != null, but $value is null; this means there is another term that is null,
            and removing this term won't change that */
@@ -214,7 +214,7 @@ public class IntegerSumBeed
    * @invar $terms != null;
    * @invar Collections.noNull($terms);
    */
-  private final Map<IntegerBeed, TermListener> $terms = new HashMap<IntegerBeed, TermListener>();
+  private final Map<LongBeed, TermListener> $terms = new HashMap<LongBeed, TermListener>();
 
   public final Double getDouble() {
     return castToDouble(getInteger());
@@ -233,7 +233,7 @@ public class IntegerSumBeed
    */
   public void recalculate() {
     Integer newValue = 0;
-    for (IntegerBeed term : $terms.keySet()) {
+    for (LongBeed term : $terms.keySet()) {
       Integer termValue = term.getInteger();
       if (termValue == null) {
         newValue = null;
@@ -255,8 +255,8 @@ public class IntegerSumBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final IntegerEvent createInitialEvent() {
-    return new ActualIntegerEvent(this, null, getInteger(), null);
+  protected final LongEvent createInitialEvent() {
+    return new ActualLongEvent(this, null, getInteger(), null);
   }
 
 

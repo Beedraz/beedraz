@@ -37,9 +37,9 @@ import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,8 +82,8 @@ public class TestFilteredSetBeed {
     /**
      * The Cq value of the well.
      */
-    public final EditableIntegerBeed cq =
-      new EditableIntegerBeed(this);
+    public final EditableLongBeed cq =
+      new EditableLongBeed(this);
 
   }
 
@@ -134,21 +134,21 @@ public class TestFilteredSetBeed {
     edit.setGoal($run.wells);
     edit.perform();
     // initialise the cq values
-    IntegerEdit integerEdit = new IntegerEdit($wellNull.cq);
-    integerEdit.setGoal($cqNull);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($well0.cq);
-    integerEdit.setGoal($cq0);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($well1.cq);
-    integerEdit.setGoal($cq1);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($well2.cq);
-    integerEdit.setGoal($cq2);
-    integerEdit.perform();
-    integerEdit = new IntegerEdit($well3.cq);
-    integerEdit.setGoal($cq3);
-    integerEdit.perform();
+    LongEdit longEdit = new LongEdit($wellNull.cq);
+    longEdit.setGoal($cqNull);
+    longEdit.perform();
+    longEdit = new LongEdit($well0.cq);
+    longEdit.setGoal($cq0);
+    longEdit.perform();
+    longEdit = new LongEdit($well1.cq);
+    longEdit.setGoal($cq1);
+    longEdit.perform();
+    longEdit = new LongEdit($well2.cq);
+    longEdit.setGoal($cq2);
+    longEdit.perform();
+    longEdit = new LongEdit($well3.cq);
+    longEdit.setGoal($cq3);
+    longEdit.perform();
   }
 
   @After
@@ -257,9 +257,9 @@ public class TestFilteredSetBeed {
     assertTrue($filteredSetBeed.get().contains(well4));
     // The FilteredSetBeed is registered as listener of all beeds in the source,
     // so when one of them changes, the beed should be notified
-    IntegerEdit integerEdit = new IntegerEdit(well4.cq);
-    integerEdit.setGoal(5);
-    integerEdit.perform();
+    LongEdit longEdit = new LongEdit(well4.cq);
+    longEdit.setGoal(5);
+    longEdit.perform();
     removed = new HashSet<WellBeanBeed>();
     removed.add(well4);
     added = new HashSet<WellBeanBeed>();
@@ -267,15 +267,15 @@ public class TestFilteredSetBeed {
     assertEquals($listener3.$event.getSource(), $filteredSetBeed);
     assertEquals($listener3.$event.getAddedElements(), added);
     assertEquals($listener3.$event.getRemovedElements(), removed);
-    assertEquals($listener3.$event.getEdit(), integerEdit);
+    assertEquals($listener3.$event.getEdit(), longEdit);
     assertEquals($filteredSetBeed.get().size(), 1);
     assertTrue($filteredSetBeed.get().contains($well2));
     // change the beed again
     $listener3.reset();
     assertNull($listener3.$event);
-    integerEdit = new IntegerEdit(well4.cq);
-    integerEdit.setGoal(6);
-    integerEdit.perform();
+    longEdit = new LongEdit(well4.cq);
+    longEdit.setGoal(6);
+    longEdit.perform();
     removed = new HashSet<WellBeanBeed>();
     added = new HashSet<WellBeanBeed>();
     added.add(well4);
@@ -283,7 +283,7 @@ public class TestFilteredSetBeed {
     assertEquals($listener3.$event.getSource(), $filteredSetBeed);
     assertEquals($listener3.$event.getAddedElements(), added);
     assertEquals($listener3.$event.getRemovedElements(), removed);
-    assertEquals($listener3.$event.getEdit(), integerEdit);
+    assertEquals($listener3.$event.getEdit(), longEdit);
     assertEquals($filteredSetBeed.get().size(), 2);
     assertTrue($filteredSetBeed.get().contains($well2));
     assertTrue($filteredSetBeed.get().contains(well4));
@@ -308,9 +308,9 @@ public class TestFilteredSetBeed {
     $listener3.reset();
     assertNull($listener3.$event);
     // so, when the removed beed is edited, the filtered set beed is NOT notified
-    integerEdit = new IntegerEdit(well4.cq);
-    integerEdit.setGoal(7);
-    integerEdit.perform();
+    longEdit = new LongEdit(well4.cq);
+    longEdit.setGoal(7);
+    longEdit.perform();
     assertNull($listener3.$event); // the FilteredSetBeed is NOT notified
     // and the value of the filtered set beed is correct
     assertEquals($filteredSetBeed.get().size(), 1);
@@ -463,7 +463,7 @@ public class TestFilteredSetBeed {
     SetEvent<WellBeanBeed> initialEvent = $filteredSetBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $filteredSetBeed);
     assertEquals(initialEvent.getAddedElements(), $filteredSetBeed.get());
-    assertEquals(initialEvent.getRemovedElements(), new HashSet<IntegerBeed>());
+    assertEquals(initialEvent.getRemovedElements(), new HashSet<LongBeed>());
     assertEquals(initialEvent.getEdit(), null);
   }
 
@@ -490,7 +490,7 @@ public class TestFilteredSetBeed {
   private WellBeanBeed createWellBeanBeed(Integer cq) {
     try {
       WellBeanBeed wellBeanBeed = new WellBeanBeed();
-      IntegerEdit edit = new IntegerEdit(wellBeanBeed.cq);
+      LongEdit edit = new LongEdit(wellBeanBeed.cq);
       edit.setGoal(cq);
       edit.perform();
       assertEquals(wellBeanBeed.cq.get(), cq);

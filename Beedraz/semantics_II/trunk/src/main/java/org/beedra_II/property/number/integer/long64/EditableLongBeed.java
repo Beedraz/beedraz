@@ -1,4 +1,4 @@
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -12,14 +12,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class EditableIntegerBeed
-    extends EditableSimplePropertyBeed<Integer, IntegerEvent>
-    implements IntegerBeed {
+public class EditableLongBeed
+    extends EditableSimplePropertyBeed<Integer, LongEvent>
+    implements LongBeed {
 
   /**
    * @pre owner != null;
    */
-  public EditableIntegerBeed(AggregateBeed owner) {
+  public EditableLongBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -32,8 +32,8 @@ public class EditableIntegerBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected IntegerEvent createInitialEvent() {
-    return new ActualIntegerEvent(this, null, get(), null);
+  protected LongEvent createInitialEvent() {
+    return new ActualLongEvent(this, null, get(), null);
   }
 
   public Double getDouble() {

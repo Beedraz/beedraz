@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -38,9 +38,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public final class ActualIntegerEvent
+public final class ActualLongEvent
     extends ActualOldNewEvent<Integer>
-    implements IntegerEvent {
+    implements LongEvent {
 
   /**
    * @pre  source != null;
@@ -58,7 +58,7 @@ public final class ActualIntegerEvent
    *          ? getDelta() == null
    *          : getDelta() = newValue - oldValue;
    */
-  public ActualIntegerEvent(IntegerBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
+  public ActualLongEvent(LongBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
     super(source, oldValue, newValue, edit);
     $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
   }

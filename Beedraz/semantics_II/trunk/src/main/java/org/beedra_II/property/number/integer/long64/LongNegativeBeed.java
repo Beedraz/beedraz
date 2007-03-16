@@ -18,12 +18,11 @@ package org.beedra_II.property.number.integer.long64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.integer.IntegerBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the negative of a {@link #getArgument() argument} {@link IntegerBeed}.
+ * A beed that is the negative of a {@link #getArgument() argument} {@link LongBeed}.
  *
  * @invar getArgument() == null ? getInteger() == null;
  * @invar getArgument() != null ? getInteger() == - getArgument().getInteger();

@@ -18,21 +18,21 @@ package org.beedra_II.property.number.integer.long64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
-import org.beedra_II.property.integer.IntegerEvent;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>>
+public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Integer, LongBeed, LongEvent>>
     extends AbstractTestUnaryExpressionBeed<Integer,
-                                            IntegerBeed,
-                                            IntegerEvent,
+                                            LongBeed,
+                                            LongEvent,
                                             _UEB_,
-                                            EditableIntegerBeed> {
+                                            EditableLongBeed> {
 
   @Override
   protected void initGoals() {
@@ -43,9 +43,9 @@ public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends Abstract
   }
 
   @Override
-  protected void changeArgument(EditableIntegerBeed editableArgumentBeed, Integer newValue) {
+  protected void changeArgument(EditableLongBeed editableArgumentBeed, Integer newValue) {
     try {
-      IntegerEdit edit = new IntegerEdit(editableArgumentBeed);
+      LongEdit edit = new LongEdit(editableArgumentBeed);
       edit.setGoal(newValue);
       edit.perform();
     }
@@ -55,27 +55,27 @@ public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends Abstract
   }
 
   @Override
-  protected EditableIntegerBeed createEditableArgumentBeed(AggregateBeed owner) {
-    return new EditableIntegerBeed(owner);
+  protected EditableLongBeed createEditableArgumentBeed(AggregateBeed owner) {
+    return new EditableLongBeed(owner);
   }
 
   @Override
-  protected StubListener<IntegerEvent> createStubListener() {
-    return new StubListener<IntegerEvent>();
+  protected StubListener<LongEvent> createStubListener() {
+    return new StubListener<LongEvent>();
   }
 
   @Override
-  protected Integer newValueFrom(IntegerEvent event) {
+  protected Integer newValueFrom(LongEvent event) {
     return event.getNewInteger();
   }
 
   @Override
-  protected Integer oldValueFrom(IntegerEvent event) {
+  protected Integer oldValueFrom(LongEvent event) {
     return event.getOldInteger();
   }
 
   @Override
-  protected Integer valueFrom(IntegerBeed argumentBeed) {
+  protected Integer valueFrom(LongBeed argumentBeed) {
     return argumentBeed.getInteger();
   }
 

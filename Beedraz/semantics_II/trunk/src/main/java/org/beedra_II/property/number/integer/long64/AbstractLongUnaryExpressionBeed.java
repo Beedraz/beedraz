@@ -21,9 +21,6 @@ import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.integer.ActualIntegerEvent;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEvent;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -36,8 +33,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractLongUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>
-    implements IntegerBeed {
+    extends AbstractUnaryExpressionBeed<Integer, LongBeed, LongEvent>
+    implements LongBeed {
 
   /**
    * @pre   owner != null;
@@ -65,22 +62,22 @@ public abstract class AbstractLongUnaryExpressionBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final IntegerEvent createInitialEvent() {
-    return new ActualIntegerEvent(this, null, getInteger(), null);
+  protected final LongEvent createInitialEvent() {
+    return new ActualLongEvent(this, null, getInteger(), null);
   }
 
   @Override
-  protected final IntegerEvent createNewEvent(Integer oldValue, Integer newValue, Edit<?> edit) {
-    return new ActualIntegerEvent(this, oldValue, newValue, edit);
+  protected final LongEvent createNewEvent(Integer oldValue, Integer newValue, Edit<?> edit) {
+    return new ActualLongEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  protected final Integer newValueFrom(IntegerEvent event) {
+  protected final Integer newValueFrom(LongEvent event) {
     return event.getNewInteger();
   }
 
   @Override
-  protected final Integer valueFrom(IntegerBeed beed) {
+  protected final Integer valueFrom(LongBeed beed) {
     return beed.getInteger();
   }
 

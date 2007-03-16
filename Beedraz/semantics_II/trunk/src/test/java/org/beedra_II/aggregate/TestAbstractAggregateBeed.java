@@ -44,8 +44,8 @@ public class TestAbstractAggregateBeed {
     $edit1 = new StubEdit($beed1);
     $edit1.perform();
     $event1 = new StubEvent($beed1);
-//    $edit2 = new IntegerEdit($beed2);
-//    $event2 = new IntegerEvent($beed2, new Integer(2), new Integer(22), $edit2);
+//    $edit2 = new LongEdit($beed2);
+//    $event2 = new LongEvent($beed2, new Integer(2), new Integer(22), $edit2);
     $edit3 = new StubEdit($beed3);
     $edit3.perform();
     $event3 = new StubEvent($beed3);
@@ -68,8 +68,8 @@ public class TestAbstractAggregateBeed {
 
   private StubEdit $edit1;
   private StubEvent $event1;
-//  private IntegerEdit $edit2;
-//  private IntegerEvent $event2;
+//  private LongEdit $edit2;
+//  private LongEvent $event2;
   private StubEdit $edit3;
   private StubEvent $event3;
 

@@ -14,36 +14,42 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
-import org.beedra_II.property.decimal.DoubleBeed;
+import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed containing an {@link Integer} value.
- * Listeners of the beed can receive events of type
- * {@link IntegerEvent}.
- *
  * @author Jan Dockx
- * @author PeopleWare n.v.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface IntegerBeed extends DoubleBeed<IntegerEvent> {
+public final class LongEdit
+    extends SimplePropertyEdit<Integer, EditableLongBeed, LongEvent> {
 
   /**
-   * @basic
+   * @pre  target != null;
+   * @post getTarget() == target;
    */
-  Integer getInteger();
+  public LongEdit(EditableLongBeed target) {
+    super(target);
+  }
 
   /**
-   * @result MathUtil.equalValue(result, getInteger());
+   * @post  result.getSource() == getTarget();
+   * @post  result.getOldValue() == getOldValue();
+   * @post  result.getNewValue() == getNewValue();
+   * @post  result.getEdit() == this;
    */
-  Double getDouble();
+  @Override
+  protected LongEvent createEvent() {
+    return new ActualLongEvent(getTarget(), getOldValue(), getNewValue(), this);
+  }
 
 }
+
 

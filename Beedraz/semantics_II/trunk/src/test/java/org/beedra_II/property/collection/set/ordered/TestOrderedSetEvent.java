@@ -23,8 +23,8 @@ import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToManyBeed;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,8 +68,8 @@ public class TestOrderedSetEvent {
     newValue.add(new ManyBeanBeed());
     newValue.add(new ManyBeanBeed());
     // edit
-    EditableIntegerBeed target = new EditableIntegerBeed(owner);
-    IntegerEdit edit = new IntegerEdit(target);
+    EditableLongBeed target = new EditableLongBeed(owner);
+    LongEdit edit = new LongEdit(target);
     edit.perform();
     // test constructor
     OrderedSetEvent<ManyBeanBeed> listEvent =

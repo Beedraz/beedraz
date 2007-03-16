@@ -24,8 +24,8 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerEdit;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.beedra_II.property.string.EditableStringBeed;
 import org.junit.After;
 import org.junit.Before;
@@ -44,8 +44,8 @@ public class TestAbstractEvent {
   }
 
   AggregateBeed $owner = new StubBeanBeed();
-  EditableIntegerBeed $target = new EditableIntegerBeed($owner);
-  IntegerEdit $edit = new IntegerEdit($target);
+  EditableLongBeed $target = new EditableLongBeed($owner);
+  LongEdit $edit = new LongEdit($target);
   Beed<?> $source = new EditableStringBeed($owner);
   Event $event;
 

@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
-import org.beedra_II.property.decimal.DoubleBeed;
+import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

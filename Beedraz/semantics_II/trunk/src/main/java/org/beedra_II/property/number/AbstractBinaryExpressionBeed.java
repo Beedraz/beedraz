@@ -19,8 +19,8 @@ package org.beedra_II.property.number;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.decimal.DoubleBeed;
-import org.beedra_II.property.decimal.DoubleEvent;
+import org.beedra_II.property.number.real.double64.DoubleBeed;
+import org.beedra_II.property.number.real.double64.DoubleEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.decimal;
+package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -23,22 +23,22 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that computes the arithmetic mean of a given set of beeds of type
+ * A beed that computes the geometric mean of a given set of beeds of type
  * {@link DoubleBeed}.
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
- *            ==> getDouble() == avg { db.getDouble() | getSource().get().contains(db)};
+ *            ==> getDouble() == geometric-mean { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective,
- *        then the value of the arithmetic mean beed is the arithmetic mean of
+ *        then the value of the geometric mean beed is the geometric mean of
  *        the values of all beeds in the given set. The mean of an empty set is NaN.
- *        e.g. getDouble() = (5.1 + 3.2 + 4.9) / 3
+ *        e.g. getDouble() = (5.1 * 3.2 * 4.9) ^ (1/3)
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
+public class DoubleGeometricMeanBeed extends DoubleSetComputationBeed {
 
 
   /**
@@ -46,7 +46,7 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleArithmeticMeanBeed(AggregateBeed owner) {
+  public DoubleGeometricMeanBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -60,14 +60,14 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
   }
 
   /**
-   * Compute the arithmetic mean of the values of the double beeds in the given
+   * Compute the geometric mean of the values of the double beeds in the given
    * set beed.
    * This is done by iterating over the beeds in the source set beed.
    * When the source is null, the result is null.
    * When the source contains zero beeds, the result is {@link Double.NaN}.
    * When one of the terms is null, the result is null.
-   * When all terms are effective, the result is the arithmetic mean
-   * of the values of the beeds.
+   * When all terms are effective, the result is the geometric mean of the
+   * values of the beeds.
    */
   public static Double mean(final SetBeed<DoubleBeed<DoubleEvent>, ?> source) {
     Double mean;
@@ -80,17 +80,17 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
     else {
       // assert source != null;
       assert source.get().size() > 0;
-      mean = 0.0;
+      mean = 1.0;
       for (DoubleBeed<DoubleEvent> doubleBeed : source.get()) {
         Double value = doubleBeed.getDouble();
         if (value == null) {
           mean = null;
           break;
         }
-        mean += value; // autoboxing
+        mean *= value; // autoboxing
       }
       if (mean != null) {
-        mean = mean / source.get().size(); // divisor is not zero (see if-condition)!
+        mean = Math.pow(mean, 1.0 / source.get().size()); // divisor is not zero (see if-condition)!
       }
     }
     return mean;

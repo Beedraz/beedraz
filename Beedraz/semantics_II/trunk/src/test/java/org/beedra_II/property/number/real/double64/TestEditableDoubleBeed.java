@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedra_II.property.decimal;
+package org.beedra_II.property.number.real.double64;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

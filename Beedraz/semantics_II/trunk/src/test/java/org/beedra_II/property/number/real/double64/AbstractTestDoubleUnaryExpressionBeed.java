@@ -18,10 +18,6 @@ package org.beedra_II.property.number.real.double64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.decimal.DoubleBeed;
-import org.beedra_II.property.decimal.DoubleEdit;
-import org.beedra_II.property.decimal.DoubleEvent;
-import org.beedra_II.property.decimal.EditableDoubleBeed;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
 import org.junit.Assert;

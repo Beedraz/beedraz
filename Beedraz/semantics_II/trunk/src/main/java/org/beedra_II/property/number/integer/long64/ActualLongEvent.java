@@ -21,7 +21,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.decimal.DoubleBeed;
+import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

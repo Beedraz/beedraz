@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.decimal;
+package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.event.Event;

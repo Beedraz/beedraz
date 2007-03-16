@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
-import org.beedra_II.property.decimal.DoubleEvent;
+import org.beedra_II.property.number.real.double64.DoubleEvent;
 import org.beedra_II.property.simple.OldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

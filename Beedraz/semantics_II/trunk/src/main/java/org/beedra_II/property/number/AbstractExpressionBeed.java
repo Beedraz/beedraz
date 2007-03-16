@@ -22,8 +22,8 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.decimal.DoubleBeed;
-import org.beedra_II.property.decimal.DoubleEvent;
+import org.beedra_II.property.number.real.double64.DoubleBeed;
+import org.beedra_II.property.number.real.double64.DoubleEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 

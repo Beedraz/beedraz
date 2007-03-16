@@ -20,9 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.decimal.DoubleBeed;
-import org.beedra_II.property.decimal.DoubleEvent;
-import org.beedra_II.property.decimal.EditableDoubleBeed;
 import org.beedra_II.property.number.real.double64.DoubleEBeed;
 import org.beedra_II.property.number.real.double64.DoubleExponentBeed;
 import org.junit.Test;

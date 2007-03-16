@@ -53,7 +53,9 @@ public abstract class AbstractBeed<_Event_ extends Event>
   }
 
   protected final void fireChangeEvent(_Event_ event) {
-    for (Listener<? super _Event_> listener : $changeListeners) {
+    @SuppressWarnings("unchecked")
+    Set<Listener<? super _Event_>> listeners = (Set<Listener<? super _Event_>>)$changeListeners.clone();
+    for (Listener<? super _Event_> listener : listeners) {
       listener.beedChanged(event);
       // same event, because is immutable
       // MUDO needs Dijkstra implementation !!
@@ -65,7 +67,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
    * @invar $changeListeners != null;
    * @invar Collections.noNull($changeListeners);
    */
-  private final Set<Listener<? super _Event_>> $changeListeners =
+  private final HashSet<Listener<? super _Event_>> $changeListeners =
       new HashSet<Listener<? super _Event_>>();
 
   @Override

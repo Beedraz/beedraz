@@ -22,6 +22,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -33,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractLongUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Long, LongBeed, LongEvent, LongEvent>
+    extends AbstractUnaryExpressionBeed<Long, LongBeed, IntegerEvent, IntegerEvent>
     implements LongBeed {
 
   /**
@@ -62,17 +63,17 @@ public abstract class AbstractLongUnaryExpressionBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final LongEvent createInitialEvent() {
+  protected final IntegerEvent createInitialEvent() {
     return new ActualLongEvent(this, null, getLong(), null);
   }
 
   @Override
-  protected final LongEvent createNewEvent(Long oldValue, Long newValue, Edit<?> edit) {
+  protected final IntegerEvent createNewEvent(Long oldValue, Long newValue, Edit<?> edit) {
     return new ActualLongEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  protected final Long newValueFrom(LongEvent event) {
+  protected final Long newValueFrom(IntegerEvent event) {
     return event.getNewLong();
   }
 

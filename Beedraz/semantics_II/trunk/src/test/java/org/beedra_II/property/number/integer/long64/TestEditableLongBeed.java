@@ -15,9 +15,9 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.LongEdit;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class TestEditableLongBeed {
   private AggregateBeed $owner;
   private StubEditableLongBeed $editableIntegerBeed;
   private LongEdit $stringEdit;
-  private LongEvent $event1;
+  private IntegerEvent $event1;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
 
@@ -68,7 +68,7 @@ public class TestEditableLongBeed {
 
   @Test
   public void createInitialEvent() {
-    LongEvent initialEvent = $editableIntegerBeed.createInitialEvent();
+    IntegerEvent initialEvent = $editableIntegerBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableIntegerBeed);
     assertEquals(initialEvent.getOldLong(), null);
     assertEquals(initialEvent.getNewLong(), $editableIntegerBeed.get());

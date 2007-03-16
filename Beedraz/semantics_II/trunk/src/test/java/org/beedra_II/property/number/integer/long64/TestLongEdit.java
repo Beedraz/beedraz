@@ -30,8 +30,8 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.LongEdit;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class TestLongEdit {
   private LongEdit $longEdit = new LongEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
-  StubListener<LongEvent> $listener3 = new StubListener<LongEvent>();
+  StubListener<IntegerEvent> $listener3 = new StubListener<IntegerEvent>();
 
   @Test
   public void constructor() {
@@ -642,7 +642,7 @@ public class TestLongEdit {
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
     assertEquals(State.NOT_YET_PERFORMED, $longEdit.getState());
-//    LongEvent createdEvent = $longEdit.createEvent();
+//    IntegerEvent createdEvent = $longEdit.createEvent();
 //    assertEquals(createdEvent.getEdit(), $longEdit);
 //    assertEquals(createdEvent.getOldValue(), null);
 //    assertEquals(createdEvent.getNewValue(), null);
@@ -652,7 +652,7 @@ public class TestLongEdit {
     $longEdit.setGoal(goal);
     $longEdit.perform();
     // create event
-    LongEvent createdEvent = $longEdit.createEvent();
+    IntegerEvent createdEvent = $longEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $longEdit);
     assertEquals(createdEvent.getOldLong(), null);
     assertEquals(createdEvent.getNewLong(), goal);

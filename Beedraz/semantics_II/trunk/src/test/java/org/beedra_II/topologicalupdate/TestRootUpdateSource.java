@@ -28,9 +28,9 @@ import java.util.Map;
 
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +41,8 @@ public class TestRootUpdateSource {
   private StubRootUpdateSource $subject1;
   private StubRootUpdateSource $subject2;
 
-  private LongEvent $event;
-  private LongEvent[] $events;
+  private IntegerEvent $event;
+  private IntegerEvent[] $events;
 
   private StubDependentUpdateSource $dNullEvent1;
   private StubDependentUpdateSource $dNullEvent2;
@@ -62,16 +62,16 @@ public class TestRootUpdateSource {
 
   }
 
-  public class StubDependentUpdateSource extends DemoDependentUpdateSource<LongEvent, UpdateSource> {
+  public class StubDependentUpdateSource extends DemoDependentUpdateSource<IntegerEvent, UpdateSource> {
 
-    public StubDependentUpdateSource(LongEvent event) {
+    public StubDependentUpdateSource(IntegerEvent event) {
       $event = event;
     }
 
-    private LongEvent $event;
+    private IntegerEvent $event;
 
     @Override
-    protected LongEvent update(Map<UpdateSource, Event> events) {
+    protected IntegerEvent update(Map<UpdateSource, Event> events) {
       $updated++;
       $events = new HashMap<UpdateSource, Event>(events);
       return $event;
@@ -104,7 +104,7 @@ public class TestRootUpdateSource {
   }
 
   private void initDs(int n) {
-    $events = new LongEvent[n];
+    $events = new IntegerEvent[n];
     $ds = new StubDependentUpdateSource[n];
     for (int i = 0; i < n; i++) {
       $events[i] = createIntegerEvent();
@@ -112,7 +112,7 @@ public class TestRootUpdateSource {
     }
   }
 
-  private LongEvent createIntegerEvent() {
+  private IntegerEvent createIntegerEvent() {
     return new ActualLongEvent(new EditableLongBeed(new AbstractBeanBeed() {
 
 //      public int getMaximumRootUpdateSourceDistance() {

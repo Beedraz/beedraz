@@ -17,15 +17,20 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -51,7 +56,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          state    = "$State$",
          tag      = "$Name$")
 public class LongSumBeed
-    extends AbstractPropertyBeed<LongEvent>
+    extends AbstractPropertyBeed<IntegerEvent>
     implements LongBeed {
 
   /**
@@ -66,7 +71,7 @@ public class LongSumBeed
   /**
    * @invar  getNbOccurrences() > 0;
    */
-  private class TermListener implements Listener<LongEvent> {
+  private class TermListener implements Listener<IntegerEvent> {
 
     /**
      * @post  getNbOccurrences() == 1;
@@ -75,7 +80,7 @@ public class LongSumBeed
       $nbOccurrences = 1;
     }
 
-    public void beedChanged(LongEvent event) {
+    public void beedChanged(IntegerEvent event) {
       // recalculate(); optimization
       Long oldValue = $value;
       if ($value !=  null) {
@@ -255,7 +260,7 @@ public class LongSumBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final LongEvent createInitialEvent() {
+  protected final IntegerEvent createInitialEvent() {
     return new ActualLongEvent(this, null, getLong(), null);
   }
 
@@ -270,6 +275,14 @@ public class LongSumBeed
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + getLong() + "\n");
     sb.append(indent(level + 1) + "number of terms:" + $terms.size() + "\n");
+  }
+
+  public BigInteger getBigInteger() {
+    return castToBigInteger(getLong());
+  }
+
+  public BigDecimal getBigDecimal() {
+    return castToBigDecimal(getLong());
   }
 
 }

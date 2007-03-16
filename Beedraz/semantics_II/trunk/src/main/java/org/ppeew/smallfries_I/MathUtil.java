@@ -20,6 +20,9 @@ package org.ppeew.smallfries_I;
 import static java.lang.Math.signum;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -172,10 +175,80 @@ public final class MathUtil {
     }
   }
 
+  public static boolean equalValue(BigInteger bi, Number n) {
+    return (bi == null) ?
+             (n == null) :
+             (n != null) && (bi.compareTo(BigInteger.valueOf(n.longValue())) == 0);
+  }
+
   public static boolean equalValue(Long l, Number n) {
     return (l == null) ?
              (n == null) :
              (n != null) && (l.longValue() == n.longValue());
+  }
+
+  /**
+   * @result equalValue(result, floatObject);
+   */
+  public static BigDecimal castToBigDecimal(Double doubleObject) {
+    if (doubleObject == null) {
+      return null;
+    }
+    else {
+      return BigDecimal.valueOf(doubleObject);
+    }
+  }
+
+  /**
+   * @result equalValue(result, floatObject);
+   */
+  public static BigDecimal castToBigDecimal(Float floatObject) {
+    if (floatObject == null) {
+      return null;
+    }
+    else {
+      return BigDecimal.valueOf(floatObject);
+    }
+  }
+
+  /**
+   * @result equalValue(result, longObject);
+   *
+   * @mudo is this a range problem?
+   */
+  public static BigDecimal castToBigDecimal(BigInteger biObject) {
+    if (biObject == null) {
+      return null;
+    }
+    else {
+      return new BigDecimal(biObject);
+    }
+  }
+
+  /**
+   * @result equalValue(result, longObject);
+   *
+   * @mudo is this a range problem?
+   */
+  public static BigDecimal castToBigDecimal(Long longObject) {
+    if (longObject == null) {
+      return null;
+    }
+    else {
+      return BigDecimal.valueOf(longObject);
+    }
+  }
+
+  /**
+   * @result equalValue(result, integerObject);
+   */
+  public static BigDecimal castToBigDecimal(Integer integerObject) {
+    if (integerObject == null) {
+      return null;
+    }
+    else {
+      return BigDecimal.valueOf(integerObject);
+    }
   }
 
   /**
@@ -186,7 +259,7 @@ public final class MathUtil {
       return null;
     }
     else {
-      return Double.valueOf(floatObject.doubleValue());
+      return Double.valueOf(floatObject);
     }
   }
 
@@ -200,7 +273,7 @@ public final class MathUtil {
       return null;
     }
     else {
-      return Double.valueOf(longObject.doubleValue());
+      return Double.valueOf(longObject);
     }
   }
 
@@ -212,7 +285,7 @@ public final class MathUtil {
       return null;
     }
     else {
-      return Double.valueOf(integerObject.doubleValue());
+      return Double.valueOf(integerObject);
     }
   }
 
@@ -226,7 +299,7 @@ public final class MathUtil {
       return null;
     }
     else {
-      return Float.valueOf(longObject.floatValue());
+      return Float.valueOf(longObject);
     }
   }
 
@@ -240,7 +313,31 @@ public final class MathUtil {
       return null;
     }
     else {
-      return Float.valueOf(integerObject.floatValue());
+      return Float.valueOf(integerObject);
+    }
+  }
+
+  /**
+   * @result equalValue(result, integerObject);
+   */
+  public static BigInteger castToBigInteger(Long longObject) {
+    if (longObject == null) {
+      return null;
+    }
+    else {
+      return BigInteger.valueOf(longObject);
+    }
+  }
+
+  /**
+   * @result equalValue(result, integerObject);
+   */
+  public static BigInteger castToBigInteger(Integer integerObject) {
+    if (integerObject == null) {
+      return null;
+    }
+    else {
+      return BigInteger.valueOf(integerObject);
     }
   }
 
@@ -252,7 +349,7 @@ public final class MathUtil {
       return null;
     }
     else {
-      return Long.valueOf(integerObject.longValue());
+      return Long.valueOf(integerObject);
     }
   }
 

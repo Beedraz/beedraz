@@ -18,9 +18,15 @@ package org.beedra_II.property.number.integer.long64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
+import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -40,7 +46,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public final class ActualLongEvent
     extends ActualOldNewEvent<Long>
-    implements LongEvent {
+    implements IntegerEvent {
 
   /**
    * @pre  source != null;
@@ -71,6 +77,14 @@ public final class ActualLongEvent
     return castToDouble(getNewLong());
   }
 
+  public BigInteger getNewBigInteger() {
+    return castToBigInteger(getNewLong());
+  }
+
+  public BigDecimal getNewBigDecimal() {
+    return castToBigDecimal(getNewLong());
+  }
+
   public Long getOldLong() {
     return getOldValue();
   }
@@ -79,12 +93,28 @@ public final class ActualLongEvent
     return castToDouble(getOldLong());
   }
 
+  public BigInteger getOldBigInteger() {
+    return castToBigInteger(getOldLong());
+  }
+
+  public BigDecimal getOldBigDecimal() {
+    return castToBigDecimal(getOldLong());
+  }
+
   public final Long getLongDelta() {
     return $delta;
   }
 
   public Double getDoubleDelta() {
     return castToDouble(getLongDelta());
+  }
+
+  public BigInteger getBigIntegerDelta() {
+    return castToBigInteger(getLongDelta());
+  }
+
+  public BigDecimal getBigDecimalDelta() {
+    return castToBigDecimal(getLongDelta());
   }
 
   private final Long $delta;

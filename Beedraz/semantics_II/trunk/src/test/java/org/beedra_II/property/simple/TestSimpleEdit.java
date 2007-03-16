@@ -31,10 +31,10 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongBeed;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +42,7 @@ import org.junit.Test;
 public class TestSimpleEdit {
 
   public class MySimpleEdit
-       extends SimplePropertyEdit<Long, MyEditableIntegerBeed, LongEvent> {
+       extends SimplePropertyEdit<Long, MyEditableIntegerBeed, IntegerEvent> {
 
     public MySimpleEdit(MyEditableIntegerBeed target) {
       super(target);
@@ -63,17 +63,17 @@ public class TestSimpleEdit {
     }
 
     @Override
-    protected LongEvent createEvent() {
+    protected IntegerEvent createEvent() {
       LongBeed source = new EditableLongBeed(new StubBeanBeed());
       $createdEvent = new ActualLongEvent(source, new Long(0), new Long(1), null);
       return $createdEvent;
     }
 
-    public LongEvent getCreatedEvent() {
+    public IntegerEvent getCreatedEvent() {
       return $createdEvent;
     }
 
-    private LongEvent $createdEvent;
+    private IntegerEvent $createdEvent;
 
   }
 
@@ -105,7 +105,7 @@ public class TestSimpleEdit {
   private MySimpleEdit $simpleEdit = new MySimpleEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
-  StubListener<LongEvent> $listener3 = new StubListener<LongEvent>();
+  StubListener<IntegerEvent> $listener3 = new StubListener<IntegerEvent>();
 
   @Test
   public void constructor() {
@@ -1096,7 +1096,7 @@ public class TestSimpleEdit {
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // fire
-    LongEvent event = new ActualLongEvent($target, new Long(0), new Long(1), null);
+    IntegerEvent event = new ActualLongEvent($target, new Long(0), new Long(1), null);
     $simpleEdit.fireEvent(event);
     // check listener
     assertNotNull($listener3.$event);

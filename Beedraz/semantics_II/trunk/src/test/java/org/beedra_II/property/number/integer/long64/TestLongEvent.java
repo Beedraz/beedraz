@@ -23,11 +23,11 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,33 +58,33 @@ public class TestLongEvent {
     LongEdit edit = new LongEdit(target);
     edit.perform();
     // test constructor
-    LongEvent longEvent = new ActualLongEvent(source, oldValue, newValue, edit);
-    assertEquals(longEvent.getSource(), source);
-    assertEquals(longEvent.getOldLong(), oldValue);
-    assertEquals(longEvent.getNewLong(), newValue);
-    assertEquals(longEvent.getEdit(), edit);
-    assertEquals(longEvent.getEditState(), edit.getState());
-    assertEquals(longEvent.getLongDelta(), newValue - oldValue);
+    IntegerEvent integerEvent = new ActualLongEvent(source, oldValue, newValue, edit);
+    assertEquals(integerEvent.getSource(), source);
+    assertEquals(integerEvent.getOldLong(), oldValue);
+    assertEquals(integerEvent.getNewLong(), newValue);
+    assertEquals(integerEvent.getEdit(), edit);
+    assertEquals(integerEvent.getEditState(), edit.getState());
+    assertEquals(integerEvent.getLongDelta(), newValue - oldValue);
     // old and new value
     oldValue = null;
     newValue = 4L;
     // test constructor
-    longEvent = new ActualLongEvent(source, oldValue, newValue, edit);
-    assertEquals(longEvent.getSource(), source);
-    assertEquals(longEvent.getOldLong(), null);
-    assertEquals(longEvent.getNewLong(), 4L);
-    assertEquals(longEvent.getEdit(), edit);
-    assertEquals(longEvent.getEditState(), edit.getState());
-    assertEquals(longEvent.getLongDelta(), null);
+    integerEvent = new ActualLongEvent(source, oldValue, newValue, edit);
+    assertEquals(integerEvent.getSource(), source);
+    assertEquals(integerEvent.getOldLong(), null);
+    assertEquals(integerEvent.getNewLong(), 4L);
+    assertEquals(integerEvent.getEdit(), edit);
+    assertEquals(integerEvent.getEditState(), edit.getState());
+    assertEquals(integerEvent.getLongDelta(), null);
     // edit is null
     edit = null;
     // test constructor
-    longEvent = new ActualLongEvent(source, oldValue, newValue, edit);
-    assertEquals(longEvent.getSource(), source);
-    assertEquals(longEvent.getOldLong(), null);
-    assertEquals(longEvent.getNewLong(), 4L);
-    assertEquals(longEvent.getEdit(), null);
-    assertEquals(longEvent.getEditState(), null);
+    integerEvent = new ActualLongEvent(source, oldValue, newValue, edit);
+    assertEquals(integerEvent.getSource(), source);
+    assertEquals(integerEvent.getOldLong(), null);
+    assertEquals(integerEvent.getNewLong(), 4L);
+    assertEquals(integerEvent.getEdit(), null);
+    assertEquals(integerEvent.getEditState(), null);
   }
 
 }

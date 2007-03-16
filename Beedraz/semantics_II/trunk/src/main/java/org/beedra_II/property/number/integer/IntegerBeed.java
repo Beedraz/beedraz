@@ -14,20 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.integer.long64;
+package org.beedra_II.property.number.integer;
 
 
 import java.math.BigInteger;
 
-import org.beedra_II.property.number.integer.IntegerBeed;
-import org.beedra_II.property.number.integer.IntegerEvent;
+import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed containing a {@link Long} value.
+ * A beed representing an mathematical integer number.
  * Listeners of the beed can receive events of type
- * {@link IntegerEvent}.
+ * {@link IntegerEvent}. Integers cannot be represented
+ * in a computer. For now, {@code IntegerBeeds} offer
+ * support for both {@link BigInteger} and {@link Long}
+ * representations. Note that using the first has a big
+ * impact on performance.
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
@@ -36,17 +39,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LongBeed extends IntegerBeed {
+public interface IntegerBeed extends RealBeed<IntegerEvent> {
+
+  /**
+   * @basic
+   */
+  BigInteger getBigInteger();
 
   /**
    * @basic
    */
   Long getLong();
-
-  /**
-   * @result MathUtil.equalValue(result, getInteger());
-   */
-  BigInteger getBigInteger();
 
   /**
    * @result MathUtil.equalValue(result, getInteger());

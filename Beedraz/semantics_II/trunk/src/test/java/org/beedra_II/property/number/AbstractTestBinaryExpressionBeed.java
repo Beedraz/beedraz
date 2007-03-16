@@ -28,8 +28,8 @@ import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
-import org.beedra_II.property.number.real.double64.DoubleEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,9 +37,9 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
-                                                       _LeftArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
-                                                       _RightArgumentBeed_ extends DoubleBeed<_NumberEvent_>,
-                                                       _NumberEvent_ extends DoubleEvent,
+                                                       _LeftArgumentBeed_ extends RealBeed<_NumberEvent_>,
+                                                       _RightArgumentBeed_ extends RealBeed<_NumberEvent_>,
+                                                       _NumberEvent_ extends RealEvent,
                                                        _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _LeftArgumentBeed_, ?, _RightArgumentBeed_, ?, _NumberEvent_>,
                                                        _LeftEAB_ extends _LeftArgumentBeed_,
                                                        _RightEAB_ extends _RightArgumentBeed_> {

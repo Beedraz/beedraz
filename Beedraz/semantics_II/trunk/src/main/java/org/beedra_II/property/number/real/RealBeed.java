@@ -14,20 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.integer.long64;
+package org.beedra_II.property.number.real;
 
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
-import org.beedra_II.property.number.integer.IntegerBeed;
-import org.beedra_II.property.number.integer.IntegerEvent;
+import org.beedra_II.property.PropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed containing a {@link Long} value.
+ * A beed representing a real value. Real values cannot
+ * be represented in a computer. Both {@link DigDecimal}
+ * and {@link Double} representations are supported.
+ * The first has big consequences on performance.
+ *
  * Listeners of the beed can receive events of type
- * {@link IntegerEvent}.
+ * {@link RealEvent}.
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
@@ -36,20 +39,16 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LongBeed extends IntegerBeed {
+public interface RealBeed<_Event_ extends RealEvent>
+    extends PropertyBeed<_Event_> {
 
   /**
    * @basic
    */
-  Long getLong();
+  BigDecimal getBigDecimal();
 
   /**
-   * @result MathUtil.equalValue(result, getInteger());
-   */
-  BigInteger getBigInteger();
-
-  /**
-   * @result MathUtil.equalValue(result, getInteger());
+   * @basic
    */
   Double getDouble();
 

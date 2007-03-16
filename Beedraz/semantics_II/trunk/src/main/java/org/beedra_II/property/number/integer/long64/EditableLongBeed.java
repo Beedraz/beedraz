@@ -2,8 +2,14 @@ package org.beedra_II.property.number.integer.long64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -13,7 +19,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableLongBeed
-    extends EditableSimplePropertyBeed<Long, LongEvent>
+    extends EditableSimplePropertyBeed<Long, IntegerEvent>
     implements LongBeed {
 
   /**
@@ -32,7 +38,7 @@ public class EditableLongBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected LongEvent createInitialEvent() {
+  protected IntegerEvent createInitialEvent() {
     return new ActualLongEvent(this, null, get(), null);
   }
 
@@ -42,6 +48,14 @@ public class EditableLongBeed
 
   public Long getLong() {
     return get();
+  }
+
+  public BigInteger getBigInteger() {
+    return castToBigInteger(getLong());
+  }
+
+  public BigDecimal getBigDecimal() {
+    return castToBigDecimal(getLong());
   }
 
 }

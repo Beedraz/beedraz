@@ -19,8 +19,8 @@ package org.beedra_II.property.number;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.number.real.double64.DoubleBeed;
-import org.beedra_II.property.number.real.double64.DoubleEvent;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -44,11 +44,11 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
-                                                   _LeftArgumentBeed_ extends DoubleBeed<_LeftArgumentEvent_>,
-                                                   _LeftArgumentEvent_ extends DoubleEvent,
-                                                   _RightArgumentBeed_ extends DoubleBeed<_RightArgumentEvent_>,
-                                                   _RightArgumentEvent_ extends DoubleEvent,
-                                                   _NumberEvent_ extends DoubleEvent>
+                                                   _LeftArgumentBeed_ extends RealBeed<_LeftArgumentEvent_>,
+                                                   _LeftArgumentEvent_ extends RealEvent,
+                                                   _RightArgumentBeed_ extends RealBeed<_RightArgumentEvent_>,
+                                                   _RightArgumentEvent_ extends RealEvent,
+                                                   _NumberEvent_ extends RealEvent>
     extends AbstractExpressionBeed<_Number_, _NumberEvent_>  {
 
   /**

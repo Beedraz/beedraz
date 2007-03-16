@@ -20,17 +20,17 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Long, LongBeed, ?, LongEvent>>
+public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Long, LongBeed, ?, IntegerEvent>>
     extends AbstractTestUnaryExpressionBeed<Long,
                                             LongBeed,
-                                            LongEvent,
+                                            IntegerEvent,
                                             _UEB_,
                                             EditableLongBeed> {
 
@@ -60,17 +60,17 @@ public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends Abstract
   }
 
   @Override
-  protected StubListener<LongEvent> createStubListener() {
-    return new StubListener<LongEvent>();
+  protected StubListener<IntegerEvent> createStubListener() {
+    return new StubListener<IntegerEvent>();
   }
 
   @Override
-  protected Long newValueFrom(LongEvent event) {
+  protected Long newValueFrom(IntegerEvent event) {
     return event.getNewLong();
   }
 
   @Override
-  protected Long oldValueFrom(LongEvent event) {
+  protected Long oldValueFrom(IntegerEvent event) {
     return event.getOldLong();
   }
 

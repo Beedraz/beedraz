@@ -14,56 +14,62 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.integer.long64;
+package org.beedra_II.property.number.real;
 
 
-import org.beedra_II.property.number.real.double64.DoubleEvent;
-import org.beedra_II.property.simple.OldNewEvent;
+import java.math.BigDecimal;
+
+import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link LongBeed} and
- * that carries a simple old and new value of type {@link Long}.
+ * Old-new event like event whose source is a {@link RealBeed} and
+ * that represents a simple old and new real value.
  *
- * @author Jan Dockx
+ * @author  Jan Dockx
  *
- * @invar getSource() instanceof LongBeed;
+ * @invar getSource() instanceof RealBeed;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface LongEvent extends DoubleEvent {
+public interface RealEvent extends Event {
 
   /**
-   * @return getNewValue();
-   */
-  Long getNewLong();
-
-  /**
-   * @result MathUtil.equalValue(getNewInteger(), result);
-   */
-  Double getNewDouble();
-
-  /**
-   * @return getOldValue();
-   */
-  Long getOldLong();
-  /**
-   * @result MathUtil.equalValue(getOldInteger(), result);
+   * @basic
    */
   Double getOldDouble();
 
   /**
-   * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
+   * @basic
    */
-  Long getLongDelta();
+  Double getNewDouble();
 
   /**
-   * @result MathUtil.equalValue(getIntegerDelta(), result);
+   * @return (getOldDouble() == null) || (getNewDouble() == null)
+   *             ? null
+   *             : getNewDouble() - getOldDouble();
    */
   Double getDoubleDelta();
+
+  /**
+   * @basic
+   */
+  BigDecimal getOldBigDecimal();
+
+  /**
+   * @basic
+   */
+  BigDecimal getNewBigDecimal();
+
+  /**
+   * @return (getOldBigDecimal() == null) || (getNewBigDecimal() == null)
+   *             ? null
+   *             : getNewBigDecimal() - getOldBigDecimal();
+   */
+  BigDecimal getBigDecimalDelta();
 
 }
 

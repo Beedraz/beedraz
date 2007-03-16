@@ -21,8 +21,8 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.number.real.double64.DoubleBeed;
-import org.beedra_II.property.number.real.double64.DoubleEvent;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -42,9 +42,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
-                                                  _ArgumentBeed_ extends DoubleBeed<_ArgumentEvent_>,
-                                                  _ArgumentEvent_ extends DoubleEvent,
-                                                  _SendingEvent_ extends DoubleEvent>
+                                                  _ArgumentBeed_ extends RealBeed<_ArgumentEvent_>,
+                                                  _ArgumentEvent_ extends RealEvent,
+                                                  _SendingEvent_ extends RealEvent>
     extends AbstractExpressionBeed<_Number_, _SendingEvent_>  {
 
   /**

@@ -22,8 +22,8 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.number.real.double64.DoubleBeed;
-import org.beedra_II.property.number.real.double64.DoubleEvent;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -36,9 +36,9 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractExpressionBeed<_Number_ extends Number,
-                                             _NumberEvent_ extends DoubleEvent>
+                                             _NumberEvent_ extends RealEvent>
     extends AbstractPropertyBeed<_NumberEvent_>
-    implements DoubleBeed<_NumberEvent_> {
+    implements RealBeed<_NumberEvent_> {
 
   /**
    * @pre   owner != null;

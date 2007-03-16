@@ -29,10 +29,10 @@ import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
-import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.beedra_II.property.number.integer.long64.LongSumBeed;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +49,7 @@ public class TestLongSumBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(LongEvent event) {
+    public void fire(IntegerEvent event) {
       fireChangeEvent(event);
     }
   }
@@ -66,7 +66,7 @@ public class TestLongSumBeed {
 
   private AggregateBeed $owner = new StubBeanBeed();
   private MyIntegerSumBeed $integerSumBeed = new MyIntegerSumBeed($owner);
-  private LongEvent $event1 = new ActualLongEvent($integerSumBeed, 0L, 1L, null);
+  private IntegerEvent $event1 = new ActualLongEvent($integerSumBeed, 0L, 1L, null);
       // @mudo Laatste argument mag niet null zijn??
   private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
   private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
@@ -803,7 +803,7 @@ public class TestLongSumBeed {
 
   @Test
   public void createInitialEvent() {
-    LongEvent initialEvent = $integerSumBeed.createInitialEvent();
+    IntegerEvent initialEvent = $integerSumBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $integerSumBeed);
     assertEquals(initialEvent.getOldLong(), null);
     assertEquals(initialEvent.getNewLong(), $integerSumBeed.getLong());

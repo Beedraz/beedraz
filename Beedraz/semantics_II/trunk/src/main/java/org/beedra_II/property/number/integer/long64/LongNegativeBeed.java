@@ -17,6 +17,12 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -52,6 +58,14 @@ public class LongNegativeBeed
   protected Long calculateValue(Long argumentValue) {
     assert argumentValue != null;
     return -argumentValue;
+  }
+
+  public BigInteger getBigInteger() {
+    return castToBigInteger(getLong());
+  }
+
+  public BigDecimal getBigDecimal() {
+    return castToBigDecimal(getLong());
   }
 
 }

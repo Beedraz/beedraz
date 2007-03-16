@@ -229,6 +229,7 @@ public abstract class DoubleSetComputationBeed
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
     sb.append(indent(level + 1) + "number of elements in source:" + getSource().get().size() + "\n");
+    getSource().toString(sb, level + 2);
   }
 
 }

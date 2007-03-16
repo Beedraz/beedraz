@@ -77,7 +77,7 @@ public abstract class AbstractExpressionBeed<_Number_ extends Number,
   }
 
   @Override
-  public final void toString(StringBuffer sb, int level) {
+  public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + get() + "\n");
   }

@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -45,28 +46,28 @@ public class DoubleQuotientBeed
   /**
    * @basic
    */
-  public final DoubleBeed<DoubleEvent> getNumerator() {
+  public final RealBeed<?> getNumerator() {
     return getLeftArgument();
   }
 
   /**
    * @post getNumerator() == numerator;
    */
-  public final void setNumerator(DoubleBeed<DoubleEvent> numerator) {
+  public final void setNumerator(RealBeed<?> numerator) {
     setLeftArgument(numerator);
   }
 
   /**
    * @basic
    */
-  public final DoubleBeed<DoubleEvent> getDenominator() {
+  public final RealBeed<?> getDenominator() {
     return getRightArgument();
   }
 
   /**
    * @post getDenominator() == denominator;
    */
-  public final void setDenominator(DoubleBeed<DoubleEvent> denominator) {
+  public final void setDenominator(RealBeed<?> denominator) {
     setRightArgument(denominator);
   }
 

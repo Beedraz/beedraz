@@ -32,6 +32,7 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.ValidityListener;
 import org.beedra_II.edit.Edit.State;
 import org.beedra_II.event.Listener;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,9 +82,9 @@ public class TestDoubleEdit {
 
   }
 
-  public class StubDoubleListener implements Listener<DoubleEvent> {
+  public class StubDoubleListener implements Listener<RealEvent> {
 
-    public void beedChanged(DoubleEvent event) {
+    public void beedChanged(RealEvent event) {
       $event = event;
     }
 
@@ -91,7 +92,7 @@ public class TestDoubleEdit {
       $event = null;
     }
 
-    public DoubleEvent $event;
+    public RealEvent $event;
 
   }
 
@@ -699,7 +700,7 @@ public class TestDoubleEdit {
   @Test
   public void createEvent() throws EditStateException, IllegalEditException {
     assertEquals(State.NOT_YET_PERFORMED, $doubleEdit.getState());
-//    DoubleEvent createdEvent = $doubleEdit.createEvent();
+//    RealEvent createdEvent = $doubleEdit.createEvent();
 //    assertEquals(createdEvent.getEdit(), $doubleEdit);
 //    assertEquals(createdEvent.getOldValue(), null);
 //    assertEquals(createdEvent.getNewValue(), null);
@@ -709,7 +710,7 @@ public class TestDoubleEdit {
     $doubleEdit.setGoal(goal);
     $doubleEdit.perform();
     // create event
-    DoubleEvent createdEvent = $doubleEdit.createEvent();
+    RealEvent createdEvent = $doubleEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $doubleEdit);
     assertEquals(createdEvent.getOldDouble(), null);
     assertEquals(createdEvent.getNewDouble(), goal);

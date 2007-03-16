@@ -25,6 +25,8 @@ import java.util.Map;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 import org.ppeew.smallfries_I.MathUtil;
@@ -48,8 +50,8 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class DoubleCommutativeOperationBeed
-    extends AbstractPropertyBeed<DoubleEvent>
-    implements DoubleBeed<DoubleEvent> {
+    extends AbstractPropertyBeed<ActualDoubleEvent>
+    implements DoubleBeed {
 
   /**
    * @pre   owner != null;
@@ -63,7 +65,7 @@ public abstract class DoubleCommutativeOperationBeed
   /**
    * @invar  getNbOccurrences() > 0;
    */
-  private class ArgumentListener implements Listener<DoubleEvent> {
+  private class ArgumentListener implements Listener<RealEvent> {
 
     /**
      * @post  getNbOccurrences() == 1;
@@ -72,7 +74,7 @@ public abstract class DoubleCommutativeOperationBeed
       $nbOccurrences = 1;
     }
 
-    public void beedChanged(DoubleEvent event) {
+    public void beedChanged(RealEvent event) {
       // recalculate(); optimization
       Double oldValue = $value;
       if ($value !=  null) {
@@ -137,7 +139,7 @@ public abstract class DoubleCommutativeOperationBeed
   /**
    * @basic
    */
-  public final int getNbOccurrences(DoubleBeed<?> argument) {
+  public final int getNbOccurrences(RealBeed<?> argument) {
     ArgumentListener argumentListener = $arguments.get(argument);
     return argumentListener != null ? argumentListener.getNbOccurrences() : 0;
   }
@@ -146,7 +148,7 @@ public abstract class DoubleCommutativeOperationBeed
    * @pre   argument != null;
    * @post  new.getNbOccurrences(argument) == getNbOccurrences(argument) + 1;
    */
-  public final void addArgument(DoubleBeed<?> argument) {
+  public final void addArgument(RealBeed<?> argument) {
     assert argument != null;
     synchronized (argument) { // TODO is this correct?
       ArgumentListener argumentListener = $arguments.get(argument);
@@ -189,7 +191,7 @@ public abstract class DoubleCommutativeOperationBeed
    *          ? new.getNbOccurrences(argument) == getNbOccurrences(argument) - 1;
    *          : true;
    */
-  public final void removeArgument(DoubleBeed<?> argument) {
+  public final void removeArgument(RealBeed<?> argument) {
     synchronized (argument) { // TODO is this correct?
       ArgumentListener argumentListener = $arguments.get(argument);
       if (argumentListener != null) {
@@ -248,8 +250,8 @@ public abstract class DoubleCommutativeOperationBeed
    * @invar $arguments != null;
    * @invar Collections.noNull($arguments);
    */
-  private final Map<DoubleBeed<?>, ArgumentListener> $arguments =
-        new HashMap<DoubleBeed<?>, ArgumentListener>();
+  private final Map<RealBeed<?>, ArgumentListener> $arguments =
+        new HashMap<RealBeed<?>, ArgumentListener>();
 
   public final Double getDouble() {
     return $value;
@@ -264,7 +266,7 @@ public abstract class DoubleCommutativeOperationBeed
    */
   public void recalculate() {
     Double newValue = initialValue();
-    for (DoubleBeed<?> argument : $arguments.keySet()) {
+    for (RealBeed<?> argument : $arguments.keySet()) {
       Double argumentValue = argument.getDouble();
       if (argumentValue == null) {
         newValue = null;
@@ -291,7 +293,7 @@ public abstract class DoubleCommutativeOperationBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final DoubleEvent createInitialEvent() {
+  protected final ActualDoubleEvent createInitialEvent() {
     return new ActualDoubleEvent(this, null, getDouble(), null);
   }
 
@@ -305,7 +307,7 @@ public abstract class DoubleCommutativeOperationBeed
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
     sb.append(indent(level + 1) + "number of " + argumentsToString() + ":" + $arguments.size() + "\n");
-    for (DoubleBeed<?> argument : $arguments.keySet()) {
+    for (RealBeed<?> argument : $arguments.keySet()) {
       argument.toString(sb, level + 2);
     }
   }

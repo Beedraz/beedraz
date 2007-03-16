@@ -20,8 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.DoubleEBeed;
-import org.beedra_II.property.number.real.double64.DoubleExponentBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Test;
 
 
@@ -55,12 +54,12 @@ public class TestDoubleExponentBeed
   }
 
   @Override
-  protected DoubleBeed<DoubleEvent> getLeftArgument() {
+  protected RealBeed<?> getLeftArgument() {
     return $subject.getBase();
   }
 
   @Override
-  protected DoubleBeed<DoubleEvent> getRightArgument() {
+  protected RealBeed<?> getRightArgument() {
     return $subject.getExponent();
   }
 

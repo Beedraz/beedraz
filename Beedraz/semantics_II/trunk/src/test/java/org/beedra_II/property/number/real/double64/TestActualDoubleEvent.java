@@ -23,6 +23,7 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class TestActualDoubleEvent {
   public void constructor() throws EditStateException, IllegalEditException {
     // source
     AggregateBeed owner = new MyBeanBeed();
-    DoubleBeed<?> source = new EditableDoubleBeed(owner);
+    DoubleBeed source = new EditableDoubleBeed(owner);
     // old and new value
     Double oldValue = 0.0;
     Double newValue = 1.0;
@@ -56,33 +57,33 @@ public class TestActualDoubleEvent {
     DoubleEdit edit = new DoubleEdit(target);
     edit.perform();
     // test constructor
-    DoubleEvent doubleEvent = new ActualDoubleEvent(source, oldValue, newValue, edit);
-    assertEquals(doubleEvent.getSource(), source);
-    assertEquals(doubleEvent.getOldDouble(), oldValue);
-    assertEquals(doubleEvent.getNewDouble(), newValue);
-    assertEquals(doubleEvent.getEdit(), edit);
-    assertEquals(doubleEvent.getEditState(), edit.getState());
-    assertEquals(doubleEvent.getDoubleDelta(), newValue - oldValue);
+    RealEvent realEvent = new ActualDoubleEvent(source, oldValue, newValue, edit);
+    assertEquals(realEvent.getSource(), source);
+    assertEquals(realEvent.getOldDouble(), oldValue);
+    assertEquals(realEvent.getNewDouble(), newValue);
+    assertEquals(realEvent.getEdit(), edit);
+    assertEquals(realEvent.getEditState(), edit.getState());
+    assertEquals(realEvent.getDoubleDelta(), newValue - oldValue);
     // old and new value
     oldValue = null;
     newValue = 4.0;
     // test constructor
-    doubleEvent = new ActualDoubleEvent(source, oldValue, newValue, edit);
-    assertEquals(doubleEvent.getSource(), source);
-    assertEquals(doubleEvent.getOldDouble(), null);
-    assertEquals(doubleEvent.getNewDouble(), newValue);
-    assertEquals(doubleEvent.getEdit(), edit);
-    assertEquals(doubleEvent.getEditState(), edit.getState());
-    assertEquals(doubleEvent.getDoubleDelta(), null);
+    realEvent = new ActualDoubleEvent(source, oldValue, newValue, edit);
+    assertEquals(realEvent.getSource(), source);
+    assertEquals(realEvent.getOldDouble(), null);
+    assertEquals(realEvent.getNewDouble(), newValue);
+    assertEquals(realEvent.getEdit(), edit);
+    assertEquals(realEvent.getEditState(), edit.getState());
+    assertEquals(realEvent.getDoubleDelta(), null);
     // edit is null
     edit = null;
     // test constructor
-    doubleEvent = new ActualDoubleEvent(source, oldValue, newValue, edit);
-    assertEquals(doubleEvent.getSource(), source);
-    assertEquals(doubleEvent.getOldDouble(), null);
-    assertEquals(doubleEvent.getNewDouble(), newValue);
-    assertEquals(doubleEvent.getEdit(), null);
-    assertEquals(doubleEvent.getEditState(), null);
+    realEvent = new ActualDoubleEvent(source, oldValue, newValue, edit);
+    assertEquals(realEvent.getSource(), source);
+    assertEquals(realEvent.getOldDouble(), null);
+    assertEquals(realEvent.getNewDouble(), newValue);
+    assertEquals(realEvent.getEdit(), null);
+    assertEquals(realEvent.getEditState(), null);
   }
 
 }

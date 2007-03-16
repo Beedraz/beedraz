@@ -17,9 +17,13 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.math.BigDecimal;
+
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -41,7 +45,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public final class ActualDoubleEvent
     extends ActualOldNewEvent<Double>
-    implements DoubleEvent {
+    implements RealEvent {
 
   /**
    * @pre  source != null;
@@ -59,7 +63,7 @@ public final class ActualDoubleEvent
    *          ? getDelta() == null
    *          : getDelta() = newValue - oldValue;
    */
-  public ActualDoubleEvent(DoubleBeed<?> source, Double oldValue, Double newValue, Edit<?> edit) {
+  public ActualDoubleEvent(DoubleBeed source, Double oldValue, Double newValue, Edit<?> edit) {
     super(source, oldValue, newValue, edit);
     $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
   }
@@ -69,8 +73,16 @@ public final class ActualDoubleEvent
     return getNewValue();
   }
 
+  public final BigDecimal getNewBigDecimal() {
+    return castToBigDecimal(getNewDouble());
+  }
+
   public final Double getOldDouble() {
     return getOldValue();
+  }
+
+  public final BigDecimal getOldBigDecimal() {
+    return castToBigDecimal(getOldDouble());
   }
 
   /**
@@ -80,6 +92,10 @@ public final class ActualDoubleEvent
    */
   public final Double getDoubleDelta() {
     return $delta;
+  }
+
+  public final BigDecimal getBigDecimalDelta() {
+    return castToBigDecimal(getDoubleDelta());
   }
 
   private final Double $delta;

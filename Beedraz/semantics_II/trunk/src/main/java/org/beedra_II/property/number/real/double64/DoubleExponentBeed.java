@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -45,28 +46,28 @@ public class DoubleExponentBeed
   /**
    * @basic
    */
-  public final DoubleBeed<DoubleEvent> getBase() {
+  public final RealBeed<?> getBase() {
     return getLeftArgument();
   }
 
   /**
    * @post getBase() == base;
    */
-  public final void setBase(DoubleBeed<DoubleEvent> base) {
+  public final void setBase(RealBeed<?> base) {
     setLeftArgument(base);
   }
 
   /**
    * @basic
    */
-  public final DoubleBeed<DoubleEvent> getExponent() {
+  public final RealBeed<?> getExponent() {
     return getRightArgument();
   }
 
   /**
    * @post getExponent() == exponent;
    */
-  public final void setExponent(DoubleBeed<DoubleEvent> exponent) {
+  public final void setExponent(RealBeed<?> exponent) {
     setRightArgument(exponent);
   }
 

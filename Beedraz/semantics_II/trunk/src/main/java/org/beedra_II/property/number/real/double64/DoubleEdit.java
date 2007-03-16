@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -24,7 +25,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * An {@link Edit} for a beed of type {@link EditableDoubleBeed}.
  * This edit can change the value of the target beed, and send
- * {@link DoubleEvent events} to the listeners of that beed.
+ * {@link RealEvent events} to the listeners of that beed.
  *
  * @author  Nele Smeets
  */
@@ -33,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class DoubleEdit
-    extends SimplePropertyEdit<Double, EditableDoubleBeed, DoubleEvent> {
+    extends SimplePropertyEdit<Double, EditableDoubleBeed, ActualDoubleEvent> {
 
   /**
    * @pre  target != null;
@@ -50,7 +51,7 @@ public final class DoubleEdit
    * @post  result.getEdit() == this;
    */
   @Override
-  protected DoubleEvent createEvent() {
+  protected ActualDoubleEvent createEvent() {
     return new ActualDoubleEvent(getTarget(), getOldValue(), getNewValue(), this);
   }
 

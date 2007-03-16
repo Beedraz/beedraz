@@ -20,19 +20,19 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.number.AbstractBinaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestBinaryExpressionBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestDoubleBinaryExpressionBeed<_UEB_ extends AbstractBinaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, ?, DoubleBeed<DoubleEvent>, ?, DoubleEvent>>
+public abstract class AbstractTestDoubleBinaryExpressionBeed<_UEB_ extends AbstractDoubleBinaryExpressionBeed>
     extends AbstractTestBinaryExpressionBeed<Double,
-                                            DoubleBeed<DoubleEvent>,
-                                            DoubleBeed<DoubleEvent>,
-                                            DoubleEvent,
-                                            _UEB_,
-                                            EditableDoubleBeed,
-                                            EditableDoubleBeed> {
+                                             RealBeed<?>,
+                                             RealBeed<?>,
+                                             ActualDoubleEvent,
+                                             _UEB_,
+                                             EditableDoubleBeed,
+                                             EditableDoubleBeed> {
 
   @Override
   protected void initGoals() {
@@ -77,27 +77,27 @@ public abstract class AbstractTestDoubleBinaryExpressionBeed<_UEB_ extends Abstr
   }
 
   @Override
-  protected StubListener<DoubleEvent> createStubListener() {
-    return new StubListener<DoubleEvent>();
+  protected StubListener<ActualDoubleEvent> createStubListener() {
+    return new StubListener<ActualDoubleEvent>();
   }
 
   @Override
-  protected Double newValueFrom(DoubleEvent event) {
+  protected Double newValueFrom(ActualDoubleEvent event) {
     return event.getNewDouble();
   }
 
   @Override
-  protected Double oldValueFrom(DoubleEvent event) {
+  protected Double oldValueFrom(ActualDoubleEvent event) {
     return event.getOldDouble();
   }
 
   @Override
-  protected Double valueFromLeft(DoubleBeed<DoubleEvent> argumentBeed) {
+  protected Double valueFromLeft(RealBeed<?> argumentBeed) {
     return argumentBeed.getDouble();
   }
 
   @Override
-  protected Double valueFromRight(DoubleBeed<DoubleEvent> argumentBeed) {
+  protected Double valueFromRight(RealBeed<?> argumentBeed) {
     return valueFromLeft(argumentBeed);
   }
 

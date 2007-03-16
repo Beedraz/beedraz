@@ -14,6 +14,7 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class TestEditableDoubleBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(DoubleEvent event) {
+    public void fire(ActualDoubleEvent event) {
       fireChangeEvent(event);
     }
   }
@@ -58,7 +59,7 @@ public class TestEditableDoubleBeed {
   private AggregateBeed $owner;
   private MyEditableDoubleBeed $editableDoubleBeed;
   private DoubleEdit $stringEdit;
-  private DoubleEvent $event1;
+  private ActualDoubleEvent $event1;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
 
@@ -82,7 +83,7 @@ public class TestEditableDoubleBeed {
 
   @Test
   public void createInitialEvent() {
-    DoubleEvent initialEvent = $editableDoubleBeed.createInitialEvent();
+    RealEvent initialEvent = $editableDoubleBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableDoubleBeed);
     assertEquals(initialEvent.getOldDouble(), null);
     assertEquals(initialEvent.getNewDouble(), $editableDoubleBeed.get());

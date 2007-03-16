@@ -30,6 +30,8 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +46,7 @@ public class TestDoubleSumBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(DoubleEvent event) {
+    public void fire(ActualDoubleEvent event) {
       fireChangeEvent(event);
     }
   }
@@ -79,7 +81,7 @@ public class TestDoubleSumBeed {
 
   private AggregateBeed $owner = new MyBeanBeed();
   private MyDoubleSumBeed $doubleSumBeed = new MyDoubleSumBeed($owner);
-  private DoubleEvent $event1 = new ActualDoubleEvent($doubleSumBeed, new Double(0), new Double(1), null);
+  private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleSumBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private PropagatedEventListener $listener1 = new PropagatedEventListener();
   private PropagatedEventListener $listener2 = new PropagatedEventListener();
@@ -184,7 +186,7 @@ public class TestDoubleSumBeed {
     assertEquals($doubleSumBeed.getDouble(), 15.0);
   }
 
-  private void addTerm1_A(DoubleBeed<?> term5, DoubleBeed<?> termNull, DoubleBeed<?> term30) {
+  private void addTerm1_A(RealBeed<?> term5, RealBeed<?> termNull, RealBeed<?> term30) {
     // add term5
     $doubleSumBeed.addArgument(term5);
     // check (sum = 5)
@@ -338,7 +340,7 @@ public class TestDoubleSumBeed {
     assertEquals($doubleSumBeed.getDouble(), 12.0);
   }
 
-  private DoubleSumBeed addTerm2_A(Number goal5, DoubleBeed<?> term5, DoubleBeed<?> termNull, Number goal30, DoubleBeed<?> term30) {
+  private DoubleSumBeed addTerm2_A(Number goal5, RealBeed<?> term5, RealBeed<?> termNull, Number goal30, RealBeed<?> term30) {
     // add term5
     $doubleSumBeed.addArgument(term5);
     // check (sum = 5)
@@ -860,7 +862,7 @@ public class TestDoubleSumBeed {
 
   @Test
   public void createInitialEvent() {
-    DoubleEvent initialEvent = $doubleSumBeed.createInitialEvent();
+    RealEvent initialEvent = $doubleSumBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $doubleSumBeed);
     assertEquals(initialEvent.getOldDouble(), null);
     assertEquals(initialEvent.getNewDouble(), $doubleSumBeed.getDouble());

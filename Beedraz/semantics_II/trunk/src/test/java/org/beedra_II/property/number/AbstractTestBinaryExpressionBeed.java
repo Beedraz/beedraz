@@ -28,8 +28,8 @@ import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
+import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
-import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,12 +37,47 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
-                                                       _LeftArgumentBeed_ extends RealBeed<_NumberEvent_>,
-                                                       _RightArgumentBeed_ extends RealBeed<_NumberEvent_>,
+                                                       _LeftArgumentBeed_ extends RealBeed<?>,
+                                                       _RightArgumentBeed_ extends RealBeed<?>,
                                                        _NumberEvent_ extends RealEvent,
                                                        _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _LeftArgumentBeed_, ?, _RightArgumentBeed_, ?, _NumberEvent_>,
                                                        _LeftEAB_ extends _LeftArgumentBeed_,
                                                        _RightEAB_ extends _RightArgumentBeed_> {
+
+
+  protected abstract _UEB_ createSubject(AggregateBeed owner);
+
+  protected abstract _LeftEAB_ createEditableLeftArgumentBeed(AggregateBeed owner);
+
+  protected abstract _RightEAB_ createEditableRightArgumentBeed(AggregateBeed owner);
+
+  protected abstract StubListener<_NumberEvent_> createStubListener();
+
+  protected abstract void initGoals();
+
+  protected abstract void setLeftArgument(_LeftEAB_ leftArgument);
+
+  protected abstract void setRightArgument(_RightEAB_ rightArgument);
+
+  protected abstract _LeftArgumentBeed_ getLeftArgument();
+
+  protected abstract _RightArgumentBeed_ getRightArgument();
+
+  protected abstract void changeLeftArgument(_LeftEAB_ editableArgumentBeed, _Number_ newValue);
+
+  protected abstract void changeRightArgument(_RightEAB_ editableArgumentBeed, _Number_ newValue);
+
+  protected abstract _Number_ expectedValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
+
+  protected abstract _Number_ valueFromSubject(_UEB_ argumentBeed);
+
+  protected abstract _Number_ valueFromLeft(_LeftArgumentBeed_ argumentBeed);
+
+  protected abstract _Number_ valueFromRight(_RightArgumentBeed_ argumentBeed);
+
+  protected abstract _Number_ oldValueFrom(_NumberEvent_ argumentBeed);
+
+  protected abstract _Number_ newValueFrom(_NumberEvent_ argumentBeed);
 
   @Before
   public void setUp() throws Exception {
@@ -338,39 +373,5 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal2);
     $subject.toString(stub, 1);
   }
-
-  protected abstract _UEB_ createSubject(AggregateBeed owner);
-
-  protected abstract _LeftEAB_ createEditableLeftArgumentBeed(AggregateBeed owner);
-
-  protected abstract _RightEAB_ createEditableRightArgumentBeed(AggregateBeed owner);
-
-  protected abstract StubListener<_NumberEvent_> createStubListener();
-
-  protected abstract void initGoals();
-
-  protected abstract void setLeftArgument(_LeftEAB_ leftArgument);
-
-  protected abstract void setRightArgument(_RightEAB_ rightArgument);
-
-  protected abstract _LeftArgumentBeed_ getLeftArgument();
-
-  protected abstract _RightArgumentBeed_ getRightArgument();
-
-  protected abstract void changeLeftArgument(_LeftEAB_ editableArgumentBeed, _Number_ newValue);
-
-  protected abstract void changeRightArgument(_RightEAB_ editableArgumentBeed, _Number_ newValue);
-
-  protected abstract _Number_ expectedValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
-
-  protected abstract _Number_ valueFromSubject(_UEB_ argumentBeed);
-
-  protected abstract _Number_ valueFromLeft(_LeftArgumentBeed_ argumentBeed);
-
-  protected abstract _Number_ valueFromRight(_RightArgumentBeed_ argumentBeed);
-
-  protected abstract _Number_ oldValueFrom(_NumberEvent_ argumentBeed);
-
-  protected abstract _Number_ newValueFrom(_NumberEvent_ argumentBeed);
 
 }

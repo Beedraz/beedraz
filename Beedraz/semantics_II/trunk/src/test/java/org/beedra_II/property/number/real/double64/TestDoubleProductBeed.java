@@ -30,6 +30,8 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +46,7 @@ public class TestDoubleProductBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(DoubleEvent event) {
+    public void fire(ActualDoubleEvent event) {
       fireChangeEvent(event);
     }
   }
@@ -79,7 +81,7 @@ public class TestDoubleProductBeed {
 
   private AggregateBeed $owner = new MyBeanBeed();
   private MyDoubleProductBeed $doubleProductBeed = new MyDoubleProductBeed($owner);
-  private DoubleEvent $event1 = new ActualDoubleEvent($doubleProductBeed, new Double(0), new Double(1), null);
+  private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleProductBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private PropagatedEventListener $listener1 = new PropagatedEventListener();
   private PropagatedEventListener $listener2 = new PropagatedEventListener();
@@ -184,7 +186,7 @@ public class TestDoubleProductBeed {
     assertEquals($doubleProductBeed.getDouble(), 105.0);
   }
 
-  private void addProduct1_A(DoubleBeed<?> factor5, DoubleBeed<?> factorNull, DoubleBeed<?> factor30) {
+  private void addProduct1_A(RealBeed<?> factor5, RealBeed<?> factorNull, RealBeed<?> factor30) {
     // add factor5
     $doubleProductBeed.addArgument(factor5);
     // check (product = 5)
@@ -338,7 +340,7 @@ public class TestDoubleProductBeed {
     assertEquals($doubleProductBeed.getDouble(), 42.0);
   }
 
-  private DoubleProductBeed addProduct2_A(Number goal5, DoubleBeed<?> factor5, DoubleBeed<?> factorNull, Number goal30, DoubleBeed<?> factor30) {
+  private DoubleProductBeed addProduct2_A(Number goal5, RealBeed<?> factor5, RealBeed<?> factorNull, Number goal30, RealBeed<?> factor30) {
     // add factor5
     $doubleProductBeed.addArgument(factor5);
     // check (product = 5)
@@ -865,7 +867,7 @@ public class TestDoubleProductBeed {
 
   @Test
   public void createInitialEvent() {
-    DoubleEvent initialEvent = $doubleProductBeed.createInitialEvent();
+    RealEvent initialEvent = $doubleProductBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $doubleProductBeed);
     assertEquals(initialEvent.getOldDouble(), null);
     assertEquals(initialEvent.getNewDouble(), $doubleProductBeed.getDouble());

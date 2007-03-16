@@ -17,14 +17,15 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.beedra_II.property.PropertyBeed;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
  * A beed containing a {@link Double} value.
  * Listeners of the beed can receive events of type
- * {@link DoubleEvent}.
+ * {@link RealEvent}.
  *
  * @author Nele Smeets
  * @author PeopleWare n.v.
@@ -33,13 +34,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface DoubleBeed<_Event_ extends DoubleEvent>
-    extends PropertyBeed<_Event_> {
+public interface DoubleBeed
+    extends RealBeed<ActualDoubleEvent> {
 
-  /**
-   * @basic
-   */
-  Double getDouble();
+  // NOP
 
 }
 

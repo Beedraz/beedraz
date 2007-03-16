@@ -17,9 +17,15 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+
+import java.math.BigDecimal;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractBinaryExpressionBeed;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -31,8 +37,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleBinaryExpressionBeed
-    extends AbstractBinaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent, DoubleBeed<DoubleEvent>, DoubleEvent, DoubleEvent>
-    implements DoubleBeed<DoubleEvent> {
+    extends AbstractBinaryExpressionBeed<Double, RealBeed<?>, RealEvent, RealBeed<?>, RealEvent, ActualDoubleEvent>
+    implements DoubleBeed {
 
   /**
    * @pre   owner != null;
@@ -47,6 +53,10 @@ public abstract class AbstractDoubleBinaryExpressionBeed
     return get();
   }
 
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
+  }
+
   /**
    * @post  result != null;
    * @post  result.getArgument() == this;
@@ -56,32 +66,32 @@ public abstract class AbstractDoubleBinaryExpressionBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final DoubleEvent createInitialEvent() {
+  protected final ActualDoubleEvent createInitialEvent() {
     return new ActualDoubleEvent(this, null, get(), null);
   }
 
   @Override
-  protected final DoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
+  protected final ActualDoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
     return new ActualDoubleEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  protected final Double valueFromLeft(DoubleBeed<DoubleEvent> beed) {
+  protected final Double valueFromLeft(RealBeed<?> beed) {
     return beed.getDouble();
   }
 
   @Override
-  protected final Double valueFromRight(DoubleBeed<DoubleEvent> beed) {
+  protected final Double valueFromRight(RealBeed<?> beed) {
     return beed.getDouble();
   }
 
   @Override
-  protected final Double newValueFromLeft(DoubleEvent event) {
+  protected final Double newValueFromLeft(RealEvent event) {
     return event.getNewDouble();
   }
 
   @Override
-  protected final Double newValueFromRight(DoubleEvent event) {
+  protected final Double newValueFromRight(RealEvent event) {
     return event.getNewDouble();
   }
 

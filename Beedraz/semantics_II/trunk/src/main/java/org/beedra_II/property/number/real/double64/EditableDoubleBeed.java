@@ -17,7 +17,12 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+
+import java.math.BigDecimal;
+
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -25,7 +30,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A editable beed containing a {@link Double} value.
  * Listeners of the beed can receive events of type
- * {@link DoubleEvent}.
+ * {@link RealEvent}.
  *
  * @author  Nele Smeets
  */
@@ -34,8 +39,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableDoubleBeed
-    extends EditableSimplePropertyBeed<Double, DoubleEvent>
-    implements DoubleBeed<DoubleEvent> {
+    extends EditableSimplePropertyBeed<Double, ActualDoubleEvent>
+    implements DoubleBeed {
 
   /**
    * @pre   owner != null;
@@ -54,7 +59,7 @@ public class EditableDoubleBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected DoubleEvent createInitialEvent() {
+  protected ActualDoubleEvent createInitialEvent() {
     return new ActualDoubleEvent(this, null, get(), null);
   }
 
@@ -63,6 +68,10 @@ public class EditableDoubleBeed
    */
   public final Double getDouble() {
     return get();
+  }
+
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
   }
 
 }

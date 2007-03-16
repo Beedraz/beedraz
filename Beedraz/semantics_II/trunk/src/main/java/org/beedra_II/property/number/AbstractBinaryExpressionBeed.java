@@ -44,9 +44,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
-                                                   _LeftArgumentBeed_ extends RealBeed<_LeftArgumentEvent_>,
+                                                   _LeftArgumentBeed_ extends RealBeed<? extends _LeftArgumentEvent_>,
                                                    _LeftArgumentEvent_ extends RealEvent,
-                                                   _RightArgumentBeed_ extends RealBeed<_RightArgumentEvent_>,
+                                                   _RightArgumentBeed_ extends RealBeed<? extends _RightArgumentEvent_>,
                                                    _RightArgumentEvent_ extends RealEvent,
                                                    _NumberEvent_ extends RealEvent>
     extends AbstractExpressionBeed<_Number_, _NumberEvent_>  {
@@ -66,14 +66,14 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
   /**
    * @basic
    */
-  public final _LeftArgumentBeed_ getLeftArgument() {
+  protected final _LeftArgumentBeed_ getLeftArgument() {
     return $leftArgument;
   }
 
   /**
    * @post getLeftArgument() == leftArgument;
    */
-  public final void setLeftArgument(_LeftArgumentBeed_ leftArgument) {
+  protected final void setLeftArgument(_LeftArgumentBeed_ leftArgument) {
     _Number_ oldValue = get();
     if ($leftArgument != null) {
       $leftArgument.removeListener($leftArgumentListener);
@@ -121,14 +121,14 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
   /**
    * @basic
    */
-  public final _RightArgumentBeed_ getRightArgument() {
+  protected final _RightArgumentBeed_ getRightArgument() {
     return $rightArgument;
   }
 
   /**
    * @post getRightArgument() == rightArgument;
    */
-  public final void setRightArgument(_RightArgumentBeed_ rightArgument) {
+  protected final void setRightArgument(_RightArgumentBeed_ rightArgument) {
     _Number_ oldValue = get();
     if ($rightArgument != null) {
       $rightArgument.removeListener($rightArgumentListener);

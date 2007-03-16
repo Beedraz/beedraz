@@ -17,9 +17,15 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+
+import java.math.BigDecimal;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -31,8 +37,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, DoubleEvent, DoubleEvent>
-    implements DoubleBeed<DoubleEvent> {
+    extends AbstractUnaryExpressionBeed<Double, RealBeed<?>, RealEvent, ActualDoubleEvent>
+    implements DoubleBeed {
 
   /**
    * @pre   owner != null;
@@ -56,23 +62,27 @@ public abstract class AbstractDoubleUnaryExpressionBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final DoubleEvent createInitialEvent() {
+  protected final ActualDoubleEvent createInitialEvent() {
     return new ActualDoubleEvent(this, null, get(), null);
   }
 
   @Override
-  protected final DoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
+  protected final ActualDoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
     return new ActualDoubleEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  protected final Double valueFrom(DoubleBeed<DoubleEvent> beed) {
+  protected final Double valueFrom(RealBeed<?> beed) {
     return beed.getDouble();
   }
 
   @Override
-  protected final Double newValueFrom(DoubleEvent event) {
+  protected final Double newValueFrom(RealEvent event) {
     return event.getNewDouble();
+  }
+
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
   }
 
 }

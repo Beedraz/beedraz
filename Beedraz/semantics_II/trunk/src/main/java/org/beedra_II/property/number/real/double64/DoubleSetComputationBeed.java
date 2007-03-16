@@ -17,8 +17,10 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -26,6 +28,8 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -50,8 +54,8 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class DoubleSetComputationBeed
-    extends AbstractPropertyBeed<DoubleEvent>
-    implements DoubleBeed<DoubleEvent> {
+    extends AbstractPropertyBeed<ActualDoubleEvent>
+    implements DoubleBeed {
 
 
   /**
@@ -63,6 +67,9 @@ public abstract class DoubleSetComputationBeed
     super(owner);
   }
 
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
+  }
 
   /*<property name="source">*/
   //------------------------------------------------------------------
@@ -70,7 +77,7 @@ public abstract class DoubleSetComputationBeed
   /**
    * @basic
    */
-  public final SetBeed<DoubleBeed<DoubleEvent>, ?> getSource() {
+  public final SetBeed<RealBeed<?>, ?> getSource() {
     return $source;
   }
 
@@ -86,7 +93,7 @@ public abstract class DoubleSetComputationBeed
    *          when one of the DoubleBeeds changes.)
    * @post    The listeners of this beed are notified when the value changes.
    */
-  public final void setSource(SetBeed<DoubleBeed<DoubleEvent>, ?> source) {
+  public final void setSource(SetBeed<RealBeed<?>, ?> source) {
     // set the source
     $source = source;
     if (source != null) {
@@ -94,7 +101,7 @@ public abstract class DoubleSetComputationBeed
       source.addListener($sourceListener);
       // register the DoubleSetComputationBeed as listener of all DoubleBeeds
       // in the given SetBeed
-      for (DoubleBeed<DoubleEvent> beed : source.get()) {
+      for (RealBeed<?> beed : source.get()) {
         beed.addListener($beedListener);
       }
     }
@@ -108,7 +115,7 @@ public abstract class DoubleSetComputationBeed
     }
   }
 
-  private SetBeed<DoubleBeed<DoubleEvent>, ?> $source;
+  private SetBeed<RealBeed<?>, ?> $source;
 
   /*</property>*/
 
@@ -116,8 +123,8 @@ public abstract class DoubleSetComputationBeed
   /**
    * A listener that will be registered as listener of the {@link #getSource()}.
    */
-  private final Listener<SetEvent<DoubleBeed<DoubleEvent>>> $sourceListener =
-        new Listener<SetEvent<DoubleBeed<DoubleEvent>>>() {
+  private final Listener<SetEvent<RealBeed<?>>> $sourceListener =
+        new Listener<SetEvent<RealBeed<?>>>() {
 
     /**
      * @post    The DoubleSetComputationBeed is registered as a listener of all
@@ -131,17 +138,17 @@ public abstract class DoubleSetComputationBeed
      * @post    getDouble() is recalculated
      * @post    The listeners of this beed are notified when the value changes.
      */
-    public void beedChanged(SetEvent<DoubleBeed<DoubleEvent>> event) {
+    public void beedChanged(SetEvent<RealBeed<?>> event) {
       // add the DoubleSetComputationBeed as listener of all DoubleBeeds that
       // are added to the SetBeed by the given event
-      Set<DoubleBeed<DoubleEvent>> added = event.getAddedElements();
-      for (DoubleBeed<DoubleEvent> beed : added) {
+      Set<RealBeed<?>> added = event.getAddedElements();
+      for (RealBeed<?> beed : added) {
         beed.addListener($beedListener);
       }
       // remove the DoubleSetComputationBeed as listener from all DoubleBeeds
       // that are removed from the SetBeed by the given event
-      Set<DoubleBeed<DoubleEvent>> removed = event.getRemovedElements();
-      for (DoubleBeed<DoubleEvent> beed : removed) {
+      Set<RealBeed<?>> removed = event.getRemovedElements();
+      for (RealBeed<?> beed : removed) {
         beed.removeListener($beedListener);
       }
       // recalculate and notify the listeners if the value has changed
@@ -161,13 +168,13 @@ public abstract class DoubleSetComputationBeed
    * A listener that will be registered as listener of the {@link DoubleBeed beeds}
    * in the {@link #getSource()}.
    */
-  private final Listener<DoubleEvent> $beedListener = new Listener<DoubleEvent>() {
+  private final Listener<RealEvent> $beedListener = new Listener<RealEvent>() {
 
     /**
      * @post    getDouble() is recalculated
      * @post    The listeners of this beed are notified when the value changes.
      */
-    public void beedChanged(DoubleEvent event) {
+    public void beedChanged(RealEvent event) {
       // recalculate and notify the listeners if the value has changed
       Double oldValue = $value;
       recalculate();
@@ -215,7 +222,7 @@ public abstract class DoubleSetComputationBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final DoubleEvent createInitialEvent() {
+  protected final ActualDoubleEvent createInitialEvent() {
     return new ActualDoubleEvent(this, null, getDouble(), null);
   }
 

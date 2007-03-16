@@ -17,6 +17,10 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+
+import java.math.BigDecimal;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -45,6 +49,10 @@ public class DoubleProductBeed extends DoubleCommutativeOperationBeed {
    */
   public DoubleProductBeed(AggregateBeed owner) {
     super(owner);
+  }
+
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
   }
 
   @Override

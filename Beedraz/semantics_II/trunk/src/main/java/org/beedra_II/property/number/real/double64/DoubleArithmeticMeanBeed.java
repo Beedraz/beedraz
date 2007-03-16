@@ -19,6 +19,7 @@ package org.beedra_II.property.number.real.double64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -68,8 +69,10 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is the arithmetic mean
    * of the values of the beeds.
+   *
+   * @mudo use commans math instead
    */
-  public static Double mean(final SetBeed<DoubleBeed<DoubleEvent>, ?> source) {
+  public static Double mean(final SetBeed<RealBeed<?>, ?> source) {
     Double mean;
     if (source == null) {
       mean = null;
@@ -81,8 +84,8 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
       // assert source != null;
       assert source.get().size() > 0;
       mean = 0.0;
-      for (DoubleBeed<DoubleEvent> doubleBeed : source.get()) {
-        Double value = doubleBeed.getDouble();
+      for (RealBeed<?> realBeed : source.get()) {
+        Double value = realBeed.getDouble();
         if (value == null) {
           mean = null;
           break;

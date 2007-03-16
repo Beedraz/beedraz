@@ -18,15 +18,15 @@ package org.beedra_II.property.number.real.double64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Double, DoubleBeed<DoubleEvent>, ?, DoubleEvent>>
+public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractDoubleUnaryExpressionBeed>
     extends AbstractTestUnaryExpressionBeed<Double,
-                                            DoubleBeed<DoubleEvent>,
-                                            DoubleEvent,
+                                            RealBeed<?>,
+                                            ActualDoubleEvent,
                                             _UEB_,
                                             EditableDoubleBeed> {
 
@@ -56,22 +56,22 @@ public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends Abstra
   }
 
   @Override
-  protected StubListener<DoubleEvent> createStubListener() {
-    return new StubListener<DoubleEvent>();
+  protected StubListener<ActualDoubleEvent> createStubListener() {
+    return new StubListener<ActualDoubleEvent>();
   }
 
   @Override
-  protected Double newValueFrom(DoubleEvent event) {
+  protected Double newValueFrom(ActualDoubleEvent event) {
     return event.getNewDouble();
   }
 
   @Override
-  protected Double oldValueFrom(DoubleEvent event) {
+  protected Double oldValueFrom(ActualDoubleEvent event) {
     return event.getOldDouble();
   }
 
   @Override
-  protected Double valueFrom(DoubleBeed<DoubleEvent> argumentBeed) {
+  protected Double valueFrom(RealBeed<?> argumentBeed) {
     return argumentBeed.getDouble();
   }
 

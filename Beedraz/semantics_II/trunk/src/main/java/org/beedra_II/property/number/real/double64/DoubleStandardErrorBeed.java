@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -83,7 +84,7 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
         // we know here that the values of all beeds are effective, so we do not need
         // to check this
         standardError = 0.0;
-        for (DoubleBeed<DoubleEvent> beed : getSource().get()) {
+        for (RealBeed<?> beed : getSource().get()) {
           Double beedValue = beed.getDouble();
           standardError += Math.pow(beedValue - average, 2); // autoboxing
         }

@@ -31,6 +31,8 @@ import org.beedra_II.event.StubListener;
 import org.beedra_II.property.collection.set.EditableSetBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEdit;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +51,7 @@ public class TestDoubleStandardErrorBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(DoubleEvent event) {
+    public void fire(ActualDoubleEvent event) {
       fireChangeEvent(event);
     }
   }
@@ -66,11 +68,11 @@ public class TestDoubleStandardErrorBeed {
 
   private AggregateBeed $owner = new StubBeanBeed();
   private MyDoubleStandardErrorBeed $doubleStandardErrorBeed = new MyDoubleStandardErrorBeed($owner);
-  private DoubleEvent $event1 = new ActualDoubleEvent($doubleStandardErrorBeed, new Double(0), new Double(1), null);
+  private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleStandardErrorBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
   private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
-  private StubListener<DoubleEvent> $listener3 = new StubListener<DoubleEvent>();
+  private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
   @Test
   public void constructor() {
@@ -102,7 +104,7 @@ public class TestDoubleStandardErrorBeed {
     $doubleStandardErrorBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
-    SetBeed<DoubleBeed<DoubleEvent>, ?> source = null;
+    SetBeed<RealBeed<?>, ?> source = null;
     $doubleStandardErrorBeed.setSource(source);
     assertEquals($doubleStandardErrorBeed.getSource(), source);
     assertEquals($doubleStandardErrorBeed.getDouble(), null);
@@ -119,7 +121,7 @@ public class TestDoubleStandardErrorBeed {
     $doubleStandardErrorBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
-    EditableSetBeed<DoubleBeed<DoubleEvent>> source = createSource();
+    EditableSetBeed<RealBeed<?>> source = createSource();
     $doubleStandardErrorBeed.setSource(source);
     assertEquals($doubleStandardErrorBeed.getSource(), source);
     Double standardError1 = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
@@ -134,7 +136,7 @@ public class TestDoubleStandardErrorBeed {
     // the source changes, the beed should be notified
     $listener3.reset();
     assertNull($listener3.$event);
-    SetEdit<DoubleBeed<DoubleEvent>> setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    SetEdit<RealBeed<?>> setEdit = new SetEdit<RealBeed<?>>(source);
     EditableDoubleBeed goal = createEditableDoubleBeed(5.0);
     setEdit.addElementToAdd(goal);
     setEdit.perform();
@@ -164,7 +166,7 @@ public class TestDoubleStandardErrorBeed {
     // of that beed.
     $listener3.reset();
     assertNull($listener3.$event);
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToRemove(goal);
     setEdit.perform();
     Double standardError4 = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
@@ -216,16 +218,16 @@ public class TestDoubleStandardErrorBeed {
     $doubleStandardErrorBeed.recalculate();
     assertEquals($doubleStandardErrorBeed.getDouble(), null);
     // create source
-    EditableSetBeed<DoubleBeed<DoubleEvent>> source =
-      new EditableSetBeed<DoubleBeed<DoubleEvent>>($owner);
+    EditableSetBeed<RealBeed<?>> source =
+      new EditableSetBeed<RealBeed<?>>($owner);
     // add source to standard error beed
     $doubleStandardErrorBeed.setSource(source);
     // recalculate (setBeed contains no elements)
     $doubleStandardErrorBeed.recalculate();
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
     // add beed
-    SetEdit<DoubleBeed<DoubleEvent>> setEdit =
-      new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    SetEdit<RealBeed<?>> setEdit =
+      new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
@@ -235,7 +237,7 @@ public class TestDoubleStandardErrorBeed {
     $doubleStandardErrorBeed.recalculate();
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
     // add beed
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
@@ -246,7 +248,7 @@ public class TestDoubleStandardErrorBeed {
     $doubleStandardErrorBeed.recalculate();
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // add beed
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
@@ -254,7 +256,7 @@ public class TestDoubleStandardErrorBeed {
     standardError = MathUtil.standardError(1.0, 2.0, 3.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // add beed
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
@@ -262,7 +264,7 @@ public class TestDoubleStandardErrorBeed {
     standardError = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // add beed
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(source);
+    setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beedNull);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3, 4 and null)
@@ -272,7 +274,7 @@ public class TestDoubleStandardErrorBeed {
 
   @Test
   public void createInitialEvent() {
-    DoubleEvent initialEvent = $doubleStandardErrorBeed.createInitialEvent();
+    RealEvent initialEvent = $doubleStandardErrorBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $doubleStandardErrorBeed);
     assertEquals(initialEvent.getOldDouble(), null);
     assertEquals(initialEvent.getNewDouble(), $doubleStandardErrorBeed.getDouble());
@@ -292,65 +294,65 @@ public class TestDoubleStandardErrorBeed {
     EditableDoubleBeed beed3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     // create set beed
-    EditableSetBeed<DoubleBeed<DoubleEvent>> setBeed =
-      new EditableSetBeed<DoubleBeed<DoubleEvent>>($owner);
+    EditableSetBeed<RealBeed<?>> setBeed =
+      new EditableSetBeed<RealBeed<?>>($owner);
     // add set beed to standard error beed
     $doubleStandardErrorBeed.setSource(setBeed);
     // add beed
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
-    SetEdit<DoubleBeed<DoubleEvent>> setEdit =
-      new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    SetEdit<RealBeed<?>> setEdit =
+      new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     double standardError = MathUtil.standardError(1.0, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     standardError = MathUtil.standardError(1.0, 2.0, 3.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     standardError = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed); // add an element that is already there
+    setEdit = new SetEdit<RealBeed<?>>(setBeed); // add an element that is already there
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     standardError = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed1);
     setEdit.perform();
     standardError = MathUtil.standardError(2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed2);
     setEdit.perform();
     standardError = MathUtil.standardError(3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed3);
     setEdit.perform();
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed4);
     setEdit.perform();
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed4); // remove an element that is not there
     setEdit.perform();
     assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
     // change beeds of the source
-    setBeed = new EditableSetBeed<DoubleBeed<DoubleEvent>>($owner);
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setBeed = new EditableSetBeed<RealBeed<?>>($owner);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     $doubleStandardErrorBeed.setSource(setBeed);
@@ -377,7 +379,7 @@ public class TestDoubleStandardErrorBeed {
     standardError = MathUtil.standardError(1.0, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // change beeds that are added later to the source
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     standardError = MathUtil.standardError(1.0, 2.0, 3.0);
@@ -394,26 +396,26 @@ public class TestDoubleStandardErrorBeed {
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
   }
 
-  private EditableSetBeed<DoubleBeed<DoubleEvent>> createSource() throws EditStateException, IllegalEditException {
+  private EditableSetBeed<RealBeed<?>> createSource() throws EditStateException, IllegalEditException {
     // create set beed
-    EditableSetBeed<DoubleBeed<DoubleEvent>> setBeed =
-      new EditableSetBeed<DoubleBeed<DoubleEvent>>($owner);
+    EditableSetBeed<RealBeed<?>> setBeed =
+      new EditableSetBeed<RealBeed<?>>($owner);
     // create beeds
     EditableDoubleBeed beed1 = createEditableDoubleBeed(1.0);
     EditableDoubleBeed beed2 = createEditableDoubleBeed(2.0);
     EditableDoubleBeed beed3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     // add beeds to set
-    SetEdit<DoubleBeed<DoubleEvent>> setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    SetEdit<RealBeed<?>> setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
-    setEdit = new SetEdit<DoubleBeed<DoubleEvent>>(setBeed);
+    setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     return setBeed;

@@ -37,10 +37,30 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
-                                                            _ArgumentBeed_ extends RealBeed<?>,
-                                                            _NumberEvent_ extends RealEvent,
-                                                            _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, ?, _NumberEvent_>,
-                                                            _EAB_ extends _ArgumentBeed_> {
+                                                      _ArgumentBeed_ extends RealBeed<?>,
+                                                      _NumberEvent_ extends RealEvent,
+                                                      _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, ?, _NumberEvent_>,
+                                                      _EAB_ extends _ArgumentBeed_> {
+
+  protected abstract _UEB_ createSubject(AggregateBeed owner);
+
+  protected abstract _EAB_ createEditableArgumentBeed(AggregateBeed owner);
+
+  protected abstract StubListener<_NumberEvent_> createStubListener();
+
+  protected abstract void initGoals();
+
+  protected abstract void changeArgument(_EAB_ editableArgumentBeed, _Number_ newValue);
+
+  protected abstract _Number_ expectedValue(_Number_ argumentValue);
+
+  protected abstract _Number_ valueFromSubject(_UEB_ argumentBeed);
+
+  protected abstract _Number_ valueFrom(_ArgumentBeed_ argumentBeed);
+
+  protected abstract _Number_ oldValueFrom(_NumberEvent_ argumentBeed);
+
+  protected abstract _Number_ newValueFrom(_NumberEvent_ argumentBeed);
 
   @Before
   public void setUp() throws Exception {
@@ -216,25 +236,5 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     changeArgument($argumentDoubleBeed, $goal2);
     $subject.toString(stub, 1);
   }
-
-  protected abstract _UEB_ createSubject(AggregateBeed owner);
-
-  protected abstract _EAB_ createEditableArgumentBeed(AggregateBeed owner);
-
-  protected abstract StubListener<_NumberEvent_> createStubListener();
-
-  protected abstract void initGoals();
-
-  protected abstract void changeArgument(_EAB_ editableArgumentBeed, _Number_ newValue);
-
-  protected abstract _Number_ expectedValue(_Number_ argumentValue);
-
-  protected abstract _Number_ valueFromSubject(_UEB_ argumentBeed);
-
-  protected abstract _Number_ valueFrom(_ArgumentBeed_ argumentBeed);
-
-  protected abstract _Number_ oldValueFrom(_NumberEvent_ argumentBeed);
-
-  protected abstract _Number_ newValueFrom(_NumberEvent_ argumentBeed);
 
 }

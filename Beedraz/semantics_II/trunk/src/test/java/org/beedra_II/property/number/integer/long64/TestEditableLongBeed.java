@@ -44,7 +44,7 @@ public class TestEditableLongBeed {
   private AggregateBeed $owner;
   private StubEditableLongBeed $editableIntegerBeed;
   private LongEdit $stringEdit;
-  private IntegerEvent $event1;
+  private ActualLongEvent $event1;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
 

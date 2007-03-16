@@ -56,7 +56,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          state    = "$State$",
          tag      = "$Name$")
 public class LongSumBeed
-    extends AbstractPropertyBeed<IntegerEvent>
+    extends AbstractPropertyBeed<ActualLongEvent>
     implements LongBeed {
 
   /**
@@ -260,7 +260,7 @@ public class LongSumBeed
    * @post  result.getEditState() == null;
    */
   @Override
-  protected final IntegerEvent createInitialEvent() {
+  protected final ActualLongEvent createInitialEvent() {
     return new ActualLongEvent(this, null, getLong(), null);
   }
 

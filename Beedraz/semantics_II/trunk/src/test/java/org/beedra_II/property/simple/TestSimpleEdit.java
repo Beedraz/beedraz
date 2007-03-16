@@ -42,7 +42,7 @@ import org.junit.Test;
 public class TestSimpleEdit {
 
   public class MySimpleEdit
-       extends SimplePropertyEdit<Long, MyEditableIntegerBeed, IntegerEvent> {
+       extends SimplePropertyEdit<Long, MyEditableIntegerBeed, ActualLongEvent> {
 
     public MySimpleEdit(MyEditableIntegerBeed target) {
       super(target);
@@ -63,17 +63,17 @@ public class TestSimpleEdit {
     }
 
     @Override
-    protected IntegerEvent createEvent() {
+    protected ActualLongEvent createEvent() {
       LongBeed source = new EditableLongBeed(new StubBeanBeed());
       $createdEvent = new ActualLongEvent(source, new Long(0), new Long(1), null);
       return $createdEvent;
     }
 
-    public IntegerEvent getCreatedEvent() {
+    public ActualLongEvent getCreatedEvent() {
       return $createdEvent;
     }
 
-    private IntegerEvent $createdEvent;
+    private ActualLongEvent $createdEvent;
 
   }
 
@@ -1096,7 +1096,7 @@ public class TestSimpleEdit {
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // fire
-    IntegerEvent event = new ActualLongEvent($target, new Long(0), new Long(1), null);
+    ActualLongEvent event = new ActualLongEvent($target, new Long(0), new Long(1), null);
     $simpleEdit.fireEvent(event);
     // check listener
     assertNotNull($listener3.$event);

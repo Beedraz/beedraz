@@ -18,19 +18,15 @@ package org.beedra_II.property.number.integer.long64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
-import org.beedra_II.property.number.integer.IntegerEvent;
-import org.beedra_II.property.number.integer.long64.EditableLongBeed;
-import org.beedra_II.property.number.integer.long64.LongBeed;
-import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.integer.IntegerBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Long, LongBeed, ?, IntegerEvent>>
+public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractLongUnaryExpressionBeed>
     extends AbstractTestUnaryExpressionBeed<Long,
-                                            LongBeed,
-                                            IntegerEvent,
+                                            IntegerBeed<?>,
+                                            ActualLongEvent,
                                             _UEB_,
                                             EditableLongBeed> {
 
@@ -60,22 +56,22 @@ public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends Abstract
   }
 
   @Override
-  protected StubListener<IntegerEvent> createStubListener() {
-    return new StubListener<IntegerEvent>();
+  protected StubListener<ActualLongEvent> createStubListener() {
+    return new StubListener<ActualLongEvent>();
   }
 
   @Override
-  protected Long newValueFrom(IntegerEvent event) {
+  protected Long newValueFrom(ActualLongEvent event) {
     return event.getNewLong();
   }
 
   @Override
-  protected Long oldValueFrom(IntegerEvent event) {
+  protected Long oldValueFrom(ActualLongEvent event) {
     return event.getOldLong();
   }
 
   @Override
-  protected Long valueFrom(LongBeed argumentBeed) {
+  protected Long valueFrom(IntegerBeed<?> argumentBeed) {
     return argumentBeed.getLong();
   }
 

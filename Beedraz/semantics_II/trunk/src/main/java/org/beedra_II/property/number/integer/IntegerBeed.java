@@ -39,7 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface IntegerBeed extends RealBeed<IntegerEvent> {
+public interface IntegerBeed<_Event_ extends IntegerEvent> extends RealBeed<_Event_> {
 
   /**
    * @basic

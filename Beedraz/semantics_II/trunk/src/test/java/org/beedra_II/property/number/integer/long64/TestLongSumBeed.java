@@ -49,7 +49,7 @@ public class TestLongSumBeed {
     /**
      * fireChangeEvent is made public for testing reasons
      */
-    public void fire(IntegerEvent event) {
+    public void fire(ActualLongEvent event) {
       fireChangeEvent(event);
     }
   }
@@ -66,7 +66,7 @@ public class TestLongSumBeed {
 
   private AggregateBeed $owner = new StubBeanBeed();
   private MyIntegerSumBeed $integerSumBeed = new MyIntegerSumBeed($owner);
-  private IntegerEvent $event1 = new ActualLongEvent($integerSumBeed, 0L, 1L, null);
+  private ActualLongEvent $event1 = new ActualLongEvent($integerSumBeed, 0L, 1L, null);
       // @mudo Laatste argument mag niet null zijn??
   private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
   private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();

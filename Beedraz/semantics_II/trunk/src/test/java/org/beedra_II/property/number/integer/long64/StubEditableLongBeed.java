@@ -8,8 +8,6 @@ package org.beedra_II.property.number.integer.long64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.integer.IntegerEvent;
-import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 
 
 public class StubEditableLongBeed extends EditableLongBeed {
@@ -21,7 +19,7 @@ public class StubEditableLongBeed extends EditableLongBeed {
   /**
    * fireChangeEvent is made public for testing reasons
    */
-  public void fire(IntegerEvent event) {
+  public void fire(ActualLongEvent event) {
     fireChangeEvent(event);
   }
 

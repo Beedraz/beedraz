@@ -49,7 +49,18 @@ public class DoubleProductBeed extends DoubleCommutativeOperationBeed {
 
   @Override
   protected Double recalculateValue(Double oldValueBeed, Double oldValueArgument, Double newValueArgument, int nbOccurrences) {
-    return oldValueBeed * Math.pow(newValueArgument / oldValueArgument, nbOccurrences);
+    if (oldValueArgument == 0.0) {
+      // when the old value of the argument is zero, the value of the beed was zero and should
+      // be recalculated fully; the new value cannot be computed using the old and new value of the
+      // argument
+      recalculate();
+      return getDouble();
+    }
+    else {
+      // no division by zero (see if-condition!!)
+      Double result = oldValueBeed * Math.pow(newValueArgument / oldValueArgument, nbOccurrences);
+      return result;
+    }
   }
 
   @Override

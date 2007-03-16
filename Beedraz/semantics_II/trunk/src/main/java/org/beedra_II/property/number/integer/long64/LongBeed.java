@@ -22,7 +22,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed containing an {@link Integer} value.
+ * A beed containing a {@link Long} value.
  * Listeners of the beed can receive events of type
  * {@link LongEvent}.
  *
@@ -38,7 +38,7 @@ public interface LongBeed extends DoubleBeed<LongEvent> {
   /**
    * @basic
    */
-  Integer getInteger();
+  Long getLong();
 
   /**
    * @result MathUtil.equalValue(result, getInteger());

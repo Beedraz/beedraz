@@ -39,7 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class ActualLongEvent
-    extends ActualOldNewEvent<Integer>
+    extends ActualOldNewEvent<Long>
     implements LongEvent {
 
   /**
@@ -58,47 +58,47 @@ public final class ActualLongEvent
    *          ? getDelta() == null
    *          : getDelta() = newValue - oldValue;
    */
-  public ActualLongEvent(LongBeed source, Integer oldValue, Integer newValue, Edit<?> edit) {
+  public ActualLongEvent(LongBeed source, Long oldValue, Long newValue, Edit<?> edit) {
     super(source, oldValue, newValue, edit);
     $delta = ((oldValue == null) || (newValue == null)) ? null : newValue - oldValue; // MUDO overflow
   }
 
-  public Integer getNewInteger() {
+  public Long getNewLong() {
     return getNewValue();
   }
 
   public Double getNewDouble() {
-    return castToDouble(getNewInteger());
+    return castToDouble(getNewLong());
   }
 
-  public Integer getOldInteger() {
+  public Long getOldLong() {
     return getOldValue();
   }
 
   public Double getOldDouble() {
-    return castToDouble(getOldInteger());
+    return castToDouble(getOldLong());
   }
 
-  public final Integer getIntegerDelta() {
+  public final Long getLongDelta() {
     return $delta;
   }
 
   public Double getDoubleDelta() {
-    return castToDouble(getIntegerDelta());
+    return castToDouble(getLongDelta());
   }
 
-  private final Integer $delta;
+  private final Long $delta;
 
   @Override
   protected String otherToStringInformation() {
     return super.otherToStringInformation() +
-           ", delta: " + getIntegerDelta();
+           ", delta: " + getLongDelta();
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
-    sb.append(indent(level + 1) + "delta:" + getIntegerDelta() + "\n");
+    sb.append(indent(level + 1) + "delta:" + getLongDelta() + "\n");
   }
 
 }

@@ -29,7 +29,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class LongEdit
-    extends SimplePropertyEdit<Integer, EditableLongBeed, LongEvent> {
+    extends SimplePropertyEdit<Long, EditableLongBeed, LongEvent> {
 
   /**
    * @pre  target != null;

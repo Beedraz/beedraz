@@ -52,8 +52,8 @@ public class TestPropagatedEvent {
     AggregateBeed owner = new StubAggregateBeed();
     LongBeed eventSource = new EditableLongBeed(owner);
     // old and new value
-    Integer oldValue = 0;
-    Integer newValue = 1;
+    Long oldValue = 0L;
+    Long newValue = 1L;
     // edit
     EditableLongBeed target = new EditableLongBeed(owner);
     LongEdit edit = new LongEdit(target);

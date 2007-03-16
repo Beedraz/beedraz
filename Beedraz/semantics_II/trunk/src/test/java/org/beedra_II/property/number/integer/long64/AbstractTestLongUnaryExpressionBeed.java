@@ -27,8 +27,8 @@ import org.beedra_II.property.number.integer.long64.LongEvent;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Integer, LongBeed, LongEvent>>
-    extends AbstractTestUnaryExpressionBeed<Integer,
+public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Long, LongBeed, LongEvent>>
+    extends AbstractTestUnaryExpressionBeed<Long,
                                             LongBeed,
                                             LongEvent,
                                             _UEB_,
@@ -36,14 +36,14 @@ public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends Abstract
 
   @Override
   protected void initGoals() {
-    $goal1 = 22;
-    $goal2 = -33;
-    $goalMIN = Integer.MIN_VALUE; // - MIN_VALUE == MIN_VALUE (2-bit complement)
-    $goalMAX = Integer.MAX_VALUE;
+    $goal1 = 22L;
+    $goal2 = -33L;
+    $goalMIN = Long.MIN_VALUE; // - MIN_VALUE == MIN_VALUE (2-bit complement)
+    $goalMAX = Long.MAX_VALUE;
   }
 
   @Override
-  protected void changeArgument(EditableLongBeed editableArgumentBeed, Integer newValue) {
+  protected void changeArgument(EditableLongBeed editableArgumentBeed, Long newValue) {
     try {
       LongEdit edit = new LongEdit(editableArgumentBeed);
       edit.setGoal(newValue);
@@ -65,18 +65,18 @@ public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends Abstract
   }
 
   @Override
-  protected Integer newValueFrom(LongEvent event) {
-    return event.getNewInteger();
+  protected Long newValueFrom(LongEvent event) {
+    return event.getNewLong();
   }
 
   @Override
-  protected Integer oldValueFrom(LongEvent event) {
-    return event.getOldInteger();
+  protected Long oldValueFrom(LongEvent event) {
+    return event.getOldLong();
   }
 
   @Override
-  protected Integer valueFrom(LongBeed argumentBeed) {
-    return argumentBeed.getInteger();
+  protected Long valueFrom(LongBeed argumentBeed) {
+    return argumentBeed.getLong();
   }
 
 

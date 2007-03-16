@@ -24,7 +24,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * {@link OldNewEvent} whose source is a {@link LongBeed} and
- * that carries a simple old and new value of type {@link Integer}.
+ * that carries a simple old and new value of type {@link Long}.
  *
  * @author Jan Dockx
  *
@@ -39,7 +39,7 @@ public interface LongEvent extends DoubleEvent {
   /**
    * @return getNewValue();
    */
-  Integer getNewInteger();
+  Long getNewLong();
 
   /**
    * @result MathUtil.equalValue(getNewInteger(), result);
@@ -49,7 +49,7 @@ public interface LongEvent extends DoubleEvent {
   /**
    * @return getOldValue();
    */
-  Integer getOldInteger();
+  Long getOldLong();
   /**
    * @result MathUtil.equalValue(getOldInteger(), result);
    */
@@ -58,7 +58,7 @@ public interface LongEvent extends DoubleEvent {
   /**
    * @return ((getOldValue() == null) || (getNewValue() == null)) ? null : getNewValue() - getOldValue();
    */
-  Integer getIntegerDelta();
+  Long getLongDelta();
 
   /**
    * @result MathUtil.equalValue(getIntegerDelta(), result);

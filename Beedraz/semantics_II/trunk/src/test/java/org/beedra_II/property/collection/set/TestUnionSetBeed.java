@@ -107,15 +107,15 @@ public class TestUnionSetBeed {
     $wellC2 = new WellBeanBeed();
     $wellC3 = new WellBeanBeed();
     $wellC4 = new WellBeanBeed();
-    $cqA1 = new Integer(0);
-    $cqA2 = new Integer(1);
-    $cqA3 = new Integer(2);
-    $cqB1 = new Integer(3);
-    $cqB2 = new Integer(4);
-    $cqC1 = new Integer(5);
-    $cqC2 = new Integer(6);
-    $cqC3 = new Integer(7);
-    $cqC4 = new Integer(8);
+    $cqA1 = new Long(0);
+    $cqA2 = new Long(1);
+    $cqA3 = new Long(2);
+    $cqB1 = new Long(3);
+    $cqB2 = new Long(4);
+    $cqC1 = new Long(5);
+    $cqC2 = new Long(6);
+    $cqC3 = new Long(7);
+    $cqC4 = new Long(8);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
@@ -188,23 +188,23 @@ public class TestUnionSetBeed {
   private WellBeanBeed $wellA1;
   private WellBeanBeed $wellA2;
   private WellBeanBeed $wellA3;
-  private Integer $cqA1;
-  private Integer $cqA2;
-  private Integer $cqA3;
+  private Long $cqA1;
+  private Long $cqA2;
+  private Long $cqA3;
   private RunBeanBeed $runB;
   private WellBeanBeed $wellB1;
   private WellBeanBeed $wellB2;
-  private Integer $cqB1;
-  private Integer $cqB2;
+  private Long $cqB1;
+  private Long $cqB2;
   private RunBeanBeed $runC;
   private WellBeanBeed $wellC1;
   private WellBeanBeed $wellC2;
   private WellBeanBeed $wellC3;
   private WellBeanBeed $wellC4;
-  private Integer $cqC1;
-  private Integer $cqC2;
-  private Integer $cqC3;
-  private Integer $cqC4;
+  private Long $cqC1;
+  private Long $cqC2;
+  private Long $cqC3;
+  private Long $cqC4;
   private MyUnionBeed $unionSetBeed;
   private MyBeanBeed $owner;
   private StubListener<PropagatedEvent> $listener1;
@@ -727,7 +727,7 @@ public class TestUnionSetBeed {
     mappedSetBeed.setSource($unionSetBeed);
     Integer sum = 0;
     for (LongBeed cq : mappedSetBeed.get()) {
-      sum += cq.getInteger();
+      sum += cq.getLong();
     }
     assertEquals(sum, 0+1+2+3+4+5+6+7+8);
   }

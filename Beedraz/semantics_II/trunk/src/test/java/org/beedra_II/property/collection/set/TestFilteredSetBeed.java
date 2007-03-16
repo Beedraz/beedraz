@@ -108,10 +108,10 @@ public class TestFilteredSetBeed {
     $well2 = new WellBeanBeed();
     $well3 = new WellBeanBeed();
     $cqNull = null;
-    $cq0 = new Integer(0);
-    $cq1 = new Integer(1);
-    $cq2 = new Integer(2);
-    $cq3 = new Integer(3);
+    $cq0 = new Long(0);
+    $cq1 = new Long(1);
+    $cq2 = new Long(2);
+    $cq3 = new Long(3);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
@@ -162,11 +162,11 @@ public class TestFilteredSetBeed {
   private WellBeanBeed $well1;
   private WellBeanBeed $well2;
   private WellBeanBeed $well3;
-  private Integer $cqNull;
-  private Integer $cq0;
-  private Integer $cq1;
-  private Integer $cq2;
-  private Integer $cq3;
+  private Long $cqNull;
+  private Long $cq0;
+  private Long $cq1;
+  private Long $cq2;
+  private Long $cq3;
   private Filter<WellBeanBeed> $filter;
   private MyFilteredSetBeed $filteredSetBeed;
   private MyBeanBeed $owner;
@@ -241,7 +241,7 @@ public class TestFilteredSetBeed {
     $listener3.reset();
     assertNull($listener3.$event);
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
-    WellBeanBeed well4 = createWellBeanBeed(4);
+    WellBeanBeed well4 = createWellBeanBeed(4L);
     setEdit.addElementToAdd(well4);
     setEdit.perform();
     removed = new HashSet<WellBeanBeed>();
@@ -258,7 +258,7 @@ public class TestFilteredSetBeed {
     // The FilteredSetBeed is registered as listener of all beeds in the source,
     // so when one of them changes, the beed should be notified
     LongEdit longEdit = new LongEdit(well4.cq);
-    longEdit.setGoal(5);
+    longEdit.setGoal(5L);
     longEdit.perform();
     removed = new HashSet<WellBeanBeed>();
     removed.add(well4);
@@ -274,7 +274,7 @@ public class TestFilteredSetBeed {
     $listener3.reset();
     assertNull($listener3.$event);
     longEdit = new LongEdit(well4.cq);
-    longEdit.setGoal(6);
+    longEdit.setGoal(6L);
     longEdit.perform();
     removed = new HashSet<WellBeanBeed>();
     added = new HashSet<WellBeanBeed>();
@@ -309,7 +309,7 @@ public class TestFilteredSetBeed {
     assertNull($listener3.$event);
     // so, when the removed beed is edited, the filtered set beed is NOT notified
     longEdit = new LongEdit(well4.cq);
-    longEdit.setGoal(7);
+    longEdit.setGoal(7L);
     longEdit.perform();
     assertNull($listener3.$event); // the FilteredSetBeed is NOT notified
     // and the value of the filtered set beed is correct
@@ -487,7 +487,7 @@ public class TestFilteredSetBeed {
     return setBeed;
   }
 
-  private WellBeanBeed createWellBeanBeed(Integer cq) {
+  private WellBeanBeed createWellBeanBeed(Long cq) {
     try {
       WellBeanBeed wellBeanBeed = new WellBeanBeed();
       LongEdit edit = new LongEdit(wellBeanBeed.cq);

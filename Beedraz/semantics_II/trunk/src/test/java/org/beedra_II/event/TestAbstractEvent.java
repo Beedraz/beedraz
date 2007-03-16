@@ -52,7 +52,7 @@ public class TestAbstractEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // the state of the edit should be DONE or UNDONE
-    Integer goal = 2;
+    Long goal = 2L;
     $edit.setGoal(goal);
     $edit.perform();
     // create a new event

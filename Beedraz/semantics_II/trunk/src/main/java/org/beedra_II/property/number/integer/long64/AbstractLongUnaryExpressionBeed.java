@@ -33,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractLongUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Integer, LongBeed, LongEvent>
+    extends AbstractUnaryExpressionBeed<Long, LongBeed, LongEvent>
     implements LongBeed {
 
   /**
@@ -46,10 +46,10 @@ public abstract class AbstractLongUnaryExpressionBeed
   }
 
   public final Double getDouble() {
-    return castToDouble(getInteger());
+    return castToDouble(getLong());
   }
 
-  public final Integer getInteger() {
+  public final Long getLong() {
     return get();
   }
 
@@ -63,22 +63,22 @@ public abstract class AbstractLongUnaryExpressionBeed
    */
   @Override
   protected final LongEvent createInitialEvent() {
-    return new ActualLongEvent(this, null, getInteger(), null);
+    return new ActualLongEvent(this, null, getLong(), null);
   }
 
   @Override
-  protected final LongEvent createNewEvent(Integer oldValue, Integer newValue, Edit<?> edit) {
+  protected final LongEvent createNewEvent(Long oldValue, Long newValue, Edit<?> edit) {
     return new ActualLongEvent(this, oldValue, newValue, edit);
   }
 
   @Override
-  protected final Integer newValueFrom(LongEvent event) {
-    return event.getNewInteger();
+  protected final Long newValueFrom(LongEvent event) {
+    return event.getNewLong();
   }
 
   @Override
-  protected final Integer valueFrom(LongBeed beed) {
-    return beed.getInteger();
+  protected final Long valueFrom(LongBeed beed) {
+    return beed.getLong();
   }
 
 }

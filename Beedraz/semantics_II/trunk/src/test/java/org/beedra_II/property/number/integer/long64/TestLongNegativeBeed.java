@@ -34,12 +34,12 @@ public class TestLongNegativeBeed
     LongNegativeBeed inb = new LongNegativeBeed($aggregateBeed);
     assertEquals($aggregateBeed, inb.getOwner());
     assertNull(inb.getArgument());
-    assertNull(inb.getInteger());
-    assertNull(inb.getInteger());
+    assertNull(inb.getLong());
+    assertNull(inb.getLong());
   }
 
   @Override
-  protected Integer expectedValue(Integer argumentValue) {
+  protected Long expectedValue(Long argumentValue) {
     return - argumentValue;
   }
 
@@ -49,8 +49,8 @@ public class TestLongNegativeBeed
   }
 
   @Override
-  protected Integer valueFromSubject(LongNegativeBeed argumentBeed) {
-    return argumentBeed.getInteger();
+  protected Long valueFromSubject(LongNegativeBeed argumentBeed) {
+    return argumentBeed.getLong();
   }
 
 }

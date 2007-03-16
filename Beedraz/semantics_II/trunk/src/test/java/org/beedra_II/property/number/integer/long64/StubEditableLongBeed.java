@@ -26,7 +26,7 @@ public class StubEditableLongBeed extends EditableLongBeed {
   }
 
   @Override
-  public boolean isAcceptable(Integer goal) {
+  public boolean isAcceptable(Long goal) {
     return goal != null && goal > 0;
   }
 

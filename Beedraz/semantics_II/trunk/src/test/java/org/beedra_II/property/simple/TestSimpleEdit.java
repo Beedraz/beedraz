@@ -42,7 +42,7 @@ import org.junit.Test;
 public class TestSimpleEdit {
 
   public class MySimpleEdit
-       extends SimplePropertyEdit<Integer, MyEditableIntegerBeed, LongEvent> {
+       extends SimplePropertyEdit<Long, MyEditableIntegerBeed, LongEvent> {
 
     public MySimpleEdit(MyEditableIntegerBeed target) {
       super(target);
@@ -65,7 +65,7 @@ public class TestSimpleEdit {
     @Override
     protected LongEvent createEvent() {
       LongBeed source = new EditableLongBeed(new StubBeanBeed());
-      $createdEvent = new ActualLongEvent(source, new Integer(0), new Integer(1), null);
+      $createdEvent = new ActualLongEvent(source, new Long(0), new Long(1), null);
       return $createdEvent;
     }
 
@@ -84,7 +84,7 @@ public class TestSimpleEdit {
     }
 
     @Override
-    public boolean isAcceptable(Integer goal) {
+    public boolean isAcceptable(Long goal) {
       return goal != null && goal > 0;
     }
 
@@ -204,7 +204,7 @@ public class TestSimpleEdit {
       assertTrue($simpleEdit.isValidityListener($listener1));
       assertTrue($simpleEdit.isValidityListener($listener2));
       // perform
-      $simpleEdit.setGoal(new Integer(1));
+      $simpleEdit.setGoal(new Long(1));
       $simpleEdit.perform();
       // listeners should be removed
       assertFalse($simpleEdit.isValidityListener($listener1));
@@ -260,7 +260,7 @@ public class TestSimpleEdit {
   public void perform7() {
     try {
       // perform
-      $simpleEdit.setGoal(-1);
+      $simpleEdit.setGoal(-1L);
       $simpleEdit.perform();
       // should not be reached
       assertTrue(false);
@@ -282,14 +282,14 @@ public class TestSimpleEdit {
       // perform
       MySimpleEdit edit1 = new MySimpleEdit($target);
       assertNull(edit1.getInitial());
-      Integer goal1 = 5;
+      Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       assertNull(edit1.getInitial());
       // perform
       MySimpleEdit edit2 = new MySimpleEdit($target);
       assertNull(edit2.getInitial());
-      Integer goal2 = 7;
+      Long goal2 = 7L;
       edit2.setGoal(goal2);
       edit2.perform();
       assertEquals(edit2.getInitial(), goal1);
@@ -315,7 +315,7 @@ public class TestSimpleEdit {
   public void perform9() {
     try {
       // perform
-      Integer goal = 5;
+      Long goal = 5L;
       $simpleEdit.setGoal(goal);
       $simpleEdit.perform();
       assertEquals($target.get(), goal);
@@ -394,7 +394,7 @@ public class TestSimpleEdit {
   // correct begin-state, check end-state
   public void undo4() {
     try {
-      $simpleEdit.setGoal(5);
+      $simpleEdit.setGoal(5L);
       $simpleEdit.perform();
       $simpleEdit.undo();
       assertEquals($simpleEdit.getState(), State.UNDONE);
@@ -423,7 +423,7 @@ public class TestSimpleEdit {
       assertTrue($simpleEdit.isValidityListener($listener1));
       assertTrue($simpleEdit.isValidityListener($listener2));
       // perform
-      $simpleEdit.setGoal(5);
+      $simpleEdit.setGoal(5L);
       $simpleEdit.perform();
       assertFalse($simpleEdit.isValidityListener($listener1));
       assertFalse($simpleEdit.isValidityListener($listener2));
@@ -452,12 +452,12 @@ public class TestSimpleEdit {
     try {
       // edit1
       edit1 = new MySimpleEdit($target);
-      Integer goal1 = 5;
+      Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       // edit2
       MySimpleEdit edit2 = new MySimpleEdit($target);
-      Integer goal2 = 7;
+      Long goal2 = 7L;
       edit2.setGoal(goal2);
       edit2.perform();
       // undo edit1
@@ -481,11 +481,11 @@ public class TestSimpleEdit {
     try {
       // edit1
       MySimpleEdit edit1 = new MySimpleEdit($target);
-      Integer goal1 = 5;
+      Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       // $simpleEdit
-      Integer goal2 = 7;
+      Long goal2 = 7L;
       $simpleEdit.setGoal(goal2);
       $simpleEdit.perform();
       $simpleEdit.undo();
@@ -593,7 +593,7 @@ public class TestSimpleEdit {
       assertTrue($simpleEdit.isValidityListener($listener1));
       assertTrue($simpleEdit.isValidityListener($listener2));
       // perform
-      $simpleEdit.setGoal(5);
+      $simpleEdit.setGoal(5L);
       $simpleEdit.perform();
       assertFalse($simpleEdit.isValidityListener($listener1));
       assertFalse($simpleEdit.isValidityListener($listener2));
@@ -623,13 +623,13 @@ public class TestSimpleEdit {
     try {
       // edit1
       edit1 = new MySimpleEdit($target);
-      Integer goal1 = 5;
+      Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       edit1.undo();
       // edit2
       MySimpleEdit edit2 = new MySimpleEdit($target);
-      Integer goal2 = 7;
+      Long goal2 = 7L;
       edit2.setGoal(goal2);
       edit2.perform();
       // redo edit1
@@ -653,11 +653,11 @@ public class TestSimpleEdit {
     try {
       // edit1
       MySimpleEdit edit1 = new MySimpleEdit($target);
-      Integer goal1 = 5;
+      Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       // $simpleEdit
-      Integer goal2 = 7;
+      Long goal2 = 7L;
       $simpleEdit.setGoal(goal2);
       $simpleEdit.perform();
       $simpleEdit.undo();
@@ -687,7 +687,7 @@ public class TestSimpleEdit {
 //    // check the value of the validity
 //    assertTrue($simpleEdit.isValid());
 //    // change validity
-//    $simpleEdit.setGoal(5);
+//    $simpleEdit.setGoal(5L);
 //    $simpleEdit.checkValidityPublic();
 //    // validity is still the same, so validity listeners are not notified
 //    assertTrue($simpleEdit.isValid());
@@ -696,7 +696,7 @@ public class TestSimpleEdit {
 //    assertTrue($listener1.isEmpty());
 //    assertTrue($listener2.isEmpty());
 //    // change validity
-//    $simpleEdit.setGoal(-1);
+//    $simpleEdit.setGoal(-1L);
 //    try {
 //      $simpleEdit.checkValidityPublic();
 //      fail();
@@ -715,7 +715,7 @@ public class TestSimpleEdit {
 //    // change validity again
 //    $listener1.reset();
 //    $listener2.reset();
-//    $simpleEdit.setGoal(2);
+//    $simpleEdit.setGoal(2L);
 //    $simpleEdit.checkValidityPublic();
 //    // validity has changed, so validity listeners are notified
 //    assertTrue($simpleEdit.isValid());
@@ -744,9 +744,9 @@ public class TestSimpleEdit {
   // incorrect begin-state
   public void setGoal1() {
     try {
-      $simpleEdit.setGoal(1);
+      $simpleEdit.setGoal(1L);
       $simpleEdit.perform();
-      $simpleEdit.setGoal(2);
+      $simpleEdit.setGoal(2L);
       // should not be reached
       assertTrue(false);
     }
@@ -765,10 +765,10 @@ public class TestSimpleEdit {
   // incorrect begin-state
   public void setGoal2() {
     try {
-      $simpleEdit.setGoal(1);
+      $simpleEdit.setGoal(1L);
       $simpleEdit.perform();
       $simpleEdit.undo();
-      $simpleEdit.setGoal(2);
+      $simpleEdit.setGoal(2L);
       // should not be reached
       assertTrue(false);
     }
@@ -787,11 +787,11 @@ public class TestSimpleEdit {
   // incorrect begin-state
   public void setGoal3() {
     try {
-      $simpleEdit.setGoal(1);
+      $simpleEdit.setGoal(1L);
       $simpleEdit.perform();
       $simpleEdit.undo();
       $simpleEdit.redo();
-      $simpleEdit.setGoal(2);
+      $simpleEdit.setGoal(2L);
       // should not be reached
       assertTrue(false);
     }
@@ -819,14 +819,14 @@ public class TestSimpleEdit {
       assertTrue($listener1.isEmpty());
       assertTrue($listener2.isEmpty());
       // set valid goal
-      Integer goal = 1;
+      Long goal = 1L;
       $simpleEdit.setGoal(goal);
       assertEquals($simpleEdit.getGoal(), goal);
       assertTrue($simpleEdit.isValid());
       assertTrue($listener1.isEmpty());
       assertTrue($listener2.isEmpty());
       // set invalid goal
-      Integer invalidGoal = -1;
+      Long invalidGoal = -1L;
       $simpleEdit.setGoal(invalidGoal);
       assertEquals($simpleEdit.getGoal(), invalidGoal);
       assertFalse($simpleEdit.isValid());
@@ -837,7 +837,7 @@ public class TestSimpleEdit {
       assertEquals($listener2.$target, $simpleEdit);
       assertEquals($listener2.$validity, $simpleEdit.isValid());
       // set other invalid goal
-      Integer invalidGoal2 = 0;
+      Long invalidGoal2 = 0L;
       $listener1.reset();
       $listener2.reset();
       $simpleEdit.setGoal(invalidGoal2);
@@ -856,7 +856,7 @@ public class TestSimpleEdit {
       assertEquals($listener2.$target, $simpleEdit);
       assertEquals($listener2.$validity, $simpleEdit.isValid());
       // set other valid goal
-      Integer goal2 = 3;
+      Long goal2 = 3L;
       $listener1.reset();
       $listener2.reset();
       $simpleEdit.setGoal(goal2);
@@ -874,7 +874,7 @@ public class TestSimpleEdit {
   @Test
   public void getOldValue() throws EditStateException, IllegalEditException {
     // set value of target
-    Integer init = 3;
+    Long init = 3L;
     MySimpleEdit edit = new MySimpleEdit($target);
     edit.setGoal(init);
     edit.perform();
@@ -884,7 +884,7 @@ public class TestSimpleEdit {
     assertEquals($simpleEdit.getInitial(), null);
     assertEquals($simpleEdit.getOldValue(), null);
     // set goal
-    Integer goal = 5;
+    Long goal = 5L;
     $simpleEdit.setGoal(goal);
     assertEquals($simpleEdit.getState(), State.NOT_YET_PERFORMED);
     assertEquals($simpleEdit.getGoal(), goal);
@@ -919,7 +919,7 @@ public class TestSimpleEdit {
   @Test
   public void getNewValue() throws EditStateException, IllegalEditException {
     // set value of target
-    Integer init = 3;
+    Long init = 3L;
     MySimpleEdit edit = new MySimpleEdit($target);
     edit.setGoal(init);
     edit.perform();
@@ -929,7 +929,7 @@ public class TestSimpleEdit {
     assertEquals($simpleEdit.getInitial(), null);
     assertEquals($simpleEdit.getNewValue(), null);
     // set goal
-    Integer goal = 5;
+    Long goal = 5L;
     $simpleEdit.setGoal(goal);
     assertEquals($simpleEdit.getState(), State.NOT_YET_PERFORMED);
     assertEquals($simpleEdit.getGoal(), goal);
@@ -964,15 +964,15 @@ public class TestSimpleEdit {
   @Test
   public void isAcceptable() throws EditStateException {
     assertFalse($simpleEdit.isAcceptable());
-    $simpleEdit.setGoal(0);
+    $simpleEdit.setGoal(0L);
     assertFalse($simpleEdit.isAcceptable());
-    $simpleEdit.setGoal(-1);
+    $simpleEdit.setGoal(-1L);
     assertFalse($simpleEdit.isAcceptable());
-    $simpleEdit.setGoal(-2);
+    $simpleEdit.setGoal(-2L);
     assertFalse($simpleEdit.isAcceptable());
-    $simpleEdit.setGoal(1);
+    $simpleEdit.setGoal(1L);
     assertTrue($simpleEdit.isAcceptable());
-    $simpleEdit.setGoal(2);
+    $simpleEdit.setGoal(2L);
     assertTrue($simpleEdit.isAcceptable());
   }
 
@@ -983,7 +983,7 @@ public class TestSimpleEdit {
     $simpleEdit.storeInitialState();
     assertNull($simpleEdit.getInitial());
     // change value of target
-    Integer goal = 5;
+    Long goal = 5L;
     $simpleEdit.setGoal(goal);
     $simpleEdit.perform();
     assertEquals($target.get(), goal);
@@ -998,7 +998,7 @@ public class TestSimpleEdit {
     assertNull($simpleEdit.getGoal());
     assertFalse($simpleEdit.isChange());
     // change goal
-    Integer goal = 2;
+    Long goal = 2L;
     $simpleEdit.setGoal(goal);
     assertNull($simpleEdit.getInitial());
     assertEquals($simpleEdit.getGoal(), goal);
@@ -1009,7 +1009,7 @@ public class TestSimpleEdit {
     assertEquals($simpleEdit.getGoal(), goal);
     assertTrue($simpleEdit.isChange());
     // perform
-    Integer goal2 = goal;
+    Long goal2 = goal;
     MySimpleEdit edit2 = new MySimpleEdit($target);
     edit2.setGoal(goal2);
     edit2.perform();
@@ -1024,7 +1024,7 @@ public class TestSimpleEdit {
     assertNull($target.get());
     assertTrue($simpleEdit.isInitialStateCurrent());
     // perform
-    Integer goal = 2;
+    Long goal = 2L;
     $simpleEdit.setGoal(goal);
     $simpleEdit.perform();
     assertNull($simpleEdit.getInitial());
@@ -1044,7 +1044,7 @@ public class TestSimpleEdit {
     $simpleEdit.performance();
     assertNull($target.get());
     // change goal
-    Integer goal = 2;
+    Long goal = 2L;
     $simpleEdit.setGoal(goal);
     assertEquals($simpleEdit.getGoal(), goal);
     assertNull($target.get());
@@ -1058,7 +1058,7 @@ public class TestSimpleEdit {
     assertNull($target.get());
     assertTrue($simpleEdit.isGoalStateCurrent());
     // perform
-    Integer goal = 2;
+    Long goal = 2L;
     $simpleEdit.setGoal(goal);
     $simpleEdit.perform();
     assertEquals($simpleEdit.getGoal(), goal);
@@ -1078,7 +1078,7 @@ public class TestSimpleEdit {
     $simpleEdit.unperformance();
     assertNull($target.get());
     // perform
-    Integer goal = 2;
+    Long goal = 2L;
     $simpleEdit.setGoal(goal);
     $simpleEdit.perform();
     // change initial
@@ -1096,7 +1096,7 @@ public class TestSimpleEdit {
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // fire
-    LongEvent event = new ActualLongEvent($target, new Integer(0), new Integer(1), null);
+    LongEvent event = new ActualLongEvent($target, new Long(0), new Long(1), null);
     $simpleEdit.fireEvent(event);
     // check listener
     assertNotNull($listener3.$event);

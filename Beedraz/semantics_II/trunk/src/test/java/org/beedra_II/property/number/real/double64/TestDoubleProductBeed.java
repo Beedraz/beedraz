@@ -151,9 +151,9 @@ public class TestDoubleProductBeed {
   // one-level product
   public void addProduct1i() throws EditStateException, IllegalEditException {
     // create factors
-    EditableLongBeed factor5 = createEditableIntegerBeed(5);
-    EditableLongBeed factorNull = createEditableIntegerBeed(null);
-    EditableLongBeed factor30 = createEditableIntegerBeed(30);
+    EditableLongBeed factor5 = createEditableLongBeed(5L);
+    EditableLongBeed factorNull = createEditableLongBeed(null);
+    EditableLongBeed factor30 = createEditableLongBeed(30L);
     addProduct1_A(factor5, factorNull, factor30);
 
     // When one of the factors is changed by an edit, the listeners of that factor
@@ -162,7 +162,7 @@ public class TestDoubleProductBeed {
     // associated with the factor. This factor listener recalculates the product.
     // change null to 7
     LongEdit editNull = new LongEdit(factorNull);
-    Integer value7 = 7;
+    Long value7 = 7L;
     editNull.setGoal(value7);
     editNull.perform();
     assertEquals(factorNull.get(), value7);
@@ -173,7 +173,7 @@ public class TestDoubleProductBeed {
     assertEquals($doubleProductBeed.getDouble(), 1050.0);
     // change 30 to 3
     LongEdit edit30 = new LongEdit(factor30);
-    Integer value3 = 3;
+    Long value3 = 3L;
     edit30.setGoal(value3);
     edit30.perform();
     assertEquals(factor30.get(), value3);
@@ -289,11 +289,11 @@ public class TestDoubleProductBeed {
   // two-level product
   public void addProduct2i() throws EditStateException, IllegalEditException {
     // create factors
-    Integer goal5 = 5;
-    EditableLongBeed factor5 = createEditableIntegerBeed(goal5);
-    EditableLongBeed factorNull = createEditableIntegerBeed(null);
-    Integer goal30 = 30;
-    EditableLongBeed factor30 = createEditableIntegerBeed(goal30);
+    Long goal5 = 5L;
+    EditableLongBeed factor5 = createEditableLongBeed(goal5);
+    EditableLongBeed factorNull = createEditableLongBeed(null);
+    Long goal30 = 30L;
+    EditableLongBeed factor30 = createEditableLongBeed(goal30);
     DoubleProductBeed doubleProductBeed2 = addProduct2_A(goal5, factor5, factorNull, goal30, factor30);
 
     // When one of the factors is changed by an edit, the listeners of that factor
@@ -302,7 +302,7 @@ public class TestDoubleProductBeed {
     // associated with the factor. This factor listener recalculates the product.
     // change 5 to 2
     LongEdit edit5 = new LongEdit(factor5);
-    Integer value2 = 2;
+    Long value2 = 2L;
     edit5.setGoal(value2);
     edit5.perform();
     assertEquals(factor5.get(), value2);
@@ -315,7 +315,7 @@ public class TestDoubleProductBeed {
     assertEquals($doubleProductBeed.getDouble(), null);
     // change null to 7
     LongEdit editNull = new LongEdit(factorNull);
-    Integer value7 = 7;
+    Long value7 = 7L;
     editNull.setGoal(value7);
     editNull.perform();
     assertEquals(factorNull.get(), value7);
@@ -328,7 +328,7 @@ public class TestDoubleProductBeed {
     assertEquals($doubleProductBeed.getDouble(), 420.0);
     // change 30 to 3
     LongEdit edit30 = new LongEdit(factor30);
-    Integer value3 = 3;
+    Long value3 = 3L;
     edit30.setGoal(value3);
     edit30.perform();
     assertEquals(factor30.get(), value3);
@@ -598,7 +598,7 @@ public class TestDoubleProductBeed {
     }
   }
 
-  private EditableLongBeed createEditableIntegerBeed(Integer value) {
+  private EditableLongBeed createEditableLongBeed(Long value) {
     try {
       EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
       LongEdit edit = new LongEdit(editableLongBeed);

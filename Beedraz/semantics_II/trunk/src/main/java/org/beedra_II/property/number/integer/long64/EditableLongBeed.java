@@ -13,7 +13,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableLongBeed
-    extends EditableSimplePropertyBeed<Integer, LongEvent>
+    extends EditableSimplePropertyBeed<Long, LongEvent>
     implements LongBeed {
 
   /**
@@ -37,10 +37,10 @@ public class EditableLongBeed
   }
 
   public Double getDouble() {
-    return castToDouble(getInteger());
+    return castToDouble(getLong());
   }
 
-  public Integer getInteger() {
+  public Long getLong() {
     return get();
   }
 

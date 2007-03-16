@@ -151,9 +151,9 @@ public class TestDoubleSumBeed {
   // one-level sum
   public void addTerm1i() throws EditStateException, IllegalEditException {
     // create terms
-    EditableLongBeed term5 = createEditableIntegerBeed(5);
+    EditableLongBeed term5 = createEditableIntegerBeed(5L);
     EditableLongBeed termNull = createEditableIntegerBeed(null);
-    EditableLongBeed term30 = createEditableIntegerBeed(30);
+    EditableLongBeed term30 = createEditableIntegerBeed(30L);
     addTerm1_A(term5, termNull, term30);
 
     // When one of the terms is changed by an edit, the listeners of that term
@@ -162,7 +162,7 @@ public class TestDoubleSumBeed {
     // associated with the term. This term listener recalculates the sum.
     // change null to 7
     LongEdit editNull = new LongEdit(termNull);
-    Integer value7 = 7;
+    Long value7 = 7L;
     editNull.setGoal(value7);
     editNull.perform();
     assertEquals(termNull.get(), value7);
@@ -173,7 +173,7 @@ public class TestDoubleSumBeed {
     assertEquals($doubleSumBeed.getDouble(), 42.0);
     // change 30 to 3
     LongEdit edit30 = new LongEdit(term30);
-    Integer value3 = 3;
+    Long value3 = 3L;
     edit30.setGoal(value3);
     edit30.perform();
     assertEquals(term30.get(), value3);
@@ -289,10 +289,10 @@ public class TestDoubleSumBeed {
   // two-level sum
   public void addTerm2i() throws EditStateException, IllegalEditException {
     // create terms
-    Integer goal5 = 5;
+    Long goal5 = 5L;
     EditableLongBeed term5 = createEditableIntegerBeed(goal5);
     EditableLongBeed termNull = createEditableIntegerBeed(null);
-    Integer goal30 = 30;
+    Long goal30 = 30L;
     EditableLongBeed term30 = createEditableIntegerBeed(goal30);
     DoubleSumBeed doubleSumBeed2 = addTerm2_A(goal5, term5, termNull, goal30, term30);
 
@@ -302,7 +302,7 @@ public class TestDoubleSumBeed {
     // associated with the term. This term listener recalculates the sum.
     // change 5 to 2
     LongEdit edit5 = new LongEdit(term5);
-    Integer value2 = 2;
+    Long value2 = 2L;
     edit5.setGoal(value2);
     edit5.perform();
     assertEquals(term5.get(), value2);
@@ -315,7 +315,7 @@ public class TestDoubleSumBeed {
     assertEquals($doubleSumBeed.getDouble(), null);
     // change null to 7
     LongEdit editNull = new LongEdit(termNull);
-    Integer value7 = 7;
+    Long value7 = 7L;
     editNull.setGoal(value7);
     editNull.perform();
     assertEquals(termNull.get(), value7);
@@ -328,7 +328,7 @@ public class TestDoubleSumBeed {
     assertEquals($doubleSumBeed.getDouble(), 39.0);
     // change 30 to 3
     LongEdit edit30 = new LongEdit(term30);
-    Integer value3 = 3;
+    Long value3 = 3L;
     edit30.setGoal(value3);
     edit30.perform();
     assertEquals(term30.get(), value3);
@@ -593,7 +593,7 @@ public class TestDoubleSumBeed {
     }
   }
 
-  private EditableLongBeed createEditableIntegerBeed(Integer value) {
+  private EditableLongBeed createEditableIntegerBeed(Long value) {
     try {
       EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
       LongEdit edit = new LongEdit(editableLongBeed);

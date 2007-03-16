@@ -31,7 +31,7 @@ public class TestEditableLongBeed {
     $editableIntegerBeed = new StubEditableLongBeed($owner);
     $stringEdit = new LongEdit($editableIntegerBeed);
     $stringEdit.perform();
-    $event1 = new ActualLongEvent($editableIntegerBeed, new Integer(0), new Integer(1), $stringEdit);
+    $event1 = new ActualLongEvent($editableIntegerBeed, 0L, 1L, $stringEdit);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
   }
@@ -70,8 +70,8 @@ public class TestEditableLongBeed {
   public void createInitialEvent() {
     LongEvent initialEvent = $editableIntegerBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $editableIntegerBeed);
-    assertEquals(initialEvent.getOldInteger(), null);
-    assertEquals(initialEvent.getNewInteger(), $editableIntegerBeed.get());
+    assertEquals(initialEvent.getOldLong(), null);
+    assertEquals(initialEvent.getNewLong(), $editableIntegerBeed.get());
     assertEquals(initialEvent.getEdit(), null);
   }
 

@@ -51,8 +51,8 @@ public class TestLongEvent {
     AggregateBeed owner = new StubAggregateBeed();
     LongBeed source = new EditableLongBeed(owner);
     // old and new value
-    Integer oldValue = 0;
-    Integer newValue = 1;
+    Long oldValue = 0L;
+    Long newValue = 1L;
     // edit
     EditableLongBeed target = new EditableLongBeed(owner);
     LongEdit edit = new LongEdit(target);
@@ -60,29 +60,29 @@ public class TestLongEvent {
     // test constructor
     LongEvent longEvent = new ActualLongEvent(source, oldValue, newValue, edit);
     assertEquals(longEvent.getSource(), source);
-    assertEquals(longEvent.getOldInteger(), oldValue);
-    assertEquals(longEvent.getNewInteger(), newValue);
+    assertEquals(longEvent.getOldLong(), oldValue);
+    assertEquals(longEvent.getNewLong(), newValue);
     assertEquals(longEvent.getEdit(), edit);
     assertEquals(longEvent.getEditState(), edit.getState());
-    assertEquals(longEvent.getIntegerDelta(), newValue - oldValue);
+    assertEquals(longEvent.getLongDelta(), newValue - oldValue);
     // old and new value
     oldValue = null;
-    newValue = 4;
+    newValue = 4L;
     // test constructor
     longEvent = new ActualLongEvent(source, oldValue, newValue, edit);
     assertEquals(longEvent.getSource(), source);
-    assertEquals(longEvent.getOldInteger(), null);
-    assertEquals(longEvent.getNewInteger(), 4);
+    assertEquals(longEvent.getOldLong(), null);
+    assertEquals(longEvent.getNewLong(), 4L);
     assertEquals(longEvent.getEdit(), edit);
     assertEquals(longEvent.getEditState(), edit.getState());
-    assertEquals(longEvent.getIntegerDelta(), null);
+    assertEquals(longEvent.getLongDelta(), null);
     // edit is null
     edit = null;
     // test constructor
     longEvent = new ActualLongEvent(source, oldValue, newValue, edit);
     assertEquals(longEvent.getSource(), source);
-    assertEquals(longEvent.getOldInteger(), null);
-    assertEquals(longEvent.getNewInteger(), 4);
+    assertEquals(longEvent.getOldLong(), null);
+    assertEquals(longEvent.getNewLong(), 4L);
     assertEquals(longEvent.getEdit(), null);
     assertEquals(longEvent.getEditState(), null);
   }

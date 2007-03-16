@@ -106,13 +106,13 @@ public class TestMappedSetBeed {
     $well1 = new WellBeanBeed();
     $well2 = new WellBeanBeed();
     $well3 = new WellBeanBeed();
-    $cq1 = new Integer(1);
-    $cq2 = new Integer(2);
-    $cq3 = new Integer(3);
+    $cq1 = new Long(1);
+    $cq2 = new Long(2);
+    $cq3 = new Long(3);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<LongBeed>>();
-    $listener4 = new StubListener<SetEvent<Integer>>();
+    $listener4 = new StubListener<SetEvent<Long>>();
     $event = new ActualSetEvent<LongBeed>($mappedSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit1 =
@@ -148,16 +148,16 @@ public class TestMappedSetBeed {
   private WellBeanBeed $well1;
   private WellBeanBeed $well2;
   private WellBeanBeed $well3;
-  private Integer $cq1;
-  private Integer $cq2;
-  private Integer $cq3;
+  private Long $cq1;
+  private Long $cq2;
+  private Long $cq3;
   private BeedMapping<WellBeanBeed, LongBeed> $mapping;
   private MyMappedSetBeed $mappedSetBeed;
   private MyBeanBeed $owner;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
   private StubListener<SetEvent<LongBeed>> $listener3;
-  private StubListener<SetEvent<Integer>> $listener4;
+  private StubListener<SetEvent<Long>> $listener4;
   private SetEvent<LongBeed> $event;
 
   @Test
@@ -231,7 +231,7 @@ public class TestMappedSetBeed {
     $listener3.reset();
     assertNull($listener3.$event);
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
-    WellBeanBeed goal = createWellBeanBeed(5);
+    WellBeanBeed goal = createWellBeanBeed(5L);
     setEdit.addElementToAdd(goal);
     setEdit.perform();
     removed = new HashSet<LongBeed>();
@@ -274,7 +274,7 @@ public class TestMappedSetBeed {
     assertNull($listener3.$event);
     // so, when the removed beed is edited, the mapped set beed is NOT notified
     LongEdit longEdit = new LongEdit(goal.cq);
-    longEdit.setGoal(7);
+    longEdit.setGoal(7L);
     longEdit.perform();
     assertNull($listener3.$event); // the MappedSetBeed is NOT notified
     // and the value of the mapped set beed is correct
@@ -293,14 +293,14 @@ public class TestMappedSetBeed {
   public void setSource3() throws EditStateException, IllegalEditException {
     // define a new mapping
     // @remark this mapping is only injective for certain source sets!
-    BeedMapping<WellBeanBeed, Integer> mapping = new BeedMapping<WellBeanBeed, Integer>() {
-      public Integer map(WellBeanBeed from) {
+    BeedMapping<WellBeanBeed, Long> mapping = new BeedMapping<WellBeanBeed, Long>() {
+      public Long map(WellBeanBeed from) {
         return from.cq.get();
       }
     };
     // define a new mapped set beed
-    MappedSetBeed<WellBeanBeed, PropagatedEvent, Integer> mappedSetBeed =
-      new MappedSetBeed<WellBeanBeed, PropagatedEvent, Integer>(mapping, $owner);
+    MappedSetBeed<WellBeanBeed, PropagatedEvent, Long> mappedSetBeed =
+      new MappedSetBeed<WellBeanBeed, PropagatedEvent, Long>(mapping, $owner);
     // register listeners to the MappedSetBeed
     mappedSetBeed.addListener($listener4);
     assertNull($listener4.$event);
@@ -314,7 +314,7 @@ public class TestMappedSetBeed {
     assertTrue(mappedSetBeed.get().contains($well3.cq.get()));
     // add an extra beed to the source
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
-    WellBeanBeed goal = createWellBeanBeed(5);
+    WellBeanBeed goal = createWellBeanBeed(5L);
     setEdit.addElementToAdd(goal);
     setEdit.perform();
     assertEquals(mappedSetBeed.get().size(), 4);
@@ -327,7 +327,7 @@ public class TestMappedSetBeed {
     $listener4.reset();
     assertNull($listener4.$event);
     LongEdit longEdit = new LongEdit(goal.cq);
-    longEdit.setGoal(6);
+    longEdit.setGoal(6L);
     longEdit.perform();
     assertNotNull($listener4.$event);
     assertEquals($listener4.$event.getSource(), mappedSetBeed);
@@ -456,14 +456,14 @@ public class TestMappedSetBeed {
     $mappedSetBeed.setSource($run.wells);
     Integer sum = 0;
     for (LongBeed cq : $mappedSetBeed.get()) {
-      sum += cq.getInteger();
+      sum += cq.getLong();
     }
     assertEquals(sum, 6);
     // test2
     $mappedSetBeed.setSource(null);
     sum = 0;
     for (LongBeed cq : $mappedSetBeed.get()) {
-      sum += cq.getInteger();
+      sum += cq.getLong();
     }
     assertEquals(sum, 0);
   }
@@ -519,7 +519,7 @@ public class TestMappedSetBeed {
     return setBeed;
   }
 
-  private WellBeanBeed createWellBeanBeed(Integer cq) {
+  private WellBeanBeed createWellBeanBeed(Long cq) {
     try {
       WellBeanBeed wellBeanBeed = new WellBeanBeed();
       LongEdit edit = new LongEdit(wellBeanBeed.cq);

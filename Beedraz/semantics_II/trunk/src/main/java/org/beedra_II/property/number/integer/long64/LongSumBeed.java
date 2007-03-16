@@ -77,17 +77,17 @@ public class LongSumBeed
 
     public void beedChanged(LongEvent event) {
       // recalculate(); optimization
-      Integer oldValue = $value;
+      Long oldValue = $value;
       if ($value !=  null) {
         assert $value != null;
-        assert event.getOldInteger() != null :
+        assert event.getOldLong() != null :
           "event old value must be not null because all old terms were not null," +
           " because $value != null";
-        $value = (event.getNewInteger() == null)
+        $value = (event.getNewLong() == null)
                      ? null
-                     : $value + (event.getIntegerDelta() * getNbOccurrences());
+                     : $value + (event.getLongDelta() * getNbOccurrences());
       }
-      else if ((event.getNewInteger() != null) && (event.getOldInteger() == null)) {
+      else if ((event.getNewLong() != null) && (event.getOldLong() == null)) {
         recalculate();
       }
       // else: NOP
@@ -152,8 +152,8 @@ public class LongSumBeed
       }
       // recalculate(); optimization
       if ($value != null) {
-        Integer oldValue = $value;
-        $value = (term.getInteger() == null) ? null : $value + term.getInteger(); // MUDO overflow
+        Long oldValue = $value;
+        $value = (term.getLong() == null) ? null : $value + term.getLong(); // MUDO overflow
         fireChangeEvent(new ActualLongEvent(this, oldValue, $value, null));
       }
       // otherwise, there is an existing null term; the new term cannot change null value
@@ -179,14 +179,14 @@ public class LongSumBeed
           $terms.remove(term);
         }
         // recalculate(); optimization
-        Integer oldValue = $value;
+        Long oldValue = $value;
         /*
          * term.getInteger() == null && getNbOccurrences() == 0  ==>  recalculate
          * term.getInteger() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
          * term.getInteger() != null && $value != null           ==>  new.$value == old.$value - term.getInteger()
          * term.getInteger() != null && $value == null           ==>  new.$value == old.$value == null
          */
-        if (term.getInteger() == null && getNbOccurrences(term) == 0) {
+        if (term.getLong() == null && getNbOccurrences(term) == 0) {
             /* $value was null because of this term. After the remove,
              * the value can be null because of another term, or
              * can be some value: we can't know, recalculate completely
@@ -196,8 +196,8 @@ public class LongSumBeed
         else if ($value != null) {
           // since $value is effective, all terms are effective
           // the new value of the sum beed is the old value minus the value of the removed term
-          assert term.getInteger() != null;
-          $value -= term.getInteger();
+          assert term.getLong() != null;
+          $value -= term.getLong();
         }
         // else: in all other cases, the value of $value is null, and stays null
         if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
@@ -217,10 +217,10 @@ public class LongSumBeed
   private final Map<LongBeed, TermListener> $terms = new HashMap<LongBeed, TermListener>();
 
   public final Double getDouble() {
-    return castToDouble(getInteger());
+    return castToDouble(getLong());
   }
 
-  public final Integer getInteger() {
+  public final Long getLong() {
     return $value;
   }
 
@@ -232,9 +232,9 @@ public class LongSumBeed
    * multiplied by the corresponding number of occurrences.
    */
   public void recalculate() {
-    Integer newValue = 0;
+    Long newValue = 0L;
     for (LongBeed term : $terms.keySet()) {
-      Integer termValue = term.getInteger();
+      Long termValue = term.getLong();
       if (termValue == null) {
         newValue = null;
         break;
@@ -244,7 +244,7 @@ public class LongSumBeed
     $value = newValue;
   }
 
-  private Integer $value = 0;
+  private Long $value = 0L;
 
   /**
    * @post  result != null;
@@ -256,19 +256,19 @@ public class LongSumBeed
    */
   @Override
   protected final LongEvent createInitialEvent() {
-    return new ActualLongEvent(this, null, getInteger(), null);
+    return new ActualLongEvent(this, null, getLong(), null);
   }
 
 
   @Override
   protected String otherToStringInformation() {
-    return getInteger() + " (# " + $terms.size() + ")";
+    return getLong() + " (# " + $terms.size() + ")";
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
-    sb.append(indent(level + 1) + "value:" + getInteger() + "\n");
+    sb.append(indent(level + 1) + "value:" + getLong() + "\n");
     sb.append(indent(level + 1) + "number of terms:" + $terms.size() + "\n");
   }
 

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -35,7 +35,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractIntegerUnaryExpressionBeed
+public abstract class AbstractLongUnaryExpressionBeed
     extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>
     implements IntegerBeed {
 
@@ -44,7 +44,7 @@ public abstract class AbstractIntegerUnaryExpressionBeed
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public AbstractIntegerUnaryExpressionBeed(AggregateBeed owner) {
+  public AbstractLongUnaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.integer;
+package org.beedra_II.property.number.integer.long64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -34,15 +34,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class IntegerNegativeBeed
-    extends AbstractIntegerUnaryExpressionBeed {
+public class LongNegativeBeed
+    extends AbstractLongUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public IntegerNegativeBeed(AggregateBeed owner) {
+  public LongNegativeBeed(AggregateBeed owner) {
     super(owner);
   }
 

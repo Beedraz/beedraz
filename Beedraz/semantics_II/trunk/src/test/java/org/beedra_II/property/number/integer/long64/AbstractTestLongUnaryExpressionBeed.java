@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.integer;
+package org.beedra_II.property.number.integer.long64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.StubListener;
@@ -27,7 +27,7 @@ import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestIntegerUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>>
+public abstract class AbstractTestLongUnaryExpressionBeed<_UEB_ extends AbstractUnaryExpressionBeed<Integer, IntegerBeed, IntegerEvent>>
     extends AbstractTestUnaryExpressionBeed<Integer,
                                             IntegerBeed,
                                             IntegerEvent,

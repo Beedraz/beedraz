@@ -14,23 +14,24 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.integer;
+package org.beedra_II.property.number.integer.long64;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.integer.long64.LongNegativeBeed;
 import org.junit.Test;
 
 
 
 
-public class TestIntegerNegativeBeed
-    extends AbstractTestIntegerUnaryExpressionBeed<IntegerNegativeBeed> {
+public class TestLongNegativeBeed
+    extends AbstractTestLongUnaryExpressionBeed<LongNegativeBeed> {
 
   @Test
   public void testConstructor() {
-    IntegerNegativeBeed inb = new IntegerNegativeBeed($aggregateBeed);
+    LongNegativeBeed inb = new LongNegativeBeed($aggregateBeed);
     assertEquals($aggregateBeed, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getInteger());
@@ -43,12 +44,12 @@ public class TestIntegerNegativeBeed
   }
 
   @Override
-  protected IntegerNegativeBeed createSubject(AggregateBeed owner) {
-    return new IntegerNegativeBeed(owner);
+  protected LongNegativeBeed createSubject(AggregateBeed owner) {
+    return new LongNegativeBeed(owner);
   }
 
   @Override
-  protected Integer valueFromSubject(IntegerNegativeBeed argumentBeed) {
+  protected Integer valueFromSubject(LongNegativeBeed argumentBeed) {
     return argumentBeed.getInteger();
   }
 

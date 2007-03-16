@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.number;
 
 
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.property.decimal.DoubleBeed;
@@ -110,6 +112,13 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
    * @pre argumentValue != null;
    */
   protected abstract _Number_ calculateValue(_Number_ argumentValue);
+
+  @Override
+  public final void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "value:" + get() + "\n");
+    getArgument().toString(sb, level + 2);
+  }
 
 }
 

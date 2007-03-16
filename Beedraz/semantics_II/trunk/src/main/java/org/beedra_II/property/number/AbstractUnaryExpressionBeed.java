@@ -117,7 +117,13 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
   public final void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + get() + "\n");
-    getArgument().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "argument:\n");
+    if (getArgument() != null) {
+      getArgument().toString(sb, level + 2);
+    }
+    else {
+      sb.append(indent(level + 2) + "null");
+    }
   }
 
 }

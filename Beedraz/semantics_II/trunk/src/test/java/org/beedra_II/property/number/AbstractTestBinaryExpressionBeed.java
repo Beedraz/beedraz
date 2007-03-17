@@ -37,10 +37,10 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
-                                                       _LeftArgumentBeed_ extends RealBeed<?>,
-                                                       _RightArgumentBeed_ extends RealBeed<?>,
+                                                       _LeftArgumentBeed_ extends RealBeed<? extends RealEvent>,
+                                                       _RightArgumentBeed_ extends RealBeed<? extends RealEvent>,
                                                        _NumberEvent_ extends RealEvent,
-                                                       _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _LeftArgumentBeed_, ?, _RightArgumentBeed_, ?, _NumberEvent_>,
+                                                       _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _LeftArgumentBeed_, ? extends RealEvent, _RightArgumentBeed_, ? extends RealEvent, _NumberEvent_>,
                                                        _LeftEAB_ extends _LeftArgumentBeed_,
                                                        _RightEAB_ extends _RightArgumentBeed_> {
 

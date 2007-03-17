@@ -37,9 +37,9 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
-                                                      _ArgumentBeed_ extends RealBeed<?>,
+                                                      _ArgumentBeed_ extends RealBeed<? extends RealEvent>,
                                                       _NumberEvent_ extends RealEvent,
-                                                      _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, ?, _NumberEvent_>,
+                                                      _UEB_ extends AbstractUnaryExpressionBeed<_Number_, _ArgumentBeed_, ? extends RealEvent, _NumberEvent_>,
                                                       _EAB_ extends _ArgumentBeed_> {
 
   protected abstract _UEB_ createSubject(AggregateBeed owner);

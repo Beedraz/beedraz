@@ -454,18 +454,18 @@ public class TestMappedSetBeed {
   public void computeSum() {
     // test1
     $mappedSetBeed.setSource($run.wells);
-    Integer sum = 0;
+    Long sum = 0L;
     for (LongBeed cq : $mappedSetBeed.get()) {
       sum += cq.getLong();
     }
-    assertEquals(sum, 6);
+    assertEquals(sum, 6L);
     // test2
     $mappedSetBeed.setSource(null);
-    sum = 0;
+    sum = 0L;
     for (LongBeed cq : $mappedSetBeed.get()) {
       sum += cq.getLong();
     }
-    assertEquals(sum, 0);
+    assertEquals(sum, 0L);
   }
 
   @Test

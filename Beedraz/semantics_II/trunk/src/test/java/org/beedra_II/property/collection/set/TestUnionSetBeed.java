@@ -725,11 +725,11 @@ public class TestUnionSetBeed {
     MappedSetBeed<WellBeanBeed, PropagatedEvent, LongBeed> mappedSetBeed =
       new MappedSetBeed<WellBeanBeed, PropagatedEvent, LongBeed>(mapping, $owner);
     mappedSetBeed.setSource($unionSetBeed);
-    Integer sum = 0;
+    Long sum = 0L;
     for (LongBeed cq : mappedSetBeed.get()) {
       sum += cq.getLong();
     }
-    assertEquals(sum, 0+1+2+3+4+5+6+7+8);
+    assertEquals(sum, 0L + 1L + 2L + 3L + 4L + 5L + 6L + 7L + 8L);
   }
 
 }

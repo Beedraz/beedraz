@@ -116,8 +116,15 @@ public final class MathUtil {
    * into account the {@link Math#ulp(double)}.
    */
   public static boolean equalValue(Double d, Number n) {
-    double dv = d.doubleValue();
-    double ulp2 = 2 * ulp(dv);
+    double ulp2 = 0;
+    if (d != null &&
+        n != null &&
+        !d.isNaN() &&
+        !isNaN(n) &&
+        !Double.isInfinite(d.doubleValue())) {
+      double dv = d.doubleValue();
+      ulp2 = 2 * ulp(dv);
+    }
     return equalValue(d, n, ulp2);
   }
 

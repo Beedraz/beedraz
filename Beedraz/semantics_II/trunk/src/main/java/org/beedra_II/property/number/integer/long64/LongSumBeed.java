@@ -41,16 +41,16 @@ import org.ppeew.smallfries_I.ComparisonUtil;
  * {@link LongBeed}.
  *
  * @invar getNbOccurrences(null) == 0;
- * @invar (forall LongBeed ib; ; getNbOccurrences(ib) >= 0);
- * @invar (exists LongBeed ib; ; getNbOccurrences(ib) > 0 && ib.getInteger() == null)
- *            ==> getInteger() == null;
+ * @invar (forall LongBeed lb; ; getNbOccurrences(lb) >= 0);
+ * @invar (exists LongBeed lb; ; getNbOccurrences(lb) > 0 && lb.getLong() == null)
+ *            ==> getLong() == null;
  *        If one of the terms is null, then the value of the sum beed is null.
- * @invar (forAll LongBeed ib; ; getNbOccurrences(ib) > 0 ==> ib.getInteger() != null)
- *            ==> getInteger() == sum { ib.getInteger() * getNbOccurrences(ib) | ib instanceof LongBeed};
+ * @invar (forAll LongBeed lb; ; getNbOccurrences(lb) > 0 ==> lb.getLong() != null)
+ *            ==> getLong() == sum { lb.getLong() * getNbOccurrences(lb) | lb instanceof LongBeed};
  *        If all terms are effective, then the value of the sum beed is the
  *        sum of the value of each term multiplied by the corresponding
  *        number of occurrences.
- *        e.g. getInteger() = 3 * 5 + 2 * 11
+ *        e.g. getLong() = 3 * 5 + 2 * 11
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -62,8 +62,8 @@ public class LongSumBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == 0;
-   * @post  (forall LongBeed ib; ; getNbOccurrences(ib) == 0};
+   * @post  getLong() == 0;
+   * @post  (forall LongBeed lb; ; getNbOccurrences(lb) == 0};
    */
   public LongSumBeed(AggregateBeed owner) {
     super(owner);
@@ -187,10 +187,10 @@ public class LongSumBeed
         // recalculate(); optimization
         Long oldValue = $value;
         /*
-         * term.getInteger() == null && getNbOccurrences() == 0  ==>  recalculate
-         * term.getInteger() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-         * term.getInteger() != null && $value != null           ==>  new.$value == old.$value - term.getInteger()
-         * term.getInteger() != null && $value == null           ==>  new.$value == old.$value == null
+         * term.getLong() == null && getNbOccurrences() == 0  ==>  recalculate
+         * term.getLong() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+         * term.getLong() != null && $value != null           ==>  new.$value == old.$value - term.getLong()
+         * term.getLong() != null && $value == null           ==>  new.$value == old.$value == null
          */
         if (term.getLong() == null && getNbOccurrences(term) == 0) {
             /* $value was null because of this term. After the remove,
@@ -255,8 +255,8 @@ public class LongSumBeed
   /**
    * @post  result != null;
    * @post  result.getSource() == this;
-   * @post  result.getOldInteger() == null;
-   * @post  result.getNewInteger() == getInteger();
+   * @post  result.getOldLong() == null;
+   * @post  result.getNewLong() == getLong();
    * @post  result.getEdit() == null;
    * @post  result.getEditState() == null;
    */

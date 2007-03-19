@@ -73,7 +73,11 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       return $size;
     }
 
-    int $size = 0;
+    public final void setSize(int size) {
+      $size = size;
+    }
+
+    private int $size = 0;
 
     public BigInteger getBigInteger() {
       return MathUtil.castToBigInteger(get());
@@ -111,7 +115,7 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
      * @result  result.getEdit() == edit;
      * @result  result.getEditState() == edit != null ? edit.getState() : null;
      */
-    void fireEvent(int oldSize, Edit<?> edit) {
+    public void fireEvent(int oldSize, Edit<?> edit) {
       Long oldS = Long.valueOf(oldSize);
       fireChangeEvent(new ActualLongEvent(this, oldS, getLong(), edit));
     }

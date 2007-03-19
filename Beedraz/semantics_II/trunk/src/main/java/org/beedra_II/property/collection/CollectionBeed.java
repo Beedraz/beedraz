@@ -19,6 +19,8 @@ package org.beedra_II.property.collection;
 
 import java.util.Collection;
 
+import org.beedra_II.property.number.integer.IntegerBeed;
+import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -39,6 +41,16 @@ public interface CollectionBeed<_Element_,
    * @basic
    */
   Collection<_Element_> get();
+
+  /**
+   * The number of elements in the collection.
+   */
+  IntegerBeed<?> getSize();
+
+  /**
+   * The number of distinct elements in the collection.
+   */
+  IntegerBeed<?> getCardinality();
 
 }
 

@@ -92,23 +92,29 @@ public abstract class Dependent {
    *      no loops
    * @post getUpdateSources().contains(updateSource);
    * @post updateSource.getDependents().contains(this);
+   * @post updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  final void addUpdateSource(UpdateSource updateSource) {
+  public final void addUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
     assert ! getDependentsTransitiveClosure().contains(updateSource);
     $updateSources.add(updateSource);
     updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
+    updateSource.addDependent(this);
   }
 
   /**
    * @pre updateSource != null;
+   * @pre 'getUpdateSources().contains(updateSource);
    * @post ! getUpdateSources().contains(updateSource);
    * @post ! updateSource.getDependents().contains(this);
+   * @post updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  final void removeUpdateSource(UpdateSource updateSource) {
+  public final void removeUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
-    $updateSources.remove(updateSource);
+    assert getUpdateSources().contains(updateSource);
+    updateSource.removeDependent(this);
     updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
+    $updateSources.remove(updateSource);
   }
 
   /**
@@ -132,9 +138,11 @@ public abstract class Dependent {
   }
 
   /**
+   * Protected only for testing reasons.
+   *
    * @pre newSourceMaximumFinalSourceDistance < Integer.MAX_VALUE
    */
-  private void updateMaximumRootUpdateSourceDistanceUp(int newSourceMaximumFinalSourceDistance) {
+  protected void updateMaximumRootUpdateSourceDistanceUp(int newSourceMaximumFinalSourceDistance) {
     assert newSourceMaximumFinalSourceDistance < Integer.MAX_VALUE;
     int potentialNewMaxDistance = newSourceMaximumFinalSourceDistance + 1;
     if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {

@@ -33,4 +33,12 @@ public class StubDependent extends Dependent {
     return null;
   }
 
+  /**
+   * public for testing reasons
+   */
+  @Override
+  public void updateMaximumRootUpdateSourceDistanceUp(int newSourceMaximumFinalSourceDistance) {
+    super.updateMaximumRootUpdateSourceDistanceUp(newSourceMaximumFinalSourceDistance);
+  }
+
 }

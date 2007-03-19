@@ -26,6 +26,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * @author  Jan Dockx
  * @author  Peopleware n.v.
+ *
+ * @invar getSize() == getCardinality();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

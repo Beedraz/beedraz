@@ -37,26 +37,14 @@ public class TestAbstractUpdateSource {
 
   private StubDependent $dependent2;
 
-  public class StubDependent extends Dependent {
-
-    @Override
-    public UpdateSource getDependentUpdateSource() {
-      return null;
-    }
-
-    @Override
-    public Event update(Map<UpdateSource, Event> events) {
-      return null;
-    }
-
-  }
+  public final static int SUBJECT_MROSD = 0;
 
   @Before
   public void setUp() throws Exception {
     $subject = new AbstractUpdateSource() {
 
       public int getMaximumRootUpdateSourceDistance() {
-        return 0;
+        return SUBJECT_MROSD;
       }
 
     };
@@ -77,22 +65,21 @@ public class TestAbstractUpdateSource {
     assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
     assertEquals(0, $dependent1.getMaximumRootUpdateSourceDistance());
     assertEquals(0, $dependent2.getMaximumRootUpdateSourceDistance());
+    $dependent1.updateMaximumRootUpdateSourceDistanceUp(SUBJECT_MROSD);
     $subject.addDependent($dependent1);
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
-    assertEquals(1, $dependent1.getUpdateSources().size());
-    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent1.getUpdateSources().isEmpty());
     assertTrue($dependent2.getUpdateSources().isEmpty());
     assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
     assertEquals(1, $dependent1.getMaximumRootUpdateSourceDistance());
     assertEquals(0, $dependent2.getMaximumRootUpdateSourceDistance());
+    $dependent2.updateMaximumRootUpdateSourceDistanceUp(SUBJECT_MROSD);
     $subject.addDependent($dependent2);
     assertTrue($subject.getDependents().contains($dependent2));
     assertEquals(2, $subject.getDependents().size());
-    assertEquals(1, $dependent1.getUpdateSources().size());
-    assertTrue($dependent1.getUpdateSources().contains($subject));
-    assertEquals(1, $dependent2.getUpdateSources().size());
-    assertTrue($dependent2.getUpdateSources().contains($subject));
+    assertTrue($dependent1.getUpdateSources().isEmpty());
+    assertTrue($dependent2.getUpdateSources().isEmpty());
     assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
     assertEquals(1, $dependent1.getMaximumRootUpdateSourceDistance());
     assertEquals(1, $dependent2.getMaximumRootUpdateSourceDistance());

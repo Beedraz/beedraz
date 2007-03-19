@@ -26,6 +26,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() >= 0;
+ * @invar for (Dependent d: getDependents() {
+ *          d.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance()
+ *        };
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -44,8 +47,8 @@ public interface UpdateSource {
    * @pre dependent != null;
    * @pre ! dependent.getDependentsTransitiveClosure().contains(this);
    *      no loops
+   * @pre dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
    * @post getDependents().contains(dependent);
-   * @post dependent.getUpdateSources().contains(this);
    */
   void addDependent(Dependent dependent);
 

@@ -61,14 +61,13 @@ public abstract class AbstractUpdateSource implements UpdateSource {
   public final void addDependent(Dependent dependent) {
     assert dependent != null;
     assert ! dependent.getDependentsTransitiveClosure().contains(this);
+    assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     $dependents.add(dependent);
-    dependent.addUpdateSource(this);
   }
 
   public final void removeDependent(Dependent dependent) {
     assert dependent != null;
     dependent.removeUpdateSource(this);
-    $dependents.remove(dependent);
   }
 
   /**

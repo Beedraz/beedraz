@@ -43,11 +43,15 @@ public interface CollectionBeed<_Element_,
 
   /**
    * The number of elements in the collection.
+   * @result  result != null;
+   * @result  result.get() == get().size();
    */
   IntegerBeed<?> getSize();
 
   /**
    * The number of distinct elements in the collection.
+   * @result  result != null;
+   * @result  result.get() == # {element : get().contains(element)};
    */
   IntegerBeed<?> getCardinality();
 

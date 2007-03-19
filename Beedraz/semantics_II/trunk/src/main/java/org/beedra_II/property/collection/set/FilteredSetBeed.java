@@ -28,7 +28,6 @@ import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 import org.ppeew.smallfries_I.Filter;
@@ -53,7 +52,7 @@ import org.ppeew.smallfries_I.Filter;
          state    = "$State$",
          tag      = "$Name$")
 public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Event>
-    extends AbstractPropertyBeed<SetEvent<_Element_>>
+    extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**

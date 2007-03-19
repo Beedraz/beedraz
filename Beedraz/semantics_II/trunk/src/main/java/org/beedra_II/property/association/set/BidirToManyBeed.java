@@ -25,10 +25,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.collection.set.AbstractSetBeed;
+import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
-import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -41,7 +41,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class BidirToManyBeed<_One_ extends BeanBeed,
                              _Many_ extends BeanBeed>
-    extends AbstractPropertyBeed<SetEvent<_Many_>>
+    extends AbstractSetBeed<_Many_, SetEvent<_Many_>>
     implements SetBeed<_Many_, SetEvent<_Many_>> {
 
   public BidirToManyBeed(_One_ bean) {

@@ -30,7 +30,6 @@ import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -70,7 +69,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          tag      = "$Name$")
 public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
                            _FromEvent_ extends Event, _To_>
-    extends AbstractPropertyBeed<SetEvent<_To_>>
+    extends AbstractSetBeed<_To_, SetEvent<_To_>>
     implements SetBeed<_To_, SetEvent<_To_>> {
 
   /**

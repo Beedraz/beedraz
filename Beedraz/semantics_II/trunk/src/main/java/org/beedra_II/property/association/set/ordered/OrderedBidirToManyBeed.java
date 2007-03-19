@@ -22,7 +22,7 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Iterator;
 
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.collection.set.AbstractSetBeed;
 import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedra_II.property.collection.set.ordered.OrderedSetBeed;
 import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
@@ -50,7 +50,7 @@ import org.ppeew.collection_I.OrderedSet;
          tag      = "$Name$")
 public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
                                    _Many_ extends BeanBeed>
-    extends AbstractPropertyBeed<OrderedSetEvent<_Many_>>
+    extends AbstractSetBeed<_Many_, OrderedSetEvent<_Many_>>
     implements OrderedSetBeed<_Many_, OrderedSetEvent<_Many_>> {
 
   public OrderedBidirToManyBeed(_One_ bean) {

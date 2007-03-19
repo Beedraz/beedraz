@@ -27,7 +27,6 @@ import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Listener;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -54,7 +53,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class UnionSetBeed<_Element_>
-    extends AbstractPropertyBeed<SetEvent<_Element_>>
+    extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**

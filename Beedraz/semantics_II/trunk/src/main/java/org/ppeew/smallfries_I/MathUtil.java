@@ -371,6 +371,18 @@ public final class MathUtil {
 
   /**
    * @pre  doubles != null;
+   */
+  public static double sum(double... doubles) {
+    assert doubles != null;
+    double sum = 0.0;
+    for (double value : doubles) {
+      sum += value;
+    }
+    return sum;
+  }
+
+  /**
+   * @pre  doubles != null;
    * @pre  doubles.length > 0;
    */
   public static double arithmeticMean(double... doubles) {
@@ -379,7 +391,7 @@ public final class MathUtil {
     double mean = 0.0;
     for (double value : doubles) {
       mean += value;
-}
+    }
     return mean / doubles.length;
   }
 

@@ -69,6 +69,8 @@ public class DoubleGeometricMeanBeed extends DoubleSetComputationBeed {
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is the geometric mean of the
    * values of the beeds.
+   *
+   * @mudo use commons math
    */
   public static Double mean(final SetBeed<RealBeed<?>, ?> source) {
     Double mean;

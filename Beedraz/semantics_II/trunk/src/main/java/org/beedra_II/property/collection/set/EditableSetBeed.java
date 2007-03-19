@@ -69,7 +69,7 @@ public class EditableSetBeed<_Element_>
     assert elements != null;
     assert org.ppeew.collection_I.CollectionUtil.intersection(get(), elements).isEmpty();
     $set.addAll(elements);
-    $sizeBeed.$size +=  elements.size();
+    $sizeBeed.setSize($sizeBeed.get() + elements.size());
   }
 
   /**
@@ -80,7 +80,7 @@ public class EditableSetBeed<_Element_>
     assert elements != null;
     assert get().containsAll(elements);
     $set.removeAll(elements);
-    $sizeBeed.$size -=  elements.size();
+    $sizeBeed.setSize($sizeBeed.get() - elements.size());
   }
 
   private Set<_Element_> $set = new HashSet<_Element_>();
@@ -92,7 +92,7 @@ public class EditableSetBeed<_Element_>
    */
   void fireEvent(SetEvent<_Element_> event) {
     fireChangeEvent(event);
-    int oldSize = $sizeBeed.$size -  event.getAddedElements().size() + event.getRemovedElements().size();
+    int oldSize = $sizeBeed.get() -  event.getAddedElements().size() + event.getRemovedElements().size();
     $sizeBeed.fireEvent(oldSize, event.getEdit());
   }
 

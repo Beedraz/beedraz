@@ -73,9 +73,9 @@ public final class MathUtil {
 
   /**
    * NaN's are equal. Serious doubles are compared, taking
-   * into account the {@link Math#ulp(double)}.
+   * into account the given error.
    */
-  public static boolean equalValue(Double d, Number n) {
+  public static boolean equalValue(Double d, Number n, Double error) {
     if (d == null) {
       return n == null;
     }
@@ -106,10 +106,19 @@ public final class MathUtil {
         else {
           delta = Math.abs(dv - nv);
         }
-        double ulp2 = 2 * ulp(dv);
-        return delta <= ulp2;
+        return delta <= error;
       }
     }
+  }
+
+  /**
+   * NaN's are equal. Serious doubles are compared, taking
+   * into account the {@link Math#ulp(double)}.
+   */
+  public static boolean equalValue(Double d, Number n) {
+    double dv = d.doubleValue();
+    double ulp2 = 2 * ulp(dv);
+    return equalValue(d, n, ulp2);
   }
 
   public static double ulp(double d) {

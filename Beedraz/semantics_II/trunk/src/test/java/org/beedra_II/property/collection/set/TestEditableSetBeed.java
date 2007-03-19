@@ -56,7 +56,6 @@ public class TestEditableSetBeed {
     $listener2 = new StubListenerMultiple<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<Integer>>();
     $listener4 = new StubListener<SetEvent<Integer>>();
-    $listener5 = new StubListener<ActualLongEvent>();
   }
 
   @After
@@ -74,7 +73,6 @@ public class TestEditableSetBeed {
   private StubListenerMultiple<PropagatedEvent> $listener2;
   private StubListener<SetEvent<Integer>> $listener3;
   private StubListener<SetEvent<Integer>> $listener4;
-  private StubListener<ActualLongEvent> $listener5;
 
   @Test
   public void constructor() {
@@ -194,16 +192,22 @@ public class TestEditableSetBeed {
 
   @Test
   public void fireEvent2() {
-    // register listeners to the $sizeBeed
-    $editableSetBeed.$sizeBeed.addListener($listener5);
+    // add listener to owner
+    $owner.addListener($listener1);
     // fire $editableSetBeed
     $editableSetBeed.fireEvent($event1);
     // checks
-    assertNotNull($listener5.$event);
-    assertEquals($listener5.$event.getEdit(), $event1.getEdit());
-    assertEquals($listener5.$event.getNewLong(), 0L);
-    assertEquals($listener5.$event.getOldLong(), 0L);
-    assertEquals($listener5.$event.getSource(), $editableSetBeed.$sizeBeed);
+    assertNotNull($listener1.$event1);
+    assertEquals($listener1.$event1.getCause(), $event1);
+    assertNotNull($listener1.$event2);
+    assertTrue($listener1.$event2.getCause() instanceof ActualLongEvent);
+    if ($listener1.$event2.getCause() instanceof ActualLongEvent) {
+      ActualLongEvent longEvent = (ActualLongEvent) $listener1.$event2.getCause();
+      assertEquals(longEvent.getSource(), $editableSetBeed.$sizeBeed);
+      assertEquals(longEvent.getNewLong(), new Long(0));
+      assertEquals(longEvent.getOldLong(), new Long(0));
+      assertEquals(longEvent.getEdit(), $event1.getEdit());
+    }
   }
 
   @Test

@@ -22,12 +22,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
@@ -47,52 +43,6 @@ public class TestRootUpdateSource {
   private StubDependentUpdateSource $dNullEvent1;
   private StubDependentUpdateSource $dNullEvent2;
   private StubDependentUpdateSource[] $ds;
-
-  public class StubDependent extends Dependent {
-
-    @Override
-    public UpdateSource getDependentUpdateSource() {
-      return null;
-    }
-
-    @Override
-    public Event update(Map<UpdateSource, Event> events) {
-      return null;
-    }
-
-  }
-
-  public class StubDependentUpdateSource extends DemoDependentUpdateSource<IntegerEvent, UpdateSource> {
-
-    public StubDependentUpdateSource(IntegerEvent event) {
-      $event = event;
-    }
-
-    private IntegerEvent $event;
-
-    @Override
-    protected IntegerEvent update(Map<UpdateSource, Event> events) {
-      $updated++;
-      $events = new HashMap<UpdateSource, Event>(events);
-      return $event;
-    }
-
-    public int $updated = 0;
-
-    public Map<UpdateSource, Event> $events;
-
-  }
-
-  public class StubRootUpdateSource extends DemoRootUpdateSource {
-
-    @Override
-    protected void notifyListeners(LinkedHashMap<UpdateSource, Event> events) {
-      $events = new LinkedHashMap<UpdateSource, Event>(events);
-    }
-
-    public Map<UpdateSource, Event> $events;
-
-  }
 
   @Before
   public void setUp() throws Exception {

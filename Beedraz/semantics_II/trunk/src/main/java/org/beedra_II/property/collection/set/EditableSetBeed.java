@@ -19,8 +19,6 @@ package org.beedra_II.property.collection.set;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,13 +26,7 @@ import java.util.Set;
 
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.number.integer.IntegerBeed;
-import org.beedra_II.property.number.integer.long64.ActualLongEvent;
-import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -48,15 +40,18 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableSetBeed<_Element_>
-    extends AbstractPropertyBeed<SetEvent<_Element_>>
+    extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>>,
                EditableBeed<SetEvent<_Element_>> {
 
+
   /**
-   * @pre ownerBeed != null;
+   * @pre   owner != null;
+   * @post  getOwner() == owner;
+   * @post  get().isEmpty();
    */
-  public EditableSetBeed(AggregateBeed ownerBeed) {
-    super(ownerBeed);
+  public EditableSetBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /**
@@ -65,58 +60,6 @@ public class EditableSetBeed<_Element_>
   public final Set<_Element_> get() {
     return Collections.unmodifiableSet($set);
   }
-
-  private class SizeBeed
-      extends AbstractPropertyBeed<ActualLongEvent>
-      implements LongBeed {
-
-    SizeBeed() {
-      super(EditableSetBeed.this.getOwner());
-    }
-
-    public final int get() {
-      return $size;
-    }
-
-    int $size = 0;
-
-    public BigInteger getBigInteger() {
-      return MathUtil.castToBigInteger(get());
-    }
-
-    public Double getDouble() {
-      return MathUtil.castToDouble(get());
-    }
-
-    public Long getLong() {
-      return MathUtil.castToLong(get());
-    }
-
-    public BigDecimal getBigDecimal() {
-      return MathUtil.castToBigDecimal(get());
-    }
-
-    @Override
-    protected ActualLongEvent createInitialEvent() {
-      return new ActualLongEvent(this, null, getLong(), null);
-    }
-
-    void fireEvent(int oldSize, Edit<?> edit) {
-      Long oldS = Long.valueOf(oldSize);
-      fireChangeEvent(new ActualLongEvent(this, oldS, getLong(), edit));
-    }
-
-  }
-
-  public final IntegerBeed<?> getSize() {
-    return $sizeBeed;
-  }
-
-  public final IntegerBeed<?> getCardinality() {
-    return $sizeBeed;
-  }
-
-  private SizeBeed $sizeBeed =  new SizeBeed();
 
   /**
    * @pre elements != null;
@@ -142,6 +85,11 @@ public class EditableSetBeed<_Element_>
 
   private Set<_Element_> $set = new HashSet<_Element_>();
 
+  /**
+   * Fire the given event.
+   * Fire an event on the $sizeBeed, containing the old size of the set beed
+   * and the edit that caused the change.
+   */
   void fireEvent(SetEvent<_Element_> event) {
     fireChangeEvent(event);
     int oldSize = $sizeBeed.$size -  event.getAddedElements().size() + event.getRemovedElements().size();

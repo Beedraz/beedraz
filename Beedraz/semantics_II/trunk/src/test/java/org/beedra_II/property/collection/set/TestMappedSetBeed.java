@@ -35,10 +35,11 @@ import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
-//import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
+import org.beedra_II.property.number.integer.IntegerBeed;
+import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
@@ -113,6 +114,7 @@ public class TestMappedSetBeed {
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<LongBeed>>();
     $listener4 = new StubListener<SetEvent<Long>>();
+    $listener5 = new StubListener<ActualLongEvent>();
     $event = new ActualSetEvent<LongBeed>($mappedSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit1 =
@@ -158,6 +160,7 @@ public class TestMappedSetBeed {
   private StubListener<PropagatedEvent> $listener2;
   private StubListener<SetEvent<LongBeed>> $listener3;
   private StubListener<SetEvent<Long>> $listener4;
+  private StubListener<ActualLongEvent> $listener5;
   private SetEvent<LongBeed> $event;
 
   @Test
@@ -536,6 +539,78 @@ public class TestMappedSetBeed {
       assertTrue(false);
       return null;
     }
+  }
+
+  @Test
+  public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
+    // add a listener to the size beed
+    IntegerBeed<ActualLongEvent> sizeBeed = $mappedSetBeed.getSize();
+    sizeBeed.addListener($listener5);
+    assertNull($listener5.$event);
+    // check the size
+    assertEquals($mappedSetBeed.getSize().getLong(), 0L);
+    assertEquals($mappedSetBeed.getCardinality().getLong(), 0L);
+    // add source
+    EditableSetBeed<WellBeanBeed> source = createSource();
+    $mappedSetBeed.setSource(source);
+    // check the size
+    assertEquals($mappedSetBeed.getSize().getLong(), 3L);
+    assertEquals($mappedSetBeed.getCardinality().getLong(), 3L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 0L);
+    assertEquals($listener5.$event.getNewLong(), 3L);
+    assertEquals($listener5.$event.getEdit(), null);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // add elements
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToAdd(createWellBeanBeed(5L));
+    setEdit.addElementToAdd(createWellBeanBeed(6L));
+    setEdit.perform();
+    // check the size
+    assertEquals($mappedSetBeed.getSize().getLong(), 5L);
+    assertEquals($mappedSetBeed.getCardinality().getLong(), 5L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 3L);
+    assertEquals($listener5.$event.getNewLong(), 5L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove elements
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToRemove($well1);
+    setEdit.perform();
+    // check the size
+    assertEquals($mappedSetBeed.getSize().getLong(), 4L);
+    assertEquals($mappedSetBeed.getCardinality().getLong(), 4L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 5L);
+    assertEquals($listener5.$event.getNewLong(), 4L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove elements
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToRemove($well2);
+    setEdit.perform();
+    // check the size
+    assertEquals($mappedSetBeed.getSize().getLong(), 3L);
+    assertEquals($mappedSetBeed.getCardinality().getLong(), 3L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 4L);
+    assertEquals($listener5.$event.getNewLong(), 3L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
   }
 
 }

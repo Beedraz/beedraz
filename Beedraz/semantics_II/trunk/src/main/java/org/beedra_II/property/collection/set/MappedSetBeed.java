@@ -28,6 +28,7 @@ import java.util.Set;
 import org.beedra_II.Beed;
 import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -122,6 +123,8 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
    *          notified (and then recalculate) when one of the beeds in the source
    *          changes.)
    * @post    The listeners of this beed are notified when the value changes.
+   * @post    The listeners of the size beed are notified when the size of this
+   *          set has changed.
    */
   public final void setSource(SetBeed<_From_, ?> source) {
     $source = source;
@@ -163,8 +166,11 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
      *          that are removed from the source by the given event.
      * @post    get() == the result of mapping the elements of the given source
      * @post    The listeners of this beed are notified when the set changes.
+     * @post    The listeners of the size beed are notified when the size of this
+     *          set has changed.
      */
     public void beedChanged(SetEvent<_From_> event) {
+      int oldSize = $mappedSet.size();
       // add the MappedSetBeed as listener of all beeds that are added to the source by the given event
       Set<_From_> added = event.getAddedElements();
       Set<_To_> addedMapped = new HashSet<_To_>();
@@ -188,6 +194,9 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
           new ActualSetEvent<_To_>(
             MappedSetBeed.this, addedMapped, removedMapped, event.getEdit()));
       }
+      // change the size beed and notify the size beed listeners when the size of the filtered set
+      // has changed
+      updateSizeBeed(oldSize, event.getEdit());
     }
 
   };
@@ -209,6 +218,17 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
     }
 
   };
+
+  /**
+   * Change the size beed and notify the size beed listeners when the size of the filtered set
+   * has changed
+   */
+  private void updateSizeBeed(int oldSize, Edit<?> edit) {
+    if (oldSize != $mappedSet.size()) {
+      $sizeBeed.setSize($mappedSet.size());
+      $sizeBeed.fireEvent(oldSize, edit);
+    }
+  }
 
   /**
    * @invar  $mappedSet != null;
@@ -247,11 +267,15 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
    * Otherwise, the resulting set contains the maps of all beeds in the given set.
    */
   public void recalculate() {
+    int oldSize = $mappedSet.size();
     $mappedSet = new HashSet<_To_>();
     Set<_From_> fromSet = getSource() != null? getSource().get(): Collections.<_From_>emptySet();
     for (_From_ from : fromSet) {
       $mappedSet.add(getMapping().map(from));
     }
+    // change the size beed and notify the size beed listeners when the size of the filtered set
+    // has changed
+    updateSizeBeed(oldSize, null);
   }
 
 

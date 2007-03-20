@@ -125,14 +125,14 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
   /**
    * See {@link CollectionBeed#getSize()}.
    */
-  public final IntegerBeed<?> getSize() {
+  public final IntegerBeed<ActualLongEvent> getSize() {
     return $sizeBeed;
   }
 
   /**
    * See {@link CollectionBeed#getCardinality()}.
    */
-  public final IntegerBeed<?> getCardinality() {
+  public final IntegerBeed<ActualLongEvent> getCardinality() {
     return $sizeBeed;
   }
 

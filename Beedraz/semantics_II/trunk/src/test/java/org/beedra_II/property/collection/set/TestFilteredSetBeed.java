@@ -570,7 +570,7 @@ public class TestFilteredSetBeed {
     // check the size
     assertEquals($filteredSetBeed.getSize().getLong(), 1L);
     assertEquals($filteredSetBeed.getCardinality().getLong(), 1L);
-    // check the listener (size has not changed, so no events should be sent)
+    // check the listener
     assertNotNull($listener5.$event);
     assertEquals($listener5.$event.getSource(), sizeBeed);
     assertEquals($listener5.$event.getOldLong(), 2L);

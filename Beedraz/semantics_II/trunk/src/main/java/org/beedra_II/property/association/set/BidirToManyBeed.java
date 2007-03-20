@@ -98,7 +98,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
    * @post !get().contains(many);
    */
   void remove(_Many_ many) {
-    assert !get().contains(many);
+    assert get().contains(many);
     $many.remove(many);
     $sizeBeed.setSize($sizeBeed.get() - 1);
   }

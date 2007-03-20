@@ -38,6 +38,8 @@ import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
+import org.beedra_II.property.number.integer.IntegerBeed;
+import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
@@ -119,6 +121,7 @@ public class TestUnionSetBeed {
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
+    $listener5 = new StubListener<ActualLongEvent>();
     $event = new ActualSetEvent<WellBeanBeed>($unionSetBeed, null, null, null);
     // add the wells to the runs
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
@@ -210,6 +213,7 @@ public class TestUnionSetBeed {
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
+  private StubListener<ActualLongEvent> $listener5;
   private SetEvent<WellBeanBeed> $event;
 
   @Test
@@ -707,6 +711,101 @@ public class TestUnionSetBeed {
   }
 
   @Test
+  public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
+    // add a listener to the size beed
+    IntegerBeed<ActualLongEvent> sizeBeed = $unionSetBeed.getSize();
+    sizeBeed.addListener($listener5);
+    assertNull($listener5.$event);
+    // check the size (empty)
+    assertEquals($unionSetBeed.getSize().getLong(), 0L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 0L);
+    // add source
+    EditableSetBeed<WellBeanBeed> sourceA = createSourceA();
+    $unionSetBeed.addSource(sourceA);
+    // check the size (wellA1, wellA2)
+    assertEquals($unionSetBeed.getSize().getLong(), 3L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 3L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 0L);
+    assertEquals($listener5.$event.getNewLong(), 3L);
+    assertEquals($listener5.$event.getEdit(), null);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // add extra source
+    EditableSetBeed<WellBeanBeed> sourceB = createSourceB();
+    $unionSetBeed.addSource(sourceB);
+    // check the size (wellA1, wellA2, wellB1, wellB2, wellB3)
+    assertEquals($unionSetBeed.getSize().getLong(), 5L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 5L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 3L);
+    assertEquals($listener5.$event.getNewLong(), 5L);
+    assertEquals($listener5.$event.getEdit(), null);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // add elements
+    WellBeanBeed well = new WellBeanBeed();
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(sourceA);
+    setEdit.addElementToAdd(well);
+    setEdit.perform();
+    // check the size (wellA1, wellA2, wellB1, wellB2, wellB3, well)
+    assertEquals($unionSetBeed.getSize().getLong(), 6L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 6L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 5L);
+    assertEquals($listener5.$event.getNewLong(), 6L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove elements
+    setEdit = new SetEdit<WellBeanBeed>(sourceB);
+    setEdit.addElementToRemove($wellB1);
+    setEdit.perform();
+    // check the size (wellA1, wellA2, wellB2, wellB3, well)
+    assertEquals($unionSetBeed.getSize().getLong(), 5L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 5L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 6L);
+    assertEquals($listener5.$event.getNewLong(), 5L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // add element that is already in another source
+    setEdit = new SetEdit<WellBeanBeed>(sourceA);
+    setEdit.addElementToAdd($wellB2);
+    setEdit.perform();
+    // check the size (wellA1, wellA2, wellB1, wellB2, wellB3, well)
+    assertEquals($unionSetBeed.getSize().getLong(), 5L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 5L);
+    // check the listener (should not be notified since the size has not changed)
+    assertNull($listener5.$event);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove element that is also in another source
+    setEdit = new SetEdit<WellBeanBeed>(sourceB);
+    setEdit.addElementToRemove($wellB2);
+    setEdit.perform();
+    // check the size (wellA1, wellA2, wellB1, wellB2, wellB3, well)
+    assertEquals($unionSetBeed.getSize().getLong(), 5L);
+    assertEquals($unionSetBeed.getCardinality().getLong(), 5L);
+    // check the listener (should not be notified since the size has not changed)
+    assertNull($listener5.$event);
+  }
+
+  @Test
   public void computeSum() {
     $unionSetBeed.addSource($runA.wells);
     $unionSetBeed.addSource($runB.wells);
@@ -732,4 +831,34 @@ public class TestUnionSetBeed {
     assertEquals(sum, 0L + 1L + 2L + 3L + 4L + 5L + 6L + 7L + 8L);
   }
 
+  private EditableSetBeed<WellBeanBeed> createSourceA() throws EditStateException, IllegalEditException {
+    // create set beed
+    EditableSetBeed<WellBeanBeed> setBeed =
+      new EditableSetBeed<WellBeanBeed>($owner);
+    // add beeds to set
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($wellA1);
+    setEdit.perform();
+    setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($wellA2);
+    setEdit.perform();
+    setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($wellA3);
+    setEdit.perform();
+    return setBeed;
+  }
+
+  private EditableSetBeed<WellBeanBeed> createSourceB() throws EditStateException, IllegalEditException {
+    // create set beed
+    EditableSetBeed<WellBeanBeed> setBeed =
+      new EditableSetBeed<WellBeanBeed>($owner);
+    // add beeds to set
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($wellB1);
+    setEdit.perform();
+    setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($wellB2);
+    setEdit.perform();
+    return setBeed;
+  }
 }

@@ -26,8 +26,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Listener;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**
@@ -83,15 +85,29 @@ public class UnionSetBeed<_Element_>
    * @post   getSources().contains(source);
    * @post   get() = the union of the sources
    * @post   The UnionBeed is added as listener of the given source.
+   * @post   The listeners of this beed are notified when the value changes.
+   * @post   The listeners of the size beed are notified when the size of this
+   *         set has changed.
    */
   public final void addSource(SetBeed<_Element_, ?> source) {
     assert source != null;
+    Set<_Element_> oldValue = $union;
+    int oldSize = $union.size();
     // add the source
     $sources.add(source);
     // add this UnionBeed as listener of the given source
     source.addListener($setBeedListener);
     // add the elements of the given source to the union
     $union.addAll(source.get());
+    // notify the listeners of this beed if the union has changed
+    if (! ComparisonUtil.equalsWithNull(oldValue, $union)) {
+      fireChangeEvent(
+        new ActualSetEvent<_Element_>(
+          UnionSetBeed.this, $union, oldValue, null));
+    }
+    // change the size beed and notify the size beed listeners when the size of the filtered set
+    // has changed
+    updateSizeBeed(oldSize, null);
   }
 
   /**
@@ -99,9 +115,15 @@ public class UnionSetBeed<_Element_>
    * @post   !getSources().contains(source);
    * @post   get() = the union of the sources
    * @post   The UnionBeed is removed as listener of the given source.
+   * @post   The listeners of this beed are notified when the value changes.
+   * @post   The listeners of the size beed are notified when the size of this
+   *         set has changed.
    */
   public final void removeSource(SetBeed<_Element_, ?> source) {
     if ($sources.contains(source)) {
+      assert source != null;
+      Set<_Element_> oldValue = $union;
+      int oldSize = $union.size();
       // remove the source
       $sources.remove(source);
       // remove this UnionBeed as listener of the given source
@@ -112,6 +134,15 @@ public class UnionSetBeed<_Element_>
           $union.remove(element);
         }
       }
+      // notify the listeners of this beed if the union has changed
+      if (! ComparisonUtil.equalsWithNull(oldValue, $union)) {
+        fireChangeEvent(
+          new ActualSetEvent<_Element_>(
+            UnionSetBeed.this, $union, oldValue, null));
+      }
+      // change the size beed and notify the size beed listeners when the size of the filtered set
+      // has changed
+      updateSizeBeed(oldSize, null);
     }
   }
 
@@ -144,8 +175,11 @@ public class UnionSetBeed<_Element_>
      *          that are removed from the source by the given event.
      * @post    get() == the union of the sources
      * @post    The listeners of this beed are notified when the set changes.
+     * @post    The listeners of the size beed are notified when the size of this
+     *          set has changed.
      */
     public void beedChanged(SetEvent<_Element_> event) {
+      int oldSize = $union.size();
       // consider all beeds that are added by the given event: add them to the union
       Set<_Element_> added = event.getAddedElements();
       Set<_Element_> reallyAdded = new HashSet<_Element_>();
@@ -176,9 +210,23 @@ public class UnionSetBeed<_Element_>
           new ActualSetEvent<_Element_>(
             UnionSetBeed.this, reallyAdded, reallyRemoved, event.getEdit()));
       }
+      // change the size beed and notify the size beed listeners when the size of the filtered set
+      // has changed
+      updateSizeBeed(oldSize, event.getEdit());
     }
 
   };
+
+  /**
+   * Change the size beed and notify the size beed listeners when the size of the filtered set
+   * has changed
+   */
+  private void updateSizeBeed(int oldSize, Edit<?> edit) {
+    if (oldSize != $union.size()) {
+      $sizeBeed.setSize($union.size());
+      $sizeBeed.fireEvent(oldSize, edit);
+    }
+  }
 
   /**
    * @invar  $union != null;

@@ -117,7 +117,9 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
      */
     public void fireEvent(int oldSize, Edit<?> edit) {
       Long oldS = Long.valueOf(oldSize);
-      fireChangeEvent(new ActualLongEvent(this, oldS, getLong(), edit));
+      if (! oldS.equals(getLong())) {
+        fireChangeEvent(new ActualLongEvent(this, oldS, getLong(), edit));
+      }
     }
 
   }

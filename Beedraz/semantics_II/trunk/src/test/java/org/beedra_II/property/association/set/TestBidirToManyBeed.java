@@ -79,6 +79,7 @@ public class TestBidirToManyBeed {
   @Before
   public void setUp() throws Exception {
     $many = new ManyBeanBeed();
+    $many1 = new ManyBeanBeed();
     $editableBidirToOneBeed =
       new EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed>($many);
     $one = new OneBeanBeed();
@@ -101,6 +102,7 @@ public class TestBidirToManyBeed {
   }
 
   private ManyBeanBeed $many;
+  private ManyBeanBeed $many1;
   private EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> $editableBidirToOneBeed;
   private OneBeanBeed $one = new OneBeanBeed();
   private MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed;
@@ -306,10 +308,13 @@ public class TestBidirToManyBeed {
     $listener5.reset();
     assertNull($listener5.$event);
     // add elements
-    EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> oneBeed = new EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed>($many);
+    assertFalse($bidirToManyBeed.get().contains($many1));
+    EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> oneBeed = new EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed>($many1);
+    assertNull(oneBeed.get());
     $bidirToOneEdit = new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>(oneBeed);
     $bidirToOneEdit.setGoal($bidirToManyBeed);
     $bidirToOneEdit.perform();
+    assertTrue($bidirToManyBeed.get().contains($many1));
     // check the size
     assertEquals($bidirToManyBeed.getSize().getLong(), 2L);
     assertEquals($bidirToManyBeed.getCardinality().getLong(), 2L);

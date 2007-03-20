@@ -490,9 +490,11 @@ public class TestMappedSetBeed {
     assertTrue($mappedSetBeed.get().contains($well3.cq));
     assertTrue($mappedSetBeed.get().contains(well.cq));
     // remove well from $run
+    assertTrue($run.wells.get().contains($well1));
     runEdit = new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well1.run);
     runEdit.setGoal(null);
     runEdit.perform();
+    assertFalse($run.wells.get().contains($well1));
     assertEquals($mappedSetBeed.get().size(), 3);
     assertTrue($mappedSetBeed.get().contains($well2.cq));
     assertTrue($mappedSetBeed.get().contains($well3.cq));

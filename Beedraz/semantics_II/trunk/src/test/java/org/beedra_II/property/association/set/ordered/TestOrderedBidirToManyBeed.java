@@ -31,6 +31,8 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
+import org.beedra_II.property.number.integer.IntegerBeed;
+import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,7 +80,7 @@ public class TestOrderedBidirToManyBeed {
   }
 
   @Before
-  public void listUp() throws Exception {
+  public void setUp() throws Exception {
     $many = new ManyBeanBeed();
     $editableOrderedBidirToOneBeed =
       new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>($many);
@@ -96,6 +98,7 @@ public class TestOrderedBidirToManyBeed {
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubOrderedSetEventListener();
     $listener4 = new StubOrderedSetEventListener();
+    $listener5 = new StubListener<ActualLongEvent>();
   }
 
   @After
@@ -113,6 +116,7 @@ public class TestOrderedBidirToManyBeed {
   private StubListener<PropagatedEvent> $listener2;
   private StubOrderedSetEventListener $listener3;
   private StubOrderedSetEventListener $listener4;
+  private StubListener<ActualLongEvent> $listener5;
 
   @Test
   public void constructor() {
@@ -270,4 +274,65 @@ public class TestOrderedBidirToManyBeed {
     assertEquals(initialEvent.getNewValue(), $orderedBidirToManyBeed.get());
     assertEquals(initialEvent.getEdit(), null);
   }
+
+  @Test
+  public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
+    // add a listener to the size beed
+    IntegerBeed<ActualLongEvent> sizeBeed = $orderedBidirToManyBeed.getSize();
+    sizeBeed.addListener($listener5);
+    assertNull($listener5.$event);
+    // check the size (empty)
+    assertEquals($orderedBidirToManyBeed.getSize().getLong(), 0L);
+    assertEquals($orderedBidirToManyBeed.getCardinality().getLong(), 0L);
+    // add elements
+    $orderedBidirToOneEdit =
+      new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed);
+    $orderedBidirToOneEdit.setGoal($orderedBidirToManyBeed);
+    $orderedBidirToOneEdit.perform();
+    // check the size ($editableOrderedBidirToOneBeed)
+    assertEquals($orderedBidirToManyBeed.getSize().getLong(), 1L);
+    assertEquals($orderedBidirToManyBeed.getCardinality().getLong(), 1L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 0L);
+    assertEquals($listener5.$event.getNewLong(), 1L);
+    assertEquals($listener5.$event.getEdit(), $orderedBidirToOneEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // add elements
+    ManyBeanBeed many2 = new ManyBeanBeed();
+    EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> oneBeed =
+      new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(many2);
+    $orderedBidirToOneEdit = new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(oneBeed);
+    $orderedBidirToOneEdit.setGoal($orderedBidirToManyBeed);
+    $orderedBidirToOneEdit.perform();
+    // check the size ($editableOrderedBidirToOneBeed, oneBeed)
+    assertEquals($orderedBidirToManyBeed.getSize().getLong(), 2L);
+    assertEquals($orderedBidirToManyBeed.getCardinality().getLong(), 2L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 1L);
+    assertEquals($listener5.$event.getNewLong(), 2L);
+    assertEquals($listener5.$event.getEdit(), $orderedBidirToOneEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove elements
+    $orderedBidirToOneEdit = new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>(oneBeed);
+    $orderedBidirToOneEdit.setGoal(null);
+    $orderedBidirToOneEdit.perform();
+    // check the size ($editableOrderedBidirToOneBeed)
+    assertEquals($orderedBidirToManyBeed.getSize().getLong(), 1L);
+    assertEquals($orderedBidirToManyBeed.getCardinality().getLong(), 1L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 2L);
+    assertEquals($listener5.$event.getNewLong(), 1L);
+    assertEquals($listener5.$event.getEdit(), $orderedBidirToOneEdit);
+  }
+
 }

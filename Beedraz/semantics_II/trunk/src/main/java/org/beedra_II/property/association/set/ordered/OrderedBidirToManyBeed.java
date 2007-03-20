@@ -90,21 +90,45 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
     return $many.indexOf(many);
   }
 
+  /**
+   * @pre  position >= 0;
+   * @pre  position <= $many.size();
+   * @pre  many != null;
+   * @pre  !get().contains(many);
+   * @post get().contains(many);
+   */
   void add(int position, _Many_ many) {
     assert position >= 0;
     assert position <= $many.size();
     assert many != null;
+    assert !get().contains(many);
     $many.add(position, many);
+    $sizeBeed.setSize($sizeBeed.get() + 1);
   }
 
+  /**
+   * @pre  get().contains(many);
+   * @post !get().contains(many);
+   */
   void remove(_Many_ many) {
+    assert get().contains(many);
     $many.remove(many);
+    $sizeBeed.setSize($sizeBeed.get() - 1);
   }
 
+  /**
+   * Fire an {@link ActualOrderedSetEvent} containing the old and new value of the
+   * the ordered set.
+   * If the size of this beed has changed, then fire an event on the $sizeBeed,
+   * containing the old size of the ordered set and the edit that caused the change.
+   */
   void fireChangeEvent(OrderedSet<_Many_> oldValue,
                        OrderedSet<_Many_> newValue,
                        OrderedBidirToOneEdit<_One_, _Many_> edit) {
     fireChangeEvent(new ActualOrderedSetEvent<_Many_>(this, oldValue, newValue, edit));
+    if (oldValue.size() != newValue.size()) {
+      $sizeBeed.fireEvent(oldValue.size(), edit);
+    }
   }
 
   private final OrderedSet<_Many_> $many = new LinkedListOrderedSet<_Many_>();

@@ -171,7 +171,21 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
   //-----------------------------------------------------------------
 
   /**
-   * @return getUpdateSources() as set
+   * @return getUpdateSources().size();
+   */
+  public final int getUpdateSourcesSize() {
+    return $updateSourcesSize;
+  }
+
+  /**
+   * @return getUpdateSourcesSet().size();
+   */
+  public final int getUpdateSourcesCardinality() {
+    return $updateSources.size();
+  }
+
+  /**
+   * @return result.equals(getUpdateSourcesOccurencesMap().keySet());
    */
   public final Set<_UpdateSource_> getUpdateSourcesSet() {
     return Collections.unmodifiableSet($updateSources.keySet());
@@ -188,6 +202,13 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
       }
     }
     return result;
+  }
+
+  /**
+   * @basic
+   */
+  public final Map<_UpdateSource_, Integer> getUpdateSourcesOccurencesMap() {
+    return Collections.unmodifiableMap($updateSources);
   }
 
   /**
@@ -209,6 +230,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
   public final void addUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
 //    assert ! isTransitiveDependent(updateSource);
+    $updateSourcesSize++;
     Integer nr = $updateSources.get(updateSource);
     if (nr == null) {
       $updateSources.put(updateSource, 1);
@@ -240,6 +262,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
     else {
       $updateSources.put(updateSource, nr - 1);
     }
+    $updateSourcesSize--;
   }
 
 //  /**
@@ -257,6 +280,8 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @invar for (Integer i : $updateSources.values()) {i > 0};
    */
   private final Map<_UpdateSource_, Integer> $updateSources = new HashMap<_UpdateSource_, Integer>();
+
+  private int $updateSourcesSize = 0;
 
   /*</section>*/
 

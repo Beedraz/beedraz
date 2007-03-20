@@ -19,7 +19,6 @@ package org.beedra_II.topologicalupdate;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.StubEvent;
@@ -35,31 +34,14 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
     this(false);
   }
 
-  public final Dependent<UpdateSource> $dependent = new Dependent<UpdateSource>() {
+  public final Dependent<UpdateSource> $dependent = new AbstractUpdateSourceDependentDelegate<UpdateSource, StubEvent>(this) {
 
     @Override
-    public UpdateSource getDependentUpdateSource() {
-      return StubDependentUpdateSource.this;
-    }
-
-    @Override
-    void fireEvent(Event event) {
-      StubEvent firedEvent = (StubEvent)event;
-      StubDependentUpdateSource.this.fireEvent(firedEvent);
-    }
-
-    @Override
-    Set<Dependent<?>> getDependents() {
-      return StubDependentUpdateSource.this.getDependents();
-    }
-
-    @Override
-    Event update(Map<UpdateSource, Event> events) {
+    StubEvent update(Map<UpdateSource, Event> events) {
       $updated++;
       $events = new HashMap<UpdateSource, Event>(events);
       return $myEvent;
     }
-
 
   };
 

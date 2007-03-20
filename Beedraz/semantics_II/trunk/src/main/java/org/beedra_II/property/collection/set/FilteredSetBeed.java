@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -104,6 +105,8 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    *          notified (and then recalculate) when one of the beeds in the source
    *          changes.)
    * @post    The listeners of this beed are notified when the value changes.
+   * @post    The listeners of the size beed are notified when the size of this
+   *          set has changed.
    */
   public final void setSource(SetBeed<_Element_, ?> source) {
     $source = source;
@@ -145,8 +148,11 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
      *          that are removed from the source by the given event.
      * @post    get() == the result of mapping the elements of the given source
      * @post    The listeners of this beed are notified when the set changes.
+     * @post    The listeners of the size beed are notified when the size of this
+     *          set has changed.
      */
     public void beedChanged(SetEvent<_Element_> event) {
+      int oldSize = $filteredSet.size();
       // add the FilteredSetBeed as listener of all beeds that are added to the source by the given event
       // remember the beeds that satisfy the filter criterion
       Set<_Element_> added = event.getAddedElements();
@@ -179,6 +185,9 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
           new ActualSetEvent<_Element_>(
             FilteredSetBeed.this, validAdded, validRemoved, event.getEdit()));
       }
+      // change the size beed and notify the size beed listeners when the size of the filtered set
+      // has changed
+      updateSizeBeed(oldSize, event.getEdit());
     }
 
   };
@@ -191,6 +200,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
      * @post    The listeners of this beed are notified.
      */
     public void beedChanged(_Event_ event) {
+      int oldSize = $filteredSet.size();
       @SuppressWarnings("unchecked")
       _Element_ element = (_Element_)event.getSource(); // MUDO can we proof that this cast is save?
       // check whether the validity of the beed has changed
@@ -216,10 +226,23 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
                   FilteredSetBeed.this, added, removed, event.getEdit()));
         }
       }
+      // change the size beed and notify the size beed listeners when the size of the filtered set
+      // has changed
+      updateSizeBeed(oldSize, event.getEdit());
     }
 
   };
 
+  /**
+   * Change the size beed and notify the size beed listeners when the size of the filtered set
+   * has changed
+   */
+  private void updateSizeBeed(int oldSize, Edit<?> edit) {
+    if (oldSize != $filteredSet.size()) {
+      $sizeBeed.setSize($filteredSet.size());
+      $sizeBeed.fireEvent(oldSize, edit);
+    }
+  }
 
   /**
    * The set of filtered elements in the {@link #getSource()}.
@@ -285,6 +308,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    * that satisfy the filter criterion.
    */
   public void recalculate() {
+    int oldSize = $filteredSet.size();
     $filteredSet = new HashSet<_Element_>();
     Set<_Element_> elements = getSource() != null
                               ? getSource().get()
@@ -294,6 +318,9 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
         $filteredSet.add(element);
       }
     }
+    // change the size beed and notify the size beed listeners when the size of the filtered set
+    // has changed
+    updateSizeBeed(oldSize, null);
   }
 
 

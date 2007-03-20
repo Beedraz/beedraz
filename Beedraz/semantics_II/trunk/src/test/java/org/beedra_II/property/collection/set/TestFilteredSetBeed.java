@@ -37,6 +37,8 @@ import org.beedra_II.event.StubListener;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
+import org.beedra_II.property.number.integer.IntegerBeed;
+import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
@@ -115,6 +117,7 @@ public class TestFilteredSetBeed {
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
+    $listener5 = new StubListener<ActualLongEvent>();
     $event = new ActualSetEvent<WellBeanBeed>($filteredSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
@@ -173,6 +176,7 @@ public class TestFilteredSetBeed {
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
+  private StubListener<ActualLongEvent> $listener5;
   private SetEvent<WellBeanBeed> $event;
 
   @Test
@@ -505,4 +509,73 @@ public class TestFilteredSetBeed {
       return null;
     }
   }
+
+  @Test
+  public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
+    // add a listener to the size beed
+    IntegerBeed<ActualLongEvent> sizeBeed = $filteredSetBeed.getSize();
+    sizeBeed.addListener($listener5);
+    assertNull($listener5.$event);
+    // check the size
+    assertEquals($filteredSetBeed.getSize().getLong(), 0L);
+    assertEquals($filteredSetBeed.getCardinality().getLong(), 0L);
+    // add source
+    EditableSetBeed<WellBeanBeed> source = createSource();
+    $filteredSetBeed.setSource(source);
+    // check the size
+    assertEquals($filteredSetBeed.getSize().getLong(), 1L);
+    assertEquals($filteredSetBeed.getCardinality().getLong(), 1L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 0L);
+    assertEquals($listener5.$event.getNewLong(), 1L);
+    assertEquals($listener5.$event.getEdit(), null);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // add elements
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToAdd(createWellBeanBeed(5L));
+    setEdit.addElementToAdd(createWellBeanBeed(6L));
+    setEdit.perform();
+    // check the size
+    assertEquals($filteredSetBeed.getSize().getLong(), 2L);
+    assertEquals($filteredSetBeed.getCardinality().getLong(), 2L);
+    // check the listener
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 1L);
+    assertEquals($listener5.$event.getNewLong(), 2L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove elements
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToRemove($well1);
+    setEdit.perform();
+    // check the size
+    assertEquals($filteredSetBeed.getSize().getLong(), 2L);
+    assertEquals($filteredSetBeed.getCardinality().getLong(), 2L);
+    // check the listener (size has not changed, so no events should be sent)
+    assertNull($listener5.$event);
+    // reset
+    $listener5.reset();
+    assertNull($listener5.$event);
+    // remove elements
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToRemove($well2);
+    setEdit.perform();
+    // check the size
+    assertEquals($filteredSetBeed.getSize().getLong(), 1L);
+    assertEquals($filteredSetBeed.getCardinality().getLong(), 1L);
+    // check the listener (size has not changed, so no events should be sent)
+    assertNotNull($listener5.$event);
+    assertEquals($listener5.$event.getSource(), sizeBeed);
+    assertEquals($listener5.$event.getOldLong(), 2L);
+    assertEquals($listener5.$event.getNewLong(), 1L);
+    assertEquals($listener5.$event.getEdit(), setEdit);
+  }
+
 }

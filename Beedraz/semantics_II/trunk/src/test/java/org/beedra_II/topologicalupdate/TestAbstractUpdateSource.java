@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
+import static org.beedra_II.topologicalupdate.StubUpdateSource.MRUSD;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,42 +29,48 @@ import org.junit.Test;
 
 public class TestAbstractUpdateSource {
 
-  private UpdateSource $subject;
+  private AbstractUpdateSource<?> $subject;
 
-  private Dependent $dependent1;
+  private Dependent<?> $dependent1;
 
   private StubDependent $dependent2;
 
-  public final static int SUBJECT_MROSD = 0;
+  private StubDependentUpdateSource $sdus1;
+
+  private StubDependentUpdateSource $sdus2;
 
   @Before
   public void setUp() throws Exception {
-    $subject = new AbstractUpdateSource() {
-
-      public int getMaximumRootUpdateSourceDistance() {
-        return SUBJECT_MROSD;
-      }
-
-    };
+    $subject = new StubUpdateSource();
     $dependent1 = new StubDependent();
     $dependent2 = new StubDependent();
+    $sdus1 = new StubDependentUpdateSource();
+    $sdus2 = new StubDependentUpdateSource();
   }
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $subject = null;
+    $dependent1 = null;
+    $dependent2 = null;
+    $sdus1 = null;
+    $sdus2 = null;
   }
 
   @Test
   public void testAddDependent1() {
+    assertFalse($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     assertTrue($subject.getDependents().isEmpty());
     assertTrue($dependent1.getUpdateSources().isEmpty());
     assertTrue($dependent2.getUpdateSources().isEmpty());
     assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
     assertEquals(0, $dependent1.getMaximumRootUpdateSourceDistance());
     assertEquals(0, $dependent2.getMaximumRootUpdateSourceDistance());
-    $dependent1.updateMaximumRootUpdateSourceDistanceUp(SUBJECT_MROSD);
+    $dependent1.updateMaximumRootUpdateSourceDistanceUp(MRUSD);
     $subject.addDependent($dependent1);
+    assertTrue($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
     assertTrue($dependent1.getUpdateSources().isEmpty());
@@ -71,8 +78,10 @@ public class TestAbstractUpdateSource {
     assertEquals(0, $subject.getMaximumRootUpdateSourceDistance());
     assertEquals(1, $dependent1.getMaximumRootUpdateSourceDistance());
     assertEquals(0, $dependent2.getMaximumRootUpdateSourceDistance());
-    $dependent2.updateMaximumRootUpdateSourceDistanceUp(SUBJECT_MROSD);
+    $dependent2.updateMaximumRootUpdateSourceDistanceUp(MRUSD);
     $subject.addDependent($dependent2);
+    assertTrue($subject.isDependent($dependent1));
+    assertTrue($subject.isDependent($dependent2));
     assertTrue($subject.getDependents().contains($dependent2));
     assertEquals(2, $subject.getDependents().size());
     assertTrue($dependent1.getUpdateSources().isEmpty());
@@ -84,12 +93,15 @@ public class TestAbstractUpdateSource {
 
   @Test
   public void testRemoveDependent1() {
+    $dependent1.updateMaximumRootUpdateSourceDistanceUp(MRUSD);
     $subject.addDependent($dependent1);
+    assertTrue($subject.isDependent($dependent1));
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
-    assertEquals(1, $dependent1.getUpdateSources().size());
-    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent1.getUpdateSources().isEmpty());
     $subject.removeDependent($dependent1);
+    assertFalse($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     assertFalse($subject.getDependents().contains($dependent1));
     assertTrue($subject.getDependents().isEmpty());
     assertFalse($dependent1.getUpdateSources().contains($subject));
@@ -97,39 +109,80 @@ public class TestAbstractUpdateSource {
     // MUDO test for getMaximumRootUpdateSourceDistance
   }
 
-//  barred by precondition
-//  @Test
-//  public void testRemoveDependent2() {
-//    $subject.addDependent($dependent1);
-//    assertEquals(1, $subject.getDependents().size());
-//    assertTrue($subject.getDependents().contains($dependent1));
-//    $subject.removeDependent(null);
-//    assertEquals(1, $subject.getDependents().size());
-//    assertTrue($subject.getDependents().contains($dependent1));
-//  }
+  @Test
+  public void testRemoveDependent2() {
+    $dependent1.updateMaximumRootUpdateSourceDistanceUp(MRUSD);
+    $subject.addDependent($dependent1);
+    assertTrue($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
+    assertEquals(1, $subject.getDependents().size());
+    assertTrue($subject.getDependents().contains($dependent1));
+    $subject.removeDependent(null);
+    assertTrue($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
+    assertEquals(1, $subject.getDependents().size());
+    assertTrue($subject.getDependents().contains($dependent1));
+  }
 
   @Test
   public void testRemoveDependent3() {
+    $dependent1.updateMaximumRootUpdateSourceDistanceUp(MRUSD);
     $subject.addDependent($dependent1);
+    assertTrue($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
-    assertEquals(1, $dependent1.getUpdateSources().size());
-    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent1.getUpdateSources().isEmpty());
     assertTrue($dependent2.getUpdateSources().isEmpty());
     $subject.removeDependent($dependent2);
+    assertTrue($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     assertEquals(1, $subject.getDependents().size());
     assertTrue($subject.getDependents().contains($dependent1));
-    assertEquals(1, $dependent1.getUpdateSources().size());
-    assertTrue($dependent1.getUpdateSources().contains($subject));
+    assertTrue($dependent1.getUpdateSources().isEmpty());
     assertTrue($dependent2.getUpdateSources().isEmpty());
   }
 
   @Test
   public void testRemoveDependent4() {
     assertTrue($dependent2.getUpdateSources().isEmpty());
+    assertFalse($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     $subject.removeDependent($dependent2);
+    assertFalse($subject.isDependent($dependent1));
+    assertFalse($subject.isDependent($dependent2));
     assertTrue($subject.getDependents().isEmpty());
     assertTrue($dependent2.getUpdateSources().isEmpty());
+  }
+
+  @Test
+  public void testIsTransitiveDependent() {
+    assertFalse($subject.isTransitiveDependent($dependent1));
+    assertFalse($subject.isTransitiveDependent($sdus1.$dependent));
+    assertFalse($subject.isTransitiveDependent($sdus2.$dependent));
+    assertFalse($subject.isTransitiveDependent($dependent2));
+    $dependent1.updateMaximumRootUpdateSourceDistanceUp(MRUSD);
+    $subject.addDependent($dependent1);
+    assertTrue($subject.isTransitiveDependent($dependent1));
+    assertFalse($subject.isTransitiveDependent($sdus1.$dependent));
+    assertFalse($subject.isTransitiveDependent($sdus2.$dependent));
+    assertFalse($subject.isTransitiveDependent($dependent2));
+    $sdus1.$dependent.addUpdateSource($subject);
+    assertTrue($subject.isTransitiveDependent($dependent1));
+    assertTrue($subject.isTransitiveDependent($sdus1.$dependent));
+    assertFalse($subject.isTransitiveDependent($sdus2.$dependent));
+    assertFalse($subject.isTransitiveDependent($dependent2));
+    $sdus2.$dependent.addUpdateSource($sdus1);
+    assertTrue($subject.isTransitiveDependent($dependent1));
+    assertTrue($subject.isTransitiveDependent($sdus1.$dependent));
+    assertTrue($subject.isTransitiveDependent($sdus2.$dependent));
+    assertFalse($subject.isTransitiveDependent($dependent2));
+    $dependent2.updateMaximumRootUpdateSourceDistanceUp(2);
+    $subject.addDependent($dependent2);
+    assertTrue($subject.isTransitiveDependent($dependent1));
+    assertTrue($subject.isTransitiveDependent($sdus1.$dependent));
+    assertTrue($subject.isTransitiveDependent($sdus2.$dependent));
+    assertTrue($subject.isTransitiveDependent($dependent2));
   }
 
 }

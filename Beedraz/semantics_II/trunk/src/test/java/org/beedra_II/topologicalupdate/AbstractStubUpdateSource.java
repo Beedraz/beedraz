@@ -16,25 +16,39 @@ limitations under the License.
 
 package org.beedra_II.topologicalupdate;
 
+
 import org.beedra_II.Beed;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubEvent;
 
 
-public class StubRootUpdateSource
-    extends AbstractRootUpdateSource<StubEvent>
+public abstract class AbstractStubUpdateSource
+    extends AbstractUpdateSource<StubEvent>
     implements Beed<StubEvent> {
 
-  public void updateDependents() {
-    updateDependents($updateEvent);
+  protected AbstractStubUpdateSource(boolean event) {
+    if (event) {
+      $myEvent = new StubEvent(this);
+    }
+    else {
+      $myEvent = null;
+    }
   }
+
+  protected AbstractStubUpdateSource() {
+    this(true);
+  }
+
+  public void updateDependents() {
+    updateDependents($myEvent);
+  }
+
+  public final StubEvent $myEvent;
 
   @Override
   protected void fireEvent(StubEvent event) {
     $firedEvent = event;
   }
-
-  public StubEvent $updateEvent = new StubEvent(this);
 
   public StubEvent $firedEvent;
 

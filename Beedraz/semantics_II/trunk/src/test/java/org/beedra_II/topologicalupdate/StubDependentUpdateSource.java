@@ -16,30 +16,69 @@ limitations under the License.
 
 package org.beedra_II.topologicalupdate;
 
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.beedra_II.event.Event;
-import org.beedra_II.property.number.integer.IntegerEvent;
+import org.beedra_II.event.StubEvent;
 
 
-public class StubDependentUpdateSource extends DemoDependentUpdateSource<IntegerEvent, UpdateSource> {
+public class StubDependentUpdateSource extends AbstractStubUpdateSource {
 
-  public StubDependentUpdateSource(IntegerEvent event) {
-    $event = event;
+  public StubDependentUpdateSource(boolean event) {
+    super(event);
   }
 
-  private IntegerEvent $event;
-
-  @Override
-  protected IntegerEvent update(Map<UpdateSource, Event> events) {
-    $updated++;
-    $events = new HashMap<UpdateSource, Event>(events);
-    return $event;
+  public StubDependentUpdateSource() {
+    this(false);
   }
+
+  public final Dependent<UpdateSource> $dependent = new Dependent<UpdateSource>() {
+
+    @Override
+    public UpdateSource getDependentUpdateSource() {
+      return StubDependentUpdateSource.this;
+    }
+
+    @Override
+    void fireEvent(Event event) {
+      StubEvent firedEvent = (StubEvent)event;
+      StubDependentUpdateSource.this.fireEvent(firedEvent);
+    }
+
+    @Override
+    Set<Dependent<?>> getDependents() {
+      return StubDependentUpdateSource.this.getDependents();
+    }
+
+    @Override
+    Event update(Map<UpdateSource, Event> events) {
+      $updated++;
+      $events = new HashMap<UpdateSource, Event>(events);
+      return $myEvent;
+    }
+
+
+  };
 
   public int $updated = 0;
 
   public Map<UpdateSource, Event> $events;
+
+  public StubEvent $firedEvent;
+
+  public int getMaximumRootUpdateSourceDistance() {
+    return $dependent.getMaximumRootUpdateSourceDistance();
+  }
+
+  public void addUpdateSource(UpdateSource updateSource) {
+    $dependent.addUpdateSource(updateSource);
+  }
+
+  public void removeUpdateSource(UpdateSource updateSource) {
+    $dependent.removeUpdateSource(updateSource);
+  }
 
 }

@@ -27,18 +27,51 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * @note Because the control for the bidirectional association between update sources
- *       and dependents must lie with the update sources (because the add and remove
- *       methods must be public there, because {@link UpdateSource} must be an interface),
- *       {@link #addUpdateSource(UpdateSource)} and {@link #removeUpdateSource(UpdateSource)}
- *       must accept any {@link UpdateSource} instance. Therefor, {@link #getUpdateSources()}
- *       can only return a {@code Set<UpdateSource>}, and we can not restrict this here, e.g.,
- *       with a generic type parameter to the more appropriate {@code Set<UpdateSource>}
- *       where {@code UpdateSource extends UpdateSource}.
+ * <p>The object responsible for the dependent role in topological updates.
+ *   It is implemented as a delegate. The dependent role has 2 functions:
+ *   updating the dependent in the topological algorithm, and maintaining
+ *   the {@link #getMaximumRootUpdateSourceDistance()} for the dependee.</p>
+ * <p>The methods {@link #update(Map)}, {@link #fireEvent(Event)},
+ *   {@link #getDependentUpdateSource()}, {@link #getMaximumRootUpdateSourceDistance()}
+ *   and {@link #getDependent()} are needed for the topological update algorithm.</p>
+ * <p>To support the type invariant</p>
+ * <pre>
+ * for (Dependent d: getDependents() {
+ *   d.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance()
+ * };
+ * </pre>
+ * <p>on both this type and {@link UpdateSource}, the
+ *   {@link #getMaximumRootUpdateSourceDistance()} must be maintained on all structural
+ *   changes. For this algorithm to work, all dependents must support the methods
+ *   {@link #updateMaximumRootUpdateSourceDistanceDown(int)} and
+ *   {@link #updateMaximumRootUpdateSourceDistanceDown(int)}, and
+ *   {@link #getDependents()} and {@link #getUpdateSources()}.</p>
+ * <p>The type {@link UpdateSource} must be an interface, because it is a supertype
+ *   for beeds, and beeds require multiple inheritance. The methods
+ *   {@link UpdateSource#addDependent(Dependent)} and
+ *   {@link UpdateSource#removeDependent(Dependent)} must be defined in that type, and
+ *   thus must public. That is deplorable, since {@link UpdateSource#addDependent(Dependent)}
+ *   has a hard precondition, and the bidirectional, many-to-many association between
+ *   update sources and dependents is adequately supported by add an remove methods on the
+ *   dependent side, and not on the update source side. When {@link #addUpdateSource(UpdateSource)}
+ *   and {@link #removeUpdateSource(UpdateSource)} of this class are used, everything is cared
+ *   for. It is ill-advised to use the methods {@link UpdateSource#addDependent(Dependent)}
+ *   and {@link UpdateSource#removeDependent(Dependent)} yourself. Implementing the maintenance
+ *   of the bidirectional many-to-many association yourself is ill-advised to. By making this
+ *   type a class that supports all that, and not an interface, and demanding that all dependents
+ *   are of this type in {@link UpdateSource}, we give a strong hint to using the framework
+ *   that way.</p>
+ * <p>Because the 2 roles now come together in this class, and all dependents have to be of this
+ *   type, access to parts of the algorithm can be restricted.</p>
  *
  * @author Jan Dockx
  *
- * @invar getMaximumRootUpdateSourceDistance() > 0;
+ * @invar getDependentUpdateSource() != null;
+ * @invar for (Dependent d: getDependents() {
+ *          d.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance()
+ *        };
+ * @invar getUpdateSource().getMaximumRootUpdateSourceDistance() > 0;
+ * @invar getUpdateSource().getMaximumRootUpdateSourceDistance() == getMaximumRootUpdateSourceDistance();
  * @invar for (UpdateSource us : getUpdateSources()) {
  *          us.getMaximalRootUpdateSourceDistance() < getMaximalRootUpdateSourceDistance()
  *        };
@@ -47,33 +80,64 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class Dependent {
+public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
+
+  /*<property name="dependent update source">*/
+  //-----------------------------------------------------------------
 
   /**
-   * Should not be, but can be, {@code null}.
+   * The dependent update source, for which we are the delegate.
+   *
+   * @basic
+   *
+   * @protected Implement preferably as <code>return <var>OuterClassName</var>.this</code>.
    */
   public abstract UpdateSource getDependentUpdateSource();
 
-  public final Set<Dependent> getDependents() {
-    return getDependentUpdateSource() == null ?
-             Collections.<Dependent>emptySet() :
-             getDependentUpdateSource().getDependents();
-  }
-
-  public final Set<Dependent> getDependentsTransitiveClosure() {
-    return getDependentUpdateSource() == null ?
-             Collections.<Dependent>emptySet() :
-             getDependentUpdateSource().getDependentsTransitiveClosure();
-  }
+  /**
+   * <p>This method is used by the topological update algorithm in
+   *   {@link AbstractUpdateSource#updateDependents(Event)}.</p>
+   * <p>It is the dependent update source that holds the dependents, not us.
+   *   And how it holds the dependents, is unknown to use at this level
+   *   ({@link UpdateSource} does not offer the collection of dependents).
+   *   Therefor, this method is abstract.</p>
+   *
+   * @result result != null;
+   * @result for (Dependent d) {getUpdateSource().isDependent(d) ? result.contains(d)};
+   * @result for (Dependent d : result) {getUpdateSource().isDependent(d)};
+   */
+  abstract Set<Dependent<?>> getDependents();
 
   /**
-   * Return {@code null} if this dependent didn't change its value
-   * during this update; otherwise, an effective {@code _Event_}
-   * that describes the change in this dependents value.
+   * It is the dependent update source that must fire events, not us.
+   * And how it does, is unknown to use at this level
+   * ({@link UpdateSource} does not offer firing events).
+   * Therefor, this method is abstract.
+   * The given {@code event} is the event that was returned
+   * by {@link #update(Map)} earlier.
+   *
+   * @pre event != null;
+   * @pre event.getSource() == getUpdateSource();
+   * @pre event instanceof _Event_
+   */
+  abstract void fireEvent(Event event);
+
+  /*</property>*/
+
+
+  /*<section name="update">*/
+  //-----------------------------------------------------------------
+
+  /**
+   * The method that updates this dependent, and reports on the change.
+   * The returned event is the one that will be offered to
+   * {@link #fireEvent(Event)} later on.
    *
    * @pre events != null;
    */
-  public abstract Event update(Map<UpdateSource, Event> events);
+  abstract Event update(Map<UpdateSource, Event> events);
+
+  /*</section>*/
 
 
   /*<section name="update sources">*/
@@ -82,7 +146,7 @@ public abstract class Dependent {
   /**
    * @basic
    */
-  public final Set<UpdateSource> getUpdateSources() {
+  public final Set<_UpdateSource_> getUpdateSources() {
     return Collections.unmodifiableSet($updateSources);
   }
 
@@ -94,9 +158,9 @@ public abstract class Dependent {
    * @post updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  public final void addUpdateSource(UpdateSource updateSource) {
+  public final void addUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
-    assert ! getDependentsTransitiveClosure().contains(updateSource);
+//    assert ! isTransitiveDependent(updateSource);
     $updateSources.add(updateSource);
     updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
     updateSource.addDependent(this);
@@ -109,7 +173,7 @@ public abstract class Dependent {
    * @post ! updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  public final void removeUpdateSource(UpdateSource updateSource) {
+  public final void removeUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
     assert getUpdateSources().contains(updateSource);
     updateSource.removeDependent(this);
@@ -121,7 +185,7 @@ public abstract class Dependent {
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
    */
-  private final Set<UpdateSource> $updateSources = new HashSet<UpdateSource>();
+  private final Set<_UpdateSource_> $updateSources = new HashSet<_UpdateSource_>();
 
   /*</section>*/
 
@@ -138,23 +202,38 @@ public abstract class Dependent {
   }
 
   /**
-   * Protected only for testing reasons.
-   *
    * @pre newSourceMaximumFinalSourceDistance < Integer.MAX_VALUE
+   * @post getMaximumRootUpdateSourceDistance() ==
+   *         max('getMaximumRootUpdateSourceDistance(), newSourceMROSD + 1);
+   * @post getMaximumRootUpdateSourceDistance() > 'getMaximumRootUpdateSourceDistance() ?
+   *         for (Dependents d: getDependents()) {
+   *           d.updateMaximumRootUpdateSourceDistanceUp(getMaximumRootUpdateSourceDistance())
+   *         }
    */
-  protected void updateMaximumRootUpdateSourceDistanceUp(int newSourceMaximumFinalSourceDistance) {
-    assert newSourceMaximumFinalSourceDistance < Integer.MAX_VALUE;
-    int potentialNewMaxDistance = newSourceMaximumFinalSourceDistance + 1;
+  final void updateMaximumRootUpdateSourceDistanceUp(int newSourceMROSD) {
+    assert newSourceMROSD < Integer.MAX_VALUE;
+    int potentialNewMaxDistance = newSourceMROSD + 1;
     if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {
       $maximumRootUpdateSourceDistance = potentialNewMaxDistance;
-      for (Dependent dependent : getDependents()) {
+      for (Dependent<?> dependent : getDependents()) {
         dependent.updateMaximumRootUpdateSourceDistanceUp($maximumRootUpdateSourceDistance);
       }
     }
   }
 
-  private void updateMaximumRootUpdateSourceDistanceDown(int oldSourceMaximumFinalSourceDistance) {
-    if ($maximumRootUpdateSourceDistance == oldSourceMaximumFinalSourceDistance + 1) {
+  /**
+   * @post 'getMaximumRootUpdateSourceDistance() > oldSourceMROSD + 1 ?
+   *         getMaximumRootUpdateSourceDistance() == 'getMaximumRootUpdateSourceDistance();
+   * @post 'getMaximumRootUpdateSourceDistance() == oldSourceMROSD + 1 ?
+   *         getMaximumRootUpdateSourceDistance() ==
+   *           max(UpdateSource us: getUpdateSources()) {us.getMaximumRootUpdateSourceDistance()} + 1;
+   * @post getMaximumRootUpdateSourceDistance() < 'getMaximumRootUpdateSourceDistance() ?
+   *         for (Dependents d: getDependents()) {
+   *           d.updateMaximumRootUpdateSourceDistanceDown('getMaximumRootUpdateSourceDistance())
+   *         }
+   */
+  final void updateMaximumRootUpdateSourceDistanceDown(int oldSourceMROSD) {
+    if ($maximumRootUpdateSourceDistance == oldSourceMROSD + 1) {
         // no overflow problem in if
       int oldMaximumFinalSourceDistance = $maximumRootUpdateSourceDistance;
       $maximumRootUpdateSourceDistance = 0;
@@ -166,7 +245,7 @@ public abstract class Dependent {
         }
       }
       if (oldMaximumFinalSourceDistance != $maximumRootUpdateSourceDistance) {
-        for (Dependent dependent : getDependents()) {
+        for (Dependent<?> dependent : getDependents()) {
           dependent.updateMaximumRootUpdateSourceDistanceDown(oldMaximumFinalSourceDistance);
         }
       }
@@ -181,4 +260,3 @@ public abstract class Dependent {
   /*</section>*/
 
 }
-

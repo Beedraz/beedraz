@@ -17,8 +17,6 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
-import java.util.Set;
-
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -39,25 +37,41 @@ public interface UpdateSource {
   /**
    * @basic
    */
-  Set<Dependent> getDependents();
+  boolean isDependent(Dependent<?> dependent);
 
-  Set<Dependent> getDependentsTransitiveClosure();
+  /**
+   * @result isDependent(dependent) ||
+   *           exists (Dependent d) {isDependent(d) && d.isTransitiveDependent(dependent)};
+   */
+  boolean isTransitiveDependent(Dependent<?> dependent);
 
   /**
    * @pre dependent != null;
-   * @pre ! dependent.getDependentsTransitiveClosure().contains(this);
+   * @pre ! isTransitiveDependent(dependent);
    *      no loops
    * @pre dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
-   * @post getDependents().contains(dependent);
+   * @post isDependent(dependent);
+   *
+   * @note {@code dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();}
+   *       is obviously a weird and hard precondition for a public method.
+   *       It is however crucial for the topological update algorithm. We would have liked
+   *       it better if we could limit access to this method for that reason, but the method
+   *       has to be declared in this type, and this type has to be an interface, because
+   *       beeds need multiple inheritance. Thus, the method must be public.
+   *       It is ill-advised to use the method yourself, though. If you make structural
+   *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
+   *       only, everything will be cared for.
    */
-  void addDependent(Dependent dependent);
+  void addDependent(Dependent<?> dependent);
 
   /**
-   * @pre dependent != null;
-   * @post ! getDependents().contains(dependent);
-   * @post ! dependent.getUpdateSources().contains(this);
+   * @post ! isDependent(dependent);
+   *
+   * @note It is ill-advised to use the method yourself, though. If you make structural
+   *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
+   *       only, everything will be cared for.
    */
-  void removeDependent(Dependent dependent);
+  void removeDependent(Dependent<?> dependent);
 
   int getMaximumRootUpdateSourceDistance();
 

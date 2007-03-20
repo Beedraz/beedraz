@@ -91,17 +91,17 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
   }
 
   /**
+   * If {@code many} is already in the set, it is moved to the new position.
+   *
    * @pre  position >= 0;
    * @pre  position <= $many.size();
    * @pre  many != null;
-   * @pre  !get().contains(many);
    * @post get().contains(many);
    */
   void add(int position, _Many_ many) {
     assert position >= 0;
     assert position <= $many.size();
     assert many != null;
-    assert !get().contains(many);
     $many.add(position, many);
     $sizeBeed.setSize($sizeBeed.get() + 1);
   }

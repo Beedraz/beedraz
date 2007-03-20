@@ -53,7 +53,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
    * @pre dependentUpdateSource != null;
    * @post getDependentUpdateSource() == dependentUpdateSource;
    */
-  AbstractUpdateSourceDependentDelegate(AbstractUpdateSource<_Event_> dependentUpdateSource) {
+  protected AbstractUpdateSourceDependentDelegate(AbstractUpdateSource<_Event_> dependentUpdateSource) {
     $dependentUpdateSource = dependentUpdateSource;
   }
 
@@ -86,7 +86,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
   //-----------------------------------------------------------------
 
   @Override
-  abstract _Event_ update(Map<UpdateSource, Event> events);
+  protected abstract _Event_ filteredUpdate(Map<_UpdateSource_, Event> events);
 
   /*</section>*/
 

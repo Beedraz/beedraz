@@ -207,7 +207,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[1].addUpdateSource($ds[0]);
     $subject1.updateDependents();
     updated($ds[0], $subject1);
-    updated($ds[1], $subject1, $ds[0]);
+    updated($ds[1], $ds[0]);
     eventFired($ds[0]);
     eventFired($ds[1]);
     eventFired($subject1);
@@ -349,11 +349,11 @@ public class TestUpdateSourceUpdateDependents {
   private void checkTopology8() {
     updated($ds[0], $subject1);
     updated($ds[5], $subject1);
-    updated($ds[1], $subject1, $ds[0]);
-    updated($ds[2], $subject1, $ds[0]);
-    updated($ds[3], $subject1, $ds[0]);
-    updated($ds[4], $subject1, $ds[0], $ds[1], $ds[2], $ds[3]);
-    updated($ds[6], $subject1, $ds[0], $ds[1], $ds[2], $ds[3], $ds[4], $ds[5]);
+    updated($ds[1], $ds[0]);
+    updated($ds[2], $ds[0]);
+    updated($ds[3], $ds[0]);
+    updated($ds[4], $ds[1], $ds[2], $ds[3]);
+    updated($ds[6], $ds[4], $ds[5]);
     eventFired($subject1);
     for (int i = 0; i < 7; i++) {
       eventFired($ds[i]);
@@ -463,9 +463,9 @@ public class TestUpdateSourceUpdateDependents {
     updated($ds[0]);
     updated($ds[1], $subject1);
     updated($ds[2], $subject1);
-    updated($ds[3], $subject1, $ds[2]);
-    updated($ds[4], $subject1, $ds[1], $ds[2]);
-    updated($ds[5], $subject1, $ds[1], $ds[2], $ds[4], $ds[3]);
+    updated($ds[3], $ds[2]);
+    updated($ds[4], $ds[1], $ds[2]);
+    updated($ds[5], $ds[4], $ds[3]);
     eventFired($subject1);
     for (int i = 1; i < 6; i++) {
       eventFired($ds[i]);
@@ -514,9 +514,9 @@ public class TestUpdateSourceUpdateDependents {
   private void checkTopology10() {
     updated($ds[1], $subject1);
     updated($ds[2], $subject1);
-    updated($ds[3], $subject1, $ds[2]);
-    updated($ds[4], $subject1, $ds[1], $ds[2]);
-    updated($ds[5], $subject1, $ds[1], $ds[2], $ds[4], $ds[3]);
+    updated($ds[3], $ds[2]);
+    updated($ds[4], $ds[1], $ds[2]);
+    updated($ds[5], $ds[4], $ds[3]);
     eventFired($subject1);
     for (int i = 1; i < 6; i++) {
       eventFired($ds[i]);
@@ -575,27 +575,19 @@ public class TestUpdateSourceUpdateDependents {
     updated($ds[0]);
     updated($ds[1], $subject1);
     updated($ds[2], $subject1);
-    updated($ds[6], $subject1, $ds[2]);
-    updated($ds[3], buildEventSources(6, 201, $subject1, $ds[2]));
-    updated($ds[4], buildEventSources(6, 201, $subject1, $ds[1], $ds[2]));
-    updated($ds[5], buildEventSources(6, 201, $subject1, $ds[1], $ds[2], $ds[3], $ds[4]));
+    updated($ds[6], $ds[2]);
+    for (int i = 7; i <= 200; i++) {
+      updated($ds[i], $ds[i - 1]);
+    }
+    updated($ds[3], $ds[200]);
+    updated($ds[4], $ds[1], $ds[200]);
+    updated($ds[5], $ds[3], $ds[4]);
     eventFired($subject1);
     eventFired($ds[0], null);
     for (int i = 1; i <= 200; i++) {
       eventFired($ds[i]);
     }
     eventFired($subject2, null);
-  }
-
-  private AbstractStubUpdateSource[] buildEventSources(int from, int until, AbstractStubUpdateSource... other) {
-    AbstractStubUpdateSource[] result = new AbstractStubUpdateSource[until - from + other.length];
-    for (int i = 0; i < other.length; i++) {
-      result[i] = other[i];
-    }
-    for (int i = from; i < until; i++) {
-      result[i - from + other.length] = $ds[i];
-    }
-    return result;
   }
 
 }

@@ -46,7 +46,7 @@ public class StubDependent extends Dependent<StubUpdateSource>
   }
 
   @Override
-  Event update(Map<UpdateSource, Event> events) {
+  protected Event filteredUpdate(Map<StubUpdateSource, Event> events) {
     $updated++;
     $events = events;
     return $myEvent;
@@ -54,7 +54,7 @@ public class StubDependent extends Dependent<StubUpdateSource>
 
   public int $updated = 0;
 
-  public Map<UpdateSource, Event> $events;
+  public Map<StubUpdateSource, Event> $events;
 
   public final StubUpdateSource $myDependentUpdateSource = new StubUpdateSource();
 
@@ -79,6 +79,22 @@ public class StubDependent extends Dependent<StubUpdateSource>
   }
 
   public void toString(StringBuffer sb, int i) {
+    // NOP
+  }
+
+  public void addDependent(Dependent<?> dependent) {
+    // NOP
+  }
+
+  public boolean isDependent(Dependent<?> dependent) {
+    return false;
+  }
+
+  public boolean isTransitiveDependent(Dependent<?> dependent) {
+    return false;
+  }
+
+  public void removeDependent(Dependent<?> dependent) {
     // NOP
   }
 

@@ -142,7 +142,27 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    *
    * @pre events != null;
    */
-  abstract Event update(Map<UpdateSource, Event> events);
+  protected final Event update(Map<UpdateSource, Event> events) {
+    Map<_UpdateSource_, Event> result = new HashMap<_UpdateSource_, Event>();
+    for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
+      if ($updateSources.containsKey(entry.getKey())) {
+        @SuppressWarnings("unchecked")
+        _UpdateSource_ us = (_UpdateSource_)entry.getKey();
+        result.put(us, entry.getValue());
+      }
+    }
+    return filteredUpdate(result);
+  }
+
+  /**
+   * The method that updates this dependent, and reports on the change.
+   * The returned event is the one that will be offered to
+   * {@link #fireEvent(Event)} later on. {@code events} only contains
+   * the events registered by elements of {@link #getUpdateSourcesSet()}.
+   *
+   * @pre events != null;
+   */
+  protected abstract Event filteredUpdate(Map<_UpdateSource_, Event> events);
 
   /*</section>*/
 

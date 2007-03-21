@@ -71,7 +71,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
 
   public final void addDependent(Dependent<?> dependent) {
     assert dependent != null;
-    assert ! isTransitiveDependent(dependent);
+    assert ! isTransitiveDependent(dependent) : "dependency loop";
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     $dependents.add(dependent);
   }

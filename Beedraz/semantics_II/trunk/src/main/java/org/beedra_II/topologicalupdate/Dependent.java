@@ -171,6 +171,13 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
   //-----------------------------------------------------------------
 
   /**
+   * @return getUpdateSourcesSet().contains(updateSource);
+   */
+  public final boolean isUpdateSource(_UpdateSource_ updateSource) {
+    return $updateSources.containsKey(updateSource);
+  }
+
+  /**
    * @return getUpdateSources().size();
    */
   public final int getUpdateSourcesSize() {
@@ -229,7 +236,10 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    */
   public final void addUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
-//    assert ! isTransitiveDependent(updateSource);
+    /* TODO I see no way possible with this code to test for loops
+     * ! isTransitiveDependent(updateSource) is what we want, but isTransitiveDependent() doesn't
+     * take update sources, but dependents
+     */
     $updateSourcesSize++;
     Integer nr = $updateSources.get(updateSource);
     if (nr == null) {

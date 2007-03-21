@@ -71,7 +71,10 @@ public abstract class AbstractUpdateSource implements UpdateSource {
 
   public final void addDependent(Dependent<?> dependent) {
     assert dependent != null;
-    assert ! isTransitiveDependent(dependent) : "dependency loop";
+    /* TODO I see no way possible with this code to test for loops
+     * ! isTransitiveUpdateSource(dependent) is what we want, but isTransitiveUpdateSource() doesn't
+     * take dependents, but update sources
+     */
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     $dependents.add(dependent);
   }

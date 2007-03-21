@@ -29,7 +29,7 @@ import org.junit.Test;
 
 public class TestAbstractUpdateSource {
 
-  private AbstractUpdateSource<?> $subject;
+  private AbstractUpdateSource $subject;
 
   private Dependent<?> $dependent1;
 

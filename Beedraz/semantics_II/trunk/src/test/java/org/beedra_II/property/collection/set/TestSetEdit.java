@@ -58,8 +58,8 @@ public class TestSetEdit {
     /**
      * Made public for testing reasons.
      */
-    public void notifyListenersPublic() {
-      notifyListeners();
+    public void publicUpdateDependents() {
+      updateDependents();
     }
 
   }
@@ -802,7 +802,7 @@ public class TestSetEdit {
     assertNull($listener3.$event);
     // notify
     $setEdit.perform();
-    $setEdit.notifyListenersPublic();
+    $setEdit.publicUpdateDependents();
     // check
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getEdit(), $setEdit);
@@ -1510,7 +1510,7 @@ public class TestSetEdit {
     removedElements.add(3);
     SetEvent<Integer> event =
       new ActualSetEvent<Integer>($target, addedElements, removedElements, null);
-    $setEdit.fireEvent(event);
+    $setEdit.updateDependents(event);
     // check listener
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event, event);

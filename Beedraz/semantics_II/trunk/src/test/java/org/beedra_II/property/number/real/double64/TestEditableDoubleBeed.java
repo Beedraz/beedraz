@@ -29,11 +29,12 @@ public class TestEditableDoubleBeed {
     }
 
     /**
-     * fireChangeEvent is made public for testing reasons
+     * updateDependents is made public for testing reasons
      */
-    public void fire(ActualDoubleEvent event) {
-      fireChangeEvent(event);
+    public void publicUpdateDependents(ActualDoubleEvent event) {
+      updateDependents(event);
     }
+    
   }
 
   public class MyBeanBeed extends AbstractBeanBeed {
@@ -73,7 +74,7 @@ public class TestEditableDoubleBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableDoubleBeed.fire($event1);
+    $editableDoubleBeed.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

@@ -278,7 +278,7 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
   }
 
   @Override
-  protected void fireEvent(_Event_ event) {
+  protected void updateDependents(_Event_ event) {
     // TODO Auto-generated method stub
 
   }

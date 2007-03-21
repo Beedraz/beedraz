@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.collection.set;
 
 
+import static org.ppeew.collection_I.CollectionUtil.intersection;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
@@ -67,9 +68,8 @@ public class EditableSetBeed<_Element_>
    */
   final void addElements(Set<_Element_> elements) {
     assert elements != null;
-    assert org.ppeew.collection_I.CollectionUtil.intersection(get(), elements).isEmpty();
+    assert intersection(get(), elements).isEmpty();
     $set.addAll(elements);
-    $sizeBeed.setSize($sizeBeed.get() + elements.size());
   }
 
   /**
@@ -80,21 +80,9 @@ public class EditableSetBeed<_Element_>
     assert elements != null;
     assert get().containsAll(elements);
     $set.removeAll(elements);
-    $sizeBeed.setSize($sizeBeed.get() - elements.size());
   }
 
   private Set<_Element_> $set = new HashSet<_Element_>();
-
-  /**
-   * Fire the given event.
-   * Fire an event on the $sizeBeed, containing the old size of the set beed
-   * and the edit that caused the change.
-   */
-  void fireEvent(SetEvent<_Element_> event) {
-    fireChangeEvent(event);
-    int oldSize = $sizeBeed.get() -  event.getAddedElements().size() + event.getRemovedElements().size();
-    $sizeBeed.fireEvent(oldSize, event.getEdit());
-  }
 
   /**
    * @post  result != null;
@@ -127,6 +115,14 @@ public class EditableSetBeed<_Element_>
       _Element_ element = iter.next();
       sb.append(indent(level + 2) + element.toString() + "\n");
     }
+  }
+
+  void packageUpdateDependents(SetEvent<_Element_> event) {
+    updateDependents(event);
+  }
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    return 0;
   }
 
 }

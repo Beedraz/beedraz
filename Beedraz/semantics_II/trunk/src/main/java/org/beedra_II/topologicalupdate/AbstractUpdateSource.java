@@ -19,6 +19,7 @@ package org.beedra_II.topologicalupdate;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,8 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractUpdateSource<_Event_ extends Event>
-    implements UpdateSource {
+public abstract class AbstractUpdateSource implements UpdateSource {
 
   public final boolean isDependent(Dependent<?> dependent) {
     return $dependents.contains(dependent);
@@ -86,15 +86,43 @@ public abstract class AbstractUpdateSource<_Event_ extends Event>
    *
    * @pre event != null;
    */
-  public final void updateDependents(_Event_ event) {
-    Map<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>();
+  protected final void updateDependents(Event event) {
+    updateDependents(this, event);
+  }
+
+  /**
+   * The topological update method. First change this update source locally,
+   * then described the change in an event, then call this method with that event.
+   *
+   * @pre us != null;
+   * @pre event != null;
+   */
+  protected static void updateDependents(AbstractUpdateSource us, Event event) {
+    HashMap<AbstractUpdateSource, Event> sourceEvents = new HashMap<AbstractUpdateSource, Event>(1);
+    sourceEvents.put(us, event);
+    multiUpdateDependents(sourceEvents);
+  }
+
+  /**
+   * The topological update method. First change this update source locally,
+   * then described the change in an event, then call this method with that event.
+   *
+   * @pre sourceEvents != null;
+   * @pre sourceEvents.size() > 0;
+   */
+  protected static void multiUpdateDependents(Map<AbstractUpdateSource, Event> sourceEvents) {
+    Map<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>(sourceEvents);
     Map<Dependent<?>, Event> dependentEvents = new LinkedHashMap<Dependent<?>, Event>();
     // LinkedHashMap to remember topol order for event listener notification
-    events.put(this, event);
-    if ($dependents.size() >= 1) {
-      assert $dependents.size() >= 1 : "initial size of priority queue must be >= 1";
+//    events.put(us, event);
+    int nrOfFirstOrderDependents = 0;
+    for (AbstractUpdateSource aus : sourceEvents.keySet()) {
+      nrOfFirstOrderDependents +=  aus.$dependents.size();
+    }
+    if (nrOfFirstOrderDependents >= 1) {
+      assert nrOfFirstOrderDependents >= 1 : "initial size of priority queue must be >= 1";
       PriorityQueue<Dependent<?>> queue =
-        new PriorityQueue<Dependent<?>>($dependents.size(),
+        new PriorityQueue<Dependent<?>>(nrOfFirstOrderDependents,
           new Comparator<Dependent<?>>() {
                 public int compare(Dependent<?> d1, Dependent<?> d2) {
                   assert d1 != null;
@@ -104,7 +132,9 @@ public abstract class AbstractUpdateSource<_Event_ extends Event>
                   return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
                 }
               });
-      queue.addAll($dependents);
+      for (AbstractUpdateSource aus : sourceEvents.keySet()) {
+        queue.addAll(aus.$dependents);
+      }
       Dependent<?> dependent = queue.poll();
       while (dependent != null) {
         Event dependentEvent = dependent.update(Collections.unmodifiableMap(events));
@@ -119,7 +149,9 @@ public abstract class AbstractUpdateSource<_Event_ extends Event>
         dependent = queue.poll();
       }
     }
-    fireEvent(event);
+    for (Map.Entry<AbstractUpdateSource, Event> entry : sourceEvents.entrySet()) {
+      entry.getKey().fireEvent(entry.getValue());
+    }
     for (Map.Entry<Dependent<?>, Event> entry : dependentEvents.entrySet()) {
       entry.getKey().fireEvent(entry.getValue());
     }
@@ -128,7 +160,7 @@ public abstract class AbstractUpdateSource<_Event_ extends Event>
   /**
    * Fire the event to regular (non-topological) listeners.
    */
-  protected abstract void fireEvent(_Event_ event);
+  protected abstract void fireEvent(Event event);
 
   /**
    * @invar $dependents != null;

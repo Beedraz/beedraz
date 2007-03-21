@@ -19,15 +19,17 @@ package org.beedra_II.property.collection.set;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.AbstractSet;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Listener;
+import org.beedra_II.event.Event;
+import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
+import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -69,6 +71,73 @@ public class UnionSetBeed<_Element_>
   }
 
 
+  private final Dependent<SetBeed<_Element_, ?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<SetBeed<_Element_, ?>, SetEvent<_Element_>>(this) {
+
+    /**
+     * @post    get() == the union of the sources
+     */
+    @Override
+    protected SetEvent<_Element_> filteredUpdate(Map<SetBeed<_Element_, ?>, Event> events) {
+      /* Optimized update is too difficult (what if several events remove the same element?)
+       * If 1 source removes an element, but it exists also in other sources, it must stay
+       * in the union. But what if all the sources that have the element remove it? Then it
+       * has to be removed too.
+       */
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> oldUnion = (HashSet<_Element_>)$union.clone();
+      recalculate();
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> added = (HashSet<_Element_>)$union.clone();
+      added.removeAll(oldUnion);
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> removed = (HashSet<_Element_>)oldUnion.clone();
+      removed.removeAll($union);
+      // notify the listeners if elements are added or removed
+      if (! added.isEmpty() || ! removed.isEmpty()) {
+        /* MUDO for now, we take the first edit we get, under the assumption that all events have
+         * the same edit; with compound edits, we should gather different edits
+         */
+        assert events.size() > 0;
+        Iterator<Event> iter = events.values().iterator();
+        Event event = iter.next();
+        Edit<?> edit = event.getEdit();
+        return new ActualSetEvent<_Element_>(UnionSetBeed.this, added, removed, edit);
+      }
+      else {
+        return null;
+      }
+    }
+
+  };
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    /* FIX FOR CONSTRUCTION PROBLEM
+     * At construction, the super constructor is called with the future owner
+     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
+     * this object is registered as update source with the dependent of the
+     * aggregate beed. During that registration process, the dependent
+     * checks to see if we need to ++ our maximum root update source distance.
+     * This involves a call to this method getMaximumRootUpdateSourceDistance.
+     * Since however, we are still doing initialization in AbstractPropertyBeed,
+     * initialization code (and construction code) further down is not yet executed.
+     * This means that our $dependent is still null, and this results in a NullPointerException.
+     * On the other hand, we cannot move the concept of $dependent up, since not all
+     * property beeds have a dependent.
+     * The fix implemented here is the following:
+     * This problem only occurs during construction. During construction, we will
+     * not have any update sources, so our maximum root update source distance is
+     * effectively 0.
+     */
+    /*
+     * TODO This only works if we only add 1 update source during construction,
+     *      so a better solution should be sought.
+     */
+    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+  }
+
+
+
   /*<property name="sources">*/
   //------------------------------------------------------------------
 
@@ -76,7 +145,7 @@ public class UnionSetBeed<_Element_>
    * @basic
    */
   public final Set<SetBeed<_Element_, ?>> getSources() {
-    return Collections.unmodifiableSet($sources);
+    return $dependent.getUpdateSourcesSet();
   }
 
   /**
@@ -90,24 +159,29 @@ public class UnionSetBeed<_Element_>
    *         set has changed.
    */
   public final void addSource(SetBeed<_Element_, ?> source) {
-    assert source != null;
-    Set<_Element_> oldValue = $union;
-    int oldSize = $union.size();
-    // add the source
-    $sources.add(source);
-    // add this UnionBeed as listener of the given source
-    source.addListener($setBeedListener);
-    // add the elements of the given source to the union
-    $union.addAll(source.get());
-    // notify the listeners of this beed if the union has changed
-    if (! ComparisonUtil.equalsWithNull(oldValue, $union)) {
-      fireChangeEvent(
-        new ActualSetEvent<_Element_>(
-          UnionSetBeed.this, $union, oldValue, null));
+    if (! $dependent.getUpdateSourcesOccurencesMap().containsKey(source)) {
+      assert source != null;
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
+      // add the source
+      $dependent.addUpdateSource(source);
+      // add the elements of the given source to the union
+      $union.addAll(source.get());
+      // notify the listeners of this beed if the union has changed
+      updateDependents(oldValue);
     }
-    // change the size beed and notify the size beed listeners when the size of the filtered set
-    // has changed
-    updateSizeBeed(oldSize, null);
+  }
+
+  private void updateDependents(HashSet<_Element_> oldValue) {
+    if (! ComparisonUtil.equalsWithNull(oldValue, $union)) {
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> added = (HashSet<_Element_>)$union.clone();
+      added.removeAll(oldValue);
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> removed = (HashSet<_Element_>)oldValue.clone();
+      removed.removeAll($union);
+      updateDependents(new ActualSetEvent<_Element_>(UnionSetBeed.this, added, removed, null));
+    }
   }
 
   /**
@@ -120,14 +194,12 @@ public class UnionSetBeed<_Element_>
    *         set has changed.
    */
   public final void removeSource(SetBeed<_Element_, ?> source) {
-    if ($sources.contains(source)) {
+    if ($dependent.getUpdateSourcesOccurencesMap().containsKey(source)) {
       assert source != null;
-      Set<_Element_> oldValue = $union;
-      int oldSize = $union.size();
+      @SuppressWarnings("unchecked")
+      HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
       // remove the source
-      $sources.remove(source);
-      // remove this UnionBeed as listener of the given source
-      source.removeListener($setBeedListener);
+      $dependent.removeUpdateSource(source);
       // remove the elements of the given source from the union
       for (_Element_ element : source.get()) {
         if (!contains(getSources(), element)) {
@@ -135,19 +207,12 @@ public class UnionSetBeed<_Element_>
         }
       }
       // notify the listeners of this beed if the union has changed
-      if (! ComparisonUtil.equalsWithNull(oldValue, $union)) {
-        fireChangeEvent(
-          new ActualSetEvent<_Element_>(
-            UnionSetBeed.this, $union, oldValue, null));
-      }
-      // change the size beed and notify the size beed listeners when the size of the filtered set
-      // has changed
-      updateSizeBeed(oldSize, null);
+      updateDependents(oldValue);
     }
   }
 
-  boolean contains(Set<SetBeed<_Element_, ?>> sources, _Element_ element) {
-    for (SetBeed<_Element_, ?> source : sources) {
+  static <_E_> boolean contains(Set<SetBeed<_E_, ?>> sources, _E_ element) {
+    for (SetBeed<_E_, ?> source : sources) {
       if (source.get().contains(element)) {
         return true;
       }
@@ -155,76 +220,14 @@ public class UnionSetBeed<_Element_>
     return false;
   }
 
-  private Set<SetBeed<_Element_, ?>> $sources = new HashSet<SetBeed<_Element_, ?>>();
-
   /*</property>*/
 
-  /**
-   * A listener that will be registered as listener of the different
-   * {@link #getSources() sources}.
-   */
-  private final Listener<SetEvent<_Element_>> $setBeedListener =
-        new Listener<SetEvent<_Element_>>() {
 
-    /**
-     * @post    The UnionBeed is registered as a listener of all beeds
-     *          that are added to the source by the given event. (The reason is that
-     *          the UnionBeed should be notified (and then recalculate) when one
-     *          of the beeds changes.)
-     * @post    The UnionBeed is removed as listener of all beeds
-     *          that are removed from the source by the given event.
-     * @post    get() == the union of the sources
-     * @post    The listeners of this beed are notified when the set changes.
-     * @post    The listeners of the size beed are notified when the size of this
-     *          set has changed.
-     */
-    public void beedChanged(SetEvent<_Element_> event) {
-      int oldSize = $union.size();
-      // consider all beeds that are added by the given event: add them to the union
-      Set<_Element_> added = event.getAddedElements();
-      Set<_Element_> reallyAdded = new HashSet<_Element_>();
-      for (_Element_ element : added) {
-        if (!$union.contains(element)) {
-          $union.add(element);
-          reallyAdded.add(element);
-        }
-      }
-      // consider all beeds that are removed by the given event: remove them from the union
-      // (but only when they are not contained in one of the other sources)
-      SetBeed<_Element_, ?> source = (SetBeed<_Element_, ?>) event.getSource();
-      Set<SetBeed<_Element_, ?>> otherSources = new HashSet<SetBeed<_Element_, ?>>();
-      otherSources.addAll(getSources());
-      otherSources.remove(source);
-      Set<_Element_> removed = event.getRemovedElements();
-      Set<_Element_> reallyRemoved = new HashSet<_Element_>();
-      for (_Element_ element : removed) {
-        if (!contains(otherSources, element)) {
-          $union.remove(element);
-          reallyRemoved.add(element);
-        }
-      }
 
-      // notify the listeners if elements are added or removed
-      if (!reallyAdded.isEmpty() || !reallyRemoved.isEmpty()) {
-        fireChangeEvent(
-          new ActualSetEvent<_Element_>(
-            UnionSetBeed.this, reallyAdded, reallyRemoved, event.getEdit()));
-      }
-      // change the size beed and notify the size beed listeners when the size of the filtered set
-      // has changed
-      updateSizeBeed(oldSize, event.getEdit());
-    }
-
-  };
-
-  /**
-   * Change the size beed and notify the size beed listeners when the size of the filtered set
-   * has changed
-   */
-  private void updateSizeBeed(int oldSize, Edit<?> edit) {
-    if (oldSize != $union.size()) {
-      $sizeBeed.setSize($union.size());
-      $sizeBeed.fireEvent(oldSize, edit);
+  private void recalculate() {
+    $union.clear();
+    for (SetBeed<_Element_, ?> sb : getSources()) {
+      $union.addAll(sb.get());
     }
   }
 
@@ -232,46 +235,13 @@ public class UnionSetBeed<_Element_>
    * @invar  $union != null;
    * @invar  Contains the union of the sets of all sources.
    */
-  private Set<_Element_> $union = new HashSet<_Element_>();
+  private HashSet<_Element_> $union = new HashSet<_Element_>();
 
   /**
    * @basic
    */
   public final Set<_Element_> get() {
-    return new AbstractSet<_Element_>() {
-
-      @Override
-      public Iterator<_Element_> iterator() {
-        final Iterator<_Element_> unionIterator = $union.iterator();
-        return new Iterator<_Element_>() {
-
-          public boolean hasNext() {
-            return unionIterator.hasNext();
-          }
-
-          public _Element_ next() {
-            return unionIterator.next();
-          }
-
-          /**
-           * optional operation
-           */
-          public void remove() {
-            // NOP
-          }
-
-        };
-      }
-
-      /**
-       * The size of the union of the given source sets.
-       */
-      @Override
-      public int size() {
-        return $union.size();
-      }
-
-    };
+    return Collections.unmodifiableSet($union);
   }
 
   /**

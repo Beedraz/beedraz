@@ -47,29 +47,37 @@ public class TestLongSumBeed {
     }
 
     /**
-     * fireChangeEvent is made public for testing reasons
+     * updateDependents is made public for testing reasons
      */
-    public void fire(ActualLongEvent event) {
-      fireChangeEvent(event);
+    public void publicUpdateDependents(ActualLongEvent event) {
+      updateDependents(event);
     }
+
   }
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $owner = new StubBeanBeed();
+    $integerSumBeed = new MyIntegerSumBeed($owner);
+    $event1 = new ActualLongEvent($integerSumBeed, 0L, 1L, null);
+    $listener1 = new StubListener<PropagatedEvent>();
+    $listener2 = new StubListener<PropagatedEvent>();
   }
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $owner = null;
+    $integerSumBeed = null;
+    $event1 = null;
+    $listener1 = null;
+    $listener2 = null;
   }
 
-  private AggregateBeed $owner = new StubBeanBeed();
-  private MyIntegerSumBeed $integerSumBeed = new MyIntegerSumBeed($owner);
-  private ActualLongEvent $event1 = new ActualLongEvent($integerSumBeed, 0L, 1L, null);
-      // @mudo Laatste argument mag niet null zijn??
-  private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
-  private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
+  private AggregateBeed $owner;
+  private MyIntegerSumBeed $integerSumBeed;
+  private ActualLongEvent $event1;
+  private StubListener<PropagatedEvent> $listener1;
+  private StubListener<PropagatedEvent> $listener2;
 
   @Test
   public void constructor() {
@@ -81,7 +89,7 @@ public class TestLongSumBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $integerSumBeed.fire($event1);
+    $integerSumBeed.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

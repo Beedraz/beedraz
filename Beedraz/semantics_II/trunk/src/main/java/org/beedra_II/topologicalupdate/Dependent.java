@@ -234,12 +234,12 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
     Integer nr = $updateSources.get(updateSource);
     if (nr == null) {
       $updateSources.put(updateSource, 1);
+      updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
+      updateSource.addDependent(this);
     }
     else {
       $updateSources.put(updateSource, nr + 1);
     }
-    updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
-    updateSource.addDependent(this);
   }
 
   /**

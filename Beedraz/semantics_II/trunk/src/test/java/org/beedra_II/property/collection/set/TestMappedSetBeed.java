@@ -59,8 +59,8 @@ public class TestMappedSetBeed {
     /**
      * Made public for testing reasons.
      */
-    public void fireChangeEventPublic(SetEvent<LongBeed> event) {
-      super.fireChangeEvent(event);
+    public void publicUpdateDependents(SetEvent<LongBeed> event) {
+      updateDependents(event);
     }
 
   }
@@ -177,7 +177,7 @@ public class TestMappedSetBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $mappedSetBeed.fireChangeEventPublic($event);
+    $mappedSetBeed.publicUpdateDependents($event);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
@@ -307,24 +307,43 @@ public class TestMappedSetBeed {
     // register listeners to the MappedSetBeed
     mappedSetBeed.addListener($listener4);
     assertNull($listener4.$event);
+
     // set the source
+    $listener4.reset();
     EditableSetBeed<WellBeanBeed> source = createSource();
     mappedSetBeed.setSource(source);
-    assertEquals(mappedSetBeed.getSource(), source);
-    assertEquals(mappedSetBeed.get().size(), 3);
+    assertEquals(source, mappedSetBeed.getSource());
+    assertEquals(3, mappedSetBeed.get().size());
     assertTrue(mappedSetBeed.get().contains($well1.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well2.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well3.cq.get()));
+    assertNotNull($listener4.$event);
+    assertEquals($listener4.$event.getSource(), mappedSetBeed);
+    assertEquals(3, $listener4.$event.getAddedElements().size());
+    assertTrue($listener4.$event.getAddedElements().contains($well1.cq.get()));
+    assertTrue($listener4.$event.getAddedElements().contains($well2.cq.get()));
+    assertTrue($listener4.$event.getAddedElements().contains($well3.cq.get()));
+    assertTrue($listener4.$event.getRemovedElements().isEmpty());
+    assertNull($listener4.$event.getEdit());
+
     // add an extra beed to the source
+    $listener4.reset();
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
     WellBeanBeed goal = createWellBeanBeed(5L);
     setEdit.addElementToAdd(goal);
     setEdit.perform();
-    assertEquals(mappedSetBeed.get().size(), 4);
+    assertEquals(4, mappedSetBeed.get().size());
     assertTrue(mappedSetBeed.get().contains($well1.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well2.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well3.cq.get()));
     assertTrue(mappedSetBeed.get().contains(goal.cq.get()));
+    assertNotNull($listener4.$event);
+    assertEquals($listener4.$event.getSource(), mappedSetBeed);
+    assertEquals(1, $listener4.$event.getAddedElements().size());
+    assertTrue($listener4.$event.getAddedElements().contains(goal.cq.get()));
+    assertTrue($listener4.$event.getRemovedElements().isEmpty());
+    assertEquals(setEdit, $listener4.$event.getEdit());
+
     // The MappedSetBeed is registered as listener of all beeds in the source,
     // so when one of them changes, the beed should be notified
     $listener4.reset();
@@ -332,18 +351,54 @@ public class TestMappedSetBeed {
     LongEdit longEdit = new LongEdit(goal.cq);
     longEdit.setGoal(6L);
     longEdit.perform();
-    assertNotNull($listener4.$event);
-    assertEquals($listener4.$event.getSource(), mappedSetBeed);
-    assertEquals($listener4.$event.getAddedElements(), new HashSet<Integer>());
-    assertEquals($listener4.$event.getRemovedElements(), new HashSet<Integer>());
-    assertEquals($listener4.$event.getEdit(), longEdit);
-    assertEquals(mappedSetBeed.get().size(), 4);
+    // YES, BUT THERE ARE NO EVENTS, BECAUSE NOTHING IS CHANGED
+//    assertNotNull($listener4.$event);
+//    assertEquals($listener4.$event.getSource(), mappedSetBeed);
+//    assertEquals(Collections.EMPTY_SET, $listener4.$event.getAddedElements());
+//    assertEquals(Collections.EMPTY_SET, $listener4.$event.getRemovedElements());
+//    assertEquals(longEdit, $listener4.$event.getEdit());
+    assertEquals(4, mappedSetBeed.get().size());
     assertTrue(mappedSetBeed.get().contains($well1.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well2.cq.get()));
     assertTrue(mappedSetBeed.get().contains($well3.cq.get()));
     assertTrue(mappedSetBeed.get().contains(goal.cq.get()));
     // When a new beed is added to the source, the MappedSetBeed is added as a listener
     // of that beed. See above.
+
+    // remove a extra beed from the source
+    $listener4.reset();
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToRemove($well1);
+    setEdit.perform();
+    assertEquals(3, mappedSetBeed.get().size());
+    assertTrue(mappedSetBeed.get().contains($well2.cq.get()));
+    assertTrue(mappedSetBeed.get().contains($well3.cq.get()));
+    assertTrue(mappedSetBeed.get().contains(goal.cq.get()));
+    assertNotNull($listener4.$event);
+    assertEquals($listener4.$event.getSource(), mappedSetBeed);
+    assertTrue($listener4.$event.getAddedElements().isEmpty());
+    assertEquals(1, $listener4.$event.getRemovedElements().size());
+    assertTrue($listener4.$event.getRemovedElements().contains($well1.cq.get()));
+    assertEquals(setEdit, $listener4.$event.getEdit());
+
+    // mix
+    $listener4.reset();
+    setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToAdd($well1);
+    setEdit.addElementToRemove($well2);
+    setEdit.addElementToRemove($well3);
+    setEdit.perform();
+    assertEquals(2, mappedSetBeed.get().size());
+    assertTrue(mappedSetBeed.get().contains($well1.cq.get()));
+    assertTrue(mappedSetBeed.get().contains(goal.cq.get()));
+    assertNotNull($listener4.$event);
+    assertEquals($listener4.$event.getSource(), mappedSetBeed);
+    assertEquals(1, $listener4.$event.getAddedElements().size());
+    assertTrue($listener4.$event.getAddedElements().contains($well1.cq.get()));
+    assertEquals(2, $listener4.$event.getRemovedElements().size());
+    assertTrue($listener4.$event.getRemovedElements().contains($well2.cq.get()));
+    assertTrue($listener4.$event.getRemovedElements().contains($well3.cq.get()));
+    assertEquals(setEdit, $listener4.$event.getEdit());
   }
 
   @Test
@@ -395,7 +450,6 @@ public class TestMappedSetBeed {
   @Test
   public void recalculate() throws EditStateException, IllegalEditException {
     // double mean beed has no source
-    $mappedSetBeed.recalculate();
     assertTrue($mappedSetBeed.get().isEmpty());
     // create source
     EditableSetBeed<WellBeanBeed> source =
@@ -403,7 +457,6 @@ public class TestMappedSetBeed {
     // add source to mean beed
     $mappedSetBeed.setSource(source);
     // recalculate (setBeed contains no elements)
-    $mappedSetBeed.recalculate();
     assertTrue($mappedSetBeed.get().isEmpty());
     // add beed
     SetEdit<WellBeanBeed> setEdit =
@@ -411,11 +464,9 @@ public class TestMappedSetBeed {
     setEdit.addElementToAdd($well1);
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
-    $mappedSetBeed.recalculate();
     assertEquals($mappedSetBeed.get().size(), 1);
     assertTrue($mappedSetBeed.get().contains($well1.cq));
     // recalculate (setBeed contains beed 1)
-    $mappedSetBeed.recalculate();
     assertEquals($mappedSetBeed.get().size(), 1);
     assertTrue($mappedSetBeed.get().contains($well1.cq));
     // add beed
@@ -423,12 +474,10 @@ public class TestMappedSetBeed {
     setEdit.addElementToAdd($well2);
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
-    $mappedSetBeed.recalculate();
     assertEquals($mappedSetBeed.get().size(), 2);
     assertTrue($mappedSetBeed.get().contains($well1.cq));
     assertTrue($mappedSetBeed.get().contains($well2.cq));
     // recalculate (setBeed contains beed 1 and 2)
-    $mappedSetBeed.recalculate();
     assertEquals($mappedSetBeed.get().size(), 2);
     assertTrue($mappedSetBeed.get().contains($well1.cq));
     assertTrue($mappedSetBeed.get().contains($well2.cq));
@@ -437,7 +486,6 @@ public class TestMappedSetBeed {
     setEdit.addElementToAdd($well3);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
-    $mappedSetBeed.recalculate();
     assertEquals($mappedSetBeed.get().size(), 3);
     assertTrue($mappedSetBeed.get().contains($well1.cq));
     assertTrue($mappedSetBeed.get().contains($well2.cq));

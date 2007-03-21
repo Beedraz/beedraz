@@ -21,15 +21,20 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Listener;
+import org.beedra_II.edit.Edit;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
+import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
+import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -71,6 +76,97 @@ public abstract class DoubleSetComputationBeed
     return castToBigDecimal(getDouble());
   }
 
+
+  private final Dependent<Beed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<Beed<?>, ActualDoubleEvent>(this) {
+
+      @Override
+      protected ActualDoubleEvent filteredUpdate(Map<Beed<?>, Event> events) {
+        // if the source changes (elements added and / or removed
+        if (events.keySet().contains($source)) {
+          @SuppressWarnings("unchecked")
+          SetEvent<RealBeed<?>> setEvent = (SetEvent<RealBeed<?>>)events.get($source);
+          sourceChanged(setEvent);
+        }
+        // if the value of one of the elements changes
+        // we do nothing special here, just a total recalculate
+        // IDEA there is room for optimalization here
+        // recalculate and notify the listeners if the value has changed
+        Double oldValue = $value;
+        recalculate();
+        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+          /* MUDO for now, we take the first edit we get, under the assumption that all events have
+           * the same edit; with compound edits, we should gather different edits
+           */
+          assert events.size() > 0;
+          Iterator<Event> iter = events.values().iterator();
+          Event event = iter.next();
+          Edit<?> edit = event.getEdit();
+          return new ActualDoubleEvent(DoubleSetComputationBeed.this, oldValue, $value, edit);
+        }
+        else {
+          return null;
+        }
+      }
+
+      /**
+       * @post    All RealBeeds that are added to the SetBeed by the given event
+       *          become update sources.
+       *          (The reason is that the DoubleSetComputationBeed should be
+       *          notified (and then recalculate) when one of the DoubleBeeds
+       *          changes.)
+       * @post    All RealBeeds that are removed from the SetBeed by the given
+       *          event are no longer update sources.
+       * @post    getDouble() is recalculated.
+       */
+      private void sourceChanged(SetEvent<RealBeed<?>> event) {
+        /* All RealBeeds that are added to the SetBeed by the given event
+         * become update sources
+         */
+        Set<RealBeed<?>> added = event.getAddedElements();
+        for (RealBeed<?> beed : added) {
+          addUpdateSource(beed);
+        }
+        /* All RealBeeds that are removed from the SetBeed by the given event
+         * stop being update sources
+         */
+        Set<RealBeed<?>> removed = event.getRemovedElements();
+        for (RealBeed<?> beed : removed) {
+          removeUpdateSource(beed);
+        }
+      }
+
+
+    };
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    /* FIX FOR CONSTRUCTION PROBLEM
+     * At construction, the super constructor is called with the future owner
+     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
+     * this object is registered as update source with the dependent of the
+     * aggregate beed. During that registration process, the dependent
+     * checks to see if we need to ++ our maximum root update source distance.
+     * This involves a call to this method getMaximumRootUpdateSourceDistance.
+     * Since however, we are still doing initialization in AbstractPropertyBeed,
+     * initialization code (and construction code) further down is not yet executed.
+     * This means that our $dependent is still null, and this results in a NullPointerException.
+     * On the other hand, we cannot move the concept of $dependent up, since not all
+     * property beeds have a dependent.
+     * The fix implemented here is the following:
+     * This problem only occurs during construction. During construction, we will
+     * not have any update sources, so our maximum root update source distance is
+     * effectively 0.
+     */
+    /*
+     * TODO This only works if we only add 1 update source during construction,
+     *      so a better solution should be sought.
+     */
+    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+  }
+
+
+
+
   /*<property name="source">*/
   //------------------------------------------------------------------
 
@@ -94,22 +190,25 @@ public abstract class DoubleSetComputationBeed
    * @post    The listeners of this beed are notified when the value changes.
    */
   public final void setSource(SetBeed<RealBeed<?>, ?> source) {
+    if ($source != null) {
+      for (RealBeed<?> beed : $source.get()) {
+        $dependent.removeUpdateSource(beed);
+      }
+      $dependent.removeUpdateSource($source);
+    }
     // set the source
     $source = source;
-    if (source != null) {
-      // register the DoubleSetComputationBeed as listener of the given SetBeed
-      source.addListener($sourceListener);
-      // register the DoubleSetComputationBeed as listener of all DoubleBeeds
-      // in the given SetBeed
-      for (RealBeed<?> beed : source.get()) {
-        beed.addListener($beedListener);
+    if ($source != null) {
+      $dependent.addUpdateSource($source);
+      for (RealBeed<?> beed : $source.get()) {
+        $dependent.addUpdateSource(beed);
       }
     }
     // recalculate and notify the listeners if the value has changed
     Double oldValue = $value;
     recalculate();
     if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-      fireChangeEvent(
+      updateDependents(
           new ActualDoubleEvent(
               DoubleSetComputationBeed.this, oldValue, $value, null)); // edit = null
     }
@@ -119,71 +218,6 @@ public abstract class DoubleSetComputationBeed
 
   /*</property>*/
 
-
-  /**
-   * A listener that will be registered as listener of the {@link #getSource()}.
-   */
-  private final Listener<SetEvent<RealBeed<?>>> $sourceListener =
-        new Listener<SetEvent<RealBeed<?>>>() {
-
-    /**
-     * @post    The DoubleSetComputationBeed is registered as a listener of all
-     *          DoubleBeeds that are added to the SetBeed by the given event.
-     *          (The reason is that the DoubleSetComputationBeed should be
-     *          notified (and then recalculate) when one of the DoubleBeeds
-     *          changes.)
-     * @post    The DoubleSetComputationBeed is removed as listener of all
-     *          DoubleBeeds that are removed from the SetBeed by the given
-     *          event.
-     * @post    getDouble() is recalculated
-     * @post    The listeners of this beed are notified when the value changes.
-     */
-    public void beedChanged(SetEvent<RealBeed<?>> event) {
-      // add the DoubleSetComputationBeed as listener of all DoubleBeeds that
-      // are added to the SetBeed by the given event
-      Set<RealBeed<?>> added = event.getAddedElements();
-      for (RealBeed<?> beed : added) {
-        beed.addListener($beedListener);
-      }
-      // remove the DoubleSetComputationBeed as listener from all DoubleBeeds
-      // that are removed from the SetBeed by the given event
-      Set<RealBeed<?>> removed = event.getRemovedElements();
-      for (RealBeed<?> beed : removed) {
-        beed.removeListener($beedListener);
-      }
-      // recalculate and notify the listeners if the value has changed
-      Double oldValue = $value;
-      recalculate();
-      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(
-            new ActualDoubleEvent(
-                DoubleSetComputationBeed.this, oldValue, $value, event.getEdit()));
-      }
-    }
-
-  };
-
-
-  /**
-   * A listener that will be registered as listener of the {@link DoubleBeed beeds}
-   * in the {@link #getSource()}.
-   */
-  private final Listener<RealEvent> $beedListener = new Listener<RealEvent>() {
-
-    /**
-     * @post    getDouble() is recalculated
-     * @post    The listeners of this beed are notified when the value changes.
-     */
-    public void beedChanged(RealEvent event) {
-      // recalculate and notify the listeners if the value has changed
-      Double oldValue = $value;
-      recalculate();
-      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new ActualDoubleEvent(DoubleSetComputationBeed.this, oldValue, $value, event.getEdit()));
-      }
-    }
-
-  };
 
 
   /*<property name="value*/

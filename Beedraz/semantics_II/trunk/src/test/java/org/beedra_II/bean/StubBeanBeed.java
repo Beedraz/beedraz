@@ -22,9 +22,7 @@ import org.beedra_II.bean.AbstractBeanBeed;
 
 public class StubBeanBeed  extends AbstractBeanBeed {
 
-  public int getMaximumRootUpdateSourceDistance() {
-    return 0;
-  }
+  // NOP
 
 }
 

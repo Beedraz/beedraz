@@ -22,9 +22,14 @@ import static org.beedra_II.edit.Edit.State.NOT_YET_PERFORMED;
 import static org.beedra_II.edit.Edit.State.UNDONE;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.util.HashMap;
+
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
+import org.beedra_II.event.Event;
+import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedra_II.property.simple.SimplePropertyEdit;
+import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.collection_I.LinkedListOrderedSet;
 import org.ppeew.collection_I.OrderedSet;
@@ -262,8 +267,9 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
    *
    */
   @Override
-  protected final void notifyListeners() {
-    super.notifyListeners();
+  protected final void updateDependents() {
+    HashMap<AbstractUpdateSource, Event> events = new HashMap<AbstractUpdateSource, Event>();
+    events.put(getTarget(), createEvent());
     assert (getState() == DONE) || (getState() == UNDONE);
     OrderedBidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
     Integer oldPosition = getOldPosition();
@@ -275,7 +281,8 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       oldValue.add(oldPosition, getTarget().getOwner());
       OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
       newValue.addAll(oldToMany.get());
-      oldToMany.fireChangeEvent(oldValue, newValue, this);
+      ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(oldToMany, oldValue, newValue, this);
+      events.put(oldToMany, event);
     }
     if (newToMany != null) {
       OrderedSet<_Many_> oldValue = new LinkedListOrderedSet<_Many_>();
@@ -283,8 +290,10 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       oldValue.remove(newPosition.intValue());
       OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
       newValue.addAll(newToMany.get());
-      newToMany.fireChangeEvent(oldValue, newValue, this);
+      ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(newToMany, oldValue, newValue, this);
+      events.put(newToMany, event);
     }
+    EditableOrderedBidirToOneBeed.packageUpdateDependents(events);
   }
 
   /**

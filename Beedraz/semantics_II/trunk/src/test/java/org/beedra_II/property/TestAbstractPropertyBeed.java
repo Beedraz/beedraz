@@ -59,7 +59,7 @@ public class TestAbstractPropertyBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $propertyBeed.fire($event1);
+    $propertyBeed.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

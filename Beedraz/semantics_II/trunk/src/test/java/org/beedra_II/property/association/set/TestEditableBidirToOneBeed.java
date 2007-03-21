@@ -42,11 +42,12 @@ public class TestEditableBidirToOneBeed {
     }
 
     /**
-     * fireChangeEvent is made public for testing reasons
+     * updateDependents is made public for testing reasons
      */
-    public void fire(BidirToOneEvent<_One_, _Many_> event) {
-      fireChangeEvent(event);
+    public void publicUpdateDependents(BidirToOneEvent<_One_, _Many_> event) {
+      updateDependents(event);
     }
+
   }
 
   public class OneBeanBeed extends AbstractBeanBeed {
@@ -116,7 +117,7 @@ public class TestEditableBidirToOneBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableBidirToOneBeed.fire($bidirToOneEvent);
+    $editableBidirToOneBeed.publicUpdateDependents($bidirToOneEvent);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

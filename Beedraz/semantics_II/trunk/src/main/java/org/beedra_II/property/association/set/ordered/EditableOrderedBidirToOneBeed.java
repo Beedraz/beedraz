@@ -17,8 +17,12 @@ limitations under the License.
 package org.beedra_II.property.association.set.ordered;
 
 
+import java.util.Map;
+
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
+import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -65,6 +69,10 @@ public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
   @Override
   protected OrderedBidirToOneEvent<_One_, _Many_> createInitialEvent() {
     return new OrderedBidirToOneEvent<_One_, _Many_>(this, null, get(), null);
+  }
+
+  static void packageUpdateDependents(Map<AbstractUpdateSource, Event> events) {
+    AbstractUpdateSource.multiUpdateDependents(events);
   }
 
 }

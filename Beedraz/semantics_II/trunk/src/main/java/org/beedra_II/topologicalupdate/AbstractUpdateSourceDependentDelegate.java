@@ -53,7 +53,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
    * @pre dependentUpdateSource != null;
    * @post getDependentUpdateSource() == dependentUpdateSource;
    */
-  protected AbstractUpdateSourceDependentDelegate(AbstractUpdateSource<_Event_> dependentUpdateSource) {
+  protected AbstractUpdateSourceDependentDelegate(AbstractUpdateSource dependentUpdateSource) {
     $dependentUpdateSource = dependentUpdateSource;
   }
 
@@ -61,7 +61,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
   //-----------------------------------------------------------------
 
   @Override
-  public final AbstractUpdateSource<_Event_> getDependentUpdateSource() {
+  public final AbstractUpdateSource getDependentUpdateSource() {
     return $dependentUpdateSource;
   }
 
@@ -77,7 +77,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
     $dependentUpdateSource.fireEvent(typedEvent);
   }
 
-  private final AbstractUpdateSource<_Event_> $dependentUpdateSource;
+  private final AbstractUpdateSource $dependentUpdateSource;
 
   /*</property>*/
 

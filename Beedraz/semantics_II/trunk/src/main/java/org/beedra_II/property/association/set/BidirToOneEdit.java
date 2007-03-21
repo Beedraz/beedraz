@@ -21,9 +21,15 @@ import static org.beedra_II.edit.Edit.State.DONE;
 import static org.beedra_II.edit.Edit.State.UNDONE;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.util.HashMap;
+
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.event.Event;
+import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.beedra_II.property.simple.SimplePropertyEdit;
+import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.Singleton;
 
 
 /**
@@ -94,17 +100,23 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
    * @todo super method should be final; can we fix this with a change listener to the to-one that propagates?
    */
   @Override
-  protected final void notifyListeners() {
-    super.notifyListeners();
+  protected final void updateDependents() {
+    HashMap<AbstractUpdateSource, Event> events = new HashMap<AbstractUpdateSource, Event>();
+    events.put(getTarget(), createEvent());
     assert (getState() == DONE) || (getState() == UNDONE);
     BidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
     BidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     if (oldToMany != null) {
-      oldToMany.fireRemovedEvent(getTarget().getOwner(), this);
+      ActualSetEvent<_Many_> removedEvent =
+          new ActualSetEvent<_Many_>(oldToMany, null, new Singleton<_Many_>(getTarget().getOwner()), this);
+      events.put(oldToMany, removedEvent);
     }
     if (newToMany != null) {
-      newToMany.fireAddedEvent(getTarget().getOwner(), this);
+      ActualSetEvent<_Many_> addedEvent =
+          new ActualSetEvent<_Many_>(newToMany, new Singleton<_Many_>(getTarget().getOwner()), null, this);
+      events.put(newToMany, addedEvent);
     }
+    EditableBidirToOneBeed.packageUpdateDependents(events);
   }
 
   /**

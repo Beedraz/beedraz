@@ -17,11 +17,15 @@ limitations under the License.
 package org.beedra_II.aggregate;
 
 
+import java.util.Iterator;
+import java.util.Map;
+
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
+import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
+import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -36,21 +40,36 @@ public abstract class AbstractAggregateBeed
     extends AbstractBeed<PropagatedEvent>
     implements AggregateBeed {
 
-  private final Listener<Event> $propagationListener = new Listener<Event>() {
+  private final Dependent<Beed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<Beed<?>, PropagatedEvent>(this) {
 
-    public void beedChanged(Event event) {
-      fireChangeEvent(new PropagatedEvent(AbstractAggregateBeed.this, event));
-    }
+      @Override
+      protected PropagatedEvent filteredUpdate(Map<Beed<?>, Event> events) {
+        assert events.size() > 0;
+        Iterator<Event> iter = events.values().iterator();
+        Event event = iter.next();
+        // MUDO we need a compound event here
+        return new PropagatedEvent(AbstractAggregateBeed.this, event);
+      }
 
-  };
+    };
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    return $dependent.getMaximumRootUpdateSourceDistance();
+  }
 
   public final boolean isAggregateElement(Beed<?> b) {
-    return (b != null) && b.isListener($propagationListener);
+    return (b != null) && b.isDependent($dependent);
   }
 
   public final void registerAggregateElement(Beed<?> b) {
     assert b != null;
-    b.addListener($propagationListener);
+    $dependent.addUpdateSource(b);
+  }
+
+  public final void deRegisterAggregateElement(Beed<?> b) {
+    assert b != null;
+    $dependent.removeUpdateSource(b);
   }
 
 }

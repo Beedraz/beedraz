@@ -628,7 +628,7 @@ public class TestAbstractSimpleEdit {
   public void notifyListeners() {
     assertNull($edit.$firedEvent);
     // notify
-    $edit.notifyListeners();
+    $edit.updateDependents();
     // check
     assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
   }

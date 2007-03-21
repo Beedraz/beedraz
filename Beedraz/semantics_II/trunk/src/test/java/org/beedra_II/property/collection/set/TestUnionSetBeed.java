@@ -58,8 +58,8 @@ public class TestUnionSetBeed {
     /**
      * Made public for testing reasons.
      */
-    public void fireChangeEventPublic(SetEvent<WellBeanBeed> event) {
-      super.fireChangeEvent(event);
+    public void publicUpdateDependents(SetEvent<WellBeanBeed> event) {
+      updateDependents(event);
     }
 
   }
@@ -228,7 +228,7 @@ public class TestUnionSetBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $unionSetBeed.fireChangeEventPublic($event);
+    $unionSetBeed.publicUpdateDependents($event);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
@@ -292,10 +292,10 @@ public class TestUnionSetBeed {
    */
   @Test
   public void addSource2() throws EditStateException, IllegalEditException {
-    assertEquals($unionSetBeed.getSources().size(), 0);
-    assertEquals($unionSetBeed.get().size(), 0);
+    assertEquals(0, $unionSetBeed.getSources().size());
+    assertEquals(0, $unionSetBeed.get().size());
     $unionSetBeed.addSource($runA.wells);
-    assertEquals($unionSetBeed.getSources().size(), 1);
+    assertEquals(1, $unionSetBeed.getSources().size());
     assertTrue($unionSetBeed.getSources().contains($runA.wells));
     assertEquals($unionSetBeed.get().size(), 3);
     assertTrue($unionSetBeed.get().contains($wellA1));
@@ -440,27 +440,27 @@ public class TestUnionSetBeed {
   @Test
   public void contains() {
     Set<SetBeed<WellBeanBeed, ?>> sources = new HashSet<SetBeed<WellBeanBeed, ?>>();
-    assertFalse($unionSetBeed.contains(sources, $wellA1));
-    assertFalse($unionSetBeed.contains(sources, $wellB1));
-    assertFalse($unionSetBeed.contains(sources, $wellC1));
+    assertFalse(UnionSetBeed.contains(sources, $wellA1));
+    assertFalse(UnionSetBeed.contains(sources, $wellB1));
+    assertFalse(UnionSetBeed.contains(sources, $wellC1));
     sources.add($runA.wells);
-    assertTrue($unionSetBeed.contains(sources, $wellA1));
-    assertTrue($unionSetBeed.contains(sources, $wellA2));
-    assertTrue($unionSetBeed.contains(sources, $wellA3));
-    assertFalse($unionSetBeed.contains(sources, $wellB1));
-    assertFalse($unionSetBeed.contains(sources, $wellC1));
+    assertTrue(UnionSetBeed.contains(sources, $wellA1));
+    assertTrue(UnionSetBeed.contains(sources, $wellA2));
+    assertTrue(UnionSetBeed.contains(sources, $wellA3));
+    assertFalse(UnionSetBeed.contains(sources, $wellB1));
+    assertFalse(UnionSetBeed.contains(sources, $wellC1));
     sources.add($runB.wells);
-    assertTrue($unionSetBeed.contains(sources, $wellA1));
-    assertTrue($unionSetBeed.contains(sources, $wellA2));
-    assertTrue($unionSetBeed.contains(sources, $wellA3));
-    assertTrue($unionSetBeed.contains(sources, $wellB1));
-    assertTrue($unionSetBeed.contains(sources, $wellB2));
-    assertFalse($unionSetBeed.contains(sources, $wellC1));
+    assertTrue(UnionSetBeed.contains(sources, $wellA1));
+    assertTrue(UnionSetBeed.contains(sources, $wellA2));
+    assertTrue(UnionSetBeed.contains(sources, $wellA3));
+    assertTrue(UnionSetBeed.contains(sources, $wellB1));
+    assertTrue(UnionSetBeed.contains(sources, $wellB2));
+    assertFalse(UnionSetBeed.contains(sources, $wellC1));
     sources.remove($runA.wells);
-    assertFalse($unionSetBeed.contains(sources, $wellA1));
-    assertTrue($unionSetBeed.contains(sources, $wellB1));
-    assertTrue($unionSetBeed.contains(sources, $wellB2));
-    assertFalse($unionSetBeed.contains(sources, $wellC1));
+    assertFalse(UnionSetBeed.contains(sources, $wellA1));
+    assertTrue(UnionSetBeed.contains(sources, $wellB1));
+    assertTrue(UnionSetBeed.contains(sources, $wellB2));
+    assertFalse(UnionSetBeed.contains(sources, $wellC1));
   }
 
 

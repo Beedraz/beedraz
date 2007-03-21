@@ -103,7 +103,7 @@ public class TestAbstractBeed {
     assertTrue($subject.isListener($listener2));
     assertNull($listener1.$event);
     assertNull($listener2.$event);
-    $subject.fire($event);
+    $subject.publicUpdateDependents($event);
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
     assertEquals($event, $listener1.$event);

@@ -18,12 +18,13 @@ package org.beedra_II.topologicalupdate;
 
 
 import org.beedra_II.Beed;
+import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubEvent;
 
 
 public abstract class AbstractStubUpdateSource
-    extends AbstractUpdateSource<StubEvent>
+    extends AbstractUpdateSource
     implements Beed<StubEvent> {
 
   protected AbstractStubUpdateSource(boolean event) {
@@ -46,8 +47,8 @@ public abstract class AbstractStubUpdateSource
   public final StubEvent $myEvent;
 
   @Override
-  protected void fireEvent(StubEvent event) {
-    $firedEvent = event;
+  protected void fireEvent(Event event) {
+    $firedEvent = (StubEvent)event;
   }
 
   public StubEvent $firedEvent;

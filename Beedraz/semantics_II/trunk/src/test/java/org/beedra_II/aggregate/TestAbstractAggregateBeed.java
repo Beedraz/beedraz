@@ -91,7 +91,7 @@ public class TestAbstractAggregateBeed {
     // register a beed with the aggregate beed
     $aggregateBeed1.registerAggregateElement($beed1);
     // fire a change on the registered beed
-    $beed1.fire($event1);
+    $beed1.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
@@ -101,7 +101,7 @@ public class TestAbstractAggregateBeed {
     $listener1.reset();
     $listener2.reset();
     // fire a change on a beed that is not registered
-    $beed3.fire($event3);
+    $beed3.publicUpdateDependents($event3);
     // listeners of the aggregate beed should not be notified
     assertNull($listener1.$event);
     assertNull($listener2.$event);
@@ -111,7 +111,7 @@ public class TestAbstractAggregateBeed {
     // register another beeds with the aggregate beed
     $aggregateBeed1.registerAggregateElement($beed3);
     // fire a change on the registered beeds
-    $beed3.fire($event3);
+    $beed3.publicUpdateDependents($event3);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

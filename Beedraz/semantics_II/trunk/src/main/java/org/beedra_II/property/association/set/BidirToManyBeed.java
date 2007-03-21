@@ -74,23 +74,6 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
     assert many != null;
     assert !get().contains(many);
     $many.add(many);
-    $sizeBeed.setSize($sizeBeed.get() + 1);
-  }
-
-  /**
-   * Fire a {@link SetEvent} saying that the given element is added
-   * by the given edit.
-   * Fire an event on the $sizeBeed, containing the old size of the set beed
-   * and the edit that caused the change.
-   *
-   * @pre  get().contains(many);
-   */
-  void fireAddedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
-    Set<_Many_> added = new HashSet<_Many_>();
-    added.add(many);
-    fireChangeEvent(new ActualSetEvent<_Many_>(this, added, null, edit));
-    int oldSize = $sizeBeed.get() - 1;
-    $sizeBeed.fireEvent(oldSize, edit);
   }
 
   /**
@@ -100,21 +83,6 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   void remove(_Many_ many) {
     assert get().contains(many);
     $many.remove(many);
-    $sizeBeed.setSize($sizeBeed.get() - 1);
-  }
-
-  /**
-   * Fire a {@link SetEvent} saying that the given element is removed
-   * by the given edit.
-   * Fire an event on the $sizeBeed, containing the old size of the set beed
-   * and the edit that caused the change.
-   */
-  void fireRemovedEvent(_Many_ many, BidirToOneEdit<_One_, _Many_> edit) {
-    Set<_Many_> removed = new HashSet<_Many_>();
-    removed.add(many);
-    fireChangeEvent(new ActualSetEvent<_Many_>(this, null, removed, edit));
-    int oldSize = $sizeBeed.get() + 1;
-    $sizeBeed.fireEvent(oldSize, edit);
   }
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
@@ -146,6 +114,10 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
       _Many_ element = iter.next();
       element.toString(sb, level + 2);
     }
+  }
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    return 0;
   }
 
 }

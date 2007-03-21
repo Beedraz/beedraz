@@ -28,12 +28,12 @@ public class StubPropertyBeed extends AbstractPropertyBeed<StubEvent> {
   }
 
   /**
-   * Makes the fireChangeEvent method public for testing reasons.
+   * Makes the updateDependents method public for testing reasons.
    *
    * @param event
    */
-  public void fire(StubEvent event) {
-    fireChangeEvent(event);
+  public void publicUpdateDependents(StubEvent event) {
+    updateDependents(event);
   }
 
   @Override

@@ -24,14 +24,17 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Listener;
+import org.beedra_II.edit.Edit;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.IntegerEvent;
+import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
+import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -69,73 +72,79 @@ public class LongSumBeed
     super(owner);
   }
 
-  /**
-   * @invar  getNbOccurrences() > 0;
-   */
-  private class TermListener implements Listener<IntegerEvent> {
 
-    /**
-     * @post  getNbOccurrences() == 1;
-     */
-    public TermListener() {
-      $nbOccurrences = 1;
-    }
+  private final Dependent<IntegerBeed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<IntegerBeed<?>, ActualLongEvent>(this) {
 
-    public void beedChanged(IntegerEvent event) {
+    @Override
+    protected ActualLongEvent filteredUpdate(Map<IntegerBeed<?>, Event> events) {
       // recalculate(); optimization
       Long oldValue = $value;
       if ($value !=  null) {
-        assert $value != null;
-        assert event.getOldLong() != null :
-          "event old value must be not null because all old terms were not null," +
-          " because $value != null";
-        $value = (event.getNewLong() == null)
-                     ? null
-                     : $value + (event.getLongDelta() * getNbOccurrences());
+
+        for (Map.Entry<IntegerBeed<?>, Event> entry : events.entrySet()) {
+          IntegerEvent event = (IntegerEvent)entry.getValue();
+          assert event.getOldLong() != null :
+            "The old value contained in the event must be effective since $value != null.";
+          if (event.getNewLong() == null) {
+            $value = null;
+            break;
+          }
+          else {
+            $value += event.getLongDelta() * getNrOfOccurences(entry.getKey());
+          }
+        }
       }
-      else if ((event.getNewLong() != null) && (event.getOldLong() == null)) {
+      else {
         recalculate();
       }
-      // else: NOP
       if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new ActualLongEvent(LongSumBeed.this, oldValue, $value, event.getEdit()));
+        /* MUDO for now, we take the first edit we get, under the assumption that all events have
+         * the same edit; with compound edits, we should gather different edits
+         */
+        assert events.size() > 0;
+        Iterator<Event> iter = events.values().iterator();
+        Event event = iter.next();
+        Edit<?> edit = event.getEdit();
+        return new ActualLongEvent(LongSumBeed.this, oldValue, $value, edit);
+      }
+      else {
+        return null;
       }
     }
 
-    public int getNbOccurrences() {
-      return $nbOccurrences;
-    }
+  };
 
-    /**
-     * @pre  nbOccurrences > 0;
+  public final int getMaximumRootUpdateSourceDistance() {
+    /* FIX FOR CONSTRUCTION PROBLEM
+     * At construction, the super constructor is called with the future owner
+     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
+     * this object is registered as update source with the dependent of the
+     * aggregate beed. During that registration process, the dependent
+     * checks to see if we need to ++ our maximum root update source distance.
+     * This involves a call to this method getMaximumRootUpdateSourceDistance.
+     * Since however, we are still doing initialization in AbstractPropertyBeed,
+     * initialization code (and construction code) further down is not yet executed.
+     * This means that our $dependent is still null, and this results in a NullPointerException.
+     * On the other hand, we cannot move the concept of $dependent up, since not all
+     * property beeds have a dependent.
+     * The fix implemented here is the following:
+     * This problem only occurs during construction. During construction, we will
+     * not have any update sources, so our maximum root update source distance is
+     * effectively 0.
      */
-    public void setNbOccurrences(int nbOccurrences) {
-      assert nbOccurrences > 0;
-      $nbOccurrences = nbOccurrences;
-    }
-
-    public void increaseNbOccurrences() {
-      $nbOccurrences += 1;
-    }
-
-    /**
-     * @pre  nbOccurrences > 1;
+    /*
+     * TODO This only works if we add no update sources during construction,
+     *      so a better solution should be sought.
      */
-    public void decreaseNbOccurrences() {
-      assert getNbOccurrences() > 1;
-      $nbOccurrences -= 1;
-    }
-
-    private int $nbOccurrences;
-
+    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
   }
 
   /**
    * @basic
    */
   public final int getNbOccurrences(IntegerBeed<?> term) {
-    TermListener termListener = $terms.get(term);
-    return termListener != null ? termListener.getNbOccurrences() : 0;
+    return $dependent.getNrOfOccurences(term);
   }
 
   /**
@@ -144,26 +153,14 @@ public class LongSumBeed
    */
   public final void addTerm(IntegerBeed<?> term) {
     assert term != null;
-    synchronized (term) { // TODO is this correct?
-      TermListener termListener = $terms.get(term);
-      if (termListener != null) {
-        assert getNbOccurrences(term) > 0;
-        termListener.increaseNbOccurrences();
-      }
-      else {
-        assert getNbOccurrences(term) == 0;
-        termListener = new TermListener();
-        term.addListener(termListener);
-        $terms.put(term, termListener);
-      }
-      // recalculate(); optimization
-      if ($value != null) {
-        Long oldValue = $value;
-        $value = (term.getLong() == null) ? null : $value + term.getLong(); // MUDO overflow
-        fireChangeEvent(new ActualLongEvent(this, oldValue, $value, null));
-      }
-      // otherwise, there is an existing null term; the new term cannot change null value
+    $dependent.addUpdateSource(term);
+    // recalculate(); optimization
+    if ($value != null) {
+      Long oldValue = $value;
+      $value = (term.getLong() == null) ? null : $value + term.getLong(); // MUDO overflow
+      updateDependents(new ActualLongEvent(this, oldValue, $value, null));
     }
+    // otherwise, there is an existing null term; the new term cannot change null value
   }
 
   /**
@@ -172,55 +169,38 @@ public class LongSumBeed
    *          : true;
    */
   public final void removeTerm(IntegerBeed<?> term) {
-    synchronized (term) { // TODO is this correct?
-      TermListener termListener = $terms.get(term);
-      if (termListener != null) {
-        assert getNbOccurrences(term) > 0;
-        if (getNbOccurrences(term) > 1) {
-          termListener.decreaseNbOccurrences();
-        }
-        else {
-          assert getNbOccurrences(term) == 1;
-          term.removeListener(termListener);
-          $terms.remove(term);
-        }
-        // recalculate(); optimization
-        Long oldValue = $value;
-        /*
-         * term.getLong() == null && getNbOccurrences() == 0  ==>  recalculate
-         * term.getLong() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-         * term.getLong() != null && $value != null           ==>  new.$value == old.$value - term.getLong()
-         * term.getLong() != null && $value == null           ==>  new.$value == old.$value == null
-         */
-        if (term.getLong() == null && getNbOccurrences(term) == 0) {
-            /* $value was null because of this term. After the remove,
-             * the value can be null because of another term, or
-             * can be some value: we can't know, recalculate completely
-             */
-           recalculate();
-        }
-        else if ($value != null) {
-          // since $value is effective, all terms are effective
-          // the new value of the sum beed is the old value minus the value of the removed term
-          assert term.getLong() != null;
-          $value -= term.getLong();
-        }
-        // else: in all other cases, the value of $value is null, and stays null
-        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-          fireChangeEvent(new ActualLongEvent(this, oldValue, $value, null));
-        }
-        /* else, term != null, but $value is null; this means there is another term that is null,
-           and removing this term won't change that */
+    if ($dependent.getUpdateSourcesOccurencesMap().containsKey(term)) {
+      $dependent.removeUpdateSource(term);
+      // recalculate(); optimization
+      Long oldValue = $value;
+      /*
+       * term.getLong() == null && getNbOccurrences() == 0  ==>  recalculate
+       * term.getLong() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+       * term.getLong() != null && $value != null           ==>  new.$value == old.$value - term.getLong()
+       * term.getLong() != null && $value == null           ==>  new.$value == old.$value == null
+       */
+      if (term.getLong() == null && getNbOccurrences(term) == 0) {
+          /* $value was null because of this term. After the remove,
+           * the value can be null because of another term, or
+           * can be some value: we can't know, recalculate completely
+           */
+         recalculate();
       }
-      // else, term was not one of our terms: do nothing
+      else if ($value != null) {
+        // since $value is effective, all terms are effective
+        // the new value of the sum beed is the old value minus the value of the removed term
+        assert term.getLong() != null;
+        $value -= term.getLong();
+      }
+      // else: in all other cases, the value of $value is null, and stays null
+      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+        updateDependents(new ActualLongEvent(this, oldValue, $value, null));
+      }
+      /* else, term != null, but $value is null; this means there is another term that is null,
+         and removing this term won't change that */
     }
+    // else, term was not one of our terms: do nothing
   }
-
-  /**
-   * @invar $terms != null;
-   * @invar Collections.noNull($terms);
-   */
-  private final Map<IntegerBeed<?>, TermListener> $terms = new HashMap<IntegerBeed<?>, TermListener>();
 
   public final Double getDouble() {
     return castToDouble(getLong());
@@ -239,13 +219,15 @@ public class LongSumBeed
    */
   public void recalculate() {
     Long newValue = 0L;
-    for (IntegerBeed<?> term : $terms.keySet()) {
-      Long termValue = term.getLong();
+    @SuppressWarnings("cast")
+    Map<IntegerBeed<?>, Integer> termMap = (Map<IntegerBeed<?>, Integer>)$dependent.getUpdateSourcesOccurencesMap();
+    for (Map.Entry<IntegerBeed<?>, Integer> entry : termMap.entrySet()) {
+      Long termValue = entry.getKey().getLong();
       if (termValue == null) {
         newValue = null;
         break;
       }
-      newValue += termValue * getNbOccurrences(term); // autoboxing
+      newValue += entry.getKey().getLong() * entry.getValue();
     }
     $value = newValue;
   }
@@ -268,14 +250,14 @@ public class LongSumBeed
 
   @Override
   protected String otherToStringInformation() {
-    return getLong() + " (# " + $terms.size() + ")";
+    return getLong() + " (# " + $dependent.getUpdateSourcesSize() + ")";
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + getLong() + "\n");
-    sb.append(indent(level + 1) + "number of terms:" + $terms.size() + "\n");
+    sb.append(indent(level + 1) + "number of terms:" + $dependent.getUpdateSourcesSize() + "\n");
   }
 
   public BigInteger getBigInteger() {

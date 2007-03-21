@@ -103,7 +103,6 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
     assert position <= $many.size();
     assert many != null;
     $many.add(position, many);
-    $sizeBeed.setSize($sizeBeed.get() + 1);
   }
 
   /**
@@ -113,22 +112,6 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
   void remove(_Many_ many) {
     assert get().contains(many);
     $many.remove(many);
-    $sizeBeed.setSize($sizeBeed.get() - 1);
-  }
-
-  /**
-   * Fire an {@link ActualOrderedSetEvent} containing the old and new value of the
-   * the ordered set.
-   * If the size of this beed has changed, then fire an event on the $sizeBeed,
-   * containing the old size of the ordered set and the edit that caused the change.
-   */
-  void fireChangeEvent(OrderedSet<_Many_> oldValue,
-                       OrderedSet<_Many_> newValue,
-                       OrderedBidirToOneEdit<_One_, _Many_> edit) {
-    fireChangeEvent(new ActualOrderedSetEvent<_Many_>(this, oldValue, newValue, edit));
-    if (oldValue.size() != newValue.size()) {
-      $sizeBeed.fireEvent(oldValue.size(), edit);
-    }
   }
 
   private final OrderedSet<_Many_> $many = new LinkedListOrderedSet<_Many_>();
@@ -161,6 +144,10 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
       _Many_ element = iter.next();
       element.toString(sb, level + 2);
     }
+  }
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    return 0;
   }
 
 }

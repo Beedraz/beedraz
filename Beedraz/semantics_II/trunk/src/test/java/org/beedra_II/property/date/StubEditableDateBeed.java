@@ -34,10 +34,10 @@ public class StubEditableDateBeed extends EditableDateBeed {
   }
 
   /**
-   * fireChangeEvent is made public for testing reasons
+   * updateDependents is made public for testing reasons
    */
-  public void fire(DateEvent event) {
-    fireChangeEvent(event);
+  public void publicUpdateDependents(DateEvent event) {
+    updateDependents(event);
   }
 
 }

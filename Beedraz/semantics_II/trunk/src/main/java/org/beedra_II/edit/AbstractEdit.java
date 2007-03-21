@@ -67,11 +67,11 @@ public abstract class AbstractEdit<_Target_ extends Beed<?>,
    * @todo method should be final
    */
   @Override
-  protected void notifyListeners() {
-    fireEvent(createEvent());
+  protected void updateDependents() {
+    updateDependents(createEvent());
   }
 
-  protected abstract void fireEvent(_Event_ event);
+  protected abstract void updateDependents(_Event_ event);
 
   protected abstract _Event_ createEvent();
 

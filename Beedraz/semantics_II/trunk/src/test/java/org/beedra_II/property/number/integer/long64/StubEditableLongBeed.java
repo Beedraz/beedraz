@@ -17,10 +17,10 @@ public class StubEditableLongBeed extends EditableLongBeed {
   }
 
   /**
-   * fireChangeEvent is made public for testing reasons
+   * updateDependents is made public for testing reasons
    */
-  public void fire(ActualLongEvent event) {
-    fireChangeEvent(event);
+  public void publicUpdateDependents(ActualLongEvent event) {
+    updateDependents(event);
   }
 
   @Override

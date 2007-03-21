@@ -25,7 +25,6 @@ import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**
@@ -48,11 +47,11 @@ public abstract class AbstractExpressionBeed<_Number_ extends Number,
     super(owner);
   }
 
-  protected final void fireEvent(_Number_ oldValue, Edit<?> edit) {
-    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-      fireChangeEvent(createNewEvent(oldValue, $value, edit));
-    }
-  }
+//  protected final void fireEvent(_Number_ oldValue, Edit<?> edit) {
+//    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+//      fireChangeEvent(createNewEvent(oldValue, $value, edit));
+//    }
+//  }
 
   protected abstract _NumberEvent_ createNewEvent(_Number_ oldValue, _Number_ newValue, Edit<?> edit);
 

@@ -59,6 +59,7 @@ public class Singleton<_Element_> extends AbstractUnmodifiableSet<_Element_> {
         if ($elementReturned) {
           throw new NoSuchElementException();
         }
+        $elementReturned = true;
         return $element;
       }
 

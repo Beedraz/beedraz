@@ -58,8 +58,8 @@ public class TestFilteredSetBeed {
     /**
      * Made public for testing reasons.
      */
-    public void fireChangeEventPublic(SetEvent<WellBeanBeed> event) {
-      super.fireChangeEvent(event);
+    public void publicUpdateDependents(SetEvent<WellBeanBeed> event) {
+      updateDependents(event);
     }
 
   }
@@ -192,7 +192,7 @@ public class TestFilteredSetBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $filteredSetBeed.fireChangeEventPublic($event);
+    $filteredSetBeed.publicUpdateDependents($event);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

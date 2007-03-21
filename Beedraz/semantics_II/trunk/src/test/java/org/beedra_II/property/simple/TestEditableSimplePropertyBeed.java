@@ -59,7 +59,7 @@ public class TestEditableSimplePropertyBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableSimplePropertyBeed.fireEvent($event1);
+    $editableSimplePropertyBeed.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
@@ -93,11 +93,12 @@ public class TestEditableSimplePropertyBeed {
     $editableSimplePropertyBeed.addListener($listener3);
     $editableSimplePropertyBeed.addListener($listener4);
     // fire event
-    $editableSimplePropertyBeed.fireEvent($event1);
+    $editableSimplePropertyBeed.publicUpdateDependents($event1);
     // checks
     assertNotNull($listener3.$event);
     assertNotNull($listener4.$event);
     assertEquals($listener3.$event, $event1);
     assertEquals($listener4.$event, $event1);
   }
+
 }

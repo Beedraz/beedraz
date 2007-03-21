@@ -85,15 +85,5 @@ public abstract class AbstractDoubleBinaryExpressionBeed
     return beed.getDouble();
   }
 
-  @Override
-  protected final Double newValueFromLeft(RealEvent event) {
-    return event.getNewDouble();
-  }
-
-  @Override
-  protected final Double newValueFromRight(RealEvent event) {
-    return event.getNewDouble();
-  }
-
 }
 

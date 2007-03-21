@@ -19,16 +19,18 @@ package org.beedra_II.property.collection.set;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.AbstractSet;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
+import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
+import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 import org.ppeew.smallfries_I.Filter;
@@ -68,6 +70,87 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     super(owner);
     $filter = filter;
   }
+
+  private final Dependent<Beed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<Beed<?>, SetEvent<_Element_>>(this) {
+
+      @Override
+      protected SetEvent<_Element_> filteredUpdate(Map<Beed<?>, Event> events) {
+        // if the source changes (elements added and / or removed
+        if (events.keySet().contains($source)) {
+          @SuppressWarnings("unchecked")
+          SetEvent<_Element_> setEvent = (SetEvent<_Element_>)events.get($source);
+          sourceChanged(setEvent);
+        }
+        // if the value of one of the elements changes
+        // we do nothing special here, just a total recalculate
+        // IDEA there is room for optimalization here
+        // recalculate and notify the listeners if the value has changed
+        /* MUDO for now, we take the first edit we get, under the assumption that all events have
+         * the same edit; with compound edits, we should gather different edits
+         */
+        assert events.size() > 0;
+        Iterator<Event> iter = events.values().iterator();
+        Event event = iter.next();
+        Edit<?> edit = event.getEdit();
+        return recalculateEvent(edit);
+      }
+
+      /**
+       * @post    All Beeds that are added to the SetBeed by the given event
+       *          become update sources.
+       *          (The reason is that this should be
+       *          notified (and then recalculate) when one of the element Beeds
+       *          changes.)
+       * @post    All Beeds that are removed from the SetBeed by the given
+       *          event are no longer update sources.
+       * @post    getDouble() is recalculated.
+       */
+      private void sourceChanged(SetEvent<_Element_> event) {
+        /* All Beeds that are added to the SetBeed by the given event
+         * become update sources
+         */
+        Set<_Element_> added = event.getAddedElements();
+        for (_Element_ beed : added) {
+          addUpdateSource(beed);
+        }
+        /* All Beeds that are removed from the SetBeed by the given event
+         * stop being update sources
+         */
+        Set<_Element_> removed = event.getRemovedElements();
+        for (_Element_ beed : removed) {
+          removeUpdateSource(beed);
+        }
+      }
+
+
+    };
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    /* FIX FOR CONSTRUCTION PROBLEM
+     * At construction, the super constructor is called with the future owner
+     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
+     * this object is registered as update source with the dependent of the
+     * aggregate beed. During that registration process, the dependent
+     * checks to see if we need to ++ our maximum root update source distance.
+     * This involves a call to this method getMaximumRootUpdateSourceDistance.
+     * Since however, we are still doing initialization in AbstractPropertyBeed,
+     * initialization code (and construction code) further down is not yet executed.
+     * This means that our $dependent is still null, and this results in a NullPointerException.
+     * On the other hand, we cannot move the concept of $dependent up, since not all
+     * property beeds have a dependent.
+     * The fix implemented here is the following:
+     * This problem only occurs during construction. During construction, we will
+     * not have any update sources, so our maximum root update source distance is
+     * effectively 0.
+     */
+    /*
+     * TODO This only works if we only add 1 update source during construction,
+     *      so a better solution should be sought.
+     */
+    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+  }
+
 
 
   /*<property name="filterCriterionFactory">*/
@@ -109,22 +192,24 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    *          set has changed.
    */
   public final void setSource(SetBeed<_Element_, ?> source) {
+    if ($source != null) {
+      for (_Element_ beed : $source.get()) {
+        $dependent.removeUpdateSource(beed);
+      }
+      $dependent.removeUpdateSource($source);
+    }
+    // set the source
     $source = source;
-    if (source != null) {
-      // register the FilteredSetBeed as listener of the given source
-      source.addListener($sourceListener);
-      // register the FilteredSetBeed as listener of all beeds in the given source
-      for (_Element_ beed : source.get()) {
-        beed.addListener($beedListener);
+    if ($source != null) {
+      $dependent.addUpdateSource($source);
+      for (_Element_ beed : $source.get()) {
+        $dependent.addUpdateSource(beed);
       }
     }
     // recalculate and notify the listeners if the value has changed
-    Set<_Element_> oldValue = $filteredSet;
-    recalculate();
-    if (! ComparisonUtil.equalsWithNull(oldValue, $filteredSet)) {
-      fireChangeEvent(
-        new ActualSetEvent<_Element_>(
-          FilteredSetBeed.this, $filteredSet, oldValue, null));
+    ActualSetEvent<_Element_> event = recalculateEvent(null);
+    if (event != null) {
+      updateDependents(event);
     }
   }
 
@@ -133,169 +218,20 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
   /*</property>*/
 
 
-  /**
-   * A listener that will be registered as listener of the {@link #getSource()}.
-   */
-  private final Listener<SetEvent<_Element_>> $sourceListener =
-        new Listener<SetEvent<_Element_>>() {
-
-    /**
-     * @post    The FilteredSetBeed is registered as a listener of all beeds
-     *          that are added to the source by the given event. (The reason is that
-     *          the FilteredSetBeed should be notified (and then recalculate) when one
-     *          of the beeds changes.)
-     * @post    The FilteredSetBeed is removed as listener of all beeds
-     *          that are removed from the source by the given event.
-     * @post    get() == the result of mapping the elements of the given source
-     * @post    The listeners of this beed are notified when the set changes.
-     * @post    The listeners of the size beed are notified when the size of this
-     *          set has changed.
-     */
-    public void beedChanged(SetEvent<_Element_> event) {
-      int oldSize = $filteredSet.size();
-      // add the FilteredSetBeed as listener of all beeds that are added to the source by the given event
-      // remember the beeds that satisfy the filter criterion
-      Set<_Element_> added = event.getAddedElements();
-      Set<_Element_> validAdded = new HashSet<_Element_>();
-      for (_Element_ element : added) {
-        // add the FilteredSetBeed as listener of the added beed
-        element.addListener($beedListener);
-        // check whether the beed will be in the resulting set
-        if (getFilter().filter(element)) {
-          $filteredSet.add(element);
-          validAdded.add(element);
-        }
-      }
-      // remove the FilteredSetBeed as listener from all beeds that are removed from the source by the given event
-      // remember the beeds that satisfy the filter criterion
-      Set<_Element_> removed = event.getRemovedElements();
-      Set<_Element_> validRemoved = new HashSet<_Element_>();
-      for (_Element_ element : removed) {
-        // remove the FilteredSetBeed as listener of the removed beed
-        element.removeListener($beedListener);
-        // check whether the beed was in the resulting set
-        if (getFilter().filter(element)) {
-          $filteredSet.remove(element);
-          validRemoved.add(element);
-        }
-      }
-      // notify the listeners if a beed has been added or removed
-      if (!validAdded.isEmpty() || !validRemoved.isEmpty()) {
-        fireChangeEvent(
-          new ActualSetEvent<_Element_>(
-            FilteredSetBeed.this, validAdded, validRemoved, event.getEdit()));
-      }
-      // change the size beed and notify the size beed listeners when the size of the filtered set
-      // has changed
-      updateSizeBeed(oldSize, event.getEdit());
-    }
-
-  };
-
-
-  private final Listener<_Event_> $beedListener = new Listener<_Event_>() {
-
-    /**
-     * @post    get() == the result of filtering the elements of the given source
-     * @post    The listeners of this beed are notified.
-     */
-    public void beedChanged(_Event_ event) {
-      int oldSize = $filteredSet.size();
-      @SuppressWarnings("unchecked")
-      _Element_ element = (_Element_)event.getSource(); // MUDO can we proof that this cast is save?
-      // check whether the validity of the beed has changed
-      Set<_Element_> added = new HashSet<_Element_>();
-      Set<_Element_> removed = new HashSet<_Element_>();
-      if (getFilter().filter(element)) {
-        if (!$filteredSet.contains(element)) {
-          // old: false, new: true
-          $filteredSet.add(element);
-          added.add(element);
-          fireChangeEvent(
-              new ActualSetEvent<_Element_>(
-                  FilteredSetBeed.this, added, removed, event.getEdit()));
-        }
-      }
-      else {
-        if ($filteredSet.contains(element)) {
-          // old: true, new: false
-          $filteredSet.remove(element);
-          removed.add(element);
-          fireChangeEvent(
-              new ActualSetEvent<_Element_>(
-                  FilteredSetBeed.this, added, removed, event.getEdit()));
-        }
-      }
-      // change the size beed and notify the size beed listeners when the size of the filtered set
-      // has changed
-      updateSizeBeed(oldSize, event.getEdit());
-    }
-
-  };
-
-  /**
-   * Change the size beed and notify the size beed listeners when the size of the filtered set
-   * has changed
-   */
-  private void updateSizeBeed(int oldSize, Edit<?> edit) {
-    if (oldSize != $filteredSet.size()) {
-      $sizeBeed.setSize($filteredSet.size());
-      $sizeBeed.fireEvent(oldSize, edit);
-    }
-  }
 
   /**
    * The set of filtered elements in the {@link #getSource()}.
    *
    * @invar  $filteredSet != null;
    */
-  private Set<_Element_> $filteredSet = new HashSet<_Element_>();
+  private HashSet<_Element_> $filteredSet = new HashSet<_Element_>();
 
 
   /**
    * @basic
    */
   public final Set<_Element_> get() {
-    return new AbstractSet<_Element_>() {
-
-      @Override
-      public Iterator<_Element_> iterator() {
-        final Iterator<_Element_> filteredSetIterator = $filteredSet.iterator();
-        return new Iterator<_Element_>() {
-
-          /**
-           * Delegation.
-           */
-          public boolean hasNext() {
-            return filteredSetIterator.hasNext();
-          }
-
-          /**
-           * Delegation.
-           */
-          public _Element_ next() {
-            return filteredSetIterator.next();
-          }
-
-          /**
-           * optional operation
-           */
-          public void remove() {
-            // NOP
-          }
-
-        };
-      }
-
-      /**
-       * The number of valid filter criterions.
-       */
-      @Override
-      public int size() {
-        return $filteredSet.size();
-      }
-
-    };
+    return Collections.unmodifiableSet($filteredSet);
   }
 
 
@@ -308,21 +244,31 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    * that satisfy the filter criterion.
    */
   public void recalculate() {
-    int oldSize = $filteredSet.size();
-    $filteredSet = new HashSet<_Element_>();
-    Set<_Element_> elements = getSource() != null
-                              ? getSource().get()
-                              : new HashSet<_Element_>();
-    for (_Element_ element : elements) {
-      if (getFilter().filter(element)) {
-        $filteredSet.add(element);
+    $filteredSet.clear();
+    if (getSource() != null) {
+      for (_Element_ element : getSource().get()) {
+        if (getFilter().filter(element)) {
+          $filteredSet.add(element);
+        }
       }
     }
-    // change the size beed and notify the size beed listeners when the size of the filtered set
-    // has changed
-    updateSizeBeed(oldSize, null);
   }
 
+  private ActualSetEvent<_Element_> recalculateEvent(Edit<?> edit) {
+    @SuppressWarnings("unchecked")
+    Set<_Element_> oldValue = (Set<_Element_>)$filteredSet.clone();
+    recalculate();
+    if (! ComparisonUtil.equalsWithNull(oldValue, $filteredSet)) {
+      Set<_Element_> addedElements = new HashSet<_Element_>($filteredSet);
+      addedElements.removeAll(oldValue);
+      Set<_Element_> removedElements = new HashSet<_Element_>(oldValue);
+      removedElements.removeAll($filteredSet);
+      return new ActualSetEvent<_Element_>(FilteredSetBeed.this, addedElements,  removedElements, edit);
+    }
+    else {
+      return null;
+    }
+  }
 
   /**
    * @post  result != null;

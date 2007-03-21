@@ -213,8 +213,8 @@ public class SetEdit<_Element_>
   }
 
   @Override
-  protected final void fireEvent(SetEvent<_Element_> event) {
-    getTarget().fireEvent(event);
+  protected final void updateDependents(SetEvent<_Element_> event) {
+    getTarget().packageUpdateDependents(event);
   }
 
   /**

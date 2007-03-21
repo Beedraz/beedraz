@@ -20,15 +20,11 @@ package org.beedra_II.aggregate;
 public class StubAggregateBeed extends AbstractAggregateBeed {
 
   /**
-   * Makes the fireChangeEvent method public for testing reasons.
+   * Makes the updateDependents method public for testing reasons.
    * @param event
    */
-  public void fire(PropagatedEvent event) {
-    fireChangeEvent(event);
-  }
-
-  public int getMaximumRootUpdateSourceDistance() {
-    return 0;
+  public void publicUpdateDependents(PropagatedEvent event) {
+    updateDependents(event);
   }
 
 }

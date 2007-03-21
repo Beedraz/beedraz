@@ -22,8 +22,8 @@ import org.beedra_II.event.StubEvent;
 
 public class StubBeed extends AbstractBeed<StubEvent> {
 
-  public void fire(StubEvent event) {
-    fireChangeEvent(event);
+  public void publicUpdateDependents(StubEvent event) {
+    updateDependents(event);
   }
 
   public int getMaximumRootUpdateSourceDistance() {

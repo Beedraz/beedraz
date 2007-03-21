@@ -29,14 +29,12 @@ import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.collection_I.CollectionUtil;
 import org.ppeew.collection_I.LinkedListOrderedSet;
 import org.ppeew.collection_I.OrderedSet;
 
@@ -50,11 +48,12 @@ public class TestOrderedBidirToManyBeed {
     }
 
     /**
-     * fireChangeEvent is made public for testing reasons
+     * updateDependents is made public for testing reasons
      */
-    public void fire(OrderedSetEvent<_Many_> event) {
-      fireChangeEvent(event);
+    public void publicUpdateDependents(OrderedSetEvent<_Many_> event) {
+      updateDependents(event);
     }
+
   }
 
   public class OneBeanBeed extends AbstractBeanBeed {
@@ -90,10 +89,10 @@ public class TestOrderedBidirToManyBeed {
     $orderedBidirToOneEdit =
       new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed);
     $orderedBidirToOneEdit.perform();
-    OrderedSet<ManyBeanBeed> oldS = CollectionUtil.emptyOrderedSet();
+//    OrderedSet<ManyBeanBeed> oldS = CollectionUtil.emptyOrderedSet();
     OrderedSet<ManyBeanBeed> newS = new LinkedListOrderedSet<ManyBeanBeed>();
     newS.add($many);
-    $listEvent = new ActualOrderedSetEvent<ManyBeanBeed>($orderedBidirToManyBeed, oldS, newS, $orderedBidirToOneEdit);
+//    $listEvent = new ActualOrderedSetEvent<ManyBeanBeed>($orderedBidirToManyBeed, oldS, newS, $orderedBidirToOneEdit);
     $listener1 = new StubListener<PropagatedEvent>();
     $listener2 = new StubListener<PropagatedEvent>();
     $listener3 = new StubOrderedSetEventListener();
@@ -111,7 +110,7 @@ public class TestOrderedBidirToManyBeed {
   private OneBeanBeed $one = new OneBeanBeed();
   private MyOrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $orderedBidirToManyBeed;
   private OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> $orderedBidirToOneEdit;
-  private OrderedSetEvent<ManyBeanBeed> $listEvent;
+//  private OrderedSetEvent<ManyBeanBeed> $listEvent;
   private StubListener<PropagatedEvent> $listener1;
   private StubListener<PropagatedEvent> $listener2;
   private StubOrderedSetEventListener $listener3;
@@ -127,13 +126,14 @@ public class TestOrderedBidirToManyBeed {
     $one.addListener($listener2);
     assertNull($listener1.$event);
     assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $orderedBidirToManyBeed.fire($listEvent);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals($listEvent, $listener1.$event.getCause());
-    assertEquals($listEvent, $listener1.$event.getCause());
+//    // fire a change on the registered beed
+// YOU CAN'T DO THAT OUT OF CONTEXT
+//    $orderedBidirToManyBeed.publicUpdateDependents($listEvent);
+//    // listeners of the aggregate beed should be notified
+//    assertNotNull($listener1.$event);
+//    assertNotNull($listener2.$event);
+//    assertEquals($listEvent, $listener1.$event.getCause());
+//    assertEquals($listEvent, $listener1.$event.getCause());
   }
 
   @Test
@@ -239,31 +239,24 @@ public class TestOrderedBidirToManyBeed {
     OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> edit1 =
       new OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed);
     edit1.perform();
-    $orderedBidirToManyBeed.fireChangeEvent(oldValue, newValue, edit1);
-    assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getSource(), $orderedBidirToManyBeed);
-    assertEquals($listener3.$event.getOldValue().size(), 1);
-    assertTrue($listener3.$event.getOldValue().contains(m1));
-    assertEquals($listener3.$event.getNewValue().size(), 2);
-    assertTrue($listener3.$event.getNewValue().contains(m2));
-    assertTrue($listener3.$event.getNewValue().contains(m3));
-    assertEquals($listener3.$event.getEdit(), edit1);
-    assertNotNull($listener4.$event);
-    assertEquals($listener4.$event.getSource(), $orderedBidirToManyBeed);
-    assertEquals($listener4.$event.getOldValue().size(), 1);
-    assertTrue($listener4.$event.getOldValue().contains(m1));
-    assertEquals($listener4.$event.getNewValue().size(), 2);
-    assertTrue($listener4.$event.getNewValue().contains(m2));
-    assertTrue($listener4.$event.getNewValue().contains(m3));
-    assertEquals($listener4.$event.getEdit(), edit1);
+    // MUDO EDIT NEEDS A GOAL TO TEST THIS
+//    assertNotNull($listener3.$event);
+//    assertEquals($listener3.$event.getSource(), $orderedBidirToManyBeed);
+//    assertEquals($listener3.$event.getOldValue().size(), 1);
+//    assertTrue($listener3.$event.getOldValue().contains(m1));
+//    assertEquals($listener3.$event.getNewValue().size(), 2);
+//    assertTrue($listener3.$event.getNewValue().contains(m2));
+//    assertTrue($listener3.$event.getNewValue().contains(m3));
+//    assertEquals($listener3.$event.getEdit(), edit1);
+//    assertNotNull($listener4.$event);
+//    assertEquals($listener4.$event.getSource(), $orderedBidirToManyBeed);
+//    assertEquals($listener4.$event.getOldValue().size(), 1);
+//    assertTrue($listener4.$event.getOldValue().contains(m1));
+//    assertEquals($listener4.$event.getNewValue().size(), 2);
+//    assertTrue($listener4.$event.getNewValue().contains(m2));
+//    assertTrue($listener4.$event.getNewValue().contains(m3));
+//    assertEquals($listener4.$event.getEdit(), edit1);
   }
-
-////  @Test
-////  public void createInitialEvent1() {
-////    assertTrue("the implementation of this method calls the constructor " +
-////        "of ListEvent; the last parameter of this constructor should be " +
-////        "effective according to the documentation", false);
-////  }
 
   @Test
   public void createInitialEvent2() {

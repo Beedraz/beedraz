@@ -27,10 +27,10 @@ public class StubEditableStringBeed extends EditableStringBeed {
   }
 
   /**
-   * fireChangeEvent is made public for testing reasons
+   * updateDependents is made public for testing reasons
    */
-  public void fire(StringEvent event) {
-    fireChangeEvent(event);
+  public void publicUpdateDependents(StringEvent event) {
+    updateDependents(event);
   }
 
   @Override

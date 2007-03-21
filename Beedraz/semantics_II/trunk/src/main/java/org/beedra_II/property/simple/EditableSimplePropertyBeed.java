@@ -83,8 +83,16 @@ public abstract class EditableSimplePropertyBeed<_Type_,
     return true;
   }
 
-  void fireEvent(_Event_ editEvent) {
-    fireChangeEvent(editEvent);
+//  void fireEvent(_Event_ editEvent) {
+//    fireChangeEvent(editEvent);
+//  }
+
+  public final int getMaximumRootUpdateSourceDistance() {
+    return 0;
+  }
+
+  void packageUpdateDependents(_Event_ event) {
+    updateDependents(event);
   }
 
   private final static String NULL_STRING = "null";

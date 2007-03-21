@@ -19,14 +19,17 @@ package org.beedra_II.property.number.real.double64;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Listener;
+import org.beedra_II.edit.Edit;
+import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
+import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
+import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 import org.ppeew.smallfries_I.MathUtil;
@@ -62,64 +65,71 @@ public abstract class DoubleCommutativeOperationBeed
     super(owner);
   }
 
-  /**
-   * @invar  getNbOccurrences() > 0;
-   */
-  private class ArgumentListener implements Listener<RealEvent> {
+  private final Dependent<RealBeed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<RealBeed<?>, ActualDoubleEvent>(this) {
 
-    /**
-     * @post  getNbOccurrences() == 1;
-     */
-    public ArgumentListener() {
-      $nbOccurrences = 1;
-    }
-
-    public void beedChanged(RealEvent event) {
-      // recalculate(); optimization
-      Double oldValue = $value;
-      if ($value !=  null) {
-        assert $value != null;
-        assert event.getOldDouble() != null :
-          "The old value contained in the event must be effective since $value != null.";
-        $value = (event.getNewDouble() == null)
-                     ? null
-                     : recalculateValue($value, event.getOldDouble(), event.getNewDouble(), getNbOccurrences());
+      @Override
+      protected ActualDoubleEvent filteredUpdate(Map<RealBeed<?>, Event> events) {
+        // recalculate(); optimization
+        Double oldValue = $value;
+        if ($value !=  null) {
+          for (Map.Entry<RealBeed<?>, Event> entry : events.entrySet()) {
+            RealEvent event = (RealEvent)entry.getValue();
+            assert event.getOldDouble() != null :
+              "The old value contained in the event must be effective since $value != null.";
+            Double newDouble = event.getNewDouble();
+            if (newDouble == null) {
+              $value = null;
+              break;
+            }
+            else {
+              $value = recalculateValue($value, event.getOldDouble(), event.getNewDouble(), getNrOfOccurences(entry.getKey()));
+            }
+          }
+        }
+        else {
+          recalculate();
+        }
+        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+          /* MUDO for now, we take the first edit we get, under the assumption that all events have
+           * the same edit; with compound edits, we should gather different edits
+           */
+          assert events.size() > 0;
+          Iterator<Event> iter = events.values().iterator();
+          Event event = iter.next();
+          Edit<?> edit = event.getEdit();
+          return new ActualDoubleEvent(DoubleCommutativeOperationBeed.this, oldValue, $value, edit);
+        }
+        else {
+          return null;
+        }
       }
-      else if ((event.getNewDouble() != null) && (event.getOldDouble() == null)) {
-        recalculate();
-      }
-      // else: NOP
-      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        fireChangeEvent(new ActualDoubleEvent(DoubleCommutativeOperationBeed.this, oldValue, $value, event.getEdit()));
-      }
-    }
 
-    public int getNbOccurrences() {
-      return $nbOccurrences;
-    }
+    };
 
-    /**
-     * @pre  nbOccurrences > 0;
+  public final int getMaximumRootUpdateSourceDistance() {
+    /* FIX FOR CONSTRUCTION PROBLEM
+     * At construction, the super constructor is called with the future owner
+     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
+     * this object is registered as update source with the dependent of the
+     * aggregate beed. During that registration process, the dependent
+     * checks to see if we need to ++ our maximum root update source distance.
+     * This involves a call to this method getMaximumRootUpdateSourceDistance.
+     * Since however, we are still doing initialization in AbstractPropertyBeed,
+     * initialization code (and construction code) further down is not yet executed.
+     * This means that our $dependent is still null, and this results in a NullPointerException.
+     * On the other hand, we cannot move the concept of $dependent up, since not all
+     * property beeds have a dependent.
+     * The fix implemented here is the following:
+     * This problem only occurs during construction. During construction, we will
+     * not have any update sources, so our maximum root update source distance is
+     * effectively 0.
      */
-    public void setNbOccurrences(int nbOccurrences) {
-      assert nbOccurrences > 0;
-      $nbOccurrences = nbOccurrences;
-    }
-
-    public void increaseNbOccurrences() {
-      $nbOccurrences += 1;
-    }
-
-    /**
-     * @pre  nbOccurrences > 1;
+    /*
+     * TODO This only works if we add no update sources during construction,
+     *      so a better solution should be sought.
      */
-    public void decreaseNbOccurrences() {
-      assert getNbOccurrences() > 1;
-      $nbOccurrences -= 1;
-    }
-
-    private int $nbOccurrences;
-
+    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
   }
 
   /**
@@ -140,8 +150,7 @@ public abstract class DoubleCommutativeOperationBeed
    * @basic
    */
   public final int getNbOccurrences(RealBeed<?> argument) {
-    ArgumentListener argumentListener = $arguments.get(argument);
-    return argumentListener != null ? argumentListener.getNbOccurrences() : 0;
+    return $dependent.getNrOfOccurences(argument);
   }
 
   /**
@@ -150,30 +159,18 @@ public abstract class DoubleCommutativeOperationBeed
    */
   public final void addArgument(RealBeed<?> argument) {
     assert argument != null;
-    synchronized (argument) { // TODO is this correct?
-      ArgumentListener argumentListener = $arguments.get(argument);
-      if (argumentListener != null) {
-        assert getNbOccurrences(argument) > 0;
-        argumentListener.increaseNbOccurrences();
+    $dependent.addUpdateSource(argument);
+    // recalculate(); optimization
+    if ($value != null) {
+      Double oldValue = $value;
+      $value = (argument.getDouble() == null)
+                 ? null
+                 : recalculateValueAdded($value, argument.getDouble(), 1);
+      if (! MathUtil.equalValue(oldValue, $value)) {
+        updateDependents(new ActualDoubleEvent(this, oldValue, $value, null));
       }
-      else {
-        assert getNbOccurrences(argument) == 0;
-        argumentListener = new ArgumentListener();
-        argument.addListener(argumentListener);
-        $arguments.put(argument, argumentListener);
-      }
-      // recalculate(); optimization
-      if ($value != null) {
-        Double oldValue = $value;
-        $value = (argument.getDouble() == null)
-                   ? null
-                   : recalculateValueAdded($value, argument.getDouble(), 1);
-        if (! MathUtil.equalValue(oldValue, $value)) {
-          fireChangeEvent(new ActualDoubleEvent(this, oldValue, $value, null));
-        }
-      }
-      // otherwise, there is an existing null argument; the new argument cannot change null value
     }
+    // otherwise, there is an existing null argument; the new argument cannot change null value
   }
 
   /**
@@ -192,48 +189,37 @@ public abstract class DoubleCommutativeOperationBeed
    *          : true;
    */
   public final void removeArgument(RealBeed<?> argument) {
-    synchronized (argument) { // TODO is this correct?
-      ArgumentListener argumentListener = $arguments.get(argument);
-      if (argumentListener != null) {
-        assert getNbOccurrences(argument) > 0;
-        if (getNbOccurrences(argument) > 1) {
-          argumentListener.decreaseNbOccurrences();
-        }
-        else {
-          assert getNbOccurrences(argument) == 1;
-          argument.removeListener(argumentListener);
-          $arguments.remove(argument);
-        }
-        // recalculate(); optimization
-        Double oldValue = $value;
-        /**
-         * argument.getDouble() == null && getNbOccurrences() == 0  ==>  recalculate
-         * argument.getDouble() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-         * argument.getDouble() != null && $value != null           ==>  new.$value == remove the value of argument.getDouble() from old.$value
-         * argument.getDouble() != null && $value == null           ==>  new.$value == old.$value == null
-         */
-        if (argument.getDouble() == null && getNbOccurrences(argument) == 0) {
-            /* $value was null because of this argument. After the remove,
-             * the value can be null because of another argument, or
-             * can be some value: we can't know, recalculate completely
-             */
-           recalculate();
-        }
-        else if ($value != null) {
-          // since $value is effective, all arguments are effective
-          // the new value of this beed beed is the old value 'minus' the value of the removed argument
-          assert argument.getDouble() != null;
-          $value = recalculateValueRemoved($value, argument.getDouble(), 1);
-        }
-        // else: in all other cases, the value of $value is null, and stays null
-        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-          fireChangeEvent(new ActualDoubleEvent(this, oldValue, $value, null));
-        }
-        /* else, argument != null, but $value is null; this means there is another argument that is null,
-           and removing this argument won't change that */
+    if ($dependent.getUpdateSourcesOccurencesMap().containsKey(argument)) {
+      $dependent.removeUpdateSource(argument);
+      // recalculate(); optimization
+      Double oldValue = $value;
+      /**
+       * argument.getDouble() == null && getNbOccurrences() == 0  ==>  recalculate
+       * argument.getDouble() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
+       * argument.getDouble() != null && $value != null           ==>  new.$value == remove the value of argument.getDouble() from old.$value
+       * argument.getDouble() != null && $value == null           ==>  new.$value == old.$value == null
+       */
+      if (argument.getDouble() == null && $dependent.getNrOfOccurences(argument) == 0) {
+          /* $value was null because of this argument. After the remove,
+           * the value can be null because of another argument, or
+           * can be some value: we can't know, recalculate completely
+           */
+         recalculate();
       }
-      // else, argument was not one of our arguments: do nothing
+      else if ($value != null) {
+        // since $value is effective, all arguments are effective
+        // the new value of this beed beed is the old value 'minus' the value of the removed argument
+        assert argument.getDouble() != null;
+        $value = recalculateValueRemoved($value, argument.getDouble(), 1);
+      }
+      // else: in all other cases, the value of $value is null, and stays null
+      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+        updateDependents(new ActualDoubleEvent(this, oldValue, $value, null));
+      }
+      /* else, argument != null, but $value is null; this means there is another argument that is null,
+         and removing this argument won't change that */
     }
+    // else, argument was not one of our arguments: do nothing
   }
 
   /**
@@ -245,13 +231,6 @@ public abstract class DoubleCommutativeOperationBeed
    */
   protected abstract Double recalculateValueRemoved(
       Double oldValueBeed, Double valueArgument, int nbOccurrences);
-
-  /**
-   * @invar $arguments != null;
-   * @invar Collections.noNull($arguments);
-   */
-  private final Map<RealBeed<?>, ArgumentListener> $arguments =
-        new HashMap<RealBeed<?>, ArgumentListener>();
 
   public final Double getDouble() {
     return $value;
@@ -266,13 +245,15 @@ public abstract class DoubleCommutativeOperationBeed
    */
   public void recalculate() {
     Double newValue = initialValue();
-    for (RealBeed<?> argument : $arguments.keySet()) {
+    for(Map.Entry<RealBeed<?>, Integer> entry : $dependent.getUpdateSourcesOccurencesMap().entrySet()) {
+      RealBeed<?> argument = entry.getKey();
       Double argumentValue = argument.getDouble();
       if (argumentValue == null) {
         newValue = null;
         break;
       }
-      newValue = recalculateValueAdded(newValue, argumentValue, getNbOccurrences(argument));
+      int nrOfOccurences = entry.getValue();
+      newValue = recalculateValueAdded(newValue, argumentValue, nrOfOccurences);
     }
     $value = newValue;
   }
@@ -299,16 +280,17 @@ public abstract class DoubleCommutativeOperationBeed
 
   @Override
   protected String otherToStringInformation() {
-    return getDouble() + " (# " + $arguments.size() + ")";
+    return getDouble() + " (# " + $dependent.getUpdateSourcesSize() + ")";
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
-    sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
-    sb.append(indent(level + 1) + "number of " + argumentsToString() + ":" + $arguments.size() + "\n");
-    for (RealBeed<?> argument : $arguments.keySet()) {
+    sb.append(indent(level + 1) + "value: " + getDouble() + "\n");
+    sb.append(indent(level + 1) + "number of " + argumentsToString() + ": " + $dependent.getUpdateSourcesSize() + "\n");
+    for (RealBeed<?> argument : $dependent.getUpdateSourcesSet()) {
       argument.toString(sb, level + 2);
+      sb.append(indent(level + 2) + "nr of occurences: " + $dependent.getNrOfOccurences(argument) + "\n");
     }
   }
 

@@ -211,7 +211,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
       checkValidity(); // throws IllegalEditException
       performance(); // throws IllegalEditException
       markPerformed();
-      notifyListeners();
+      updateDependents();
     }
     else {
       markPerformed();
@@ -269,7 +269,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
     unperformance(); // throws IllegalEditException
     $state = UNDONE;
     // end of transaction if unperformance succeeded
-    notifyListeners();
+    updateDependents();
   }
 
   /**
@@ -324,7 +324,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
     performance(); // throws IllegalEditException
     $state = DONE;
     // end of transaction if performance succeeded
-    notifyListeners();
+    updateDependents();
   }
 
   /**
@@ -458,7 +458,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * Should be implemented as
    * {@code getTarget().fireChangeEvent(<var>an event</var>);}.
    */
-  protected abstract void notifyListeners();
+  protected abstract void updateDependents();
 
   /*</section>*/
 

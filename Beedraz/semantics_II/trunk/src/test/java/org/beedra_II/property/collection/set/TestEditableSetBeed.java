@@ -19,7 +19,6 @@ package org.beedra_II.property.collection.set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +31,6 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.event.StubListenerMultiple;
 import org.beedra_II.property.number.integer.IntegerBeed;
-import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,26 +88,10 @@ public class TestEditableSetBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event1);
     assertNotNull($listener2.$event1);
-    assertNotNull($listener1.$event2);
-    assertNotNull($listener2.$event2);
+    assertNull($listener1.$event2); // the size has not changed, so the size beed sends no event
+    assertNull($listener2.$event2); // the size has not changed, so the size beed sends no event
     assertEquals($event1, $listener1.$event1.getCause());
     assertEquals($event1, $listener2.$event1.getCause());
-    assertTrue($listener1.$event2.getCause() instanceof ActualLongEvent);
-    if ($listener1.$event2.getCause() instanceof ActualLongEvent) {
-      ActualLongEvent longEvent = (ActualLongEvent) $listener1.$event2.getCause();
-      assertEquals(longEvent.getSource(), $editableSetBeed.$sizeBeed);
-      assertEquals(longEvent.getNewLong(), new Long(0));
-      assertEquals(longEvent.getOldLong(), new Long(0));
-      assertEquals(longEvent.getEdit(), $event1.getEdit());
-    }
-    assertTrue($listener2.$event2.getCause() instanceof ActualLongEvent);
-    if ($listener2.$event2.getCause() instanceof ActualLongEvent) {
-      ActualLongEvent longEvent = (ActualLongEvent) $listener2.$event2.getCause();
-      assertEquals(longEvent.getSource(), $editableSetBeed.$sizeBeed);
-      assertEquals(longEvent.getNewLong(), new Long(0));
-      assertEquals(longEvent.getOldLong(), new Long(0));
-      assertEquals(longEvent.getEdit(), $event1.getEdit());
-    }
   }
 
   @Test
@@ -199,15 +181,7 @@ public class TestEditableSetBeed {
     // checks
     assertNotNull($listener1.$event1);
     assertEquals($listener1.$event1.getCause(), $event1);
-    assertNotNull($listener1.$event2);
-    assertTrue($listener1.$event2.getCause() instanceof ActualLongEvent);
-    if ($listener1.$event2.getCause() instanceof ActualLongEvent) {
-      ActualLongEvent longEvent = (ActualLongEvent) $listener1.$event2.getCause();
-      assertEquals(longEvent.getSource(), $editableSetBeed.$sizeBeed);
-      assertEquals(longEvent.getNewLong(), new Long(0));
-      assertEquals(longEvent.getOldLong(), new Long(0));
-      assertEquals(longEvent.getEdit(), $event1.getEdit());
-    }
+    assertNull($listener1.$event2); // the size has not changed, so the size beed sends no event
   }
 
   @Test

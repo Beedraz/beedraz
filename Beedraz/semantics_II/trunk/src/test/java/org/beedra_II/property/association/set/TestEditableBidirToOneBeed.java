@@ -16,6 +16,7 @@
 
 package org.beedra_II.property.association.set;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -25,12 +26,16 @@ import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubListener;
 import org.beedra_II.property.collection.set.SetEvent;
+import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class TestEditableBidirToOneBeed {
 
@@ -152,4 +157,92 @@ public class TestEditableBidirToOneBeed {
     assertEquals(initialEvent.getNewValue(), $editableBidirToOneBeed.get());
     assertEquals(initialEvent.getEdit(), null);
   }
+
+  public class ManyBean extends AbstractBeanBeed {
+
+    public final EditableLongBeed lb = new EditableLongBeed(this);
+
+    public final EditableBidirToOneBeed<OneBean, ManyBean> toOne = new EditableBidirToOneBeed<OneBean, ManyBean>(this);
+
+  }
+
+  public class OneBean extends AbstractBeanBeed {
+
+    public final BidirToManyBeed<OneBean, ManyBean> toMany = new BidirToManyBeed<OneBean, ManyBean>(this);
+
+  }
+
+  /**
+   * Events propagate from manies to ones.
+   */
+  @Test
+  public void eventPropagation() throws EditStateException, IllegalEditException {
+    ManyBean manyBean = new ManyBean();
+    OneBean oneBean1 = new OneBean();
+    OneBean oneBean2 = new OneBean();
+    BidirToOneEdit<OneBean, ManyBean> edit = new BidirToOneEdit<OneBean, ManyBean>(manyBean.toOne);
+    edit.setGoal(oneBean1.toMany);
+    edit.perform();
+    StubListener<PropagatedEvent> listener1 = new StubListener<PropagatedEvent>();
+    oneBean1.addListener(listener1);
+    StubListener<Event> listener2 = new StubListener<Event>();
+    oneBean2.addListener(listener2);
+
+    listener1.reset();
+    listener2.reset();
+    LongEdit lEdit = new LongEdit(manyBean.lb);
+    lEdit.setGoal(7L);
+    lEdit.perform();
+    assertNotNull(listener1.$event);
+    StringBuffer out = new StringBuffer();
+    listener1.$event.toString(out, 1);
+    System.out.println(out);
+    assertNull(listener2.$event);
+
+    listener1.reset();
+    listener2.reset();
+    edit = new BidirToOneEdit<OneBean, ManyBean>(manyBean.toOne);
+    edit.setGoal(oneBean2.toMany);
+    edit.perform();
+    assertNotNull(listener1.$event);
+    out = new StringBuffer();
+    listener1.$event.toString(out, 1);
+    System.out.println(out);
+    assertNotNull(listener2.$event);
+    out = new StringBuffer();
+    listener2.$event.toString(out, 1);
+    System.out.println(out);
+
+    listener1.reset();
+    listener2.reset();
+    lEdit = new LongEdit(manyBean.lb);
+    lEdit.setGoal(77L);
+    lEdit.perform();
+    assertNull(listener1.$event);
+    assertNotNull(listener2.$event);
+    out = new StringBuffer();
+    listener2.$event.toString(out, 1);
+    System.out.println(out);
+
+    listener1.reset();
+    listener2.reset();
+    edit = new BidirToOneEdit<OneBean, ManyBean>(manyBean.toOne);
+    edit.setGoal(null);
+    edit.perform();
+    assertNull(listener1.$event);
+    assertNotNull(listener2.$event);
+    System.out.println(listener1.$event);
+    out = new StringBuffer();
+    listener2.$event.toString(out, 1);
+    System.out.println(out);
+
+    listener1.reset();
+    listener2.reset();
+    lEdit = new LongEdit(manyBean.lb);
+    lEdit.setGoal(777L);
+    lEdit.perform();
+    assertNull(listener1.$event);
+    assertNull(listener2.$event);
+  }
+
 }

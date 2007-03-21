@@ -53,5 +53,13 @@ public interface AggregateBeed extends Beed<PropagatedEvent> {
    */
   void registerAggregateElement(Beed<?> beed);
 
+  /**
+   * @pre isAggregateBeed(beed);
+   * @post ! isAggregateBeed(beed);
+   *
+   * @idea having this public is not such a good idea; make this a class?
+   */
+  void deregisterAggregateElement(Beed<?> b);
+
 }
 

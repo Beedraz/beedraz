@@ -67,7 +67,7 @@ public abstract class AbstractAggregateBeed
     $dependent.addUpdateSource(b);
   }
 
-  public final void deRegisterAggregateElement(Beed<?> b) {
+  public final void deregisterAggregateElement(Beed<?> b) {
     assert b != null;
     $dependent.removeUpdateSource(b);
   }

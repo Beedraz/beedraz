@@ -70,11 +70,13 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   @Override
   protected final void performance() {
     if (getInitial() != null) {
+      getInitial().getOwner().deregisterAggregateElement(getTarget().getOwner());
       getInitial().remove(getTarget().getOwner());
     }
     super.performance();
     if (getGoal() != null) {
       getGoal().add(getTarget().getOwner());
+      getGoal().getOwner().registerAggregateElement(getTarget().getOwner());
     }
   }
 
@@ -88,11 +90,13 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   @Override
   protected final void unperformance() {
     if (getGoal() != null) {
+      getGoal().getOwner().deregisterAggregateElement(getTarget().getOwner());
       getGoal().remove(getTarget().getOwner());
     }
     super.unperformance();
     if (getInitial() != null) {
       getInitial().add(getTarget().getOwner());
+      getInitial().getOwner().registerAggregateElement(getTarget().getOwner());
     }
   }
 

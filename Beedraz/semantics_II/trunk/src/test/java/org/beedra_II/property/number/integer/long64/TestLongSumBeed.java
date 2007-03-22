@@ -106,7 +106,7 @@ public class TestLongSumBeed {
     // NOP: basic
   }
 
-  //@Test
+  @Test
   // one-level sum
   public void addTerm1() throws EditStateException, IllegalEditException {
     // create terms
@@ -282,7 +282,7 @@ public class TestLongSumBeed {
     assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getLong()));
   }
 
-  //@Test
+  @Test
   // three-level sum
   public void addTerm3() throws EditStateException, IllegalEditException {
     // create terms
@@ -691,7 +691,7 @@ public class TestLongSumBeed {
     assertTrue(equalValue($integerSumBeed.getDouble(), $integerSumBeed.getLong()));
   }
 
-  //@Test
+  @Test
   // three-level sum
   public void removeTerm3() throws EditStateException, IllegalEditException {
     // create terms

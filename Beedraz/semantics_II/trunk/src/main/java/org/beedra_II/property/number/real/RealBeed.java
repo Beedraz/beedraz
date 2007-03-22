@@ -52,5 +52,7 @@ public interface RealBeed<_Event_ extends RealEvent>
    */
   Double getDouble();
 
+//  void refresh();
+
 }
 

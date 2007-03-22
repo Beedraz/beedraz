@@ -268,5 +268,12 @@ public class LongSumBeed
     return castToBigDecimal(getLong());
   }
 
+//  public void refresh() {
+//    for (RealBeed<?> argument : $terms.keySet()) {
+//      argument.refresh();
+//    }
+//    recalculate();
+//  }
+
 }
 

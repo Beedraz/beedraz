@@ -300,5 +300,12 @@ public abstract class DoubleCommutativeOperationBeed
    */
   public abstract String argumentsToString();
 
+//  public void refresh() {
+//    for (RealBeed<?> argument : $arguments.keySet()) {
+//      argument.refresh();
+//    }
+//    recalculate();
+//  }
+
 }
 

@@ -85,5 +85,10 @@ public abstract class AbstractDoubleBinaryExpressionBeed
     return beed.getDouble();
   }
 
+//  public void refresh() {
+//    getLeftArgument().refresh();
+//    getRightArgument().refresh();
+//    // mudo??
+//  }
 }
 

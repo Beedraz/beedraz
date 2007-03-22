@@ -273,5 +273,12 @@ public abstract class DoubleSetComputationBeed
     getSource().toString(sb, level + 2);
   }
 
+//  public void refresh() {
+//    for (RealBeed<?> beed : getSource().get()) {
+//      beed.refresh();
+//    }
+//    recalculate();
+//  }
+
 }
 

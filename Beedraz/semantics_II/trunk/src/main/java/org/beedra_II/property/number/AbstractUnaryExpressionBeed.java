@@ -178,5 +178,10 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
     }
   }
 
+//  public void refresh() {
+//    getArgument().refresh();
+//    assignValue(calculateValueInternal(valueFrom($argument)));
+//  }
+
 }
 

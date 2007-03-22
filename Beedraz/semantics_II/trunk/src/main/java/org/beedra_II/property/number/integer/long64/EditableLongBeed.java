@@ -57,5 +57,9 @@ public class EditableLongBeed
     return castToBigDecimal(getLong());
   }
 
+//  public void refresh() {
+//    //
+//  }
+
 }
 

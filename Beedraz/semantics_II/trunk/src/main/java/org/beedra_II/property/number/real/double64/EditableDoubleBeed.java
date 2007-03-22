@@ -74,5 +74,8 @@ public class EditableDoubleBeed
     return castToBigDecimal(getDouble());
   }
 
+//  public void refresh() {
+//    //
+//  }
 }
 

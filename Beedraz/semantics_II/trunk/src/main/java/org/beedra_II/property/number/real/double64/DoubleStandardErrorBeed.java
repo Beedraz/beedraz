@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -67,37 +68,26 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
    */
   @Override
   public void recalculate() {
-    Double standardError;
     if (getSource() == null) {
-      standardError = null;
-    }
-    else if (getSource().get().size() == 0 ||
-             getSource().get().size() == 1) {
-      standardError = Double.NaN;
+      setValue(null);
     }
     else {
-      assert getSource() != null;
-      assert getSource().get().size() > 1;
-      // compute the average
-      Double average = DoubleArithmeticMeanBeed.mean(getSource());
-      if (average != null) {
-        // we know here that the values of all beeds are effective, so we do not need
-        // to check this
-        standardError = 0.0;
-        for (RealBeed<?> beed : getSource().get()) {
-          Double beedValue = beed.getDouble();
-          standardError += Math.pow(beedValue - average, 2); // autoboxing
+      $calculator.clear();
+      for (RealBeed<?> realBeed : getSource().get()) {
+        Double value = realBeed.getDouble();
+        if (value == null) {
+          setValue(null);
+          return;
         }
-        int size = getSource().get().size();
-        standardError = standardError / (size * (size - 1)); // divisor is not zero (see if-condition)!
-        standardError = Math.sqrt(standardError);
+        $calculator.increment(value);
       }
-      else {
-        standardError = null;
-      }
+      setValue($calculator.getResult());
     }
-    setValue(standardError);
   }
+
+  // MUDO use second moment and merge with arithmetic mean
+
+  private final StandardDeviation $calculator = new StandardDeviation(true); // MUDO is this "true" correct?
 
 }
 

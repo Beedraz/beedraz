@@ -23,6 +23,9 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import org.apache.commons.math.stat.descriptive.moment.FirstMoment;
+import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
+import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -388,11 +391,8 @@ public final class MathUtil {
   public static double arithmeticMean(double... doubles) {
     assert doubles != null;
     assert doubles.length > 0;
-    double mean = 0.0;
-    for (double value : doubles) {
-      mean += value;
-    }
-    return mean / doubles.length;
+    FirstMoment fm = new FirstMoment();
+    return fm.evaluate(doubles);
   }
 
   /**
@@ -402,11 +402,8 @@ public final class MathUtil {
   public static double geometricMean(double... doubles) {
     assert doubles != null;
     assert doubles.length > 0;
-    double mean = 1.0;
-    for (double value : doubles) {
-      mean *= value;
-    }
-    return Math.pow(mean, 1.0 / doubles.length);
+    GeometricMean gm = new GeometricMean();
+    return gm.evaluate(doubles);
   }
 
   /**
@@ -416,12 +413,7 @@ public final class MathUtil {
   public static double standardError(double... doubles) {
     assert doubles != null;
     assert doubles.length > 1;
-    double mean = arithmeticMean(doubles);
-    double standardError = 0.0;
-    for (double value : doubles) {
-      standardError += Math.pow(value - mean, 2);
-    }
-    standardError = standardError / (doubles.length * (doubles.length - 1));
-    return Math.sqrt(standardError);
+    StandardDeviation sd = new StandardDeviation(true);
+    return sd.evaluate(doubles);
   }
 }

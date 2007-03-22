@@ -54,6 +54,11 @@ limitations under the License.
       <artifactId>commons-collections</artifactId>
     </dependency>
     -->
+    <dependency>
+      <groupId>commons-math</groupId>
+      <artifactId>commons-math</artifactId>
+      <version>1.1</version>
+    </dependency>
   </dependencies>
 
   <!-- More Project Information -->

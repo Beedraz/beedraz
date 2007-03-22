@@ -54,7 +54,7 @@ public class TestDoubleStandardErrorBeed {
     public void publicUpdateDependents(ActualDoubleEvent event) {
       updateDependents(event);
     }
-    
+
   }
 
   @Before
@@ -233,10 +233,10 @@ public class TestDoubleStandardErrorBeed {
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
     $doubleStandardErrorBeed.recalculate();
-    assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
+    assertEquals(0.0, $doubleStandardErrorBeed.getDouble());
     // recalculate (setBeed contains beed 1)
     $doubleStandardErrorBeed.recalculate();
-    assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
+    assertEquals(0.0, $doubleStandardErrorBeed.getDouble());
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed2);
@@ -270,7 +270,7 @@ public class TestDoubleStandardErrorBeed {
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3, 4 and null)
     $doubleStandardErrorBeed.recalculate();
-    assertEquals($doubleStandardErrorBeed.getDouble(), null);
+    assertEquals(null, $doubleStandardErrorBeed.getDouble());
   }
 
   @Test
@@ -305,7 +305,7 @@ public class TestDoubleStandardErrorBeed {
       new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
-    assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
+    assertEquals(0.0, $doubleStandardErrorBeed.getDouble());
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
@@ -339,7 +339,7 @@ public class TestDoubleStandardErrorBeed {
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed3);
     setEdit.perform();
-    assertEquals($doubleStandardErrorBeed.getDouble(), Double.NaN);
+    assertEquals(0.0, $doubleStandardErrorBeed.getDouble());
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed4);
     setEdit.perform();

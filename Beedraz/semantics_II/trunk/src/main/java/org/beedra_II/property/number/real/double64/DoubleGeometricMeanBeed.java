@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
@@ -69,35 +70,25 @@ public class DoubleGeometricMeanBeed extends DoubleSetComputationBeed {
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is the geometric mean of the
    * values of the beeds.
-   *
-   * @mudo use commons math
    */
-  public static Double mean(final SetBeed<RealBeed<?>, ?> source) {
-    Double mean;
+  public Double mean(final SetBeed<RealBeed<?>, ?> source) {
     if (source == null) {
-      mean = null;
-    }
-    else if (source.get().size() == 0) {
-      mean = Double.NaN;
+      return null;
     }
     else {
-      // assert source != null;
-      assert source.get().size() > 0;
-      mean = 1.0;
+      $calculator.clear();
       for (RealBeed<?> doubleBeed : source.get()) {
         Double value = doubleBeed.getDouble();
         if (value == null) {
-          mean = null;
-          break;
+          return null;
         }
-        mean *= value; // autoboxing
+        $calculator.increment(value);
       }
-      if (mean != null) {
-        mean = Math.pow(mean, 1.0 / source.get().size()); // divisor is not zero (see if-condition)!
-      }
+      return $calculator.getResult();
     }
-    return mean;
   }
+
+  private final GeometricMean $calculator = new GeometricMean();
 
 }
 

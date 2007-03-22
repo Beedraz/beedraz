@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.apache.commons.math.stat.descriptive.moment.FirstMoment;
+import org.apache.commons.math.stat.descriptive.moment.Mean;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
@@ -90,7 +90,7 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
 
   // MUDO use second moment and merge with standard error
 
-  private final FirstMoment $calculator = new FirstMoment();
+  private final Mean $calculator = new Mean();
 
 }
 

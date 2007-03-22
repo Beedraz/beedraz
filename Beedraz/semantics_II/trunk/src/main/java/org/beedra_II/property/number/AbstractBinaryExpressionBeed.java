@@ -18,6 +18,7 @@ package org.beedra_II.property.number;
 
 
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Map;
 
@@ -232,5 +233,20 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
    */
   protected abstract _Number_ calculateValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
 
+  @Override
+  public final void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "value:" + get() + "\n");
+    sb.append(indent(level + 1) + "arguments:\n");
+    if (getLeftArgument() == null && getRightArgument() == null) {
+      sb.append(indent(level + 2) + "null");
+    }
+    if (getLeftArgument() != null) {
+      getLeftArgument().toString(sb, level + 2);
+    }
+    if (getRightArgument() != null) {
+      getRightArgument().toString(sb, level + 2);
+    }
+  }
 }
 

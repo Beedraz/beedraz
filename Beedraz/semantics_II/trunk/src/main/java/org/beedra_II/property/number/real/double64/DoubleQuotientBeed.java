@@ -76,9 +76,7 @@ public class DoubleQuotientBeed
    * @pre denominator != null;
    */
   @Override
-  protected final Double calculateValue(Double numerator, Double denominator) {
-    assert numerator != null;
-    assert denominator != null;
+  protected final double calculateValue(double numerator, double denominator) {
     return numerator / denominator;
   }
 

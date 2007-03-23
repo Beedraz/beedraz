@@ -55,8 +55,7 @@ public class LongNegativeBeed
    * @pre argumentValue != null;
    */
   @Override
-  protected Long calculateValue(Long argumentValue) {
-    assert argumentValue != null;
+  protected long calculateValue(long argumentValue) {
     return -argumentValue;
   }
 

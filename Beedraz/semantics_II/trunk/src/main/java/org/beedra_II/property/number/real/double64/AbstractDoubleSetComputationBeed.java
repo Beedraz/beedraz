@@ -58,7 +58,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class DoubleSetComputationBeed
+public abstract class AbstractDoubleSetComputationBeed
     extends AbstractPropertyBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
@@ -68,14 +68,19 @@ public abstract class DoubleSetComputationBeed
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleSetComputationBeed(AggregateBeed owner) {
+  public AbstractDoubleSetComputationBeed(AggregateBeed owner) {
     super(owner);
   }
 
-  public final BigDecimal getBigDecimal() {
-    return castToBigDecimal(getDouble());
+  public final boolean isEffective() {
+    return $effective;
   }
 
+  protected void assignEffective(boolean effective) {
+    $effective = effective;
+  }
+
+  private boolean $effective = false;
 
   private final Dependent<Beed<?>> $dependent =
     new AbstractUpdateSourceDependentDelegate<Beed<?>, ActualDoubleEvent>(this) {
@@ -93,7 +98,8 @@ public abstract class DoubleSetComputationBeed
         // IDEA there is room for optimalization here
         // recalculate and notify the listeners if the value has changed
         Double oldValue = $value;
-        recalculate();
+        assert $source != null;
+        recalculate($source);
         if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
           /* MUDO for now, we take the first edit we get, under the assumption that all events have
            * the same edit; with compound edits, we should gather different edits
@@ -102,7 +108,7 @@ public abstract class DoubleSetComputationBeed
           Iterator<Event> iter = events.values().iterator();
           Event event = iter.next();
           Edit<?> edit = event.getEdit();
-          return new ActualDoubleEvent(DoubleSetComputationBeed.this, oldValue, $value, edit);
+          return new ActualDoubleEvent(AbstractDoubleSetComputationBeed.this, oldValue, $value, edit);
         }
         else {
           return null;
@@ -112,7 +118,7 @@ public abstract class DoubleSetComputationBeed
       /**
        * @post    All RealBeeds that are added to the SetBeed by the given event
        *          become update sources.
-       *          (The reason is that the DoubleSetComputationBeed should be
+       *          (The reason is that the AbstractDoubleSetComputationBeed should be
        *          notified (and then recalculate) when one of the DoubleBeeds
        *          changes.)
        * @post    All RealBeeds that are removed from the SetBeed by the given
@@ -181,11 +187,11 @@ public abstract class DoubleSetComputationBeed
    * @param   source
    * @post    getSource() == source;
    * @post    getDouble() == the mean of the given source
-   * @post    The DoubleSetComputationBeed is registered as a listener of the
+   * @post    The AbstractDoubleSetComputationBeed is registered as a listener of the
    *          given SetBeed.
-   * @post    The DoubleSetComputationBeed is registered as a listener of all
+   * @post    The AbstractDoubleSetComputationBeed is registered as a listener of all
    *          DoubleBeeds in the given SetBeed. (The reason is that the
-   *          DoubleSetComputationBeed should be notified (and then recalculate)
+   *          AbstractDoubleSetComputationBeed should be notified (and then recalculate)
    *          when one of the DoubleBeeds changes.)
    * @post    The listeners of this beed are notified when the value changes.
    */
@@ -198,19 +204,25 @@ public abstract class DoubleSetComputationBeed
     }
     // set the source
     $source = source;
+    boolean oldEffective = isEffective();
+    double oldValue = $value;
     if ($source != null) {
       $dependent.addUpdateSource($source);
       for (RealBeed<?> beed : $source.get()) {
         $dependent.addUpdateSource(beed);
       }
+      recalculate($source);
     }
-    // recalculate and notify the listeners if the value has changed
-    Double oldValue = $value;
-    recalculate();
-    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+    else {
+      assignEffective(false);
+    }
+    if ((oldEffective != isEffective()) || (oldValue != $value)) {
       updateDependents(
           new ActualDoubleEvent(
-              DoubleSetComputationBeed.this, oldValue, $value, null)); // edit = null
+              AbstractDoubleSetComputationBeed.this,
+              oldEffective ? oldValue : null,
+              isEffective() ? $value : null,
+              null)); // edit = null
     }
   }
 
@@ -223,28 +235,38 @@ public abstract class DoubleSetComputationBeed
   /*<property name="value*/
   //------------------------------------------------------------------
 
-  public final Double getDouble() {
+  public final double getdouble() {
     return $value;
   }
 
-
-  /**
-   * The value of this beed is recalculated.
-   */
-  public abstract void recalculate();
-
-
-  protected final void setValue(Double value) {
-    $value = value;
+  public final Double getDouble() {
+    return $effective ? Double.valueOf(getdouble()) : null;
   }
 
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
+  }
 
   /**
    * The value of this beed.
    */
-  private Double $value = null;
+  private double $value;
 
   /*</property>*/
+
+
+
+  /**
+   * The value of this beed is recalculated.
+   *
+   * @pre source != null;
+   */
+  protected abstract void recalculate(SetBeed<RealBeed<?>, ?> source);
+
+
+  protected final void assignValue(Double value) {
+    $value = value;
+  }
 
 
   /**
@@ -272,13 +294,6 @@ public abstract class DoubleSetComputationBeed
     sb.append(indent(level + 1) + "number of elements in source:" + getSource().get().size() + "\n");
     getSource().toString(sb, level + 2);
   }
-
-//  public void refresh() {
-//    for (RealBeed<?> beed : getSource().get()) {
-//      beed.refresh();
-//    }
-//    recalculate();
-//  }
 
 }
 

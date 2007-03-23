@@ -19,7 +19,6 @@ package org.beedra_II.property.number.integer.long64;
 
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
-import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
@@ -36,7 +35,6 @@ import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**
@@ -67,10 +65,17 @@ public class LongSumBeed
    * @pre   owner != null;
    * @post  getLong() == 0;
    * @post  (forall LongBeed lb; ; getNbOccurrences(lb) == 0};
+   * @post  isEffective();
    */
   public LongSumBeed(AggregateBeed owner) {
     super(owner);
   }
+
+  public final boolean isEffective() {
+    return $effective;
+  }
+
+  private boolean $effective = true;
 
 
   private final Dependent<IntegerBeed<?>> $dependent =
@@ -79,26 +84,27 @@ public class LongSumBeed
     @Override
     protected ActualLongEvent filteredUpdate(Map<IntegerBeed<?>, Event> events) {
       // recalculate(); optimization
-      Long oldValue = $value;
-      if ($value !=  null) {
-
+      boolean oldEffective = $effective;
+      long oldValue = $value;
+      if ($effective) {
         for (Map.Entry<IntegerBeed<?>, Event> entry : events.entrySet()) {
           IntegerEvent event = (IntegerEvent)entry.getValue();
           assert event.getOldLong() != null :
             "The old value contained in the event must be effective since $value != null.";
           if (event.getNewLong() == null) {
-            $value = null;
+            $effective = false;
             break;
           }
           else {
             $value += event.getLongDelta() * getNrOfOccurences(entry.getKey());
+            // MUDO in events long instead of Long too
           }
         }
       }
       else {
         recalculate();
       }
-      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+      if ((oldEffective != $effective) || (oldValue != $value)) {
         /* MUDO for now, we take the first edit we get, under the assumption that all events have
          * the same edit; with compound edits, we should gather different edits
          */
@@ -106,7 +112,7 @@ public class LongSumBeed
         Iterator<Event> iter = events.values().iterator();
         Event event = iter.next();
         Edit<?> edit = event.getEdit();
-        return new ActualLongEvent(LongSumBeed.this, oldValue, $value, edit);
+        return new ActualLongEvent(LongSumBeed.this, oldEffective ? oldValue : null, $effective ? $value : null, edit);
       }
       else {
         return null;
@@ -155,10 +161,17 @@ public class LongSumBeed
     assert term != null;
     $dependent.addUpdateSource(term);
     // recalculate(); optimization
-    if ($value != null) {
-      Long oldValue = $value;
-      $value = (term.getLong() == null) ? null : $value + term.getLong(); // MUDO overflow
-      updateDependents(new ActualLongEvent(this, oldValue, $value, null));
+    if ($effective) {
+      long oldValue = $value;
+      if (! term.isEffective()) {
+        $effective = false;
+      }
+      else {
+        $value += term.getlong(); // MUDO overflow
+      }
+      if ((! $effective) || (term.getlong() != 0)) {
+        updateDependents(new ActualLongEvent(this, oldValue, $effective ? $value : null, null));
+      }
     }
     // otherwise, there is an existing null term; the new term cannot change null value
   }
@@ -172,29 +185,30 @@ public class LongSumBeed
     if ($dependent.getUpdateSourcesOccurencesMap().containsKey(term)) {
       $dependent.removeUpdateSource(term);
       // recalculate(); optimization
-      Long oldValue = $value;
+      boolean oldEffective = $effective;
+      long oldValue = $value;
       /*
        * term.getLong() == null && getNbOccurrences() == 0  ==>  recalculate
        * term.getLong() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
        * term.getLong() != null && $value != null           ==>  new.$value == old.$value - term.getLong()
        * term.getLong() != null && $value == null           ==>  new.$value == old.$value == null
        */
-      if (term.getLong() == null && getNbOccurrences(term) == 0) {
+      if (! term.isEffective() && getNbOccurrences(term) == 0) {
           /* $value was null because of this term. After the remove,
            * the value can be null because of another term, or
            * can be some value: we can't know, recalculate completely
            */
          recalculate();
       }
-      else if ($value != null) {
+      else if ($effective) {
         // since $value is effective, all terms are effective
         // the new value of the sum beed is the old value minus the value of the removed term
-        assert term.getLong() != null;
-        $value -= term.getLong();
+        assert term.isEffective();
+        $value -= term.getlong();
       }
       // else: in all other cases, the value of $value is null, and stays null
-      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        updateDependents(new ActualLongEvent(this, oldValue, $value, null));
+      if ((oldEffective != $effective) || (oldValue != $value)) {
+        updateDependents(new ActualLongEvent(this, oldEffective ? oldValue : null, $effective ? $value : null, null));
       }
       /* else, term != null, but $value is null; this means there is another term that is null,
          and removing this term won't change that */
@@ -203,10 +217,18 @@ public class LongSumBeed
   }
 
   public final Double getDouble() {
-    return castToDouble(getLong());
+    return $effective ? Double.valueOf($value) : null;
+  }
+
+  public final double getdouble() {
+    return $value;
   }
 
   public final Long getLong() {
+    return $effective ? Long.valueOf($value) : null;
+  }
+
+  public final long getlong() {
     return $value;
   }
 
@@ -218,21 +240,21 @@ public class LongSumBeed
    * multiplied by the corresponding number of occurrences.
    */
   public void recalculate() {
-    Long newValue = 0L;
+    $value = 0L;
     @SuppressWarnings("cast")
     Map<IntegerBeed<?>, Integer> termMap = (Map<IntegerBeed<?>, Integer>)$dependent.getUpdateSourcesOccurencesMap();
     for (Map.Entry<IntegerBeed<?>, Integer> entry : termMap.entrySet()) {
-      Long termValue = entry.getKey().getLong();
-      if (termValue == null) {
-        newValue = null;
-        break;
+      IntegerBeed<?> term = entry.getKey();
+      if (! term.isEffective()) {
+        $effective = false;
+        return;
       }
-      newValue += entry.getKey().getLong() * entry.getValue();
+      $value += entry.getKey().getlong() * entry.getValue();
     }
-    $value = newValue;
+    $effective = true;
   }
 
-  private Long $value = 0L;
+  private long $value = 0L;
 
   /**
    * @post  result != null;
@@ -267,13 +289,6 @@ public class LongSumBeed
   public BigDecimal getBigDecimal() {
     return castToBigDecimal(getLong());
   }
-
-//  public void refresh() {
-//    for (RealBeed<?> argument : $terms.keySet()) {
-//      argument.refresh();
-//    }
-//    recalculate();
-//  }
 
 }
 

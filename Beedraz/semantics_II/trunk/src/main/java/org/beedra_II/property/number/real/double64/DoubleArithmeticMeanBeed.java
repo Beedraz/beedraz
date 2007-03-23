@@ -19,8 +19,6 @@ package org.beedra_II.property.number.real.double64;
 
 import org.apache.commons.math.stat.descriptive.moment.Mean;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.collection.set.SetBeed;
-import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -40,8 +38,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
-
+public class DoubleArithmeticMeanBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
   /**
    * @pre   owner != null;
@@ -49,48 +46,8 @@ public class DoubleArithmeticMeanBeed extends DoubleSetComputationBeed {
    * @post  getDouble() == null;
    */
   public DoubleArithmeticMeanBeed(AggregateBeed owner) {
-    super(owner);
+    super(owner, new Mean());
   }
-
-  /**
-   * The value of this beed is recalculated.
-   * See {@link #mean(SetBeed)}.
-   */
-  @Override
-  public void recalculate() {
-    setValue(mean(getSource()));
-  }
-
-  /**
-   * Compute the arithmetic mean of the values of the double beeds in the given
-   * set beed.
-   * This is done by iterating over the beeds in the source set beed.
-   * When the source is null, the result is null.
-   * When the source contains zero beeds, the result is {@link Double.NaN}.
-   * When one of the terms is null, the result is null.
-   * When all terms are effective, the result is the arithmetic mean
-   * of the values of the beeds.
-   */
-  public Double mean(final SetBeed<RealBeed<?>, ?> source) {
-    if (source == null) {
-      return null;
-    }
-    else {
-      $calculator.clear();
-      for (RealBeed<?> realBeed : source.get()) {
-        Double value = realBeed.getDouble();
-        if (value == null) {
-          return null;
-        }
-        $calculator.increment(value);
-      }
-      return $calculator.getResult();
-    }
-  }
-
-  // MUDO use second moment and merge with standard error
-
-  private final Mean $calculator = new Mean();
 
 }
 

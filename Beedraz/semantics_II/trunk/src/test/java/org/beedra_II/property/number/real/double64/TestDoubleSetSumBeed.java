@@ -53,6 +53,11 @@ public class TestDoubleSetSumBeed {
       updateDependents(event);
     }
 
+    public final void publicRecalculate() {
+      assert getSource() != null;
+      recalculate(getSource());
+    }
+
   }
 
   @Before
@@ -210,7 +215,8 @@ public class TestDoubleSetSumBeed {
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     EditableDoubleBeed beedNull = createEditableDoubleBeed(null);
     // double sum beed has no source
-    $doubleSetSumBeed.recalculate();
+    // cannot test: violates precondition
+//    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), null);
     // create source
     EditableSetBeed<RealBeed<?>> source =
@@ -218,49 +224,49 @@ public class TestDoubleSetSumBeed {
     // add source to sum beed
     $doubleSetSumBeed.setSource(source);
     // recalculate (setBeed contains no elements)
-    $doubleSetSumBeed.recalculate();
-    assertEquals($doubleSetSumBeed.getDouble(), DoubleSetSumBeed.DOUBLE_ZERO);
+    $doubleSetSumBeed.publicRecalculate();
+    assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     // add beed
     SetEdit<RealBeed<?>> setEdit =
       new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0));
     // recalculate (setBeed contains beed 1)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0, 2.0));
     // recalculate (setBeed contains beed 1 and 2)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0, 2.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0, 2.0, 3.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0, 2.0, 3.0, 4.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beedNull);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3, 4 and null)
-    $doubleSetSumBeed.recalculate();
+    $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), null);
   }
 
@@ -291,7 +297,7 @@ public class TestDoubleSetSumBeed {
     // add set beed to sum beed
     $doubleSetSumBeed.setSource(setBeed);
     // add beed
-    assertEquals($doubleSetSumBeed.getDouble(), DoubleSetSumBeed.DOUBLE_ZERO);
+    assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     SetEdit<RealBeed<?>> setEdit =
       new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
@@ -328,11 +334,11 @@ public class TestDoubleSetSumBeed {
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed4);
     setEdit.perform();
-    assertEquals($doubleSetSumBeed.getDouble(), DoubleSetSumBeed.DOUBLE_ZERO);
+    assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed4); // remove an element that is not there
     setEdit.perform();
-    assertEquals($doubleSetSumBeed.getDouble(), DoubleSetSumBeed.DOUBLE_ZERO);
+    assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     // change beeds of the source
     setBeed = new EditableSetBeed<RealBeed<?>>($owner);
     setEdit = new SetEdit<RealBeed<?>>(setBeed);

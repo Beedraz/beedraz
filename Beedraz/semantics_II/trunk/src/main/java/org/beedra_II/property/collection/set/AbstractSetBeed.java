@@ -75,6 +75,10 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       $dependent.addUpdateSource(AbstractSetBeed.this);
     }
 
+    public final boolean isEffective() {
+      return true;
+    }
+
     private final Dependent<AbstractSetBeed<_Element_, _SetEvent_>> $dependent =
       new AbstractUpdateSourceDependentDelegate<AbstractSetBeed<_Element_, _SetEvent_>, ActualLongEvent>(this) {
 
@@ -133,12 +137,20 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
 
     private int $size = 0;
 
+    public final long getlong() {
+      return $size;
+    }
+
     public BigInteger getBigInteger() {
       return MathUtil.castToBigInteger(get());
     }
 
     public Double getDouble() {
       return MathUtil.castToDouble(get());
+    }
+
+    public final double getdouble() {
+      return $size;
     }
 
     public Long getLong() {
@@ -161,9 +173,6 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       return new ActualLongEvent(this, null, getLong(), null);
     }
 
-//    public void refresh() {
-//      //
-//    }
   }
 
   /**

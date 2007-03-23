@@ -42,28 +42,29 @@ public abstract class AbstractExpressionBeed<_Number_ extends Number,
   /**
    * @pre   owner != null;
    * @post  get() == null;
+   * @post ! isEffective();
    */
   protected AbstractExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 
-//  protected final void fireEvent(_Number_ oldValue, Edit<?> edit) {
-//    if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-//      fireChangeEvent(createNewEvent(oldValue, $value, edit));
-//    }
-//  }
-
   protected abstract _NumberEvent_ createNewEvent(_Number_ oldValue, _Number_ newValue, Edit<?> edit);
 
-  public final _Number_ get() {
-    return $value;
+  public final boolean isEffective() {
+    return $effective;
   }
 
-  protected final void assignValue(_Number_ value) {
-    $value = value;
+  protected void assignEffective(boolean effective) {
+    $effective = effective;
   }
 
-  private _Number_ $value;
+  private boolean $effective = false;
+
+  public abstract _Number_ get();
+
+  public final Double getDouble() {
+    return $effective ? Double.valueOf(getdouble()) : null;
+  }
 
   @Override
   protected final String otherToStringInformation() {

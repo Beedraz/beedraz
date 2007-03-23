@@ -49,8 +49,15 @@ public abstract class AbstractDoubleBinaryExpressionBeed
     super(owner);
   }
 
-  public final Double getDouble() {
-    return get();
+  public final double getdouble() {
+    return $value;
+  }
+
+  private double $value;
+
+  @Override
+  public final Double get() {
+    return getDouble();
   }
 
   public final BigDecimal getBigDecimal() {
@@ -76,19 +83,11 @@ public abstract class AbstractDoubleBinaryExpressionBeed
   }
 
   @Override
-  protected final Double valueFromLeft(RealBeed<?> beed) {
-    return beed.getDouble();
+  protected final void recalculateFrom(RealBeed<?> leftArgument, RealBeed<?> rightArgument) {
+    $value = calculateValue(leftArgument.getdouble(), rightArgument.getdouble());
   }
 
-  @Override
-  protected final Double valueFromRight(RealBeed<?> beed) {
-    return beed.getDouble();
-  }
+  protected abstract double calculateValue(double leftArgument, double rightArgument);
 
-//  public void refresh() {
-//    getLeftArgument().refresh();
-//    getRightArgument().refresh();
-//    // mudo??
-//  }
 }
 

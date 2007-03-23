@@ -17,10 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
-
-import java.math.BigDecimal;
-
 import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -40,7 +36,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleSumBeed extends DoubleCommutativeOperationBeed {
+public class DoubleSumBeed extends AbstractDoubleCommutativeOperationBeed {
 
   /**
    * @pre   owner != null;
@@ -52,32 +48,28 @@ public class DoubleSumBeed extends DoubleCommutativeOperationBeed {
   }
 
   @Override
-  protected Double recalculateValue(Double oldValueBeed, Double oldValueArgument, Double newValueArgument, int nbOccurrences) {
+  protected double recalculateValue(double oldValueBeed, double oldValueArgument, double newValueArgument, int nbOccurrences) {
     return oldValueBeed + ((newValueArgument - oldValueArgument) * nbOccurrences);
   }
 
   @Override
-  protected Double recalculateValueAdded(Double oldValueBeed, Double valueArgument, int nbOccurrences) {
+  protected double recalculateValueAdded(double oldValueBeed, double valueArgument, int nbOccurrences) {
     return oldValueBeed + valueArgument * nbOccurrences;
   }
 
   @Override
-  protected Double recalculateValueRemoved(Double oldValueBeed, Double valueArgument, int nbOccurrences) {
+  protected double recalculateValueRemoved(double oldValueBeed, double valueArgument, int nbOccurrences) {
     return oldValueBeed - valueArgument * nbOccurrences;
   }
 
   @Override
-  public Double initialValue() {
+  public double initialValue() {
     return 0.0;
   }
 
   @Override
   public String argumentsToString() {
     return "terms";
-  }
-
-  public final BigDecimal getBigDecimal() {
-    return castToBigDecimal(getDouble());
   }
 
 }

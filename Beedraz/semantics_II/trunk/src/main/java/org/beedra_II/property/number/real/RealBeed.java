@@ -34,6 +34,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
+ *
+ * @invar isEffective() ?? getBigDecimal() != null;
+ * @invar isEffective() ?? getDouble() != null;
+ * @invar equalValue(getDouble(), getBigDecimal());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -46,6 +50,10 @@ public interface RealBeed<_Event_ extends RealEvent>
    * @basic
    */
   BigDecimal getBigDecimal();
+
+  boolean isEffective();
+
+  double getdouble();
 
   /**
    * @basic

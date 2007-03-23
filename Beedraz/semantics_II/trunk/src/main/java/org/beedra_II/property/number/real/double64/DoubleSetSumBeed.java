@@ -39,10 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleSetSumBeed extends DoubleSetComputationBeed {
-
-  public static final double DOUBLE_ZERO = 0.0;
-
+public class DoubleSetSumBeed extends AbstractDoubleSetComputationBeed {
 
   /**
    * @pre   owner != null;
@@ -55,45 +52,19 @@ public class DoubleSetSumBeed extends DoubleSetComputationBeed {
 
   /**
    * The value of this beed is recalculated.
-   * See {@link #sum(SetBeed)}.
    */
   @Override
-  public void recalculate() {
-    setValue(sum(getSource()));
-  }
-
-  /**
-   * Compute the sum of the values of the double beeds in the given
-   * set beed.
-   * This is done by iterating over the beeds in the source set beed.
-   * When the source is null, the result is null.
-   * When the source contains zero beeds, the result is zero.
-   * When one of the terms is null, the result is null.
-   * When all terms are effective, the result is the sum
-   * of the values of the beeds.
-   */
-  public static Double sum(final SetBeed<RealBeed<?>, ?> source) {
-    Double sum;
-    if (source == null) {
-      sum = null;
-    }
-    else if (source.get().size() == 0) {
-      sum = DOUBLE_ZERO;
-    }
-    else {
-      // assert source != null;
-      assert source.get().size() > 0;
-      sum = DOUBLE_ZERO;
-      for (RealBeed<?> realBeed : source.get()) {
-        Double value = realBeed.getDouble();
-        if (value == null) {
-          sum = null;
-          break;
-        }
-        sum += value; // autoboxing
+  protected final void recalculate(SetBeed<RealBeed<?>, ?> source) {
+    double acc = 0.0;
+    for (RealBeed<?> realBeed : source.get()) {
+      if (! realBeed.isEffective()) {
+        assignEffective(false);
+        return;
       }
+      acc += realBeed.getdouble();
     }
-    return sum;
+    assignValue(acc);
+    assignEffective(true);
   }
 
 }

@@ -49,7 +49,7 @@ public class TestDoubleSumBeed {
     public void publicUpdateDependents(ActualDoubleEvent event) {
       updateDependents(event);
     }
-    
+
   }
 
   public class PropagatedEventListener implements Listener<PropagatedEvent> {
@@ -192,7 +192,7 @@ public class TestDoubleSumBeed {
     $doubleSumBeed.addArgument(term5);
     // check (sum = 5)
     assertTrue($doubleSumBeed.getNbOccurrences(term5) == 1);
-    assertEquals($doubleSumBeed.getDouble(), 5.0);
+    assertEquals(5.0d, $doubleSumBeed.getDouble());
     // add term30
     $doubleSumBeed.addArgument(term30);
     // check (sum = 5 + 30)

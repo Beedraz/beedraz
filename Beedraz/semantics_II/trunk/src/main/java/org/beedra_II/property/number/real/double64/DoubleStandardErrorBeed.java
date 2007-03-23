@@ -19,7 +19,6 @@ package org.beedra_II.property.number.real.double64;
 
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -44,7 +43,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
+public class DoubleStandardErrorBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
 
   /**
@@ -53,41 +52,8 @@ public class DoubleStandardErrorBeed extends DoubleSetComputationBeed {
    * @post  getDouble() == null;
    */
   public DoubleStandardErrorBeed(AggregateBeed owner) {
-    super(owner);
+    super(owner, new StandardDeviation(true)); // MUDO is this "true" correct?
   }
-
-
-  /**
-   * The value of $value is recalculated. This is done by iterating over the beeds
-   * in the source set beed.
-   * When the source is null, the result is null.
-   * When the source contains zero or one beeds, the result is Double.NaN.
-   * When one of the terms is null, the result is null.
-   * When all terms are effective, the result is the standard error of the values
-   * of the beeds.
-   */
-  @Override
-  public void recalculate() {
-    if (getSource() == null) {
-      setValue(null);
-    }
-    else {
-      $calculator.clear();
-      for (RealBeed<?> realBeed : getSource().get()) {
-        Double value = realBeed.getDouble();
-        if (value == null) {
-          setValue(null);
-          return;
-        }
-        $calculator.increment(value);
-      }
-      setValue($calculator.getResult());
-    }
-  }
-
-  // MUDO use second moment and merge with arithmetic mean
-
-  private final StandardDeviation $calculator = new StandardDeviation(true); // MUDO is this "true" correct?
 
 }
 

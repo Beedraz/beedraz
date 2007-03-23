@@ -17,8 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
-import static org.ppeew.smallfries_I.MathUtil.castToDouble;
-
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
@@ -47,12 +45,24 @@ public abstract class AbstractLongUnaryExpressionBeed
     super(owner);
   }
 
-  public final Double getDouble() {
-    return castToDouble(getLong());
+  public final long getlong() {
+    return $value;
+  }
+
+  private long $value;
+
+  @SuppressWarnings("cast")
+  public double getdouble() {
+    return (double)$value;
+  }
+
+  @Override
+  public final Long get() {
+    return getLong();
   }
 
   public final Long getLong() {
-    return get();
+    return isEffective() ? Long.valueOf($value) : null;
   }
 
   /**
@@ -74,14 +84,11 @@ public abstract class AbstractLongUnaryExpressionBeed
   }
 
   @Override
-  protected final Long newValueFrom(IntegerEvent event) {
-    return event.getNewLong();
+  protected final void recalculateFrom(IntegerBeed<?> argument) {
+    $value = calculateValue(argument.getlong());
   }
 
-  @Override
-  protected final Long valueFrom(IntegerBeed<?> beed) {
-    return beed.getLong();
-  }
+  protected abstract long calculateValue(long argument);
 
 }
 

@@ -17,11 +17,10 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
-
-import java.math.BigDecimal;
+import java.util.Map;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -40,7 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleProductBeed extends DoubleCommutativeOperationBeed {
+public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
 
   /**
    * @pre   owner != null;
@@ -51,38 +50,40 @@ public class DoubleProductBeed extends DoubleCommutativeOperationBeed {
     super(owner);
   }
 
-  public final BigDecimal getBigDecimal() {
-    return castToBigDecimal(getDouble());
-  }
-
   @Override
-  protected Double recalculateValue(Double oldValueBeed, Double oldValueArgument, Double newValueArgument, int nbOccurrences) {
+  protected double recalculateValue(double oldValueBeed, double oldValueArgument, double newValueArgument, int nbOccurrences) {
     if (oldValueArgument == 0.0) {
       // when the old value of the argument is zero, the value of the beed was zero and should
       // be recalculated fully; the new value cannot be computed using the old and new value of the
       // argument
-      recalculate();
-      return getDouble();
+      // TODO this is dirty code
+      double value = initialValue();
+      for(Map.Entry<RealBeed<?>, Integer> entry : getArgumentMap().entrySet()) {
+        RealBeed<?> argument = entry.getKey();
+        int nrOfOccurences = entry.getValue();
+        value = recalculateValueAdded(value, argument.getdouble(), nrOfOccurences);
+      }
+      return value;
     }
     else {
       // no division by zero (see if-condition!!)
-      Double result = oldValueBeed * Math.pow(newValueArgument / oldValueArgument, nbOccurrences);
+      double result = oldValueBeed * Math.pow(newValueArgument / oldValueArgument, nbOccurrences);
       return result;
     }
   }
 
   @Override
-  protected Double recalculateValueAdded(Double oldValueBeed, Double valueArgument, int nbOccurrences) {
+  protected double recalculateValueAdded(double oldValueBeed, double valueArgument, int nbOccurrences) {
     return oldValueBeed * Math.pow(valueArgument, nbOccurrences);
   }
 
   @Override
-  protected Double recalculateValueRemoved(Double oldValueBeed, Double valueArgument, int nbOccurrences) {
+  protected double recalculateValueRemoved(double oldValueBeed, double valueArgument, int nbOccurrences) {
     return oldValueBeed / Math.pow(valueArgument, nbOccurrences);
   }
 
   @Override
-  public Double initialValue() {
+  public double initialValue() {
     return 1.0;
   }
 

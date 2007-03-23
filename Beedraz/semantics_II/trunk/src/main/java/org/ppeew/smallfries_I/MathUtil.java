@@ -413,7 +413,7 @@ public final class MathUtil {
   public static double standardError(double... doubles) {
     assert doubles != null;
     assert doubles.length > 1;
-    StandardDeviation sd = new StandardDeviation(true);
+    StandardDeviation sd = new StandardDeviation(true); // is this true correct?
     return sd.evaluate(doubles);
   }
 }

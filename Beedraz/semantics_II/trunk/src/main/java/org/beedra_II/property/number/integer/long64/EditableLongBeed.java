@@ -13,6 +13,9 @@ import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
+/**
+ * @mudo break link with editable simple property beed and use long instead of Long internally.
+ */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
@@ -57,9 +60,17 @@ public class EditableLongBeed
     return castToBigDecimal(getLong());
   }
 
-//  public void refresh() {
-//    //
-//  }
+  public long getlong() {
+    return get().longValue();
+  }
+
+  public double getdouble() {
+    return get().doubleValue();
+  }
+
+  public boolean isEffective() {
+    return get() != null;
+  }
 
 }
 

@@ -23,6 +23,7 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Map;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
@@ -69,11 +70,10 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
       protected _SendingEvent_ filteredUpdate(Map<_ArgumentBeed_, Event> events) {
         assert $argument != null;
         _Number_ oldValue = get();
-        @SuppressWarnings("unchecked")
-        _ArgumentEvent_ event = (_ArgumentEvent_)events.get($argument);
-        assignValue(calculateValueInternal(newValueFrom(event)));
+        recalculate();
         if (! equalValue(oldValue, get())) {
-          return createNewEvent(oldValue, get(), event.getEdit());
+          Edit<?> edit = events.get($argument).getEdit();
+          return createNewEvent(oldValue, get(), edit);
         }
         else {
           return null;
@@ -129,11 +129,11 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
     }
     $argument = argument;
     if ($argument != null) {
-      assignValue(calculateValueInternal(valueFrom($argument)));
+      recalculate();
       $dependent.addUpdateSource($argument);
     }
     else {
-      assignValue(null);
+      assignEffective(false);
     }
     if (! equalValue(oldValue, get())) {
       _SendingEvent_ event = createNewEvent(oldValue, get(), null);
@@ -141,29 +141,31 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
     }
   }
 
-  /**
-   * @pre beed != null;
-   */
-  protected abstract _Number_ valueFrom(_ArgumentBeed_ beed);
-
   private _ArgumentBeed_ $argument;
-
-  /**
-   * @pre event != null;
-   */
-  protected abstract _Number_ newValueFrom(_ArgumentEvent_ event);
 
   /*</property>*/
 
 
-  private _Number_ calculateValueInternal(_Number_ argumentValue) {
-    return argumentValue == null ? null : calculateValue(argumentValue);
+
+  /**
+   * @pre $argument != null;
+   *
+   */
+  private void recalculate() {
+    if ($argument.isEffective()) {
+      recalculateFrom($argument);
+      assignEffective(true);
+    }
+    else {
+      assignEffective(false);
+    }
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre argument != null;
+   * @pre argument.isEffective();
    */
-  protected abstract _Number_ calculateValue(_Number_ argumentValue);
+  protected abstract void recalculateFrom(_ArgumentBeed_ argument);
 
   @Override
   public final void toString(StringBuffer sb, int level) {
@@ -177,11 +179,6 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
       sb.append(indent(level + 2) + "null");
     }
   }
-
-//  public void refresh() {
-//    getArgument().refresh();
-//    assignValue(calculateValueInternal(valueFrom($argument)));
-//  }
 
 }
 

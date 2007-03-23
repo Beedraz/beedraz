@@ -33,6 +33,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * {@link RealEvent}.
  *
  * @author  Nele Smeets
+ *
+ * @mudo break link with editable simple property beed and use double instead of Double internally.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -74,8 +76,13 @@ public class EditableDoubleBeed
     return castToBigDecimal(getDouble());
   }
 
-//  public void refresh() {
-//    //
-//  }
+  public double getdouble() {
+    return get().doubleValue();
+  }
+
+  public boolean isEffective() {
+    return get() != null;
+  }
+
 }
 

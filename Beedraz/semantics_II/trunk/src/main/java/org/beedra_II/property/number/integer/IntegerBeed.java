@@ -34,6 +34,11 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
+ *
+ * @invar isEffective() ?? getBigInteger() != null;
+ * @invar isEffective() ?? getLong() != null;
+ * @invar equalValue(getLong(), getBigInteger());
+ * @invar equalValue(getLong(), getDouble());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -49,12 +54,12 @@ public interface IntegerBeed<_Event_ extends IntegerEvent> extends RealBeed<_Eve
   /**
    * @basic
    */
-  Long getLong();
+  long getlong();
 
   /**
-   * @result MathUtil.equalValue(result, getInteger());
+   * @basic
    */
-  Double getDouble();
+  Long getLong();
 
 }
 

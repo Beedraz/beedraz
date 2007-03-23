@@ -17,8 +17,11 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -31,8 +34,6 @@ import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
-import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -52,18 +53,29 @@ import org.ppeew.smallfries_I.MathUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class DoubleCommutativeOperationBeed
+public abstract class AbstractDoubleCommutativeOperationBeed
     extends AbstractPropertyBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
   /**
    * @pre   owner != null;
-   * @post  getDouble() == 0;
+   * @post  getdouble() == initialValue();
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
+   * @post  isEffective();
    */
-  public DoubleCommutativeOperationBeed(AggregateBeed owner) {
+  protected AbstractDoubleCommutativeOperationBeed(AggregateBeed owner) {
     super(owner);
   }
+
+  public final boolean isEffective() {
+    return $effective;
+  }
+
+  protected void assignEffective(boolean effective) {
+    $effective = effective;
+  }
+
+  private boolean $effective = true;
 
   private final Dependent<RealBeed<?>> $dependent =
     new AbstractUpdateSourceDependentDelegate<RealBeed<?>, ActualDoubleEvent>(this) {
@@ -71,26 +83,30 @@ public abstract class DoubleCommutativeOperationBeed
       @Override
       protected ActualDoubleEvent filteredUpdate(Map<RealBeed<?>, Event> events) {
         // recalculate(); optimization
-        Double oldValue = $value;
-        if ($value !=  null) {
+        boolean oldEffective = $effective;
+        double oldValue = $value;
+        if ($effective) {
           for (Map.Entry<RealBeed<?>, Event> entry : events.entrySet()) {
             RealEvent event = (RealEvent)entry.getValue();
             assert event.getOldDouble() != null :
               "The old value contained in the event must be effective since $value != null.";
             Double newDouble = event.getNewDouble();
             if (newDouble == null) {
-              $value = null;
+              assignEffective(false);
               break;
             }
             else {
+              assert event.getOldDouble() != null : "we couldn't have been effective if the old value in the event is not";
+              assert event.getNewDouble() != null;
               $value = recalculateValue($value, event.getOldDouble(), event.getNewDouble(), getNrOfOccurences(entry.getKey()));
+              assert isEffective();
             }
           }
         }
         else {
           recalculate();
         }
-        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+        if ((oldEffective != $effective) || (oldValue != $value)) {
           /* MUDO for now, we take the first edit we get, under the assumption that all events have
            * the same edit; with compound edits, we should gather different edits
            */
@@ -98,7 +114,7 @@ public abstract class DoubleCommutativeOperationBeed
           Iterator<Event> iter = events.values().iterator();
           Event event = iter.next();
           Edit<?> edit = event.getEdit();
-          return new ActualDoubleEvent(DoubleCommutativeOperationBeed.this, oldValue, $value, edit);
+          return new ActualDoubleEvent(AbstractDoubleCommutativeOperationBeed.this, oldEffective ? oldValue : null, $effective ? $value : null, edit);
         }
         else {
           return null;
@@ -140,17 +156,17 @@ public abstract class DoubleCommutativeOperationBeed
    * @param newValueArgument  The new value of that argument.
    * @param nbOccurrences     The number of occurrences of that argument.
    */
-  protected abstract Double recalculateValue(
-      Double oldValueBeed,
-      Double oldValueArgument,
-      Double newValueArgument,
-      int nbOccurrences);
+  protected abstract double recalculateValue(double oldValueBeed, double oldValueArgument, double newValueArgument, int nbOccurrences);
 
   /**
    * @basic
    */
   public final int getNbOccurrences(RealBeed<?> argument) {
     return $dependent.getNrOfOccurences(argument);
+  }
+
+  public final Collection<RealBeed<?>> getArguments() {
+    return $dependent.getUpdateSources();
   }
 
   /**
@@ -161,13 +177,19 @@ public abstract class DoubleCommutativeOperationBeed
     assert argument != null;
     $dependent.addUpdateSource(argument);
     // recalculate(); optimization
-    if ($value != null) {
-      Double oldValue = $value;
-      $value = (argument.getDouble() == null)
-                 ? null
-                 : recalculateValueAdded($value, argument.getDouble(), 1);
-      if (! MathUtil.equalValue(oldValue, $value)) {
-        updateDependents(new ActualDoubleEvent(this, oldValue, $value, null));
+    if ($effective) {
+      double oldValue = $value;
+      if (! argument.isEffective()) {
+        assignEffective(false);
+      }
+      else {
+        assert argument.isEffective();
+        if (argument.getdouble() != initialValue()) {
+          $value = recalculateValueAdded($value, argument.getdouble(), 1);
+        }
+      }
+      if ((! $effective) || (oldValue != $value)) {
+        updateDependents(new ActualDoubleEvent(this, oldValue, $effective ? $value : null, null));
       }
     }
     // otherwise, there is an existing null argument; the new argument cannot change null value
@@ -180,8 +202,7 @@ public abstract class DoubleCommutativeOperationBeed
    * @param valueArgument    The value of the argument that has been added.
    * @param nbOccurrences    The number of times that the argument is added.
    */
-  protected abstract Double recalculateValueAdded(
-      Double oldValueBeed, Double valueArgument, int nbOccurrences);
+  protected abstract double recalculateValueAdded(double oldValueBeed, double valueArgument, int nbOccurrences);
 
   /**
    * @post  getNbOccurrences() > 0
@@ -192,34 +213,39 @@ public abstract class DoubleCommutativeOperationBeed
     if ($dependent.getUpdateSourcesOccurencesMap().containsKey(argument)) {
       $dependent.removeUpdateSource(argument);
       // recalculate(); optimization
-      Double oldValue = $value;
+      boolean oldEffective = $effective;
+      double oldValue = $value;
       /**
        * argument.getDouble() == null && getNbOccurrences() == 0  ==>  recalculate
        * argument.getDouble() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
        * argument.getDouble() != null && $value != null           ==>  new.$value == remove the value of argument.getDouble() from old.$value
        * argument.getDouble() != null && $value == null           ==>  new.$value == old.$value == null
        */
-      if (argument.getDouble() == null && $dependent.getNrOfOccurences(argument) == 0) {
+      if ((! argument.isEffective()) && ($dependent.getNrOfOccurences(argument) == 0)) {
           /* $value was null because of this argument. After the remove,
            * the value can be null because of another argument, or
            * can be some value: we can't know, recalculate completely
            */
          recalculate();
       }
-      else if ($value != null) {
+      else if ($effective) {
         // since $value is effective, all arguments are effective
         // the new value of this beed beed is the old value 'minus' the value of the removed argument
-        assert argument.getDouble() != null;
-        $value = recalculateValueRemoved($value, argument.getDouble(), 1);
+        assert argument.isEffective();
+        $value = recalculateValueRemoved($value, argument.getdouble(), 1);
       }
       // else: in all other cases, the value of $value is null, and stays null
-      if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
-        updateDependents(new ActualDoubleEvent(this, oldValue, $value, null));
+      if ((oldEffective != $effective) || (oldValue != $value)) {
+        updateDependents(new ActualDoubleEvent(this, oldEffective ? oldValue : null, $effective ? $value : null, null));
       }
       /* else, argument != null, but $value is null; this means there is another argument that is null,
          and removing this argument won't change that */
     }
     // else, argument was not one of our arguments: do nothing
+  }
+
+  protected final Map<RealBeed<?>, Integer> getArgumentMap() {
+    return $dependent.getUpdateSourcesOccurencesMap();
   }
 
   /**
@@ -229,12 +255,7 @@ public abstract class DoubleCommutativeOperationBeed
    * @param valueArgument    The value of the argument that has been removed.
    * @param nbOccurrences    The number of times that the argument is removed.
    */
-  protected abstract Double recalculateValueRemoved(
-      Double oldValueBeed, Double valueArgument, int nbOccurrences);
-
-  public final Double getDouble() {
-    return $value;
-  }
+  protected abstract double recalculateValueRemoved(double oldValueBeed, double valueArgument, int nbOccurrences);
 
   /**
    * The value of this beed is recalculated. This is done by iterating over the
@@ -243,27 +264,42 @@ public abstract class DoubleCommutativeOperationBeed
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is dependent on the specific subclass.
    */
-  public void recalculate() {
-    Double newValue = initialValue();
+  protected final void recalculate() {
+    $value = initialValue();
     for(Map.Entry<RealBeed<?>, Integer> entry : $dependent.getUpdateSourcesOccurencesMap().entrySet()) {
       RealBeed<?> argument = entry.getKey();
-      Double argumentValue = argument.getDouble();
-      if (argumentValue == null) {
-        newValue = null;
-        break;
+      if (! argument.isEffective()) {
+        assignEffective(false);
+        return;
       }
       int nrOfOccurences = entry.getValue();
-      newValue = recalculateValueAdded(newValue, argumentValue, nrOfOccurences);
+      $value = recalculateValueAdded($value, argument.getdouble(), nrOfOccurences);
     }
-    $value = newValue;
+    assignEffective(true);
   }
 
-  private Double $value = initialValue();
+  public final Double get() {
+    return getDouble();
+  }
+
+  public final Double getDouble() {
+    return $effective ? Double.valueOf($value) : null;
+  }
+
+  public final BigDecimal getBigDecimal() {
+    return castToBigDecimal(getDouble());
+  }
+
+  public final double getdouble() {
+    return $value;
+  }
+
+  private double $value = initialValue();
 
   /**
    * The initial value of this beed.
    */
-  public abstract Double initialValue();
+  public abstract double initialValue();
 
   /**
    * @post  result != null;
@@ -299,13 +335,6 @@ public abstract class DoubleCommutativeOperationBeed
    * in a specific subclass: "terms", "factors", ....
    */
   public abstract String argumentsToString();
-
-//  public void refresh() {
-//    for (RealBeed<?> argument : $arguments.keySet()) {
-//      argument.refresh();
-//    }
-//    recalculate();
-//  }
 
 }
 

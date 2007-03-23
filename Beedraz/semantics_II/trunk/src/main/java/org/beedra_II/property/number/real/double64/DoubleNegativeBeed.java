@@ -46,8 +46,7 @@ public class DoubleNegativeBeed
    * @pre argumentValue != null;
    */
   @Override
-  protected final Double calculateValue(Double argumentValue) {
-    assert argumentValue != null;
+  protected final double calculateValue(double argumentValue) {
     return -argumentValue;
   }
 

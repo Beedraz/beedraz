@@ -75,17 +75,16 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       protected _NumberEvent_ filteredUpdate(Map<RealBeed<?>, Event> events) {
         assert $leftArgument != null || $rightArgument != null;
         _Number_ oldValue = get();
-        assignValue(calculateValueInternal($leftArgument == null ? null : valueFromLeft($leftArgument),
-                                           $rightArgument == null ? null : valueFromRight($rightArgument)));
-        Event leftEvent = events.get($leftArgument);
-        Event rightEvent = events.get($rightArgument);
-        assert leftEvent != null || rightEvent != null;
-        assert leftEvent != null && rightEvent != null ? leftEvent.getEdit() == rightEvent.getEdit() : true;
-        // MUDO with compound events, not equal, but we should create a compound ourselfs
-        Edit<?> leftEdit = leftEvent != null ? leftEvent.getEdit() : null;
-        Edit<?> rightEdit = rightEvent != null ? rightEvent.getEdit() : null;
-        Edit<?> edit = leftEdit != null ? leftEdit : rightEdit;
+        recalculate();
         if (! equalValue(oldValue, get())) {
+          Event leftEvent = events.get($leftArgument);
+          Event rightEvent = events.get($rightArgument);
+          assert leftEvent != null || rightEvent != null;
+          assert leftEvent != null && rightEvent != null ? leftEvent.getEdit() == rightEvent.getEdit() : true;
+          // MUDO with compound events, not equal, but we should create a compound ourselfs
+          Edit<?> leftEdit = leftEvent != null ? leftEvent.getEdit() : null;
+          Edit<?> rightEdit = rightEvent != null ? rightEvent.getEdit() : null;
+          Edit<?> edit = leftEdit != null ? leftEdit : rightEdit;
           return createNewEvent(oldValue, get(), edit);
         }
         else {
@@ -140,12 +139,7 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       $dependent.removeUpdateSource($leftArgument);
     }
     $leftArgument = leftArgument;
-    if (($leftArgument != null) && ($rightArgument != null)) {
-      assignValue(calculateValueInternal(valueFromLeft($leftArgument), valueFromRight($rightArgument)));
-    }
-    else {
-      assignValue(null);
-    }
+    recalculate();
     if ($leftArgument != null) {
       $dependent.addUpdateSource($leftArgument);
     }
@@ -153,11 +147,6 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       updateDependents(createNewEvent(oldValue, get(), null));
     }
   }
-
-  /**
-   * @pre beed != null;
-   */
-  protected abstract _Number_ valueFromLeft(_LeftArgumentBeed_ beed);
 
   private _LeftArgumentBeed_ $leftArgument;
 
@@ -183,12 +172,7 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       $dependent.removeUpdateSource($rightArgument);
     }
     $rightArgument = rightArgument;
-    if (($leftArgument != null) && ($rightArgument != null)) {
-      assignValue(calculateValueInternal(valueFromLeft($leftArgument), valueFromRight($rightArgument)));
-    }
-    else {
-      assignValue(null);
-    }
+    recalculate();
     if ($rightArgument != null) {
       $dependent.addUpdateSource($rightArgument);
     }
@@ -197,41 +181,33 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
     }
   }
 
-  /**
-   * @pre beed != null;
-   */
-  protected abstract _Number_ valueFromRight(_RightArgumentBeed_ beed);
-
   private _RightArgumentBeed_ $rightArgument;
-
-//  private Listener<_RightArgumentEvent_> $rightArgumentListener = new Listener<_RightArgumentEvent_>() {
-//
-//    public void beedChanged(_RightArgumentEvent_ event) {
-//      if ($leftArgument != null) {
-//        _Number_ oldValue = get();
-//        assignValue(calculateValueInternal(valueFromLeft($leftArgument), newValueFromRight(event)));
-//        fireEvent(oldValue, event.getEdit());
-//      }
-//    }
-//
-//  };
-//
-//  protected abstract _Number_ newValueFromRight(_RightArgumentEvent_ event);
 
   /*</property>*/
 
 
-  private _Number_ calculateValueInternal(_Number_ leftArgumentValue, _Number_ rightArgumentValue) {
-    return ((leftArgumentValue == null) || (rightArgumentValue == null)) ?
-             null :
-             calculateValue(leftArgumentValue, rightArgumentValue);
+
+  /**
+   * @pre $leftArgument != null || $rightArgument != null;
+   */
+  private void recalculate() {
+    if (($leftArgument != null) && $leftArgument.isEffective() &&
+        ($rightArgument != null) && $rightArgument.isEffective()) {
+      recalculateFrom($leftArgument, $rightArgument);
+      assignEffective(true);
+    }
+    else {
+      assignEffective(false);
+    }
   }
 
   /**
-   * @pre leftArgumentValue != null;
-   * @pre rightArgumentValue != null;
+   * @pre $leftArgument != null;
+   * @pre leftArgument.isEffective();
+   * @pre $rightArgument != null;
+   * @pre $rightArgument.isEffective();
    */
-  protected abstract _Number_ calculateValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
+  protected abstract void recalculateFrom(_LeftArgumentBeed_ leftArgument, _RightArgumentBeed_ rightArgument);
 
   @Override
   public final void toString(StringBuffer sb, int level) {

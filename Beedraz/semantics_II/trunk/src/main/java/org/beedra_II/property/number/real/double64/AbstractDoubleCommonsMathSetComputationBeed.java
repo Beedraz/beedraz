@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
+import org.apache.commons.math.stat.descriptive.StorelessUnivariateStatistic;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
@@ -25,31 +25,25 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that computes the geometric mean of a given set of beeds of type
- * {@link DoubleBeed}.
- *
- * @invar getSource() != null ==>
- *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
- *            ==> getDouble() == geometric-mean { db.getDouble() | getSource().get().contains(db)};
- *        If the values of all beeds in the given set are effective,
- *        then the value of the geometric mean beed is the geometric mean of
- *        the values of all beeds in the given set. The mean of an empty set is NaN.
- *        e.g. getDouble() = (5.1 * 3.2 * 4.9) ^ (1/3)
+ * {@link AbstractDoubleSetComputationBeed} that delegates computation
+ * to a Apache Jakarta Commons {@link StorelessUnivariateStatistic}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleGeometricMeanBeed extends AbstractDoubleSetComputationBeed {
-
+public class AbstractDoubleCommonsMathSetComputationBeed extends AbstractDoubleSetComputationBeed {
 
   /**
    * @pre   owner != null;
+   * @pre   sus != null;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleGeometricMeanBeed(AggregateBeed owner) {
+  public AbstractDoubleCommonsMathSetComputationBeed(AggregateBeed owner, StorelessUnivariateStatistic sus) {
     super(owner);
+    assert sus != null;
+    $calculator = sus;
   }
 
   /**
@@ -69,7 +63,9 @@ public class DoubleGeometricMeanBeed extends AbstractDoubleSetComputationBeed {
     assignEffective(true);
   }
 
-  private final GeometricMean $calculator = new GeometricMean();
+  // MUDO use second moment and merge with standard error
+
+  private final StorelessUnivariateStatistic $calculator;
 
 }
 

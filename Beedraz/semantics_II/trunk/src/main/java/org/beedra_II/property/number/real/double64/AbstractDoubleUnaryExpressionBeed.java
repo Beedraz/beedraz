@@ -49,9 +49,11 @@ public abstract class AbstractDoubleUnaryExpressionBeed
     super(owner);
   }
 
-  public final Double getDouble() {
-    return get();
+  public final double getdouble() {
+    return $value;
   }
+
+  private double $value;
 
   /**
    * @post  result != null;
@@ -71,18 +73,20 @@ public abstract class AbstractDoubleUnaryExpressionBeed
     return new ActualDoubleEvent(this, oldValue, newValue, edit);
   }
 
-  @Override
-  protected final Double valueFrom(RealBeed<?> beed) {
-    return beed.getDouble();
-  }
-
-  @Override
-  protected final Double newValueFrom(RealEvent event) {
-    return event.getNewDouble();
-  }
-
   public final BigDecimal getBigDecimal() {
     return castToBigDecimal(getDouble());
+  }
+
+  @Override
+  protected final void recalculateFrom(RealBeed<?> argument) {
+    $value = calculateValue(argument.getdouble());
+  }
+
+  protected abstract double calculateValue(double argument);
+
+  @Override
+  public final Double get() {
+    return getDouble();
   }
 
 }

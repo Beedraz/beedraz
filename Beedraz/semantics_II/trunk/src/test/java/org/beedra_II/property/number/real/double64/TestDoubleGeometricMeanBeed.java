@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
@@ -51,6 +52,11 @@ public class TestDoubleGeometricMeanBeed {
      */
     public void publicUpdateDependents(ActualDoubleEvent event) {
       updateDependents(event);
+    }
+
+    public final void publicRecalculate() {
+      assert getSource() != null;
+      recalculate(getSource());
     }
 
   }
@@ -153,7 +159,7 @@ public class TestDoubleGeometricMeanBeed {
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleGeometricMeanBeed);
     assertEquals($listener3.$event.getOldDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0, 5.0));
-    assertEquals($listener3.$event.getNewDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0, 6.0));
+    assertTrue(equalValue($listener3.$event.getNewDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0, 6.0), Math.ulp($listener3.$event.getNewDouble()) * 4));
     assertEquals($listener3.$event.getEdit(), doubleEdit);
     // When a new beed is added to the source, the DoubleGeometricMeanBeed is added as a listener
     // of that beed. See above.
@@ -167,7 +173,7 @@ public class TestDoubleGeometricMeanBeed {
     setEdit.perform();
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleGeometricMeanBeed);
-    assertEquals($listener3.$event.getOldDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0, 6.0));
+    assertTrue(equalValue($listener3.$event.getOldDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0, 6.0), Math.ulp($listener3.$event.getOldDouble()) * 4));
     assertEquals($listener3.$event.getNewDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0));
     assertEquals($listener3.$event.getEdit(), setEdit);
     $listener3.reset();
@@ -210,7 +216,8 @@ public class TestDoubleGeometricMeanBeed {
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     EditableDoubleBeed beedNull = createEditableDoubleBeed(null);
     // double mean beed has no source
-    $doubleGeometricMeanBeed.recalculate();
+    // cannot test: violates precondition
+//    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), null);
     // create source
     EditableSetBeed<RealBeed<?>> source =
@@ -218,7 +225,7 @@ public class TestDoubleGeometricMeanBeed {
     // add source to mean beed
     $doubleGeometricMeanBeed.setSource(source);
     // recalculate (setBeed contains no elements)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), Double.NaN);
     // add beed
     SetEdit<RealBeed<?>> setEdit =
@@ -226,41 +233,41 @@ public class TestDoubleGeometricMeanBeed {
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), MathUtil.geometricMean(1.0));
     // recalculate (setBeed contains beed 1)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), MathUtil.geometricMean(1.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), MathUtil.geometricMean(1.0, 2.0));
     // recalculate (setBeed contains beed 1 and 2)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), MathUtil.geometricMean(1.0, 2.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), MathUtil.geometricMean(1.0, 2.0, 3.0, 4.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beedNull);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3, 4 and null)
-    $doubleGeometricMeanBeed.recalculate();
+    $doubleGeometricMeanBeed.publicRecalculate();
     assertEquals($doubleGeometricMeanBeed.getDouble(), null);
   }
 

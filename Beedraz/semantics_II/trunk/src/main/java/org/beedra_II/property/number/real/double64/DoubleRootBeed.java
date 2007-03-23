@@ -46,8 +46,7 @@ public class DoubleRootBeed
    * @pre argumentValue != null;
    */
   @Override
-  protected final Double calculateValue(Double argumentValue) {
-    assert argumentValue != null;
+  protected final double calculateValue(double argumentValue) {
     double root = getConstant();
     if (root == 1) {
       return argumentValue;

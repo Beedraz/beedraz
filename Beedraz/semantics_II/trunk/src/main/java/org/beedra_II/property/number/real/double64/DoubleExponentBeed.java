@@ -76,9 +76,7 @@ public class DoubleExponentBeed
    * @pre exponent != null;
    */
   @Override
-  protected final Double calculateValue(Double base, Double exponent) {
-    assert base != null;
-    assert exponent != null;
+  protected final double calculateValue(double base, double exponent) {
     return Math.pow(base, exponent);
   }
 

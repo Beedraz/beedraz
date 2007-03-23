@@ -53,6 +53,14 @@ public class TestDoubleArithmeticMeanBeed {
       updateDependents(event);
     }
 
+    /**
+     * @pre getSource() != null;
+     */
+    public void publicRecalculate() {
+      assert getSource() != null;
+      recalculate(getSource());
+    }
+
   }
 
   @Before
@@ -210,7 +218,8 @@ public class TestDoubleArithmeticMeanBeed {
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     EditableDoubleBeed beedNull = createEditableDoubleBeed(null);
     // double mean beed has no source
-    $doubleArithmeticMeanBeed.recalculate();
+//    cannot be tested, because violates precondition
+//    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), null);
     // create source
     EditableSetBeed<RealBeed<?>> source =
@@ -218,7 +227,7 @@ public class TestDoubleArithmeticMeanBeed {
     // add source to mean beed
     $doubleArithmeticMeanBeed.setSource(source);
     // recalculate (setBeed contains no elements)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), Double.NaN);
     // add beed
     SetEdit<RealBeed<?>> setEdit =
@@ -226,41 +235,41 @@ public class TestDoubleArithmeticMeanBeed {
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     // recalculate (setBeed contains beed 1)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), MathUtil.arithmeticMean(1.0));
     // recalculate (setBeed contains beed 1)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), MathUtil.arithmeticMean(1.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), MathUtil.arithmeticMean(1.0, 2.0));
     // recalculate (setBeed contains beed 1 and 2)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), MathUtil.arithmeticMean(1.0, 2.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), MathUtil.arithmeticMean(1.0, 2.0, 3.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), MathUtil.arithmeticMean(1.0, 2.0, 3.0, 4.0));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToAdd(beedNull);
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3, 4 and null)
-    $doubleArithmeticMeanBeed.recalculate();
+    $doubleArithmeticMeanBeed.publicRecalculate();
     assertEquals($doubleArithmeticMeanBeed.getDouble(), null);
   }
 

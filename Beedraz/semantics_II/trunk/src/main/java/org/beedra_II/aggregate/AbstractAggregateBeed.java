@@ -17,8 +17,10 @@ limitations under the License.
 package org.beedra_II.aggregate;
 
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
@@ -26,6 +28,7 @@ import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -70,6 +73,20 @@ public abstract class AbstractAggregateBeed
   public final void deregisterAggregateElement(Beed<?> b) {
     assert b != null;
     $dependent.removeUpdateSource(b);
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return $dependent.getUpdateSourcesSet();
+  }
+
+  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    /* fixed to make it possible to use this method during construction,
+     * before $dependent is initialized. But that is bad code, and should be
+     * fixed.
+     */
+    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
   }
 
 }

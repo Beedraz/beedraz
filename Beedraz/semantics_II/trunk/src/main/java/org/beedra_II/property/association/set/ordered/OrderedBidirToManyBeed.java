@@ -19,13 +19,16 @@ package org.beedra_II.property.association.set.ordered;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.collection.set.AbstractSetBeed;
 import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedra_II.property.collection.set.ordered.OrderedSetBeed;
 import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.collection_I.CollectionUtil;
 import org.ppeew.collection_I.LinkedListOrderedSet;
@@ -148,6 +151,14 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
 
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return Collections.emptySet();
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    return Collections.emptySet();
   }
 
 }

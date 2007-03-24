@@ -17,7 +17,11 @@ limitations under the License.
 package org.beedra_II;
 
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.beedra_II.event.StubEvent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 
 
 public class StubBeed extends AbstractBeed<StubEvent> {
@@ -28,6 +32,14 @@ public class StubBeed extends AbstractBeed<StubEvent> {
 
   public int getMaximumRootUpdateSourceDistance() {
     return 0;
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return Collections.emptySet();
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    return Collections.emptySet();
   }
 
 }

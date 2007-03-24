@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
+import java.util.Set;
+
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -74,5 +76,9 @@ public interface UpdateSource {
   void removeDependent(Dependent<?> dependent);
 
   int getMaximumRootUpdateSourceDistance();
+
+  Set<? extends UpdateSource> getUpdateSources();
+
+  Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure();
 
 }

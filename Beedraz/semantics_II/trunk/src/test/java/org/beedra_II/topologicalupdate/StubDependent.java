@@ -98,4 +98,8 @@ public class StubDependent extends Dependent<StubUpdateSource>
     // NOP
   }
 
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return getUpdateSourcesSet();
+  }
+
 }

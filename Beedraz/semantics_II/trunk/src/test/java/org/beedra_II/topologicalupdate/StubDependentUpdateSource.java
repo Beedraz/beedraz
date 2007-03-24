@@ -17,8 +17,10 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.StubEvent;
@@ -61,6 +63,20 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
 
   public void removeUpdateSource(UpdateSource updateSource) {
     $dependent.removeUpdateSource(updateSource);
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return $dependent.getUpdateSourcesSet();
+  }
+
+  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    /* fixed to make it possible to use this method during construction,
+     * before $dependent is initialized. But that is bad code, and should be
+     * fixed.
+     */
+    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
   }
 
 }

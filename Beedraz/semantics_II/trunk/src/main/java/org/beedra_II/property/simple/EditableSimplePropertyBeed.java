@@ -19,10 +19,14 @@ package org.beedra_II.property.simple;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -96,6 +100,14 @@ public abstract class EditableSimplePropertyBeed<_Type_,
   }
 
   private final static String NULL_STRING = "null";
+
+  public final Set<UpdateSource> getUpdateSources() {
+    return Collections.emptySet();
+  }
+
+  public final Set<UpdateSource> getUpdateSourcesTransitiveClosure() {
+    return Collections.emptySet();
+  }
 
   @Override
   protected String otherToStringInformation() {

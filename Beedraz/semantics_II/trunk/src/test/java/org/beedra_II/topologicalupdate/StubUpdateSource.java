@@ -6,6 +6,9 @@
 
 package org.beedra_II.topologicalupdate;
 
+import java.util.Collections;
+import java.util.Set;
+
 
 public final class StubUpdateSource extends AbstractStubUpdateSource {
 
@@ -23,6 +26,14 @@ public final class StubUpdateSource extends AbstractStubUpdateSource {
 
   public int getMaximumRootUpdateSourceDistance() {
     return $mrusd;
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return Collections.emptySet();
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    return Collections.emptySet();
   }
 
 }

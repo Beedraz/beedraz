@@ -20,6 +20,7 @@ package org.beedra_II.topologicalupdate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   changes. For this algorithm to work, all dependents must support the methods
  *   {@link #updateMaximumRootUpdateSourceDistanceDown(int)} and
  *   {@link #updateMaximumRootUpdateSourceDistanceDown(int)}, and
- *   {@link #getDependents()} and {@link #getUpdateSources()}.</p>
+ *   {@link #getDependents()} and {@link #getUpdateSourcesCollection()}.</p>
  * <p>The type {@link UpdateSource} must be an interface, because it is a supertype
  *   for beeds, and beeds require multiple inheritance. The methods
  *   {@link UpdateSource#addDependent(Dependent)} and
@@ -66,7 +67,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   that way.</p>
  * <p>Because the 2 roles now come together in this class, and all dependents have to be of this
  *   type, access to parts of the algorithm can be restricted.</p>
- * <p>The collection of {@link #getUpdateSources() update sources} is a <em>bag</em>, i.e.,
+ * <p>The collection of {@link #getUpdateSourcesCollection() update sources} is a <em>bag</em>, i.e.,
  *   update sources can be in the collection more than once. This changes nothing with respect
  *   to the topological update algorithm. It is only offered because some users need bag
  *   functionality here.</p>
@@ -198,10 +199,18 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
     return Collections.unmodifiableSet($updateSources.keySet());
   }
 
+  public final Set<UpdateSource> getUpdateSourcesTransitiveClosure() {
+    HashSet<UpdateSource> result = new HashSet<UpdateSource>($updateSources.keySet());
+    for (UpdateSource us : $updateSources.keySet()) {
+      result.addAll(us.getUpdateSourcesTransitiveClosure());
+    }
+    return result;
+  }
+
   /**
    * @basic
    */
-  public final Collection<_UpdateSource_> getUpdateSources() {
+  public final Collection<_UpdateSource_> getUpdateSourcesCollection() {
     List<_UpdateSource_> result = new LinkedList<_UpdateSource_>();
     for (Map.Entry<_UpdateSource_, Integer> entry : $updateSources.entrySet()) {
       for (int i = 1; i < entry.getValue(); i++) {

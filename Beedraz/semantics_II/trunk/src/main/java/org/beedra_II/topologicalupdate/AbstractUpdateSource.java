@@ -69,12 +69,15 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     return Collections.unmodifiableSet($dependents);
   }
 
+  /**
+   * @pre dependent != null;
+   * @pre dependent.getDependentUpdateSource() != this;
+   * @pre ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
+   */
   public final void addDependent(Dependent<?> dependent) {
     assert dependent != null;
-    /* TODO I see no way possible with this code to test for loops
-     * ! isTransitiveUpdateSource(dependent) is what we want, but isTransitiveUpdateSource() doesn't
-     * take dependents, but update sources
-     */
+    assert dependent.getDependentUpdateSource() != this;
+    assert ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     $dependents.add(dependent);
   }

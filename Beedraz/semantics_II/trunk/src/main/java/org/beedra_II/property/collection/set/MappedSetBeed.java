@@ -32,6 +32,7 @@ import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -293,6 +294,19 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
     return new ActualSetEvent<_To_>(this, get(), null, null);
   }
 
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return $dependent.getUpdateSourcesSet();
+  }
+
+  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    /* fixed to make it possible to use this method during construction,
+     * before $dependent is initialized. But that is bad code, and should be
+     * fixed.
+     */
+    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
+  }
 
   @Override
   protected String otherToStringInformation() {

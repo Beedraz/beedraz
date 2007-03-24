@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -123,6 +124,14 @@ public class EditableSetBeed<_Element_>
 
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return Collections.emptySet();
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    return Collections.emptySet();
   }
 
 }

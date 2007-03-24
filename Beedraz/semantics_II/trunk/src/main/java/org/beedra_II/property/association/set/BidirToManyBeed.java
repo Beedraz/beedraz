@@ -29,6 +29,7 @@ import org.beedra_II.property.collection.set.AbstractSetBeed;
 import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -118,6 +119,14 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
 
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return Collections.emptySet();
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    return Collections.emptySet();
   }
 
 }

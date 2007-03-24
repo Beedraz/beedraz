@@ -23,8 +23,10 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
@@ -34,6 +36,7 @@ import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -269,6 +272,19 @@ public class LongSumBeed
     return new ActualLongEvent(this, null, getLong(), null);
   }
 
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return $dependent.getUpdateSourcesSet();
+  }
+
+  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    /* fixed to make it possible to use this method during construction,
+     * before $dependent is initialized. But that is bad code, and should be
+     * fixed.
+     */
+    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
+  }
 
   @Override
   protected String otherToStringInformation() {

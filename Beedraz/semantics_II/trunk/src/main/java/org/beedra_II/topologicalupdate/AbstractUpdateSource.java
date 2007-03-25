@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
+import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.MultiLineToStringUtil;
 
 
 /**
@@ -77,7 +80,9 @@ public abstract class AbstractUpdateSource implements UpdateSource {
   public final void addDependent(Dependent<?> dependent) {
     assert dependent != null;
     assert dependent.getDependentUpdateSource() != this;
+    /* MUDO incredible slowdown, and -da doesn't work ???
     assert ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
+    */
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     $dependents.add(dependent);
   }
@@ -143,7 +148,19 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       }
       Dependent<?> dependent = queue.poll();
       while (dependent != null) {
+        // TODO start timing measurement START
+        long starttime = 0;
+        if (Timing._active) {
+          starttime = System.nanoTime();
+        }
+        // TODO start timing measurement END
         Event dependentEvent = dependent.update(Collections.unmodifiableMap(events));
+        // TODO stop timing measurement START
+        if (Timing._active) {
+          long endtime = System.nanoTime();
+          Timing.add(dependent, starttime, endtime, dependentEvent);
+        }
+        // TODO stop timing measurement END
         if (dependentEvent != null) {
           events.put(dependent.getDependentUpdateSource(), dependentEvent);
           dependentEvents.put(dependent, dependentEvent);
@@ -163,6 +180,122 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     }
   }
 
+
+  public static class Timing {
+
+    public static boolean _active = false;
+
+    public static Timing[] resultsSortedByAverageDuration() {
+      return resultsSorted(new Comparator<Timing>() {
+
+        public int compare(Timing t1, Timing t2) {
+          assert t1 != null;
+          assert t2 != null;
+          if (t1.getAverageDuration() > t2.getAverageDuration()) {
+            return -1;
+          }
+          else if (t1.getAverageDuration() == t2.getAverageDuration()) {
+            return 0;
+          }
+          else {
+            return +1;
+          }
+        }
+
+      });
+    }
+
+    public static Timing[] resultsSortedByTotalDuration() {
+      return resultsSorted(new Comparator<Timing>() {
+
+        public int compare(Timing t1, Timing t2) {
+          assert t1 != null;
+          assert t2 != null;
+          if (t1.getTotalDuration() > t2.getTotalDuration()) {
+            return -1;
+          }
+          else if (t1.getTotalDuration() == t2.getTotalDuration()) {
+            return 0;
+          }
+          else {
+            return +1;
+          }
+        }
+
+      });
+    }
+
+    public static Timing[] resultsSorted(Comparator<Timing> comparator) {
+      Timing[] result = new Timing[_results.size()];
+      result = _results.values().toArray(result);
+      Arrays.sort(result, comparator);
+      return result;
+    }
+
+    public static Map<Dependent<?>, Timing> results() {
+      return Collections.unmodifiableMap(_results);
+    }
+
+    private static Map<Dependent<?>, Timing> _results;
+
+    public static void reset() {
+      _active = true;
+      _results = new HashMap<Dependent<?>, Timing>();
+    }
+
+    static void add(Dependent<?> dependent, long starttime, long endtime, Event event) {
+      long duration = endtime - starttime;
+      Timing timing = _results.get(dependent);
+      if (timing == null) {
+        timing = new Timing(dependent, duration, event);
+        _results.put(dependent, timing);
+      }
+      else {
+        timing.succ(duration);
+      }
+    }
+
+    private Timing(Dependent<?> dependent, long duration, Event event) {
+      $updateSource = dependent.getDependentUpdateSource();
+      $duration = duration;
+      $event = event;
+    }
+
+    final void succ(long duration) {
+      $count++;
+      $duration += duration;
+    }
+
+    public final int getCount() {
+      return $count;
+    }
+
+    private int $count = 1;
+
+    public final UpdateSource getUpdateSource() {
+      return $updateSource;
+    }
+
+    private final UpdateSource $updateSource;
+
+    public final long getTotalDuration() {
+      return $duration;
+    }
+
+    public final double getAverageDuration() {
+      return ((double)$duration) / ((double)$count);
+    }
+
+    private long $duration;
+
+    public final Event getEvent() {
+      return $event;
+    }
+
+    private final Event $event;
+
+  }
+
   /**
    * Fire the event to regular (non-topological) listeners.
    */
@@ -173,5 +306,80 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @invar Collections.noNull($dependents);
    */
   private final Set<Dependent<?>> $dependents = new HashSet<Dependent<?>>();
+
+  public final Set<? extends UpdateSource> getRootUpdateSources() {
+    Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();
+    HashSet<UpdateSource> result = new HashSet<UpdateSource>();
+    for (UpdateSource us : uss) {
+      if (us.getMaximumRootUpdateSourceDistance() == 0) {
+        result.add(us);
+      }
+    }
+    return result;
+  }
+
+  public static void writeUpdateSourcesDotFile(Set<? extends UpdateSource> updateSources, PrintStream out) {
+    assert updateSources != null;
+    writeDotHeader(updateSources, out);
+
+    int nrOfFirstOrderUpdateSources = updateSources.size();
+    if (nrOfFirstOrderUpdateSources >= 1) {
+      assert nrOfFirstOrderUpdateSources >= 1 : "initial size of priority queue must be >= 1";
+      PriorityQueue<UpdateSource> queue =
+        new PriorityQueue<UpdateSource>(nrOfFirstOrderUpdateSources,
+          new Comparator<UpdateSource>() {
+                public int compare(UpdateSource us1, UpdateSource us2) {
+                  assert us1 != null;
+                  assert us2 != null;
+                  int mrusd1 = us1.getMaximumRootUpdateSourceDistance();
+                  int mrusd2 = us2.getMaximumRootUpdateSourceDistance();
+                  return (mrusd1 < mrusd2) ? +1 : ((mrusd1 == mrusd2) ? 0 : -1);
+                }
+              });
+      queue.addAll(updateSources);
+      UpdateSource us = queue.poll();
+      while (us != null) {
+        writeUpdateSourcesToDotFile(us, out);
+        Set<UpdateSource> secondDependents = new HashSet<UpdateSource>(us.getUpdateSources());
+        secondDependents.removeAll(queue);
+        queue.addAll(secondDependents);
+        us = queue.poll();
+      }
+    }
+
+    writeDotFooter(updateSources, out);
+  }
+
+  private static void writeDotHeader(Set<? extends UpdateSource> updateSources, PrintStream out) {
+    assert updateSources != null;
+    out.println("digraph " + "\"Update Sources of " + updateSources.size() + " UpdateSource instances\" {");
+  }
+
+  private static void writeDotFooter(Set<? extends UpdateSource> updateSources, PrintStream out) {
+    out.println("}");
+  }
+
+  private static void writeUpdateSourcesToDotFile(UpdateSource us, PrintStream out) {
+      out.print(MultiLineToStringUtil.indent(1));
+      out.print(updateSourceDotId(us));
+      if (us.getMaximumRootUpdateSourceDistance() > 0) {
+        out.print(" -> {");
+        for (UpdateSource usus : us.getUpdateSources()) {
+          out.print(updateSourceDotId(usus) + "; ");
+        }
+        out.print("}");
+      }
+      out.println(";");
+  }
+
+  private static String updateSourceDotId(UpdateSource us) {
+    String className = us.getClass().getSimpleName();
+    if (className.equals("")) {
+      className = us.getClass().getName();
+    }
+    className = className.replace('$', '_');
+    className = className.replace('.', '_');
+    return className + "_" + Integer.toHexString(us.hashCode());
+  }
 
 }

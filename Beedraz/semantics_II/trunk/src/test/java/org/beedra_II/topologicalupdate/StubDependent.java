@@ -18,6 +18,7 @@ package org.beedra_II.topologicalupdate;
 
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -100,6 +101,16 @@ public class StubDependent extends Dependent<StubUpdateSource>
 
   public final Set<? extends UpdateSource> getUpdateSources() {
     return getUpdateSourcesSet();
+  }
+
+  public Set<? extends UpdateSource> getRootUpdateSources() {
+    HashSet<UpdateSource> result = new HashSet<UpdateSource>();
+    for (UpdateSource us : getUpdateSourcesTransitiveClosure()) {
+      if (us.getMaximumRootUpdateSourceDistance() == 0) {
+        result.add(us);
+      }
+    }
+    return result;
   }
 
 }

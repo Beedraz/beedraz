@@ -81,4 +81,6 @@ public interface UpdateSource {
 
   Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure();
 
+  Set<? extends UpdateSource> getRootUpdateSources();
+
 }

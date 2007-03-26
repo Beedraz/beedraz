@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
@@ -321,7 +322,12 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
     Iterator<_To_> iter = get().iterator();
     while (iter.hasNext()) {
       _To_ element = iter.next();
-      sb.append(indent(level + 2) + element.toString() + "\n");
+      if (element instanceof AbstractBeed<?>) {
+        ((AbstractBeed<?>)element).toString(sb, level + 2);
+      }
+      else {
+        sb.append(indent(level + 2) + element.toString() + "\n");
+      }
     }
   }
 

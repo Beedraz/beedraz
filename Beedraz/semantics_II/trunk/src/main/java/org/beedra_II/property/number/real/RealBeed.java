@@ -53,6 +53,9 @@ public interface RealBeed<_Event_ extends RealEvent>
 
   boolean isEffective();
 
+  /**
+   * @pre  isEffective();
+   */
   double getdouble();
 
   /**

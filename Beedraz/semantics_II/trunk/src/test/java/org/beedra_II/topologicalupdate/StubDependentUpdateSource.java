@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.StubEvent;
 
@@ -39,7 +40,7 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
   public final Dependent<UpdateSource> $dependent = new AbstractUpdateSourceDependentDelegate<UpdateSource, StubEvent>(this) {
 
     @Override
-    public StubEvent filteredUpdate(Map<UpdateSource, Event> events) {
+    public StubEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
       $updated++;
       $events = new HashMap<UpdateSource, Event>(events);
       return $myEvent;

@@ -70,12 +70,11 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
     new AbstractUpdateSourceDependentDelegate<_ArgumentBeed_, _SendingEvent_>(this) {
 
       @Override
-      protected _SendingEvent_ filteredUpdate(Map<_ArgumentBeed_, Event> events) {
+      protected _SendingEvent_ filteredUpdate(Map<_ArgumentBeed_, Event> events, Edit<?> edit) {
         assert $argument != null;
         _Number_ oldValue = get();
         recalculate();
         if (! equalValue(oldValue, get())) {
-          Edit<?> edit = events.get($argument).getEdit();
           return createNewEvent(oldValue, get(), edit);
         }
         else {

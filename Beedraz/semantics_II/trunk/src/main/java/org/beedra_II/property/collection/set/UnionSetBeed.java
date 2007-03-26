@@ -79,7 +79,7 @@ public class UnionSetBeed<_Element_>
      * @post    get() == the union of the sources
      */
     @Override
-    protected SetEvent<_Element_> filteredUpdate(Map<SetBeed<_Element_, ?>, Event> events) {
+    protected SetEvent<_Element_> filteredUpdate(Map<SetBeed<_Element_, ?>, Event> events, Edit<?> edit) {
       /* Optimized update is too difficult (what if several events remove the same element?)
        * If 1 source removes an element, but it exists also in other sources, it must stay
        * in the union. But what if all the sources that have the element remove it? Then it
@@ -96,13 +96,6 @@ public class UnionSetBeed<_Element_>
       removed.removeAll($union);
       // notify the listeners if elements are added or removed
       if (! added.isEmpty() || ! removed.isEmpty()) {
-        /* MUDO for now, we take the first edit we get, under the assumption that all events have
-         * the same edit; with compound edits, we should gather different edits
-         */
-        assert events.size() > 0;
-        Iterator<Event> iter = events.values().iterator();
-        Event event = iter.next();
-        Edit<?> edit = event.getEdit();
         return new ActualSetEvent<_Element_>(UnionSetBeed.this, added, removed, edit);
       }
       else {

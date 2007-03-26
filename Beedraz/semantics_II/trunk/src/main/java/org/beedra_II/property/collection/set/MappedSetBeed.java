@@ -96,7 +96,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
     new AbstractUpdateSourceDependentDelegate<Beed<?>, SetEvent<_To_>>(this) {
 
       @Override
-      protected SetEvent<_To_> filteredUpdate(Map<Beed<?>, Event> events) {
+      protected SetEvent<_To_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
         // if the source changes (elements added and / or removed
         if (events.keySet().contains($source)) {
           @SuppressWarnings("unchecked")
@@ -107,13 +107,6 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
         // we do nothing special here, just a total recalculate
         // IDEA there is room for optimalization here
         // recalculate and notify the listeners if the value has changed
-        /* MUDO for now, we take the first edit we get, under the assumption that all events have
-         * the same edit; with compound edits, we should gather different edits
-         */
-        assert events.size() > 0;
-        Iterator<Event> iter = events.values().iterator();
-        Event event = iter.next();
-        Edit<?> edit = event.getEdit();
         return recalculateEvent(edit);
       }
 

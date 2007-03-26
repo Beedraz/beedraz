@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.MultiLineToStringUtil;
@@ -105,23 +106,29 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * The topological update method. First change this update source locally,
    * then described the change in an event, then call this method with that event.
    *
+   * @param edit
+   *        The edit that causes this update. This may be {@code null},
+   *        for structural changes.
    * @pre us != null;
    * @pre event != null;
    */
   protected static void updateDependents(AbstractUpdateSource us, Event event) {
     HashMap<AbstractUpdateSource, Event> sourceEvents = new HashMap<AbstractUpdateSource, Event>(1);
     sourceEvents.put(us, event);
-    multiUpdateDependents(sourceEvents);
+    multiUpdateDependents(sourceEvents, event.getEdit());
   }
 
   /**
    * The topological update method. First change this update source locally,
    * then described the change in an event, then call this method with that event.
    *
+   * @param edit
+   *        The edit that causes this update. This may be {@code null},
+   *        for structural changes.
    * @pre sourceEvents != null;
    * @pre sourceEvents.size() > 0;
    */
-  protected static void multiUpdateDependents(Map<AbstractUpdateSource, Event> sourceEvents) {
+  protected static void multiUpdateDependents(Map<AbstractUpdateSource, Event> sourceEvents, Edit<?> edit) {
     Map<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>(sourceEvents);
     Map<Dependent<?>, Event> dependentEvents = new LinkedHashMap<Dependent<?>, Event>();
     // LinkedHashMap to remember topol order for event listener notification
@@ -154,7 +161,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
           starttime = System.nanoTime();
         }
         // TODO start timing measurement END
-        Event dependentEvent = dependent.update(Collections.unmodifiableMap(events));
+        Event dependentEvent = dependent.update(Collections.unmodifiableMap(events), edit);
         // TODO stop timing measurement START
         if (Timing._active) {
           long endtime = System.nanoTime();

@@ -225,6 +225,31 @@ public class LinkedListOrderedSet<E>
   }
 
   @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    try {
+      @SuppressWarnings("unchecked")
+      OrderedSet<E> cOther = (OrderedSet<E>)other;
+      if (size() != cOther.size()) {
+        return false;
+      }
+      Iterator<E> myIter = iterator();
+      Iterator<E> otherIter = cOther.iterator();
+      while (myIter.hasNext()) {
+        if (! ComparisonUtil.equalsWithNull(myIter.next(), otherIter.next())) {
+          return false;
+        }
+      }
+      return true;
+    }
+    catch (ClassCastException ccExc) {
+      return false;
+    }
+  }
+
+  @Override
   public final String toString() {
     return $backingList.toString();
   }

@@ -86,7 +86,7 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       new AbstractUpdateSourceDependentDelegate<AbstractSetBeed<_Element_, _SetEvent_>, ActualLongEvent>(this) {
 
       @Override
-      protected ActualLongEvent filteredUpdate(Map<AbstractSetBeed<_Element_, _SetEvent_>, Event> events) {
+      protected ActualLongEvent filteredUpdate(Map<AbstractSetBeed<_Element_, _SetEvent_>, Event> events, Edit<?> edit) {
         // We only get events from our set beed, and that can only be 1
         assert events.size() == 1;
         Iterator<Event> iter = events.values().iterator();
@@ -96,7 +96,6 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
           long oldSize = $size;
           $size += setEvent.getAddedElements().size();
           $size -= setEvent.getRemovedElements().size();
-          Edit<?> edit = event.getEdit();
           assert AbstractSetBeed.this.get().size() == $size :
                   "size in size beed should be " + AbstractSetBeed.this.get().size() +
                   " but is " + $size;

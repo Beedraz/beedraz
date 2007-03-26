@@ -75,19 +75,11 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
     new AbstractUpdateSourceDependentDelegate<RealBeed<?>, _NumberEvent_>(this) {
 
       @Override
-      protected _NumberEvent_ filteredUpdate(Map<RealBeed<?>, Event> events) {
+      protected _NumberEvent_ filteredUpdate(Map<RealBeed<?>, Event> events, Edit<?> edit) {
         assert $leftArgument != null || $rightArgument != null;
         _Number_ oldValue = get();
         recalculate();
         if (! equalValue(oldValue, get())) {
-          Event leftEvent = events.get($leftArgument);
-          Event rightEvent = events.get($rightArgument);
-          assert leftEvent != null || rightEvent != null;
-          assert leftEvent != null && rightEvent != null ? leftEvent.getEdit() == rightEvent.getEdit() : true;
-          // MUDO with compound events, not equal, but we should create a compound ourselfs
-          Edit<?> leftEdit = leftEvent != null ? leftEvent.getEdit() : null;
-          Edit<?> rightEdit = rightEvent != null ? rightEvent.getEdit() : null;
-          Edit<?> edit = leftEdit != null ? leftEdit : rightEdit;
           return createNewEvent(oldValue, get(), edit);
         }
         else {

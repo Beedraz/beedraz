@@ -17,70 +17,57 @@ limitations under the License.
 package org.ppeew.collection_I;
 
 
-import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Set;
 
 
 /**
- * Unmodifiable {@link OrderedSet} backed by an {@link OrderedSet}.
+ * Unmodifiable {@link Set} general code.
  *
  * @author Jan Dockx
  */
 public abstract class AbstractUnmodifiableSet<E>
-    extends AbstractSet<E> {
+    extends AbstractUnmodifiableCollection<E>
+    implements Set<E> {
 
-  protected abstract class AbstractUnmodifiableIterator implements Iterator<E> {
-
-    /**
-     * @result false;
-     * @throws UnsupportedOperationException
-     *         true;
-     */
-    public final void remove() {
-      throw new UnsupportedOperationException();
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
     }
-
+    try {
+      @SuppressWarnings("unchecked")
+      Collection<E> cOther = (Collection<E>)other;
+      if (size() != cOther.size()) {
+        return false;
+      }
+      for (E e : cOther) {
+        if (! contains(e)) {
+          return false;
+        }
+      }
+      for (E e : this) {
+        if (! cOther.contains(e)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    catch (ClassCastException ccExc) {
+      return false;
+    }
   }
 
-  /**
-   * @result false;
-   * @throws UnsupportedOperationException
-   *         true;
-   */
   @Override
-  public final boolean add(E object) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  /**
-   * @result false;
-   * @throws UnsupportedOperationException
-   *         true;
-   */
-  @Override
-  public final boolean addAll(Collection<? extends E> c) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  /**
-   * @result false;
-   * @throws UnsupportedOperationException
-   *         true;
-   */
-  @Override
-  public final boolean removeAll(Collection<?> c) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
-  }
-
-  /**
-   * @result false;
-   * @throws UnsupportedOperationException
-   *         true;
-   */
-  @Override
-  public final boolean remove(Object object) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException();
+  public final int hashCode() {
+    // sum of element hash codes
+    int acc = 0;
+    for (E e : this) {
+      if (e != null) {
+        acc += e.hashCode();
+      }
+    }
+    return acc;
   }
 
 }

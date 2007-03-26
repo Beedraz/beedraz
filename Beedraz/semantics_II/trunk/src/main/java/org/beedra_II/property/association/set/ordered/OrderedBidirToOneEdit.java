@@ -293,7 +293,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(newToMany, oldValue, newValue, this);
       events.put(newToMany, event);
     }
-    EditableOrderedBidirToOneBeed.packageUpdateDependents(events);
+    EditableOrderedBidirToOneBeed.packageUpdateDependents(events, this);
   }
 
   /**

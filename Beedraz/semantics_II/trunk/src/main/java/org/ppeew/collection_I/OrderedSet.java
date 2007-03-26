@@ -49,6 +49,9 @@ import java.util.Set;
  *       here is not the correct semantics either, or very difficult for the user
  *       to understand.
  *
+ * @note Implementing classes should implement {@link #equals(Object)} so that it takes
+ *       the order into account.
+ *
  * @author Jan Dockx
  */
 public interface OrderedSet<E> extends Set<E> {

@@ -24,7 +24,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,7 +85,7 @@ public class LongSumBeed
     new AbstractUpdateSourceDependentDelegate<IntegerBeed<?>, ActualLongEvent>(this) {
 
     @Override
-    protected ActualLongEvent filteredUpdate(Map<IntegerBeed<?>, Event> events) {
+    protected ActualLongEvent filteredUpdate(Map<IntegerBeed<?>, Event> events, Edit<?> edit) {
       // recalculate(); optimization
       boolean oldEffective = $effective;
       long oldValue = $value;
@@ -109,13 +108,6 @@ public class LongSumBeed
         recalculate();
       }
       if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
-        /* MUDO for now, we take the first edit we get, under the assumption that all events have
-         * the same edit; with compound edits, we should gather different edits
-         */
-        assert events.size() > 0;
-        Iterator<Event> iter = events.values().iterator();
-        Event event = iter.next();
-        Edit<?> edit = event.getEdit();
         return new ActualLongEvent(
             LongSumBeed.this,
             oldEffective ? oldValue : null,

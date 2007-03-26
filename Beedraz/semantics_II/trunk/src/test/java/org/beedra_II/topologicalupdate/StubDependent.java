@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Beed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubEvent;
@@ -47,7 +48,7 @@ public class StubDependent extends Dependent<StubUpdateSource>
   }
 
   @Override
-  protected Event filteredUpdate(Map<StubUpdateSource, Event> events) {
+  protected Event filteredUpdate(Map<StubUpdateSource, Event> events, Edit<?> edit) {
     $updated++;
     $events = events;
     return $myEvent;

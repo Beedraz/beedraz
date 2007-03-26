@@ -26,8 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.algebra.FilteredMap;
+import org.ppeew.collection_I.algebra.MapFilter;
 
 
 /**
@@ -141,18 +144,23 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * The returned event is the one that will be offered to
    * {@link #fireEvent(Event)} later on.
    *
+   * @param edit
+   *        The edit that causes this update. This may be {@code null},
+   *        for structural changes.
    * @pre events != null;
    */
-  protected final Event update(Map<UpdateSource, Event> events) {
-    Map<_UpdateSource_, Event> result = new HashMap<_UpdateSource_, Event>();
-    for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
-      if ($updateSources.containsKey(entry.getKey())) {
-        @SuppressWarnings("unchecked")
-        _UpdateSource_ us = (_UpdateSource_)entry.getKey();
-        result.put(us, entry.getValue());
+  protected final Event update(Map<UpdateSource, Event> events, Edit<?> edit) {
+    MapFilter<UpdateSource, Event> filter = new MapFilter<UpdateSource, Event>() {
+
+      public boolean filter(UpdateSource key, Event value) {
+        return $updateSources.containsKey(key);
       }
-    }
-    return filteredUpdate(result);
+
+    };
+    FilteredMap<UpdateSource, Event> fm = new FilteredMap<UpdateSource, Event>(events, filter);
+    @SuppressWarnings("unchecked")
+    Map<_UpdateSource_, Event> fm2 = (Map<_UpdateSource_, Event>)fm;
+    return filteredUpdate(fm2, edit);
   }
 
   /**
@@ -163,7 +171,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    *
    * @pre events != null;
    */
-  protected abstract Event filteredUpdate(Map<_UpdateSource_, Event> events);
+  protected abstract Event filteredUpdate(Map<_UpdateSource_, Event> events, Edit<?> edit);
 
   /*</section>*/
 

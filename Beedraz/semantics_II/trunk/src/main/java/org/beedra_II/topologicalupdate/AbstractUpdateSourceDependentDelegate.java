@@ -20,6 +20,7 @@ package org.beedra_II.topologicalupdate;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -86,7 +87,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
   //-----------------------------------------------------------------
 
   @Override
-  protected abstract _Event_ filteredUpdate(Map<_UpdateSource_, Event> events);
+  protected abstract _Event_ filteredUpdate(Map<_UpdateSource_, Event> events, Edit<?> edit);
 
   /*</section>*/
 

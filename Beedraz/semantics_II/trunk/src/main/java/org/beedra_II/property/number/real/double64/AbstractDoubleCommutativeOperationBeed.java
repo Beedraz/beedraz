@@ -23,7 +23,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -85,7 +84,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
     new AbstractUpdateSourceDependentDelegate<RealBeed<?>, ActualDoubleEvent>(this) {
 
       @Override
-      protected ActualDoubleEvent filteredUpdate(Map<RealBeed<?>, Event> events) {
+      protected ActualDoubleEvent filteredUpdate(Map<RealBeed<?>, Event> events, Edit<?> edit) {
         // recalculate(); optimization
         boolean oldEffective = $effective;
         double oldValue = $value;
@@ -111,13 +110,6 @@ public abstract class AbstractDoubleCommutativeOperationBeed
           recalculate();
         }
         if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
-          /* MUDO for now, we take the first edit we get, under the assumption that all events have
-           * the same edit; with compound edits, we should gather different edits
-           */
-          assert events.size() > 0;
-          Iterator<Event> iter = events.values().iterator();
-          Event event = iter.next();
-          Edit<?> edit = event.getEdit();
           return new ActualDoubleEvent(
               AbstractDoubleCommutativeOperationBeed.this,
               oldEffective ? oldValue : null,

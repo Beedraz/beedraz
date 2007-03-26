@@ -25,6 +25,7 @@ import java.util.Set;
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
@@ -47,7 +48,7 @@ public abstract class AbstractAggregateBeed
     new AbstractUpdateSourceDependentDelegate<Beed<?>, PropagatedEvent>(this) {
 
       @Override
-      protected PropagatedEvent filteredUpdate(Map<Beed<?>, Event> events) {
+      protected PropagatedEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?>  edit) {
         assert events.size() > 0;
         Iterator<Event> iter = events.values().iterator();
         Event event = iter.next();

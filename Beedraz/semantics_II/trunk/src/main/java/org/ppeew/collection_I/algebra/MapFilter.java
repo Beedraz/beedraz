@@ -14,24 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.ppeew.smallfries_I;
+package org.ppeew.collection_I.algebra;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.Filter;
 
 
 /**
- * A filter defines a filter criterion.
- * Using the filter, we can check whether a given element meets this
- * criterion or not.
+ * An {@link Filter} criterion for {@link Map Maps}.
  *
- * @author Nele Smeets
- *
- * @todo move to ppeew.collection?
+ * @author Jan Dockx
+ * @author PeopleWare n.v.
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
@@ -39,13 +39,13 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date        = "$Date$",
          state       = "$State$",
          tag         = "$Name$")
-public interface Filter<_Element_> {
+public interface MapFilter<K, V> {
 
   /**
-   * Returns true when the given element satisfies the filter criterion.
-   * Returns false otherwise.
+   * @pre key != null;
+   * @pre value != null;
    */
-  boolean filter(_Element_ element);
+  boolean filter(K key, V value);
 
 }
 

@@ -120,7 +120,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
           new ActualSetEvent<_Many_>(newToMany, new Singleton<_Many_>(getTarget().getOwner()), null, this);
       events.put(newToMany, addedEvent);
     }
-    EditableBidirToOneBeed.packageUpdateDependents(events);
+    EditableBidirToOneBeed.packageUpdateDependents(events, this);
   }
 
   /**

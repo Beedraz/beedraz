@@ -139,7 +139,7 @@ public class UnionSetBeed<_Element_>
    * @basic
    */
   public final Set<SetBeed<_Element_, ?>> getSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   /**
@@ -153,7 +153,7 @@ public class UnionSetBeed<_Element_>
    *         set has changed.
    */
   public final void addSource(SetBeed<_Element_, ?> source) {
-    if (! $dependent.getUpdateSourcesOccurencesMap().containsKey(source)) {
+    if (! $dependent.isUpdateSource(source)) {
       assert source != null;
       @SuppressWarnings("unchecked")
       HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
@@ -188,7 +188,7 @@ public class UnionSetBeed<_Element_>
    *         set has changed.
    */
   public final void removeSource(SetBeed<_Element_, ?> source) {
-    if ($dependent.getUpdateSourcesOccurencesMap().containsKey(source)) {
+    if ($dependent.isUpdateSource(source)) {
       assert source != null;
       @SuppressWarnings("unchecked")
       HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
@@ -251,7 +251,7 @@ public class UnionSetBeed<_Element_>
   }
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();

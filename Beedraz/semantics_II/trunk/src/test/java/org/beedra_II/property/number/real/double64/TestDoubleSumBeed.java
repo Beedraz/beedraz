@@ -823,45 +823,6 @@ public class TestDoubleSumBeed {
   }
 
   @Test
-  public void recalculate() {
-    // create terms
-    EditableDoubleBeed term1 = createEditableDoubleBeed(1.0);
-    EditableDoubleBeed term2 = createEditableDoubleBeed(2.0);
-    EditableDoubleBeed term3 = createEditableDoubleBeed(3.0);
-    EditableDoubleBeed term4 = createEditableDoubleBeed(4.0);
-    EditableDoubleBeed termNull = createEditableDoubleBeed(null);
-    // create sum beed
-    $doubleSumBeed.addArgument(term1);
-    $doubleSumBeed.addArgument(term2);
-    // recalculate
-    $doubleSumBeed.recalculate();
-    assertEquals($doubleSumBeed.getDouble(), 3.0);
-    // recalculate
-    $doubleSumBeed.recalculate();
-    assertEquals($doubleSumBeed.getDouble(), 3.0);
-    // add term
-    $doubleSumBeed.addArgument(term3);
-    // recalculate
-    $doubleSumBeed.recalculate();
-    assertEquals($doubleSumBeed.getDouble(), 6.0);
-    // add term
-    $doubleSumBeed.addArgument(term4);
-    // recalculate
-    $doubleSumBeed.recalculate();
-    assertEquals($doubleSumBeed.getDouble(), 10.0);
-    // add term
-    $doubleSumBeed.addArgument(termNull);
-    // recalculate
-    $doubleSumBeed.recalculate();
-    assertEquals($doubleSumBeed.getDouble(), null);
-    // add term
-    $doubleSumBeed.addArgument(termNull);
-    // recalculate
-    $doubleSumBeed.recalculate();
-    assertEquals($doubleSumBeed.getDouble(), null);
-  }
-
-  @Test
   public void createInitialEvent() {
     RealEvent initialEvent = $doubleSumBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $doubleSumBeed);

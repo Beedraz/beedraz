@@ -170,7 +170,7 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
   protected abstract void recalculateFrom(_ArgumentBeed_ argument);
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();

@@ -828,45 +828,6 @@ public class TestDoubleProductBeed {
   }
 
   @Test
-  public void recalculate() {
-    // create factors
-    EditableDoubleBeed factor1 = createEditableDoubleBeed(1.0);
-    EditableDoubleBeed factor2 = createEditableDoubleBeed(2.0);
-    EditableDoubleBeed factor3 = createEditableDoubleBeed(3.0);
-    EditableDoubleBeed factor4 = createEditableDoubleBeed(4.0);
-    EditableDoubleBeed factorNull = createEditableDoubleBeed(null);
-    // create product beed
-    $doubleProductBeed.addArgument(factor1);
-    $doubleProductBeed.addArgument(factor2);
-    // recalculate
-    $doubleProductBeed.recalculate();
-    assertEquals($doubleProductBeed.getDouble(), 2.0);
-    // recalculate
-    $doubleProductBeed.recalculate();
-    assertEquals($doubleProductBeed.getDouble(), 2.0);
-    // add factor
-    $doubleProductBeed.addArgument(factor3);
-    // recalculate
-    $doubleProductBeed.recalculate();
-    assertEquals($doubleProductBeed.getDouble(), 6.0);
-    // add factor
-    $doubleProductBeed.addArgument(factor4);
-    // recalculate
-    $doubleProductBeed.recalculate();
-    assertEquals($doubleProductBeed.getDouble(), 24.0);
-    // add factor
-    $doubleProductBeed.addArgument(factorNull);
-    // recalculate
-    $doubleProductBeed.recalculate();
-    assertEquals($doubleProductBeed.getDouble(), null);
-    // add factor
-    $doubleProductBeed.addArgument(factorNull);
-    // recalculate
-    $doubleProductBeed.recalculate();
-    assertEquals($doubleProductBeed.getDouble(), null);
-  }
-
-  @Test
   public void createInitialEvent() {
     RealEvent initialEvent = $doubleProductBeed.createInitialEvent();
     assertEquals(initialEvent.getSource(), $doubleProductBeed);

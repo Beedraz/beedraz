@@ -176,7 +176,7 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
     }
 
     public final Set<? extends UpdateSource> getUpdateSources() {
-      return $dependent.getUpdateSourcesSet();
+      return $dependent.getUpdateSources();
     }
 
     public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {

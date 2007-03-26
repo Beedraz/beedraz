@@ -77,7 +77,7 @@ public abstract class AbstractAggregateBeed
   }
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();

@@ -23,7 +23,9 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -99,7 +101,7 @@ public class LongSumBeed
             break;
           }
           else {
-            $value += event.getLongDelta() * getNrOfOccurences(entry.getKey());
+            $value += event.getLongDelta() * getNbOccurrences(entry.getKey());
             // MUDO in events long instead of Long too
           }
         }
@@ -150,7 +152,13 @@ public class LongSumBeed
    * @basic
    */
   public final int getNbOccurrences(IntegerBeed<?> term) {
-    return $dependent.getNrOfOccurences(term);
+    int count = 0;
+    for (IntegerBeed<?> t : $terms) {
+      if (t.equals(term)) {
+        count++;
+      }
+    }
+    return count;
   }
 
   /**
@@ -160,6 +168,7 @@ public class LongSumBeed
   public final void addTerm(IntegerBeed<?> term) {
     assert term != null;
     $dependent.addUpdateSource(term);
+    $terms.add(term);
     // recalculate(); optimization
     if ($effective) {
       long oldValue = $value;
@@ -182,8 +191,11 @@ public class LongSumBeed
    *          : true;
    */
   public final void removeTerm(IntegerBeed<?> term) {
-    if ($dependent.getUpdateSourcesOccurencesMap().containsKey(term)) {
-      $dependent.removeUpdateSource(term);
+    if ($terms.contains(term)) {
+      $terms.remove(term);
+      if (! $terms.contains(term)) {
+        $dependent.removeUpdateSource(term);
+      }
       // recalculate(); optimization
       boolean oldEffective = $effective;
       long oldValue = $value;
@@ -193,7 +205,7 @@ public class LongSumBeed
        * term.getLong() != null && $value != null           ==>  new.$value == old.$value - term.getLong()
        * term.getLong() != null && $value == null           ==>  new.$value == old.$value == null
        */
-      if (! term.isEffective() && getNbOccurrences(term) == 0) {
+      if ((! term.isEffective()) && (! $terms.contains(term))) {
           /* $value was null because of this term. After the remove,
            * the value can be null because of another term, or
            * can be some value: we can't know, recalculate completely
@@ -208,17 +220,15 @@ public class LongSumBeed
       }
       // else: in all other cases, the value of $value is null, and stays null
       if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
-        updateDependents(new ActualLongEvent(
-            this,
-            oldEffective ? oldValue : null,
-            $effective ? $value : null,
-            null));
+        updateDependents(new ActualLongEvent(this, oldEffective ? oldValue : null, $effective ? $value : null, null));
       }
       /* else, term != null, but $value is null; this means there is another term that is null,
          and removing this term won't change that */
+      // else, term was not one of our terms: do nothing
     }
-    // else, term was not one of our terms: do nothing
   }
+
+  private List<IntegerBeed<?>> $terms = new ArrayList<IntegerBeed<?>>();
 
   public final Double getDouble() {
     return $effective ? Double.valueOf($value) : null;
@@ -245,15 +255,12 @@ public class LongSumBeed
    */
   public void recalculate() {
     $value = 0L;
-    @SuppressWarnings("cast")
-    Map<IntegerBeed<?>, Integer> termMap = (Map<IntegerBeed<?>, Integer>)$dependent.getUpdateSourcesOccurencesMap();
-    for (Map.Entry<IntegerBeed<?>, Integer> entry : termMap.entrySet()) {
-      IntegerBeed<?> term = entry.getKey();
+    for (IntegerBeed<?> term : $terms) {
       if (! term.isEffective()) {
         $effective = false;
         return;
       }
-      $value += entry.getKey().getlong() * entry.getValue();
+      $value += term.getlong();
     }
     $effective = true;
   }
@@ -274,7 +281,7 @@ public class LongSumBeed
   }
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
@@ -289,14 +296,14 @@ public class LongSumBeed
 
   @Override
   protected String otherToStringInformation() {
-    return getLong() + " (# " + $dependent.getUpdateSourcesSize() + ")";
+    return getLong() + " (# " + $terms.size() + ")";
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + getLong() + "\n");
-    sb.append(indent(level + 1) + "number of terms:" + $dependent.getUpdateSourcesSize() + "\n");
+    sb.append(indent(level + 1) + "number of terms:" + $terms.size() + "\n");
   }
 
   public BigInteger getBigInteger() {

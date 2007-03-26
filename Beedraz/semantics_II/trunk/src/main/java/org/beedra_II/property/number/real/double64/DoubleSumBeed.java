@@ -48,18 +48,8 @@ public class DoubleSumBeed extends AbstractDoubleCommutativeOperationBeed {
   }
 
   @Override
-  protected double recalculateValue(double oldValueBeed, double oldValueArgument, double newValueArgument, int nbOccurrences) {
-    return oldValueBeed + ((newValueArgument - oldValueArgument) * nbOccurrences);
-  }
-
-  @Override
-  protected double recalculateValueAdded(double oldValueBeed, double valueArgument, int nbOccurrences) {
-    return oldValueBeed + valueArgument * nbOccurrences;
-  }
-
-  @Override
-  protected double recalculateValueRemoved(double oldValueBeed, double valueArgument, int nbOccurrences) {
-    return oldValueBeed - valueArgument * nbOccurrences;
+  protected double operation(double arg1, double arg2) {
+    return arg1 + arg2;
   }
 
   @Override

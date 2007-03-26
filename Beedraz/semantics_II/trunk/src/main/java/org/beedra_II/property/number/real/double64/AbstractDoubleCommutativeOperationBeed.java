@@ -21,8 +21,10 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +33,6 @@ import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -85,30 +86,13 @@ public abstract class AbstractDoubleCommutativeOperationBeed
 
       @Override
       protected ActualDoubleEvent filteredUpdate(Map<RealBeed<?>, Event> events, Edit<?> edit) {
-        // recalculate(); optimization
         boolean oldEffective = $effective;
         double oldValue = $value;
-        if ($effective) {
-          for (Map.Entry<RealBeed<?>, Event> entry : events.entrySet()) {
-            RealEvent event = (RealEvent)entry.getValue();
-            assert event.getOldDouble() != null :
-              "The old value contained in the event must be effective since $value != null.";
-            Double newDouble = event.getNewDouble();
-            if (newDouble == null) {
-              assignEffective(false);
-              break;
-            }
-            else {
-              assert event.getOldDouble() != null : "we couldn't have been effective if the old value in the event is not";
-              assert event.getNewDouble() != null;
-              $value = recalculateValue($value, event.getOldDouble(), event.getNewDouble(), getNrOfOccurences(entry.getKey()));
-              assert isEffective();
-            }
-          }
-        }
-        else {
-          recalculate();
-        }
+        /* optimization is worse than not optimized;
+         * especially for multiplication: removing value involves division; recurrent
+         * use would loose us precision big time
+         */
+        recalculate();
         if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
           return new ActualDoubleEvent(
               AbstractDoubleCommutativeOperationBeed.this,
@@ -149,24 +133,20 @@ public abstract class AbstractDoubleCommutativeOperationBeed
   }
 
   /**
-   * Recalculate the value of this beed: one of the arguments has changed.
-   *
-   * @param oldValueBeed      The old value of this beed.
-   * @param oldValueArgument  The old value of the argument that has changed.
-   * @param newValueArgument  The new value of that argument.
-   * @param nbOccurrences     The number of occurrences of that argument.
-   */
-  protected abstract double recalculateValue(double oldValueBeed, double oldValueArgument, double newValueArgument, int nbOccurrences);
-
-  /**
    * @basic
    */
   public final int getNbOccurrences(RealBeed<?> argument) {
-    return $dependent.getNrOfOccurences(argument);
+    int count = 0;
+    for (RealBeed<?> a : $arguments) {
+      if (a.equals(argument)) {
+        count++;
+      }
+    }
+    return count;
   }
 
   public final Collection<RealBeed<?>> getArguments() {
-    return $dependent.getUpdateSourcesCollection();
+    return Collections.unmodifiableCollection($arguments);
   }
 
   /**
@@ -176,6 +156,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
   public final void addArgument(RealBeed<?> argument) {
     assert argument != null;
     $dependent.addUpdateSource(argument);
+    $arguments.add(argument);
     // recalculate(); optimization
     if ($effective) {
       double oldValue = $value;
@@ -185,7 +166,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
       else {
         assert argument.isEffective();
         if (argument.getdouble() != initialValue()) {
-          $value = recalculateValueAdded($value, argument.getdouble(), 1);
+          $value = operation($value, argument.getdouble());
         }
       }
       if ((! $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
@@ -196,13 +177,9 @@ public abstract class AbstractDoubleCommutativeOperationBeed
   }
 
   /**
-   * Recalculate the value of this beed: a new argument has been added.
-   *
-   * @param oldValueBeed     The old value of this beed.
-   * @param valueArgument    The value of the argument that has been added.
-   * @param nbOccurrences    The number of times that the argument is added.
+   * Perform the operation of this commutative beed.
    */
-  protected abstract double recalculateValueAdded(double oldValueBeed, double valueArgument, int nbOccurrences);
+  protected abstract double operation(double arg1, double arg2);
 
   /**
    * @post  getNbOccurrences() > 0
@@ -210,31 +187,15 @@ public abstract class AbstractDoubleCommutativeOperationBeed
    *          : true;
    */
   public final void removeArgument(RealBeed<?> argument) {
-    if ($dependent.getUpdateSourcesOccurencesMap().containsKey(argument)) {
-      $dependent.removeUpdateSource(argument);
+    if ($arguments.contains(argument)) {
+      $arguments.remove(argument);
+      if (! $arguments.contains(argument)) {
+        $dependent.removeUpdateSource(argument);
+      }
       // recalculate(); optimization
       boolean oldEffective = $effective;
       double oldValue = $value;
-      /**
-       * argument.getDouble() == null && getNbOccurrences() == 0  ==>  recalculate
-       * argument.getDouble() == null && getNbOccurrences() > 0   ==>  new.$value == old.$value == null
-       * argument.getDouble() != null && $value != null           ==>  new.$value == remove the value of argument.getDouble() from old.$value
-       * argument.getDouble() != null && $value == null           ==>  new.$value == old.$value == null
-       */
-      if ((! argument.isEffective()) && ($dependent.getNrOfOccurences(argument) == 0)) {
-          /* $value was null because of this argument. After the remove,
-           * the value can be null because of another argument, or
-           * can be some value: we can't know, recalculate completely
-           */
-         recalculate();
-      }
-      else if ($effective) {
-        // since $value is effective, all arguments are effective
-        // the new value of this beed beed is the old value 'minus' the value of the removed argument
-        assert argument.isEffective();
-        $value = recalculateValueRemoved($value, argument.getdouble(), 1);
-      }
-      // else: in all other cases, the value of $value is null, and stays null
+      recalculate(); // optimization would loose precision with multiplication
       if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
         updateDependents(new ActualDoubleEvent(
             this,
@@ -242,24 +203,10 @@ public abstract class AbstractDoubleCommutativeOperationBeed
             $effective ? $value : null,
             null));
       }
-      /* else, argument != null, but $value is null; this means there is another argument that is null,
-         and removing this argument won't change that */
     }
-    // else, argument was not one of our arguments: do nothing
   }
 
-  protected final Map<RealBeed<?>, Integer> getArgumentMap() {
-    return $dependent.getUpdateSourcesOccurencesMap();
-  }
-
-  /**
-   * Recalculate the value of this beed: an argument has been removed.
-   *
-   * @param oldValueBeed     The old value of this beed.
-   * @param valueArgument    The value of the argument that has been removed.
-   * @param nbOccurrences    The number of times that the argument is removed.
-   */
-  protected abstract double recalculateValueRemoved(double oldValueBeed, double valueArgument, int nbOccurrences);
+  private List<RealBeed<?>> $arguments = new ArrayList<RealBeed<?>>();
 
   /**
    * The value of this beed is recalculated. This is done by iterating over the
@@ -268,16 +215,14 @@ public abstract class AbstractDoubleCommutativeOperationBeed
    * When one of the terms is null, the result is null.
    * When all terms are effective, the result is dependent on the specific subclass.
    */
-  protected final void recalculate() {
+  private final void recalculate() {
     $value = initialValue();
-    for(Map.Entry<RealBeed<?>, Integer> entry : $dependent.getUpdateSourcesOccurencesMap().entrySet()) {
-      RealBeed<?> argument = entry.getKey();
+    for(RealBeed<?> argument : $arguments) {
       if (! argument.isEffective()) {
         assignEffective(false);
         return;
       }
-      int nrOfOccurences = entry.getValue();
-      $value = recalculateValueAdded($value, argument.getdouble(), nrOfOccurences);
+      $value = operation($value, argument.getdouble());
     }
     assignEffective(true);
   }
@@ -320,11 +265,11 @@ public abstract class AbstractDoubleCommutativeOperationBeed
 
   @Override
   protected String otherToStringInformation() {
-    return getDouble() + " (# " + $dependent.getUpdateSourcesSize() + ")";
+    return getDouble() + " (# " + $arguments.size() + ")";
   }
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
@@ -341,10 +286,10 @@ public abstract class AbstractDoubleCommutativeOperationBeed
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value: " + getDouble() + "\n");
-    sb.append(indent(level + 1) + "number of " + argumentsToString() + ": " + $dependent.getUpdateSourcesSize() + "\n");
-    for (RealBeed<?> argument : $dependent.getUpdateSourcesSet()) {
+    sb.append(indent(level + 1) + "number of " + argumentsToString() + ": " + $arguments.size() + "\n");
+    for (RealBeed<?> argument : $dependent.getUpdateSources()) {
       argument.toString(sb, level + 2);
-      sb.append(indent(level + 2) + "nr of occurences: " + $dependent.getNrOfOccurences(argument) + "\n");
+      sb.append(indent(level + 2) + "nr of occurences: " + getNbOccurrences(argument) + "\n");
     }
   }
 

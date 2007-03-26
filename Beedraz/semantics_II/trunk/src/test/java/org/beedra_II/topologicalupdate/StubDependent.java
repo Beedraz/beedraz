@@ -100,10 +100,6 @@ public class StubDependent extends Dependent<StubUpdateSource>
     // NOP
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return getUpdateSourcesSet();
-  }
-
   public Set<? extends UpdateSource> getRootUpdateSources() {
     HashSet<UpdateSource> result = new HashSet<UpdateSource>();
     for (UpdateSource us : getUpdateSourcesTransitiveClosure()) {

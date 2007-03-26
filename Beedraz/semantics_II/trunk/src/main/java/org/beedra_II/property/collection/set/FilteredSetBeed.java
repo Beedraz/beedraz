@@ -277,7 +277,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
   }
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();

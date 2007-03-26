@@ -17,12 +17,8 @@ limitations under the License.
 package org.beedra_II.topologicalupdate;
 
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -153,7 +149,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
     MapFilter<UpdateSource, Event> filter = new MapFilter<UpdateSource, Event>() {
 
       public boolean filter(UpdateSource key, Event value) {
-        return $updateSources.containsKey(key);
+        return $updateSources.contains(key);
       }
 
     };
@@ -167,7 +163,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * The method that updates this dependent, and reports on the change.
    * The returned event is the one that will be offered to
    * {@link #fireEvent(Event)} later on. {@code events} only contains
-   * the events registered by elements of {@link #getUpdateSourcesSet()}.
+   * the events registered by elements of {@link #getUpdateSources()}.
    *
    * @pre events != null;
    */
@@ -183,64 +179,22 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @return getUpdateSourcesSet().contains(updateSource);
    */
   public final boolean isUpdateSource(_UpdateSource_ updateSource) {
-    return $updateSources.containsKey(updateSource);
-  }
-
-  /**
-   * @return getUpdateSources().size();
-   */
-  public final int getUpdateSourcesSize() {
-    return $updateSourcesSize;
-  }
-
-  /**
-   * @return getUpdateSourcesSet().size();
-   */
-  public final int getUpdateSourcesCardinality() {
-    return $updateSources.size();
+    return $updateSources.contains(updateSource);
   }
 
   /**
    * @return result.equals(getUpdateSourcesOccurencesMap().keySet());
    */
-  public final Set<_UpdateSource_> getUpdateSourcesSet() {
-    return Collections.unmodifiableSet($updateSources.keySet());
+  public final Set<_UpdateSource_> getUpdateSources() {
+    return Collections.unmodifiableSet($updateSources);
   }
 
   public final Set<UpdateSource> getUpdateSourcesTransitiveClosure() {
-    HashSet<UpdateSource> result = new HashSet<UpdateSource>($updateSources.keySet());
-    for (UpdateSource us : $updateSources.keySet()) {
+    HashSet<UpdateSource> result = new HashSet<UpdateSource>($updateSources);
+    for (UpdateSource us : $updateSources) {
       result.addAll(us.getUpdateSourcesTransitiveClosure());
     }
     return result;
-  }
-
-  /**
-   * @basic
-   */
-  public final Collection<_UpdateSource_> getUpdateSourcesCollection() {
-    List<_UpdateSource_> result = new LinkedList<_UpdateSource_>();
-    for (Map.Entry<_UpdateSource_, Integer> entry : $updateSources.entrySet()) {
-      for (int i = 1; i < entry.getValue(); i++) {
-        result.add(entry.getKey());
-      }
-    }
-    return result;
-  }
-
-  /**
-   * @basic
-   */
-  public final Map<_UpdateSource_, Integer> getUpdateSourcesOccurencesMap() {
-    return Collections.unmodifiableMap($updateSources);
-  }
-
-  /**
-   * @result result >= 0;
-   */
-  public final int getNrOfOccurences(_UpdateSource_ updateSource) {
-    Integer nr = $updateSources.get(updateSource);
-    return nr == null ? 0 : nr;
   }
 
   /**
@@ -253,62 +207,30 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    */
   public final void addUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
-    /* TODO I see no way possible with this code to test for loops
-     * ! isTransitiveDependent(updateSource) is what we want, but isTransitiveDependent() doesn't
-     * take update sources, but dependents
-     */
-    $updateSourcesSize++;
-    Integer nr = $updateSources.get(updateSource);
-    if (nr == null) {
-      $updateSources.put(updateSource, 1);
-      updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
-      updateSource.addDependent(this);
-    }
-    else {
-      $updateSources.put(updateSource, nr + 1);
-    }
+    // TODO assert against loop
+    $updateSources.add(updateSource);
+    updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
+    updateSource.addDependent(this);
   }
 
   /**
    * @pre updateSource != null;
-   * @pre 'getUpdateSources().contains(updateSource);
    * @post ! getUpdateSources().contains(updateSource);
    * @post ! updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
    */
   public final void removeUpdateSource(_UpdateSource_ updateSource) {
     assert updateSource != null;
-    assert getUpdateSourcesSet().contains(updateSource);
     updateSource.removeDependent(this);
     updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
-    Integer nr = $updateSources.get(updateSource);
-    assert nr != null;
-    if (nr == 1) {
-      $updateSources.remove(updateSource);
-    }
-    else {
-      $updateSources.put(updateSource, nr - 1);
-    }
-    $updateSourcesSize--;
+    $updateSources.remove(updateSource);
   }
 
-//  /**
-//   * @invar $updateSources != null;
-//   * @invar Collections.noNull($updateSources);
-//   */
-//  private final Set<_UpdateSource_> $updateSources = new HashSet<_UpdateSource_>();
-
   /**
-   * The key here is the update source. The value is the number
-   * of times the update source is in the collection.
-   *
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
-   * @invar for (Integer i : $updateSources.values()) {i > 0};
    */
-  private final Map<_UpdateSource_, Integer> $updateSources = new HashMap<_UpdateSource_, Integer>();
-
-  private int $updateSourcesSize = 0;
+  private final Set<_UpdateSource_> $updateSources = new HashSet<_UpdateSource_>();
 
   /*</section>*/
 
@@ -360,7 +282,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
         // no overflow problem in if
       int oldMaximumFinalSourceDistance = $maximumRootUpdateSourceDistance;
       $maximumRootUpdateSourceDistance = 0;
-      for (UpdateSource otherUpdateSource : getUpdateSourcesSet()) {
+      for (UpdateSource otherUpdateSource : getUpdateSources()) {
         int potentialNewMaxDistance = otherUpdateSource.getMaximumRootUpdateSourceDistance() + 1;
           // no overflow problem due to invariant
         if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {

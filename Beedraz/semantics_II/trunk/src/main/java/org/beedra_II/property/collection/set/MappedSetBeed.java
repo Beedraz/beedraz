@@ -289,7 +289,7 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
   }
 
   public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSourcesSet();
+    return $dependent.getUpdateSources();
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();

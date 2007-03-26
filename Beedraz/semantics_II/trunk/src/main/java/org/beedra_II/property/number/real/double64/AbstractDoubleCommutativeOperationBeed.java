@@ -37,6 +37,7 @@ import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -109,7 +110,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
         else {
           recalculate();
         }
-        if ((oldEffective != $effective) || (oldValue != $value)) {
+        if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
           /* MUDO for now, we take the first edit we get, under the assumption that all events have
            * the same edit; with compound edits, we should gather different edits
            */
@@ -117,7 +118,11 @@ public abstract class AbstractDoubleCommutativeOperationBeed
           Iterator<Event> iter = events.values().iterator();
           Event event = iter.next();
           Edit<?> edit = event.getEdit();
-          return new ActualDoubleEvent(AbstractDoubleCommutativeOperationBeed.this, oldEffective ? oldValue : null, $effective ? $value : null, edit);
+          return new ActualDoubleEvent(
+              AbstractDoubleCommutativeOperationBeed.this,
+              oldEffective ? oldValue : null,
+              $effective ? $value : null,
+              edit);
         }
         else {
           return null;
@@ -191,7 +196,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
           $value = recalculateValueAdded($value, argument.getdouble(), 1);
         }
       }
-      if ((! $effective) || (oldValue != $value)) {
+      if ((! $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
         updateDependents(new ActualDoubleEvent(this, oldValue, $effective ? $value : null, null));
       }
     }
@@ -238,8 +243,12 @@ public abstract class AbstractDoubleCommutativeOperationBeed
         $value = recalculateValueRemoved($value, argument.getdouble(), 1);
       }
       // else: in all other cases, the value of $value is null, and stays null
-      if ((oldEffective != $effective) || (oldValue != $value)) {
-        updateDependents(new ActualDoubleEvent(this, oldEffective ? oldValue : null, $effective ? $value : null, null));
+      if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
+        updateDependents(new ActualDoubleEvent(
+            this,
+            oldEffective ? oldValue : null,
+            $effective ? $value : null,
+            null));
       }
       /* else, argument != null, but $value is null; this means there is another argument that is null,
          and removing this argument won't change that */

@@ -38,6 +38,7 @@ import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -107,7 +108,7 @@ public class LongSumBeed
       else {
         recalculate();
       }
-      if ((oldEffective != $effective) || (oldValue != $value)) {
+      if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
         /* MUDO for now, we take the first edit we get, under the assumption that all events have
          * the same edit; with compound edits, we should gather different edits
          */
@@ -115,7 +116,11 @@ public class LongSumBeed
         Iterator<Event> iter = events.values().iterator();
         Event event = iter.next();
         Edit<?> edit = event.getEdit();
-        return new ActualLongEvent(LongSumBeed.this, oldEffective ? oldValue : null, $effective ? $value : null, edit);
+        return new ActualLongEvent(
+            LongSumBeed.this,
+            oldEffective ? oldValue : null,
+            $effective ? $value : null,
+            edit);
       }
       else {
         return null;
@@ -210,8 +215,12 @@ public class LongSumBeed
         $value -= term.getlong();
       }
       // else: in all other cases, the value of $value is null, and stays null
-      if ((oldEffective != $effective) || (oldValue != $value)) {
-        updateDependents(new ActualLongEvent(this, oldEffective ? oldValue : null, $effective ? $value : null, null));
+      if ((oldEffective != $effective) || !MathUtil.equalPrimitiveValue(oldValue, $value)) {
+        updateDependents(new ActualLongEvent(
+            this,
+            oldEffective ? oldValue : null,
+            $effective ? $value : null,
+            null));
       }
       /* else, term != null, but $value is null; this means there is another term that is null,
          and removing this term won't change that */

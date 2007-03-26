@@ -38,7 +38,7 @@ import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -99,10 +99,11 @@ public abstract class AbstractDoubleSetComputationBeed
         // we do nothing special here, just a total recalculate
         // IDEA there is room for optimalization here
         // recalculate and notify the listeners if the value has changed
-        Double oldValue = $value;
+        boolean oldEffective = $effective;
+        double oldValue = $value;
         assert $source != null;
         recalculate($source);
-        if (! ComparisonUtil.equalsWithNull(oldValue, $value)) {
+        if ((oldEffective != $effective) || ! MathUtil.equalPrimitiveValue(oldValue, $value)) {
           /* MUDO for now, we take the first edit we get, under the assumption that all events have
            * the same edit; with compound edits, we should gather different edits
            */
@@ -110,7 +111,16 @@ public abstract class AbstractDoubleSetComputationBeed
           Iterator<Event> iter = events.values().iterator();
           Event event = iter.next();
           Edit<?> edit = event.getEdit();
-          return new ActualDoubleEvent(AbstractDoubleSetComputationBeed.this, oldValue, $value, edit);
+          return new ActualDoubleEvent(
+              AbstractDoubleSetComputationBeed.this,
+              oldEffective ? oldValue : null, // When oldEffective and $effective are different, the values of
+                  // oldValue and $value are not necessarily different, while the constructor of the event
+                  // expects two different values
+                  // To solve this problem, we return null for the value that corresponds to the boolean
+                  // value (oldEffective or $effective) that is false. One of the two values will be null,
+                  // the other one is a double value (or NaN, or Infinity).
+              $effective ? $value : null,
+              edit);
         }
         else {
           return null;

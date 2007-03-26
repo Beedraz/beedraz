@@ -47,6 +47,41 @@ public final class MathUtil {
   private MathUtil() {
     // NOP
   }
+  
+  /**
+   * NaN's are equal. Serious doubles are compared, using {@code Math.ulp(d1) * 2}.
+   */
+  public static boolean equalPrimitiveValue(double d1, double d2) {
+    return equalValue(d1, d2, Math.ulp(d1) * 2);
+  }
+
+  /**
+   * NaN's are equal. Serious doubles are compared, taking
+   * into account the given error.
+   */
+  public static boolean equalPrimitiveValue(double d1, double d2, double error) {
+    if (Double.isNaN(d1)) {
+      return Double.isNaN(d2);
+    }
+    else if (Double.isNaN(d2)) {
+      return false;
+    }
+    else {
+      double delta;
+      if (Double.isInfinite(d1)) {
+        if (Double.isInfinite(d2) && signum(d1) == signum(d2)) {
+          delta = 0;
+        }
+        else {
+          delta = Double.POSITIVE_INFINITY;
+        }
+      }
+      else {
+        delta = Math.abs(d1 - d2);
+      }
+      return delta <= error;
+    }
+  }
 
   /**
    * NaN's are equal.
@@ -78,7 +113,7 @@ public final class MathUtil {
    * NaN's are equal. Serious doubles are compared, taking
    * into account the given error.
    */
-  public static boolean equalValue(Double d, Number n, Double error) {
+  public static boolean equalValue(Double d, Number n, double error) {
     if (d == null) {
       return n == null;
     }
@@ -88,29 +123,7 @@ public final class MathUtil {
     else {
 //      assert d != null;
 //      assert n != null;
-      if (d.isNaN()) {
-        return isNaN(n);
-      }
-      else if (isNaN(n)) {
-        return false;
-      }
-      else {
-        double dv = d.doubleValue();
-        double nv = n.doubleValue();
-        double delta;
-        if (Double.isInfinite(dv)) {
-          if (Double.isInfinite(nv) && signum(dv) == signum(nv)) {
-            delta = 0;
-          }
-          else {
-            delta = Double.POSITIVE_INFINITY;
-          }
-        }
-        else {
-          delta = Math.abs(dv - nv);
-        }
-        return delta <= error;
-      }
+      return equalPrimitiveValue(d.doubleValue(), n.doubleValue(), error);
     }
   }
 

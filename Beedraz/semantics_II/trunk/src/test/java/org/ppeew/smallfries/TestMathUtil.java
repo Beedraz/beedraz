@@ -23,6 +23,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 
@@ -104,6 +105,37 @@ public class TestMathUtil {
   private static List<Float> fs;
   private static List<Long> ls;
   private static List<Integer> is;
+
+  @Test
+  public void testPower() {
+    for (Double d : ds) {
+      if (d != null) {
+        testPower(d, 0);
+        testPower(d, 1);
+        testPower(d, 2);
+        testPower(d, 3);
+        testPower(d, 4);
+        testPower(d, 7);
+        testPower(d, 13);
+        testPower(d, 138);
+      }
+    }
+  }
+
+  private void testPower(double d, int e) {
+    System.out.println("d: " + d + "; e: " + e + "; Naive: " + naivePower(d, e) + "; power: " + MathUtil.power(d, e));
+    double expected = naivePower(d, e);
+    assertTrue(MathUtil.equalPrimitiveValue(expected, MathUtil.power(d, e), Math.ulp(expected) * 32)); // TODO this is a high error rate! why?
+  }
+
+  private double naivePower(double d, int e) {
+    double result = 1;
+    while (e > 0) {
+      result *= d;
+      e--;
+    }
+    return result;
+  }
 
   @Test
   public void testEqualValueDoubleDouble() {

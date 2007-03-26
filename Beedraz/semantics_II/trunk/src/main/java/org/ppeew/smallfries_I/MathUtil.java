@@ -47,7 +47,60 @@ public final class MathUtil {
   private MathUtil() {
     // NOP
   }
-  
+
+  /**
+   * Power of {@code double}, with exponent a positive integer.
+   * We believe this iterative multiplication is faster than
+   * {@code Math#power(double)} in this case
+   *
+   * @pre exponent >=0;
+   */
+  public static double power(double base, int exponent) {
+    assert exponent >= 0;
+    switch (exponent) {
+      case 0:
+        return 1;
+      case 1:
+        return base;
+      case 2:
+        return base * base;
+      case 3:
+        return base * base * base;
+      default:
+        if (base == Double.POSITIVE_INFINITY) {
+          return base;
+        }
+        if (base == Double.NEGATIVE_INFINITY) {
+          if (odd(exponent)) {
+            return base;
+          }
+          else {
+            return Double.POSITIVE_INFINITY;
+          }
+        }
+        assert exponent > 3;
+        double result = 1;
+        int halfExponent = exponent / 2;
+        assert halfExponent >= 2;
+        double halfResult = power(base, halfExponent);
+        result = halfResult * halfResult;
+        if (odd(exponent)) {
+          result *= base;
+        }
+        return result;
+    }
+  }
+
+  /**
+   * {@code i} is odd. For negative numbers, it still means that
+   * the modulus is {@code 0}.
+   *
+   * @return i%2 != 0;
+   */
+  public static boolean odd(int i) {
+    return i % 2 != 0;
+  }
+
   /**
    * NaN's are equal. Serious doubles are compared, using {@code Math.ulp(d1) * 2}.
    */

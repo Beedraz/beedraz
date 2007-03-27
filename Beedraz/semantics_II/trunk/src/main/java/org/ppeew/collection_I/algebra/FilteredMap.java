@@ -256,7 +256,7 @@ public class FilteredMap<K, V> implements Map<K, V> {
 
   }
 
-  private Collection<V> $valueCollection = new ValueCollection();
+  private final Collection<V> $valueCollection = new ValueCollection();
 
   public Collection<V> values() {
     return $valueCollection;

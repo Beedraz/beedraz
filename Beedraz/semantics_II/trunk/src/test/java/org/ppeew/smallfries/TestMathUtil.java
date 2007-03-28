@@ -9,10 +9,21 @@ package org.ppeew.smallfries;
 import static java.lang.Math.abs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.ppeew.smallfries_I.MathUtil.arithmeticMean;
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import static org.ppeew.smallfries_I.MathUtil.castToFloat;
 import static org.ppeew.smallfries_I.MathUtil.castToLong;
+import static org.ppeew.smallfries_I.MathUtil.equalPrimitiveValue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
+import static org.ppeew.smallfries_I.MathUtil.geometricMean;
+import static org.ppeew.smallfries_I.MathUtil.populationGeometricStandardError;
+import static org.ppeew.smallfries_I.MathUtil.populationStandardDeviation;
+import static org.ppeew.smallfries_I.MathUtil.populationStandardError;
+import static org.ppeew.smallfries_I.MathUtil.populationVariance;
+import static org.ppeew.smallfries_I.MathUtil.sampleGeometricStandardError;
+import static org.ppeew.smallfries_I.MathUtil.sampleStandardDeviation;
+import static org.ppeew.smallfries_I.MathUtil.sampleStandardError;
+import static org.ppeew.smallfries_I.MathUtil.sampleVariance;
 import static org.ppeew.smallfries_I.MathUtil.ulp;
 
 import java.util.LinkedList;
@@ -123,7 +134,7 @@ public class TestMathUtil {
   }
 
   private void testPower(double d, int e) {
-    System.out.println("d: " + d + "; e: " + e + "; Naive: " + naivePower(d, e) + "; power: " + MathUtil.power(d, e));
+//    System.out.println("d: " + d + "; e: " + e + "; Naive: " + naivePower(d, e) + "; power: " + MathUtil.power(d, e));
     double expected = naivePower(d, e);
     assertTrue(MathUtil.equalPrimitiveValue(expected, MathUtil.power(d, e), Math.ulp(expected) * 32)); // TODO this is a high error rate! why?
   }
@@ -345,6 +356,360 @@ public class TestMathUtil {
       assertTrue(equalValue(result, i));
     }
   }
+
+  @Test
+  public void testArithmeticMean() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(arithmeticMeanByHand(values), arithmeticMean(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(arithmeticMeanByHand(values), arithmeticMean(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(arithmeticMeanByHand(values), arithmeticMean(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(arithmeticMeanByHand(values), arithmeticMean(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(arithmeticMeanByHand(values), arithmeticMean(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double arithmeticMeanByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else {
+      double sum = 0.0;
+      for (int i = 0; i < doubles.length; i++) {
+        sum += doubles[i];
+      }
+      return sum / doubles.length;
+    }
+  }
+
+  @Test
+  public void testGeometricMean() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(geometricMeanByHand(values), geometricMean(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(geometricMeanByHand(values), geometricMean(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(geometricMeanByHand(values), geometricMean(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(geometricMeanByHand(values), geometricMean(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(geometricMeanByHand(values), geometricMean(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double geometricMeanByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else {
+      double product = 1.0;
+      for (int i = 0; i < doubles.length; i++) {
+        product *= doubles[i];
+      }
+      return Math.pow(product, 1.0 / doubles.length);
+    }
+  }
+
+  @Test
+  public void testSampleVariance() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(sampleVarianceByHand(values), sampleVariance(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(sampleVarianceByHand(values), sampleVariance(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(sampleVarianceByHand(values), sampleVariance(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(sampleVariance(values), sampleVariance(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(sampleVariance(values), sampleVariance(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double sampleVarianceByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double variance = sum / (doubles.length - 1);
+      return variance;
+    }
+  }
+
+  @Test
+  public void testPopulationVariance() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(populationVarianceByHand(values), populationVariance(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(populationVarianceByHand(values), populationVariance(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(populationVarianceByHand(values), populationVariance(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(populationVarianceByHand(values), populationVariance(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(populationVarianceByHand(values), populationVariance(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double populationVarianceByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double variance = sum / doubles.length;
+      return variance;
+    }
+  }
+
+  @Test
+  public void testSampleStandardDeviation() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(sampleStandardDeviationByHand(values), sampleStandardDeviation(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(sampleStandardDeviationByHand(values), sampleStandardDeviation(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(sampleStandardDeviationByHand(values), sampleStandardDeviation(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(sampleStandardDeviationByHand(values), sampleStandardDeviation(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(sampleStandardDeviationByHand(values), sampleStandardDeviation(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double sampleStandardDeviationByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double deviation = Math.sqrt(sum / (doubles.length - 1));
+      return deviation;
+    }
+  }
+
+  @Test
+  public void testPopulationStandardDeviation() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(populationStandardDeviationByHand(values), populationStandardDeviation(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(populationStandardDeviationByHand(values), populationStandardDeviation(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(populationStandardDeviationByHand(values), populationStandardDeviation(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(populationStandardDeviationByHand(values), populationStandardDeviation(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(populationStandardDeviationByHand(values), populationStandardDeviation(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double populationStandardDeviationByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double deviation = Math.sqrt(sum / doubles.length);
+      return deviation;
+    }
+  }
+
+  @Test
+  public void testSampleStandardError() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double sampleStandardErrorByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double error = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
+      return error;
+    }
+  }
+
+  @Test
+  public void testPopulationStandardError() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double populationStandardErrorByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double error = Math.sqrt(sum / ((doubles.length)*doubles.length));
+      return error;
+    }
+  }
+
+  @Test
+  public void testSampleGeometricStandardError() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double sampleGeometricStandardErrorByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return Double.POSITIVE_INFINITY;
+    }
+    else {
+      double sum = 0.0;
+      double geometricMean = geometricMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
+      }
+      double error = Math.exp(Math.sqrt(sum / ((doubles.length - 1)*doubles.length)));
+      return error;
+    }
+  }
+
+  @Test
+  public void testPopulationGeometricStandardError() {
+    double[] values = new double[0];
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double populationGeometricStandardErrorByHand(double... doubles) {
+    assert doubles != null;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return Double.POSITIVE_INFINITY;
+    }
+    else {
+      double sum = 0.0;
+      double geometricMean = geometricMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
+      }
+      double error = Math.exp(Math.sqrt(sum / (doubles.length*doubles.length)));
+      return error;
+    }
+  }
+
+
+
+
 
 }
 

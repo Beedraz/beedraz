@@ -505,4 +505,28 @@ public final class MathUtil {
 //      return variance;
 //    }
   }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double populationVariance(double... doubles) {
+    assert doubles != null;
+    Variance v = new Variance(false);
+    return v.evaluate(doubles);
+//    if (doubles.length == 0) {
+//      return Double.NaN;
+//    }
+//    else if (doubles.length == 1) {
+//      return 0.0;
+//    }
+//    else {
+//      double sum = 0.0;
+//      double mean = arithmeticMean(doubles);
+//      for (int i = 0; i < doubles.length; i++) {
+//        sum += Math.pow(doubles[i]-mean, 2);
+//      }
+//      double variance = sum / doubles.length;
+//      return variance;
+//    }
+  }
 }

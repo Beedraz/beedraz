@@ -453,22 +453,18 @@ public final class MathUtil {
 
   /**
    * @pre  doubles != null;
-   * @pre  doubles.length > 0;
    */
   public static double arithmeticMean(double... doubles) {
     assert doubles != null;
-    assert doubles.length > 0;
     FirstMoment fm = new FirstMoment();
     return fm.evaluate(doubles);
   }
 
   /**
    * @pre  doubles != null;
-   * @pre  doubles.length > 0;
    */
   public static double geometricMean(double... doubles) {
     assert doubles != null;
-    assert doubles.length > 0;
     GeometricMean gm = new GeometricMean();
     return gm.evaluate(doubles);
   }
@@ -480,21 +476,6 @@ public final class MathUtil {
     assert doubles != null;
     Variance v = new Variance(true);
     return v.evaluate(doubles);
-//    if (doubles.length == 0) {
-//      return Double.NaN;
-//    }
-//    else if (doubles.length == 1) {
-//      return 0.0;
-//    }
-//    else {
-//      double sum = 0.0;
-//      double mean = arithmeticMean(doubles);
-//      for (int i = 0; i < doubles.length; i++) {
-//        sum += Math.pow(doubles[i]-mean, 2);
-//      }
-//      double variance = sum / (doubles.length - 1);
-//      return variance;
-//    }
   }
 
   /**
@@ -504,21 +485,6 @@ public final class MathUtil {
     assert doubles != null;
     Variance v = new Variance(false);
     return v.evaluate(doubles);
-//    if (doubles.length == 0) {
-//      return Double.NaN;
-//    }
-//    else if (doubles.length == 1) {
-//      return 0.0;
-//    }
-//    else {
-//      double sum = 0.0;
-//      double mean = arithmeticMean(doubles);
-//      for (int i = 0; i < doubles.length; i++) {
-//        sum += Math.pow(doubles[i]-mean, 2);
-//      }
-//      double variance = sum / doubles.length;
-//      return variance;
-//    }
   }
 
   /**
@@ -528,21 +494,6 @@ public final class MathUtil {
     assert doubles != null;
     StandardDeviation sd = new StandardDeviation(true);
     return sd.evaluate(doubles);
-//    if (doubles.length == 0) {
-//      return Double.NaN;
-//    }
-//    else if (doubles.length == 1) {
-//      return 0.0;
-//    }
-//    else {
-//      double sum = 0.0;
-//      double mean = arithmeticMean(doubles);
-//      for (int i = 0; i < doubles.length; i++) {
-//        sum += Math.pow(doubles[i]-mean, 2);
-//      }
-//      double deviation = Math.sqrt(sum / (doubles.length - 1));
-//      return deviation;
-//    }
   }
 
   /**
@@ -552,24 +503,6 @@ public final class MathUtil {
     assert doubles != null;
     StandardDeviation sd = new StandardDeviation(false);
     return sd.evaluate(doubles);
-//    double v = (new StandardDeviation(false)).evaluate(doubles);
-//    if (doubles.length == 0) {
-//      return Double.NaN;
-//    }
-//    else if (doubles.length == 1) {
-//      return 0.0;
-//    }
-//    else {
-//      double sum = 0.0;
-//      double mean = arithmeticMean(doubles);
-//      for (int i = 0; i < doubles.length; i++) {
-//        sum += Math.pow(doubles[i]-mean, 2);
-//      }
-//      double deviation = Math.sqrt(sum / doubles.length);
-//      System.out.println(variance);
-//      System.out.println(variance == v);
-//      return deviation;
-//    }
   }
 
   /**
@@ -580,46 +513,37 @@ public final class MathUtil {
     StandardError se = new StandardError(true);
     double standardError = se.evaluate(doubles);
     return standardError;
-//    if (doubles.length == 0) {
-//      return Double.NaN;
-//    }
-//    else if (doubles.length == 1) {
-//      return 0.0;
-//    }
-//    else {
-//      double sum = 0.0;
-//      double mean = arithmeticMean(doubles);
-//      for (int i = 0; i < doubles.length; i++) {
-//        sum += Math.pow(doubles[i]-mean, 2);
-//      }
-//      double error = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
-//      return error;
-//    }
   }
 
   /**
    * @pre  doubles != null;
    */
   public static double populationStandardError(double... doubles) {
-//    assert doubles != null;
-//    StandardError se = new StandardError(false);
-//    double standardError = se.evaluate(doubles);
-//    return standardError;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return 0.0;
-    }
-    else {
-      double sum = 0.0;
-      double mean = arithmeticMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(doubles[i]-mean, 2);
-      }
-      double error = Math.sqrt(sum / ((doubles.length)*doubles.length));
-      return error;
-    }
+    assert doubles != null;
+    StandardError se = new StandardError(false);
+    double standardError = se.evaluate(doubles);
+    return standardError;
   }
 
+  /**
+   * @pre  doubles != null;
+   */
+  public static double sampleGeometricStandardError(double... doubles) {
+    assert doubles != null;
+    GeometricStandardError gse = new GeometricStandardError(true);
+    gse.incrementAll(doubles);
+    double standardError = gse.getResult();
+    return standardError;
+  }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double populationGeometricStandardError(double... doubles) {
+    assert doubles != null;
+    GeometricStandardError gse = new GeometricStandardError(false);
+    gse.incrementAll(doubles);
+    double standardError = gse.getResult();
+    return standardError;
+  }
 }

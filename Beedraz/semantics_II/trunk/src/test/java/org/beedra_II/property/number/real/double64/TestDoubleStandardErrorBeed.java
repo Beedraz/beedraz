@@ -130,7 +130,7 @@ public class TestDoubleStandardErrorBeed {
     EditableSetBeed<RealBeed<?>> source = createSource();
     $doubleStandardErrorBeed.setSource(source);
     assertEquals($doubleStandardErrorBeed.getSource(), source);
-    Double standardError1 = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
+    Double standardError1 = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError1, Math.ulp($doubleStandardErrorBeed.getDouble()) * 4));
     // value has changed, so the listeners of the standard error beed are notified
     assertNotNull($listener3.$event);
@@ -146,7 +146,7 @@ public class TestDoubleStandardErrorBeed {
     EditableDoubleBeed goal = createEditableDoubleBeed(5.0);
     setEdit.addElementToAdd(goal);
     setEdit.perform();
-    Double standardError2 = MathUtil.standardError(1.0, 2.0, 3.0, 4.0, 5.0);
+    Double standardError2 = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0, 5.0);
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
     assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), standardError1));
@@ -159,7 +159,7 @@ public class TestDoubleStandardErrorBeed {
     DoubleEdit doubleEdit = new DoubleEdit(goal);
     doubleEdit.setGoal(6.0);
     doubleEdit.perform();
-    Double standardError3 = MathUtil.standardError(1.0, 2.0, 3.0, 4.0, 6.0);
+    Double standardError3 = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0, 6.0);
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
     assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), standardError2));
@@ -175,7 +175,7 @@ public class TestDoubleStandardErrorBeed {
     setEdit = new SetEdit<RealBeed<?>>(source);
     setEdit.addElementToRemove(goal);
     setEdit.perform();
-    Double standardError4 = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
+    Double standardError4 = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0);
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getSource(), $doubleStandardErrorBeed);
     assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), standardError3));
@@ -249,11 +249,7 @@ public class TestDoubleStandardErrorBeed {
     setEdit.perform();
     // recalculate (setBeed contains beed 1 and 2)
     $doubleStandardErrorBeed.publicRecalculate();
-    double standardError = MathUtil.standardError(1.0, 2.0);
-
-    System.out.println($doubleStandardErrorBeed.getDouble());
-    System.out.println(standardError);
-
+    double standardError = MathUtil.sampleStandardError(1.0, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError, Math.ulp($doubleStandardErrorBeed.getDouble()) * 4));
     // recalculate (setBeed contains beed 1 and 2)
     $doubleStandardErrorBeed.publicRecalculate();
@@ -264,7 +260,7 @@ public class TestDoubleStandardErrorBeed {
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2 and 3)
     $doubleStandardErrorBeed.publicRecalculate();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
@@ -272,7 +268,7 @@ public class TestDoubleStandardErrorBeed {
     setEdit.perform();
     // recalculate (setBeed contains beed 1, 2, 3 and 4)
     $doubleStandardErrorBeed.publicRecalculate();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);
@@ -319,32 +315,32 @@ public class TestDoubleStandardErrorBeed {
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
-    double standardError = MathUtil.standardError(1.0, 2.0);
+    double standardError = MathUtil.sampleStandardError(1.0, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError, Math.ulp($doubleStandardErrorBeed.getDouble()) * 4));
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     setEdit = new SetEdit<RealBeed<?>>(setBeed); // add an element that is already there
     setEdit.addElementToAdd(beed4);
     setEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.0, 4.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed1);
     setEdit.perform();
-    standardError = MathUtil.standardError(2.0, 3.0, 4.0);
+    standardError = MathUtil.sampleStandardError(2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed2);
     setEdit.perform();
-    standardError = MathUtil.standardError(3.0, 4.0);
+    standardError = MathUtil.sampleStandardError(3.0, 4.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed3);
@@ -367,43 +363,43 @@ public class TestDoubleStandardErrorBeed {
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
     $doubleStandardErrorBeed.setSource(setBeed);
-    standardError = MathUtil.standardError(1.0, 2.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     DoubleEdit doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.5);
     doubleEdit.perform();
-    standardError = MathUtil.standardError(1.5, 2.0);
+    standardError = MathUtil.sampleStandardError(1.5, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     doubleEdit = new DoubleEdit(beed2);
     doubleEdit.setGoal(2.5);
     doubleEdit.perform();
-    standardError = MathUtil.standardError(1.5, 2.5);
+    standardError = MathUtil.sampleStandardError(1.5, 2.5);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.0);
     doubleEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.5);
+    standardError = MathUtil.sampleStandardError(1.0, 2.5);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     doubleEdit = new DoubleEdit(beed2);
     doubleEdit.setGoal(2.0);
     doubleEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     // change beeds that are added later to the source
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed3);
     setEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.0);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.0);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     doubleEdit = new DoubleEdit(beed3);
     doubleEdit.setGoal(3.5);
     doubleEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.5);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.5);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
     doubleEdit = new DoubleEdit(beed3);
     doubleEdit.setGoal(3.7);
     doubleEdit.perform();
-    standardError = MathUtil.standardError(1.0, 2.0, 3.7);
+    standardError = MathUtil.sampleStandardError(1.0, 2.0, 3.7);
     assertTrue(MathUtil.equalValue($doubleStandardErrorBeed.getDouble(), standardError));
   }
 

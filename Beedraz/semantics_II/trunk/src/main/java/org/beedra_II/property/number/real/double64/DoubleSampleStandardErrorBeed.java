@@ -46,7 +46,7 @@ import org.ppeew.smallfries_I.StandardError;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleStandardErrorBeed extends AbstractDoubleCommonsMathSetComputationBeed {
+public class DoubleSampleStandardErrorBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
 
   /**
@@ -55,7 +55,7 @@ public class DoubleStandardErrorBeed extends AbstractDoubleCommonsMathSetComputa
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleStandardErrorBeed(AggregateBeed owner) {
+  public DoubleSampleStandardErrorBeed(AggregateBeed owner) {
     super(owner, new StandardError(true));
   }
 

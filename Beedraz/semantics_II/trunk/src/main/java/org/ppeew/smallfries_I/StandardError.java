@@ -131,7 +131,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
    */
   @Override
   public double evaluate(final double[] values)  {
-      return Math.sqrt($standardDeviation.evaluate(values));
+      return $standardDeviation.evaluate(values) / Math.sqrt(values.length);
   }
 
   /**
@@ -154,7 +154,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
    */
   @Override
   public double evaluate(final double[] values, final int begin, final int length)  {
-     return Math.sqrt($standardDeviation.evaluate(values, begin, length));
+     return $standardDeviation.evaluate(values, begin, length) / Math.sqrt(values.length);
   }
 
   /**
@@ -183,7 +183,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
    */
   public double evaluate(final double[] values, final double mean,
           final int begin, final int length)  {
-      return Math.sqrt($standardDeviation.evaluate(values, mean, begin, length));
+      return $standardDeviation.evaluate(values, mean, begin, length) / Math.sqrt(values.length);
   }
 
   /**
@@ -208,7 +208,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
    * @throws IllegalArgumentException if the array is null
    */
   public double evaluate(final double[] values, final double mean)  {
-      return Math.sqrt($standardDeviation.evaluate(values, mean));
+      return $standardDeviation.evaluate(values, mean) / Math.sqrt(values.length);
   }
 
 }

@@ -26,6 +26,7 @@ import java.math.BigInteger;
 import org.apache.commons.math.stat.descriptive.moment.FirstMoment;
 import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
+import org.apache.commons.math.stat.descriptive.moment.Variance;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -474,12 +475,34 @@ public final class MathUtil {
 
   /**
    * @pre  doubles != null;
-   * @pre  doubles.length > 1;
    */
   public static double standardError(double... doubles) {
     assert doubles != null;
-    assert doubles.length > 1;
-    StandardDeviation sd = new StandardDeviation(true); // is this true correct?
+    StandardDeviation sd = new StandardDeviation(true);
     return sd.evaluate(doubles);
+  }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double sampleVariance(double... doubles) {
+    assert doubles != null;
+    Variance v = new Variance(true);
+    return v.evaluate(doubles);
+//    if (doubles.length == 0) {
+//      return Double.NaN;
+//    }
+//    else if (doubles.length == 1) {
+//      return 0.0;
+//    }
+//    else {
+//      double sum = 0.0;
+//      double mean = arithmeticMean(doubles);
+//      for (int i = 0; i < doubles.length; i++) {
+//        sum += Math.pow(doubles[i]-mean, 2);
+//      }
+//      double variance = sum / (doubles.length - 1);
+//      return variance;
+//    }
   }
 }

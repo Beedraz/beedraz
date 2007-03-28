@@ -476,10 +476,27 @@ public final class MathUtil {
   /**
    * @pre  doubles != null;
    */
-  public static double standardError(double... doubles) {
+  public static double sampleStandardError(double... doubles) {
     assert doubles != null;
-    StandardDeviation sd = new StandardDeviation(true);
-    return sd.evaluate(doubles);
+    StandardError se = new StandardError(true);
+    double standardError = se.evaluate(doubles);
+    return standardError;
+    // by hand
+//    if (doubles.length == 0) {
+//      return Double.NaN;
+//    }
+//    else if (doubles.length == 1) {
+//      return 0.0;
+//    }
+//    else {
+//      double sum = 0.0;
+//      double mean = arithmeticMean(doubles);
+//      for (int i = 0; i < doubles.length; i++) {
+//        sum += Math.pow(doubles[i]-mean, 2);
+//      }
+//      double variance = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
+//      return variance;
+//    }
   }
 
   /**
@@ -549,8 +566,8 @@ public final class MathUtil {
 //      for (int i = 0; i < doubles.length; i++) {
 //        sum += Math.pow(doubles[i]-mean, 2);
 //      }
-//      double variance = Math.sqrt(sum / (doubles.length - 1));
-//      return variance;
+//      double deviation = Math.sqrt(sum / (doubles.length - 1));
+//      return deviation;
 //    }
   }
 
@@ -574,10 +591,10 @@ public final class MathUtil {
 //      for (int i = 0; i < doubles.length; i++) {
 //        sum += Math.pow(doubles[i]-mean, 2);
 //      }
-//      double variance = Math.sqrt(sum / doubles.length);
+//      double deviation = Math.sqrt(sum / doubles.length);
 //      System.out.println(variance);
 //      System.out.println(variance == v);
-//      return variance;
+//      return deviation;
 //    }
   }
 }

@@ -580,7 +580,6 @@ public final class MathUtil {
     StandardError se = new StandardError(true);
     double standardError = se.evaluate(doubles);
     return standardError;
-    // by hand
 //    if (doubles.length == 0) {
 //      return Double.NaN;
 //    }
@@ -593,8 +592,34 @@ public final class MathUtil {
 //      for (int i = 0; i < doubles.length; i++) {
 //        sum += Math.pow(doubles[i]-mean, 2);
 //      }
-//      double variance = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
-//      return variance;
+//      double error = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
+//      return error;
 //    }
   }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double populationStandardError(double... doubles) {
+//    assert doubles != null;
+//    StandardError se = new StandardError(false);
+//    double standardError = se.evaluate(doubles);
+//    return standardError;
+    if (doubles.length == 0) {
+      return Double.NaN;
+    }
+    else if (doubles.length == 1) {
+      return 0.0;
+    }
+    else {
+      double sum = 0.0;
+      double mean = arithmeticMean(doubles);
+      for (int i = 0; i < doubles.length; i++) {
+        sum += Math.pow(doubles[i]-mean, 2);
+      }
+      double error = Math.sqrt(sum / ((doubles.length)*doubles.length));
+      return error;
+    }
+  }
+
 }

@@ -17,25 +17,28 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.StandardError;
 
 
 /**
- * A beed that computes the standard error of a given set of beeds of type
+ * A beed that computes the sample standard error of a given set of beeds of type
  * {@link DoubleBeed}.
+ *
+ * sample_standard_error(x_1, ..., x_n) = Math.sqrt(sum((x_i - mean)^2) / ((n - 1)*n))
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
- *            ==> getDouble() == SE { db.getDouble() | getSource().get().contains(db)};
- *        If the values of all beeds in the given set are effective,
- *        then the value of the standard error beed is the standard error of the values of
- *        all beeds in the given set. The standard error of an empty set or of a set containing
- *        only one element is NaN.
+ *            ==> getDouble() == sample_standard_error { db.getDouble() | getSource().get().contains(db)};
+ *        If the values of all beeds in the given set are effective, then the value
+ *        of the sample standard error beed is the sample standard error of
+ *        the values of all beeds in the given set.
+ *        The sample standard error of an empty set is {@link Double#NaN}.
+ *        The sample standard error of a set containing only one element is 0.
  *        e.g. when  getSource() = {1, 2, 3, 4}
  *             then  getDouble() = Math.sqrt(dividend/divisor)
- *             where divisor = 4*3
+ *             where divisor = 3 * 4
  *             and   dividend = (1-mean)^2 + (2-mean)^2 + (3-mean)^2 + (4-mean)^2)
  *             and   mean = (1 + 2 + 3 + 4)/4
  */
@@ -48,11 +51,12 @@ public class DoubleStandardErrorBeed extends AbstractDoubleCommonsMathSetComputa
 
   /**
    * @pre   owner != null;
+   * @post  getOwner() == owner;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
   public DoubleStandardErrorBeed(AggregateBeed owner) {
-    super(owner, new StandardDeviation(true)); // MUDO is this "true" correct?
+    super(owner, new StandardError(true));
   }
 
 }

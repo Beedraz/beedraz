@@ -529,4 +529,29 @@ public final class MathUtil {
 //      return variance;
 //    }
   }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double sampleStandardDeviation(double... doubles) {
+    assert doubles != null;
+    StandardDeviation sd = new StandardDeviation(true);
+    return sd.evaluate(doubles);
+//    if (doubles.length == 0) {
+//      return Double.NaN;
+//    }
+//    else if (doubles.length == 1) {
+//      return 0.0;
+//    }
+//    else {
+//      double sum = 0.0;
+//      double mean = arithmeticMean(doubles);
+//      for (int i = 0; i < doubles.length; i++) {
+//        sum += Math.pow(doubles[i]-mean, 2);
+//      }
+//      double variance = Math.sqrt(sum / (doubles.length - 1));
+//      return variance;
+//    }
+  }
+
 }

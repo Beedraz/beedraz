@@ -154,7 +154,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
    */
   @Override
   public double evaluate(final double[] values, final int begin, final int length)  {
-     return $standardDeviation.evaluate(values, begin, length) / Math.sqrt(values.length);
+     return $standardDeviation.evaluate(values, begin, length) / Math.sqrt(length);
   }
 
   /**
@@ -183,7 +183,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
    */
   public double evaluate(final double[] values, final double mean,
           final int begin, final int length)  {
-      return $standardDeviation.evaluate(values, mean, begin, length) / Math.sqrt(values.length);
+      return $standardDeviation.evaluate(values, mean, begin, length) / Math.sqrt(length);
   }
 
   /**

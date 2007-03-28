@@ -39,11 +39,11 @@ import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
 
-public class TestDoubleStandardErrorBeed {
+public class TestDoubleSampleStandardErrorBeed {
 
 //  private static final double DOUBLE_ERROR = 0.0001;
 
-  public class MyDoubleStandardErrorBeed extends DoubleStandardErrorBeed {
+  public class MyDoubleStandardErrorBeed extends DoubleSampleStandardErrorBeed {
     public MyDoubleStandardErrorBeed(AggregateBeed owner) {
       super(owner);
     }

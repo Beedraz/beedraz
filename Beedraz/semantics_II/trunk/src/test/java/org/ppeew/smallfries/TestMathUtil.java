@@ -18,11 +18,9 @@ import static org.ppeew.smallfries_I.MathUtil.equalValue;
 import static org.ppeew.smallfries_I.MathUtil.geometricMean;
 import static org.ppeew.smallfries_I.MathUtil.populationGeometricStandardError;
 import static org.ppeew.smallfries_I.MathUtil.populationStandardDeviation;
-import static org.ppeew.smallfries_I.MathUtil.populationStandardError;
 import static org.ppeew.smallfries_I.MathUtil.populationVariance;
 import static org.ppeew.smallfries_I.MathUtil.sampleGeometricStandardError;
 import static org.ppeew.smallfries_I.MathUtil.sampleStandardDeviation;
-import static org.ppeew.smallfries_I.MathUtil.sampleStandardError;
 import static org.ppeew.smallfries_I.MathUtil.sampleVariance;
 import static org.ppeew.smallfries_I.MathUtil.ulp;
 
@@ -560,78 +558,6 @@ public class TestMathUtil {
       }
       double deviation = Math.sqrt(sum / doubles.length);
       return deviation;
-    }
-  }
-
-  @Test
-  public void testSampleStandardError() {
-    double[] values = new double[0];
-    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
-    values = new double[]{1.1};
-    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
-    values = new double[]{1.1, 2.2};
-    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3};
-    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4};
-    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), sampleStandardError(values)));
-  }
-
-  /**
-   * @pre   doubles != null;
-   */
-  private double sampleStandardErrorByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return 0.0;
-    }
-    else {
-      double sum = 0.0;
-      double mean = arithmeticMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(doubles[i]-mean, 2);
-      }
-      double error = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
-      return error;
-    }
-  }
-
-  @Test
-  public void testPopulationStandardError() {
-    double[] values = new double[0];
-    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
-    values = new double[]{1.1};
-    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
-    values = new double[]{1.1, 2.2};
-    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3};
-    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4};
-    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), populationStandardError(values)));
-  }
-
-  /**
-   * @pre   doubles != null;
-   */
-  private double populationStandardErrorByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return 0.0;
-    }
-    else {
-      double sum = 0.0;
-      double mean = arithmeticMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(doubles[i]-mean, 2);
-      }
-      double error = Math.sqrt(sum / ((doubles.length)*doubles.length));
-      return error;
     }
   }
 

@@ -194,8 +194,6 @@ public class TestStandardError {
     double mean = m.evaluate(values);
     $sampleStandardError2.clear();
     $sampleStandardError2.incrementAll(values);
-    System.out.println($sampleStandardError2.getResult());
-    System.out.println($sampleStandardError.evaluate(values));
     assertTrue(equalPrimitiveValue($sampleStandardError2.getResult(), $sampleStandardError.evaluate(values)));
     assertTrue(equalPrimitiveValue($sampleStandardError2.getResult(), $sampleStandardError.evaluate(values, 0, values.length)));
     assertTrue(equalPrimitiveValue($sampleStandardError2.getResult(), $sampleStandardError.evaluate(values2, begin, values.length)));

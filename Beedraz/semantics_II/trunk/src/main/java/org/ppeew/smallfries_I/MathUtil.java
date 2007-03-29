@@ -572,9 +572,9 @@ public final class MathUtil {
    *
    * @param   values  The array to transform.
    * @return  values == null ==> result == null;
-   * @return  values != null ==> result != null;
-   * @return  values != null ==> result.length == values.length;
-   * @return  values != null ==>
+   * @result  values != null ==> result != null;
+   * @result  values != null ==> result.length == values.length;
+   * @result  values != null ==>
    *             (forAll int i; 0 <= i < values.length; result[i]=Math.log(values[i]));
    */
   public static double[] logTransform(double[] values) {

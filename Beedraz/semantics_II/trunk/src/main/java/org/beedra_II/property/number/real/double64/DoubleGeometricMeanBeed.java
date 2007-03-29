@@ -19,8 +19,6 @@ package org.beedra_II.property.number.real.double64;
 
 import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.collection.set.SetBeed;
-import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -40,8 +38,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleGeometricMeanBeed extends AbstractDoubleSetComputationBeed {
-
+public class DoubleGeometricMeanBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
   /**
    * @pre   owner != null;
@@ -49,27 +46,8 @@ public class DoubleGeometricMeanBeed extends AbstractDoubleSetComputationBeed {
    * @post  getDouble() == null;
    */
   public DoubleGeometricMeanBeed(AggregateBeed owner) {
-    super(owner);
+    super(owner, new GeometricMean());
   }
-
-  /**
-   * The value of this beed is recalculated.
-   */
-  @Override
-  protected final void recalculate(SetBeed<RealBeed<?>, ?> source) {
-    $calculator.clear();
-    for (RealBeed<?> realBeed : source.get()) {
-      if (! realBeed.isEffective()) {
-        assignEffective(false);
-        return;
-      }
-      $calculator.increment(realBeed.getdouble());
-    }
-    assignValue($calculator.getResult());
-    assignEffective(true);
-  }
-
-  private final GeometricMean $calculator = new GeometricMean();
 
 }
 

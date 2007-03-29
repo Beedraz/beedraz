@@ -97,7 +97,7 @@ public class StandardError extends AbstractStorelessUnivariateStatistic
   /*<property name="standardDeviation">*/
   //------------------------------------------------------------------
 
-  private StandardDeviation $standardDeviation = null;
+  private StandardDeviation $standardDeviation;
 
   /*</property>*/
 

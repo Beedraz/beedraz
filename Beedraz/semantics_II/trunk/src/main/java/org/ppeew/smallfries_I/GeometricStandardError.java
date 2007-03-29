@@ -111,7 +111,7 @@ public class GeometricStandardError extends AbstractStorelessUnivariateStatistic
   /*<property name="standardError">*/
   //------------------------------------------------------------------
 
-  private StandardError $standardError = null;
+  private StandardError $standardError;
 
   /*</property>*/
 

@@ -34,11 +34,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * 2. Compute the standard error of the new values
  * 3. Take the exponential value of the result
  *
- * Therefore:
- * <li></li>
- * <li></li>
- * <li></li>
- *
  * This implementation wraps a {@link StandardError} instance.
  * The <code>isBiasCorrected</code> property of the wrapped {@link StandardError}
  * instance is exposed, so that this class can be used to

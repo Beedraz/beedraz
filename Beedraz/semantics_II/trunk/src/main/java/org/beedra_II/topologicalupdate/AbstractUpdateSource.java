@@ -18,12 +18,13 @@ package org.beedra_II.topologicalupdate;
 
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -118,6 +119,8 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     multiUpdateDependents(sourceEvents, event.getEdit());
   }
 
+  private final static int TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE = 15;
+
   /**
    * The topological update method. First change this update source locally,
    * then described the change in an event, then call this method with that event.
@@ -129,63 +132,104 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @pre sourceEvents.size() > 0;
    */
   protected static void multiUpdateDependents(Map<AbstractUpdateSource, Event> sourceEvents, Edit<?> edit) {
-    Map<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>(sourceEvents);
-    Map<Dependent<?>, Event> dependentEvents = new LinkedHashMap<Dependent<?>, Event>();
-    // LinkedHashMap to remember topol order for event listener notification
-//    events.put(us, event);
-    int nrOfFirstOrderDependents = 0;
-    for (AbstractUpdateSource aus : sourceEvents.keySet()) {
-      nrOfFirstOrderDependents +=  aus.$dependents.size();
+    assert sourceEvents != null;
+    assert sourceEvents.size() > 0;
+    Map<UpdateSource, Event> events = new HashMap<UpdateSource, Event>(sourceEvents);
+    /* most efficient structure to store the events to give them to the dependents
+     * when they need to update themselves
+     */
+    ArrayList<HashSet<Dependent<?>>> topologicalOrder = initialTopologicalOrder(sourceEvents);
+      /* invar: topologicalOrder.get(0) = null;
+       * invar: for (int i : [0, topologicalOrder.size()]) {for (Depenent<?> d : topologicalOrder.get(i)) {d.getMursd() == 1}};
+       */
+    topologicalUpdate(topologicalOrder, events, edit);
+    fireInitialUpdateSourcesEvents(sourceEvents);
+    fireDependentEvents(topologicalOrder, events);
     }
-    if (nrOfFirstOrderDependents >= 1) {
-      assert nrOfFirstOrderDependents >= 1 : "initial size of priority queue must be >= 1";
-      PriorityQueue<Dependent<?>> queue =
-        new PriorityQueue<Dependent<?>>(nrOfFirstOrderDependents,
-          new Comparator<Dependent<?>>() {
-                public int compare(Dependent<?> d1, Dependent<?> d2) {
-                  assert d1 != null;
-                  assert d2 != null;
-                  int mfsd1 = d1.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                  int mfsd2 = d2.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                  return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
+
+  private static void putDependent(ArrayList<HashSet<Dependent<?>>> topologicalOrder, Dependent<?> d) {
+    assert topologicalOrder != null;
+    assert d != null;
+    int dMrusd = d.getMaximumRootUpdateSourceDistance();
+    topologicalOrder.ensureCapacity(dMrusd + 1);
+    while (topologicalOrder.size() <= dMrusd) {
+      // make list large enough; stupid, but that's what it is
+      topologicalOrder.add(null);
                 }
-              });
+    assert topologicalOrder.size() > dMrusd;
+    HashSet<Dependent<?>> dMrusdDependents = topologicalOrder.get(dMrusd);
+    if (dMrusdDependents == null) {
+      dMrusdDependents = new HashSet<Dependent<?>>();
+      topologicalOrder.set(dMrusd, dMrusdDependents);
+    }
+    dMrusdDependents.add(d);
+  }
+
+  private static ArrayList<HashSet<Dependent<?>>> initialTopologicalOrder(Map<AbstractUpdateSource, Event> sourceEvents) {
+    assert sourceEvents != null;
+    ArrayList<HashSet<Dependent<?>>> topologicalOrder = new ArrayList<HashSet<Dependent<?>>>(TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE);
       for (AbstractUpdateSource aus : sourceEvents.keySet()) {
-        queue.addAll(aus.$dependents);
+      assert aus != null;
+      for (Dependent<?> d : aus.getDependents()) {
+        putDependent(topologicalOrder, d);
       }
-      Dependent<?> dependent = queue.poll();
-      while (dependent != null) {
-        // TODO start timing measurement START
+    }
+    return topologicalOrder;
+  }
+
+  private static void topologicalUpdate(ArrayList<HashSet<Dependent<?>>> topologicalOrder, Map<UpdateSource, Event> events, Edit<?> edit) {
+    int mrusd = 1; // 0 is not used
+    while (mrusd < topologicalOrder.size()) {
+      HashSet<Dependent<?>> currentDependents = topologicalOrder.get(mrusd);
+      if ((currentDependents != null) && (! currentDependents.isEmpty())) {
+        Iterator<Dependent<?>> iter = currentDependents.iterator();
+        while (iter.hasNext()) {
+          Dependent<?> currentDependent = iter.next();
         long starttime = 0;
         if (Timing._active) {
           starttime = System.nanoTime();
         }
-        // TODO start timing measurement END
-        Event dependentEvent = dependent.update(Collections.unmodifiableMap(events), edit);
-        // TODO stop timing measurement START
+          Event event = currentDependent.update(events, edit); // this is the actual update request
         if (Timing._active) {
           long endtime = System.nanoTime();
-          Timing.add(dependent, starttime, endtime, dependentEvent);
+            Timing.add(currentDependent, starttime, endtime, event);
         }
-        // TODO stop timing measurement END
-        if (dependentEvent != null) {
-          events.put(dependent.getDependentUpdateSource(), dependentEvent);
-          dependentEvents.put(dependent, dependentEvent);
-          Set<Dependent<?>> secondDependents =
-            new HashSet<Dependent<?>>(dependent.getDependents());
-          secondDependents.removeAll(queue);
-          queue.addAll(secondDependents);
+          if (event != null) {
+            // remember the event, for when we ask the dependents of d to update
+            events.put(currentDependent.getDependentUpdateSource(), event);
+            // add dependents of d to topological order
+            Set<Dependent<?>> currentDependentDependents = currentDependent.getDependents();
+            for (Dependent<?> d2 : currentDependentDependents) {
+              putDependent(topologicalOrder, d2);
         }
-        dependent = queue.poll();
+      }
+          else {
+            /* We will not ask d to send events; remove it from the set.
+               the set may stay. */
+            iter.remove();
+    }
+        }
+      }
+      mrusd++;
+    }
+  }
+
+  private static void fireDependentEvents(ArrayList<HashSet<Dependent<?>>> topologicalOrder, Map<UpdateSource, Event> events) {
+    for (Set<Dependent<?>> ds : topologicalOrder) {
+      if (ds != null) {
+        for (Dependent<?> d: ds) {
+          Event event = events.get(d.getDependentUpdateSource());
+          d.fireEvent(event);
+        }
       }
     }
+  }
+
+  private static void fireInitialUpdateSourcesEvents(Map<AbstractUpdateSource, Event> sourceEvents) {
     for (Map.Entry<AbstractUpdateSource, Event> entry : sourceEvents.entrySet()) {
       entry.getKey().fireEvent(entry.getValue());
     }
-    for (Map.Entry<Dependent<?>, Event> entry : dependentEvents.entrySet()) {
-      entry.getKey().fireEvent(entry.getValue());
     }
-  }
 
 
   public static class Timing {

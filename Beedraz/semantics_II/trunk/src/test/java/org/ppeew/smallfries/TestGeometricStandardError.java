@@ -137,7 +137,7 @@ public class TestGeometricStandardError {
   /**
    * @pre   doubles != null;
    */
-  private double geometricStandardErrorByHand(boolean b, double... doubles) {
+  private double geometricStandardErrorByHand(boolean sample, double... doubles) {
     assert doubles != null;
     if (doubles.length == 0) {
       return Double.NaN;
@@ -157,7 +157,7 @@ public class TestGeometricStandardError {
       for (int i = 0; i < doubles.length; i++) {
         sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
       }
-      double x = b ? 1 : 0;
+      double x = sample ? 1 : 0;
       double error = Math.exp(Math.sqrt(sum / ((doubles.length - x)*doubles.length)));
       return error;
     }

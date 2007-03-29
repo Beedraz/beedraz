@@ -41,7 +41,6 @@ public class TestStandardError {
     assertTrue(standardError.isBiasCorrected());
     assertEquals(0L, standardError.getN());
     assertEquals(Double.NaN, standardError.getResult());
-    assertEquals(Double.NaN, standardError.getResult());
   }
 
   @Test

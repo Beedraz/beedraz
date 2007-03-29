@@ -16,10 +16,8 @@ import static org.ppeew.smallfries_I.MathUtil.castToLong;
 import static org.ppeew.smallfries_I.MathUtil.equalPrimitiveValue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 import static org.ppeew.smallfries_I.MathUtil.geometricMean;
-import static org.ppeew.smallfries_I.MathUtil.populationGeometricStandardError;
 import static org.ppeew.smallfries_I.MathUtil.populationStandardDeviation;
 import static org.ppeew.smallfries_I.MathUtil.populationVariance;
-import static org.ppeew.smallfries_I.MathUtil.sampleGeometricStandardError;
 import static org.ppeew.smallfries_I.MathUtil.sampleStandardDeviation;
 import static org.ppeew.smallfries_I.MathUtil.sampleVariance;
 import static org.ppeew.smallfries_I.MathUtil.ulp;
@@ -560,128 +558,6 @@ public class TestMathUtil {
       return deviation;
     }
   }
-
-  @Test
-  public void testSampleGeometricStandardError() {
-    double[] values = new double[0];
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, -5.5};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, 0.0};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.POSITIVE_INFINITY};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.NEGATIVE_INFINITY};
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
-  }
-
-  /**
-   * @pre   doubles != null;
-   */
-  private double sampleGeometricStandardErrorByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else if (containsNegative(doubles)) {
-      return Double.NaN;
-    }
-    else if (containsZeroOrInfinity(doubles)) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else {
-      double sum = 0.0;
-      double geometricMean = geometricMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
-      }
-      double error = Math.exp(Math.sqrt(sum / ((doubles.length - 1)*doubles.length)));
-      return error;
-    }
-  }
-
-  private boolean containsNegative(double... values) {
-    for (double d : values) {
-      if (d < 0.0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean containsZeroOrInfinity(double... values) {
-    for (double d : values) {
-      if (d == 0.0 || Double.isInfinite(d)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Test
-  public void testPopulationGeometricStandardError() {
-    double[] values = new double[0];
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, -5.5};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, 0.0};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.POSITIVE_INFINITY};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.NEGATIVE_INFINITY};
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
-  }
-
-  /**
-   * @pre   doubles != null;
-   */
-  private double populationGeometricStandardErrorByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else if (containsNegative(doubles)) {
-      return Double.NaN;
-    }
-    else if (containsZeroOrInfinity(doubles)) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else {
-      double sum = 0.0;
-      double geometricMean = geometricMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
-      }
-      double error = Math.exp(Math.sqrt(sum / (doubles.length*doubles.length)));
-      return error;
-    }
-  }
-
-
-
-
 
 }
 

@@ -647,6 +647,14 @@ public class TestMathUtil {
     assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
     values = new double[]{1.1, 2.2, 3.3, 4.4};
     assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, -5.5};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, 0.0};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.POSITIVE_INFINITY};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.NEGATIVE_INFINITY};
+    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), sampleGeometricStandardError(values)));
   }
 
   /**
@@ -660,6 +668,12 @@ public class TestMathUtil {
     else if (doubles.length == 1) {
       return Double.POSITIVE_INFINITY;
     }
+    else if (containsNegative(doubles)) {
+      return Double.NaN;
+    }
+    else if (containsZeroOrInfinity(doubles)) {
+      return Double.POSITIVE_INFINITY;
+    }
     else {
       double sum = 0.0;
       double geometricMean = geometricMean(doubles);
@@ -669,6 +683,24 @@ public class TestMathUtil {
       double error = Math.exp(Math.sqrt(sum / ((doubles.length - 1)*doubles.length)));
       return error;
     }
+  }
+
+  private boolean containsNegative(double... values) {
+    for (double d : values) {
+      if (d < 0.0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean containsZeroOrInfinity(double... values) {
+    for (double d : values) {
+      if (d == 0.0 || Double.isInfinite(d)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Test
@@ -683,6 +715,14 @@ public class TestMathUtil {
     assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
     values = new double[]{1.1, 2.2, 3.3, 4.4};
     assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, -5.5};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, 0.0};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.POSITIVE_INFINITY};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
+    values = new double[]{1.1, 2.2, 3.3, 4.4, Double.NEGATIVE_INFINITY};
+    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), populationGeometricStandardError(values)));
   }
 
   /**
@@ -694,6 +734,12 @@ public class TestMathUtil {
       return Double.NaN;
     }
     else if (doubles.length == 1) {
+      return Double.POSITIVE_INFINITY;
+    }
+    else if (containsNegative(doubles)) {
+      return Double.NaN;
+    }
+    else if (containsZeroOrInfinity(doubles)) {
       return Double.POSITIVE_INFINITY;
     }
     else {

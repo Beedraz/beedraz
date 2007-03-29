@@ -37,7 +37,10 @@ import org.ppeew.smallfries_I.Filter;
  *
  * @invar getFilter() != null;
  * @invar ! containsValue(null);
+ *
+ * @deprecated Not use in the Beedra code, and no unit test.
  */
+@Deprecated
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",

@@ -18,6 +18,7 @@ package org.beedra_II.topologicalupdate;
 
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -25,8 +26,6 @@ import java.util.Set;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.collection_I.algebra.FilteredMap;
-import org.ppeew.collection_I.algebra.MapFilter;
 
 
 /**
@@ -146,17 +145,14 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @pre events != null;
    */
   protected final Event update(Map<UpdateSource, Event> events, Edit<?> edit) {
-    MapFilter<UpdateSource, Event> filter = new MapFilter<UpdateSource, Event>() {
-
-      public boolean filter(UpdateSource key, Event value) {
-        return $updateSources.contains(key);
+    Map<_UpdateSource_, Event> result = new HashMap<_UpdateSource_, Event>();
+    for (_UpdateSource_ us : $updateSources) {
+      Event event = events.get(us);
+      if (event != null) {
+        result.put(us, event);
       }
-
-    };
-    FilteredMap<UpdateSource, Event> fm = new FilteredMap<UpdateSource, Event>(events, filter);
-    @SuppressWarnings("unchecked")
-    Map<_UpdateSource_, Event> fm2 = (Map<_UpdateSource_, Event>)fm;
-    return filteredUpdate(fm2, edit);
+    }
+    return filteredUpdate(result, edit);
   }
 
   /**

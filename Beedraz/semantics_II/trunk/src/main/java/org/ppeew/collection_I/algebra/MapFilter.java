@@ -32,7 +32,10 @@ import org.ppeew.smallfries_I.Filter;
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
+ *
+ * @deprecated Not use in the Beedra code, and no unit test.
  */
+@Deprecated
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
 @CvsInfo(revision    = "$Revision$",

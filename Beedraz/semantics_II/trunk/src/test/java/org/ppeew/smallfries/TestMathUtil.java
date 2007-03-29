@@ -435,7 +435,7 @@ public class TestMathUtil {
   /**
    * @pre   doubles != null;
    */
-  private double sampleVarianceByHand(double... doubles) {
+  private double varianceByHand(boolean sample, double... doubles) {
     assert doubles != null;
     if (doubles.length == 0) {
       return Double.NaN;
@@ -449,9 +449,17 @@ public class TestMathUtil {
       for (int i = 0; i < doubles.length; i++) {
         sum += Math.pow(doubles[i]-mean, 2);
       }
-      double variance = sum / (doubles.length - 1);
+      double x = sample ? 1 : 0;
+      double variance = sum / (doubles.length - x);
       return variance;
     }
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double sampleVarianceByHand(double... doubles) {
+    return varianceByHand(true, doubles);
   }
 
   @Test
@@ -472,22 +480,7 @@ public class TestMathUtil {
    * @pre   doubles != null;
    */
   private double populationVarianceByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return 0.0;
-    }
-    else {
-      double sum = 0.0;
-      double mean = arithmeticMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(doubles[i]-mean, 2);
-      }
-      double variance = sum / doubles.length;
-      return variance;
-    }
+    return varianceByHand(false, doubles);
   }
 
   @Test
@@ -507,7 +500,7 @@ public class TestMathUtil {
   /**
    * @pre   doubles != null;
    */
-  private double sampleStandardDeviationByHand(double... doubles) {
+  private double standardDeviationByHand(boolean sample, double... doubles) {
     assert doubles != null;
     if (doubles.length == 0) {
       return Double.NaN;
@@ -521,9 +514,17 @@ public class TestMathUtil {
       for (int i = 0; i < doubles.length; i++) {
         sum += Math.pow(doubles[i]-mean, 2);
       }
-      double deviation = Math.sqrt(sum / (doubles.length - 1));
+      double x = sample ? 1 : 0;
+      double deviation = Math.sqrt(sum / (doubles.length - x));
       return deviation;
     }
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
+  private double sampleStandardDeviationByHand(double... doubles) {
+    return standardDeviationByHand(true, doubles);
   }
 
   @Test
@@ -544,22 +545,7 @@ public class TestMathUtil {
    * @pre   doubles != null;
    */
   private double populationStandardDeviationByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return 0.0;
-    }
-    else {
-      double sum = 0.0;
-      double mean = arithmeticMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(doubles[i]-mean, 2);
-      }
-      double deviation = Math.sqrt(sum / doubles.length);
-      return deviation;
-    }
+    return standardDeviationByHand(false, doubles);
   }
 
   @Test

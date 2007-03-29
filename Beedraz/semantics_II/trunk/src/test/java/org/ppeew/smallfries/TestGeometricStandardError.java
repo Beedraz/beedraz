@@ -60,76 +60,40 @@ public class TestGeometricStandardError {
     double[] values;
     // []
     values = new double[0];
-    assertEquals(0L, $sampleGeometricStandardError.getN());
-    assertEquals(0L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
+    checkGetResult(values);
     // [1.1]
     values = new double[] {1.1};
-    $sampleGeometricStandardError.incrementAll(values);
-    $populationGeometricStandardError.incrementAll(values);
-    assertEquals(1L, $sampleGeometricStandardError.getN());
-    assertEquals(1L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
+    checkGetResult(values);
     // [1.1, 2.2]
     values = new double[] {1.1, 2.2};
-    $sampleGeometricStandardError.clear();
-    $populationGeometricStandardError.clear();
-    $sampleGeometricStandardError.incrementAll(values);
-    $populationGeometricStandardError.incrementAll(values);
-    assertEquals(2L, $sampleGeometricStandardError.getN());
-    assertEquals(2L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
+    checkGetResult(values);
     // [1.1, 2.2, 3.3]
     values = new double[] {1.1, 2.2, 3.3};
-    $sampleGeometricStandardError.clear();
-    $populationGeometricStandardError.clear();
-    $sampleGeometricStandardError.incrementAll(values);
-    $populationGeometricStandardError.incrementAll(values);
-    assertEquals(3L, $sampleGeometricStandardError.getN());
-    assertEquals(3L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
+    checkGetResult(values);
+    // [1.1, 2.2, 3.3, Double.NaN]
+    values = new double[] {1.1, 2.2, 3.3, Double.NaN};
+    checkGetResult(values);
     // [1.1, 2.2, 3.3, -5.0]
     values = new double[] {1.1, 2.2, 3.3, -5.0};
-    $sampleGeometricStandardError.clear();
-    $populationGeometricStandardError.clear();
-    $sampleGeometricStandardError.incrementAll(values);
-    $populationGeometricStandardError.incrementAll(values);
-    assertEquals(4L, $sampleGeometricStandardError.getN());
-    assertEquals(4L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
-    // [1.1, 2.2, 3.3, 0.0]
-    values = new double[] {1.1, 2.2, 3.3, 0.0};
-    $sampleGeometricStandardError.clear();
-    $populationGeometricStandardError.clear();
-    $sampleGeometricStandardError.incrementAll(values);
-    $populationGeometricStandardError.incrementAll(values);
-    assertEquals(4L, $sampleGeometricStandardError.getN());
-    assertEquals(4L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
-    // [1.1, 2.2, 3.3, Double.POSITIVE_INFINITY]
-    values = new double[] {1.1, 2.2, 3.3, Double.POSITIVE_INFINITY};
-    $sampleGeometricStandardError.clear();
-    $populationGeometricStandardError.clear();
-    $sampleGeometricStandardError.incrementAll(values);
-    $populationGeometricStandardError.incrementAll(values);
-    assertEquals(4L, $sampleGeometricStandardError.getN());
-    assertEquals(4L, $populationGeometricStandardError.getN());
-    assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
-    assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
+    checkGetResult(values);
     // [1.1, 2.2, 3.3, Double.NEGATIVE_INFINITY]
     values = new double[] {1.1, 2.2, 3.3, Double.NEGATIVE_INFINITY};
+    checkGetResult(values);
+    // [1.1, 2.2, 3.3, 0.0]
+    values = new double[] {1.1, 2.2, 3.3, 0.0};
+    checkGetResult(values);
+    // [1.1, 2.2, 3.3, Double.POSITIVE_INFINITY]
+    values = new double[] {1.1, 2.2, 3.3, Double.POSITIVE_INFINITY};
+    checkGetResult(values);
+  }
+
+  private void checkGetResult(double[] values) {
     $sampleGeometricStandardError.clear();
     $populationGeometricStandardError.clear();
     $sampleGeometricStandardError.incrementAll(values);
     $populationGeometricStandardError.incrementAll(values);
-    assertEquals(4L, $sampleGeometricStandardError.getN());
-    assertEquals(4L, $populationGeometricStandardError.getN());
+    assertEquals((long)values.length, $sampleGeometricStandardError.getN());
+    assertEquals((long)values.length, $populationGeometricStandardError.getN());
     assertTrue(equalPrimitiveValue(sampleGeometricStandardErrorByHand(values), $sampleGeometricStandardError.getResult()));
     assertTrue(equalPrimitiveValue(populationGeometricStandardErrorByHand(values), $populationGeometricStandardError.getResult()));
   }
@@ -143,9 +107,9 @@ public class TestGeometricStandardError {
       return Double.NaN;
     }
     else if (doubles.length == 1) {
-      return Double.POSITIVE_INFINITY;
+      return 1.0;
     }
-    else if (Util.containsNegative(doubles)) {
+    else if (Util.containsNaN(doubles) || Util.containsNegative(doubles)) {
       return Double.NaN;
     }
     else if (Util.containsZero(doubles) || Util.containsInfinity(doubles)) {
@@ -180,120 +144,57 @@ public class TestGeometricStandardError {
   public void evaluate() {
     double[] values;
     double[] values2;
-    double mean;
-    Mean m = new Mean();
     // []
     values = new double[0];
-    mean = m.evaluate(values);
     values2 = new double[] {5.5, 6.6, 7.7, 8.8};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 0, 0)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 0, 0)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 0, 0)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 0, 0)));
+    checkEvaluate(values, values2, 0);
     // [1.1]
     values = new double[] {1.1};
-    mean = m.evaluate(values);
     values2 = new double[] {6.6, 7.7, 1.1, 8.8, 9.9};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 1)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 1)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 1)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 1)));
+    checkEvaluate(values, values2, 2);
     // [1.1, 2.2]
     values = new double[] {1.1, 2.2};
-    mean = m.evaluate(values);
     values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 2)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 2)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 2)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 2)));
+    checkEvaluate(values, values2, 2);
     // [1.1, 2.2, 3.3]
     values = new double[] {1.1, 2.2, 3.3};
-    mean = m.evaluate(values);
     values2 = new double[] {6.6, 7.7, 1.1, 2.2, 3.3, 8.8, 9.9};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 3)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 3)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 3)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 3)));
+    checkEvaluate(values, values2, 2);
+    // [1.1, 2.2, 3.3, Double.NaN]
+    values = new double[] {1.1, 2.2, 3.3, Double.NaN};
+    values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
+    checkEvaluate(values, values2, 2);
     // [1.1, 2.2, 3.3, -5.0]
     values = new double[] {1.1, 2.2, 3.3, -5.0};
-    mean = m.evaluate(values);
     values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 4)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 4)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 4)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 4)));
-    // [1.1, 2.2, 3.3, 0.0]
-    values = new double[] {1.1, 2.2, 3.3, 0.0};
-    mean = m.evaluate(values);
-    values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 4)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 4)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 4)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 4)));
-    // [1.1, 2.2, 3.3, Double.POSITIVE_INFINITY]
-    values = new double[] {1.1, 2.2, 3.3, Double.POSITIVE_INFINITY};
-    mean = m.evaluate(values);
-    values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 4)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 4)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 4)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 4)));
+    checkEvaluate(values, values2, 2);
     // [1.1, 2.2, 3.3, Double.NEGATIVE_INFINITY]
     values = new double[] {1.1, 2.2, 3.3, Double.NEGATIVE_INFINITY};
-    mean = m.evaluate(values);
     values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
+    checkEvaluate(values, values2, 2);
+    // [1.1, 2.2, 3.3, 0.0]
+    values = new double[] {1.1, 2.2, 3.3, 0.0};
+    values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
+    checkEvaluate(values, values2, 2);
+    // [1.1, 2.2, 3.3, Double.POSITIVE_INFINITY]
+    values = new double[] {1.1, 2.2, 3.3, Double.POSITIVE_INFINITY};
+    values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
+    checkEvaluate(values, values2, 2);
+  }
+
+  private void checkEvaluate(double[] values, double[] values2, int begin) {
+    Mean m = new Mean();
+    double mean = m.evaluate(values);
     assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values)));
     assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, 2, 4)));
+    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, begin, values.length)));
     assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, 2, 4)));
+    assertTrue(equalPrimitiveValue($sampleGeometricStandardError.getResult(), $sampleGeometricStandardError.evaluate(values2, mean, begin, values.length)));
     assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values)));
     assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, 0, values.length)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, 2, 4)));
+    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, begin, values.length)));
     assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values, mean)));
-    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, 2, 4)));
+    assertTrue(equalPrimitiveValue($populationGeometricStandardError.getResult(), $populationGeometricStandardError.evaluate(values2, mean, begin, values.length)));
   }
 
 }

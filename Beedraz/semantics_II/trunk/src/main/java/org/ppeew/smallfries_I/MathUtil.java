@@ -526,6 +526,27 @@ public final class MathUtil {
   /**
    * @pre  doubles != null;
    */
+  public static double sampleGeometricStandardDeviation(double... doubles) {
+    assert doubles != null;
+    GeometricStandardDeviation gsd = new GeometricStandardDeviation(true);
+    gsd.incrementAll(doubles);
+    double standardDeviation = gsd.getResult();
+    return standardDeviation;
+  }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double populationGeometricStandardDeviation(double... doubles) {
+    assert doubles != null;
+    GeometricStandardDeviation gsd = new GeometricStandardDeviation(false);
+    gsd.incrementAll(doubles);
+    double standardDeviation = gsd.getResult();
+    return standardDeviation;
+  }
+  /**
+   * @pre  doubles != null;
+   */
   public static double sampleGeometricStandardError(double... doubles) {
     assert doubles != null;
     GeometricStandardError gse = new GeometricStandardError(true);

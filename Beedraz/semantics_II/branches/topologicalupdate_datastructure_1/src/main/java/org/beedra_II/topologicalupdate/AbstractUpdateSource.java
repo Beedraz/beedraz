@@ -129,62 +129,296 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @pre sourceEvents.size() > 0;
    */
   protected static void multiUpdateDependents(Map<AbstractUpdateSource, Event> sourceEvents, Edit<?> edit) {
+    assert sourceEvents != null;
+    assert sourceEvents.size() > 0;
+    // create an array of first order dependents, sorted by MRUSD
+    int nrOfFirstOrderDependents = nrOfFirstOrderDependents(sourceEvents);
+    QueueElement queueHead = null;
+    if (nrOfFirstOrderDependents >= 1) { // otherwise, nothing to do
+      queueHead = firstOrderQueue(sourceEvents, nrOfFirstOrderDependents);
+      queueHead = updateQueue(sourceEvents, edit, queueHead);
+      // assert: all QE's contain an event
+    }
+    fireInitialUpdateSourcesEvents(sourceEvents);
+    fireQueueEvents(queueHead);
+  }
+
+  private static void fireQueueEvents(QueueElement qe) {
+    while (qe != null) {
+      qe.fireEvent();
+      qe = qe.getNext();
+    }
+  }
+
+  private static void fireInitialUpdateSourcesEvents(Map<AbstractUpdateSource, Event> sourceEvents) {
+    for (Map.Entry<AbstractUpdateSource, Event> entry : sourceEvents.entrySet()) {
+      entry.getKey().fireEvent(entry.getValue());
+    }
+  }
+
+  private static QueueElement updateQueue(Map<AbstractUpdateSource, Event> sourceEvents, Edit<?> edit, QueueElement queueHead) {
     Map<UpdateSource, Event> events = new LinkedHashMap<UpdateSource, Event>(sourceEvents);
-    Map<Dependent<?>, Event> dependentEvents = new LinkedHashMap<Dependent<?>, Event>();
-    // LinkedHashMap to remember topol order for event listener notification
-//    events.put(us, event);
+      /* most efficient structure to store the events to give them to the dependents
+       * when they need to update themselves
+       */
+    QueueElement current;
+    QueueElement previous = null;
+    current = queueHead;
+    while (current != null) {
+      previous = current.update(previous, events, edit); // this is it
+      // returns null if the first element of the structure needs to be removed
+      if (previous == null) {
+        assert current == queueHead;
+        queueHead = current.getNext();
+      }
+      current = current.getNext();
+    }
+    return queueHead;
+  }
+
+  private static int nrOfFirstOrderDependents(Map<AbstractUpdateSource, Event> sourceEvents) {
     int nrOfFirstOrderDependents = 0;
     for (AbstractUpdateSource aus : sourceEvents.keySet()) {
       nrOfFirstOrderDependents +=  aus.$dependents.size();
     }
-    if (nrOfFirstOrderDependents >= 1) {
-      assert nrOfFirstOrderDependents >= 1 : "initial size of priority queue must be >= 1";
-      PriorityQueue<Dependent<?>> queue =
-        new PriorityQueue<Dependent<?>>(nrOfFirstOrderDependents,
-          new Comparator<Dependent<?>>() {
-                public int compare(Dependent<?> d1, Dependent<?> d2) {
-                  assert d1 != null;
-                  assert d2 != null;
-                  int mfsd1 = d1.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                  int mfsd2 = d2.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
-                  return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
-                }
-              });
-      for (AbstractUpdateSource aus : sourceEvents.keySet()) {
-        queue.addAll(aus.$dependents);
-      }
-      Dependent<?> dependent = queue.poll();
-      while (dependent != null) {
-        // TODO start timing measurement START
-        long starttime = 0;
-        if (Timing._active) {
-          starttime = System.nanoTime();
-        }
-        // TODO start timing measurement END
-        Event dependentEvent = dependent.update(Collections.unmodifiableMap(events), edit);
-        // TODO stop timing measurement START
-        if (Timing._active) {
-          long endtime = System.nanoTime();
-          Timing.add(dependent, starttime, endtime, dependentEvent);
-        }
-        // TODO stop timing measurement END
-        if (dependentEvent != null) {
-          events.put(dependent.getDependentUpdateSource(), dependentEvent);
-          dependentEvents.put(dependent, dependentEvent);
-          Set<Dependent<?>> secondDependents =
-            new HashSet<Dependent<?>>(dependent.getDependents());
-          secondDependents.removeAll(queue);
-          queue.addAll(secondDependents);
-        }
-        dependent = queue.poll();
+    return nrOfFirstOrderDependents;
+  }
+
+  private static QueueElement firstOrderQueue(Map<AbstractUpdateSource, Event> sourceEvents, int nrOfFirstOrderDependents) {
+    assert nrOfFirstOrderDependents >= 1;
+    QueueElement queueHead;
+    Dependent<?>[] sortedFirstOrderDependents = firstOrderDepenentsToArray(sourceEvents, nrOfFirstOrderDependents);
+    Arrays.sort(sortedFirstOrderDependents, MRUSD_COMPARATOR);
+    // create initial structure of first order dependents
+    queueHead = createQueueFromSortedArray(sortedFirstOrderDependents);
+    return queueHead;
+  }
+
+  private static QueueElement createQueueFromSortedArray(Dependent<?>[] sortedFirstOrderDependents) {
+    assert sortedFirstOrderDependents != null;
+    assert sortedFirstOrderDependents.length > 0;
+    QueueElement queueHead;
+    queueHead = new QueueElement(sortedFirstOrderDependents[0]); // there is at least 1 element
+    QueueElement current = queueHead;
+    for (int j = 1; j < sortedFirstOrderDependents.length; j++) {
+      current.setNext(new QueueElement(sortedFirstOrderDependents[j]));
+      current = current.getNext();
+    }
+    return queueHead;
+  }
+
+  private static Dependent<?>[] firstOrderDepenentsToArray(Map<AbstractUpdateSource, Event> sourceEvents, int nrOfFirstOrderDependents) {
+    assert nrOfFirstOrderDependents >= 1;
+    Dependent<?>[] sortedFirstOrderDependents = new Dependent<?>[nrOfFirstOrderDependents];
+    int i = 0;
+    for (AbstractUpdateSource aus : sourceEvents.keySet()) {
+      Set<Dependent<?>> firstOrderDependents = aus.getDependents();
+      for (Dependent<?> fod : firstOrderDependents) {
+        sortedFirstOrderDependents[i] = fod;
+        i++;
       }
     }
-    for (Map.Entry<AbstractUpdateSource, Event> entry : sourceEvents.entrySet()) {
-      entry.getKey().fireEvent(entry.getValue());
+    assert i == nrOfFirstOrderDependents;
+    return sortedFirstOrderDependents;
+  }
+
+  /**
+   * Comparator that compares maximal root update source distance of dependents.
+   */
+  private static Comparator<Dependent<?>> MRUSD_COMPARATOR = new Comparator<Dependent<?>>() {
+    public int compare(Dependent<?> d1, Dependent<?> d2) {
+      assert d1 != null;
+      assert d2 != null;
+      int mfsd1 = d1.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
+      int mfsd2 = d2.getDependentUpdateSource().getMaximumRootUpdateSourceDistance();
+      return (mfsd1 < mfsd2) ? -1 : ((mfsd1 == mfsd2) ? 0 : +1);
     }
-    for (Map.Entry<Dependent<?>, Event> entry : dependentEvents.entrySet()) {
-      entry.getKey().fireEvent(entry.getValue());
+  };
+
+  /**
+   * @invar getDependent() != null;
+   * @invar getNext() != null ? getNext().getMRUSD() >= getNext().getMRUSD();
+   */
+  private static class QueueElement {
+
+    /**
+     * @pre dependent != null;
+     * @post getDependent() == dependent;
+     * @post getNext() == null;
+     */
+    public QueueElement(Dependent<?> dependent) {
+      assert dependent != null;
+      $dependent = dependent;
     }
+
+    /**
+     * @basic
+     */
+    public final QueueElement getNext() {
+      return $next;
+    }
+
+    /**
+     * @pre next != null;
+     * @post getNext() == next;
+     */
+    public final void setNext(QueueElement next) {
+      assert next != null;
+      $next = next;
+    }
+
+    /**
+     * @invar $next != null ? $next.getMRUSD() >= $next.getMRUSD();
+     */
+    private QueueElement $next;
+
+    /**
+     * @basic
+     */
+    public final Dependent<?> getDependent() {
+      return $dependent;
+    }
+
+    /**
+     * @return getDependent().getMaximumRootUpdateSourceDistance();
+     */
+    final int getMrusd() {
+      return $dependent.getMaximumRootUpdateSourceDistance();
+    }
+
+    /**
+     * Asks the dependent to update itself, and report on the change
+     * with an event. Timing is done. The timing code has no
+     * substantial effect on performance.
+     * Return false if the dependent did not actually change, and no event
+     * should be send. Return true if the dependent did actually change, and
+     * we should send the event later. If false is returned, the caller
+     * should remove this from the structure.
+     * We return the new previous QE. Previous is null for the first element in
+     * the structure.
+     */
+    public final QueueElement update(QueueElement previous, Map<UpdateSource, Event> events, Edit<?> edit) {
+      actualUpdate(events, edit);
+      if ($event != null) {
+        events.put($dependent.getDependentUpdateSource(), $event);
+        addDependents();
+        return this;
+      }
+      else {
+        if (previous != null) {
+          previous.setNext($next);
+          return previous;
+        }
+        else {
+          // we are the head of the queue
+          return null;
+        }
+      }
+    }
+
+    /**
+     * Asks the dependent to update itself, and report on the change
+     * with an event. Timing is done. The timing code has no
+     * substantial effect on performance.
+     */
+    private void actualUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+      long starttime = 0;
+      if (Timing._active) {
+        starttime = System.nanoTime();
+      }
+      $event = $dependent.update(events, edit);
+      if (Timing._active) {
+        long endtime = System.nanoTime();
+        Timing.add($dependent, starttime, endtime, $event);
+      }
+    }
+
+    /**
+     * Adds dependents to the topological update priority queue structure.
+     * Dependents are added immediately after dependents
+     * that are already in this structure with the samen maximal root update
+     * source distance. Elements that are already in the structure are not added
+     * again. If there is no element in the structure with the same maximal root update
+     * source distance, the element is added after elements with smaller maximal root update
+     * source distance and before elemenents with larger maximal root update
+     * source distance.
+     *
+     * The algorithm first sorts the new dependents according to their maximal root update
+     * source distance. Because of this, going through the structure from start (low
+     * maximal root update source distance) to end, we can deal with elements one
+     * after to other, without the need to restart going through the structure from the
+     * beginning.
+     * Because we only add the dependents of the current QueueElement dependent, they
+     * surely are added further down in the structure.
+     *
+     * @invar for (Dependent<?> d : $dependent.getDependents()) {
+     *          d.getMaximalRootUpdateSourceDistance() > getMRUSD()
+     *        };
+     */
+    private void addDependents() {
+      Set<Dependent<?>> dependents = $dependent.getDependents();
+      assert dependents != null;
+      // MRUSD of dependents is > than current MRUSD
+      Dependent<?>[] sorted = new Dependent<?>[dependents.size()];
+      sorted = dependents.toArray(sorted);
+      Arrays.sort(sorted, MRUSD_COMPARATOR);
+      int i = 0;
+      QueueElement qe = this;
+      /* invar: sorted[i -1] is placed in the structure before current
+       * invar: qe and elements before qe have a MRUSD smaller than or equal to sorted[i]
+       */
+      while ((i < sorted.length ) && (qe.getNext() != null)) {
+        assert qe.getMrusd() <= sorted[i].getMaximumRootUpdateSourceDistance();
+        if (qe.getNext().getDependent() == sorted[i]) {
+          // do not proceed in structure yet: we might need to add more sorted d's here
+          i++; // next sorted
+        }
+        else if (qe.getNext().getMrusd() > sorted[i].getMaximumRootUpdateSourceDistance()) {
+          // we need to add sorted[i] after qe
+          QueueElement insert = new QueueElement(sorted[i]);
+          insert.setNext(qe.getNext());
+          qe.setNext(insert);
+          qe = insert;
+          // do not proceed in structure yet: we might need to add more sorted d's here
+          i++; // next sorted
+        }
+        else {
+          /* not already a member, and qe.getMrusd() is smaller are equal to sorted MRUSD;
+           * proceed to next element in structure (keep looking)
+           */
+          qe = qe.getNext();
+        }
+      }
+      if (i < sorted.length) {
+        /* add all leftover elements to the end of the structure, in the order
+           they appear in the array */
+        assert qe.getNext() == null : "we are at the end of the structure";
+        for (int j = i; j < sorted.length; j++) {
+          qe.setNext(new QueueElement(sorted[j]));
+          qe = qe.getNext();
+        }
+      }
+    }
+
+    /**
+     * @invar $dependent != null;
+     */
+    private final Dependent<?> $dependent;
+
+    /**
+     * @basic
+     */
+    public final Event getEvent() {
+      return $event;
+    }
+
+    public final void fireEvent() {
+      assert $event != null;
+      $dependent.fireEvent($event);
+    }
+
+    private Event $event;
+
   }
 
 

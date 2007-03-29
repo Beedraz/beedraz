@@ -3,7 +3,7 @@ package org.beedra_II;
 import org.apache.commons.math.stat.descriptive.moment.Variance;
 
 
-public class TestNele {
+public class MathBugDemonstration {
 
   /**
    * @param args

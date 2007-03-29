@@ -8,6 +8,8 @@ package org.ppeew.smallfries;
 
 import static java.lang.Math.abs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.arithmeticMean;
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -16,6 +18,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToLong;
 import static org.ppeew.smallfries_I.MathUtil.equalPrimitiveValue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 import static org.ppeew.smallfries_I.MathUtil.geometricMean;
+import static org.ppeew.smallfries_I.MathUtil.logTransform;
 import static org.ppeew.smallfries_I.MathUtil.populationStandardDeviation;
 import static org.ppeew.smallfries_I.MathUtil.populationVariance;
 import static org.ppeew.smallfries_I.MathUtil.sampleStandardDeviation;
@@ -559,5 +562,17 @@ public class TestMathUtil {
     }
   }
 
+  @Test
+  public void testLogTransform() {
+    double[] values = null;
+    assertNull(logTransform(values));
+    values = new double[] {1.0, 2.0, 3.0, 4.0};
+    double[] logValues = logTransform(values);
+    assertNotNull(logValues);
+    assertEquals(values.length, logValues.length);
+    for (int i = 0; i < logValues.length; i++) {
+      assertEquals(Math.log(values[i]), logValues[i]);
+    }
+  }
 }
 

@@ -546,4 +546,26 @@ public final class MathUtil {
     double standardError = gse.getResult();
     return standardError;
   }
+
+  /**
+   * Return a new array, containing the log-transformed values of the given
+   * values.
+   *
+   * @param   values  The array to transform.
+   * @return  values == null ==> result == null;
+   * @return  values != null ==> result != null;
+   * @return  values != null ==> result.length == values.length;
+   * @return  values != null ==>
+   *             (forAll int i; 0 <= i < values.length; result[i]=Math.log(values[i]));
+   */
+  public static double[] logTransform(double[] values) {
+    if (values == null) {
+      return null;
+    }
+    double[] logValues = new double[values.length];
+    for (int i = 0; i < values.length; i++) {
+      logValues[i] = Math.log(values[i]);
+    }
+    return logValues;
+  }
 }

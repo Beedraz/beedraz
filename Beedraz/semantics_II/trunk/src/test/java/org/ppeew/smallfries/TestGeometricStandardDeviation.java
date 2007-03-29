@@ -194,12 +194,6 @@ public class TestGeometricStandardDeviation {
     double geomMean = Math.log(gm.evaluate(values));
     $sampleGeometricStandardDeviation2.clear();
     $sampleGeometricStandardDeviation2.incrementAll(values);
-    System.out.println("A:" + $sampleGeometricStandardDeviation2.getResult());
-    System.out.println("B:" + $sampleGeometricStandardDeviation.evaluate(values));
-    System.out.println("C:" + $sampleGeometricStandardDeviation.evaluate(values, 0, values.length));
-    System.out.println("D:" + $sampleGeometricStandardDeviation.evaluate(values2, begin, values.length));
-    System.out.println("E:" + $sampleGeometricStandardDeviation.evaluate(values, geomMean));
-    System.out.println("F:" + $sampleGeometricStandardDeviation.evaluate(values2, geomMean, begin, values.length));
     assertTrue(equalPrimitiveValue($sampleGeometricStandardDeviation2.getResult(), $sampleGeometricStandardDeviation.evaluate(values)));
     assertTrue(equalPrimitiveValue($sampleGeometricStandardDeviation2.getResult(), $sampleGeometricStandardDeviation.evaluate(values, 0, values.length)));
     assertTrue(equalPrimitiveValue($sampleGeometricStandardDeviation2.getResult(), $sampleGeometricStandardDeviation.evaluate(values2, begin, values.length)));

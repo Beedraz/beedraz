@@ -145,15 +145,7 @@ public class GeometricStandardError extends AbstractStorelessUnivariateStatistic
    */
   @Override
   public double evaluate(final double[] values)  {
-    return Math.exp($standardError.evaluate(logTransform(values)));
-  }
-
-  private double[] logTransform(double[] values) {
-    double[] lnValues = new double[values.length];
-    for (int i = 0; i < values.length; i++) {
-      lnValues[i] = Math.log(values[i]);
-    }
-    return lnValues;
+    return Math.exp($standardError.evaluate(MathUtil.logTransform(values)));
   }
 
   /**
@@ -176,7 +168,7 @@ public class GeometricStandardError extends AbstractStorelessUnivariateStatistic
    */
   @Override
   public double evaluate(final double[] values, final int begin, final int length)  {
-    return Math.exp($standardError.evaluate(logTransform(values), begin, length));
+    return Math.exp($standardError.evaluate(MathUtil.logTransform(values), begin, length));
   }
 
   /**
@@ -205,7 +197,7 @@ public class GeometricStandardError extends AbstractStorelessUnivariateStatistic
    */
   public double evaluate(final double[] values, final double mean,
           final int begin, final int length)  {
-    return Math.exp($standardError.evaluate(logTransform(values), mean, begin, length));
+    return Math.exp($standardError.evaluate(MathUtil.logTransform(values), mean, begin, length));
   }
 
   /**
@@ -230,7 +222,7 @@ public class GeometricStandardError extends AbstractStorelessUnivariateStatistic
    * @throws IllegalArgumentException if the array is null
    */
   public double evaluate(final double[] values, final double mean)  {
-    return Math.exp($standardError.evaluate(logTransform(values), mean));
+    return Math.exp($standardError.evaluate(MathUtil.logTransform(values), mean));
   }
 
 }

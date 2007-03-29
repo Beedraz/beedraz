@@ -39,6 +39,13 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * or the "population standard deviation" (using the population standard deviation).
  * See {@link StandardDeviation} for more information.
  *
+ * The standard error of an empty set is {@link Double#NaN}.
+ * The standard error of a set containing one element is 0.
+ * If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
+ * If none of the elements is {@link Double#NaN}, but one of the elements is
+ * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}, then the result
+ * is {@link Double#POSITIVE_INFINITY}.
+ *
  * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")

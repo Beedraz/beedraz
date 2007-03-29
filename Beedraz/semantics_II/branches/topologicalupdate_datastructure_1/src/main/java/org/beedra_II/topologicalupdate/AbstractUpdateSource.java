@@ -165,6 +165,9 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     QueueElement previous = null;
     current = queueHead;
     while (current != null) {
+//      if (Timing._active) {
+//        queueHead.checkOrder();
+//      }
       previous = current.update(previous, events, edit); // this is it
       // returns null if the first element of the structure needs to be removed
       if (previous == null) {
@@ -194,6 +197,9 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     return queueHead;
   }
 
+  /**
+   * The sorted array might contain duplicates.
+   */
   private static QueueElement createQueueFromSortedArray(Dependent<?>[] sortedFirstOrderDependents) {
     assert sortedFirstOrderDependents != null;
     assert sortedFirstOrderDependents.length > 0;
@@ -201,12 +207,29 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     queueHead = new QueueElement(sortedFirstOrderDependents[0]); // there is at least 1 element
     QueueElement current = queueHead;
     for (int j = 1; j < sortedFirstOrderDependents.length; j++) {
-      current.setNext(new QueueElement(sortedFirstOrderDependents[j]));
-      current = current.getNext();
+      if (sortedFirstOrderDependents[j] != null) {
+        current.setNext(new QueueElement(sortedFirstOrderDependents[j]));
+        current = current.getNext();
+        // remove duplicates; look only in elements with same MRUSD
+        int k = j + 1;
+        while ((k < sortedFirstOrderDependents.length) &&
+            (sortedFirstOrderDependents[k].getMaximumRootUpdateSourceDistance() ==
+                 sortedFirstOrderDependents[j].getMaximumRootUpdateSourceDistance())) {
+          if (sortedFirstOrderDependents[k] == sortedFirstOrderDependents[j]) {
+            // k is a duplicate
+            sortedFirstOrderDependents[k] = null;
+          }
+          k++;
+        }
+      }
+      // else this was a duplicate
     }
     return queueHead;
   }
 
+  /**
+   * The resulting array might contain duplicates.
+   */
   private static Dependent<?>[] firstOrderDepenentsToArray(Map<AbstractUpdateSource, Event> sourceEvents, int nrOfFirstOrderDependents) {
     assert nrOfFirstOrderDependents >= 1;
     Dependent<?>[] sortedFirstOrderDependents = new Dependent<?>[nrOfFirstOrderDependents];
@@ -258,6 +281,34 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       return $next;
     }
 
+//    /**
+//     * Introduced for debugging reasons. Not performant.
+//     */
+//    public final int size() {
+//      int count = 1;
+//      QueueElement current = this;
+//      while (current.getNext() != null) {
+//        count++;
+//        current = current.getNext();
+//      }
+//      return count;
+//    }
+//
+//    public void checkOrder() {
+//      QueueElement current = this;
+//      while (current.getNext() != null) {
+//        if (current.getMrusd() > current.getNext().getMrusd()) {
+//          System.out.println("OUT OF ORDER: " +
+//                             current.getDependent().getDependentUpdateSource() + " (" +
+//                             current.getMrusd() + ") --- " +
+//                             current.getNext().getDependent().getDependentUpdateSource() +
+//                             " (" + current.getNext().getMrusd() + ")");
+//        }
+//        current = current.getNext();
+//      }
+//
+//    }
+
     /**
      * @pre next != null;
      * @post getNext() == next;
@@ -298,6 +349,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
      * the structure.
      */
     public final QueueElement update(QueueElement previous, Map<UpdateSource, Event> events, Edit<?> edit) {
+      assert $event == null;
       actualUpdate(events, edit);
       if ($event != null) {
         events.put($dependent.getDependentUpdateSource(), $event);
@@ -354,6 +406,8 @@ public abstract class AbstractUpdateSource implements UpdateSource {
      * @invar for (Dependent<?> d : $dependent.getDependents()) {
      *          d.getMaximalRootUpdateSourceDistance() > getMRUSD()
      *        };
+     *
+     * @mudo PROBLEM: we might add duplicates here! (in the same plateau, things that are there before qe)
      */
     private void addDependents() {
       Set<Dependent<?>> dependents = $dependent.getDependents();

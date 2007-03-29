@@ -35,12 +35,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * 3. Take the exponential value of the result
  *
  * Therefore:
- * <li>If any of the values is negative (including {@link Double#NEGATIVE_INFINITY}),
- *     the result is {@link Double#NaN}.</li>
- * <li>If all values are non-negative and less than {@link Double#POSITIVE_INFINITY},
- *     and at least one value is 0, then the result is {@link Double#POSITIVE_INFINITY}</li>
- * <li>If {@link Double.POSITIVE_INFINITY} is among the values, the result is
- *     {@link Double#POSITIVE_INFINITY}</li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
  *
  * This implementation wraps a {@link StandardError} instance.
  * The <code>isBiasCorrected</code> property of the wrapped {@link StandardError}
@@ -48,6 +45,16 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * compute both the "sample geometric standard error" (using the sample standard error)
  * or the "population geometric standard deviation" (using the population standard error).
  * See {@link StandardError} for more information.
+ *
+ * The geometric standard error of an empty set is {@link Double#NaN}.
+ * The geometric standard error of a set containing one element is 1.
+ * If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
+ * If one of the elements is negative (including {@link Double#NEGATIVE_INFINITY}),
+ * the result is {@link Double#NaN}.
+ * If none of the elements is {@link Double#NaN} or negative, and at least one value is 0,
+ * then the result is {@link Double#POSITIVE_INFINITY}.
+ * If none of the elements is {@link Double#NaN} or negative, and at least one value is
+ * {@link Double.POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.
  *
  * @author Nele Smeets
  */

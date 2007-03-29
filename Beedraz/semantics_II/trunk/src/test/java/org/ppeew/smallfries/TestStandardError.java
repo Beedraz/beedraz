@@ -132,6 +132,16 @@ public class TestStandardError {
     assertEquals(4L, $populationStandardError.getN());
     assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), $sampleStandardError.getResult()));
     assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), $populationStandardError.getResult()));
+    // [1.1, 2.2, 3.3, Double.NaN]
+    values = new double[] {1.1, 2.2, 3.3, Double.NaN};
+    $sampleStandardError.clear();
+    $populationStandardError.clear();
+    $sampleStandardError.incrementAll(values);
+    $populationStandardError.incrementAll(values);
+    assertEquals(4L, $sampleStandardError.getN());
+    assertEquals(4L, $populationStandardError.getN());
+    assertTrue(equalPrimitiveValue(sampleStandardErrorByHand(values), $sampleStandardError.getResult()));
+    assertTrue(equalPrimitiveValue(populationStandardErrorByHand(values), $populationStandardError.getResult()));
   }
 
   /**
@@ -144,6 +154,9 @@ public class TestStandardError {
     }
     else if (doubles.length == 1) {
       return 0.0;
+    }
+    else if (Util.containsNaN(doubles)) {
+      return Double.NaN;
     }
     else if (Util.containsInfinity(doubles)) {
       return Double.POSITIVE_INFINITY;
@@ -279,6 +292,20 @@ public class TestStandardError {
     assertTrue(equalPrimitiveValue($populationStandardError.getResult(), $populationStandardError.evaluate(values2, mean, 2, 4)));
     // [1.1, 2.2, 3.3, Double.NEGATIVE_INFINITY]
     values = new double[] {1.1, 2.2, 3.3, Double.NEGATIVE_INFINITY};
+    mean = m.evaluate(values);
+    values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
+    assertTrue(equalPrimitiveValue($sampleStandardError.getResult(), $sampleStandardError.evaluate(values)));
+    assertTrue(equalPrimitiveValue($sampleStandardError.getResult(), $sampleStandardError.evaluate(values, 0, values.length)));
+    assertTrue(equalPrimitiveValue($sampleStandardError.getResult(), $sampleStandardError.evaluate(values2, 2, 4)));
+    assertTrue(equalPrimitiveValue($sampleStandardError.getResult(), $sampleStandardError.evaluate(values, mean)));
+    assertTrue(equalPrimitiveValue($sampleStandardError.getResult(), $sampleStandardError.evaluate(values2, mean, 2, 4)));
+    assertTrue(equalPrimitiveValue($populationStandardError.getResult(), $populationStandardError.evaluate(values)));
+    assertTrue(equalPrimitiveValue($populationStandardError.getResult(), $populationStandardError.evaluate(values, 0, values.length)));
+    assertTrue(equalPrimitiveValue($populationStandardError.getResult(), $populationStandardError.evaluate(values2, 2, 4)));
+    assertTrue(equalPrimitiveValue($populationStandardError.getResult(), $populationStandardError.evaluate(values, mean)));
+    assertTrue(equalPrimitiveValue($populationStandardError.getResult(), $populationStandardError.evaluate(values2, mean, 2, 4)));
+    // [1.1, 2.2, 3.3, Double.NaN]
+    values = new double[] {1.1, 2.2, 3.3, Double.NaN};
     mean = m.evaluate(values);
     values2 = new double[] {6.6, 7.7, 1.1, 2.2, 8.8, 9.9};
     assertTrue(equalPrimitiveValue($sampleStandardError.getResult(), $sampleStandardError.evaluate(values)));

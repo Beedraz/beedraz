@@ -48,5 +48,14 @@ public class Util {
     return false;
   }
 
+  public static boolean containsNaN(double... values) {
+    for (double d : values) {
+      if (Double.isNaN(d)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
 

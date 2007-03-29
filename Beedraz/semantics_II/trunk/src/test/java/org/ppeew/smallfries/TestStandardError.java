@@ -137,7 +137,7 @@ public class TestStandardError {
   /**
    * @pre   doubles != null;
    */
-  private double sampleStandardErrorByHand(double... doubles) {
+  private double standardErrorByHand(boolean b, double... doubles) {
     assert doubles != null;
     if (doubles.length == 0) {
       return Double.NaN;
@@ -154,7 +154,8 @@ public class TestStandardError {
       for (int i = 0; i < doubles.length; i++) {
         sum += Math.pow(doubles[i]-mean, 2);
       }
-      double error = Math.sqrt(sum / ((doubles.length - 1)*doubles.length));
+      double x = b ? 1 : 0; // sample: n - 1, population: n
+      double error = Math.sqrt(sum / ((doubles.length - x)*doubles.length));
       return error;
     }
   }
@@ -162,26 +163,15 @@ public class TestStandardError {
   /**
    * @pre   doubles != null;
    */
+  private double sampleStandardErrorByHand(double... doubles) {
+    return standardErrorByHand(true, doubles);
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
   private double populationStandardErrorByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return 0.0;
-    }
-    else if (Util.containsInfinity(doubles)) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else {
-      double sum = 0.0;
-      double mean = arithmeticMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(doubles[i]-mean, 2);
-      }
-      double error = Math.sqrt(sum / ((doubles.length)*doubles.length));
-      return error;
-    }
+    return standardErrorByHand(false, doubles);
   }
 
   public void evaluate() {

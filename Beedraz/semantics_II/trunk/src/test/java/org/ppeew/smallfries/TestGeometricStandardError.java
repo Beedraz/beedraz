@@ -137,7 +137,7 @@ public class TestGeometricStandardError {
   /**
    * @pre   doubles != null;
    */
-  private double sampleGeometricStandardErrorByHand(double... doubles) {
+  private double geometricStandardErrorByHand(boolean b, double... doubles) {
     assert doubles != null;
     if (doubles.length == 0) {
       return Double.NaN;
@@ -157,7 +157,8 @@ public class TestGeometricStandardError {
       for (int i = 0; i < doubles.length; i++) {
         sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
       }
-      double error = Math.exp(Math.sqrt(sum / ((doubles.length - 1)*doubles.length)));
+      double x = b ? 1 : 0;
+      double error = Math.exp(Math.sqrt(sum / ((doubles.length - x)*doubles.length)));
       return error;
     }
   }
@@ -165,29 +166,15 @@ public class TestGeometricStandardError {
   /**
    * @pre   doubles != null;
    */
+  private double sampleGeometricStandardErrorByHand(double... doubles) {
+    return geometricStandardErrorByHand(true, doubles);
+  }
+
+  /**
+   * @pre   doubles != null;
+   */
   private double populationGeometricStandardErrorByHand(double... doubles) {
-    assert doubles != null;
-    if (doubles.length == 0) {
-      return Double.NaN;
-    }
-    else if (doubles.length == 1) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else if (Util.containsNegative(doubles)) {
-      return Double.NaN;
-    }
-    else if (Util.containsZero(doubles) || Util.containsInfinity(doubles)) {
-      return Double.POSITIVE_INFINITY;
-    }
-    else {
-      double sum = 0.0;
-      double geometricMean = geometricMean(doubles);
-      for (int i = 0; i < doubles.length; i++) {
-        sum += Math.pow(Math.log(doubles[i])-Math.log(geometricMean), 2);
-      }
-      double error = Math.exp(Math.sqrt(sum / (doubles.length*doubles.length)));
-      return error;
-    }
+    return geometricStandardErrorByHand(false, doubles);
   }
 
   public void evaluate() {

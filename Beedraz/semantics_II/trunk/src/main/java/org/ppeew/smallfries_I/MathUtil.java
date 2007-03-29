@@ -121,19 +121,18 @@ public final class MathUtil {
       return false;
     }
     else {
-      double delta;
       if (Double.isInfinite(d1)) {
         if (Double.isInfinite(d2) && signum(d1) == signum(d2)) {
-          delta = 0;
+          return true;
         }
         else {
-          delta = Double.POSITIVE_INFINITY;
+          return false;
         }
       }
       else {
-        delta = Math.abs(d1 - d2);
+        double delta = Math.abs(d1 - d2);
+        return delta <= error;
       }
-      return delta <= error;
     }
   }
 
@@ -244,19 +243,18 @@ public final class MathUtil {
       else {
         float fv = f.floatValue();
         float nv = n.floatValue();
-        float delta;
         if (Float.isInfinite(fv)) {
           if (Float.isInfinite(nv) && signum(fv) == signum(nv)) {
-            delta = 0;
+            return true;
           }
           else {
-            delta = Float.POSITIVE_INFINITY;
+            return false;
           }
         }
         else {
-          delta = Math.abs(fv - nv);
+          float delta = Math.abs(fv - nv);
+          return delta <= 2 * ulp(fv);
         }
-        return delta <= 2 * ulp(fv);
       }
     }
   }

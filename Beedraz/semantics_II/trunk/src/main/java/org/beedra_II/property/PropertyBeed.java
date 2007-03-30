@@ -20,7 +20,6 @@ package org.beedra_II.property;
 import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -52,19 +51,6 @@ public interface PropertyBeed<_Event_ extends Event>
    * @basic
    */
   AggregateBeed getOwner();
-
-  /**
-   * This beed will send an event of type {@code _Event_} during listener
-   * registration. This event will carry the current state of the beed as
-   * &quot;new&quot; information, and the &quot;old&quot; information in
-   * the event will be {@code null} or some other form of N/A. If you don't
-   * want initial events, use {@link #addListener(Listener)} instead.
-   *
-   * @pre listener != null;
-   * @post isListener(listener);
-   * @post initialEvent ? exists (_Event_ event) {listener.beedChanged(event)};
-   */
-  void addListenerInitialEvent(Listener<? super _Event_> listener);
 
 }
 

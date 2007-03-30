@@ -17,14 +17,16 @@ limitations under the License.
 package org.beedra_II.property;
 
 
-import org.beedra_II.AbstractBeed;
+import org.beedra_II.aggregate.AbstractAggregateBeed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Event;
+import org.beedra_II.aggregate.PropagatedEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * Support for implementations of {@link PropertyBeed}.
+ * Support for implementations of aggregate {@link PropertyBeed PropertyBeeds}.
+ * These are {@link AggregateBeed AggregateBeeds} that have an
+ * {@link #getOwner owner}, to which changes are delegated.
  *
  * @author Jan Dockx
  */
@@ -32,14 +34,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPropertyBeed<_Event_ extends Event>
-    extends AbstractBeed<_Event_>
-    implements PropertyBeed<_Event_> {
+public abstract class AbstractAggregatePropertyBeed
+    extends AbstractAggregateBeed
+    implements PropertyBeed<PropagatedEvent> {
 
   /**
    * @pre owner != null;
    */
-  protected AbstractPropertyBeed(AggregateBeed owner) {
+  protected AbstractAggregatePropertyBeed(AggregateBeed owner) {
     assert owner != null;
     $owner = owner;
     owner.registerAggregateElement(this);

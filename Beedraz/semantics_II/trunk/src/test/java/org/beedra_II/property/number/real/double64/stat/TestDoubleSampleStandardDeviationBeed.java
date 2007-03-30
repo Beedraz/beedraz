@@ -14,17 +14,18 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleStandardDeviationBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
 
-public class TestDoublePopulationVarianceBeed
-    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoublePopulationVarianceBeed> {
+public class TestDoubleSampleStandardDeviationBeed
+    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleSampleStandardDeviationBeed>{
 
   @Test
   public void test() {
@@ -33,28 +34,28 @@ public class TestDoublePopulationVarianceBeed
 
   @Override
   protected double computeStatistic(double... values) {
-    return MathUtil.populationVariance(values);
+    return MathUtil.sampleStandardDeviation(values);
   }
 
   @Override
-  protected MyDoublePopulationVarianceBeed createSubject(AggregateBeed owner) {
-    return new MyDoublePopulationVarianceBeed(owner);
+  protected MyDoubleSampleStandardDeviationBeed createSubject(AggregateBeed owner) {
+    return new MyDoubleSampleStandardDeviationBeed(owner);
   }
 
   @Override
-  protected void recalculate(MyDoublePopulationVarianceBeed subject) {
+  protected void recalculate(MyDoubleSampleStandardDeviationBeed subject) {
     subject.publicRecalculate();
   }
 
   @Override
-  protected void updateDependents(MyDoublePopulationVarianceBeed subject, Event event) {
+  protected void updateDependents(MyDoubleSampleStandardDeviationBeed subject, Event event) {
     subject.publicUpdateDependents(event);
   }
 
 }
 
-class MyDoublePopulationVarianceBeed extends DoublePopulationVarianceBeed {
-  public MyDoublePopulationVarianceBeed(AggregateBeed owner) {
+class MyDoubleSampleStandardDeviationBeed extends DoubleSampleStandardDeviationBeed {
+  public MyDoubleSampleStandardDeviationBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -69,5 +70,5 @@ class MyDoublePopulationVarianceBeed extends DoublePopulationVarianceBeed {
     assert getSource() != null;
     recalculate(getSource());
   }
-}
 
+}

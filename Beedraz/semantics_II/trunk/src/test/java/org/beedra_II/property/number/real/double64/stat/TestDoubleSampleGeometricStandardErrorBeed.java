@@ -14,11 +14,12 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleGeometricStandardErrorBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 

@@ -14,17 +14,18 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationStandardErrorBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
 
-public class TestDoubleSampleStandardDeviationBeed
-    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleSampleStandardDeviationBeed>{
+public class TestDoublePopulationStandardErrorBeed
+    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoublePopulationStandardErrorBeed> {
 
   @Test
   public void test() {
@@ -33,28 +34,28 @@ public class TestDoubleSampleStandardDeviationBeed
 
   @Override
   protected double computeStatistic(double... values) {
-    return MathUtil.sampleStandardDeviation(values);
+    return MathUtil.populationStandardError(values);
   }
 
   @Override
-  protected MyDoubleSampleStandardDeviationBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleSampleStandardDeviationBeed(owner);
+  protected MyDoublePopulationStandardErrorBeed createSubject(AggregateBeed owner) {
+    return new MyDoublePopulationStandardErrorBeed(owner);
   }
 
   @Override
-  protected void recalculate(MyDoubleSampleStandardDeviationBeed subject) {
+  protected void recalculate(MyDoublePopulationStandardErrorBeed subject) {
     subject.publicRecalculate();
   }
 
   @Override
-  protected void updateDependents(MyDoubleSampleStandardDeviationBeed subject, Event event) {
+  protected void updateDependents(MyDoublePopulationStandardErrorBeed subject, Event event) {
     subject.publicUpdateDependents(event);
   }
 
 }
 
-class MyDoubleSampleStandardDeviationBeed extends DoubleSampleStandardDeviationBeed {
-  public MyDoubleSampleStandardDeviationBeed(AggregateBeed owner) {
+class MyDoublePopulationStandardErrorBeed extends DoublePopulationStandardErrorBeed {
+  public MyDoublePopulationStandardErrorBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -69,5 +70,5 @@ class MyDoubleSampleStandardDeviationBeed extends DoubleSampleStandardDeviationB
     assert getSource() != null;
     recalculate(getSource());
   }
-
 }
+

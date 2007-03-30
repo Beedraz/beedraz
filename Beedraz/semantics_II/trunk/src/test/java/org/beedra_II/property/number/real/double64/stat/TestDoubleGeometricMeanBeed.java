@@ -14,17 +14,18 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.number.real.double64.stat.DoubleGeometricMeanBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
 
-public class TestDoubleArithmeticMeanBeed
-    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleArithmeticMeanBeed> {
+public class TestDoubleGeometricMeanBeed
+    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleGeometricMeanBeed> {
 
   @Test
   public void test() {
@@ -33,28 +34,28 @@ public class TestDoubleArithmeticMeanBeed
 
   @Override
   protected double computeStatistic(double... values) {
-    return MathUtil.arithmeticMean(values);
+    return MathUtil.geometricMean(values);
   }
 
   @Override
-  protected MyDoubleArithmeticMeanBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleArithmeticMeanBeed(owner);
+  protected MyDoubleGeometricMeanBeed createSubject(AggregateBeed owner) {
+    return new MyDoubleGeometricMeanBeed(owner);
   }
 
   @Override
-  protected void recalculate(MyDoubleArithmeticMeanBeed subject) {
+  protected void recalculate(MyDoubleGeometricMeanBeed subject) {
     subject.publicRecalculate();
   }
 
   @Override
-  protected void updateDependents(MyDoubleArithmeticMeanBeed subject, Event event) {
+  protected void updateDependents(MyDoubleGeometricMeanBeed subject, Event event) {
     subject.publicUpdateDependents(event);
   }
 
 }
 
-class MyDoubleArithmeticMeanBeed extends DoubleArithmeticMeanBeed {
-  public MyDoubleArithmeticMeanBeed(AggregateBeed owner) {
+class MyDoubleGeometricMeanBeed extends DoubleGeometricMeanBeed {
+  public MyDoubleGeometricMeanBeed(AggregateBeed owner) {
     super(owner);
   }
 

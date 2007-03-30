@@ -14,39 +14,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
-import org.ppeew.smallfries_I.StandardError;
+import org.ppeew.smallfries_I.GeometricStandardError;
 
 
 /**
- * A beed that computes the sample standard error of a given set of beeds of type
+ * A beed that computes the population geometric standard error of a given set of beeds of type
  * {@link DoubleBeed}.
  *
- * sample_standard_error(x_1, ..., x_n) = Math.sqrt(sum((x_i - mean)^2) / ((n - 1)*n))
+ * population_geometric_standard_error(x_1, ..., x_n) =
+ *   Math.exp(population_geometric_standard_error(Math.log(x_1), ..., Math.log(x_n)))
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
- *            ==> getDouble() == sample_standard_error { db.getDouble() | getSource().get().contains(db)};
+ *            ==> getDouble() == population_geometric_standard_error { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective, then the value
- *        of the sample standard error beed is the sample standard error of
+ *        of the population geometric standard error beed is the population geometric standard error of
  *        the values of all beeds in the given set.
- *        The sample standard error of an empty set is {@link Double#NaN}.
- *        The sample standard error of a set containing only one element is 0.
- *        e.g. when  getSource() = {1, 2, 3, 4}
- *             then  getDouble() = Math.sqrt(dividend/divisor)
- *             where divisor = 3 * 4
- *             and   dividend = (1-mean)^2 + (2-mean)^2 + (3-mean)^2 + (4-mean)^2)
- *             and   mean = (1 + 2 + 3 + 4)/4
+ *        See {@link GeometricStandardError} for more information.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleSampleStandardErrorBeed extends AbstractDoubleCommonsMathSetComputationBeed {
+public class DoublePopulationGeometricStandardErrorBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
 
   /**
@@ -55,8 +51,8 @@ public class DoubleSampleStandardErrorBeed extends AbstractDoubleCommonsMathSetC
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleSampleStandardErrorBeed(AggregateBeed owner) {
-    super(owner, new StandardError(true));
+  public DoublePopulationGeometricStandardErrorBeed(AggregateBeed owner) {
+    super(owner, new GeometricStandardError(false));
   }
 
 }

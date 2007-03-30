@@ -14,31 +14,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that computes the population standard deviation of a given set of beeds of type
+ * A beed that computes the sample standard deviation of a given set of beeds of type
  * {@link DoubleBeed}.
  *
- * population_standard_deviation(x_1, ..., x_n) = Math.sqrt(sum((x_i - mean)^2) / n)
+ * sample_standard_deviation(x_1, ..., x_n) = Math.sqrt(sum((x_i - mean)^2) / (n - 1))
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
- *            ==> getDouble() == population_standard_deviation { db.getDouble() | getSource().get().contains(db)};
+ *            ==> getDouble() == sample_standard_deviation { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective, then the value
- *        of the population standard deviation beed is the population standard deviation of
+ *        of the sample standard deviation beed is the sample standard deviation of
  *        the values of all beeds in the given set.
- *        The population standard deviation of an empty set is {@link Double#NaN}.
- *        The population standard deviation of a set containing only one element is 0.
+ *        The sample standard deviation of an empty set is {@link Double#NaN}.
+ *        The sample standard deviation of a set containing only one element is 0.
  *        e.g. when  getSource() = {1, 2, 3, 4}
  *             then  getDouble() = Math.sqrt(dividend/divisor)
- *             where divisor = 4
+ *             where divisor = 3
  *             and   dividend = (1-mean)^2 + (2-mean)^2 + (3-mean)^2 + (4-mean)^2)
  *             and   mean = (1 + 2 + 3 + 4)/4
  */
@@ -46,7 +47,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoublePopulationStandardDeviationBeed extends AbstractDoubleCommonsMathSetComputationBeed {
+public class DoubleSampleStandardDeviationBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
 
   /**
@@ -55,8 +56,8 @@ public class DoublePopulationStandardDeviationBeed extends AbstractDoubleCommons
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoublePopulationStandardDeviationBeed(AggregateBeed owner) {
-    super(owner, new StandardDeviation(false));
+  public DoubleSampleStandardDeviationBeed(AggregateBeed owner) {
+    super(owner, new StandardDeviation(true));
   }
 
 }

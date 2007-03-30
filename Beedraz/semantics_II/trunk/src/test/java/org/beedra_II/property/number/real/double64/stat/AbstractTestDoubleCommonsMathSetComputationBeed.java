@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import static org.junit.Assert.assertEquals;
@@ -34,6 +34,9 @@ import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEdit;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
+import org.beedra_II.property.number.real.double64.ActualDoubleEvent;
+import org.beedra_II.property.number.real.double64.DoubleEdit;
+import org.beedra_II.property.number.real.double64.EditableDoubleBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -260,15 +263,6 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     // recalculate (setBeed contains beed 1, 2, 3, 4 and null)
     recalculate($subject);
     assertEquals(null, $subject.getDouble());
-  }
-
-  @Test
-  public void createInitialEvent() {
-    RealEvent initialEvent = $subject.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $subject);
-    assertEquals(initialEvent.getOldDouble(), null);
-    assertEquals(initialEvent.getNewDouble(), $subject.getDouble());
-    assertEquals(initialEvent.getEdit(), null);
   }
 
   /**

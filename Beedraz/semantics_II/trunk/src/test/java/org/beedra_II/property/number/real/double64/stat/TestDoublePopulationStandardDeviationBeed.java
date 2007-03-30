@@ -14,17 +14,18 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.event.Event;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationStandardDeviationBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
 
-public class TestDoubleGeometricMeanBeed
-    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleGeometricMeanBeed> {
+public class TestDoublePopulationStandardDeviationBeed
+    extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoublePopulationStandardDeviationBeed> {
 
   @Test
   public void test() {
@@ -33,28 +34,28 @@ public class TestDoubleGeometricMeanBeed
 
   @Override
   protected double computeStatistic(double... values) {
-    return MathUtil.geometricMean(values);
+    return MathUtil.populationStandardDeviation(values);
   }
 
   @Override
-  protected MyDoubleGeometricMeanBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleGeometricMeanBeed(owner);
+  protected MyDoublePopulationStandardDeviationBeed createSubject(AggregateBeed owner) {
+    return new MyDoublePopulationStandardDeviationBeed(owner);
   }
 
   @Override
-  protected void recalculate(MyDoubleGeometricMeanBeed subject) {
+  protected void recalculate(MyDoublePopulationStandardDeviationBeed subject) {
     subject.publicRecalculate();
   }
 
   @Override
-  protected void updateDependents(MyDoubleGeometricMeanBeed subject, Event event) {
+  protected void updateDependents(MyDoublePopulationStandardDeviationBeed subject, Event event) {
     subject.publicUpdateDependents(event);
   }
 
 }
 
-class MyDoubleGeometricMeanBeed extends DoubleGeometricMeanBeed {
-  public MyDoubleGeometricMeanBeed(AggregateBeed owner) {
+class MyDoublePopulationStandardDeviationBeed extends DoublePopulationStandardDeviationBeed {
+  public MyDoublePopulationStandardDeviationBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -69,5 +70,5 @@ class MyDoubleGeometricMeanBeed extends DoubleGeometricMeanBeed {
     assert getSource() != null;
     recalculate(getSource());
   }
-
 }
+

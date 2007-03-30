@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.number.real.double64;
+package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.StorelessUnivariateStatistic;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.double64.AbstractDoubleSetComputationBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

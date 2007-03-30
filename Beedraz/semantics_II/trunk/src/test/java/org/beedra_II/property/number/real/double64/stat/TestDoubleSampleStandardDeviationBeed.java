@@ -28,7 +28,7 @@ public class TestDoubleSampleStandardDeviationBeed
     extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleSampleStandardDeviationBeed>{
 
   @Test
-  public void test() {
+  public void forceTest() {
     // to let the compiler know that this is a unit test
   }
 

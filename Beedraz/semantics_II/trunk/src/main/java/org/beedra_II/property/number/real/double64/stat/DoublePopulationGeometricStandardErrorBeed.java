@@ -28,7 +28,7 @@ import org.ppeew.smallfries_I.GeometricStandardError;
  * {@link DoubleBeed}.
  *
  * population_geometric_standard_error(x_1, ..., x_n) =
- *   Math.exp(population_geometric_standard_error(Math.log(x_1), ..., Math.log(x_n)))
+ *   Math.exp(population_standard_error(Math.log(x_1), ..., Math.log(x_n)))
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)

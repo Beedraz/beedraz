@@ -9,22 +9,6 @@ public class MathBugDemonstration {
    * @param args
    */
   public static void main(String[] args) {
-//    Variance v = new Variance();
-//    System.out.println(v.getResult());
-//    v.increment(1);
-//    System.out.println(v.getResult());
-//    v.increment(2);
-//    System.out.println(v.getResult());
-//    v.increment(3);
-//    System.out.println(v.getResult());
-//    v.increment(4);
-//    System.out.println(v.getResult());
-
-
-//      GeometricStandardDeviation sd = new GeometricStandardDeviation();
-//      double[] values = new double[] {1.0,2.0,0.0, Double.POSITIVE_INFINITY, -9.0};
-//      sd.incrementAll(values);
-//      System.out.println(sd.getResult());
 
       // difference between getResult and evaluate
 //      double[] values = new double[] {1.0, 2.0, Double.POSITIVE_INFINITY};

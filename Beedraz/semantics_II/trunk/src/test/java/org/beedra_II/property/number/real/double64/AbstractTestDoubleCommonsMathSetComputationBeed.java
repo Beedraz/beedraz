@@ -244,8 +244,6 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     // recalculate (setBeed contains beed 1, 2 and 3)
     recalculate($subject);
     statistic = computeStatistic(1.0, 2.0, 3.0);
-    System.out.println("1:"+$subject.getdouble());
-    System.out.println("2:"+statistic);
     assertTrue(MathUtil.equalValue($subject.getDouble(), statistic));
     // add beed
     setEdit = new SetEdit<RealBeed<?>>(source);

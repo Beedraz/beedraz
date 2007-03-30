@@ -276,18 +276,6 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
     }
   }
 
-  /**
-   * @post  result != null;
-   * @post  result.getAddedElements().equals(get());
-   * @post  result.getRemovedElements().isEmpty();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected SetEvent<_To_> createInitialEvent() {
-    return new ActualSetEvent<_To_>(this, get(), null, null);
-  }
-
   public final Set<? extends UpdateSource> getUpdateSources() {
     return $dependent.getUpdateSources();
   }

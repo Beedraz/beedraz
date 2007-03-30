@@ -259,16 +259,6 @@ public class TestOrderedBidirToManyBeed {
   }
 
   @Test
-  public void createInitialEvent2() {
-    OrderedSetEvent<ManyBeanBeed> initialEvent =
-      $orderedBidirToManyBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $orderedBidirToManyBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $orderedBidirToManyBeed.get());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
-  @Test
   public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
     // add a listener to the size beed
     IntegerBeed<ActualLongEvent> sizeBeed = $orderedBidirToManyBeed.getSize();

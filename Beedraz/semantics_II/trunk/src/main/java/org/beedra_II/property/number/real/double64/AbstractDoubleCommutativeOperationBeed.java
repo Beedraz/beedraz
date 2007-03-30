@@ -250,19 +250,6 @@ public abstract class AbstractDoubleCommutativeOperationBeed
    */
   public abstract double initialValue();
 
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldDouble() == null;
-   * @post  result.getNewDouble() == getDouble();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final ActualDoubleEvent createInitialEvent() {
-    return new ActualDoubleEvent(this, null, getDouble(), null);
-  }
-
   @Override
   protected String otherToStringInformation() {
     return getDouble() + " (# " + $arguments.size() + ")";

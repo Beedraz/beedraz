@@ -31,19 +31,6 @@ public class EditableLongBeed
     super(owner);
   }
 
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldInteger() == null;
-   * @post  result.getNewInteger() == get();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected ActualLongEvent createInitialEvent() {
-    return new ActualLongEvent(this, null, get(), null);
-  }
-
   public Double getDouble() {
     return castToDouble(getLong());
   }

@@ -53,19 +53,6 @@ public class EditableDoubleBeed
   }
 
   /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldDouble() == null;
-   * @post  result.getNewDouble() == get();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected ActualDoubleEvent createInitialEvent() {
-    return new ActualDoubleEvent(this, null, get(), null);
-  }
-
-  /**
    * @return get();
    */
   public final Double getDouble() {

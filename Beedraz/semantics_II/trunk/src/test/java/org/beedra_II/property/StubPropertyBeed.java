@@ -40,11 +40,6 @@ public class StubPropertyBeed extends AbstractPropertyBeed<StubEvent> {
     updateDependents(event);
   }
 
-  @Override
-  protected StubEvent createInitialEvent() {
-    return $initialEvent;
-  }
-
   public StubEvent $initialEvent = new StubEvent(this);
 
   public int getMaximumRootUpdateSourceDistance() {

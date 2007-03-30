@@ -55,19 +55,6 @@ public abstract class AbstractDoubleUnaryExpressionBeed
 
   private double $value;
 
-  /**
-   * @post  result != null;
-   * @post  result.getArgument() == this;
-   * @post  result.getOldInteger() == null;
-   * @post  result.getNewInteger() == getInteger();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final ActualDoubleEvent createInitialEvent() {
-    return new ActualDoubleEvent(this, null, get(), null);
-  }
-
   @Override
   protected final ActualDoubleEvent createNewEvent(Double oldValue, Double newValue, Edit<?> edit) {
     return new ActualDoubleEvent(this, oldValue, newValue, edit);

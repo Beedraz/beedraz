@@ -163,18 +163,6 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       return MathUtil.castToBigDecimal(get());
     }
 
-    /**
-     * @post  result != null;
-     * @post  result.getOldValue() == null;
-     * @post  result.getNewValue().equals(getLong());
-     * @post  result.getEdit() == null;
-     * @post  result.getEditState() == null;
-     */
-    @Override
-    protected ActualLongEvent createInitialEvent() {
-      return new ActualLongEvent(this, null, getLong(), null);
-    }
-
     public final Set<? extends UpdateSource> getUpdateSources() {
       return $dependent.getUpdateSources();
     }

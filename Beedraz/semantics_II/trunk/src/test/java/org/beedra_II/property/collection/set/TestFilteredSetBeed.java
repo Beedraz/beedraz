@@ -40,7 +40,6 @@ import org.beedra_II.property.association.set.EditableBidirToOneBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
-import org.beedra_II.property.number.integer.long64.LongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
@@ -460,15 +459,6 @@ public class TestFilteredSetBeed {
     $filteredSetBeed.recalculate();
     assertEquals($filteredSetBeed.get().size(), 1);
     assertTrue($filteredSetBeed.get().contains($well2));
-  }
-
-  @Test
-  public void createInitialEvent() {
-    SetEvent<WellBeanBeed> initialEvent = $filteredSetBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $filteredSetBeed);
-    assertEquals(initialEvent.getAddedElements(), $filteredSetBeed.get());
-    assertEquals(initialEvent.getRemovedElements(), new HashSet<LongBeed>());
-    assertEquals(initialEvent.getEdit(), null);
   }
 
   private EditableSetBeed<WellBeanBeed> createSource() throws EditStateException, IllegalEditException {

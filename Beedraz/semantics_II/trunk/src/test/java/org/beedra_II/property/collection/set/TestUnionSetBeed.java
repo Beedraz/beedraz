@@ -560,15 +560,6 @@ public class TestUnionSetBeed {
   }
 
   @Test
-  public void createInitialEvent() {
-    SetEvent<WellBeanBeed> initialEvent = $unionSetBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $unionSetBeed);
-    assertEquals(initialEvent.getAddedElements(), $unionSetBeed.get());
-    assertEquals(initialEvent.getRemovedElements(), new HashSet<WellBeanBeed>());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
-  @Test
   public void testSetBeedListener() throws EditStateException, IllegalEditException {
     // create two set beeds whose sets overlap
     EditableSetBeed<WellBeanBeed> setBeed1 = new EditableSetBeed<WellBeanBeed>($owner);

@@ -21,11 +21,6 @@ public class StubEditableSimplePropertyBeed
     super(owner);
   }
 
-  @Override
-  protected StubEvent createInitialEvent() {
-    return $initialEvent;
-  }
-
   public Object publicSafeValueCopy(Object original) {
     return safeValueCopy(original);
   }

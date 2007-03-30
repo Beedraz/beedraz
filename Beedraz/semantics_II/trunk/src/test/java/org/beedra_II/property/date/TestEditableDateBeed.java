@@ -10,7 +10,6 @@ package org.beedra_II.property.date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
@@ -62,16 +61,6 @@ public class TestEditableDateBeed {
     assertNotNull($listener2.$event);
     assertEquals($event1, $listener1.$event.getCause());
     assertEquals($event1, $listener1.$event.getCause());
-  }
-
-  @Test
-  public void createInitialEvent() {
-    DateEvent initialEvent = $editableDateBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $editableDateBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertTrue(initialEvent.getNewValue() == $editableDateBeed.get());
-    assertEquals(initialEvent.getNewValue(), $editableDateBeed.get());
-    assertEquals(initialEvent.getEdit(), null);
   }
 
 }

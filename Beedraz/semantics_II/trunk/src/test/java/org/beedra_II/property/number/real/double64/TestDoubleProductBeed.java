@@ -31,7 +31,6 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -825,15 +824,6 @@ public class TestDoubleProductBeed {
     assertTrue($doubleProductBeed.getNbOccurrences(factor1) == 0);
     assertTrue($doubleProductBeed.getNbOccurrences(doubleProductBeed2times3times4) == 0);
     assertEquals($doubleProductBeed.getDouble(), 1.0);
-  }
-
-  @Test
-  public void createInitialEvent() {
-    RealEvent initialEvent = $doubleProductBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $doubleProductBeed);
-    assertEquals(initialEvent.getOldDouble(), null);
-    assertEquals(initialEvent.getNewDouble(), $doubleProductBeed.getDouble());
-    assertEquals(initialEvent.getEdit(), null);
   }
 
 }

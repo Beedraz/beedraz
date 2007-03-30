@@ -59,19 +59,6 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
     return get() == null ? null : get().getOwner();
   }
 
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected BidirToOneEvent<_One_, _Many_> createInitialEvent() {
-    return new BidirToOneEvent<_One_, _Many_>(this, null, get(), null);
-  }
-
   static void packageUpdateDependents(Map<AbstractUpdateSource, Event> events, Edit<?> edit) {
     AbstractUpdateSource.multiUpdateDependents(events, edit);
   }

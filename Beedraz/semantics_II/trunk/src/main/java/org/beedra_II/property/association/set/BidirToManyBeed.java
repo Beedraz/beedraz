@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.collection.set.AbstractSetBeed;
-import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -87,18 +86,6 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
   }
 
   private final Set<_Many_> $many = new HashSet<_Many_>();
-
-  /**
-   * @post  result != null;
-   * @post  result.getAddedElements().equals(get());
-   * @post  result.getRemovedElements().isEmpty();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final SetEvent<_Many_> createInitialEvent() {
-    return new ActualSetEvent<_Many_>(this, $many, null, null); // event constructor copies set
-  }
 
   @Override
   protected String otherToStringInformation() {

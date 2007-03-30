@@ -270,15 +270,6 @@ public class TestDoubleSetSumBeed {
     assertEquals($doubleSetSumBeed.getDouble(), null);
   }
 
-  @Test
-  public void createInitialEvent() {
-    RealEvent initialEvent = $doubleSetSumBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $doubleSetSumBeed);
-    assertEquals(initialEvent.getOldDouble(), null);
-    assertEquals(initialEvent.getNewDouble(), $doubleSetSumBeed.getDouble());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
   /**
    * Source gooit events bij add en remove.
    * @throws EditStateException

@@ -190,15 +190,6 @@ public class TestEditableSetBeed {
     }
 
   @Test
-  public void createInitialEvent() {
-    SetEvent<Integer> initialEvent = $editableSetBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $editableSetBeed);
-    assertEquals(initialEvent.getAddedElements(), $editableSetBeed.get());
-    assertEquals(initialEvent.getRemovedElements(), new HashSet<Integer>());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
-  @Test
   public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
     IntegerBeed<?> sizeBeed = $editableSetBeed.getSize();
     assertEquals(sizeBeed.getOwner(), $editableSetBeed.getOwner());

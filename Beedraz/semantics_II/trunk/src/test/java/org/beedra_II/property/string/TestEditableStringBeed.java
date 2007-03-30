@@ -73,12 +73,4 @@ public class TestEditableStringBeed {
     assertEquals($event1, $listener1.$event.getCause());
   }
 
-  @Test
-  public void createInitialEvent() {
-    StringEvent initialEvent = $editableStringBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $editableStringBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $editableStringBeed.get());
-    assertEquals(initialEvent.getEdit(), null);
-  }
 }

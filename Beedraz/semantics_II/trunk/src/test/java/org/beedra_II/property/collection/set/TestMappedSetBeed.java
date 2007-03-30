@@ -493,15 +493,6 @@ public class TestMappedSetBeed {
   }
 
   @Test
-  public void createInitialEvent() {
-    SetEvent<LongBeed> initialEvent = $mappedSetBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $mappedSetBeed);
-    assertEquals(initialEvent.getAddedElements(), $mappedSetBeed.get());
-    assertEquals(initialEvent.getRemovedElements(), new HashSet<LongBeed>());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
-  @Test
   public void computeSum() {
     // test1
     $mappedSetBeed.setSource($run.wells);

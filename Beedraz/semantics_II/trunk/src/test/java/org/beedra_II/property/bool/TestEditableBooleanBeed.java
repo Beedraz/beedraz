@@ -89,12 +89,4 @@ public class TestEditableBooleanBeed {
     assertEquals($event1, $listener1.$event.getCause());
   }
 
-  @Test
-  public void createInitialEvent() {
-    BooleanEvent initialEvent = $editableBooleanBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $editableBooleanBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $editableBooleanBeed.get());
-    assertEquals(initialEvent.getEdit(), null);
-  }
 }

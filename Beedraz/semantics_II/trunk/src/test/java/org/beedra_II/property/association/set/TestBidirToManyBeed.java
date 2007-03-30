@@ -166,16 +166,6 @@ public class TestBidirToManyBeed {
   }
 
   @Test
-  public void createInitialEvent2() {
-    SetEvent<ManyBeanBeed> initialEvent =
-      $bidirToManyBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $bidirToManyBeed);
-    assertEquals(initialEvent.getAddedElements(), $bidirToManyBeed.get());
-    assertTrue(initialEvent.getRemovedElements().isEmpty());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
-  @Test
   public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
     // add a listener to the size beed
     IntegerBeed<ActualLongEvent> sizeBeed = $bidirToManyBeed.getSize();

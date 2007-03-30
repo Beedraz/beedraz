@@ -148,16 +148,6 @@ public class TestEditableBidirToOneBeed {
     assertEquals($editableBidirToOneBeed.getOne(), $one);
   }
 
-  @Test
-  public void createInitialEvent() {
-    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> initialEvent =
-      $editableBidirToOneBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $editableBidirToOneBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $editableBidirToOneBeed.get());
-    assertEquals(initialEvent.getEdit(), null);
-  }
-
   public class ManyBean extends AbstractBeanBeed {
 
     public final EditableLongBeed lb = new EditableLongBeed(this);

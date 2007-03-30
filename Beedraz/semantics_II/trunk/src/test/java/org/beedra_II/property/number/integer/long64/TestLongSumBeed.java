@@ -29,11 +29,6 @@ import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.event.StubListener;
-import org.beedra_II.property.number.integer.IntegerEvent;
-import org.beedra_II.property.number.integer.long64.ActualLongEvent;
-import org.beedra_II.property.number.integer.long64.EditableLongBeed;
-import org.beedra_II.property.number.integer.long64.LongEdit;
-import org.beedra_II.property.number.integer.long64.LongSumBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -807,15 +802,6 @@ public class TestLongSumBeed {
     $longSumBeed.recalculate();
     assertEquals($longSumBeed.getLong(), null);
     assertTrue(equalValue($longSumBeed.getDouble(), $longSumBeed.getLong()));
-  }
-
-  @Test
-  public void createInitialEvent() {
-    IntegerEvent initialEvent = $longSumBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $longSumBeed);
-    assertEquals(initialEvent.getOldLong(), null);
-    assertEquals(initialEvent.getNewLong(), $longSumBeed.getLong());
-    assertEquals(initialEvent.getEdit(), null);
   }
 
 }

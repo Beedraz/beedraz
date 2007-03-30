@@ -272,20 +272,6 @@ public abstract class AbstractDoubleSetComputationBeed
     $value = value;
   }
 
-
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldDouble() == null;
-   * @post  result.getNewDouble() == getDouble();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final ActualDoubleEvent createInitialEvent() {
-    return new ActualDoubleEvent(this, null, getDouble(), null);
-  }
-
   public final Set<? extends UpdateSource> getUpdateSources() {
     return $dependent.getUpdateSources();
   }

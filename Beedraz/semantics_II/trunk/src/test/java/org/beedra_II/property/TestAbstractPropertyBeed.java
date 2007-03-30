@@ -19,7 +19,6 @@ package org.beedra_II.property;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.PropagatedEvent;
@@ -47,7 +46,6 @@ public class TestAbstractPropertyBeed {
   private StubEvent $event1 = new StubEvent($propertyBeed);
   private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
   private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
-  private StubListener<StubEvent> $listener3 = new StubListener<StubEvent>();
 
   @Test
   public void constructor() {
@@ -67,11 +65,4 @@ public class TestAbstractPropertyBeed {
     assertEquals($event1, $listener1.$event.getCause());
   }
 
-  @Test
-  public void addListenerInitialEvent() {
-    $propertyBeed.addListenerInitialEvent($listener3);
-    assertTrue($propertyBeed.isListener($listener3));
-    assertNotNull($listener3.$event);
-    assertEquals($listener3.$event, $propertyBeed.$initialEvent);
-  }
 }

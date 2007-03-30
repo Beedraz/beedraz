@@ -85,18 +85,6 @@ public class EditableSetBeed<_Element_>
 
   private Set<_Element_> $set = new HashSet<_Element_>();
 
-  /**
-   * @post  result != null;
-   * @post  result.getAddedElements().equals(get());
-   * @post  result.getRemovedElements().isEmpty();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected SetEvent<_Element_> createInitialEvent() {
-    return new ActualSetEvent<_Element_>(this, get(), null, null);
-  }
-
   public boolean isAcceptable(Set<_Element_> elementsToAdd, Set<_Element_> elementsToRemove) {
     return true;
   }

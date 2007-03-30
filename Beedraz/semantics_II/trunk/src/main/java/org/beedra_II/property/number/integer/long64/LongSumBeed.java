@@ -267,19 +267,6 @@ public class LongSumBeed
 
   private long $value = 0L;
 
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldLong() == null;
-   * @post  result.getNewLong() == getLong();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final ActualLongEvent createInitialEvent() {
-    return new ActualLongEvent(this, null, getLong(), null);
-  }
-
   public final Set<? extends UpdateSource> getUpdateSources() {
     return $dependent.getUpdateSources();
   }

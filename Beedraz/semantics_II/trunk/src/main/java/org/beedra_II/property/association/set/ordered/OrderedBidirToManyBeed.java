@@ -25,7 +25,6 @@ import java.util.Set;
 
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.property.collection.set.AbstractSetBeed;
-import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedra_II.property.collection.set.ordered.OrderedSetBeed;
 import org.beedra_II.property.collection.set.ordered.OrderedSetEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -118,19 +117,6 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
   }
 
   private final OrderedSet<_Many_> $many = new LinkedListOrderedSet<_Many_>();
-
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected final OrderedSetEvent<_Many_> createInitialEvent() {
-    return new ActualOrderedSetEvent<_Many_>(this, null, get(), null);
-  }
 
   @Override
   protected String otherToStringInformation() {

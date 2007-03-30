@@ -238,18 +238,6 @@ public class UnionSetBeed<_Element_>
     return Collections.unmodifiableSet($union);
   }
 
-  /**
-   * @post  result != null;
-   * @post  result.getAddedElements().equals(get());
-   * @post  result.getRemovedElements().isEmpty();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected SetEvent<_Element_> createInitialEvent() {
-    return new ActualSetEvent<_Element_>(this, get(), null, null);
-  }
-
   public final Set<? extends UpdateSource> getUpdateSources() {
     return $dependent.getUpdateSources();
   }

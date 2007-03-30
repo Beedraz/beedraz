@@ -37,18 +37,5 @@ public class EditableStringBeed
     super(owner);
   }
 
-  /**
-   * @post  result != null;
-   * @post  result.getSource() == this;
-   * @post  result.getOldValue() == null;
-   * @post  result.getNewValue() == get();
-   * @post  result.getEdit() == null;
-   * @post  result.getEditState() == null;
-   */
-  @Override
-  protected StringEvent createInitialEvent() {
-    return new StringEvent(this, null, get(), null);
-  }
-
 }
 

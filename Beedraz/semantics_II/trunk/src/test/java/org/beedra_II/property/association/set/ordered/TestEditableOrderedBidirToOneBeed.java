@@ -142,13 +142,4 @@ public class TestEditableOrderedBidirToOneBeed {
     assertEquals($editableOrderedBidirToOneBeed.getOne(), $one);
   }
 
-  @Test
-  public void createInitialEvent() {
-    OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> initialEvent =
-      $editableOrderedBidirToOneBeed.createInitialEvent();
-    assertEquals(initialEvent.getSource(), $editableOrderedBidirToOneBeed);
-    assertEquals(initialEvent.getOldValue(), null);
-    assertEquals(initialEvent.getNewValue(), $editableOrderedBidirToOneBeed.get());
-    assertEquals(initialEvent.getEdit(), null);
-  }
 }

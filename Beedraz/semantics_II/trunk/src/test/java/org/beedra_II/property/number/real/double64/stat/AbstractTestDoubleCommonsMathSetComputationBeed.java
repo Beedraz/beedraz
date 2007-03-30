@@ -288,11 +288,12 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
       new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
-    assertEquals(0.0, $subject.getDouble());
+    double statistic = computeStatistic(1.0);
+    assertEquals(statistic, $subject.getDouble());
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
-    double statistic = computeStatistic(1.0, 2.0);
+    statistic = computeStatistic(1.0, 2.0);
     assertTrue(MathUtil.equalValue($subject.getDouble(), statistic, Math.ulp($subject.getDouble()) * 4));
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed3);
@@ -322,7 +323,8 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed3);
     setEdit.perform();
-    assertEquals(0.0, $subject.getDouble());
+    statistic = computeStatistic(4.0);
+    assertEquals(statistic, $subject.getDouble());
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToRemove(beed4);
     setEdit.perform();

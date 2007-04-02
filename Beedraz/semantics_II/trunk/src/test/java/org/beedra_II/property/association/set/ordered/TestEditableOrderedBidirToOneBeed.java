@@ -19,8 +19,9 @@ package org.beedra_II.property.association.set.ordered;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -85,8 +86,8 @@ public class TestEditableOrderedBidirToOneBeed {
     $OrderedBidirToOneEdit.perform();
     $OrderedBidirToOneEvent =
       new OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed>($editableOrderedBidirToOneBeed, null, $OrderedBidirToManyBeed, $OrderedBidirToOneEdit);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
 //  $listener3 = new StubEditableOrderedBidirToOneBeedListener();
 //  $listener4 = new StubEditableOrderedBidirToOneBeedListener();
   }
@@ -102,8 +103,8 @@ public class TestEditableOrderedBidirToOneBeed {
   private OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $OrderedBidirToManyBeed;
   private OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> $OrderedBidirToOneEdit;
   private OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> $OrderedBidirToOneEvent;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
 //  private StubEditableOrderedBidirToOneBeedListener $listener3;
 //  private StubEditableOrderedBidirToOneBeedListener $listener4;
 
@@ -121,8 +122,10 @@ public class TestEditableOrderedBidirToOneBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($OrderedBidirToOneEvent, $listener1.$event.getCause());
-    assertEquals($OrderedBidirToOneEvent, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($OrderedBidirToOneEvent));
+    assertTrue($listener2.$event.getComponentevents().contains($OrderedBidirToOneEvent));
   }
 
   @Test

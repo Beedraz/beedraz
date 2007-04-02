@@ -20,8 +20,9 @@ package org.beedra_II.property.association.set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -90,8 +91,8 @@ public class TestEditableBidirToOneBeed {
     $bidirToOneEdit.perform();
     $bidirToOneEvent =
       new BidirToOneEvent<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed, null, $bidirToManyBeed, $bidirToOneEdit);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
 //  $listener3 = new StubEditableBidirToOneBeedListener();
 //  $listener4 = new StubEditableBidirToOneBeedListener();
   }
@@ -107,8 +108,8 @@ public class TestEditableBidirToOneBeed {
   private BidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed;
   private BidirToOneEdit<OneBeanBeed, ManyBeanBeed> $bidirToOneEdit;
   private BidirToOneEvent<OneBeanBeed, ManyBeanBeed> $bidirToOneEvent;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
 //  private StubEditableBidirToOneBeedListener $listener3;
 //  private StubEditableBidirToOneBeedListener $listener4;
 
@@ -126,8 +127,10 @@ public class TestEditableBidirToOneBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($bidirToOneEvent, $listener1.$event.getCause());
-    assertEquals($bidirToOneEvent, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($bidirToOneEvent));
+    assertTrue($listener2.$event.getComponentevents().contains($bidirToOneEvent));
   }
 
   @Test
@@ -173,7 +176,7 @@ public class TestEditableBidirToOneBeed {
     BidirToOneEdit<OneBean, ManyBean> edit = new BidirToOneEdit<OneBean, ManyBean>(manyBean.toOne);
     edit.setGoal(oneBean1.toMany);
     edit.perform();
-    StubListener<PropagatedEvent> listener1 = new StubListener<PropagatedEvent>();
+    StubListener<AggregateEvent> listener1 = new StubListener<AggregateEvent>();
     oneBean1.addListener(listener1);
     StubListener<Event> listener2 = new StubListener<Event>();
     oneBean2.addListener(listener2);

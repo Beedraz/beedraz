@@ -20,9 +20,10 @@ package org.beedra_II.property.string;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.event.StubListener;
 import org.junit.After;
@@ -39,8 +40,8 @@ public class TestEditableStringBeed {
     $stringEdit = new StringEdit($editableStringBeed);
     $stringEdit.perform();
     $event1 = new StringEvent($editableStringBeed, "old", "event", $stringEdit);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
   }
 
   @After
@@ -52,8 +53,8 @@ public class TestEditableStringBeed {
   private StubEditableStringBeed $editableStringBeed;
   private StringEdit $stringEdit;
   private StringEvent $event1;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
 
   @Test
   public void constructor() {
@@ -69,8 +70,10 @@ public class TestEditableStringBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event1, $listener1.$event.getCause());
-    assertEquals($event1, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($event1));
+    assertTrue($listener2.$event.getComponentevents().contains($event1));
   }
 
 }

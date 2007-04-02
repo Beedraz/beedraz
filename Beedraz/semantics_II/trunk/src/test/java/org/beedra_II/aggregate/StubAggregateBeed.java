@@ -23,7 +23,7 @@ public class StubAggregateBeed extends AbstractAggregateBeed {
    * Makes the updateDependents method public for testing reasons.
    * @param event
    */
-  public void publicUpdateDependents(PropagatedEvent event) {
+  public void publicUpdateDependents(AggregateEvent event) {
     updateDependents(event);
   }
 

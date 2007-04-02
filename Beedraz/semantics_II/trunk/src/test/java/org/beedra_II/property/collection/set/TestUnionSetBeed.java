@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.beedra_II.BeedMapping;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -118,8 +118,8 @@ public class TestUnionSetBeed {
     $cqC2 = new Long(6);
     $cqC3 = new Long(7);
     $cqC4 = new Long(8);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
     $listener5 = new StubListener<ActualLongEvent>();
     $event = new ActualSetEvent<WellBeanBeed>($unionSetBeed, null, null, null);
@@ -210,8 +210,8 @@ public class TestUnionSetBeed {
   private Long $cqC4;
   private MyUnionBeed $unionSetBeed;
   private MyBeanBeed $owner;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
   private StubListener<ActualLongEvent> $listener5;
   private SetEvent<WellBeanBeed> $event;
@@ -232,8 +232,10 @@ public class TestUnionSetBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event, $listener1.$event.getCause());
-    assertEquals($event, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($event));
+    assertTrue($listener2.$event.getComponentevents().contains($event));
   }
 
   @Test
@@ -812,8 +814,8 @@ public class TestUnionSetBeed {
         }
 
     };
-    MappedSetBeed<WellBeanBeed, PropagatedEvent, LongBeed> mappedSetBeed =
-      new MappedSetBeed<WellBeanBeed, PropagatedEvent, LongBeed>(mapping, $owner);
+    MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed> mappedSetBeed =
+      new MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed>(mapping, $owner);
     mappedSetBeed.setSource($unionSetBeed);
     Long sum = 0L;
     for (LongBeed cq : mappedSetBeed.get()) {

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -51,9 +51,9 @@ public class TestDoubleSumBeed {
 
   }
 
-  public class PropagatedEventListener implements Listener<PropagatedEvent> {
+  public class PropagatedEventListener implements Listener<AggregateEvent> {
 
-    public void beedChanged(PropagatedEvent event) {
+    public void beedChanged(AggregateEvent event) {
       $event = event;
     }
 
@@ -61,7 +61,7 @@ public class TestDoubleSumBeed {
       $event = null;
     }
 
-    public PropagatedEvent $event;
+    public AggregateEvent $event;
 
   }
 
@@ -100,8 +100,10 @@ public class TestDoubleSumBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event1, $listener1.$event.getCause());
-    assertEquals($event1, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($event1));
+    assertTrue($listener2.$event.getComponentevents().contains($event1));
     // the value should be 0
     assertEquals($doubleSumBeed.getDouble(), 0.0);
     // no terms registered (cannot be tested)

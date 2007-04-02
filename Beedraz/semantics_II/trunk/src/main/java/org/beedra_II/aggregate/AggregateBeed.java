@@ -25,7 +25,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * <p>Aggregate beeds are considered changed when one of their
  *   aggregate elements is changed.
  *   I.e., they listen to changes in their aggregate elements,
- *   and send {@link PropagatedEvent derived events} themselves:
+ *   and send {@link AggregateEvent derived events} themselves:
  *   changes are propagated.</p>
  * <p>Most aggregate beeds are bean beeds. Final propagation
  *   sources are {@link EditableBeed editable beeds}.</p>
@@ -38,7 +38,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface AggregateBeed extends Beed<PropagatedEvent> {
+public interface AggregateBeed extends Beed<AggregateEvent> {
 
   /**
    * @basic

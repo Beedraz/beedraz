@@ -19,7 +19,7 @@ package org.beedra_II.property;
 
 import org.beedra_II.aggregate.AbstractAggregateBeed;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -36,7 +36,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractAggregatePropertyBeed
     extends AbstractAggregateBeed
-    implements PropertyBeed<PropagatedEvent> {
+    implements PropertyBeed<AggregateEvent> {
 
   /**
    * @pre owner != null;

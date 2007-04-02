@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -89,8 +89,8 @@ public class TestBidirToManyBeed {
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
     $bidirToOneEdit.perform();
     $setEvent = new ActualSetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, $bidirToOneEdit);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
     $listener5 = new StubListener<ActualLongEvent>();
   }
 
@@ -106,8 +106,8 @@ public class TestBidirToManyBeed {
   private MyBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $bidirToManyBeed;
   private BidirToOneEdit<OneBeanBeed, ManyBeanBeed> $bidirToOneEdit;
   private SetEvent<ManyBeanBeed> $setEvent;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
   private StubListener<ActualLongEvent> $listener5;
 
   @Test
@@ -124,8 +124,10 @@ public class TestBidirToManyBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($setEvent, $listener1.$event.getCause());
-    assertEquals($setEvent, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($setEvent));
+    assertTrue($listener2.$event.getComponentevents().contains($setEvent));
   }
 
   @Test

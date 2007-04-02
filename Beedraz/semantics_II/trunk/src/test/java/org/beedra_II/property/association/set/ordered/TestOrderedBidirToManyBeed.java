@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -93,8 +93,8 @@ public class TestOrderedBidirToManyBeed {
     OrderedSet<ManyBeanBeed> newS = new LinkedListOrderedSet<ManyBeanBeed>();
     newS.add($many);
 //    $listEvent = new ActualOrderedSetEvent<ManyBeanBeed>($orderedBidirToManyBeed, oldS, newS, $orderedBidirToOneEdit);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
     $listener3 = new StubOrderedSetEventListener();
     $listener4 = new StubOrderedSetEventListener();
     $listener5 = new StubListener<ActualLongEvent>();
@@ -111,8 +111,8 @@ public class TestOrderedBidirToManyBeed {
   private MyOrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> $orderedBidirToManyBeed;
   private OrderedBidirToOneEdit<OneBeanBeed, ManyBeanBeed> $orderedBidirToOneEdit;
 //  private OrderedSetEvent<ManyBeanBeed> $listEvent;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
   private StubOrderedSetEventListener $listener3;
   private StubOrderedSetEventListener $listener4;
   private StubListener<ActualLongEvent> $listener5;

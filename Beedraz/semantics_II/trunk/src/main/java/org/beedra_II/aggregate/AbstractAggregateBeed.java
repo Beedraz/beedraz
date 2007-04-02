@@ -18,7 +18,6 @@ package org.beedra_II.aggregate;
 
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,19 +40,26 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractAggregateBeed
-    extends AbstractBeed<PropagatedEvent>
+    extends AbstractBeed<AggregateEvent>
     implements AggregateBeed {
 
   private final Dependent<Beed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<Beed<?>, PropagatedEvent>(this) {
+    new AbstractUpdateSourceDependentDelegate<Beed<?>, AggregateEvent>(this) {
 
       @Override
-      protected PropagatedEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?>  edit) {
+      protected AggregateEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?>  edit) {
         assert events.size() > 0;
-        Iterator<Event> iter = events.values().iterator();
-        Event event = iter.next();
-        // MUDO we need a compound event here
-        return new PropagatedEvent(AbstractAggregateBeed.this, event);
+        AggregateEvent result = new AggregateEvent(AbstractAggregateBeed.this, edit);
+        for (Event event : events.values()) {
+         try {
+          result.addComponentEvent(event);
+        }
+        catch (AggregateEventStateException exc) {
+          assert false : "AggregateEventStateException should not happen: we are not closed. " + exc;
+        }
+        }
+        result.close();
+        return result;
       }
 
     };

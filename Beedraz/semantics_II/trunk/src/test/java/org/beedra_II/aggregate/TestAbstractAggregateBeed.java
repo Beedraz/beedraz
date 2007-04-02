@@ -20,6 +20,7 @@ package org.beedra_II.aggregate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.edit.StubEdit;
 import org.beedra_II.event.StubEvent;
@@ -50,8 +51,8 @@ public class TestAbstractAggregateBeed {
     $edit3.perform();
     $event3 = new StubEvent($beed3);
 
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
   }
 
   @After
@@ -73,8 +74,8 @@ public class TestAbstractAggregateBeed {
   private StubEdit $edit3;
   private StubEvent $event3;
 
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
 
   @Test
   public void isAggregateElement() {
@@ -95,8 +96,8 @@ public class TestAbstractAggregateBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event1, $listener1.$event.getCause());
-    assertEquals($event1, $listener1.$event.getCause());
+    assertTrue($listener1.$event.getComponentevents().contains($event1));
+    assertTrue($listener2.$event.getComponentevents().contains($event1));
     // reset the listeners
     $listener1.reset();
     $listener2.reset();
@@ -115,8 +116,11 @@ public class TestAbstractAggregateBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event3, $listener1.$event.getCause());
-    assertEquals($event3, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($event3));
+    assertTrue($listener2.$event.getComponentevents().contains($event3));
   }
+
 }
 

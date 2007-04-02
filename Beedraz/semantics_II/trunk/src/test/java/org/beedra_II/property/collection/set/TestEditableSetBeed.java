@@ -19,12 +19,13 @@ package org.beedra_II.property.collection.set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -62,8 +63,8 @@ public class TestEditableSetBeed {
     $setEdit = new SetEdit<Integer>($editableSetBeed);
     $setEdit.perform();
     $event1 = new ActualSetEvent<Integer>($editableSetBeed, $addedElements, $removedElements, $setEdit);
-    $listener1 = new StubListenerMultiple<PropagatedEvent>();
-    $listener2 = new StubListenerMultiple<PropagatedEvent>();
+    $listener1 = new StubListenerMultiple<AggregateEvent>();
+    $listener2 = new StubListenerMultiple<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<Integer>>();
     $listener4 = new StubListener<SetEvent<Integer>>();
   }
@@ -79,8 +80,8 @@ public class TestEditableSetBeed {
   private Set<Integer> $removedElements;
   private SetEdit<Integer> $setEdit;
   private SetEvent<Integer> $event1;
-  private StubListenerMultiple<PropagatedEvent> $listener1;
-  private StubListenerMultiple<PropagatedEvent> $listener2;
+  private StubListenerMultiple<AggregateEvent> $listener1;
+  private StubListenerMultiple<AggregateEvent> $listener2;
   private StubListener<SetEvent<Integer>> $listener3;
   private StubListener<SetEvent<Integer>> $listener4;
 
@@ -102,8 +103,10 @@ public class TestEditableSetBeed {
     assertNotNull($listener2.$event1);
     assertNull($listener1.$event2); // the size has not changed, so the size beed sends no event
     assertNull($listener2.$event2); // the size has not changed, so the size beed sends no event
-    assertEquals($event1, $listener1.$event1.getCause());
-    assertEquals($event1, $listener2.$event1.getCause());
+    assertEquals(1, $listener1.$event1.getComponentevents().size());
+    assertEquals(1, $listener2.$event1.getComponentevents().size());
+    assertTrue($listener1.$event1.getComponentevents().contains($event1));
+    assertTrue($listener2.$event1.getComponentevents().contains($event1));
     }
 
   @Test
@@ -185,7 +188,8 @@ public class TestEditableSetBeed {
     $editableSetBeed.publicUpdateDependents($event1);
     // checks
     assertNotNull($listener1.$event1);
-    assertEquals($listener1.$event1.getCause(), $event1);
+    assertEquals(1, $listener1.$event1.getComponentevents().size());
+    assertTrue($listener1.$event1.getComponentevents().contains($event1));
     assertNull($listener1.$event2); // the size has not changed, so the size beed sends no event
     }
 

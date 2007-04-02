@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -55,8 +55,8 @@ public class TestLongSumBeed {
     $owner = new StubBeanBeed();
     $longSumBeed = new MyIntegerSumBeed($owner);
     $event1 = new ActualLongEvent($longSumBeed, 0L, 1L, null);
-    $listener1 = new StubListener<PropagatedEvent>();
-    $listener2 = new StubListener<PropagatedEvent>();
+    $listener1 = new StubListener<AggregateEvent>();
+    $listener2 = new StubListener<AggregateEvent>();
   }
 
   @After
@@ -71,8 +71,8 @@ public class TestLongSumBeed {
   private AggregateBeed $owner;
   private MyIntegerSumBeed $longSumBeed;
   private ActualLongEvent $event1;
-  private StubListener<PropagatedEvent> $listener1;
-  private StubListener<PropagatedEvent> $listener2;
+  private StubListener<AggregateEvent> $listener1;
+  private StubListener<AggregateEvent> $listener2;
 
   @Test
   public void constructor() {
@@ -88,8 +88,10 @@ public class TestLongSumBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event1, $listener1.$event.getCause());
-    assertEquals($event1, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($event1));
+    assertTrue($listener2.$event.getComponentevents().contains($event1));
     // the value should be 0
     assertEquals($longSumBeed.getLong(), 0L);
     assertTrue(equalValue($longSumBeed.getDouble(), $longSumBeed.getLong()));

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.PropagatedEvent;
+import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -74,8 +74,8 @@ public class TestDoubleSetSumBeed {
   private MyDoubleSetSumBeed $doubleSetSumBeed = new MyDoubleSetSumBeed($owner);
   private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleSetSumBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
-  private StubListener<PropagatedEvent> $listener1 = new StubListener<PropagatedEvent>();
-  private StubListener<PropagatedEvent> $listener2 = new StubListener<PropagatedEvent>();
+  private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
+  private StubListener<AggregateEvent> $listener2 = new StubListener<AggregateEvent>();
   private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
   @Test
@@ -94,8 +94,10 @@ public class TestDoubleSetSumBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals($event1, $listener1.$event.getCause());
-    assertEquals($event1, $listener1.$event.getCause());
+    assertEquals(1, $listener1.$event.getComponentevents().size());
+    assertEquals(1, $listener2.$event.getComponentevents().size());
+    assertTrue($listener1.$event.getComponentevents().contains($event1));
+    assertTrue($listener2.$event.getComponentevents().contains($event1));
     // no terms registered (cannot be tested)
   }
 

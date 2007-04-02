@@ -37,7 +37,7 @@ public class DoubleLnBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
   public DoubleLnBeed(AggregateBeed owner) {

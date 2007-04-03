@@ -55,5 +55,10 @@ public class DoublePopulationGeometricStandardDeviationBeed extends AbstractDoub
     super(owner, new GeometricStandardDeviation(false));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "population_geometric_standard_deviation";
+  }
+
 }
 

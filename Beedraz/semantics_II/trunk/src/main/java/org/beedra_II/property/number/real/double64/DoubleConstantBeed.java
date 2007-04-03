@@ -20,6 +20,7 @@ package org.beedra_II.property.number.real.double64;
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Set;
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -82,6 +83,10 @@ public class DoubleConstantBeed
 
   public Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
     return null;
+  }
+
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append(numberFormat.format(getdouble()));
   }
 }
 

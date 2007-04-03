@@ -60,5 +60,10 @@ public class DoublePopulationStandardErrorBeed extends AbstractDoubleCommonsMath
     super(owner, new StandardError(false));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "population_standard_error";
+  }
+
 }
 

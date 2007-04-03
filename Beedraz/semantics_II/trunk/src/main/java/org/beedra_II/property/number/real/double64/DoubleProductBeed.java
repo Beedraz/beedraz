@@ -62,5 +62,14 @@ public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
     return "factors";
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "*";
+  }
+
+  @Override
+  public final String getNbOccurrencesOperatorString() {
+    return "^";
+  }
 }
 

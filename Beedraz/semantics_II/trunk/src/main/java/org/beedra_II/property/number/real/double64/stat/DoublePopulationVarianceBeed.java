@@ -60,5 +60,9 @@ public class DoublePopulationVarianceBeed extends AbstractDoubleCommonsMathSetCo
     super(owner, new Variance(false));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "population_variance";
+  }
 }
 

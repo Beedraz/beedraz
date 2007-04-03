@@ -50,5 +50,10 @@ public class DoublePowerBeed
     return Math.pow(argumentValue, getConstant());
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "^" + getConstant();
+  }
+
 }
 

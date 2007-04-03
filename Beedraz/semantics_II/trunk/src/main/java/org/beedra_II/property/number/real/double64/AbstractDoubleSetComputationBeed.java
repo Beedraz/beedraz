@@ -21,7 +21,9 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -298,6 +300,32 @@ public abstract class AbstractDoubleSetComputationBeed
     sb.append(indent(level + 1) + "number of elements in source:" + getSource().get().size() + "\n");
     getSource().toString(sb, level + 2);
   }
+
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append(getOperatorString());
+    sb.append("(");
+    Iterator<RealBeed<?>> i = getSource().get().iterator();
+    while (i.hasNext()) {
+      RealBeed<?> argument = i.next();
+      sb.append("(");
+      if (depth == 1) {
+        sb.append(numberFormat.format(argument.getdouble()));
+      }
+      else {
+        argument.toStringDepth(sb, depth - 1, numberFormat);
+      }
+      sb.append(")");
+      if (i.hasNext()) {
+        sb.append(",");
+      }
+    }
+    sb.append(")");
+  }
+
+  /**
+   * The operator of this binary expression.
+   */
+  public abstract String getOperatorString();
 
 }
 

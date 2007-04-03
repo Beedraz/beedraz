@@ -55,5 +55,9 @@ public class DoubleSampleGeometricStandardDeviationBeed extends AbstractDoubleCo
     super(owner, new GeometricStandardDeviation(true));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "sample_geometric_standard_deviation";
+  }
 }
 

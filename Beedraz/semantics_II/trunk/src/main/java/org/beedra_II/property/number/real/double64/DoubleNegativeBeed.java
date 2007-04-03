@@ -50,5 +50,10 @@ public class DoubleNegativeBeed
     return -argumentValue;
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "-";
+  }
+
 }
 

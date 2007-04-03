@@ -60,5 +60,9 @@ public class DoubleSampleStandardDeviationBeed extends AbstractDoubleCommonsMath
     super(owner, new StandardDeviation(true));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "sample_standard_deviation";
+  }
 }
 

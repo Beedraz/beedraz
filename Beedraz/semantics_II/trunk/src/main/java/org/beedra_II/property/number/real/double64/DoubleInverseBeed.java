@@ -53,5 +53,10 @@ public class DoubleInverseBeed
     return 1.0d / argumentValue;
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "1/";
+  }
+
 }
 

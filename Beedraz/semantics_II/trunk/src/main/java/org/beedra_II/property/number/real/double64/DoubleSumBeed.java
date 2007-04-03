@@ -62,5 +62,15 @@ public class DoubleSumBeed extends AbstractDoubleCommutativeOperationBeed {
     return "terms";
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "+";
+  }
+
+  @Override
+  public final String getNbOccurrencesOperatorString() {
+    return "*";
+  }
+
 }
 

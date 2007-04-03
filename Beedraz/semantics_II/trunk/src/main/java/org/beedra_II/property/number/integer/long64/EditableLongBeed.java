@@ -7,6 +7,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.NumberFormat;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
@@ -59,5 +60,8 @@ public class EditableLongBeed
     return get() != null;
   }
 
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append(numberFormat.format(get()));
+  }
 }
 

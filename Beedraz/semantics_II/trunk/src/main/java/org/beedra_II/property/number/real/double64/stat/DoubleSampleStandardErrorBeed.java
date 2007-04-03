@@ -60,5 +60,9 @@ public class DoubleSampleStandardErrorBeed extends AbstractDoubleCommonsMathSetC
     super(owner, new StandardError(true));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "sample_standard_error";
+  }
 }
 

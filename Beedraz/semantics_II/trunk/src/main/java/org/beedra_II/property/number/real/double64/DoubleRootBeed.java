@@ -62,5 +62,10 @@ public class DoubleRootBeed
     }
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "^(1/" + getConstant() + ")";
+  }
+
 }
 

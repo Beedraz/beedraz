@@ -55,5 +55,10 @@ public class DoublePopulationGeometricStandardErrorBeed extends AbstractDoubleCo
     super(owner, new GeometricStandardError(false));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "population_geometric_standard_error";
+  }
+
 }
 

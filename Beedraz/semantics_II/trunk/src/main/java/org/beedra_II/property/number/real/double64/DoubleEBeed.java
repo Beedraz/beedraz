@@ -49,5 +49,10 @@ public class DoubleEBeed
     return Math.exp(argumentValue);
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "exp";
+  }
+
 }
 

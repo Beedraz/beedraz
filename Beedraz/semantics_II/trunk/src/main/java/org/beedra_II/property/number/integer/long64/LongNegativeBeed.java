@@ -67,5 +67,9 @@ public class LongNegativeBeed
     return castToBigDecimal(getLong());
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "-";
+  }
 }
 

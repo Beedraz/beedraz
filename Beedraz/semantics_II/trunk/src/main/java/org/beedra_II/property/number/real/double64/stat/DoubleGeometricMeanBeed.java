@@ -50,5 +50,10 @@ public class DoubleGeometricMeanBeed extends AbstractDoubleCommonsMathSetComputa
     super(owner, new GeometricMean());
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "geometric_mean";
+  }
+
 }
 

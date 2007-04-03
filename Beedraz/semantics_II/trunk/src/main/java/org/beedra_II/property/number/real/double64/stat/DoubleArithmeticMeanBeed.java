@@ -50,5 +50,10 @@ public class DoubleArithmeticMeanBeed extends AbstractDoubleCommonsMathSetComput
     super(owner, new Mean());
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "arithmetic_mean";
+  }
+
 }
 

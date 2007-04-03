@@ -19,6 +19,7 @@ package org.beedra_II.property.collection.set;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -175,6 +176,9 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
     }
 
+    public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+      sb.append(numberFormat.format(getdouble()));
+    }
   }
 
   private final static Set<? extends UpdateSource> PHI = Collections.emptySet();

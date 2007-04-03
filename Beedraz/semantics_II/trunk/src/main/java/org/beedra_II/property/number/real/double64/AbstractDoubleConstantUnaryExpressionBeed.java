@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import java.text.NumberFormat;
+
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -53,5 +55,16 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
 
   private final double $constant;
 
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append("(");
+    if (depth == 1) {
+      sb.append(numberFormat.format(getArgument().getdouble()));
+    }
+    else {
+      getArgument().toStringDepth(sb, depth - 1, numberFormat);
+    }
+    sb.append(")");
+    sb.append(getOperatorString());
+  }
 }
 

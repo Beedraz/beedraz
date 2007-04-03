@@ -33,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class AbstractDoubleCommonsMathSetComputationBeed extends AbstractDoubleSetComputationBeed {
+public abstract class AbstractDoubleCommonsMathSetComputationBeed extends AbstractDoubleSetComputationBeed {
 
   /**
    * @pre   owner != null;

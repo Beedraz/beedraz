@@ -52,5 +52,10 @@ public class DoubleLnBeed
     return Math.log(argumentValue);
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "ln";
+  }
+
 }
 

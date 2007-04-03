@@ -60,5 +60,10 @@ public class DoublePopulationStandardDeviationBeed extends AbstractDoubleCommons
     super(owner, new StandardDeviation(false));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "population_standard_deviation";
+  }
+
 }
 

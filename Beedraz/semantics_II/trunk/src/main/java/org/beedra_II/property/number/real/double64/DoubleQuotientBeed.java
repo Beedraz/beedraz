@@ -80,5 +80,10 @@ public class DoubleQuotientBeed
     return numerator / denominator;
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "/";
+  }
+
 }
 

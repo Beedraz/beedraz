@@ -60,5 +60,9 @@ public class DoubleSampleVarianceBeed extends AbstractDoubleCommonsMathSetComput
     super(owner, new Variance(true));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "sample_variance";
+  }
 }
 

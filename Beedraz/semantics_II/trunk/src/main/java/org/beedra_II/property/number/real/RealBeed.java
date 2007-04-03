@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real;
 
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 import org.beedra_II.property.PropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -64,6 +65,8 @@ public interface RealBeed<_Event_ extends RealEvent>
   Double getDouble();
 
 //  void refresh();
+
+  void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat);
 
 }
 

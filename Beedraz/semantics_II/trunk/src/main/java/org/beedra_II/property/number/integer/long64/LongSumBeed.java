@@ -23,8 +23,10 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -301,5 +303,30 @@ public class LongSumBeed
     return castToBigDecimal(getLong());
   }
 
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    Iterator<IntegerBeed<?>> i = $terms.iterator();
+    while (i.hasNext()) {
+      IntegerBeed<?> argument = i.next();
+      sb.append("(");
+      if (depth == 1) {
+        sb.append(numberFormat.format(argument.getdouble()));
+      }
+      else {
+        argument.toStringDepth(sb, depth - 1, numberFormat);
+      }
+      sb.append(")" + getNbOccurrencesOperatorString() + getNbOccurrences(argument));
+      if (i.hasNext()) {
+        sb.append(getOperatorString());
+      }
+    }
+  }
+
+  public final String getOperatorString() {
+    return "+";
+  }
+
+  public final String getNbOccurrencesOperatorString() {
+    return "*";
+  }
 }
 

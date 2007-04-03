@@ -55,5 +55,9 @@ public class DoubleSampleGeometricStandardErrorBeed extends AbstractDoubleCommon
     super(owner, new GeometricStandardError(true));
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "sample_geometric_standard_error";
+  }
 }
 

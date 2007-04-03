@@ -20,6 +20,7 @@ package org.beedra_II.property.number;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -233,5 +234,31 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
       getRightArgument().toString(sb, level + 2);
     }
   }
+
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append("(");
+    if (depth == 1) {
+      sb.append(numberFormat.format(getLeftArgument().getdouble()));
+    }
+    else {
+      getLeftArgument().toStringDepth(sb, depth - 1, numberFormat);
+    }
+    sb.append(")");
+    sb.append(getOperatorString());
+    sb.append("(");
+    if (depth == 1) {
+      sb.append(numberFormat.format(getRightArgument().getdouble()));
+    }
+    else {
+      getRightArgument().toStringDepth(sb, depth - 1, numberFormat);
+    }
+    sb.append(")");
+  }
+
+  /**
+   * The operator of this binary expression.
+   */
+  public abstract String getOperatorString();
+
 }
 

@@ -80,5 +80,9 @@ public class DoubleExponentBeed
     return Math.pow(base, exponent);
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "^";
+  }
 }
 

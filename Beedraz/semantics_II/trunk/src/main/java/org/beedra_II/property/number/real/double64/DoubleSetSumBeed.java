@@ -67,5 +67,9 @@ public class DoubleSetSumBeed extends AbstractDoubleSetComputationBeed {
     assignEffective(true);
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "sum";
+  }
 }
 

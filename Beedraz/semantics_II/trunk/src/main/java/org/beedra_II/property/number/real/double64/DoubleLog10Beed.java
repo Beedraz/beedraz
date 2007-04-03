@@ -52,5 +52,10 @@ public class DoubleLog10Beed
     return Math.log10(argumentValue);
   }
 
+  @Override
+  public final String getOperatorString() {
+    return "log10";
+  }
+
 }
 

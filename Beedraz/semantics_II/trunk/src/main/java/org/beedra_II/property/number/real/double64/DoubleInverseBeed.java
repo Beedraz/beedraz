@@ -38,7 +38,7 @@ public class DoubleInverseBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
   public DoubleInverseBeed(AggregateBeed owner) {

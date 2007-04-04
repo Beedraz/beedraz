@@ -35,7 +35,7 @@ public class DoubleNegativeBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
   public DoubleNegativeBeed(AggregateBeed owner) {

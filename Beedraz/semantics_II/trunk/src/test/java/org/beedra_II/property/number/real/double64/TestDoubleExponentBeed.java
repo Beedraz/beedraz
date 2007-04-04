@@ -31,11 +31,11 @@ public class TestDoubleExponentBeed
 
   @Test
   public void testConstructor() {
-    DoubleEBeed inb = new DoubleEBeed($aggregateBeed);
-    assertEquals($aggregateBeed, inb.getOwner());
-    assertNull(inb.getArgument());
-    assertNull(inb.getDouble());
-    assertNull(inb.getDouble());
+    DoubleExponentBeed beed = new DoubleExponentBeed($aggregateBeed);
+    assertEquals($aggregateBeed, beed.getOwner());
+    assertNull(beed.getBase());
+    assertNull(beed.getExponent());
+    assertNull(beed.getDouble());
   }
 
   @Override

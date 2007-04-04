@@ -31,11 +31,10 @@ public class TestDoubleNegativeBeed
 
   @Test
   public void testConstructor() {
-    DoubleNegativeBeed inb = new DoubleNegativeBeed($aggregateBeed);
-    assertEquals($aggregateBeed, inb.getOwner());
-    assertNull(inb.getArgument());
-    assertNull(inb.getDouble());
-    assertNull(inb.getDouble());
+    DoubleNegativeBeed beed = new DoubleNegativeBeed($aggregateBeed);
+    assertEquals($aggregateBeed, beed.getOwner());
+    assertNull(beed.getArgument());
+    assertNull(beed.getDouble());
   }
 
   @Override

@@ -24,7 +24,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.beedpath.BeedPath;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.beedra_II.property.number.real.RealBeed;
@@ -66,11 +68,11 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
   }
 
 
-  private final Dependent<_ArgumentBeed_> $dependent =
-    new AbstractUpdateSourceDependentDelegate<_ArgumentBeed_, _SendingEvent_>(this) {
+  private final Dependent<Beed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<Beed<?>, _SendingEvent_>(this) {
 
       @Override
-      protected _SendingEvent_ filteredUpdate(Map<_ArgumentBeed_, Event> events, Edit<?> edit) {
+      protected _SendingEvent_ filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
         assert $argument != null;
         _Number_ oldValue = get();
         recalculate();
@@ -121,10 +123,28 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
     return $argument;
   }
 
+  public final void setArgumentPath(BeedPath<_ArgumentBeed_> beedPath) {
+    _ArgumentBeed_ oldArgument = $argument;
+    if ($argumentPath != null) {
+      $dependent.removeUpdateSource($argumentPath);
+    }
+    $argumentPath = beedPath;
+    _ArgumentBeed_ argument = null;
+    if ($argumentPath != null) {
+      argument = $argumentPath.get();
+      $dependent.addUpdateSource($argumentPath);
+    }
+    if (argument != oldArgument) {
+      setArgument(argument);
+    }
+  }
+
+  private BeedPath<_ArgumentBeed_> $argumentPath;
+
   /**
    * @post getArgument() == argument;
    */
-  public final void setArgument(_ArgumentBeed_ argument) {
+  private final void setArgument(_ArgumentBeed_ argument) {
     _Number_ oldValue = get();
     if ($argument != null) {
       $dependent.removeUpdateSource($argument);

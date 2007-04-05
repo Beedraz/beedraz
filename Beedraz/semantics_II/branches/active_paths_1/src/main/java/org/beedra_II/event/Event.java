@@ -56,6 +56,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   for example when the value of derived beeds changes due to structure
  *   changes, or for initial events.</p>
  *
+ * <p>We cannot extend {@code java.util.EventObject}, because in this framework
+ *   event types need multiple inheritance, so we must be able to define them as
+ *   interfaces (and {@code java.util.EventObject} is a class)/</p>
+ *
  * @author Jan Dockx
  *
  * @invar getSource() != null;

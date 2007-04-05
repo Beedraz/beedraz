@@ -101,6 +101,9 @@ public class TestMappedSetBeed {
         public LongBeed map(WellBeanBeed from) {
           return from.cq;
         }
+        public boolean dependsOnBeed() {
+          return true;
+        }
     };
     $mappedSetBeed = new MyMappedSetBeed($mapping, $owner);
     $run = new RunBeanBeed();
@@ -301,6 +304,9 @@ public class TestMappedSetBeed {
     BeedMapping<WellBeanBeed, Long> mapping = new BeedMapping<WellBeanBeed, Long>() {
       public Long map(WellBeanBeed from) {
         return from.cq.get();
+      }
+      public boolean dependsOnBeed() {
+        return true;
       }
     };
     // define a new mapped set beed

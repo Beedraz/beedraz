@@ -805,14 +805,15 @@ public class TestUnionSetBeed {
     $unionSetBeed.addSource($runC.wells);
     BeedMapping<WellBeanBeed, LongBeed> mapping =
       new BeedMapping<WellBeanBeed, LongBeed>() {
-
         /**
          * @pre  from != null;
          */
         public LongBeed map(WellBeanBeed from) {
           return from.cq;
         }
-
+        public boolean dependsOnBeed() {
+          return true;
+        }
     };
     MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed> mappedSetBeed =
       new MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed>(mapping, $owner);

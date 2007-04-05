@@ -207,8 +207,10 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
    */
   public final void setSource(SetBeed<_From_, ?> source) {
     if ($source != null) {
-      for (_From_ beed : $source.get()) {
-        $dependent.removeUpdateSource(beed);
+      if (getMapping().dependsOnBeed()) {
+        for (_From_ beed : $source.get()) {
+          $dependent.removeUpdateSource(beed);
+        }
       }
       $dependent.removeUpdateSource($source);
     }
@@ -216,8 +218,10 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
     $source = source;
     if ($source != null) {
       $dependent.addUpdateSource($source);
-      for (_From_ beed : $source.get()) {
-        $dependent.addUpdateSource(beed);
+      if (getMapping().dependsOnBeed()) {
+        for (_From_ beed : $source.get()) {
+          $dependent.addUpdateSource(beed);
+        }
       }
     }
     // recalculate and notify the listeners if the value has changed

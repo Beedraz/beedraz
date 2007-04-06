@@ -19,11 +19,10 @@ package org.beedra_II.beedpath;
 
 import java.util.Map;
 
-import org.beedra_II.BeedMapping;
+import org.beedra_II.Beed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
-import org.beedra_II.property.PropertyBeed;
 import org.beedra_II.property.association.set.BidirToOneEvent;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -33,45 +32,80 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * <p>{@link BeedPath} that selects a {@link BeanBeed} from an
- *   {@link BidirToOneBeed}. The {@link #get() returned} {@link BeanBeed}
- *   has the {@link #getOwner() owner aggregate beed} as
- *   {@link PropertyBeed#getOwner()}.</p>
- * <p>When the {@link #getOwner() owner} is {@code null}, the
- *   {@link #get() resulting} {@link PropertyBeed} is {@code null}
- *   too. When the {@link #getOwner() owner} changes, the
- *   {@link #get() resulting} {@link PropertyBeed} can change to. The
- *   {@link #get() resulting} {@link PropertyBeed}  cannot change for
- *   any other reason. When the {@link #get() resulting} {@link PropertyBeed}
- *   changes, dependents and listeners are warned.</p>
+ *   {@link BidirToOneBeed}. The {@link #getToOneBeed() to-one beed} is the result of
+ *   a {@link #getToOneBeedPath() property beed path}. When the result of the
+ *   {@link #getToOneBeedPath() to-one beed path} changes (the path sends events),
+ *   <em>or the result changes itself</em> (the {@link EditableBidirToOneBeed}
+ *   sends events), the result of this {@code ToOneBeanBeedPath} might change too.
+ *   When this happens, this will update dependents and send events to listeners.</p>
  *
  * @author Jan Dockx
- *
- * @note instead of inhering from {@link BeedMapping}, we could use it as a strategy
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public abstract class ToOneBeanBeedPath<_One_ extends BeanBeed>
-    extends AbstractBeedPath<_One_>
-    implements BeedPath<_One_> {
+    extends AbstractBeedPath<_One_> {
+
+
+  /*<construction>*/
+  //-----------------------------------------------------------------
+
+  /**
+   * @pre toOneBeedPath != null;
+   * @post getBeanBeedPath() == toOneBeedPath;
+   * @post getBeanBeed() == beanBeedPath.get();
+   */
+  public ToOneBeanBeedPath(BeedPath<EditableBidirToOneBeed<_One_, ?>> toOneBeedPath) {
+    assert toOneBeedPath != null;
+    $toOneBeedPath = toOneBeedPath;
+    $dependent.addUpdateSource($toOneBeedPath);
+    setToOneBeed(toOneBeedPath.get());
+  }
+
+//      When does this go away?
+  public final void terminate() {
+    assert $toOneBeedPath != null;
+    $dependent.removeUpdateSource($toOneBeedPath);
+    if ($toOneBeed != null) {
+      $dependent.removeUpdateSource($toOneBeed);
+    }
+  }
+
+  /*</construction>*/
+
 
 
   /*<section name="dependent">*/
   //-----------------------------------------------------------------
 
-  private final Dependent<EditableBidirToOneBeed<_One_, ?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<EditableBidirToOneBeed<_One_, ?>, BeedPathEvent<_One_>>(this) {
+  private final Dependent<Beed<?>> $dependent =
+    new AbstractUpdateSourceDependentDelegate<Beed<?>, BeedPathEvent<_One_>>(this) {
 
       @Override
-      protected BeedPathEvent<_One_> filteredUpdate(Map<EditableBidirToOneBeed<_One_, ?>, Event> events, Edit<?> edit) {
+      protected BeedPathEvent<_One_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
         assert events != null;
-        assert events.size() == 1;
-        BidirToOneEvent<_One_, ?> event = (BidirToOneEvent<_One_, ?>)events.get($from);
-        assert event != null;
-        assert $one == event.getOldOne();
-        $one = event.getNewOne();
-        return new BeedPathEvent<_One_>(ToOneBeanBeedPath.this, event.getOldOne(), $one, edit);
+        assert events.size() >= 1;
+        _One_ oldOne = $one;
+        // $toOneBeed could be null
+        BidirToOneEvent<_One_, ?> toOneEvent = (BidirToOneEvent<_One_, ?>)events.get($toOneBeed);
+        if (toOneEvent != null) {
+          assert $one == toOneEvent.getOldOne();
+          $one = toOneEvent.getNewOne();
+        }
+        BeedPathEvent<EditableBidirToOneBeed<_One_, ?>> pathEvent = (BeedPathEvent<EditableBidirToOneBeed<_One_, ?>>)events.get($toOneBeedPath);
+        if (pathEvent != null) {
+          assert $toOneBeed == pathEvent.getOldBeed(); // could be null
+          setToOneBeed(pathEvent.getNewBeed());
+        }
+        if (oldOne != $one) {
+          return new BeedPathEvent<_One_>(ToOneBeanBeedPath.this, oldOne, $one, edit);
+        }
+        else {
+          return null;
+        }
+
       }
 
     };
@@ -105,35 +139,47 @@ public abstract class ToOneBeanBeedPath<_One_ extends BeanBeed>
 
 
 
-  /*<property name="from">*/
+  /*<property name="to-one beed path">*/
   //-----------------------------------------------------------------
 
-  public final EditableBidirToOneBeed<_One_, ?> getFrom() {
-    return $from;
+  /**
+   * @basic
+   */
+  public final BeedPath<EditableBidirToOneBeed<_One_, ?>> getToOneBeedPath() {
+    return $toOneBeedPath;
   }
 
-  public final void setFrom(EditableBidirToOneBeed<_One_, ?> from) {
-    if ($from != null) {
-      $dependent.removeUpdateSource($from);
+  private final BeedPath<EditableBidirToOneBeed<_One_, ?>> $toOneBeedPath;
+
+  /*</property>*/
+
+
+
+  /*<property name="to-one beed">*/
+  //-----------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final EditableBidirToOneBeed<_One_, ?> getToOneBeed() {
+    return $toOneBeed;
+  }
+
+  private void setToOneBeed(EditableBidirToOneBeed<_One_, ?> toOneBeed) {
+    if ($toOneBeed != null) {
+      $dependent.removeUpdateSource($toOneBeed);
     }
-    $from = from;
-    if ($from != null) {
-      $dependent.addUpdateSource($from);
-    }
-    _One_ oldOne = $one;
-    if ($from == null) {
-      $one = null;
+    $toOneBeed = toOneBeed;
+    if ($toOneBeed != null) {
+      $one = $toOneBeed.getOne();
+      $dependent.addUpdateSource($toOneBeed);
     }
     else {
-      $one = $from.getOne();
-    }
-    if ($one != oldOne) {
-      updateDependents(new BeedPathEvent<_One_>(this, oldOne, $one, null));
+      $one = null;
     }
   }
 
-
-  private EditableBidirToOneBeed<_One_, ?> $from;
+  private EditableBidirToOneBeed<_One_, ?> $toOneBeed;
 
   /*</property>*/
 

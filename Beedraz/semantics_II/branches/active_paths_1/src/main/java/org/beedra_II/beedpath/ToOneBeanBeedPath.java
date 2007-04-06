@@ -17,7 +17,9 @@ limitations under the License.
 package org.beedra_II.beedpath;
 
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.bean.BeanBeed;
@@ -27,6 +29,7 @@ import org.beedra_II.property.association.set.BidirToOneEvent;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
+import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -45,7 +48,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class ToOneBeanBeedPath<_One_ extends BeanBeed>
+public class ToOneBeanBeedPath<_One_ extends BeanBeed>
     extends AbstractBeedPath<_One_> {
 
 
@@ -105,7 +108,6 @@ public abstract class ToOneBeanBeedPath<_One_ extends BeanBeed>
         else {
           return null;
         }
-
       }
 
     };
@@ -133,6 +135,20 @@ public abstract class ToOneBeanBeedPath<_One_ extends BeanBeed>
      *      so a better solution should be sought.
      */
     return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+  }
+
+  public final Set<? extends UpdateSource> getUpdateSources() {
+    return $dependent.getUpdateSources();
+  }
+
+  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+
+  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+    /* fixed to make it possible to use this method during construction,
+     * before $dependent is initialized. But that is bad code, and should be
+     * fixed.
+     */
+    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
   }
 
   /*</section>*/

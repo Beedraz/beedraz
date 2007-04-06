@@ -273,6 +273,15 @@ public final class MathUtil {
              (n != null) && (l.longValue() == n.longValue());
   }
 
+  public static boolean equalValue(Boolean b1, Boolean b2) {
+    if (b1 == null) {
+      return b2 == null;
+    }
+    else {
+      return b1.equals(b2);
+    }
+  }
+
   /**
    * @result equalValue(result, floatObject);
    */

@@ -27,6 +27,8 @@ import org.apache.commons.math.stat.descriptive.moment.FirstMoment;
 import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math.stat.descriptive.moment.Variance;
+import org.apache.commons.math.stat.descriptive.rank.Max;
+import org.apache.commons.math.stat.descriptive.rank.Min;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -447,6 +449,24 @@ public final class MathUtil {
       sum += value;
     }
     return sum;
+  }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double max(double... doubles) {
+    assert doubles != null;
+    Max max = new Max();
+    return max.evaluate(doubles);
+  }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double min(double... doubles) {
+    assert doubles != null;
+    Min min = new Min();
+    return min.evaluate(doubles);
   }
 
   /**

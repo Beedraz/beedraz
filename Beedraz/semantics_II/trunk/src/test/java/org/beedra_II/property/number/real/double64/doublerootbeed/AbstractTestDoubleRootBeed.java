@@ -20,6 +20,7 @@ package org.beedra_II.property.number.real.double64.doublerootbeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.AbstractTestDoubleConstantUnaryExpressionBeed;
 import org.beedra_II.property.number.real.double64.DoubleRootBeed;
+import org.junit.Test;
 
 
 public abstract class AbstractTestDoubleRootBeed
@@ -37,6 +38,12 @@ public abstract class AbstractTestDoubleRootBeed
   @Override
   protected final Double expectedValue(Double argumentValue) {
     return Math.pow(argumentValue, 1 / $constant);
+  }
+
+  @Test
+  public void testConstructor() {
+    DoubleRootBeed drb = new DoubleRootBeed($aggregateBeed, $constant);
+    validateConstructor(drb);
   }
 
 }

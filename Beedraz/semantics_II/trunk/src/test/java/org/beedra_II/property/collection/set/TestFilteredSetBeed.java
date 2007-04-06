@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.beedra_II.BeedFilter;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
@@ -44,13 +45,12 @@ import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.smallfries_I.Filter;
 
 public class TestFilteredSetBeed {
 
   public class MyFilteredSetBeed extends FilteredSetBeed<WellBeanBeed, AggregateEvent> {
 
-    public MyFilteredSetBeed(Filter<WellBeanBeed> filter, AggregateBeed owner) {
+    public MyFilteredSetBeed(BeedFilter<WellBeanBeed> filter, AggregateBeed owner) {
       super(filter, owner);
     }
 
@@ -95,10 +95,13 @@ public class TestFilteredSetBeed {
   @Before
   public void setUp() throws Exception {
     $owner = new MyBeanBeed();
-    $filter = new Filter<WellBeanBeed>() {
+    $filter = new BeedFilter<WellBeanBeed>() {
         public boolean filter(WellBeanBeed element) {
           return element.cq.get() != null &&
           element.cq.get().intValue() % 2 == 0;
+        }
+        public boolean dependsOnBeed() {
+          return true;
         }
     };
     $filteredSetBeed = new MyFilteredSetBeed($filter, $owner);
@@ -169,7 +172,7 @@ public class TestFilteredSetBeed {
   private Long $cq1;
   private Long $cq2;
   private Long $cq3;
-  private Filter<WellBeanBeed> $filter;
+  private BeedFilter<WellBeanBeed> $filter;
   private MyFilteredSetBeed $filteredSetBeed;
   private MyBeanBeed $owner;
   private StubListener<AggregateEvent> $listener1;
@@ -344,13 +347,15 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // filter the odd wells
-    Filter<WellBeanBeed> filter =
-      new Filter<WellBeanBeed>() {
+    BeedFilter<WellBeanBeed> filter =
+      new BeedFilter<WellBeanBeed>() {
         public boolean filter(WellBeanBeed element) {
           return element.cq.get() != null &&
                  element.cq.get().intValue() % 2 == 1;
         }
-
+        public boolean dependsOnBeed() {
+          return true;
+        }
     };
     $filteredSetBeed = new MyFilteredSetBeed(filter, $owner);
     $filteredSetBeed.setSource(source);
@@ -375,12 +380,14 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // filter the wells whose cq value is empty
-    filter = new Filter<WellBeanBeed>() {
+    filter = new BeedFilter<WellBeanBeed>() {
 
       public boolean filter(WellBeanBeed element) {
         return element.cq.get() == null;
       }
-
+      public boolean dependsOnBeed() {
+        return true;
+      }
     };
     $filteredSetBeed = new MyFilteredSetBeed(filter, $owner);
     $filteredSetBeed.setSource(source);

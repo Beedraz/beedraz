@@ -43,7 +43,6 @@ public abstract class AbstractTestDoubleConstantUnaryExpressionBeed<_DoubleBeed_
     assertEquals($aggregateBeed, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getDouble());
-    assertNull(inb.getDouble());
     assertEquals($constant, inb.getConstant());
   }
 

@@ -17,7 +17,6 @@
 package org.beedra_II.property.number.real.double64.doublepowerbeed;
 
 
-import org.beedra_II.property.number.real.double64.DoublePowerBeed;
 import org.junit.Test;
 
 
@@ -29,9 +28,8 @@ public class TestDoublePowerBeedMaximum
   }
 
   @Test
-  public void testConstructor() {
-    DoublePowerBeed inb = new DoublePowerBeed($aggregateBeed, $constant);
-    validateConstructor(inb);
+  public void forceTest() {
+    // to let the compiler know that this is a unit test
   }
 
 }

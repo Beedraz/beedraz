@@ -17,7 +17,6 @@
 package org.beedra_II.property.number.real.double64.doublerootbeed;
 
 
-import org.beedra_II.property.number.real.double64.DoubleRootBeed;
 import org.junit.Test;
 
 
@@ -29,9 +28,8 @@ public class TestDoubleRootBeedInfinity
   }
 
   @Test
-  public void testConstructor() {
-    DoubleRootBeed inb = new DoubleRootBeed($aggregateBeed, $constant);
-    validateConstructor(inb);
+  public void forceTest() {
+    // to let the compiler know that this is a unit test
   }
 
 }

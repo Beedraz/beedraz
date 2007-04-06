@@ -55,6 +55,7 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
 
   private final double $constant;
 
+  @Override
   public void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
     sb.append("(");
     if (depth == 1) {

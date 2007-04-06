@@ -42,7 +42,7 @@ public abstract class AbstractDoubleUnaryExpressionBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
   protected AbstractDoubleUnaryExpressionBeed(AggregateBeed owner) {

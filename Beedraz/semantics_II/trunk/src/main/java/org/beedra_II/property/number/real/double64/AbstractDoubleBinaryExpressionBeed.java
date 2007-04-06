@@ -42,7 +42,7 @@ public abstract class AbstractDoubleBinaryExpressionBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
   protected AbstractDoubleBinaryExpressionBeed(AggregateBeed owner) {

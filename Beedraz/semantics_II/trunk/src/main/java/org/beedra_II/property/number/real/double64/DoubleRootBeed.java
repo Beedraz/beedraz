@@ -34,7 +34,7 @@ public class DoubleRootBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    * @post  getConstant() == constant;
    */

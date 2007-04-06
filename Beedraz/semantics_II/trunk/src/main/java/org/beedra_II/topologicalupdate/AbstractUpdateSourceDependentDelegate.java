@@ -29,6 +29,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * <p>More can be implemented in a general way if we know that our
  *   {@link #getDependentUpdateSource()} is an {@link AbstractUpdateSource}
  *   (which it will be most of the time).</p>
+ * <p>From experience, we know that it makes no sense for this type to be generic in the types
+ *   of allowed {@link UpdateSource UpdateSources} or {@link Event Events}.</p>
  *
  * @author Jan Dockx
  *
@@ -46,9 +48,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ extends UpdateSource,
-                                                            _Event_ extends Event>
-    extends Dependent<_UpdateSource_> {
+public abstract class AbstractUpdateSourceDependentDelegate
+    extends Dependent {
 
   /**
    * @pre dependentUpdateSource != null;
@@ -67,15 +68,13 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
   }
 
   @Override
-  final Set<Dependent<?>> getDependents() {
+  final Set<Dependent> getDependents() {
     return $dependentUpdateSource.getDependents();
   }
 
   @Override
   final void fireEvent(Event event) {
-    @SuppressWarnings("unchecked")
-    _Event_ typedEvent = (_Event_)event;
-    $dependentUpdateSource.fireEvent(typedEvent);
+    $dependentUpdateSource.fireEvent(event);
   }
 
   private final AbstractUpdateSource $dependentUpdateSource;
@@ -87,7 +86,7 @@ public abstract class AbstractUpdateSourceDependentDelegate<_UpdateSource_ exten
   //-----------------------------------------------------------------
 
   @Override
-  protected abstract _Event_ filteredUpdate(Map<_UpdateSource_, Event> events, Edit<?> edit);
+  protected abstract Event filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit);
 
   /*</section>*/
 

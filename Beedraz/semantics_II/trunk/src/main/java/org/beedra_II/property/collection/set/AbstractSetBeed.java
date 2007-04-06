@@ -83,11 +83,10 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       return true;
     }
 
-    private final Dependent<AbstractSetBeed<_Element_, _SetEvent_>> $dependent =
-      new AbstractUpdateSourceDependentDelegate<AbstractSetBeed<_Element_, _SetEvent_>, ActualLongEvent>(this) {
+    private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected ActualLongEvent filteredUpdate(Map<AbstractSetBeed<_Element_, _SetEvent_>, Event> events, Edit<?> edit) {
+      protected ActualLongEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         // We only get events from our set beed, and that can only be 1
         assert events.size() == 1;
         Iterator<Event> iter = events.values().iterator();

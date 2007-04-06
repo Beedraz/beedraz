@@ -47,16 +47,16 @@ import org.ppeew.smallfries_I.MultiLineToStringUtil;
          tag      = "$Name$")
 public abstract class AbstractUpdateSource implements UpdateSource {
 
-  public final boolean isDependent(Dependent<?> dependent) {
+  public final boolean isDependent(Dependent dependent) {
     return $dependents.contains(dependent);
   }
 
-  public final boolean isTransitiveDependent(Dependent<?> dependent) {
+  public final boolean isTransitiveDependent(Dependent dependent) {
     if (isDependent(dependent)) {
       return true;
     }
     else {
-      for (Dependent<?> d : $dependents.strongClone()) {
+      for (Dependent d : $dependents.strongClone()) {
         if (d.getDependentUpdateSource().isTransitiveDependent(dependent)) {
           return true;
         }
@@ -72,7 +72,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    *
    * @result for (Dependent d) {isDependent(d) ?? result.contains(d)};
    */
-  protected final Set<Dependent<?>> getDependents() {
+  protected final Set<Dependent> getDependents() {
     return $dependents.strongClone();
   }
 
@@ -81,7 +81,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @pre dependent.getDependentUpdateSource() != this;
    * @pre ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
    */
-  public final void addDependent(Dependent<?> dependent) {
+  public final void addDependent(Dependent dependent) {
     assert dependent != null;
     assert dependent.getDependentUpdateSource() != this;
     /* MUDO incredible slowdown, and -da doesn't work ???
@@ -91,7 +91,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     $dependents.add(dependent);
   }
 
-  public final void removeDependent(Dependent<?> dependent) {
+  public final void removeDependent(Dependent dependent) {
     $dependents.remove(dependent);
   }
 
@@ -140,7 +140,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     /* most efficient structure to store the events to give them to the dependents
      * when they need to update themselves
      */
-    ArrayList<HashSet<Dependent<?>>> topologicalOrder = initialTopologicalOrder(sourceEvents);
+    ArrayList<HashSet<Dependent>> topologicalOrder = initialTopologicalOrder(sourceEvents);
       /* invar: topologicalOrder.get(0) = null;
        * invar: for (int i : [0, topologicalOrder.size()]) {for (Depenent<?> d : topologicalOrder.get(i)) {d.getMursd() == 1}};
        */
@@ -149,7 +149,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     fireDependentEvents(topologicalOrder, events);
     }
 
-  private static void putDependent(ArrayList<HashSet<Dependent<?>>> topologicalOrder, Dependent<?> d) {
+  private static void putDependent(ArrayList<HashSet<Dependent>> topologicalOrder, Dependent d) {
     assert topologicalOrder != null;
     assert d != null;
     int dMrusd = d.getMaximumRootUpdateSourceDistance();
@@ -159,34 +159,34 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       topologicalOrder.add(null);
     }
     assert topologicalOrder.size() > dMrusd;
-    HashSet<Dependent<?>> dMrusdDependents = topologicalOrder.get(dMrusd);
+    HashSet<Dependent> dMrusdDependents = topologicalOrder.get(dMrusd);
     if (dMrusdDependents == null) {
-      dMrusdDependents = new HashSet<Dependent<?>>();
+      dMrusdDependents = new HashSet<Dependent>();
       topologicalOrder.set(dMrusd, dMrusdDependents);
     }
     dMrusdDependents.add(d);
   }
 
-  private static ArrayList<HashSet<Dependent<?>>> initialTopologicalOrder(Map<AbstractUpdateSource, Event> sourceEvents) {
+  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<AbstractUpdateSource, Event> sourceEvents) {
     assert sourceEvents != null;
-    ArrayList<HashSet<Dependent<?>>> topologicalOrder = new ArrayList<HashSet<Dependent<?>>>(TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE);
+    ArrayList<HashSet<Dependent>> topologicalOrder = new ArrayList<HashSet<Dependent>>(TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE);
       for (AbstractUpdateSource aus : sourceEvents.keySet()) {
       assert aus != null;
-      for (Dependent<?> d : aus.getDependents()) {
+      for (Dependent d : aus.getDependents()) {
         putDependent(topologicalOrder, d);
       }
     }
     return topologicalOrder;
   }
 
-  private static void topologicalUpdate(ArrayList<HashSet<Dependent<?>>> topologicalOrder, Map<UpdateSource, Event> events, Edit<?> edit) {
+  private static void topologicalUpdate(ArrayList<HashSet<Dependent>> topologicalOrder, Map<UpdateSource, Event> events, Edit<?> edit) {
     int mrusd = 1; // 0 is not used
     while (mrusd < topologicalOrder.size()) {
-      HashSet<Dependent<?>> currentDependents = topologicalOrder.get(mrusd);
+      HashSet<Dependent> currentDependents = topologicalOrder.get(mrusd);
       if ((currentDependents != null) && (! currentDependents.isEmpty())) {
-        Iterator<Dependent<?>> iter = currentDependents.iterator();
+        Iterator<Dependent> iter = currentDependents.iterator();
         while (iter.hasNext()) {
-          Dependent<?> currentDependent = iter.next();
+          Dependent currentDependent = iter.next();
         long starttime = 0;
         if (Timing._active) {
           starttime = System.nanoTime();
@@ -200,8 +200,8 @@ public abstract class AbstractUpdateSource implements UpdateSource {
             // remember the event, for when we ask the dependents of d to update
             events.put(currentDependent.getDependentUpdateSource(), event);
             // add dependents of d to topological order
-            Set<Dependent<?>> currentDependentDependents = currentDependent.getDependents();
-            for (Dependent<?> d2 : currentDependentDependents) {
+            Set<Dependent> currentDependentDependents = currentDependent.getDependents();
+            for (Dependent d2 : currentDependentDependents) {
               putDependent(topologicalOrder, d2);
         }
       }
@@ -216,10 +216,10 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     }
   }
 
-  private static void fireDependentEvents(ArrayList<HashSet<Dependent<?>>> topologicalOrder, Map<UpdateSource, Event> events) {
-    for (Set<Dependent<?>> ds : topologicalOrder) {
+  private static void fireDependentEvents(ArrayList<HashSet<Dependent>> topologicalOrder, Map<UpdateSource, Event> events) {
+    for (Set<Dependent> ds : topologicalOrder) {
       if (ds != null) {
-        for (Dependent<?> d: ds) {
+        for (Dependent d: ds) {
           Event event = events.get(d.getDependentUpdateSource());
           d.fireEvent(event);
         }
@@ -285,18 +285,18 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       return result;
     }
 
-    public static Map<Dependent<?>, Timing> results() {
+    public static Map<Dependent, Timing> results() {
       return Collections.unmodifiableMap(_results);
     }
 
-    private static Map<Dependent<?>, Timing> _results;
+    private static Map<Dependent, Timing> _results;
 
     public static void reset() {
       _active = true;
-      _results = new HashMap<Dependent<?>, Timing>();
+      _results = new HashMap<Dependent, Timing>();
     }
 
-    static void add(Dependent<?> dependent, long starttime, long endtime, Event event) {
+    static void add(Dependent dependent, long starttime, long endtime, Event event) {
       long duration = endtime - starttime;
       Timing timing = _results.get(dependent);
       if (timing == null) {
@@ -308,7 +308,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       }
     }
 
-    private Timing(Dependent<?> dependent, long duration, Event event) {
+    private Timing(Dependent dependent, long duration, Event event) {
       $updateSource = dependent.getDependentUpdateSource();
       $duration = duration;
       $event = event;
@@ -358,7 +358,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @invar $dependents != null;
    * @invar Collections.noNull($dependents);
    */
-  private final WeakHashSet<Dependent<?>> $dependents = new WeakHashSet<Dependent<?>>();
+  private final WeakHashSet<Dependent> $dependents = new WeakHashSet<Dependent>();
 
   public final Set<? extends UpdateSource> getRootUpdateSources() {
     Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();

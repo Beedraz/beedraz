@@ -85,16 +85,15 @@ public class LongSumBeed
   private boolean $effective = true;
 
 
-  private final Dependent<IntegerBeed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<IntegerBeed<?>, ActualLongEvent>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
     @Override
-    protected ActualLongEvent filteredUpdate(Map<IntegerBeed<?>, Event> events, Edit<?> edit) {
+    protected ActualLongEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
       // recalculate(); optimization
       boolean oldEffective = $effective;
       long oldValue = $value;
       if ($effective) {
-        for (Map.Entry<IntegerBeed<?>, Event> entry : events.entrySet()) {
+        for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
           IntegerEvent event = (IntegerEvent)entry.getValue();
           assert event.getOldLong() != null :
             "The old value contained in the event must be effective since $value != null.";
@@ -103,7 +102,7 @@ public class LongSumBeed
             break;
           }
           else {
-            $value += event.getLongDelta() * getNbOccurrences(entry.getKey());
+            $value += event.getLongDelta() * getNbOccurrences((IntegerBeed<?>)entry.getKey());
             // MUDO in events long instead of Long too
           }
         }

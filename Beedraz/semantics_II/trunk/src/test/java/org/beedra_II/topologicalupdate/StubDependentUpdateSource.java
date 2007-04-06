@@ -37,7 +37,7 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
     this(false);
   }
 
-  public final Dependent<UpdateSource> $dependent = new AbstractUpdateSourceDependentDelegate<UpdateSource, StubEvent>(this) {
+  public final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
     @Override
     public StubEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {

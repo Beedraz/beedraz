@@ -83,11 +83,10 @@ public abstract class AbstractDoubleCommutativeOperationBeed
 
   private boolean $effective = true;
 
-  private final Dependent<RealBeed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<RealBeed<?>, ActualDoubleEvent>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected ActualDoubleEvent filteredUpdate(Map<RealBeed<?>, Event> events, Edit<?> edit) {
+      protected ActualDoubleEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         boolean oldEffective = $effective;
         double oldValue = $value;
         /* optimization is worse than not optimized;
@@ -276,7 +275,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value: " + getDouble() + "\n");
     sb.append(indent(level + 1) + "number of " + argumentsToString() + ": " + $arguments.size() + "\n");
-    for (RealBeed<?> argument : $dependent.getUpdateSources()) {
+    for (RealBeed<?> argument : $arguments) {
       argument.toString(sb, level + 2);
       sb.append(indent(level + 2) + "nr of occurences: " + getNbOccurrences(argument) + "\n");
     }
@@ -289,7 +288,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
   public abstract String argumentsToString();
 
   public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
-    Iterator<RealBeed<?>> i = $dependent.getUpdateSources().iterator();
+    Iterator<RealBeed<?>> i = $arguments.iterator();
     while (i.hasNext()) {
       RealBeed<?> argument = i.next();
       sb.append("(");

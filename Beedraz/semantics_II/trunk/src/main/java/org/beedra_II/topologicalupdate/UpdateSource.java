@@ -42,13 +42,13 @@ public interface UpdateSource {
   /**
    * @basic
    */
-  boolean isDependent(Dependent<?> dependent);
+  boolean isDependent(Dependent dependent);
 
   /**
    * @result isDependent(dependent) ||
    *           exists (Dependent d) {isDependent(d) && d.isTransitiveDependent(dependent)};
    */
-  boolean isTransitiveDependent(Dependent<?> dependent);
+  boolean isTransitiveDependent(Dependent dependent);
 
   /**
    * @pre dependent != null;
@@ -67,7 +67,7 @@ public interface UpdateSource {
    *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
    *       only, everything will be cared for.
    */
-  void addDependent(Dependent<?> dependent);
+  void addDependent(Dependent dependent);
 
   /**
    * @post ! isDependent(dependent);
@@ -76,7 +76,7 @@ public interface UpdateSource {
    *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
    *       only, everything will be cared for.
    */
-  void removeDependent(Dependent<?> dependent);
+  void removeDependent(Dependent dependent);
 
   int getMaximumRootUpdateSourceDistance();
 

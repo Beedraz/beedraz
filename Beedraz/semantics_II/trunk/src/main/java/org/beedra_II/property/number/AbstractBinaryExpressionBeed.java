@@ -72,11 +72,10 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
     super(owner);
   }
 
-  private final Dependent<RealBeed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<RealBeed<?>, _NumberEvent_>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected _NumberEvent_ filteredUpdate(Map<RealBeed<?>, Event> events, Edit<?> edit) {
+      protected _NumberEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         assert $leftArgument != null || $rightArgument != null;
         _Number_ oldValue = get();
         recalculate();

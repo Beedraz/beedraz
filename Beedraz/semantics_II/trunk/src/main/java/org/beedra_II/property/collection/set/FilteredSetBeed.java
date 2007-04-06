@@ -72,11 +72,10 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     $filter = filter;
   }
 
-  private final Dependent<Beed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<Beed<?>, SetEvent<_Element_>>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected SetEvent<_Element_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
+      protected SetEvent<_Element_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         // if the source changes (elements added and / or removed
         if (events.keySet().contains($source)) {
           @SuppressWarnings("unchecked")

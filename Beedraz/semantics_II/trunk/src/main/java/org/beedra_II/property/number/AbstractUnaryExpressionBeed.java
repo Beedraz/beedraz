@@ -67,11 +67,10 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
   }
 
 
-  private final Dependent<_ArgumentBeed_> $dependent =
-    new AbstractUpdateSourceDependentDelegate<_ArgumentBeed_, _SendingEvent_>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected _SendingEvent_ filteredUpdate(Map<_ArgumentBeed_, Event> events, Edit<?> edit) {
+      protected _SendingEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         assert $argument != null;
         _Number_ oldValue = get();
         recalculate();

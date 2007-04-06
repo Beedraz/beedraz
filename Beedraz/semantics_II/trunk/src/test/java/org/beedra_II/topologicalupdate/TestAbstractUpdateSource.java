@@ -31,7 +31,7 @@ public class TestAbstractUpdateSource {
 
   private AbstractUpdateSource $subject;
 
-  private Dependent<?> $dependent1;
+  private Dependent $dependent1;
 
   private StubDependent $dependent2;
 

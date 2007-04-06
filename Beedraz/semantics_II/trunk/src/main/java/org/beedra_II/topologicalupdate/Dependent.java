@@ -65,10 +65,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   that way.</p>
  * <p>Because the 2 roles now come together in this class, and all dependents have to be of this
  *   type, access to parts of the algorithm can be restricted.</p>
- * <p>The collection of {@link #getUpdateSourcesCollection() update sources} is a <em>bag</em>, i.e.,
- *   update sources can be in the collection more than once. This changes nothing with respect
- *   to the topological update algorithm. It is only offered because some users need bag
- *   functionality here.</p>
+ * <p>The collection of {@link #getUpdateSourcesCollection() update sources} is a <em>set</em>.</p>
+ * <p>From experience, we know that it makes no sense for this type to be generic in the types
+ *   of allowed {@link UpdateSource UpdateSources} or {@link Event Events}.</p>
  *
  * @author Jan Dockx
  *
@@ -86,7 +85,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
+public abstract class Dependent {
 
   /*<property name="dependent update source">*/
   //-----------------------------------------------------------------
@@ -112,7 +111,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @result for (Dependent d) {getUpdateSource().isDependent(d) ? result.contains(d)};
    * @result for (Dependent d : result) {getUpdateSource().isDependent(d)};
    */
-  abstract Set<Dependent<?>> getDependents();
+  abstract Set<Dependent> getDependents();
 
   /**
    * It is the dependent update source that must fire events, not us.
@@ -145,8 +144,8 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @pre events != null;
    */
   protected final Event update(Map<UpdateSource, Event> events, Edit<?> edit) {
-    Map<_UpdateSource_, Event> result = new HashMap<_UpdateSource_, Event>();
-    for (_UpdateSource_ us : $updateSources) {
+    Map<UpdateSource, Event> result = new HashMap<UpdateSource, Event>();
+    for (UpdateSource us : $updateSources) {
       Event event = events.get(us);
       if (event != null) {
         result.put(us, event);
@@ -163,7 +162,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    *
    * @pre events != null;
    */
-  protected abstract Event filteredUpdate(Map<_UpdateSource_, Event> events, Edit<?> edit);
+  protected abstract Event filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit);
 
   /*</section>*/
 
@@ -174,14 +173,14 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
   /**
    * @return getUpdateSourcesSet().contains(updateSource);
    */
-  public final boolean isUpdateSource(_UpdateSource_ updateSource) {
+  public final boolean isUpdateSource(UpdateSource updateSource) {
     return $updateSources.contains(updateSource);
   }
 
   /**
    * @return result.equals(getUpdateSourcesOccurencesMap().keySet());
    */
-  public final Set<_UpdateSource_> getUpdateSources() {
+  public final Set<UpdateSource> getUpdateSources() {
     return Collections.unmodifiableSet($updateSources);
   }
 
@@ -201,7 +200,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @post updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  public final void addUpdateSource(_UpdateSource_ updateSource) {
+  public final void addUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
     // TODO assert against loop
     $updateSources.add(updateSource);
@@ -215,7 +214,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @post ! updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  public final void removeUpdateSource(_UpdateSource_ updateSource) {
+  public final void removeUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
     updateSource.removeDependent(this);
     updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
@@ -226,7 +225,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
    */
-  private final Set<_UpdateSource_> $updateSources = new HashSet<_UpdateSource_>();
+  private final Set<UpdateSource> $updateSources = new HashSet<UpdateSource>();
 
   /*</section>*/
 
@@ -256,7 +255,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
     int potentialNewMaxDistance = newSourceMROSD + 1;
     if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {
       $maximumRootUpdateSourceDistance = potentialNewMaxDistance;
-      for (Dependent<?> dependent : getDependents()) {
+      for (Dependent dependent : getDependents()) {
         dependent.updateMaximumRootUpdateSourceDistanceUp($maximumRootUpdateSourceDistance);
       }
     }
@@ -286,7 +285,7 @@ public abstract class Dependent<_UpdateSource_ extends UpdateSource> {
         }
       }
       if (oldMaximumFinalSourceDistance != $maximumRootUpdateSourceDistance) {
-        for (Dependent<?> dependent : getDependents()) {
+        for (Dependent dependent : getDependents()) {
           dependent.updateMaximumRootUpdateSourceDistanceDown(oldMaximumFinalSourceDistance);
         }
       }

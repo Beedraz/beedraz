@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedra_II.Beed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
@@ -85,11 +84,10 @@ public abstract class AbstractDoubleSetComputationBeed
 
   private boolean $effective = false;
 
-  private final Dependent<Beed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<Beed<? extends Event>, ActualDoubleEvent>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected ActualDoubleEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
+      protected ActualDoubleEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         // if the source changes (elements added and / or removed
         if (events.keySet().contains($source)) {
           @SuppressWarnings("unchecked")

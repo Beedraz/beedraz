@@ -67,11 +67,10 @@ public abstract class AbstractBinaryExpressionBeed<_LeftArgumentBeed_ extends Re
     super(owner);
   }
 
-  private final Dependent<RealBeed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<RealBeed<?>, BooleanEvent>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected BooleanEvent filteredUpdate(Map<RealBeed<?>, Event> events, Edit<?> edit) {
+      protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         assert $leftArgument != null || $rightArgument != null;
         Boolean oldValue = get();
         recalculate();

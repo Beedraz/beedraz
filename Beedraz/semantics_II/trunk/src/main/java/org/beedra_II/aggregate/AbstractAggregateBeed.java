@@ -43,11 +43,10 @@ public abstract class AbstractAggregateBeed
     extends AbstractBeed<AggregateEvent>
     implements AggregateBeed {
 
-  private final Dependent<Beed<?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<Beed<?>, AggregateEvent>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected AggregateEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?>  edit) {
+      protected AggregateEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?>  edit) {
         assert events.size() > 0;
         AggregateEvent result = new AggregateEvent(AbstractAggregateBeed.this, edit);
         for (Event event : events.values()) {

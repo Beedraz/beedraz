@@ -29,8 +29,7 @@ import org.beedra_II.event.Listener;
 import org.beedra_II.event.StubEvent;
 
 
-public class StubDependent extends Dependent<StubUpdateSource>
-    implements Beed<StubEvent> {
+public class StubDependent extends Dependent implements Beed<StubEvent> {
 
   @Override
   void fireEvent(Event event) {
@@ -43,12 +42,12 @@ public class StubDependent extends Dependent<StubUpdateSource>
   }
 
   @Override
-  Set<Dependent<?>> getDependents() {
+  Set<Dependent> getDependents() {
     return Collections.emptySet();
   }
 
   @Override
-  protected Event filteredUpdate(Map<StubUpdateSource, Event> events, Edit<?> edit) {
+  protected Event filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
     $updated++;
     $events = events;
     return $myEvent;
@@ -56,7 +55,7 @@ public class StubDependent extends Dependent<StubUpdateSource>
 
   public int $updated = 0;
 
-  public Map<StubUpdateSource, Event> $events;
+  public Map<UpdateSource, Event> $events;
 
   public final StubUpdateSource $myDependentUpdateSource = new StubUpdateSource();
 
@@ -84,19 +83,19 @@ public class StubDependent extends Dependent<StubUpdateSource>
     // NOP
   }
 
-  public void addDependent(Dependent<?> dependent) {
+  public void addDependent(Dependent dependent) {
     // NOP
   }
 
-  public boolean isDependent(Dependent<?> dependent) {
+  public boolean isDependent(Dependent dependent) {
     return false;
   }
 
-  public boolean isTransitiveDependent(Dependent<?> dependent) {
+  public boolean isTransitiveDependent(Dependent dependent) {
     return false;
   }
 
-  public void removeDependent(Dependent<?> dependent) {
+  public void removeDependent(Dependent dependent) {
     // NOP
   }
 

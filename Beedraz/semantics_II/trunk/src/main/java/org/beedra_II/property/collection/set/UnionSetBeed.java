@@ -72,14 +72,13 @@ public class UnionSetBeed<_Element_>
   }
 
 
-  private final Dependent<SetBeed<_Element_, ?>> $dependent =
-    new AbstractUpdateSourceDependentDelegate<SetBeed<_Element_, ?>, SetEvent<_Element_>>(this) {
+  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
     /**
      * @post    get() == the union of the sources
      */
     @Override
-    protected SetEvent<_Element_> filteredUpdate(Map<SetBeed<_Element_, ?>, Event> events, Edit<?> edit) {
+    protected SetEvent<_Element_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
       /* Optimized update is too difficult (what if several events remove the same element?)
        * If 1 source removes an element, but it exists also in other sources, it must stay
        * in the union. But what if all the sources that have the element remove it? Then it
@@ -139,7 +138,7 @@ public class UnionSetBeed<_Element_>
    * @basic
    */
   public final Set<SetBeed<_Element_, ?>> getSources() {
-    return $dependent.getUpdateSources();
+    return Collections.unmodifiableSet($sources);
   }
 
   /**
@@ -153,12 +152,13 @@ public class UnionSetBeed<_Element_>
    *         set has changed.
    */
   public final void addSource(SetBeed<_Element_, ?> source) {
-    if (! $dependent.isUpdateSource(source)) {
+    if (! $sources.contains(source)) {
       assert source != null;
       @SuppressWarnings("unchecked")
       HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
       // add the source
       $dependent.addUpdateSource(source);
+      $sources.add(source);
       // add the elements of the given source to the union
       $union.addAll(source.get());
       // notify the listeners of this beed if the union has changed
@@ -188,15 +188,16 @@ public class UnionSetBeed<_Element_>
    *         set has changed.
    */
   public final void removeSource(SetBeed<_Element_, ?> source) {
-    if ($dependent.isUpdateSource(source)) {
+    if ($sources.contains(source)) {
       assert source != null;
       @SuppressWarnings("unchecked")
       HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
       // remove the source
       $dependent.removeUpdateSource(source);
+      $sources.remove(source);
       // remove the elements of the given source from the union
       for (_Element_ element : source.get()) {
-        if (!contains(getSources(), element)) {
+        if (!contains($sources, element)) {
           $union.remove(element);
         }
       }
@@ -213,6 +214,8 @@ public class UnionSetBeed<_Element_>
     }
     return false;
   }
+
+  private Set<SetBeed<_Element_, ?>> $sources = new HashSet<SetBeed<_Element_, ?>>();
 
   /*</property>*/
 

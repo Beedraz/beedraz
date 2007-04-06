@@ -37,5 +37,17 @@ public class EditableBooleanBeed
     super(owner);
   }
 
+  public Boolean getBoolean() {
+    return get();
+  }
+
+  public boolean getboolean() {
+    return get().booleanValue();
+  }
+
+  public boolean isEffective() {
+    return get() != null;
+  }
+
 }
 

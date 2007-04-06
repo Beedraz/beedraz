@@ -28,7 +28,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public interface BooleanBeed
     extends SimplePropertyBeed<Boolean, BooleanEvent> {
 
-  // NOP
+  boolean isEffective();
+
+  /**
+   * @pre  isEffective();
+   */
+  boolean getboolean();
+
+  /**
+   * @basic
+   */
+  Boolean getBoolean();
 
 }
 

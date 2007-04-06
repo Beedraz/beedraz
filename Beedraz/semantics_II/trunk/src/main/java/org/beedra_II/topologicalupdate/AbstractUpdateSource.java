@@ -32,6 +32,7 @@ import java.util.Set;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.WeakHashSet;
 import org.ppeew.smallfries_I.MultiLineToStringUtil;
 
 
@@ -55,7 +56,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       return true;
     }
     else {
-      for (Dependent<?> d : $dependents) {
+      for (Dependent<?> d : $dependents.strongClone()) {
         if (d.getDependentUpdateSource().isTransitiveDependent(dependent)) {
           return true;
         }
@@ -66,12 +67,13 @@ public abstract class AbstractUpdateSource implements UpdateSource {
 
   /**
    * Don't expose the collection of dependents publicly. It's
-   * a secret shared between us and the dependent.
+   * a secret shared between us and the dependent. This collection
+   * uses strong references.
    *
    * @result for (Dependent d) {isDependent(d) ?? result.contains(d)};
    */
   protected final Set<Dependent<?>> getDependents() {
-    return Collections.unmodifiableSet($dependents);
+    return $dependents.strongClone();
   }
 
   /**
@@ -155,7 +157,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     while (topologicalOrder.size() <= dMrusd) {
       // make list large enough; stupid, but that's what it is
       topologicalOrder.add(null);
-                }
+    }
     assert topologicalOrder.size() > dMrusd;
     HashSet<Dependent<?>> dMrusdDependents = topologicalOrder.get(dMrusd);
     if (dMrusdDependents == null) {
@@ -356,7 +358,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @invar $dependents != null;
    * @invar Collections.noNull($dependents);
    */
-  private final Set<Dependent<?>> $dependents = new HashSet<Dependent<?>>();
+  private final WeakHashSet<Dependent<?>> $dependents = new WeakHashSet<Dependent<?>>();
 
   public final Set<? extends UpdateSource> getRootUpdateSources() {
     Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();

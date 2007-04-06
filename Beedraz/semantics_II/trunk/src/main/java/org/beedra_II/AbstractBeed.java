@@ -19,13 +19,13 @@ package org.beedra_II;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.event.Event;
 import org.beedra_II.event.Listener;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.collection_I.WeakHashSet;
 
 
 /**
@@ -54,23 +54,12 @@ public abstract class AbstractBeed<_Event_ extends Event>
     $changeListeners.remove(listener);
   }
 
-  /**
-   * @deprecated This method will be removed shortly. With the introduction
-   *             of the topological update, all calls to this method are
-   *             suspect. Labelling this as deprecated for the time being
-   *             gives us the chance to find all uses quickly.
-   */
-  @Deprecated
-  protected final void fireChangeEvent(_Event_ event) {
-    fireEvent(event);
-  }
-
   @Override
   protected final void fireEvent(Event event) {
     @SuppressWarnings("unchecked")
     _Event_ eEvent = (_Event_)event;
     @SuppressWarnings("unchecked")
-    Set<Listener<? super _Event_>> listeners = (Set<Listener<? super _Event_>>)$changeListeners.clone();
+    Set<Listener<? super _Event_>> listeners = $changeListeners.strongClone();
     for (Listener<? super _Event_> listener : listeners) {
       listener.beedChanged(eEvent);
       // same event, because is immutable
@@ -82,8 +71,8 @@ public abstract class AbstractBeed<_Event_ extends Event>
    * @invar $changeListeners != null;
    * @invar Collections.noNull($changeListeners);
    */
-  private final HashSet<Listener<? super _Event_>> $changeListeners =
-      new HashSet<Listener<? super _Event_>>();
+  private final WeakHashSet<Listener<? super _Event_>> $changeListeners =
+      new WeakHashSet<Listener<? super _Event_>>();
 
   @Override
   public final String toString() {

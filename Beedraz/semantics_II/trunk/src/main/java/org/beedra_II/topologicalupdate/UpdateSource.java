@@ -23,6 +23,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
+ * Dependents are stored using weak references. Update sources must be stored
+ * using strong references.
+ *
  * @author Jan Dockx
  *
  * @invar getMaximumRootUpdateSourceDistance() >= 0;

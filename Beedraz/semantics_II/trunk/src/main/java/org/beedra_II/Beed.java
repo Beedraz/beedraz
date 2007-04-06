@@ -73,6 +73,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  *   LISTENERS OF A SUPERTYPE OF EVENT E CAN ALSO ACCEPT EVENTS OF TYPE E, WHICH WE WILL SEND, VIA POLYMORPHISM
  *
+ * <p>Listeners are to be implemented using weak references.</p>
+ *
  * @author Jan Dockx
  *
  * @mudo to be added: validation, civilization, propagation

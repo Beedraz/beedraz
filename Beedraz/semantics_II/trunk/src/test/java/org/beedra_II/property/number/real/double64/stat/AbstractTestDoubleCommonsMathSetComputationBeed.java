@@ -135,24 +135,28 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     setEdit.addElementToAdd(goal);
     setEdit.perform();
     Double statistic2 = computeStatistic(1.0, 2.0, 3.0, 4.0, 5.0);
-    assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getSource(), $subject);
-    assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), statistic1));
-    assertTrue(MathUtil.equalValue($listener3.$event.getNewDouble(), statistic2));
-    assertEquals($listener3.$event.getEdit(), setEdit);
+    if (!statistic2.equals(statistic1)) {
+      assertNotNull($listener3.$event);
+      assertEquals($listener3.$event.getSource(), $subject);
+      assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), statistic1));
+      assertTrue(MathUtil.equalValue($listener3.$event.getNewDouble(), statistic2));
+      assertEquals($listener3.$event.getEdit(), setEdit);
+    }
     // The beed is registered as listener of all double beeds in the source,
     // so when one of them changes, the beed should be notified
     $listener3.reset();
     assertNull($listener3.$event);
     DoubleEdit doubleEdit = new DoubleEdit(goal);
-    doubleEdit.setGoal(6.0);
+    doubleEdit.setGoal(-6.0);
     doubleEdit.perform();
-    Double statistic3 = computeStatistic(1.0, 2.0, 3.0, 4.0, 6.0);
-    assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getSource(), $subject);
-    assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), statistic2));
-    assertTrue(MathUtil.equalValue($listener3.$event.getNewDouble(), statistic3));
-    assertEquals($listener3.$event.getEdit(), doubleEdit);
+    Double statistic3 = computeStatistic(1.0, 2.0, 3.0, 4.0, -6.0);
+    if (!statistic3.equals(statistic2)) {
+      assertNotNull($listener3.$event);
+      assertEquals($listener3.$event.getSource(), $subject);
+      assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), statistic2));
+      assertTrue(MathUtil.equalValue($listener3.$event.getNewDouble(), statistic3));
+      assertEquals($listener3.$event.getEdit(), doubleEdit);
+    }
     // When a new beed is added to the source, the beed is added as a listener
     // of that beed. See above.
 
@@ -164,11 +168,13 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     setEdit.addElementToRemove(goal);
     setEdit.perform();
     Double statistic4 = computeStatistic(1.0, 2.0, 3.0, 4.0);
-    assertNotNull($listener3.$event);
-    assertEquals($listener3.$event.getSource(), $subject);
-    assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), statistic3));
-    assertTrue(MathUtil.equalValue($listener3.$event.getNewDouble(), statistic4));
-    assertEquals($listener3.$event.getEdit(), setEdit);
+    if (!statistic4.equals(statistic3)) {
+      assertNotNull($listener3.$event);
+      assertEquals($listener3.$event.getSource(), $subject);
+      assertTrue(MathUtil.equalValue($listener3.$event.getOldDouble(), statistic3));
+      assertTrue(MathUtil.equalValue($listener3.$event.getNewDouble(), statistic4));
+      assertEquals($listener3.$event.getEdit(), setEdit);
+    }
     $listener3.reset();
     assertNull($listener3.$event);
     doubleEdit = new DoubleEdit(goal);

@@ -37,7 +37,7 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
 
   /**
    * @pre   owner != null;
-   * @post  getInteger() == null;
+   * @post  getDouble() == null;
    * @post  getArgument() == null;
    * @post  getConstant() == constant;
    */
@@ -55,7 +55,7 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
 
   private final double $constant;
 
-  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+  public void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
     sb.append("(");
     if (depth == 1) {
       sb.append(numberFormat.format(getArgument().getdouble()));

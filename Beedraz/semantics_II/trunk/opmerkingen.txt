@@ -1,6 +1,0 @@
-2/2/2007 (opstart Beedra checkout)
-
-- pom aangemaakt
-- source folder: src/example met de hand -> waarom niet onder src/main/java?
-- default compiler gewijzigd naar 1.5 (eclipse terug opstarten!)
-- junit 4.1 ipv 3.8.1 (voor de annotations)

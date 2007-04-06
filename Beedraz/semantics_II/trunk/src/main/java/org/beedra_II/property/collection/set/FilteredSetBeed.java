@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Beed;
+import org.beedra_II.BeedFilter;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.event.Event;
@@ -34,12 +35,11 @@ import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
-import org.ppeew.smallfries_I.Filter;
 
 
 /**
  * A {@link SetBeed} that returns a filtered subset of a given {@link SetBeed}
- * using a {@link Filter}. Only the elements that meet the filter criterion
+ * using a {@link BeedFilter}. Only the elements that meet the filter criterion
  * are in the resulting set.
  *
  * @author  Nele Smeets
@@ -67,7 +67,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    * @post  getSource() == null;
    * @post  get().isEmpty();
    */
-  public FilteredSetBeed(Filter<_Element_> filter, AggregateBeed owner) {
+  public FilteredSetBeed(BeedFilter<_Element_> filter, AggregateBeed owner) {
     super(owner);
     $filter = filter;
   }
@@ -153,11 +153,11 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
   /**
    * @basic
    */
-  public final Filter<_Element_> getFilter() {
+  public final BeedFilter<_Element_> getFilter() {
     return $filter;
   }
 
-  private Filter<_Element_> $filter;
+  private BeedFilter<_Element_> $filter;
 
   /*</property>*/
 
@@ -187,8 +187,10 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    */
   public final void setSource(SetBeed<_Element_, ?> source) {
     if ($source != null) {
-      for (_Element_ beed : $source.get()) {
-        $dependent.removeUpdateSource(beed);
+      if (getFilter().dependsOnBeed()) {
+        for (_Element_ beed : $source.get()) {
+          $dependent.removeUpdateSource(beed);
+        }
       }
       $dependent.removeUpdateSource($source);
     }
@@ -196,8 +198,10 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     $source = source;
     if ($source != null) {
       $dependent.addUpdateSource($source);
-      for (_Element_ beed : $source.get()) {
-        $dependent.addUpdateSource(beed);
+      if (getFilter().dependsOnBeed()) {
+        for (_Element_ beed : $source.get()) {
+          $dependent.addUpdateSource(beed);
+        }
       }
     }
     // recalculate and notify the listeners if the value has changed

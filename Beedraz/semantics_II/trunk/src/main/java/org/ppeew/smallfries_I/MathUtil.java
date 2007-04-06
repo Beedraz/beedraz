@@ -587,4 +587,12 @@ public final class MathUtil {
     }
     return logValues;
   }
+
+  /**
+   * Returns the log with the given base of the given argument.
+   * We use the following formula: loga(x) = ln(x) / ln(a).
+   */
+  public static double log(double base, double argument) {
+    return Math.log(argument) / Math.log(base);
+  }
 }

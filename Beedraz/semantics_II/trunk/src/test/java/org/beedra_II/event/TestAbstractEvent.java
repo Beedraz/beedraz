@@ -19,7 +19,9 @@ package org.beedra_II.event;
 
 import static org.junit.Assert.assertEquals;
 
+import org.beedra_II.AbstractEvent;
 import org.beedra_II.Beed;
+import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;

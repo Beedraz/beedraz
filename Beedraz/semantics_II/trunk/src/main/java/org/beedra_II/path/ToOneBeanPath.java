@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.association.set.BidirToOneEvent;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;

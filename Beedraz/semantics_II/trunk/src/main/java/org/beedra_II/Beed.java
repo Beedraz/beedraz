@@ -18,8 +18,6 @@ package org.beedra_II;
 
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

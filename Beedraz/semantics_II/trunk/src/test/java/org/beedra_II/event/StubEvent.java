@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedra_II.event;
 
 
+import org.beedra_II.AbstractEvent;
 import org.beedra_II.Beed;
 
 

@@ -18,7 +18,7 @@ package org.beedra_II.edit;
 
 
 import org.beedra_II.Beed;
-import org.beedra_II.event.Event;
+import org.beedra_II.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

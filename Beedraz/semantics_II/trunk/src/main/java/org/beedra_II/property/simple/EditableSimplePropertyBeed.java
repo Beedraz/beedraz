@@ -23,8 +23,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.beedra_II.EditableBeed;
+import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;

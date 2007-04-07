@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.aggregate;
 
 
-import org.beedra_II.event.Event;
+import org.beedra_II.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

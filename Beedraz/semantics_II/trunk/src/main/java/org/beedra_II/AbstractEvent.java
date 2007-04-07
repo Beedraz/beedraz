@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.event;
+package org.beedra_II;
 
 
 import static org.beedra_II.edit.Edit.State.DONE;
@@ -22,7 +22,6 @@ import static org.beedra_II.edit.Edit.State.UNDONE;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
-import org.beedra_II.Beed;
 import org.beedra_II.edit.Edit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

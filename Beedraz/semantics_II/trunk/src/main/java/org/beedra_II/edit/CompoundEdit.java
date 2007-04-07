@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.beedra_II.Beed;
-import org.beedra_II.event.Event;
+import org.beedra_II.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

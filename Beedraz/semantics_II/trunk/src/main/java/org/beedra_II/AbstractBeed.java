@@ -21,8 +21,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
 import java.util.Set;
 
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.collection_I.WeakHashSet;

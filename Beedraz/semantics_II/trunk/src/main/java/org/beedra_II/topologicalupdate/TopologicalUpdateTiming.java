@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.beedra_II.event.Event;
+import org.beedra_II.Event;
 
 
 public class TopologicalUpdateTiming {

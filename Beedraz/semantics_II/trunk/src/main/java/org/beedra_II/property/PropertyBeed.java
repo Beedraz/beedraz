@@ -18,8 +18,8 @@ package org.beedra_II.property;
 
 
 import org.beedra_II.Beed;
+import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

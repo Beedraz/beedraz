@@ -19,7 +19,7 @@ package org.beedra_II.property.collection;
 
 import java.util.Collection;
 
-import org.beedra_II.event.Event;
+import org.beedra_II.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

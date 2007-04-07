@@ -24,13 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotSame;
 
+import org.beedra_II.Listener;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.ValidityListener;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.event.Listener;
 import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToManyBeed;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEdit;

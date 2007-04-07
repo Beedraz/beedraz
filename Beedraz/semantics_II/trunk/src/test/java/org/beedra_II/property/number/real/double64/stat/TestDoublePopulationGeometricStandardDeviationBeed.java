@@ -17,8 +17,8 @@
 package org.beedra_II.property.number.real.double64.stat;
 
 
+import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.number.real.double64.stat.DoublePopulationGeometricStandardDeviationBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;

@@ -19,9 +19,9 @@ package org.beedra_II.property.simple;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import org.beedra_II.AbstractEvent;
+import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.AbstractEvent;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.PropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

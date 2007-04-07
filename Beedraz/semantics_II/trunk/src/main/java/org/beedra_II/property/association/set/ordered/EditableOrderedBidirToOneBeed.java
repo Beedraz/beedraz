@@ -19,9 +19,9 @@ package org.beedra_II.property.association.set.ordered;
 
 import java.util.Map;
 
+import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;

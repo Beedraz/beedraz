@@ -23,9 +23,9 @@ import java.util.Set;
 
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
+import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.Event;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;

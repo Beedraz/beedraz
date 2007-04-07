@@ -21,8 +21,8 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collection;
 
+import org.beedra_II.AbstractEvent;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.AbstractEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

@@ -23,8 +23,8 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
 
+import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.event.Event;
 import org.beedra_II.property.collection.set.ActualSetEvent;
 import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;

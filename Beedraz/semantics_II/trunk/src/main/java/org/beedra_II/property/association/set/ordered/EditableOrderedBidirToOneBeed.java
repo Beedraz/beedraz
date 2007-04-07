@@ -60,7 +60,7 @@ public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
   }
 
   static void packageUpdateDependents(Map<AbstractUpdateSource, Event> events, Edit<?> edit) {
-    AbstractUpdateSource.multiUpdateDependents(events, edit);
+    AbstractUpdateSource.updateDependents(events, edit);
   }
 
 }

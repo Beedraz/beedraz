@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.event;
+package org.beedra_II;
 
 
 import static org.junit.Assert.assertEquals;

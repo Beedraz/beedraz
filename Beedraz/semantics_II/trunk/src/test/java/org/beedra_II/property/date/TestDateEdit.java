@@ -25,13 +25,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
+import org.beedra_II.StubListener;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

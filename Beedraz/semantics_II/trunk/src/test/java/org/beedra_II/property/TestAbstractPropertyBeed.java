@@ -21,11 +21,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.beedra_II.StubEvent;
+import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
-import org.beedra_II.event.StubEvent;
-import org.beedra_II.event.StubListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

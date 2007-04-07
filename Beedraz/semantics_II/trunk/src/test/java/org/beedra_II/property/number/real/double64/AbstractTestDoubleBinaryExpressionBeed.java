@@ -16,10 +16,10 @@
 
 package org.beedra_II.property.number.real.double64;
 
+import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.StubListener;
 import org.beedra_II.property.number.AbstractTestBinaryExpressionBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Assert;

@@ -20,7 +20,7 @@ package org.beedra_II.topologicalupdate;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.Listener;
-import org.beedra_II.event.StubEvent;
+import org.beedra_II.StubEvent;
 
 
 public abstract class AbstractStubUpdateSource

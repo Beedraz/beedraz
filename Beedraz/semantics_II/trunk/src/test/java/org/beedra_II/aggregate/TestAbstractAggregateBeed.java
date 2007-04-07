@@ -22,9 +22,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.beedra_II.StubEvent;
+import org.beedra_II.StubListener;
 import org.beedra_II.edit.StubEdit;
-import org.beedra_II.event.StubEvent;
-import org.beedra_II.event.StubListener;
 import org.beedra_II.property.simple.StubEditableSimplePropertyBeed;
 import org.junit.After;
 import org.junit.Before;

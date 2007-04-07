@@ -23,12 +23,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.Event;
+import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.StubListener;
 import org.beedra_II.property.collection.set.EditableSetBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEdit;

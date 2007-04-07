@@ -22,9 +22,9 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 
+import org.beedra_II.ActualOldNewEvent;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.real.RealEvent;
-import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

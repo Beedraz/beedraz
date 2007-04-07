@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.event.StubEvent;
+import org.beedra_II.StubEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

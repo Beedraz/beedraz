@@ -20,8 +20,8 @@ package org.beedra_II.property;
 import java.util.Collections;
 import java.util.Set;
 
+import org.beedra_II.StubEvent;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.StubEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 
 

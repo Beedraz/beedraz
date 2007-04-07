@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
@@ -30,7 +31,6 @@ import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.event.StubListener;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;

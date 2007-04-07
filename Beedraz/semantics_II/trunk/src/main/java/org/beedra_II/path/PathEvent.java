@@ -17,10 +17,10 @@ limitations under the License.
 package org.beedra_II.path;
 
 
+import org.beedra_II.ActualOldNewEvent;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

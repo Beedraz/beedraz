@@ -19,9 +19,9 @@ package org.beedra_II.property.date;
 
 import java.util.Date;
 
+import org.beedra_II.ActualOldNewEvent;
+import org.beedra_II.OldNewEvent;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.ActualOldNewEvent;
-import org.beedra_II.property.simple.OldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

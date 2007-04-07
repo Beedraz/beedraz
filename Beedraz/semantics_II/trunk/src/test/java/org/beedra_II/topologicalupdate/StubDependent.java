@@ -25,8 +25,8 @@ import java.util.Set;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.Listener;
+import org.beedra_II.StubEvent;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.event.StubEvent;
 
 
 public class StubDependent extends Dependent implements Beed<StubEvent> {

@@ -14,25 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.event;
-
-import org.beedra_II.Event;
-import org.beedra_II.Listener;
+package org.beedra_II;
 
 
+import org.beedra_II.AbstractEvent;
+import org.beedra_II.Beed;
 
 
-public class StubListener<_Event_ extends Event>
-    implements Listener<_Event_> {
+public class StubEvent extends AbstractEvent {
 
-  public void beedChanged(_Event_ event) {
-    $event = event;
+  public StubEvent(Beed<?> source) {
+    super(source, null);
   }
-
-  public void reset() {
-    $event = null;
-  }
-
-  public _Event_ $event;
 
 }

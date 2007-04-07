@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
+import org.beedra_II.ActualOldNewEvent;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.ActualOldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

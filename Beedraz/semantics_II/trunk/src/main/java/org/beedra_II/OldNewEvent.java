@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II;
 
 
-import org.beedra_II.Event;
+import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

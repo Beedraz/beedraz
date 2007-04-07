@@ -20,7 +20,6 @@ package org.beedra_II;
 import java.util.Collections;
 import java.util.Set;
 
-import org.beedra_II.event.StubEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 
 

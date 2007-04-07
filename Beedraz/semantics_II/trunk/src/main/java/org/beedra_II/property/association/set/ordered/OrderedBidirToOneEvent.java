@@ -19,10 +19,10 @@ package org.beedra_II.property.association.set.ordered;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import org.beedra_II.ActualOldNewEvent;
+import org.beedra_II.OldNewEvent;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.ActualOldNewEvent;
-import org.beedra_II.property.simple.OldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

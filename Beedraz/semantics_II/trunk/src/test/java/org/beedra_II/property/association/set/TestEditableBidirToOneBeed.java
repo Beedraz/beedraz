@@ -24,12 +24,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.Event;
 import org.beedra_II.Listener;
+import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.StubListener;
 import org.beedra_II.property.collection.set.SetEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;

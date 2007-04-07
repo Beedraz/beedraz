@@ -1,8 +1,8 @@
 package org.beedra_II.property.simple;
 
 
+import org.beedra_II.StubEvent;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.StubEvent;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

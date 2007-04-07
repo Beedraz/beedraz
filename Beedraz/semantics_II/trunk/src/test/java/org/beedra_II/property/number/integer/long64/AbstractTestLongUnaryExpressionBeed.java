@@ -16,8 +16,8 @@
 
 package org.beedra_II.property.number.integer.long64;
 
+import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.event.StubListener;
 import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.junit.Assert;

@@ -27,14 +27,14 @@ import java.util.Map;
 import org.beedra_II.event.Event;
 
 
-public class Timing {
+public class TopologicalUpdateTiming {
 
   public static boolean _active = false;
 
-  public static Timing[] resultsSortedByAverageDuration() {
-    return resultsSorted(new Comparator<Timing>() {
+  public static TopologicalUpdateTiming[] resultsSortedByAverageDuration() {
+    return resultsSorted(new Comparator<TopologicalUpdateTiming>() {
 
-      public int compare(Timing t1, Timing t2) {
+      public int compare(TopologicalUpdateTiming t1, TopologicalUpdateTiming t2) {
         assert t1 != null;
         assert t2 != null;
         if (t1.getAverageDuration() > t2.getAverageDuration()) {
@@ -51,10 +51,10 @@ public class Timing {
     });
   }
 
-  public static Timing[] resultsSortedByTotalDuration() {
-    return resultsSorted(new Comparator<Timing>() {
+  public static TopologicalUpdateTiming[] resultsSortedByTotalDuration() {
+    return resultsSorted(new Comparator<TopologicalUpdateTiming>() {
 
-      public int compare(Timing t1, Timing t2) {
+      public int compare(TopologicalUpdateTiming t1, TopologicalUpdateTiming t2) {
         assert t1 != null;
         assert t2 != null;
         if (t1.getTotalDuration() > t2.getTotalDuration()) {
@@ -71,29 +71,29 @@ public class Timing {
     });
   }
 
-  public static Timing[] resultsSorted(Comparator<Timing> comparator) {
-    Timing[] result = new Timing[_results.size()];
+  public static TopologicalUpdateTiming[] resultsSorted(Comparator<TopologicalUpdateTiming> comparator) {
+    TopologicalUpdateTiming[] result = new TopologicalUpdateTiming[_results.size()];
     result = _results.values().toArray(result);
     Arrays.sort(result, comparator);
     return result;
   }
 
-  public static Map<Dependent, Timing> results() {
+  public static Map<Dependent, TopologicalUpdateTiming> results() {
     return Collections.unmodifiableMap(_results);
   }
 
-  private static Map<Dependent, Timing> _results;
+  private static Map<Dependent, TopologicalUpdateTiming> _results;
 
   public static void reset() {
     _active = true;
-    _results = new HashMap<Dependent, Timing>();
+    _results = new HashMap<Dependent, TopologicalUpdateTiming>();
   }
 
   static void add(Dependent dependent, long starttime, long endtime, Event event) {
     long duration = endtime - starttime;
-    Timing timing = _results.get(dependent);
+    TopologicalUpdateTiming timing = _results.get(dependent);
     if (timing == null) {
-      timing = new Timing(dependent, duration, event);
+      timing = new TopologicalUpdateTiming(dependent, duration, event);
       _results.put(dependent, timing);
     }
     else {
@@ -101,7 +101,7 @@ public class Timing {
     }
   }
 
-  private Timing(Dependent dependent, long duration, Event event) {
+  private TopologicalUpdateTiming(Dependent dependent, long duration, Event event) {
     $updateSource = dependent.getDependentUpdateSource();
     $duration = duration;
     $event = event;

@@ -129,13 +129,13 @@ class TopologicalUpdate {
         while (iter.hasNext()) {
           Dependent currentDependent = iter.next();
           long starttime = 0;
-          if (Timing._active) {
+          if (TopologicalUpdateTiming._active) {
             starttime = System.nanoTime();
           }
           Event event = currentDependent.update(events, edit); // this is the actual update request
-          if (Timing._active) {
+          if (TopologicalUpdateTiming._active) {
             long endtime = System.nanoTime();
-            Timing.add(currentDependent, starttime, endtime, event);
+            TopologicalUpdateTiming.add(currentDependent, starttime, endtime, event);
           }
           if (event != null) {
             // remember the event, for when we ask the dependents of d to update

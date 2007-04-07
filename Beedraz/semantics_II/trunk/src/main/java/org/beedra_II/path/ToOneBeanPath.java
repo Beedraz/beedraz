@@ -97,8 +97,8 @@ public class ToOneBeanPath<_One_ extends BeanBeed>
         }
         PathEvent<EditableBidirToOneBeed<_One_, ?>> pathEvent = (PathEvent<EditableBidirToOneBeed<_One_, ?>>)events.get($toOnePath);
         if (pathEvent != null) {
-          assert $toOneBeed == pathEvent.getOldBeed(); // could be null
-          setToOneBeed(pathEvent.getNewBeed());
+          assert $toOneBeed == pathEvent.getOldValue(); // could be null
+          setToOneBeed(pathEvent.getNewValue());
         }
         if (oldOne != $one) {
           return new PathEvent<_One_>(ToOneBeanPath.this, oldOne, $one, edit);

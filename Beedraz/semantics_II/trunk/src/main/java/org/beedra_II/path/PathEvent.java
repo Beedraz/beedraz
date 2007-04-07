@@ -17,9 +17,6 @@ limitations under the License.
 package org.beedra_II.path;
 
 
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
-
-import org.beedra_II.AbstractEvent;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
@@ -44,7 +41,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class PathEvent<_SelectedBeed_ extends Beed<?>> extends AbstractEvent {
+public class PathEvent<_SelectedBeed_ extends Beed<?>>
+    extends ActualOldNewEvent<_SelectedBeed_> {
 
   /**
    * @pre  source != null;
@@ -60,49 +58,10 @@ public class PathEvent<_SelectedBeed_ extends Beed<?>> extends AbstractEvent {
    * @post getNewBeed() == newBeed;
    */
   public PathEvent(Path<_SelectedBeed_> source,
-                       _SelectedBeed_ oldBeed,
-                       _SelectedBeed_ newBeed,
-                       Edit<?> edit) {
-    super(source, edit);
-    assert oldBeed !=  newBeed : "oldBeed: " + oldBeed+ "; newBeed: " + newBeed + " : should not be equal";
-    $oldBeed = oldBeed;
-    $newBeed = newBeed;
-  }
-
-  /**
-   * @basic
-   */
-  public final _SelectedBeed_ getOldBeed() {
-    return $oldBeed;
-  }
-
-  private final _SelectedBeed_ $oldBeed;
-
-  /**
-   * @basic
-   */
-  public final _SelectedBeed_ getNewBeed() {
-    return $newBeed;
-  }
-
-  private final _SelectedBeed_ $newBeed;
-
-  @Override
-  protected String otherToStringInformation() {
-    return super.otherToStringInformation() +
-           ", old beed: " + getOldBeed() +
-           ", new beed: " + getNewBeed();
-  }
-
-  @Override
-  public void toString(StringBuffer sb, int level) {
-    super.toString(sb, level);
-    toStringOldNew(sb, level + 1);
-  }
-
-  protected void toStringOldNew(StringBuffer sb, int level) {
-    sb.append(indent(level + 1) + "old beed: " + getOldBeed() + "\n");
-    sb.append(indent(level + 1) + "new beed: " + getNewBeed() + "\n");
+                        _SelectedBeed_ oldBeed,
+                        _SelectedBeed_ newBeed,
+                        Edit<?> edit) {
+    super(source, oldBeed, newBeed, edit);
   }
 
 }

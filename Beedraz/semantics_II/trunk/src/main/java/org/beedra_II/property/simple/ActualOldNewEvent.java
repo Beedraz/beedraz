@@ -20,9 +20,9 @@ package org.beedra_II.property.simple;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedra_II.AbstractEvent;
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.PropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -56,10 +56,10 @@ public class ActualOldNewEvent<_Type_>
    * @post oldValue == null ? getOldValue() == null : getOldValue().equals(oldValue);
    * @post newValue == null ? getNewValue() == null : getNewValue().equals(newValue);
    */
-  public ActualOldNewEvent(PropertyBeed<?> source,
-                     _Type_ oldValue,
-                     _Type_ newValue,
-                     Edit<?> edit) {
+  public ActualOldNewEvent(Beed<?> source,
+                           _Type_ oldValue,
+                           _Type_ newValue,
+                           Edit<?> edit) {
     super(source, edit);
     assert ((oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true) :
            "oldValue: " + oldValue + "; newValue: " + newValue;

@@ -94,7 +94,7 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
         PathEvent<_BeanBeed_> event = (PathEvent<_BeanBeed_>)events.get($beanPath);
         assert event != null;
         _PropertyBeed_ oldPropertyBeed = $propertyBeed;
-        _BeanBeed_ newBeanBeed = event.getNewBeed();
+        _BeanBeed_ newBeanBeed = event.getNewValue();
         assert newBeanBeed == $beanPath.get();
         $propertyBeed = newBeanBeed == null ? null : selectPropertyBeedFromBeanBeed(newBeanBeed);
         if (oldPropertyBeed != $propertyBeed) {

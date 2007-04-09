@@ -17,70 +17,61 @@ limitations under the License.
 package org.beedra_II;
 
 
-import org.beedra_II.edit.Edit;
+import java.lang.ref.WeakReference;
+
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
  * <p>Beeds are the declarative unit of semantic state, relevant for the system.
- *   Beeds warn {@link Listener registered Listeners} and invite {@link Dependent
+ *   Beeds warn {@link Listener registered Listeners} and invite
+ *   {@link org.beedra_II.topologicalupdate.Dependent
  *   registered Dependents} to update themselves when they change, using an
- *   {@link Event} that describes the change. Some beeds can be {@link Edit edited}
+ *   {@link Event} that describes the change. Some beeds can be
+ *   {@link org.beedra_II.edit.Edit edited}
  *   directly, others derive their state from beeds they depend on.</p>
- * <p>The class name of beeds should always be of the form {@code ...Beed}.
- *   The class name of editable beeds should always be of the form
- *   {@code Editable...Beed}.</p>
- * <p>Beeds that can be edited directly extend {@link EditableBeed}.
- *   (see {@link EditableBeed}). </p>
+ * <p>There are no special interfaces to tag these 2 kinds (it turned out that did
+ *   not add any value). The name of a beed type should always be of the form
+ *   {@code ...Beed}. The class name of editable beeds should always be of the form
+ *   {@code Editable...Beed}, and the name of beeds whose semantic state cannot be
+ *   edited directly should never start with &quot;Editable&quot;.</p>
+ *
+ * <h3>Events and Listeners</h3>
+ * <p>Generic type invocations define the type of the events Beeds send.
+ *   This static type is defined by the type parameter {@code _Event_}.
+ *   Registered listeners should be able to accept events of type
+ *   {@code _Event_} or its subtypes (a beed might send an event with a more specific
+ *   dynamic type). Since the type of events being send is only guaranteed to be
+ *   {@code _Event_}, only listeners that are content with events of type
+ *   {@code _Event_} or more general events are accepted.</p>
+ * <p>Concrete beeds define exactly which type of concrete events they send
+ *   via the generic parameter {@code _Event_}. Beeds accept listener registrations from
+ *   listeners that can accept events of type {@code _Event_} and listeners that can
+ *   accept events from super types of {@code _Event_}. The type
+ *   {@code Listener<? super _Event_>} is an interface with all
+ *   the methods defined in {@link Listener}. It is used as the polymorph type
+ *   for listener registration.</p>
+ * <p>Listeners are implemented by concrete implementations using
+ *   <em>weak references</em> (see {@link WeakReference}). This means that when an
+ *   object is only registered as a listener with a beed, and not referenced by
+ *   any other object using a <em>strong reference</em>, it will be garbage
+ *   collected.</p>
+ * <p>See {@link Event} and {@link Listener} for more information.</p>
+ *
+ * <h3>Update of Dependents
+ *
+ * <h3>Editable Beeds</h3>
  * <p>Changing the state of editable beans should always happen via
  *   creation of an appropriate {@link Edit}, which is then
  *   {@link Edit#execute() executed} at the appropriate time. Beeds
  *   should never offer public methods that allow to change directly
  *   the semantic state they hold.</p>
- *
- * <p>Generic type invocations define the super type of the events Beeds send.
- *   This static type is defined by the type parameter {@code _Event_}.
- *   Registered listeners should be able to accept events of type
- *   {@code _Event_}, its subtypes or its supertypes, but since the type of
- *   events being send is only guaranteed to be {@code _Event_}, only listeners
- *   that are content with events of type {@code _Event_} or less specific
- *   are accepted.
- *
- *
- *   which means that the event
- *   type has to declare the static type of the beeds that can send it
- *   as the generic invocation itself or one of its supertypes.
- *   In the current type, {@code _This_} is Beed<_Event_>. Subtypes and
- *   generic invocations can declare a stronger
- *
- *   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- *
- *   class of actual event sent > _Event_
- *
- * <p>Concrete beeds define exactly which type of concrete events they send
- *   via generic parameter {@code _Event_} (and concrete {@code Event events}
- *   define exactly which kind of Beed is their source; the Beed and {@link Event}
- *   inheritance hierarchy is covariant). Beeds accept listener registrations from
- *   listeners that can accept events of type {@code _Event_} and listeners that can
- *   accept events from super types of {@code _Event_}. The type
- *   {@link Listener}{@code &lt;? super _Event_&gt;} is an interface with all
- *   the methods defined in {@link Listener}. It is used as the polymorph type
- *   for listener registration.</p>
- * <p>Beeds accept
- * Beeds can have listeners that can accept (at least) events
- *   of the type defined above. This means that the type of the listener
- *   should be {@link BeedListener}{@code &lt;? super _Event_&gt;}.</p>
- * <p>A concrete beed sends events specifically defined for the beed type or
- *   one of its supertypes.</p>
- *
- *   LISTENERS OF A SUPERTYPE OF EVENT E CAN ALSO ACCEPT EVENTS OF TYPE E, WHICH WE WILL SEND, VIA POLYMORPHISM
- *
- * <p>Listeners are to be implemented using weak references.</p>
+ * <p>See {@link Edit} for more information.</p>
  *
  * @author Jan Dockx
  *
- * @mudo to be added: validation, civilization, propagation
+ * @todo to be added: validation, civilization?
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

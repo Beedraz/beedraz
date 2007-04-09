@@ -22,7 +22,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Collections;
 import java.util.Set;
 
-import org.beedra_II.EditableBeed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
@@ -43,8 +42,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public abstract class EditableSimplePropertyBeed<_Type_,
                                                  _Event_ extends Event>
     extends AbstractPropertyBeed<_Event_>
-    implements SimplePropertyBeed<_Type_, _Event_>,
-               EditableBeed<_Event_> {
+    implements SimplePropertyBeed<_Type_, _Event_> {
 
   /**
    * @pre ownerBeed != null;

@@ -23,27 +23,32 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Beeds hold semantic state, relevant for the system.
- *   Beeds send events of type {@code _Event_ extends }{@link Event}
- *   to {@link Listener registered listeners} when they change.</p>
- * <p>Some beeds are <em>read-only</em>, others are <em>editable</em> with
- *   respect to the semantic state they represent.
- *   Changing the state of editable beans should always happen via creation of an
- *   appropriate {@link Edit}, which is then {@link Edit#execute() executed}
- *   at the appropriate time. Beeds should never offer public methods
- *   that allow to change directly the semantic state they hold.</p>
- * <p>Generic type invocations define the super type of the events they send.
+ * <p>Beeds are the declarative unit of semantic state, relevant for the system.
+ *   Beeds warn {@link Listener registered Listeners} and invite {@link Dependent
+ *   registered Dependents} to update themselves when they change, using an
+ *   {@link Event} that describes the change. Some beeds can be {@link Edit edited}
+ *   directly, others derive their state from beeds they depend on.</p>
+ * <p>The class name of beeds should always be of the form {@code ...Beed}.
+ *   The class name of editable beeds should always be of the form
+ *   {@code Editable...Beed}.</p>
+ * <p>Beeds that can be edited directly extend {@link EditableBeed}.
+ *   (see {@link EditableBeed}). </p>
+ * <p>Changing the state of editable beans should always happen via
+ *   creation of an appropriate {@link Edit}, which is then
+ *   {@link Edit#execute() executed} at the appropriate time. Beeds
+ *   should never offer public methods that allow to change directly
+ *   the semantic state they hold.</p>
+ *
+ * <p>Generic type invocations define the super type of the events Beeds send.
  *   This static type is defined by the type parameter {@code _Event_}.
  *   Registered listeners should be able to accept events of type
  *   {@code _Event_}, its subtypes or its supertypes, but since the type of
  *   events being send is only guaranteed to be {@code _Event_}, only listeners
  *   that are content with events of type {@code _Event_} or less specific
- *   are accepted. The actual type parameter {@code _Event_} in concrete
- *   generic invocations has to be a subtype of
+ *   are accepted.
  *
- *   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  *
- *   {@link Event}{@code &lt;? super _This_&gt;}, which means that the event
+ *   which means that the event
  *   type has to declare the static type of the beeds that can send it
  *   as the generic invocation itself or one of its supertypes.
  *   In the current type, {@code _This_} is Beed<_Event_>. Subtypes and

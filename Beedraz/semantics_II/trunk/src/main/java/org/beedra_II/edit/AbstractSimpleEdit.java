@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.edit;
 
 
-import org.beedra_II.EditableBeed;
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -33,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractSimpleEdit<_Target_ extends EditableBeed<_Event_>,
+public abstract class AbstractSimpleEdit<_Target_ extends Beed<_Event_>,
                                          _Event_ extends Event>
     extends AbstractEdit<_Target_, _Event_> {
 

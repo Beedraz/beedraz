@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.beedra_II.EditableBeed;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -43,8 +42,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class EditableSetBeed<_Element_>
     extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
-    implements SetBeed<_Element_, SetEvent<_Element_>>,
-               EditableBeed<SetEvent<_Element_>> {
+    implements SetBeed<_Element_, SetEvent<_Element_>> {
 
 
   /**

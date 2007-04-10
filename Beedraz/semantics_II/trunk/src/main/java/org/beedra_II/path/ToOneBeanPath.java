@@ -59,21 +59,21 @@ public class ToOneBeanPath<_One_ extends BeanBeed>
    * @post getBeanBeedPath() == toOneBeedPath;
    * @post getBeanBeed() == beanBeedPath.get();
    */
-  public ToOneBeanPath(Path<EditableBidirToOneBeed<_One_, ?>> toOneBeedPath) {
+  public ToOneBeanPath(Path<? extends EditableBidirToOneBeed<_One_, ?>> toOneBeedPath) {
     assert toOneBeedPath != null;
     $toOnePath = toOneBeedPath;
     $dependent.addUpdateSource($toOnePath);
     setToOneBeed(toOneBeedPath.get());
   }
 
-//      When does this go away?
-  public final void terminate() {
-    assert $toOnePath != null;
-    $dependent.removeUpdateSource($toOnePath);
-    if ($toOneBeed != null) {
-      $dependent.removeUpdateSource($toOneBeed);
-    }
-  }
+////      When does this go away?
+//  public final void terminate() {
+//    assert $toOnePath != null;
+//    $dependent.removeUpdateSource($toOnePath);
+//    if ($toOneBeed != null) {
+//      $dependent.removeUpdateSource($toOneBeed);
+//    }
+//  }
 
   /*</construction>*/
 
@@ -159,11 +159,11 @@ public class ToOneBeanPath<_One_ extends BeanBeed>
   /**
    * @basic
    */
-  public final Path<EditableBidirToOneBeed<_One_, ?>> getToOnePath() {
+  public final Path<? extends EditableBidirToOneBeed<_One_, ?>> getToOnePath() {
     return $toOnePath;
   }
 
-  private final Path<EditableBidirToOneBeed<_One_, ?>> $toOnePath;
+  private final Path<? extends EditableBidirToOneBeed<_One_, ?>> $toOnePath;
 
   /*</property>*/
 

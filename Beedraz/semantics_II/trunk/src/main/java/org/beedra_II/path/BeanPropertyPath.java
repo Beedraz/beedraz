@@ -64,7 +64,7 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
    * @post getBeanBeedPath() == beanBeedPath;
    * @post getBeanBeed() == beanBeedPath.get();
    */
-  public BeanPropertyPath(Path<_BeanBeed_> beanBeedPath) {
+  public BeanPropertyPath(Path<? extends _BeanBeed_> beanBeedPath) {
     assert beanBeedPath != null;
     $beanPath = beanBeedPath;
     _BeanBeed_ beanBeed = beanBeedPath.get();
@@ -156,11 +156,11 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
   /**
    * @basic
    */
-  public final Path<_BeanBeed_> getBeanPath() {
+  public final Path<? extends _BeanBeed_> getBeanPath() {
     return $beanPath;
   }
 
-  private final Path<_BeanBeed_> $beanPath;
+  private final Path<? extends _BeanBeed_> $beanPath;
 
   /*</property>*/
 

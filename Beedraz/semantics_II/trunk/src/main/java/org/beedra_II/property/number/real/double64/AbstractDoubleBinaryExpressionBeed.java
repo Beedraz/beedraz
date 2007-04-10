@@ -30,18 +30,24 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>General code for Double implementations of {@link AbstractBinaryExpressionBeed}.</p>
+ * General code for Double implementations of {@link AbstractBinaryExpressionBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleBinaryExpressionBeed
-    extends AbstractBinaryExpressionBeed<Double, RealBeed<?>, RealEvent, RealBeed<?>, RealEvent, ActualDoubleEvent>
+    extends AbstractBinaryExpressionBeed<Double,
+                                         ActualDoubleEvent,
+                                         RealBeed<?>,
+                                         RealEvent,
+                                         RealBeed<?>,
+                                         RealEvent>
     implements DoubleBeed {
 
   /**
    * @pre   owner != null;
+   * @post  getOwner() == owner;
    * @post  getDouble() == null;
    * @post  getArgument() == null;
    */

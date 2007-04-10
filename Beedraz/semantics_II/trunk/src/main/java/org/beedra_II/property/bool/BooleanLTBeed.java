@@ -32,15 +32,26 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class BooleanLTBeed extends AbstractBooleanBinaryExpressionBeed {
 
+
+  /*<construction>*/
+  //------------------------------------------------------------------
+
   /**
    * @pre   owner != null;
-   * @post  getBoolean() == null;
+   * @post  getOwner() == owner;
    * @post  getFirstArgument() == null;
    * @post  getSecondArgument() == null;
+   * @post  getBoolean() == null;
    */
   public BooleanLTBeed(AggregateBeed owner) {
     super(owner);
   }
+
+  /*</construction>*/
+
+
+  /*<property name="firstArgument">*/
+  //------------------------------------------------------------------
 
   /**
    * @basic
@@ -56,6 +67,12 @@ public class BooleanLTBeed extends AbstractBooleanBinaryExpressionBeed {
     setLeftArgument(firstArgument);
   }
 
+  /*</property>*/
+
+
+  /*<property name="secondArgument">*/
+  //------------------------------------------------------------------
+
   /**
    * @basic
    */
@@ -69,6 +86,10 @@ public class BooleanLTBeed extends AbstractBooleanBinaryExpressionBeed {
   public final void setSecondArgument(RealBeed<?> secondArgument) {
     setRightArgument(secondArgument);
   }
+
+  /*</property>*/
+
+
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;
@@ -77,6 +98,7 @@ public class BooleanLTBeed extends AbstractBooleanBinaryExpressionBeed {
   protected final boolean calculateValue(double firstArgument, double secondArgument) {
     return firstArgument < secondArgument;
   }
+
 
   @Override
   public final String getOperatorString() {

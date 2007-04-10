@@ -71,8 +71,9 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
-                           _FromEvent_ extends Event, _To_>
+public class MappedSetBeed<_From_ extends Beed<?>,
+                           _FromEvent_ extends Event, // MUDO remove this generic parameter
+                           _To_>
     extends AbstractSetBeed<_To_, SetEvent<_To_>>
     implements SetBeed<_To_, SetEvent<_To_>> {
 
@@ -101,12 +102,18 @@ public class MappedSetBeed<_From_ extends Beed<_FromEvent_>,
           @SuppressWarnings("unchecked")
           SetEvent<_From_> setEvent = (SetEvent<_From_>)events.get($source);
           sourceChanged(setEvent);
+          // TODO optimization: only add and remove mappings of added and removed elements
         }
-        // if the value of one of the elements changes
-        // we do nothing special here, just a total recalculate
-        // IDEA there is room for optimalization here
-        // recalculate and notify the listeners if the value has changed
-        return recalculateEvent(edit);
+        if (events.keySet().contains($source) || getMapping().dependsOnBeed()) {
+          // if the value of one of the elements changes
+          // we do nothing special here, just a total recalculate
+          // IDEA there is room for optimalization here
+          // recalculate and notify the listeners if the value has changed
+          return recalculateEvent(edit);
+        }
+        else {
+          return null;
+        }
       }
 
       /**

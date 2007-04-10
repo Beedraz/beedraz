@@ -21,13 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.double64.EditableDoubleBeed;
 import org.junit.Test;
 
 
 public class TestBooleanLTBeed
-    extends AbstractTestBooleanBinaryExpressionBeed<BooleanLTBeed> {
+    extends AbstractTestBooleanBinaryRelationalExpressionBeed<BooleanLTBeed> {
 
   @Test
   public void testConstructor() {
@@ -46,31 +44,6 @@ public class TestBooleanLTBeed
   @Override
   protected BooleanLTBeed createSubject(AggregateBeed owner) {
     return new BooleanLTBeed(owner);
-  }
-
-  @Override
-  protected Boolean valueFromSubject(BooleanLTBeed argumentBeed) {
-    return argumentBeed.get();
-  }
-
-  @Override
-  protected RealBeed<?> getLeftArgument() {
-    return $subject.getLeftArgument();
-  }
-
-  @Override
-  protected RealBeed<?> getRightArgument() {
-    return $subject.getRightArgument();
-  }
-
-  @Override
-  protected void setLeftArgument(EditableDoubleBeed leftArgument) {
-    $subject.setLeftArgument(leftArgument);
-  }
-
-  @Override
-  protected void setRightArgument(EditableDoubleBeed rightArgument) {
-    $subject.setRightArgument(rightArgument);
   }
 
 }

@@ -17,48 +17,35 @@ limitations under the License.
 package org.beedra_II.property.number;
 
 
-import static org.ppeew.smallfries_I.MathUtil.equalValue;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
-
-import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-
-import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.edit.Edit;
+import org.beedra_II.property.AbstractUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
-import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
- * Abstract implementation of unary expression number beeds, represent the a value derived
- * from an {@link #getArgument() argument}.
- *
- * @invar getArgument() == null ? get() == null;
- *
- * @protected
- * @invar getArgument() != null && valueFrom(getArgument()) == null ? get() == null;
- * @invar getArgument() != null && ! valueFrom(getArgument()) != null ?
- *              get().equals(calculateValue(valueFrom(getArgument())));
+ * Abstract implementation of unary expression beeds, that represent a value
+ * of type {@link Number} derived from one argument of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
+                                                  _NumberEvent_ extends RealEvent,
                                                   _ArgumentBeed_ extends RealBeed<? extends _ArgumentEvent_>,
-                                                  _ArgumentEvent_ extends RealEvent,
-                                                  _SendingEvent_ extends RealEvent>
-    extends AbstractExpressionBeed<_Number_, _SendingEvent_>  {
+                                                  _ArgumentEvent_ extends RealEvent>
+    extends AbstractUnaryExprBeed<_Number_,
+                                  _NumberEvent_,
+                                  _ArgumentBeed_,
+                                  _ArgumentEvent_>
+    implements RealBeed<_NumberEvent_>{
 
   /**
    * @pre   owner != null;
+   * @post  getOwner() == owner;
    * @post  getArgument() == null;
    * @post  get() == null;
    */
@@ -66,152 +53,14 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
     super(owner);
   }
 
-
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected _SendingEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        assert $argument != null;
-        _Number_ oldValue = get();
-        recalculate();
-        if (! equalValue(oldValue, get())) {
-          return createNewEvent(oldValue, get(), edit);
-        }
-        else {
-          return null;
-        }
-      }
-
-    };
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
-     */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
-  }
-
-
-  /*<property name="argument">*/
-  //-----------------------------------------------------------------
-
-
-  /**
-   * @basic
-   */
-  public final _ArgumentBeed_ getArgument() {
-    return $argument;
-  }
-
-  /**
-   * @post getArgument() == argument;
-   */
-  public final void setArgument(_ArgumentBeed_ argument) {
-    _Number_ oldValue = get();
-    if ($argument != null) {
-      $dependent.removeUpdateSource($argument);
-    }
-    $argument = argument;
-    if ($argument != null) {
-      recalculate();
-      $dependent.addUpdateSource($argument);
-    }
-    else {
-      assignEffective(false);
-    }
-    if (! equalValue(oldValue, get())) {
-      _SendingEvent_ event = createNewEvent(oldValue, get(), null);
-      updateDependents(event);
-    }
-  }
-
-  private _ArgumentBeed_ $argument;
-
-  /*</property>*/
-
-
-
-  /**
-   * @pre $argument != null;
-   *
-   */
-  private void recalculate() {
-    if ($argument.isEffective()) {
-      recalculateFrom($argument);
-      assignEffective(true);
-    }
-    else {
-      assignEffective(false);
-    }
-  }
-
-  /**
-   * @pre argument != null;
-   * @pre argument.isEffective();
-   */
-  protected abstract void recalculateFrom(_ArgumentBeed_ argument);
-
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
-
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
+  public final Double getDouble() {
+    return isEffective() ? Double.valueOf(getdouble()) : null;
   }
 
   @Override
-  public final void toString(StringBuffer sb, int level) {
-    super.toString(sb, level);
-    sb.append(indent(level + 1) + "value:" + get() + "\n");
-    sb.append(indent(level + 1) + "argument:\n");
-    if (getArgument() != null) {
-      getArgument().toString(sb, level + 2);
-    }
-    else {
-      sb.append(indent(level + 2) + "null");
-    }
+  protected boolean equalValue(_Number_ n1, _Number_ n2) {
+    return MathUtil.equalValue(n1, n2);
   }
-
-  public void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
-    sb.append(getOperatorString());
-    sb.append("(");
-    if (depth == 1) {
-      sb.append(numberFormat.format(getArgument().getdouble()));
-    }
-    else {
-      getArgument().toStringDepth(sb, depth - 1, numberFormat);
-    }
-    sb.append(")");
-  }
-
-  /**
-   * The operator of this binary expression.
-   */
-  public abstract String getOperatorString();
 
 }
 

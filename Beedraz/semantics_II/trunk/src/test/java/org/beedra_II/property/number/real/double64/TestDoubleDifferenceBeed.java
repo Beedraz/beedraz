@@ -20,6 +20,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.edit.EditStateException;
+import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Test;
 
@@ -71,6 +73,21 @@ public class TestDoubleDifferenceBeed
   @Override
   protected void setRightArgument(EditableDoubleBeed rightArgument) {
     $subject.setRightArgument(rightArgument);
+  }
+
+  /**
+   * Bug: difference of null and NaN is 0, and should be null.
+   */
+  @Test
+  public void testBug1() throws EditStateException, IllegalEditException {
+    DoubleDifferenceBeed ddb = new DoubleDifferenceBeed($aggregateBeed);
+    ddb.setLeftArgument(null);
+    EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
+    DoubleEdit edit = new DoubleEdit(edb);
+    edit.setGoal(Double.NaN);
+    edit.perform();
+    ddb.setRightArgument(edb);
+    assertNull(ddb.getDouble());
   }
 
 }

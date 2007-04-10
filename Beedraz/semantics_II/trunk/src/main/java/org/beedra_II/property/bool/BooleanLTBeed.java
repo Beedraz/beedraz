@@ -23,7 +23,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that expresses whether the first argument is strictly smaller than the
+ * A beed that expresses whether the first argument is strictly less than the
  * second argument.
  */
 @CvsInfo(revision = "$Revision$",

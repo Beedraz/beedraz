@@ -67,14 +67,14 @@ public final class BidirToOneEvent<_One_ extends BeanBeed,
    * @return getOldValue().getOwner();
    */
   public final _One_ getOldOne() {
-    return getOldValue().getOwner();
+    return (getOldValue() == null) ? null : getOldValue().getOwner();
   }
 
   /**
    * @return getNewValue().getOwner();
    */
   public final _One_ getNewOne() {
-    return getNewValue().getOwner();
+    return (getNewValue() == null) ? null : getNewValue().getOwner();
   }
 
   @Override

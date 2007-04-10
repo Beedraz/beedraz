@@ -20,19 +20,20 @@ import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.property.number.AbstractTestBinaryExpressionBeed;
+import org.beedra_II.property.AbstractTestBinaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Assert;
 
 
 public abstract class AbstractTestDoubleBinaryExpressionBeed<_UEB_ extends AbstractDoubleBinaryExpressionBeed>
-    extends AbstractTestBinaryExpressionBeed<Double,
-                                             RealBeed<?>,
-                                             RealBeed<?>,
-                                             ActualDoubleEvent,
-                                             _UEB_,
-                                             EditableDoubleBeed,
-                                             EditableDoubleBeed> {
+    extends AbstractTestBinaryExprBeed<Double,
+                                       ActualDoubleEvent,
+                                       Double,
+                                       RealBeed<?>,
+                                       RealBeed<?>,
+                                       _UEB_,
+                                       EditableDoubleBeed,
+                                       EditableDoubleBeed> {
 
   @Override
   protected void initGoals() {

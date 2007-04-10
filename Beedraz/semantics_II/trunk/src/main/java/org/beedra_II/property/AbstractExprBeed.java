@@ -49,7 +49,7 @@ public abstract class AbstractExprBeed<_Result_ extends Object,
   protected abstract _ResultEvent_ createNewEvent(_Result_ oldValue, _Result_ newValue, Edit<?> edit);
 
 
-  /*<property name="secondArgument">*/
+  /*<property name="effective">*/
   //------------------------------------------------------------------
 
   public final boolean isEffective() {

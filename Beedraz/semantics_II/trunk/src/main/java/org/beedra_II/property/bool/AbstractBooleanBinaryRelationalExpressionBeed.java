@@ -23,7 +23,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A binary relation expression with two operands of type {@link RealBeed}.
+ * A binary relation expression or equality expression
+ * with two operands of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

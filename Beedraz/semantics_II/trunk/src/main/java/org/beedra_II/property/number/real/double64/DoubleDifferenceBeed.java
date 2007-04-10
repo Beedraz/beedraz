@@ -23,8 +23,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the difference of a {@link #getLeftArgument()}
- * and a {@link #getRightArgument()}.
+ * A beed that is the difference of a {@link #getLeftArg()}
+ * and a {@link #getRightArg()}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -32,50 +32,70 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class DoubleDifferenceBeed extends AbstractDoubleBinaryExpressionBeed {
 
+
+  /*<construction>*/
+  //------------------------------------------------------------------
+
   /**
    * @pre   owner != null;
    * @post  getDouble() == null;
-   * @post  getFirstArgument() == null;
-   * @post  getSecondArgument() == null;
+   * @post  getLeftArgument() == null;
+   * @post  getRightArgument() == null;
    */
   public DoubleDifferenceBeed(AggregateBeed owner) {
     super(owner);
   }
 
-  /**
-   * @basic
-   */
-  public final RealBeed<?> getFirstArgument() {
-    return getLeftArgument();
-  }
+  /*</construction>*/
 
-  /**
-   * @post getFirstArgument() == firstArgument;
-   */
-  public final void setFirstArgument(RealBeed<?> firstArgument) {
-    setLeftArgument(firstArgument);
-  }
+
+  /*<property name="leftArgument">*/
+  //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final RealBeed<?> getSecondArgument() {
-    return getRightArgument();
+  public final RealBeed<?> getLeftArgument() {
+    return getLeftArg();
   }
 
   /**
-   * @post getSecondArgument() == secondArgument;
+   * @post getLeftArgument() == leftArgument;
    */
-  public final void setSecondArgument(RealBeed<?> secondArgument) {
-    setRightArgument(secondArgument);
+  public final void setLeftArgument(RealBeed<?> leftArgument) {
+    setLeftArg(leftArgument);
   }
+
+  /*</property>*/
+
+
+  /*<property name="rightArgument">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final RealBeed<?> getRightArgument() {
+    return getRightArg();
+  }
+
+  /**
+   * @post getRightArgument() == rightArgument;
+   */
+  public final void setRightArgument(RealBeed<?> rightArgument) {
+    setRightArg(rightArgument);
+  }
+
+  /*</property>*/
+
+
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;
    */
   @Override
-  protected final double calculateValue(double firstArgument, double secondArgument) {
-    return firstArgument - secondArgument;
+  protected final double calculateValue(double leftArgument, double rightArgument) {
+    return leftArgument - rightArgument;
   }
 
   @Override

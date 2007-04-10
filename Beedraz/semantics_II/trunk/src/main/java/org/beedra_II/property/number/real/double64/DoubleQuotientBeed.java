@@ -47,28 +47,28 @@ public class DoubleQuotientBeed
    * @basic
    */
   public final RealBeed<?> getNumerator() {
-    return getLeftArgument();
+    return getLeftArg();
   }
 
   /**
    * @post getNumerator() == numerator;
    */
   public final void setNumerator(RealBeed<?> numerator) {
-    setLeftArgument(numerator);
+    setLeftArg(numerator);
   }
 
   /**
    * @basic
    */
   public final RealBeed<?> getDenominator() {
-    return getRightArgument();
+    return getRightArg();
   }
 
   /**
    * @post getDenominator() == denominator;
    */
   public final void setDenominator(RealBeed<?> denominator) {
-    setRightArgument(denominator);
+    setRightArg(denominator);
   }
 
   /**

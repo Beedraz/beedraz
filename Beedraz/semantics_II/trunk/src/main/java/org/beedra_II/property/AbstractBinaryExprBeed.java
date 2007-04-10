@@ -39,12 +39,12 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * Abstract implementation of binary expression beeds, that represent a value derived
  * from 2 arguments of type {@link RealBeed}.
  *
- * @invar getLeftArgument() == null || getRightArgument() == null
+ * @invar getLeftArg() == null || getRightArg() == null
  *          ? get() == null
  *          : true;
  *
  * @protected
- * Accessor methods for the {@link #getLeftArgument() left argument} and the {@link #getRightArgument()
+ * Accessor methods for the {@link #getLeftArg() left argument} and the {@link #getRightArg()
  * right argument} are kept protected, to force subclasses to provide meaningful public names for the
  * arguments.
  */
@@ -63,8 +63,8 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   /**
    * @pre   owner != null;
    * @post  getOwner() == owner;
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
+   * @post  getLeftArg() == null;
+   * @post  getRightArg() == null;
    * @post  get() == null;
    */
   public AbstractBinaryExprBeed(AggregateBeed owner) {
@@ -122,14 +122,14 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   /**
    * @basic
    */
-  protected final _LeftArgumentBeed_ getLeftArgument() {
+  protected final _LeftArgumentBeed_ getLeftArg() {
     return $leftArgument;
   }
 
   /**
-   * @post getLeftArgument() == leftArgument;
+   * @post getLeftArg() == leftArgument;
    */
-  protected final void setLeftArgument(_LeftArgumentBeed_ leftArgument) {
+  protected final void setLeftArg(_LeftArgumentBeed_ leftArgument) {
     _Result_ oldValue = get();
     if ($leftArgument != null) {
       $dependent.removeUpdateSource($leftArgument);
@@ -155,14 +155,14 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   /**
    * @basic
    */
-  protected final _RightArgumentBeed_ getRightArgument() {
+  protected final _RightArgumentBeed_ getRightArg() {
     return $rightArgument;
   }
 
   /**
-   * @post getRightArgument() == rightArgument;
+   * @post getRightArg() == rightArgument;
    */
-  protected final void setRightArgument(_RightArgumentBeed_ rightArgument) {
+  protected final void setRightArg(_RightArgumentBeed_ rightArgument) {
     _Result_ oldValue = get();
     if ($rightArgument != null) {
       $dependent.removeUpdateSource($rightArgument);
@@ -224,33 +224,33 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + get() + "\n");
     sb.append(indent(level + 1) + "arguments:\n");
-    if (getLeftArgument() == null && getRightArgument() == null) {
+    if (getLeftArg() == null && getRightArg() == null) {
       sb.append(indent(level + 2) + "null");
     }
-    if (getLeftArgument() != null) {
-      getLeftArgument().toString(sb, level + 2);
+    if (getLeftArg() != null) {
+      getLeftArg().toString(sb, level + 2);
     }
-    if (getRightArgument() != null) {
-      getRightArgument().toString(sb, level + 2);
+    if (getRightArg() != null) {
+      getRightArg().toString(sb, level + 2);
     }
   }
 
   public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getLeftArgument().getdouble()));
+      sb.append(numberFormat.format(getLeftArg().getdouble()));
     }
     else {
-      getLeftArgument().toStringDepth(sb, depth - 1, numberFormat);
+      getLeftArg().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
     sb.append(getOperatorString());
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getRightArgument().getdouble()));
+      sb.append(numberFormat.format(getRightArg().getdouble()));
     }
     else {
-      getRightArgument().toStringDepth(sb, depth - 1, numberFormat);
+      getRightArg().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
   }

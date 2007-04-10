@@ -47,28 +47,28 @@ public class DoubleExponentBeed
    * @basic
    */
   public final RealBeed<?> getBase() {
-    return getLeftArgument();
+    return getLeftArg();
   }
 
   /**
    * @post getBase() == base;
    */
   public final void setBase(RealBeed<?> base) {
-    setLeftArgument(base);
+    setLeftArg(base);
   }
 
   /**
    * @basic
    */
   public final RealBeed<?> getExponent() {
-    return getRightArgument();
+    return getRightArg();
   }
 
   /**
    * @post getExponent() == exponent;
    */
   public final void setExponent(RealBeed<?> exponent) {
-    setRightArgument(exponent);
+    setRightArg(exponent);
   }
 
   /**

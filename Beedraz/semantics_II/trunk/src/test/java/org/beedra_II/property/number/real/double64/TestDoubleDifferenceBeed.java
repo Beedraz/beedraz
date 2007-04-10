@@ -33,8 +33,8 @@ public class TestDoubleDifferenceBeed
   public void testConstructor() {
     DoubleDifferenceBeed beed = new DoubleDifferenceBeed($aggregateBeed);
     assertEquals($aggregateBeed, beed.getOwner());
-    assertNull(beed.getFirstArgument());
-    assertNull(beed.getSecondArgument());
+    assertNull(beed.getLeftArgument());
+    assertNull(beed.getRightArgument());
     assertNull(beed.getDouble());
   }
 
@@ -55,22 +55,22 @@ public class TestDoubleDifferenceBeed
 
   @Override
   protected RealBeed<?> getLeftArgument() {
-    return $subject.getFirstArgument();
+    return $subject.getLeftArgument();
   }
 
   @Override
   protected RealBeed<?> getRightArgument() {
-    return $subject.getSecondArgument();
+    return $subject.getRightArgument();
   }
 
   @Override
   protected void setLeftArgument(EditableDoubleBeed leftArgument) {
-    $subject.setFirstArgument(leftArgument);
+    $subject.setLeftArgument(leftArgument);
   }
 
   @Override
   protected void setRightArgument(EditableDoubleBeed rightArgument) {
-    $subject.setSecondArgument(rightArgument);
+    $subject.setRightArgument(rightArgument);
   }
 
 }

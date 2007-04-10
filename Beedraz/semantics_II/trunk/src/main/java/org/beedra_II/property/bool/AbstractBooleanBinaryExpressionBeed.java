@@ -40,8 +40,8 @@ public abstract class AbstractBooleanBinaryExpressionBeed
    * @pre   owner != null;
    * @post  getOwner() == owner;
    * @post  getBoolean() == null;
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
+   * @post  getLeftArg() == null;
+   * @post  getRightArg() == null;
    */
   protected AbstractBooleanBinaryExpressionBeed(AggregateBeed owner) {
     super(owner);

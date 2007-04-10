@@ -50,8 +50,8 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
   /**
    * @pre   owner != null;
    * @post  getOwner() == owner;
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
+   * @post  getLeftArg() == null;
+   * @post  getRightArg() == null;
    * @post  get() == null;
    */
   public AbstractBinaryExpressionBeed(AggregateBeed owner) {

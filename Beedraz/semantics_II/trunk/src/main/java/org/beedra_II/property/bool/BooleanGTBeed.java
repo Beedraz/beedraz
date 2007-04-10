@@ -18,7 +18,6 @@ package org.beedra_II.property.bool;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -30,7 +29,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BooleanGTBeed extends AbstractBooleanBinaryExpressionBeed {
+public class BooleanGTBeed extends AbstractBooleanBinaryRelationalExpressionBeed {
 
 
   /*<construction>*/
@@ -39,8 +38,8 @@ public class BooleanGTBeed extends AbstractBooleanBinaryExpressionBeed {
   /**
    * @pre   owner != null;
    * @post  getOwner() == owner;
-   * @post  getFirstArgument() == null;
-   * @post  getSecondArgument() == null;
+   * @post  getLeftArgument() == null;
+   * @post  getRightArgument() == null;
    * @post  getBoolean() == null;
    */
   public BooleanGTBeed(AggregateBeed owner) {
@@ -49,54 +48,13 @@ public class BooleanGTBeed extends AbstractBooleanBinaryExpressionBeed {
 
   /*</construction>*/
 
-
-  /*<property name="firstArgument">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  public final RealBeed<?> getFirstArgument() {
-    return getLeftArgument();
-  }
-
-  /**
-   * @post getFirstArgument() == firstArgument;
-   */
-  public final void setFirstArgument(RealBeed<?> firstArgument) {
-    setLeftArgument(firstArgument);
-  }
-
-  /*</property>*/
-
-
-  /*<property name="secondArgument">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  public final RealBeed<?> getSecondArgument() {
-    return getRightArgument();
-  }
-
-  /**
-   * @post getSecondArgument() == secondArgument;
-   */
-  public final void setSecondArgument(RealBeed<?> secondArgument) {
-    setRightArgument(secondArgument);
-  }
-
-  /*</property>*/
-
-
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;
    */
   @Override
-  protected final boolean calculateValue(double firstArgument, double secondArgument) {
-    return firstArgument > secondArgument;
+  protected final boolean calculateValue(double leftArgument, double rightArgument) {
+    return leftArgument > rightArgument;
   }
 
 

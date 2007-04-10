@@ -47,6 +47,7 @@ public abstract class AbstractBinaryExpressionBeed<_LeftArgumentBeed_ extends Re
 
   /**
    * @pre   owner != null;
+   * @post  getOwner() == owner;
    * @post  getLeftArgument() == null;
    * @post  getRightArgument() == null;
    * @post  get() == null;

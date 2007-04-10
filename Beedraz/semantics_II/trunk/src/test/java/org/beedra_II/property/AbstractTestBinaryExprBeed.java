@@ -14,15 +14,15 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.number;
+package org.beedra_II.property;
 
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
+import org.beedra_II.Event;
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.StubAggregateBeed;
@@ -33,16 +33,16 @@ import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.smallfries_I.MathUtil;
 
 
-public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
-                                                       _LeftArgumentBeed_ extends RealBeed<? extends RealEvent>,
-                                                       _RightArgumentBeed_ extends RealBeed<? extends RealEvent>,
-                                                       _NumberEvent_ extends RealEvent,
-                                                       _UEB_ extends AbstractBinaryExpressionBeed<_Number_, _NumberEvent_, _LeftArgumentBeed_, ? extends RealEvent, _RightArgumentBeed_, ? extends RealEvent>,
-                                                       _LeftEAB_ extends _LeftArgumentBeed_,
-                                                       _RightEAB_ extends _RightArgumentBeed_> {
+public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
+                                                 _ResultEvent_ extends Event,
+                                                 _Number_ extends Number,
+                                                 _LeftArgumentBeed_ extends RealBeed<? extends RealEvent>,
+                                                 _RightArgumentBeed_ extends RealBeed<? extends RealEvent>,
+                                                 _UEB_ extends AbstractBinaryExprBeed<_Result_, _ResultEvent_, _LeftArgumentBeed_, ? extends RealEvent, _RightArgumentBeed_, ? extends RealEvent>,
+                                                 _LeftEAB_ extends _LeftArgumentBeed_,
+                                                 _RightEAB_ extends _RightArgumentBeed_> {
 
 
   protected abstract _UEB_ createSubject(AggregateBeed owner);
@@ -51,7 +51,7 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
 
   protected abstract _RightEAB_ createEditableRightArgumentBeed(AggregateBeed owner);
 
-  protected abstract StubListener<_NumberEvent_> createStubListener();
+  protected abstract StubListener<_ResultEvent_> createStubListener();
 
   protected abstract void initGoals();
 
@@ -67,17 +67,17 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
 
   protected abstract void changeRightArgument(_RightEAB_ editableArgumentBeed, _Number_ newValue);
 
-  protected abstract _Number_ expectedValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
+  protected abstract _Result_ expectedValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
 
-  protected abstract _Number_ valueFromSubject(_UEB_ argumentBeed);
+  protected abstract _Result_ valueFromSubject(_UEB_ argumentBeed);
 
   protected abstract _Number_ valueFromLeft(_LeftArgumentBeed_ argumentBeed);
 
   protected abstract _Number_ valueFromRight(_RightArgumentBeed_ argumentBeed);
 
-  protected abstract _Number_ oldValueFrom(_NumberEvent_ argumentBeed);
+  protected abstract _Result_ oldValueFrom(_ResultEvent_ argumentBeed);
 
-  protected abstract _Number_ newValueFrom(_NumberEvent_ argumentBeed);
+  protected abstract _Result_ newValueFrom(_ResultEvent_ argumentBeed);
 
   @Before
   public void setUp() throws Exception {
@@ -122,7 +122,7 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
   protected _Number_ $rightGoal2;
   protected _Number_ $rightGoalMIN;
   protected _Number_ $rightGoalMAX;
-  StubListener<_NumberEvent_> $listener;
+  StubListener<_ResultEvent_> $listener;
 
   @Test
   public void testSetArgument_1L() {
@@ -263,23 +263,23 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
   }
 
   private void validateEvent(_Number_ oldLeftV, _Number_ newLeftV, _Number_ oldRightV, _Number_ newRightV) {
-    _Number_ expectedOldValue = ((oldLeftV == null) || (oldRightV == null)) ? null : expectedValue(oldLeftV, oldRightV);
-    _Number_ expectedNewValue = ((newLeftV == null) || (newRightV == null)) ? null : expectedValue(newLeftV, newRightV);
-    if (! MathUtil.equalValue(expectedOldValue, expectedNewValue)) {
+    _Result_ expectedOldValue = ((oldLeftV == null) || (oldRightV == null)) ? null : expectedValue(oldLeftV, oldRightV);
+    _Result_ expectedNewValue = ((newLeftV == null) || (newRightV == null)) ? null : expectedValue(newLeftV, newRightV);
+    if (! $subject.equalValue(expectedOldValue, expectedNewValue)) {
       assertNotNull($listener.$event);
       if ((oldLeftV == null) || (oldRightV == null)) {
         assertNull(oldValueFrom($listener.$event));
       }
       else {
-        assertNotNull($listener.$event.getOldDouble());
-        assertTrue(equalValue(expectedValue(oldLeftV, oldRightV), oldValueFrom($listener.$event)));
+        assertNotNull(oldValueFrom($listener.$event));
+        assertTrue($subject.equalValue(expectedValue(oldLeftV, oldRightV), oldValueFrom($listener.$event)));
       }
       if ((newLeftV == null) || (newRightV == null)) {
         assertNull(newValueFrom($listener.$event));
       }
       else {
         assertNotNull(newValueFrom($listener.$event));
-        assertTrue(equalValue(expectedValue(newLeftV, newRightV), newValueFrom($listener.$event)));
+        assertTrue($subject.equalValue(expectedValue(newLeftV, newRightV), newValueFrom($listener.$event)));
       }
     }
     else {
@@ -298,7 +298,7 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
       assertNotNull(getLeftArgument());
       leftArgumentValue = valueFromLeft(leftArgument);
       if (leftArgumentValue == null) {
-        assertNull($subject.getDouble());
+        assertNull($subject.get());
       }
     }
     else {
@@ -308,15 +308,15 @@ public abstract class AbstractTestBinaryExpressionBeed<_Number_ extends Number,
       assertNotNull(getRightArgument());
       rightArgumentValue = valueFromRight(rightArgument);
       if (rightArgumentValue == null) {
-        assertNull($subject.getDouble());
+        assertNull($subject.get());
       }
     }
     else {
       assertNull(getRightArgument());
     }
     if ((leftArgument != null) && (rightArgument != null) && (leftArgumentValue != null) && (rightArgumentValue != null)) {
-      assertNotNull($subject.getDouble());
-      assertTrue(equalValue(expectedValue(leftArgumentValue, rightArgumentValue), valueFromSubject($subject)));
+      assertNotNull($subject.get());
+      assertTrue($subject.equalValue(expectedValue(leftArgumentValue, rightArgumentValue), valueFromSubject($subject)));
     }
   }
 

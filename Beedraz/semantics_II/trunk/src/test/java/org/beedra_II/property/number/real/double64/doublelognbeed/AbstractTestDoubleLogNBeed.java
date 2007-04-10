@@ -21,6 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.StubBeanBeed;
+import org.beedra_II.path.ConstantPath;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.double64.AbstractTestDoubleConstantUnaryExpressionBeed;
 import org.beedra_II.property.number.real.double64.DoubleConstantBeed;
 import org.beedra_II.property.number.real.double64.DoubleLnBeed;
@@ -61,8 +63,9 @@ public abstract class AbstractTestDoubleLogNBeed
     DoubleLogNBeed logNBeed = new DoubleLogNBeed(new StubBeanBeed(), Math.E);
     for (double d : values) {
       DoubleConstantBeed constantBeed = new DoubleConstantBeed(new StubBeanBeed(), d);
-      lnBeed.setArgument(constantBeed);
-      logNBeed.setArgument(constantBeed);
+      Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
+      lnBeed.setArgumentPath(constantBeedPath);
+      logNBeed.setArgumentPath(constantBeedPath);
       assertEquals(lnBeed.getDouble(), logNBeed.getDouble());
     }
   }
@@ -76,8 +79,9 @@ public abstract class AbstractTestDoubleLogNBeed
     DoubleLogNBeed logNBeed = new DoubleLogNBeed(new StubBeanBeed(), 10);
     for (double d : values) {
       DoubleConstantBeed constantBeed = new DoubleConstantBeed(new StubBeanBeed(), d);
-      log10Beed.setArgument(constantBeed);
-      logNBeed.setArgument(constantBeed);
+      Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
+      log10Beed.setArgumentPath(constantBeedPath);
+      logNBeed.setArgumentPath(constantBeedPath);
       assertEquals(log10Beed.getDouble(), logNBeed.getDouble());
     }
   }

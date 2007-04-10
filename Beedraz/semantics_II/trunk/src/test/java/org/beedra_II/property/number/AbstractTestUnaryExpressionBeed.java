@@ -28,6 +28,9 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.path.ConstantPath;
+import org.beedra_II.path.NullPath;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
@@ -67,7 +70,9 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     initGoals();
     $aggregateBeed = new StubAggregateBeed();
     $argumentDoubleBeed = createEditableArgumentBeed($aggregateBeed);
+    $argumentDoubleBeedPath = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed);
     $argumentDoubleBeed2 = createEditableArgumentBeed($aggregateBeed);
+    $argumentDoubleBeedPath2 = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed2);
     $subject = createSubject($aggregateBeed);
     $listener = createStubListener();
   }
@@ -75,7 +80,9 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   @After
   public void tearDown() throws Exception {
     $argumentDoubleBeed = null;
+    $argumentDoubleBeedPath = null;
     $argumentDoubleBeed2 = null;
+    $argumentDoubleBeedPath2 = null;
     $subject = null;
     $aggregateBeed = null;
     $listener = null;
@@ -88,7 +95,9 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   private _UEB_ $subject;
   protected AggregateBeed $aggregateBeed;
   private _EAB_ $argumentDoubleBeed;
+  private Path<_ArgumentBeed_> $argumentDoubleBeedPath;
   private _EAB_ $argumentDoubleBeed2;
+  private Path<_ArgumentBeed_> $argumentDoubleBeedPath2;
   protected _Number_ $goal1;
   protected _Number_ $goal2;
   protected _Number_ $goalMIN;
@@ -97,14 +106,14 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
 
   @Test
   public void testSetArgument_1() {
-    $subject.setArgument(null);
+    $subject.setArgumentPath(new NullPath<_ArgumentBeed_>());
     validateSubjectFromArgument(null);
     validateEvent(null, null);
   }
 
   @Test
   public void testSetArgument_2() {
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     validateSubjectFromArgument($argumentDoubleBeed);
     validateEvent(null, null);
   }
@@ -113,24 +122,24 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   public void testSetArgument_3() {
     changeArgument($argumentDoubleBeed, $goal1);
     $subject.addListener($listener);
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     validateSubjectFromArgument($argumentDoubleBeed);
     validateEvent(null, $goal1);
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     validateSubjectFromArgument($argumentDoubleBeed);
     validateEvent(null, null);
-    $subject.setArgument(null);
+    $subject.setArgumentPath(null);
     validateSubjectFromArgument(null);
     validateEvent($goal1, null);
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     validateSubjectFromArgument($argumentDoubleBeed);
     validateEvent(null, $goal1);
     changeArgument($argumentDoubleBeed2, $goal2);
-    $subject.setArgument($argumentDoubleBeed2);
+    $subject.setArgumentPath($argumentDoubleBeedPath2);
     validateSubjectFromArgument($argumentDoubleBeed2);
     validateEvent($goal1, $goal2);
     changeArgument($argumentDoubleBeed, $goal2);
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     validateSubjectFromArgument($argumentDoubleBeed);
     validateEvent(null, null);
   }
@@ -140,7 +149,7 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
     $subject.addListener($listener);
     assertTrue($subject.isListener($listener));
     changeArgument($argumentDoubleBeed, $goal1);
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     validateSubjectFromArgument($argumentDoubleBeed);
     validateEvent(null, $goal1);
     changeArgument($argumentDoubleBeed, $goal2);
@@ -229,7 +238,7 @@ public abstract class AbstractTestUnaryExpressionBeed<_Number_ extends Number,
   public void testToString_StringBuffer_int_2() throws EditStateException, IllegalEditException {
     StringBuffer stub = new StringBuffer();
     $subject.toString(stub, 1);
-    $subject.setArgument($argumentDoubleBeed);
+    $subject.setArgumentPath($argumentDoubleBeedPath);
     $subject.toString(stub, 1);
     changeArgument($argumentDoubleBeed, $goal1);
     $subject.toString(stub, 1);

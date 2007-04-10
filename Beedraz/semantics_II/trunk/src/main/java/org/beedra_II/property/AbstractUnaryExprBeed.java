@@ -27,6 +27,7 @@ import java.util.Set;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -121,10 +122,28 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
     return $argument;
   }
 
+  public final void setArgumentPath(Path<? extends _ArgumentBeed_> beedPath) {
+    _ArgumentBeed_ oldArgument = $argument;
+    if ($argumentPath != null) {
+      $dependent.removeUpdateSource($argumentPath);
+    }
+    $argumentPath = beedPath;
+    _ArgumentBeed_ argument = null;
+    if ($argumentPath != null) {
+      argument = $argumentPath.get();
+      $dependent.addUpdateSource($argumentPath);
+    }
+    if (argument != oldArgument) {
+      setArgument(argument);
+    }
+  }
+
+  private Path<? extends _ArgumentBeed_> $argumentPath;
+
   /**
    * @post getArgument() == argument;
    */
-  public final void setArgument(_ArgumentBeed_ argument) {
+  private final void setArgument(_ArgumentBeed_ argument) {
     _Result_ oldValue = get();
     if ($argument != null) {
       $dependent.removeUpdateSource($argument);

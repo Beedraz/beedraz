@@ -25,7 +25,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>General code for Double implementations of {@link AbstractBinaryExpressionBeed}.</p>
+ * Abstract implementation of binary expression beeds, that represent a boolean value derived
+ * from 2 arguments of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -39,7 +40,8 @@ public abstract class AbstractBooleanBinaryExpressionBeed
    * @pre   owner != null;
    * @post  getOwner() == owner;
    * @post  getBoolean() == null;
-   * @post  getArgument() == null;
+   * @post  getLeftArgument() == null;
+   * @post  getRightArgument() == null;
    */
   protected AbstractBooleanBinaryExpressionBeed(AggregateBeed owner) {
     super(owner);

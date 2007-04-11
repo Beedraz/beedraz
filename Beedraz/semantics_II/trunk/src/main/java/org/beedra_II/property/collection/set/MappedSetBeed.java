@@ -130,6 +130,8 @@ public class MappedSetBeed<_From_ extends Beed<?>,
         /* All Beeds that are added to the SetBeed by the given event
          * become update sources
          */
+        // mudo dependsonbeed
+
         Set<_From_> added = event.getAddedElements();
         for (_From_ beed : added) {
           addUpdateSource(beed);

@@ -28,6 +28,7 @@ import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
+import org.beedra_II.path.PathEvent;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -71,8 +72,14 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
       @Override
       protected _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        assert $argument != null;
+        /* Events are from the argument or the argument path, or both.
+         * React to event from path first, setting the argument. Then do a recalculate.
+         */
         _Result_ oldValue = get();
+        PathEvent<_ArgumentBeed_> pathEvent = (PathEvent<_ArgumentBeed_>)events.get($argumentPath);
+        if (pathEvent != null) {
+          setArgument(pathEvent.getNewValue());
+        }
         recalculate();
         if (! equalValue(oldValue, get())) {
           return createNewEvent(oldValue, get(), edit);
@@ -117,6 +124,13 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
   /**
    * @basic
+   */
+  public final Path<? extends _ArgumentBeed_> getArgumentPath() {
+    return $argumentPath;
+  }
+
+  /**
+   * @return getArgumentPath() == null ? null : getArgumentPath().get();
    */
   public final _ArgumentBeed_ getArgument() {
     return $argument;

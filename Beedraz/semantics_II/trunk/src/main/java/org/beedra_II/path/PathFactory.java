@@ -22,8 +22,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Return a {@link Beed}, and warn dependents if the
- *   beed to return changes.</p>
+ * <p>Create a {@link Path}. Pathfactories are necessary,
+ *   because paths hold state, and we need instances
+ *   when we use them.</p>
  *
  * @author Jan Dockx
  */
@@ -31,12 +32,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public interface Path<_ResultBeed_ extends Beed<?>> extends Beed<PathEvent<_ResultBeed_>> {
+public interface PathFactory<_StartBeed_ extends Beed<?>,
+                             _ResultBeed_ extends Beed<?>> {
 
   /**
-   * @basic
+   * @pre startBeed != null;
+   * @result result != null;
    */
-  _ResultBeed_ get();
+  Path<_ResultBeed_> createPath(_StartBeed_ startBeed);
 
 }
 

@@ -35,6 +35,7 @@ import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.path.PathFactory;
 import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.property.PropertyBeed;
 import org.beedra_II.property.bool.BooleanBeed;
 import org.beedra_II.property.bool.BooleanEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -55,11 +56,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author  Peopleware n.v.
  *
  * @invar  getCriterion() != null;
- * @invar  getSource() == null ? get().isEmpty();
- * @invar  getSource() != null ?
- *           get() == {element : getSource().get().contains(element) &&
- *                               getFilter().filter(element)};
- * @mudo invariants
+ * @invar  getCriterion() == 'getCriterion();
+ * @invar  getSource() == null
+ *           ? get().isEmpty()
+ *           : true;
+ * @invar  getSource() != null
+ *           ? get() == {element : getSource().get().contains(element) &&
+ *                                 getCriterion().createPath(element).get().getboolean() == true}
+ *           : true;
+ * @invar  getSourcePath() != null
+ *           ? getSource() == getSourcePath().get()
+ *           : getSource() == null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -75,6 +82,7 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
    * @post  getOwner() == owner;
    * @post  getCriterion() == criterion;
    * @post  getSource() == null;
+   * @post  getSourcePath() == null;
    * @post  get().isEmpty();
    */
   public NewFilteredSetBeed(PathFactory<_Element_, BooleanBeed> criterion, AggregateBeed owner) {
@@ -88,8 +96,10 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
       protected SetEvent<_Element_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         assert events != null;
         assert events.size() > 0;
-        /* evenst can come from the source (elements added or removed) and from the
-         * element criteria of each of the source elements, or from the source path
+        /* Events can come:
+         * - from the source path,
+         * - from the source (elements added or removed) and
+         * - from the element criteria of each of the source elements
          */
         HashSet<_Element_> addedFilteredElements = new HashSet<_Element_>();
         HashSet<_Element_> removedFilteredElements = new HashSet<_Element_>();
@@ -98,14 +108,36 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
           handleSourceEvent(event, addedFilteredElements, removedFilteredElements);
           handleElementCriterionEvent(event, addedFilteredElements, removedFilteredElements);
         }
-        return createEvent(addedFilteredElements, removedFilteredElements);
+        return createEvent(addedFilteredElements, removedFilteredElements, edit);
       }
 
-      private void handleSourcePathEvent(Event event, HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
+      /**
+       * If the given event is of type {@link PathEvent}, then it is caused by
+       * the {@link NewFilteredSetBeed#getSourcePath()}. In this case, we
+       * replace the old source by the new value in the given event.
+       * The elements that are added by this operation are gathered in
+       * <code>addedFilteredElements</code>.
+       * The elements that are removed by this operation are gathered in
+       * <code>removedFilteredElements</code>.
+       *
+       * @pre  event != null;
+       * @pre  addedFilteredElements != null;
+       * @pre  addedFilteredElements.isEmpty();
+       * @pre  removedFilteredElements != null;
+       * @pre  removedFilteredElements.isEmpty();
+       */
+      private void handleSourcePathEvent(Event event,
+          HashSet<_Element_> addedFilteredElements,
+          HashSet<_Element_> removedFilteredElements) {
         assert event != null;
+        assert addedFilteredElements != null;
+        assert addedFilteredElements.isEmpty();
+        assert removedFilteredElements != null;
+        assert removedFilteredElements.isEmpty();
         try {
           @SuppressWarnings("unchecked")
           PathEvent<SetBeed<_Element_, ?>> pathEvent = (PathEvent<SetBeed<_Element_, ?>>)event;
+          assert pathEvent.getSource() == $sourcePath;
           SetBeed<_Element_, ?> newSource = pathEvent.getNewValue();
           setSource(newSource, addedFilteredElements, removedFilteredElements);
         }
@@ -114,8 +146,29 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
         }
       }
 
-      private void handleSourceEvent(Event event, HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
+      /**
+       * If the given event is of type {@link SetEvent}, then it is caused by
+       * the {@link NewFilteredSetBeed#getSource()}.
+       * In this case, we remove the elements in {@link SetEvent#getRemovedElements()}
+       * and we add the elements in {@link SetEvent#getAddedElements()}.
+       * The elements that are added to {@link NewFilteredSetBeed#$filteredSet}
+       * by this operation are gathered in <code>addedFilteredElements</code>.
+       * The elements that are removed from {@link NewFilteredSetBeed#$filteredSet}
+       * by this operation are gathered in <code>removedFilteredElements</code>.
+       *
+       * @pre  event != null;
+       * @pre  addedFilteredElements != null;
+       * @pre  addedFilteredElements.isEmpty();
+       * @pre  removedFilteredElements != null;
+       * @pre  removedFilteredElements.isEmpty();
+       */
+      private void handleSourceEvent(Event event,
+          HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
         assert event != null;
+        assert addedFilteredElements != null;
+        assert addedFilteredElements.isEmpty();
+        assert removedFilteredElements != null;
+        assert removedFilteredElements.isEmpty();
         try {
           @SuppressWarnings("unchecked")
           SetEvent<_Element_> setEvent = (SetEvent<_Element_>)event;
@@ -132,10 +185,37 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
         }
       }
 
-      private void handleElementCriterionEvent(Event event, HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
+      /**
+       * If the given event is of type {@link BooleanEvent}, then it is caused by
+       * one of the {@link ElementCriterion filter criteria}.
+       * Since a {@link ElementCriterion filter criterion} is a {@link BooleanBeed},
+       * and since it can only be true or false (not null), this event is sent when
+       * the value of the {@link ElementCriterion filter criterion} changed from true
+       * to false, or from false to true.
+       * When the {@link BooleanEvent#getNewValue() new value} of the event is true,
+       * we add the element of the {@link ElementCriterion filter criterion} to
+       * {@link NewFilteredSetBeed#$filteredSet} and to <code>addedFilteredElements</code>.
+       * When the {@link BooleanEvent#getNewValue() new value} of the event is false,
+       * we remove the element of the {@link ElementCriterion filter criterion} from
+       * {@link NewFilteredSetBeed#$filteredSet} and add it to
+       * <code>removedFilteredElements</code>.
+       *
+       * @pre  event != null;
+       * @pre  addedFilteredElements != null;
+       * @pre  addedFilteredElements.isEmpty();
+       * @pre  removedFilteredElements != null;
+       * @pre  removedFilteredElements.isEmpty();
+       */
+      private void handleElementCriterionEvent(Event event,
+          HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
         assert event != null;
+        assert addedFilteredElements != null;
+        assert addedFilteredElements.isEmpty();
+        assert removedFilteredElements != null;
+        assert removedFilteredElements.isEmpty();
         try {
           BooleanEvent criterionEvent = (BooleanEvent)event;
+          assert criterionEvent.getSource() instanceof NewFilteredSetBeed.ElementCriterion;
           ElementCriterion ec = (ElementCriterion)criterionEvent.getSource();
           _Element_ element = ec.getElement();
           if (criterionEvent.getNewValue()) {
@@ -192,8 +272,8 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
   }
 
   /**
-   * BooleanBeeds are PropertyBeeds and need an owner.
-   * We don't wat that for ElementCriterion in the real
+   * {@link BooleanBeed}s are {@link PropertyBeed}s and need an owner.
+   * We don't want that for {@link ElementCriterion} in the real
    * semantic graph, so whe use this stub.
    */
   private final static AbstractAggregateBeed ELEMENT_CRITERION_OWNER = new AbstractAggregateBeed() {
@@ -203,19 +283,22 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
   /**
    * Fabricated class. This {@link BooleanBeed} uses a
    * {@link Path} to a true {@link BooleanBeed} for an
-   * element (created by {@link #getCriterion()}).
+   * {@link _Element_} (created by {@link #getCriterion()}).
    * If the result of the path is {@code true}, this {@link BooleanBeed}
    * returns {@code true}.
    * If the result of the path is {@code false}, this {@link BooleanBeed}
    * returns {@code false}.
-   * If the result of the path is {@code null} (either the result {@link BooleanBeed}
+   * If the result of the path is {@code null} (either the resulting {@link BooleanBeed}
    * is not effective, or its {@link BooleanBeed#getBoolean()} method returns
    * {@code null}), this {@link BooleanBeed} returns {@code false}.
-   * This {@link BooleanBeed} never returns {@code null}.
-   * The value of this {@link BooleanBeed} can change if the resulting
-   * {@link BooleanBeed}'s value changes, or the result of the give path
-   * changes.
+   * So, this {@link BooleanBeed} never returns {@code null}.
    *
+   * The value of this {@link BooleanBeed} can change if:
+   * - the value of the resulting {@link BooleanBeed} changes, or
+   * - the result of the given path changes, i.e. the path returns another
+   *   {@link BooleanBeed}.
+   *
+   * @invar get() != null; The value of this beed is always true or false, never null.
    * @invar getElement() != null;
    */
   private class ElementCriterion
@@ -223,7 +306,8 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
       implements BooleanBeed {
 
     /**
-     * @pre element != null;
+     * @pre   element != null;
+     * @post  getElement() == element;
      */
     public ElementCriterion(_Element_ element) {
       super(ELEMENT_CRITERION_OWNER);
@@ -241,9 +325,28 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
 
     private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
+      /**
+       * There are two update sources:
+       * - {@link ElementCriterion#$bbPath} and
+       * - {@link ElementCriterion#$bb} (if it is effective)
+       * If {@link ElementCriterion#$bbPath} changes, then it sends a {@link PathEvent},
+       * containing the old and new value of the path, i.e. containing the old and new
+       * {@link BooleanBeed}. We remove the old {@link BooleanBeed} as {@link UpdateSource}
+       * and add the new {@link BooleanBeed} as {@link UpdateSource}. The value of
+       * {@link ElementCriterion#$bb} is replaced by the new {@link BooleanBeed}. The
+       * {@link ElementCriterion#$value} is updated to the value of the new
+       * {@link BooleanBeed}.
+       * If {@link ElementCriterion#$bb} changes, then it sends a {@link BooleanEvent},
+       * containing the old and new value of the {@link BooleanBeed}. The
+       * {@link ElementCriterion#$value} is updated to the new value of the
+       * {@link ElementCriterion#$bb}.
+       *
+       * If the {@link ElementCriterion#$value} has changed, then we return a
+       * {@link BooleanEvent} containing the old and new value.
+       */
       @Override
       protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        // events are from the $bbPath or the $bb
+        // events are from the $bbPath or the $bb (if it is effective)
         assert events != null;
         assert events.size() > 0;
         boolean oldValue = getboolean();
@@ -319,6 +422,9 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
      */
     private BooleanBeed $bb;
 
+    /**
+     * @invar $bb == null ? $value == false : $value == $bb.getboolean();
+     */
     private boolean $value;
 
     public Boolean getBoolean() {
@@ -329,6 +435,9 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
       return $value;
     }
 
+    /**
+     * The value of this beed is never null.
+     */
     public boolean isEffective() {
       return true;
     }
@@ -374,6 +483,11 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
     return $source;
   }
 
+  /**
+   * The old source path is removed as update source.
+   * The new source path is added as update source.
+   * The source is replaced by the new source: see {@link #setSource(SetBeed)}.
+   */
   public final void setSourcePath(Path<? extends SetBeed<_Element_, ?>> sourcePath) {
     if ($sourcePath != null) {
       $dependent.removeUpdateSource($sourcePath);
@@ -392,29 +506,55 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
    * @param   source
    * @post    getSource() == source;
    * @post    get() == the result of filtering the given source
-   * @post    The FilteredSetBeed is registered as a listener of the given SetBeed.
-   * @post    The FilteredSetBeed is registered as a listener of all beeds in
-   *          the given source. (The reason is that the MappedSetBeed should be
+   * @post    The {@link NewFilteredSetBeed} is registered as a listener of the given SetBeed.
+   * @post    The {@link NewFilteredSetBeed} is registered as a listener of all beeds in
+   *          the given source. (The reason is that the {@link NewFilteredSetBeed} should be
    *          notified (and then recalculate) when one of the beeds in the source
    *          changes.)
    * @post    The listeners of this beed are notified when the value changes.
-   * @post    The listeners of the size beed are notified when the size of this
-   *          set has changed.
    */
   private final void setSource(SetBeed<_Element_, ?> source) {
-    HashSet<_Element_> addedElements = new HashSet<_Element_>();
-    HashSet<_Element_> removedElements = new HashSet<_Element_>();
-    setSource(source, addedElements, removedElements);
-    ActualSetEvent<_Element_> event = createEvent(addedElements, removedElements);
+    HashSet<_Element_> addedFilteredElements = new HashSet<_Element_>();
+    HashSet<_Element_> removedFilteredElements = new HashSet<_Element_>();
+    setSource(source, addedFilteredElements, removedFilteredElements);
+    ActualSetEvent<_Element_> event = createEvent(addedFilteredElements, removedFilteredElements, null);
     if (event != null) {
       updateDependents(event);
     }
   }
 
-  private final void setSource(SetBeed<_Element_, ?> source, HashSet<_Element_> addedElements, HashSet<_Element_> removedElements) {
+  /**
+   * Replace the old {@link #getSource() source} by the given source.
+   * Remove the old {@link #getSource() source} and all the
+   * {@link ElementCriterion filter criteria} of its elements as
+   * {@link UpdateSource}.
+   * Add the given source and all the {@link ElementCriterion filter criteria}
+   * of its elements as {@link UpdateSource}.
+   * Update the {@link #$filteredSet}:
+   * - remove the elements that were there, and put them in
+   *   <code>removedFilteredElements</code>.
+   * - add the elements in the given source that satisfy the
+   *   {@link ElementCriterion filter criterion} and put them in
+   *   <code>addedFilteredElements</code>.
+   * Update the {@link #$elementCriteria}:
+   * - remove the elements that were there.
+   * - add the elements in the given source, with their corresponding
+   *   {@link ElementCriterion filter criteria}.
+   *
+   * @pre  addedFilteredElements != null;
+   * @pre  addedFilteredElements.isEmpty();
+   * @pre  removedFilteredElements != null;
+   * @pre  removedFilteredElements.isEmpty();
+   */
+  private final void setSource(SetBeed<_Element_, ?> source,
+      HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
+    assert addedFilteredElements != null;
+    assert addedFilteredElements.isEmpty();
+    assert removedFilteredElements != null;
+    assert removedFilteredElements.isEmpty();
     if ($source != null) {
       for (_Element_ beed : $source.get()) {
-        sourceElementRemoved(beed, removedElements);
+        sourceElementRemoved(beed, removedFilteredElements);
       }
       $dependent.removeUpdateSource($source);
     }
@@ -423,19 +563,25 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
     if ($source != null) {
       $dependent.addUpdateSource($source);
       for (_Element_ beed : $source.get()) {
-        sourceElementAdded(beed, addedElements);
+        sourceElementAdded(beed, addedFilteredElements);
       }
     }
   }
 
-  private ActualSetEvent<_Element_> createEvent(HashSet<_Element_> addedElements, HashSet<_Element_> removedElements) {
+  private ActualSetEvent<_Element_> createEvent(
+      HashSet<_Element_> addedFilteredElements,
+      HashSet<_Element_> removedFilteredElements,
+      Edit<?> edit) {
     ActualSetEvent<_Element_> event;
     @SuppressWarnings("unchecked")
-    Set<_Element_> addedClone = (Set<_Element_>)addedElements.clone();
-    addedElements.removeAll(removedElements);
-    removedElements.removeAll(addedClone);
-    if ((! removedElements.isEmpty()) || (! addedElements.isEmpty())) {
-      event = new ActualSetEvent<_Element_>(NewFilteredSetBeed.this, addedElements, removedElements, null);
+    Set<_Element_> addedClone = (Set<_Element_>)addedFilteredElements.clone();
+    addedFilteredElements.removeAll(removedFilteredElements);
+    removedFilteredElements.removeAll(addedClone);
+    if ((! removedFilteredElements.isEmpty()) || (! addedFilteredElements.isEmpty())) {
+      event = new ActualSetEvent<_Element_>(NewFilteredSetBeed.this,
+                                            addedFilteredElements,
+                                            removedFilteredElements,
+                                            edit);
     }
     else {
       event = null;
@@ -451,12 +597,21 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
 
 
   /**
-   * @pre element != null;
-   * @pre ! $elementCriteria.containsKey(element);
+   * Add the {@link ElementCriterion filter criterion} of the given element as
+   * {@link UpdateSource}.
+   * Update the {@link #$filteredSet}: add the element if it satisfies
+   * the {@link ElementCriterion filter criterion} and put it in
+   * <code>addedFilteredElements</code>.
+   * Update the {@link #$elementCriteria}: add the given element.
+   *
+   * @pre  element != null;
+   * @pre  ! $elementCriteria.containsKey(element);
+   * @pre  addedFilteredElements != null;
    */
   private void sourceElementAdded(_Element_ element, Set<_Element_> addedFilteredElements) {
     assert element != null;
     assert ! $elementCriteria.containsKey(element);
+    assert addedFilteredElements != null;
     ElementCriterion ec = new ElementCriterion(element);
     $elementCriteria.put(element, ec);
     $dependent.addUpdateSource(ec);
@@ -467,14 +622,23 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
   }
 
   /**
-   * @pre element != null;
-   * @pre $elementCriteria.containsKey(element);
+   * Remove the {@link ElementCriterion filter criterion} of the given element as
+   * {@link UpdateSource}.
+   * Update the {@link #$filteredSet}: remove the element (if it was there)
+   * and then put it in <code>removedFilteredElements</code>.
+   * Update the {@link #$elementCriteria}: remove the given element.
+   *
+   * @pre  element != null;
+   * @pre  $elementCriteria.containsKey(element);
+   * @pre  removedFilteredElements != null;
    */
   private void sourceElementRemoved(_Element_ element, Set<_Element_> removedFilteredElements) {
     assert element != null;
     assert $elementCriteria.containsKey(element);
+    assert removedFilteredElements != null;
     boolean removed = $filteredSet.remove(element);
     ElementCriterion ec = $elementCriteria.get(element);
+    $elementCriteria.remove(element);
     assert ec != null;
     $dependent.removeUpdateSource(ec);
     if (removed) {
@@ -482,6 +646,9 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
     }
   }
 
+  /**
+   * @invar  $elementCriteria != null;
+   */
   private Map<_Element_, ElementCriterion> $elementCriteria = new HashMap<_Element_, ElementCriterion>();
 
 

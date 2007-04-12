@@ -35,7 +35,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar getOwner() != null;
  * @invar getOwner() == this'getOwner();
  *
  * @mudo since the owner os not always a Bean, other name? owned beed? weak beed?

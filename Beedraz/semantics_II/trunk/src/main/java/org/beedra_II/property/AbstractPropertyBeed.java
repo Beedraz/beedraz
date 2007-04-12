@@ -37,12 +37,13 @@ public abstract class AbstractPropertyBeed<_Event_ extends Event>
     implements PropertyBeed<_Event_> {
 
   /**
-   * @pre owner != null;
+   * @post getOwner() == owner;
    */
   protected AbstractPropertyBeed(AggregateBeed owner) {
-    assert owner != null;
     $owner = owner;
-    owner.registerAggregateElement(this);
+    if (owner != null) {
+      owner.registerAggregateElement(this);
+    }
   }
 
   /**

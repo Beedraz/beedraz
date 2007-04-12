@@ -33,8 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBooleanBinaryExpressionBeed
-    extends AbstractBinaryExpressionBeed<RealBeed<?>, RealEvent, RealBeed<?>, RealEvent>
-    implements BooleanBeed {
+    extends AbstractBinaryExpressionBeed<RealBeed<?>, RealEvent, RealBeed<?>, RealEvent> {
 
   /**
    * @pre   owner != null;

@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real.double64;
 
 
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -88,5 +89,12 @@ public class DoubleConstantBeed
   public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
     sb.append(numberFormat.format(getdouble()));
   }
+
+  @Override
+  public final void toString(StringBuffer sb, int level) {
+    super.toString(sb, level);
+    sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
+  }
+
 }
 

@@ -18,17 +18,18 @@ package org.beedra_II.property.number.real.double64;
 
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.AbstractTestUnaryExpressionBeed;
+import org.beedra_II.property.AbstractTestUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Assert;
 
 
 public abstract class AbstractTestDoubleUnaryExpressionBeed<_UEB_ extends AbstractDoubleUnaryExpressionBeed>
-    extends AbstractTestUnaryExpressionBeed<Double,
-                                            RealBeed<?>,
-                                            ActualDoubleEvent,
-                                            _UEB_,
-                                            EditableDoubleBeed> {
+    extends AbstractTestUnaryExprBeed<Double,
+                                      ActualDoubleEvent,
+                                      Double,
+                                      RealBeed<?>,
+                                      _UEB_,
+                                      EditableDoubleBeed> {
 
   @Override
   protected void initGoals() {

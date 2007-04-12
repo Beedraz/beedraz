@@ -29,10 +29,9 @@ public class TestBooleanNotNullBeed
 
   @Test
   public void testConstructor() {
-    BooleanGTBeed beed = new BooleanGTBeed($aggregateBeed);
+    BooleanNotNullBeed beed = new BooleanNotNullBeed($aggregateBeed);
     assertEquals($aggregateBeed, beed.getOwner());
-    assertNull(beed.getLeftArgument());
-    assertNull(beed.getRightArgument());
+    assertNull(beed.getArgument());
     assertNull(beed.get());
   }
 

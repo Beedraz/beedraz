@@ -41,6 +41,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * Abstract implementation of unary expression beeds, that represent a value derived
  * from one argument of type {@link RealBeed}.
  *
+ * @invar getArgumentPath() != null
+ *          ? getArgument() == getArgumentPath().get()
+ *          : null;
  * @invar getArgument() == null
  *          ? get() == null
  *          : true;
@@ -185,8 +188,9 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
   /**
    * @pre $argument != null;
    *
+   * @default  This method could be overriden in subclasses
    */
-  private void recalculate() {
+  protected void recalculate() {
     if ($argument.isEffective()) {
       recalculateFrom($argument);
       assignEffective(true);

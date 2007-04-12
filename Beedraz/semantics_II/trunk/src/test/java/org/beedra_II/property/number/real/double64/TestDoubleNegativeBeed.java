@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.DoubleNegativeBeed;
 import org.junit.Test;
 
 
@@ -38,7 +37,7 @@ public class TestDoubleNegativeBeed
   }
 
   @Override
-  protected Double expectedValue(Double argumentValue) {
+  protected Double expectedValueNotNull(Double argumentValue) {
     return - argumentValue;
   }
 

@@ -38,7 +38,7 @@ public class TestDoubleInverseBeed
   }
 
   @Override
-  protected Double expectedValue(Double argumentValue) {
+  protected Double expectedValueNotNull(Double argumentValue) {
     return Math.pow(argumentValue, -1);
   }
 

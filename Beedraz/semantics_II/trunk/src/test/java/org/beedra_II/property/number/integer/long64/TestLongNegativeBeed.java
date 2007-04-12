@@ -39,7 +39,7 @@ public class TestLongNegativeBeed
   }
 
   @Override
-  protected Long expectedValue(Long argumentValue) {
+  protected Long expectedValueNotNull(Long argumentValue) {
     return - argumentValue;
   }
 

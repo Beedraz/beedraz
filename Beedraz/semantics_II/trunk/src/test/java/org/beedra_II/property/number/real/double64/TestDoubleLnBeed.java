@@ -38,7 +38,7 @@ public class TestDoubleLnBeed
   }
 
   @Override
-  protected Double expectedValue(Double argumentValue) {
+  protected Double expectedValueNotNull(Double argumentValue) {
     return Math.log(argumentValue);
   }
 

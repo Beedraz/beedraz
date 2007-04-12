@@ -50,7 +50,7 @@ public abstract class AbstractTestDoubleLogNBeed
   }
 
   @Override
-  protected final Double expectedValue(Double argumentValue) {
+  protected final Double expectedValueNotNull(Double argumentValue) {
     return Math.log(argumentValue) / Math.log($constant);
   }
 

@@ -52,7 +52,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
-                                            _ArgumentBeed_ extends Beed<?>,
+                                            _ArgumentBeed_ extends Beed<? extends _ArgumentEvent_>,
                                             _ArgumentEvent_ extends Event>
     extends AbstractExprBeed<_Result_, _ResultEvent_>  {
 

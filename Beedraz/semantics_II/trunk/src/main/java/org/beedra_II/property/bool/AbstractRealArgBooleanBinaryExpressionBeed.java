@@ -19,9 +19,11 @@ package org.beedra_II.property.bool;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.AbstractRealArgBinaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
@@ -32,8 +34,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractBooleanBinaryExpressionBeed
-    extends AbstractBinaryExpressionBeed<RealBeed<?>, RealEvent, RealBeed<?>, RealEvent> {
+public abstract class AbstractRealArgBooleanBinaryExpressionBeed
+    extends AbstractRealArgBinaryExprBeed<
+                                   Boolean,
+                                   BooleanEvent,
+                                   RealBeed<?>,
+                                   RealEvent,
+                                   RealBeed<?>,
+                                   RealEvent>
+    implements BooleanBeed {
 
   /**
    * @pre   owner != null;
@@ -42,8 +51,17 @@ public abstract class AbstractBooleanBinaryExpressionBeed
    * @post  getLeftArg() == null;
    * @post  getRightArg() == null;
    */
-  protected AbstractBooleanBinaryExpressionBeed(AggregateBeed owner) {
+  protected AbstractRealArgBooleanBinaryExpressionBeed(AggregateBeed owner) {
     super(owner);
+  }
+
+  public final Boolean getBoolean() {
+    return isEffective() ? Boolean.valueOf(getboolean()) : null;
+  }
+
+  @Override
+  protected boolean equalValue(Boolean b1, Boolean b2) {
+    return MathUtil.equalValue(b1, b2);
   }
 
   public final boolean getboolean() {

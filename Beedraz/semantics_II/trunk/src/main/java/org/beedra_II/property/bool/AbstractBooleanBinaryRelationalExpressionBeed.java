@@ -30,7 +30,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends AbstractBooleanBinaryExpressionBeed {
+public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends AbstractRealArgBooleanBinaryExpressionBeed {
 
 
   /*<construction>*/

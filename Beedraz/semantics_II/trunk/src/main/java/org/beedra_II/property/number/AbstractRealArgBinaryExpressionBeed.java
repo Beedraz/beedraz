@@ -17,8 +17,10 @@ limitations under the License.
 package org.beedra_II.property.number;
 
 
+import java.text.NumberFormat;
+
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.AbstractBinaryExprBeed;
+import org.beedra_II.property.AbstractRealArgBinaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -33,18 +35,19 @@ import org.ppeew.smallfries_I.MathUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
+public abstract class AbstractRealArgBinaryExpressionBeed<
+                                                   _Number_ extends Number,
                                                    _NumberEvent_ extends RealEvent,
                                                    _LeftArgumentBeed_ extends RealBeed<? extends _LeftArgumentEvent_>,
                                                    _LeftArgumentEvent_ extends RealEvent,
                                                    _RightArgumentBeed_ extends RealBeed<? extends _RightArgumentEvent_>,
                                                    _RightArgumentEvent_ extends RealEvent>
-    extends AbstractBinaryExprBeed<_Number_,
-                                   _NumberEvent_,
-                                   _LeftArgumentBeed_,
-                                   _LeftArgumentEvent_,
-                                   _RightArgumentBeed_,
-                                   _RightArgumentEvent_>
+    extends AbstractRealArgBinaryExprBeed<_Number_,
+                                          _NumberEvent_,
+                                          _LeftArgumentBeed_,
+                                          _LeftArgumentEvent_,
+                                          _RightArgumentBeed_,
+                                          _RightArgumentEvent_>
     implements RealBeed<_NumberEvent_> {
 
   /**
@@ -54,7 +57,7 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
    * @post  getRightArg() == null;
    * @post  get() == null;
    */
-  public AbstractBinaryExpressionBeed(AggregateBeed owner) {
+  public AbstractRealArgBinaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -67,6 +70,25 @@ public abstract class AbstractBinaryExpressionBeed<_Number_ extends Number,
     return MathUtil.equalValue(n1, n2);
   }
 
+  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append("(");
+    if (depth == 1) {
+      sb.append(numberFormat.format(getLeftArg().getdouble()));
+    }
+    else {
+      getLeftArg().toStringDepth(sb, depth - 1, numberFormat);
+    }
+    sb.append(")");
+    sb.append(getOperatorString());
+    sb.append("(");
+    if (depth == 1) {
+      sb.append(numberFormat.format(getRightArg().getdouble()));
+    }
+    else {
+      getRightArg().toStringDepth(sb, depth - 1, numberFormat);
+    }
+    sb.append(")");
+  }
 
 }
 

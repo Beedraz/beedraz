@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class DoubleInverseBeed
-    extends AbstractDoubleUnaryExpressionBeed {
+    extends AbstractRealArgDoubleUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;

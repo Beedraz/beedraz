@@ -20,12 +20,12 @@ package org.beedra_II.property.number.real.double64;
 import java.text.NumberFormat;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
+import org.beedra_II.property.number.AbstractRealArgUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>General code for Double implementations of {@link AbstractUnaryExpressionBeed}
+ * <p>General code for Double implementations of {@link AbstractRealArgUnaryExpressionBeed}
  *   that use a constant..</p>
  */
 @CvsInfo(revision = "$Revision$",
@@ -33,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleConstantUnaryExpressionBeed
-    extends AbstractDoubleUnaryExpressionBeed {
+    extends AbstractRealArgDoubleUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;

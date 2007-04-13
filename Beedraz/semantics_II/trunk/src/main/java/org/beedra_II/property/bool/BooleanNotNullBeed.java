@@ -32,7 +32,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BooleanNotNullBeed extends AbstractBooleanUnaryExpressionBeed {
+public class BooleanNotNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;

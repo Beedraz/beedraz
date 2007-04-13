@@ -19,16 +19,14 @@ package org.beedra_II.property;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -37,7 +35,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
- * from 2 arguments of type {@link RealBeed}.
+ * from 2 arguments.
  *
  * @invar getLeftArg() == null || getRightArg() == null
  *          ? get() == null
@@ -54,10 +52,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
                                              _ResultEvent_ extends Event,
-                                             _LeftArgumentBeed_ extends RealBeed<? extends _LeftArgumentEvent_>,
-                                             _LeftArgumentEvent_ extends RealEvent,
-                                             _RightArgumentBeed_ extends RealBeed<? extends _RightArgumentEvent_>,
-                                             _RightArgumentEvent_ extends RealEvent>
+                                             _LeftArgumentBeed_ extends Beed<? extends _LeftArgumentEvent_>,
+                                             _LeftArgumentEvent_ extends Event,
+                                             _RightArgumentBeed_ extends Beed<? extends _RightArgumentEvent_>,
+                                             _RightArgumentEvent_ extends Event>
     extends AbstractExprBeed<_Result_, _ResultEvent_>  {
 
   /**
@@ -187,8 +185,8 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
    * @pre $leftArgument != null || $rightArgument != null;
    */
   private void recalculate() {
-    if (($leftArgument != null) && $leftArgument.isEffective() &&
-        ($rightArgument != null) && $rightArgument.isEffective()) {
+    if (($leftArgument != null) && hasEffectiveLeftArgument() &&
+        ($rightArgument != null) && hasEffectiveRightArgument()) {
       recalculateFrom($leftArgument, $rightArgument);
       assignEffective(true);
     }
@@ -196,6 +194,10 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
       assignEffective(false);
     }
   }
+
+  protected abstract boolean hasEffectiveLeftArgument();
+
+  protected abstract boolean hasEffectiveRightArgument();
 
   /**
    * @pre $leftArgument != null;
@@ -235,25 +237,6 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     }
   }
 
-  public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
-    sb.append("(");
-    if (depth == 1) {
-      sb.append(numberFormat.format(getLeftArg().getdouble()));
-    }
-    else {
-      getLeftArg().toStringDepth(sb, depth - 1, numberFormat);
-    }
-    sb.append(")");
-    sb.append(getOperatorString());
-    sb.append("(");
-    if (depth == 1) {
-      sb.append(numberFormat.format(getRightArg().getdouble()));
-    }
-    else {
-      getRightArg().toStringDepth(sb, depth - 1, numberFormat);
-    }
-    sb.append(")");
-  }
 
   /**
    * The operator of this binary expression.

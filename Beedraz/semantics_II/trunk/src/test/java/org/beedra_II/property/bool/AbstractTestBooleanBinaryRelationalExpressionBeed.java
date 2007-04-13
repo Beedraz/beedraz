@@ -21,8 +21,9 @@ import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.double64.EditableDoubleBeed;
 
 
-public abstract class AbstractTestBooleanBinaryRelationalExpressionBeed<_UEB_ extends AbstractBooleanBinaryRelationalExpressionBeed>
-    extends AbstractTestBooleanBinaryExpressionBeed<_UEB_> {
+public abstract class AbstractTestBooleanBinaryRelationalExpressionBeed<
+                      _UEB_ extends AbstractBooleanBinaryRelationalExpressionBeed>
+    extends AbstractTestRealArgBooleanBinaryExpressionBeed<_UEB_> {
 
   @Override
   protected Boolean valueFromSubject(_UEB_ argumentBeed) {

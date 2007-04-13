@@ -17,8 +17,10 @@ limitations under the License.
 package org.beedra_II.property.number;
 
 
+import java.text.NumberFormat;
+
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.AbstractUnaryExprBeed;
+import org.beedra_II.property.AbstractRealArgUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -33,14 +35,14 @@ import org.ppeew.smallfries_I.MathUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
+public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number,
                                                   _NumberEvent_ extends RealEvent,
                                                   _ArgumentBeed_ extends RealBeed<? extends _ArgumentEvent_>,
                                                   _ArgumentEvent_ extends RealEvent>
-    extends AbstractUnaryExprBeed<_Number_,
-                                  _NumberEvent_,
-                                  _ArgumentBeed_,
-                                  _ArgumentEvent_>
+    extends AbstractRealArgUnaryExprBeed<_Number_,
+                                              _NumberEvent_,
+                                              _ArgumentBeed_,
+                                              _ArgumentEvent_>
     implements RealBeed<_NumberEvent_>{
 
   /**
@@ -49,7 +51,7 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
    * @post  getArgument() == null;
    * @post  get() == null;
    */
-  public AbstractUnaryExpressionBeed(AggregateBeed owner) {
+  public AbstractRealArgUnaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 
@@ -60,6 +62,18 @@ public abstract class AbstractUnaryExpressionBeed<_Number_ extends Number,
   @Override
   protected boolean equalValue(_Number_ n1, _Number_ n2) {
     return MathUtil.equalValue(n1, n2);
+  }
+
+  public void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
+    sb.append(getOperatorString());
+    sb.append("(");
+    if (depth == 1) {
+      sb.append(numberFormat.format(getArgument().getdouble()));
+    }
+    else {
+      getArgument().toStringDepth(sb, depth - 1, numberFormat);
+    }
+    sb.append(")");
   }
 
 }

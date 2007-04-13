@@ -26,7 +26,7 @@ import org.beedra_II.property.number.real.double64.AbstractDoubleConstantUnaryEx
 
 
 public abstract class AbstractTestDoubleConstantUnaryExpressionBeed<_DoubleBeed_ extends AbstractDoubleConstantUnaryExpressionBeed>
-    extends AbstractTestDoubleUnaryExpressionBeed<_DoubleBeed_> {
+    extends AbstractTestRealArgDoubleUnaryExpressionBeed<_DoubleBeed_> {
 
   protected AbstractTestDoubleConstantUnaryExpressionBeed(double constant) {
     $constant = constant;

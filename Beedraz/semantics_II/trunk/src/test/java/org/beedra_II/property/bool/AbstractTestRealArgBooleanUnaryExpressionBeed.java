@@ -25,7 +25,8 @@ import org.beedra_II.property.number.real.double64.EditableDoubleBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestBooleanUnaryExpressionBeed<_UEB_ extends AbstractBooleanUnaryExpressionBeed>
+public abstract class AbstractTestRealArgBooleanUnaryExpressionBeed<
+                                      _UEB_ extends AbstractRealArgBooleanUnaryExpressionBeed>
     extends AbstractTestUnaryExprBeed<Boolean,
                                       BooleanEvent,
                                       Double,

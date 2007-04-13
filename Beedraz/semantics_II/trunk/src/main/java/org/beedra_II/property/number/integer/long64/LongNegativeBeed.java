@@ -40,7 +40,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class LongNegativeBeed
-    extends AbstractLongUnaryExpressionBeed {
+    extends AbstractRealArgLongUnaryExpressionBeed {
 
   /**
    * @pre   owner != null;

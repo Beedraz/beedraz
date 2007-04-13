@@ -19,21 +19,22 @@ package org.beedra_II.property.number.integer.long64;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.number.AbstractUnaryExpressionBeed;
+import org.beedra_II.property.number.AbstractRealArgUnaryExpressionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>General code for Intger implementations of {@link AbstractUnaryExpressionBeed}.</p>
+ * <p>General code for Intger implementations of {@link AbstractRealArgUnaryExpressionBeed}.</p>
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractLongUnaryExpressionBeed
-    extends AbstractUnaryExpressionBeed<Long,
+public abstract class AbstractRealArgLongUnaryExpressionBeed
+    extends AbstractRealArgUnaryExpressionBeed<
+                                        Long,
                                         ActualLongEvent,
                                         IntegerBeed<?>,
                                         IntegerEvent>
@@ -44,7 +45,7 @@ public abstract class AbstractLongUnaryExpressionBeed
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public AbstractLongUnaryExpressionBeed(AggregateBeed owner) {
+  public AbstractRealArgLongUnaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 

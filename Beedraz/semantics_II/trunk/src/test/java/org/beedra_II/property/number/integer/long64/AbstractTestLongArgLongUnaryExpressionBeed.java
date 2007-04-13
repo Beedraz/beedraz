@@ -23,7 +23,7 @@ import org.beedra_II.property.number.integer.IntegerBeed;
 import org.junit.Assert;
 
 
-public abstract class AbstractTestRealArgLongUnaryExpressionBeed<
+public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
                                       _UEB_ extends AbstractRealArgLongUnaryExpressionBeed>
     extends AbstractTestUnaryExprBeed<Long,
                                       ActualLongEvent,

@@ -44,255 +44,146 @@ import org.ppeew.smallfries_I.MathUtil;
 
 public class TestBooleanInstanceofBeed {
 
+  public class MyRunBeanBeed extends RunBeanBeed {
+    // NOP
+  }
+
+  public class YourRunBeanBeed extends RunBeanBeed {
+    // NOP
+  }
+
   @Before
   public void setUp() throws Exception {
     $aggregateBeed = new StubAggregateBeed();
-    $leftArgument1 = new RunBeanBeed();
-    $leftArgumentPath1 = new ConstantPath<RunBeanBeed>($leftArgument1);
-    $rightArgument1 = new RunBeanBeed();
-    $rightArgumentPath1 = new ConstantPath<RunBeanBeed>($rightArgument1);
-    $subject = new BooleanEqualBeanBeedsBeed<RunBeanBeed>($aggregateBeed);
+    $beed = new MyRunBeanBeed();
+    $beedPath = new ConstantPath<RunBeanBeed>($beed);
+    $subject = new BooleanInstanceofBeed<RunBeanBeed>($aggregateBeed, MyRunBeanBeed.class);
     $listener = new StubListener<BooleanEvent>();
     // initialise runs
-    $run1 = new RunBeanBeed();
-    $run2 = new RunBeanBeed();
-    $run3 = new RunBeanBeed();
-    $run4 = new RunBeanBeed();
+    $myRun = new MyRunBeanBeed();
+    $yourRun = new YourRunBeanBeed();
     $well1 = new WellBeanBeed();
     $well2 = new WellBeanBeed();
-    $well3 = new WellBeanBeed();
-    $well4 = new WellBeanBeed();
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well1.run);
-    edit.setGoal($run1.wells);
+    edit.setGoal($myRun.wells);
     edit.perform();
     edit = new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well2.run);
-    edit.setGoal($run2.wells);
-    edit.perform();
-    edit = new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well3.run);
-    edit.setGoal($run3.wells);
-    edit.perform();
-    edit = new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well4.run);
-    edit.setGoal($run4.wells);
+    edit.setGoal($yourRun.wells);
     edit.perform();
     // initialise paths
-    $leftPathToRun1 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well1.run));
-    $leftPathToRun2 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well2.run));
-    $rightPathToRun3 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well3.run));
-    $rightPathToRun4 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well4.run));
+    $pathToMyRun = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well1.run));
+    $pathToYourRun = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well2.run));
   }
 
   @After
   public void tearDown() throws Exception {
-    $leftArgument1 = null;
-    $leftArgumentPath1 = null;
-    $rightArgument1 = null;
-    $rightArgumentPath1 = null;
+    $beed = null;
+    $beedPath = null;
     $subject = null;
     $aggregateBeed = null;
     $listener = null;
-    $run1 = null;
-    $run2 = null;
-    $run3 = null;
-    $run4 = null;
+    $myRun = null;
+    $yourRun = null;
     $well1 = null;
     $well2 = null;
-    $well3 = null;
-    $well4 = null;
-    $leftPathToRun1 = null;
-    $leftPathToRun2 = null;
-    $rightPathToRun3 = null;
-    $rightPathToRun4 = null;
+    $pathToMyRun = null;
+    $pathToYourRun = null;
   }
 
-  protected BooleanEqualBeanBeedsBeed<RunBeanBeed> $subject;
+  protected BooleanInstanceofBeed<RunBeanBeed> $subject;
   protected AggregateBeed $aggregateBeed;
-  private RunBeanBeed $leftArgument1;
-  private Path<RunBeanBeed> $leftArgumentPath1;
-  private RunBeanBeed $rightArgument1;
-  private Path<RunBeanBeed> $rightArgumentPath1;
+  private RunBeanBeed $beed;
+  private Path<RunBeanBeed> $beedPath;
   StubListener<BooleanEvent> $listener;
-  private RunBeanBeed $run1;
-  private RunBeanBeed $run2;
-  private RunBeanBeed $run3;
-  private RunBeanBeed $run4;
+  private RunBeanBeed $myRun;
+  private RunBeanBeed $yourRun;
   private WellBeanBeed $well1;
   private WellBeanBeed $well2;
-  private WellBeanBeed $well3;
-  private WellBeanBeed $well4;
-  private ToOneBeanPath<RunBeanBeed> $leftPathToRun1;
-  private ToOneBeanPath<RunBeanBeed> $leftPathToRun2;
-  private ToOneBeanPath<RunBeanBeed> $rightPathToRun3;
-  private ToOneBeanPath<RunBeanBeed> $rightPathToRun4;
+  private ToOneBeanPath<RunBeanBeed> $pathToMyRun;
+  private ToOneBeanPath<RunBeanBeed> $pathToYourRun;
 
   @Test
-  public void testSetArgument_1L() {
+  public void testSetArgument_1() {
     $subject.addListener($listener);
-    $subject.setLeftArgumentPath(new NullPath<RunBeanBeed>());
-    validateSubjectFromArgument(null, null);
-    validateEvent(null, null, null, null);
+    $subject.setBeedPath(new NullPath<RunBeanBeed>());
+    validateSubjectFromBeed(null);
+    validateEvent(null, null);
   }
 
   @Test
-  public void testSetArgument_1R() {
+  public void testSetArgument_2() {
     $subject.addListener($listener);
-    $subject.setRightArgumentPath(new NullPath<RunBeanBeed>());
-    validateSubjectFromArgument(null, null);
-    validateEvent(null, null, null, null);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($beed);
+    validateEvent(null, $beed);
   }
 
-  @Test
-  public void testSetArgument_1LR() {
-    $subject.addListener($listener);
-    $subject.setLeftArgumentPath(new NullPath<RunBeanBeed>());
-    $subject.setRightArgumentPath(new NullPath<RunBeanBeed>());
-    validateSubjectFromArgument(null, null);
-    validateEvent(null, null, null, null);
+  private boolean valueFrom(RunBeanBeed beed) {
+    return beed instanceof MyRunBeanBeed;
   }
 
-  @Test
-  public void testSetArgument_2L() {
-    $subject.addListener($listener);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($leftArgument1, null);
-    validateEvent(null, $leftArgument1, null, null);
-  }
-
-  @Test
-  public void testSetArgument_2R() {
-    $subject.addListener($listener);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument(null, $rightArgument1);
-    validateEvent(null, null, null, $rightArgument1);
-  }
-
-  @Test
-  public void testSetArgument_2LR() {
-    $subject.addListener($listener);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument($leftArgument1, $rightArgument1);
-    validateEvent(null, $leftArgument1, null, $rightArgument1);
-  }
-
-  private void validateSubjectFromArgument(RunBeanBeed leftArgument, RunBeanBeed rightArgument) {
-    assertEquals(leftArgument, $subject.getLeftArg());
-    assertEquals(rightArgument, $subject.getRightArg());
+  private void validateSubjectFromBeed(RunBeanBeed beed) {
+    assertEquals(beed, $subject.getBeed());
     assertNotNull($subject.get());
-    assertEquals(leftArgument == rightArgument, $subject.getboolean());
+    assertEquals(valueFrom(beed), $subject.getboolean());
   }
 
   @Test
-  public void testSetArgument_3L() {
+  public void testSetArgument_3() {
     $subject.addListener($listener);
-    changeLeftArgumentPath($leftPathToRun1);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run1, null);
-    validateEvent(null, $run1, null, null);
-    changeRightArgumentPath($rightPathToRun3);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run1, $run1, null, $run3);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run1, $run1, $run3, $run3);
-    $subject.setLeftArgumentPath(null);
-    validateSubjectFromArgument(null, $run3);
-    validateEvent($run1, null, $run3, $run3);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent(null, $run1, $run3, $run3);
-    changeLeftArgumentPath($leftPathToRun2);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run2, $run3);
-    validateEvent($run1, $run2, $run3, $run3);
-    changeLeftArgumentPath($leftPathToRun2);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run2, $run3);
-    validateEvent($run2, $run2, $run3, $run3);
+    changeBeedPath($pathToMyRun);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($myRun);
+    validateEvent(null, $myRun);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($myRun);
+    validateEvent($myRun, $myRun);
+    $subject.setBeedPath(null);
+    validateSubjectFromBeed(null);
+    validateEvent($myRun, null);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($myRun);
+    validateEvent(null, $myRun);
+    changeBeedPath($pathToYourRun);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($yourRun);
+    validateEvent($myRun, $yourRun);
+    changeBeedPath($pathToYourRun);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($yourRun);
+    validateEvent($yourRun, $yourRun);
   }
-
-  @Test
-  public void testSetArgument_3R() {
-    $subject.addListener($listener);
-    changeRightArgumentPath($rightPathToRun3);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument(null, $run3);
-    validateEvent(null, null, null, $run3);
-    changeLeftArgumentPath($leftPathToRun1);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent(null, $run1, $run3, $run3);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run1, $run1, $run3, $run3);
-    $subject.setRightArgumentPath(null);
-    validateSubjectFromArgument($run1, null);
-    validateEvent($run1, $run1, $run3, null);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run1, $run1, null, $run3);
-    changeRightArgumentPath($rightPathToRun4);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument($run1, $run4);
-    validateEvent($run1, $run1, $run3, $run4);
-    changeRightArgumentPath($rightPathToRun4);
-    $subject.setRightArgumentPath($rightArgumentPath1);
-    validateSubjectFromArgument($run1, $run4);
-    validateEvent($run1, $run1, $run4, $run4);
-  }
-
 
   @Test
   public void testDynamics() throws EditStateException, IllegalEditException {
     $subject.addListener($listener);
     assertTrue($subject.isListener($listener));
-    changeLeftArgumentPath($leftPathToRun1);
-    $subject.setLeftArgumentPath($leftArgumentPath1);
-    validateSubjectFromArgument($run1, null);
-    validateEvent(null, $run1, null, null);
-    changeRightArgumentPath($rightPathToRun3);
-    $subject.setRightArgumentPath($rightPathToRun3);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run1, $run1, null, $run3);
-    // now change the value of the left argument path
-    changeArgumentPath($leftPathToRun1, $run2);
-    validateSubjectFromArgument($run2, $run3);
-    validateEvent($run1, $run2, $run3, $run3);
-    changeArgumentPath($leftPathToRun1, $run1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run2, $run1, $run3, $run3);
-    changeArgumentPath($leftPathToRun1, $run1);
-    validateSubjectFromArgument($run1, $run3);
-    validateEvent($run1, $run1, $run3, $run3);
-    changeArgumentPath($leftPathToRun1, null);
-    validateSubjectFromArgument(null, $run3);
-    validateEvent($run1, null, $run3, $run3);
-    changeArgumentPath($leftPathToRun1, null);
-    validateSubjectFromArgument(null, $run3);
-    validateEvent(null, null, $run3, $run3);
-    // now change the value of the right argument path
-    changeArgumentPath($rightPathToRun3, $run4);
-    validateSubjectFromArgument(null, $run4);
-    validateEvent(null, null, $run3, $run4);
-    changeArgumentPath($rightPathToRun3, $run3);
-    validateSubjectFromArgument(null, $run3);
-    validateEvent(null, null, $run4, $run3);
-    changeArgumentPath($rightPathToRun3, $run3);
-    validateSubjectFromArgument(null, $run3);
-    validateEvent(null, null, $run3, $run3);
-    changeArgumentPath($rightPathToRun3, null);
-    validateSubjectFromArgument(null, null);
-    validateEvent(null, null, $run3, null);
-    changeArgumentPath($rightPathToRun3, null);
-    validateSubjectFromArgument(null, null);
-    validateEvent(null, null, null, null);
+    changeBeedPath($pathToMyRun);
+    $subject.setBeedPath($beedPath);
+    validateSubjectFromBeed($myRun);
+    validateEvent(null, $myRun);
+    // now change the value of the beed path
+    changeBeedPath($pathToMyRun, $yourRun);
+    validateSubjectFromBeed($yourRun);
+    validateEvent($myRun, $yourRun);
+    changeBeedPath($pathToMyRun, $myRun);
+    validateSubjectFromBeed($myRun);
+    validateEvent($yourRun, $myRun);
+    changeBeedPath($pathToMyRun, $myRun);
+    validateSubjectFromBeed($myRun);
+    validateEvent($myRun, $myRun);
+    changeBeedPath($pathToMyRun, null);
+    validateSubjectFromBeed(null);
+    validateEvent($myRun, null);
+    changeBeedPath($pathToMyRun, null);
+    validateSubjectFromBeed(null);
+    validateEvent(null, null);
   }
 
-  private void validateEvent(RunBeanBeed oldLeftBeed, RunBeanBeed newLeftBeed,
-                             RunBeanBeed oldRightBeed, RunBeanBeed newRightBeed) {
-    Boolean expectedOldValue = oldLeftBeed == oldRightBeed;
-    Boolean expectedNewValue = newLeftBeed == newRightBeed;
+  private void validateEvent(RunBeanBeed oldBeed, RunBeanBeed newBeed) {
+    Boolean expectedOldValue = valueFrom(oldBeed);
+    Boolean expectedNewValue = valueFrom(newBeed);
     if (! MathUtil.equalValue(expectedOldValue, expectedNewValue)) {
       assertNotNull($listener.$event);
       assertNotNull($listener.$event.getOldValue());
@@ -306,14 +197,9 @@ public class TestBooleanInstanceofBeed {
     $listener.$event = null;
   }
 
-  private void changeLeftArgumentPath(Path<RunBeanBeed> path) {
-    $leftArgumentPath1 = path;
-    $leftArgument1 = path.get();
-  }
-
-  private void changeRightArgumentPath(Path<RunBeanBeed> path) {
-    $rightArgumentPath1 = path;
-    $rightArgument1 = path.get();
+  private void changeBeedPath(Path<RunBeanBeed> path) {
+    $beedPath = path;
+    $beed = path.get();
   }
 
   /**
@@ -324,7 +210,7 @@ public class TestBooleanInstanceofBeed {
    * @pre  path.getToOneBeed() instanceof EditableBidirToOneBeed<RunBeanBeed, WellBeanBeed>;
    * @pre  path.getToOneBeed().getOwner() != null;
    */
-  private void changeArgumentPath(ToOneBeanPath<RunBeanBeed> path, RunBeanBeed run) throws EditStateException, IllegalEditException {
+  private void changeBeedPath(ToOneBeanPath<RunBeanBeed> path, RunBeanBeed run) throws EditStateException, IllegalEditException {
     @SuppressWarnings("unchecked")
     EditableBidirToOneBeed<RunBeanBeed, WellBeanBeed> bidirToOne =
       (EditableBidirToOneBeed<RunBeanBeed, WellBeanBeed>) path.getToOneBeed();

@@ -29,7 +29,7 @@ import org.junit.Test;
 
 
 public class TestDoubleModBeed
-    extends AbstractTestDoubleBinaryExpressionBeed<DoubleModBeed> {
+    extends AbstractTestRealArgDoubleBinaryExpressionBeed<DoubleModBeed> {
 
   @Test
   public void testConstructor() {

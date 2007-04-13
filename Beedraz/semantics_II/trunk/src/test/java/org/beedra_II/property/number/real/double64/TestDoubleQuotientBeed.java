@@ -27,7 +27,7 @@ import org.junit.Test;
 
 
 public class TestDoubleQuotientBeed
-    extends AbstractTestDoubleBinaryExpressionBeed<DoubleQuotientBeed> {
+    extends AbstractTestRealArgDoubleBinaryExpressionBeed<DoubleQuotientBeed> {
 
   @Test
   public void testConstructor() {

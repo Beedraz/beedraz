@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
@@ -31,8 +32,6 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.path.ConstantPath;
 import org.beedra_II.path.NullPath;
 import org.beedra_II.path.Path;
-import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,9 +39,9 @@ import org.junit.Test;
 
 public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
                                                 _ResultEvent_ extends Event,
-                                                _Number_ extends Number,
-                                                _ArgumentBeed_ extends RealBeed<? extends RealEvent>,
-                                                _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_, ? extends RealEvent>,
+                                                _Argument_ extends Object,
+                                                _ArgumentBeed_ extends Beed<?>,
+                                                _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_, ? extends Event>,
                                                 _EAB_ extends _ArgumentBeed_> {
 
   protected abstract _UEB_ createSubject(AggregateBeed owner);
@@ -53,9 +52,9 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
 
   protected abstract void initGoals();
 
-  protected abstract void changeArgument(_EAB_ editableArgumentBeed, _Number_ newValue);
+  protected abstract void changeArgument(_EAB_ editableArgumentBeed, _Argument_ newValue);
 
-  protected final _Result_ expectedValue(_Number_ argumentValue) {
+  protected final _Result_ expectedValue(_Argument_ argumentValue) {
     if (argumentValue == null) {
       return expectedValueNull();
     }
@@ -67,7 +66,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
   /**
    * @pre  argumentValue != null;
    */
-  protected abstract _Result_ expectedValueNotNull(_Number_ argumentValue);
+  protected abstract _Result_ expectedValueNotNull(_Argument_ argumentValue);
 
   /**
    * @default-return null;
@@ -78,7 +77,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
 
   protected abstract _Result_ valueFromSubject(_UEB_ argumentBeed);
 
-  protected abstract _Number_ valueFrom(_ArgumentBeed_ argumentBeed);
+  protected abstract _Argument_ valueFrom(_ArgumentBeed_ argumentBeed);
 
   protected abstract _Result_ oldValueFrom(_ResultEvent_ argumentBeed);
 
@@ -117,10 +116,10 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
   private Path<_ArgumentBeed_> $argumentDoubleBeedPath;
   private _EAB_ $argumentDoubleBeed2;
   private Path<_ArgumentBeed_> $argumentDoubleBeedPath2;
-  protected _Number_ $goal1;
-  protected _Number_ $goal2;
-  protected _Number_ $goalMIN;
-  protected _Number_ $goalMAX;
+  protected _Argument_ $goal1;
+  protected _Argument_ $goal2;
+  protected _Argument_ $goalMIN;
+  protected _Argument_ $goalMAX;
   StubListener<_ResultEvent_> $listener;
 
   @Test
@@ -197,8 +196,8 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     validateEvent($argumentDoubleBeed, $goalMIN, $argumentDoubleBeed, $goalMAX);
   }
 
-  private void validateEvent(_ArgumentBeed_ oldBeed, _Number_ oldV,
-                             _ArgumentBeed_ newBeed, _Number_ newV) {
+  private void validateEvent(_ArgumentBeed_ oldBeed, _Argument_ oldV,
+                             _ArgumentBeed_ newBeed, _Argument_ newV) {
     _Result_ expectedOldValue =
       oldBeed == null
         ? null
@@ -218,12 +217,12 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     $listener.$event = null;
   }
 
-  protected void checkOldValue(_ArgumentBeed_ oldBeed, _Number_ oldV, _ResultEvent_ event) {
+  protected void checkOldValue(_ArgumentBeed_ oldBeed, _Argument_ oldV, _ResultEvent_ event) {
     if (oldBeed == null) {
       assertNull(oldValueFrom(event));
     }
     else if (oldV == null) {
-      checkOldValueNull(event);
+      checkValueNull(oldValueFrom(event));
     }
     else {
       assertNotNull(oldValueFrom(event));
@@ -231,16 +230,16 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     }
   }
 
-  protected void checkOldValueNull(_ResultEvent_ event) {
-    assertNull(oldValueFrom(event));
+  private void checkValueNull(_Result_ value) {
+    assertEquals(expectedValueNull(), value);
   }
 
-  protected void checkNewValue(_ArgumentBeed_ newBeed, _Number_ newV, _ResultEvent_ event) {
+  protected void checkNewValue(_ArgumentBeed_ newBeed, _Argument_ newV, _ResultEvent_ event) {
     if (newBeed == null) {
       assertNull(newValueFrom(event));
     }
     else if (newV == null) {
-      checkNewValueNull(event);
+      checkValueNull(newValueFrom(event));
     }
     else {
       assertNotNull(newValueFrom(event));
@@ -248,16 +247,12 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     }
   }
 
-  protected void checkNewValueNull(_ResultEvent_ event) {
-    assertNull(newValueFrom(event));
-  }
-
   private void validateSubjectFromArgument(_EAB_ argument) {
 //    System.out.println("argument: " + argument + "  ##  $subject: "+ $subject);
     assertEquals(argument, $subject.getArgument());
     if (argument != null) {
       assertNotNull($subject.getArgument());
-      _Number_ argumentValue = valueFrom(argument);
+      _Argument_ argumentValue = valueFrom(argument);
       checkArgumentValue(argument, argumentValue);
 //      equalsWithNull($subject.getDouble(), $subject.getDouble());
     }
@@ -266,21 +261,17 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     }
   }
 
-  protected void checkArgumentValue(_ArgumentBeed_ argumentBeed, _Number_ argumentValue) {
+  protected void checkArgumentValue(_ArgumentBeed_ argumentBeed, _Argument_ argumentValue) {
     if (argumentBeed == null) {
       assertNull($subject.get());
     }
     else if (argumentValue == null) {
-      checkArgumentValueNull();
+      checkValueNull($subject.get());
     }
     else {
       assertNotNull($subject.get());
       assertTrue($subject.equalValue(expectedValue(argumentValue), valueFromSubject($subject)));
     }
-  }
-
-  protected void checkArgumentValueNull() {
-    assertNull($subject.get());
   }
 
   @Test

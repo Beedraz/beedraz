@@ -23,21 +23,22 @@ import java.math.BigDecimal;
 
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.number.AbstractBinaryExpressionBeed;
+import org.beedra_II.property.number.AbstractRealArgBinaryExpressionBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * General code for Double implementations of {@link AbstractBinaryExpressionBeed}.
+ * General code for Double implementations of {@link AbstractRealArgBinaryExpressionBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractDoubleBinaryExpressionBeed
-    extends AbstractBinaryExpressionBeed<Double,
+public abstract class AbstractRealArgDoubleBinaryExpressionBeed
+    extends AbstractRealArgBinaryExpressionBeed<
+                                         Double,
                                          ActualDoubleEvent,
                                          RealBeed<?>,
                                          RealEvent,
@@ -51,7 +52,7 @@ public abstract class AbstractDoubleBinaryExpressionBeed
    * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
-  protected AbstractDoubleBinaryExpressionBeed(AggregateBeed owner) {
+  protected AbstractRealArgDoubleBinaryExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 

@@ -30,7 +30,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleDifferenceBeed extends AbstractDoubleBinaryExpressionBeed {
+public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
 
 
   /*<construction>*/

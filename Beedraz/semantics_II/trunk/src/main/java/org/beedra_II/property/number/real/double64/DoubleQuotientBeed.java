@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class DoubleQuotientBeed
-    extends AbstractDoubleBinaryExpressionBeed {
+    extends AbstractRealArgDoubleBinaryExpressionBeed {
 
   /**
    * @pre   owner != null;

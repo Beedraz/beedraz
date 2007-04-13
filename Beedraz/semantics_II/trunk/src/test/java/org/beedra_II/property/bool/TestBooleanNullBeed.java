@@ -25,7 +25,7 @@ import org.junit.Test;
 
 
 public class TestBooleanNullBeed
-    extends AbstractTestBooleanUnaryExpressionBeed<BooleanNullBeed> {
+    extends AbstractTestRealArgBooleanUnaryExpressionBeed<BooleanNullBeed> {
 
   @Test
   public void testConstructor() {
@@ -53,21 +53,6 @@ public class TestBooleanNullBeed
   @Override
   protected final Boolean valueFromSubject(BooleanNullBeed argumentBeed) {
     return argumentBeed.getBoolean();
-  }
-
-  @Override
-  protected void checkNewValueNull(BooleanEvent event) {
-    assertEquals(true, newValueFrom(event));
-  }
-
-  @Override
-  protected void checkOldValueNull(BooleanEvent event) {
-    assertEquals(true, oldValueFrom(event));
-  }
-
-  @Override
-  protected void checkArgumentValueNull() {
-    assertEquals(true, $subject.get());
   }
 
 }

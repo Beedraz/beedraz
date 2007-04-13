@@ -19,18 +19,16 @@ package org.beedra_II.property;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
-import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -39,7 +37,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
- * from one argument of type {@link RealBeed}.
+ * from one argument.
  *
  * @invar getArgumentPath() != null
  *          ? getArgument() == getArgumentPath().get()
@@ -47,8 +45,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar getArgument() == null
  *          ? get() == null
  *          : true;
- *
- * @protected
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -56,8 +52,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
-                                            _ArgumentBeed_ extends RealBeed<? extends _ArgumentEvent_>,
-                                            _ArgumentEvent_ extends RealEvent>
+                                            _ArgumentBeed_ extends Beed<?>,
+                                            _ArgumentEvent_ extends Event>
     extends AbstractExprBeed<_Result_, _ResultEvent_>  {
 
   /**
@@ -191,7 +187,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
    * @default  This method could be overriden in subclasses
    */
   protected void recalculate() {
-    if ($argument.isEffective()) {
+    if (hasEffectiveArgument()) {
       recalculateFrom($argument);
       assignEffective(true);
     }
@@ -199,6 +195,8 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
       assignEffective(false);
     }
   }
+
+  protected abstract boolean hasEffectiveArgument();
 
   /**
    * @pre argument != null;
@@ -231,18 +229,6 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
     else {
       sb.append(indent(level + 2) + "null");
     }
-  }
-
-  public void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
-    sb.append(getOperatorString());
-    sb.append("(");
-    if (depth == 1) {
-      sb.append(numberFormat.format(getArgument().getdouble()));
-    }
-    else {
-      getArgument().toStringDepth(sb, depth - 1, numberFormat);
-    }
-    sb.append(")");
   }
 
   /**

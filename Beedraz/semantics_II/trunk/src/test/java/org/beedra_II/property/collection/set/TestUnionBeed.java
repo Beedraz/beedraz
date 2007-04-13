@@ -32,14 +32,13 @@ import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
+import org.beedra_II.bean.RunBeanBeed;
+import org.beedra_II.bean.WellBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
-import org.beedra_II.property.association.set.EditableBidirToOneBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
-import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
@@ -62,30 +61,6 @@ public class TestUnionBeed {
 
   }
 
-  public class RunBeanBeed extends AbstractBeanBeed {
-    /**
-     * The wells contained in this run.
-     */
-    public final BidirToManyBeed<RunBeanBeed, WellBeanBeed> wells =
-      new BidirToManyBeed<RunBeanBeed, WellBeanBeed>(this);
-
-  }
-
-  public class WellBeanBeed extends AbstractBeanBeed {
-
-    /**
-     * The run in which the well is contained.
-     */
-    public final EditableBidirToOneBeed<RunBeanBeed, WellBeanBeed> run =
-      new EditableBidirToOneBeed<RunBeanBeed, WellBeanBeed>(this);
-
-    /**
-     * The Cq value of the well.
-     */
-    public final EditableLongBeed cq =
-      new EditableLongBeed(this);
-
-  }
 
   public class MyBeanBeed extends AbstractBeanBeed {
     // NOP

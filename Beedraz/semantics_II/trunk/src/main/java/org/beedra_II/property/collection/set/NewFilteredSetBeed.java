@@ -283,7 +283,7 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
   /**
    * Fabricated class. This {@link BooleanBeed} uses a
    * {@link Path} to a true {@link BooleanBeed} for an
-   * {@link _Element_} (created by {@link #getCriterion()}).
+   * {@code _Element_} (created by {@link #getCriterion()}).
    * If the result of the path is {@code true}, this {@link BooleanBeed}
    * returns {@code true}.
    * If the result of the path is {@code false}, this {@link BooleanBeed}

@@ -57,6 +57,7 @@ public class BooleanNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
   /**
    * The operator of this binary expression.
    */
+  @Override
   public String getOperatorString() {
     return "null";
   }

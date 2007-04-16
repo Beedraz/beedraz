@@ -58,6 +58,7 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
   public OrderedBidirToManyBeed(_One_ bean) {
     super();
     $bean = bean;
+    $bean.registerAggregateElement(this);
   }
 
   private _One_ $bean;

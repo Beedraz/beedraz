@@ -2,6 +2,7 @@ package org.beedra_II.property.simple;
 
 
 import org.beedra_II.StubEvent;
+import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -10,7 +11,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class StubEditableSimplePropertyBeed
-    extends EditableSimplePropertyBeed<Object, StubEvent> {
+    extends EditableSimpleExpressionBeed<Object, StubEvent> {
 
   /**
    * @pre owner != null;

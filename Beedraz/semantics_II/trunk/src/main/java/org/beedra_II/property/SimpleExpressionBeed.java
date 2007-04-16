@@ -19,43 +19,35 @@ package org.beedra_II.property;
 
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.OldNewEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * MUDO this explanation is not correct. the whole idea of "property beed" is now
- * obsolete; this interface disappears, and we need a new package name
- *
- * <p>{@link Beed Beeds} <em>of
- *   another beed</em>. They are <em>owned</em>
- *   (see {@link #getOwner()}), they do not exist on their own.</p>
- * <p>{@code PropertyBeeds} are like properties
- *   of JavaBeans. The JavaBean is the owner of the
- *   property.</p>
- * <p>Events send by {@code PropertyBeeds} are just
- *   {@link Event BeedEvents}.</p>
+ * <p>A {@link Beed} whose state is expressed
+ *   by one {@link #get() reference} of type {@code _Type_}.
+ *   In general, the state can be {@link #get() retrieved},
+ *   but explicitly setting state requires a subtype.</p>
+ * <p>Most, but not all, {@code SimplePropertyBeed SimplePropertyBeeds}
+ *   send {@link OldNewEvent OldNewBeedEvents}.</p>
  *
  * @author Jan Dockx
  *
- * @invar getOwner() == this'getOwner();
- *
- * @mudo since the owner os not always a Bean, other name? owned beed? weak beed?
- *
- * @deprecated
+ * @note This interface has little use in its own, but is important
+ *       for reuse in, e.g., the SWT peripherals.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-@Deprecated
-public interface PropertyBeed<_Event_ extends Event>
+public interface SimpleExpressionBeed<_Type_,
+                                    _Event_ extends Event>
     extends Beed<_Event_> {
 
   /**
    * @basic
    */
-  AggregateBeed getOwner();
+  _Type_ get();
 
 }
 

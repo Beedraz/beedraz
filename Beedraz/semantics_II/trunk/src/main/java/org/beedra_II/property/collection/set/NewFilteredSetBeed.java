@@ -26,13 +26,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.path.PathFactory;
-import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.property.bool.BooleanBeed;
 import org.beedra_II.property.bool.BooleanEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;

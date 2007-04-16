@@ -42,7 +42,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar isEffective() ? getDouble().doubleValue() == getdouble();
  *
  * @mudo describe semantics if real is to big (or to small) for double
- * @mudo why don't we extend {@link SimplePropertyBeed}?
+ * @mudo why don't we extend {@link SimpleExpressionBeed}?
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

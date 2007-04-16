@@ -20,7 +20,7 @@ package org.beedra_II.property.date;
 import java.util.Date;
 
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.SimplePropertyEdit;
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -36,7 +36,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class DateEdit
-    extends SimplePropertyEdit<Date, EditableDateBeed, DateEvent> {
+    extends SimpleExpressionEdit<Date, EditableDateBeed, DateEvent> {
 
   /**
    * @pre  target != null;

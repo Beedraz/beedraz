@@ -14,15 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property;
+package org.beedra_II;
 
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedra_II.AbstractBeed;
-import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;

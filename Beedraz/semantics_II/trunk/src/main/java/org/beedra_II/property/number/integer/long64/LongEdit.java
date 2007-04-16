@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
-import org.beedra_II.property.simple.SimplePropertyEdit;
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -29,7 +29,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class LongEdit
-    extends SimplePropertyEdit<Long, EditableLongBeed, ActualLongEvent> {
+    extends SimpleExpressionEdit<Long, EditableLongBeed, ActualLongEvent> {
 
   /**
    * @pre  target != null;

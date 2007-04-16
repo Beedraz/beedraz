@@ -26,9 +26,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
 import org.beedra_II.property.number.real.RealBeed;

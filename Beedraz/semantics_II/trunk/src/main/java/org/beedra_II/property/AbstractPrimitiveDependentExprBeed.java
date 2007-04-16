@@ -19,6 +19,7 @@ package org.beedra_II.property;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -37,7 +38,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractExprBeed<_Result_ extends Object,
+public abstract class AbstractPrimitiveDependentExprBeed<_Result_ extends Object,
                                        _ResultEvent_ extends Event>
     extends AbstractDependentBeed<_ResultEvent_> {
 

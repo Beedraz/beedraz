@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.path;
 
 
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Beed;
-import org.beedra_II.property.AbstractDependentBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.beedra_II.property.number.real.RealEvent;
-import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class DoubleEdit
-    extends SimplePropertyEdit<Double, EditableDoubleBeed, ActualDoubleEvent> {
+    extends SimpleExpressionEdit<Double, EditableDoubleBeed, ActualDoubleEvent> {
 
   /**
    * @pre  target != null;

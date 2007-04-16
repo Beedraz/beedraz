@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.string;
 
 
-import org.beedra_II.property.simple.SimplePropertyBeed;
+import org.beedra_II.property.SimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -26,7 +26,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface StringBeed
-    extends SimplePropertyBeed<String, StringEvent> {
+    extends SimpleExpressionBeed<String, StringEvent> {
 
   // NOP
 

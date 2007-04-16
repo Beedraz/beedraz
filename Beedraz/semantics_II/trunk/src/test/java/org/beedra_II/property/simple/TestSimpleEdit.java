@@ -31,6 +31,7 @@ import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.edit.StubValidityListener;
 import org.beedra_II.edit.Edit.State;
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
@@ -42,7 +43,7 @@ import org.junit.Test;
 public class TestSimpleEdit {
 
   public class MySimpleEdit
-       extends SimplePropertyEdit<Long, MyEditableIntegerBeed, ActualLongEvent> {
+       extends SimpleExpressionEdit<Long, MyEditableIntegerBeed, ActualLongEvent> {
 
     public MySimpleEdit(MyEditableIntegerBeed target) {
       super(target);

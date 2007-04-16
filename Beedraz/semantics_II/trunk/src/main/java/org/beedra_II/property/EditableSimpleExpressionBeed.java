@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property;
 
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
@@ -22,9 +22,9 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Collections;
 import java.util.Set;
 
+import org.beedra_II.AbstractEditableBeed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -39,15 +39,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class EditableSimplePropertyBeed<_Type_,
+public abstract class EditableSimpleExpressionBeed<_Type_,
                                                  _Event_ extends Event>
-    extends AbstractPropertyBeed<_Event_>
-    implements SimplePropertyBeed<_Type_, _Event_> {
+    extends AbstractEditableBeed<_Event_>
+    implements SimpleExpressionBeed<_Type_, _Event_> {
 
   /**
    * @pre ownerBeed != null;
    */
-  public EditableSimplePropertyBeed(AggregateBeed ownerBeed) {
+  public EditableSimpleExpressionBeed(AggregateBeed ownerBeed) {
     super(ownerBeed);
   }
 

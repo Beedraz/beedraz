@@ -22,7 +22,7 @@ import java.util.Map;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.simple.EditableSimplePropertyBeed;
+import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -40,7 +40,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class EditableBidirToOneBeed<_One_ extends BeanBeed,
                                     _Many_ extends BeanBeed>
-    extends EditableSimplePropertyBeed<BidirToManyBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
+    extends EditableSimpleExpressionBeed<BidirToManyBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre bean != null;

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property;
 
 
 import static org.beedra_II.edit.Edit.State.DONE;
@@ -37,8 +37,8 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class SimplePropertyEdit<_Type_,
-                                         _Target_ extends EditableSimplePropertyBeed<_Type_, _Event_>,
+public abstract class SimpleExpressionEdit<_Type_,
+                                         _Target_ extends EditableSimpleExpressionBeed<_Type_, _Event_>,
                                          _Event_ extends Event>
     extends AbstractSimpleEdit<_Target_, _Event_> {
 
@@ -46,7 +46,7 @@ public abstract class SimplePropertyEdit<_Type_,
    * @pre target != null;
    * @post getTarget() == target;
    */
-  public SimplePropertyEdit(_Target_ target) {
+  public SimpleExpressionEdit(_Target_ target) {
     super(target);
   }
 

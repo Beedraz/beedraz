@@ -23,8 +23,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.beedra_II.property.number.real.RealEvent;
-import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -42,7 +42,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableDoubleBeed
-    extends EditableSimplePropertyBeed<Double, ActualDoubleEvent>
+    extends EditableSimpleExpressionBeed<Double, ActualDoubleEvent>
     implements DoubleBeed {
 
   /**

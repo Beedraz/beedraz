@@ -27,8 +27,8 @@ import java.util.HashMap;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.EditStateException;
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.beedra_II.property.collection.set.ordered.ActualOrderedSetEvent;
-import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.collection_I.LinkedListOrderedSet;
@@ -46,7 +46,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          tag      = "$Name$")
 public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
                                   _Many_ extends BeanBeed>
-    extends SimplePropertyEdit<OrderedBidirToManyBeed<_One_, _Many_>,
+    extends SimpleExpressionEdit<OrderedBidirToManyBeed<_One_, _Many_>,
                                EditableOrderedBidirToOneBeed<_One_, _Many_>,
                                OrderedBidirToOneEvent<_One_, _Many_>> {
 

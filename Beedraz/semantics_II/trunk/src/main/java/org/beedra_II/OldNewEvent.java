@@ -17,14 +17,14 @@ limitations under the License.
 package org.beedra_II;
 
 
-import org.beedra_II.property.simple.SimplePropertyBeed;
+import org.beedra_II.property.SimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
  * {@link Event} that carries a simple old and new value,
  * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} is often a {@link SimplePropertyBeed},
+ * The {@link #getSource() source} is often a {@link SimpleExpressionBeed},
  * but not necessarily.
  *
  * @author Jan Dockx

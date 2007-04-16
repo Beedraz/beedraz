@@ -49,7 +49,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
                                             _ArgumentBeed_ extends Beed<? extends _ArgumentEvent_>,
                                             _ArgumentEvent_ extends Event>
-    extends AbstractExprBeed<_Result_, _ResultEvent_>  {
+    extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {

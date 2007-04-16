@@ -53,7 +53,7 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
                                              _LeftArgumentEvent_ extends Event,
                                              _RightArgumentBeed_ extends Beed<? extends _RightArgumentEvent_>,
                                              _RightArgumentEvent_ extends Event>
-    extends AbstractExprBeed<_Result_, _ResultEvent_>  {
+    extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {

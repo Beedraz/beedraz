@@ -25,8 +25,8 @@ import java.util.HashMap;
 
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.beedra_II.property.collection.set.ActualSetEvent;
-import org.beedra_II.property.simple.SimplePropertyEdit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.collection_I.Singleton;
@@ -43,7 +43,7 @@ import org.ppeew.collection_I.Singleton;
          tag      = "$Name$")
 public class BidirToOneEdit<_One_ extends BeanBeed,
                             _Many_ extends BeanBeed>
-    extends SimplePropertyEdit<BidirToManyBeed<_One_, _Many_>, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
+    extends SimpleExpressionEdit<BidirToManyBeed<_One_, _Many_>, EditableBidirToOneBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
    * @pre  target != null;

@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.property.simple.SimplePropertyBeed;
+import org.beedra_II.property.SimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -30,7 +30,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public interface BooleanBeed
-    extends SimplePropertyBeed<Boolean, BooleanEvent> {
+    extends SimpleExpressionBeed<Boolean, BooleanEvent> {
 
   /**
    * @basic

@@ -29,9 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;

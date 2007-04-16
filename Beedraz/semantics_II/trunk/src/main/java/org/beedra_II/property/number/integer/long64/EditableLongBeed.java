@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.simple.EditableSimplePropertyBeed;
+import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -22,7 +22,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableLongBeed
-    extends EditableSimplePropertyBeed<Long, ActualLongEvent>
+    extends EditableSimpleExpressionBeed<Long, ActualLongEvent>
     implements LongBeed {
 
   /**

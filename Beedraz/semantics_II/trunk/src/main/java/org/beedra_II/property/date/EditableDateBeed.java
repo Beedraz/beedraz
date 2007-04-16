@@ -19,7 +19,7 @@ package org.beedra_II.property.date;
 
 import java.util.Date;
 
-import org.beedra_II.property.simple.EditableSimplePropertyBeed;
+import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -35,7 +35,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableDateBeed
-    extends EditableSimplePropertyBeed<Date, DateEvent>
+    extends EditableSimpleExpressionBeed<Date, DateEvent>
     implements DateBeed {
 
   /**

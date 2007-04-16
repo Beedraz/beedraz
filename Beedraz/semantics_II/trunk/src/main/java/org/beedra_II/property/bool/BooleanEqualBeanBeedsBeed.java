@@ -21,12 +21,12 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Map;
 
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
-import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.MathUtil;

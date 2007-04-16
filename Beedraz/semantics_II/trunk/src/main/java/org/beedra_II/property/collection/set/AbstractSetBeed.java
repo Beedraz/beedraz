@@ -24,9 +24,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.beedra_II.AbstractBeed;
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.property.collection.CollectionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;

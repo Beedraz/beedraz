@@ -14,12 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedra_II.property;
+package org.beedra_II;
 
 
-import org.beedra_II.AbstractBeed;
-import org.beedra_II.Beed;
-import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -28,21 +25,19 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * Support for implementations of {@link PropertyBeed}.
  *
  * @author Jan Dockx
- *
- * @mudo used as superclass for editable beeds, that always have an owner and are root update source
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPropertyBeed<_Event_ extends Event>
+public abstract class AbstractEditableBeed<_Event_ extends Event>
     extends AbstractBeed<_Event_>
     implements Beed<_Event_> {
 
   /**
    * @post getOwner() == owner;
    */
-  protected AbstractPropertyBeed(AggregateBeed owner) {
+  protected AbstractEditableBeed(AggregateBeed owner) {
     $owner = owner;
     if (owner != null) {
       owner.registerAggregateElement(this);

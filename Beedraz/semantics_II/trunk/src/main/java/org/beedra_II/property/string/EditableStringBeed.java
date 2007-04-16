@@ -18,7 +18,7 @@ package org.beedra_II.property.string;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.simple.EditableSimplePropertyBeed;
+import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -27,7 +27,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class EditableStringBeed
-    extends EditableSimplePropertyBeed<String, StringEvent>
+    extends EditableSimpleExpressionBeed<String, StringEvent>
     implements StringBeed {
 
   /**

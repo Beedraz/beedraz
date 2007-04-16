@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.property.simple.SimplePropertyEdit;
+import org.beedra_II.property.SimpleExpressionEdit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -29,7 +29,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public final class BooleanEdit
-    extends SimplePropertyEdit<Boolean, EditableBooleanBeed, BooleanEvent> {
+    extends SimpleExpressionEdit<Boolean, EditableBooleanBeed, BooleanEvent> {
 
   /**
    * @pre  target != null;

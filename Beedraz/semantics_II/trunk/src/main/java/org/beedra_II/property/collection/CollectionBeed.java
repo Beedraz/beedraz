@@ -19,8 +19,8 @@ package org.beedra_II.property.collection;
 
 import java.util.Collection;
 
+import org.beedra_II.property.SimpleExpressionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
-import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public interface CollectionBeed<_Element_,
                                 _Event_ extends CollectionEvent<_Element_>>
-    extends SimplePropertyBeed<Collection<_Element_>, _Event_> {
+    extends SimpleExpressionBeed<Collection<_Element_>, _Event_> {
 
   /**
    * @basic

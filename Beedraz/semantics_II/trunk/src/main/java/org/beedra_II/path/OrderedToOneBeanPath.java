@@ -24,8 +24,8 @@ import java.util.Set;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.association.set.BidirToOneEvent;
 import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
+import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -90,7 +90,7 @@ public class OrderedToOneBeanPath<_One_ extends BeanBeed>
         assert events.size() >= 1;
         _One_ oldOne = $one;
         // $toOneBeed could be null
-        BidirToOneEvent<_One_, ?> toOneEvent = (BidirToOneEvent<_One_, ?>)events.get($toOneBeed);
+        OrderedBidirToOneEvent<_One_, ?> toOneEvent = (OrderedBidirToOneEvent<_One_, ?>)events.get($toOneBeed);
         if (toOneEvent != null) {
           assert $one == toOneEvent.getOldOne();
           $one = toOneEvent.getNewOne();

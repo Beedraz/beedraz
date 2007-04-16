@@ -17,7 +17,6 @@
 package org.beedra_II.property.number.real.double64.doublepowerbeed;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.AbstractTestDoubleConstantUnaryExpressionBeed;
 import org.beedra_II.property.number.real.double64.DoublePowerBeed;
 import org.junit.Test;
@@ -31,7 +30,7 @@ public abstract class AbstractTestDoublePowerBeed
   }
 
   @Override
-  protected DoublePowerBeed createSubject(AggregateBeed owner) {
+  protected DoublePowerBeed createSubject() {
     return new DoublePowerBeed($constant);
   }
 

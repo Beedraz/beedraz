@@ -19,7 +19,6 @@ package org.beedra_II.property.number.real.double64.doublelognbeed;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.path.ConstantPath;
 import org.beedra_II.path.Path;
@@ -45,8 +44,8 @@ public abstract class AbstractTestDoubleLogNBeed
   }
 
   @Override
-  protected DoubleLogNBeed createSubject(AggregateBeed owner) {
-    return new DoubleLogNBeed(owner, $constant);
+  protected DoubleLogNBeed createSubject() {
+    return new DoubleLogNBeed(null, $constant);
   }
 
   @Override

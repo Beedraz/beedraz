@@ -23,7 +23,6 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -43,12 +42,11 @@ public class LongNegativeBeed
     extends AbstractRealArgLongUnaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public LongNegativeBeed(AggregateBeed owner) {
-    super(owner);
+  public LongNegativeBeed() {
+    super(null);
   }
 
   /**

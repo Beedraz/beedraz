@@ -20,7 +20,6 @@ package org.beedra_II.property.bool;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.junit.Test;
 
 
@@ -46,8 +45,8 @@ public class TestBooleanNullBeed
   }
 
   @Override
-  protected BooleanNullBeed createSubject(AggregateBeed owner) {
-    return new BooleanNullBeed(owner);
+  protected BooleanNullBeed createSubject() {
+    return new BooleanNullBeed(null);
   }
 
   @Override

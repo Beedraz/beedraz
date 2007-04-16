@@ -44,7 +44,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
                                                 _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_, ? extends Event>,
                                                 _EAB_ extends _ArgumentBeed_> {
 
-  protected abstract _UEB_ createSubject(AggregateBeed owner);
+  protected abstract _UEB_ createSubject();
 
   protected abstract _EAB_ createEditableArgumentBeed(AggregateBeed owner);
 
@@ -91,7 +91,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     $argumentDoubleBeedPath = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed);
     $argumentDoubleBeed2 = createEditableArgumentBeed($aggregateBeed);
     $argumentDoubleBeedPath2 = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed2);
-    $subject = createSubject($aggregateBeed);
+    $subject = createSubject();
     $listener = createStubListener();
   }
 

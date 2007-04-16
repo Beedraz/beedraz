@@ -19,8 +19,6 @@ package org.beedra_II.property.number.real.double64;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.DoubleEBeed;
 import org.junit.Test;
 
 
@@ -43,8 +41,8 @@ public class TestDoubleEBeed
   }
 
   @Override
-  protected DoubleEBeed createSubject(AggregateBeed owner) {
-    return new DoubleEBeed(owner);
+  protected DoubleEBeed createSubject() {
+    return new DoubleEBeed(null);
   }
 
   @Override

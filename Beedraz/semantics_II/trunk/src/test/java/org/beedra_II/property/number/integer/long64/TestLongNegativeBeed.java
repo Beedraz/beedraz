@@ -19,8 +19,6 @@ package org.beedra_II.property.number.integer.long64;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.integer.long64.LongNegativeBeed;
 import org.junit.Test;
 
 
@@ -31,7 +29,7 @@ public class TestLongNegativeBeed
 
   @Test
   public void testConstructor() {
-    LongNegativeBeed inb = new LongNegativeBeed($aggregateBeed);
+    LongNegativeBeed inb = new LongNegativeBeed();
     assertEquals($aggregateBeed, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getLong());
@@ -44,8 +42,8 @@ public class TestLongNegativeBeed
   }
 
   @Override
-  protected LongNegativeBeed createSubject(AggregateBeed owner) {
-    return new LongNegativeBeed(owner);
+  protected LongNegativeBeed createSubject() {
+    return new LongNegativeBeed();
   }
 
   @Override

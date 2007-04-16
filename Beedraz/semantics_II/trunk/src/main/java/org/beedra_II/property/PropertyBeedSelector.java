@@ -26,11 +26,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * <p>Selects a {@link PropertyBeed} from a beed owner.</p>
  *
  * @author Jan Dockx
+ *
+ * @deprecated use paths instead
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+@Deprecated
 public interface PropertyBeedSelector<_Owner_ extends AggregateBeed,
                                       _PropertyBeed_ extends PropertyBeed<?>>
     extends BeedMapping<_Owner_, _PropertyBeed_> {

@@ -24,6 +24,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
+ * MUDO this explanation is not correct. the whole idea of "property beed" is now
+ * obsolete; this interface disappears, and we need a new package name
+ *
  * <p>{@link Beed Beeds} <em>of
  *   another beed</em>. They are <em>owned</em>
  *   (see {@link #getOwner()}), they do not exist on their own.</p>
@@ -38,11 +41,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar getOwner() == this'getOwner();
  *
  * @mudo since the owner os not always a Bean, other name? owned beed? weak beed?
+ *
+ * @deprecated
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+@Deprecated
 public interface PropertyBeed<_Event_ extends Event>
     extends Beed<_Event_> {
 

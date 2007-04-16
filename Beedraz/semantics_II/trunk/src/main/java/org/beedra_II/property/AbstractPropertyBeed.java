@@ -27,11 +27,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * Support for implementations of {@link PropertyBeed}.
  *
  * @author Jan Dockx
+ *
+ * @deprecated
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+@Deprecated
 public abstract class AbstractPropertyBeed<_Event_ extends Event>
     extends AbstractBeed<_Event_>
     implements PropertyBeed<_Event_> {

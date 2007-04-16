@@ -20,6 +20,7 @@ package org.beedra_II.path;
 import java.util.Collections;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -43,7 +44,19 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractIndependentPath<_SelectedBeed_ extends Beed<?>>
-    extends AbstractPath<_SelectedBeed_> {
+    extends AbstractBeed<PathEvent<_SelectedBeed_>>
+    implements Path<_SelectedBeed_> {
+
+  @Override
+  protected String otherToStringInformation() {
+    _SelectedBeed_ selected = get();
+    return selected == null ? "null" : selected.toString();
+  }
+
+  @Override
+  public final void toString(StringBuffer sb, int i) {
+    sb.append(otherToStringInformation());
+  }
 
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;

@@ -17,17 +17,13 @@ limitations under the License.
 package org.beedra_II.path;
 
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
 import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEvent;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -48,7 +44,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class OrderedToOneBeanPath<_One_ extends BeanBeed>
-    extends AbstractPath<_One_> {
+    extends AbstractDependentPath<_One_> {
 
 
   /*<construction>*/
@@ -62,16 +58,16 @@ public class OrderedToOneBeanPath<_One_ extends BeanBeed>
   public OrderedToOneBeanPath(Path<? extends EditableOrderedBidirToOneBeed<_One_, ?>> toOneBeedPath) {
     assert toOneBeedPath != null;
     $toOnePath = toOneBeedPath;
-    $dependent.addUpdateSource($toOnePath);
+    addUpdateSource($toOnePath);
     setToOneBeed(toOneBeedPath.get());
   }
 
 //      When does this go away?
   public final void terminate() {
     assert $toOnePath != null;
-    $dependent.removeUpdateSource($toOnePath);
+    removeUpdateSource($toOnePath);
     if ($toOneBeed != null) {
-      $dependent.removeUpdateSource($toOneBeed);
+      removeUpdateSource($toOneBeed);
     }
   }
 
@@ -82,72 +78,29 @@ public class OrderedToOneBeanPath<_One_ extends BeanBeed>
   /*<section name="dependent">*/
   //-----------------------------------------------------------------
 
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected PathEvent<_One_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        assert events != null;
-        assert events.size() >= 1;
-        _One_ oldOne = $one;
-        // $toOneBeed could be null
-        OrderedBidirToOneEvent<_One_, ?> toOneEvent = (OrderedBidirToOneEvent<_One_, ?>)events.get($toOneBeed);
-        if (toOneEvent != null) {
-          assert $one == toOneEvent.getOldOne();
-          $one = toOneEvent.getNewOne();
-        }
-        PathEvent<EditableOrderedBidirToOneBeed<_One_, ?>> pathEvent =
-            (PathEvent<EditableOrderedBidirToOneBeed<_One_, ?>>)events.get($toOnePath);
-        if (pathEvent != null) {
-          assert $toOneBeed == pathEvent.getOldValue(); // could be null
-          setToOneBeed(pathEvent.getNewValue());
-        }
-        if (oldOne != $one) {
-          return new PathEvent<_One_>(OrderedToOneBeanPath.this, oldOne, $one, edit);
-        }
-        else {
-          return null;
-        }
-      }
-
-    };
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
-     */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
-  }
-
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
-
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
+  @Override
+  protected PathEvent<_One_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+    assert events != null;
+    assert events.size() >= 1;
+    _One_ oldOne = $one;
+    // $toOneBeed could be null
+    OrderedBidirToOneEvent<_One_, ?> toOneEvent = (OrderedBidirToOneEvent<_One_, ?>)events.get($toOneBeed);
+    if (toOneEvent != null) {
+      assert $one == toOneEvent.getOldOne();
+      $one = toOneEvent.getNewOne();
+    }
+    PathEvent<EditableOrderedBidirToOneBeed<_One_, ?>> pathEvent =
+        (PathEvent<EditableOrderedBidirToOneBeed<_One_, ?>>)events.get($toOnePath);
+    if (pathEvent != null) {
+      assert $toOneBeed == pathEvent.getOldValue(); // could be null
+      setToOneBeed(pathEvent.getNewValue());
+    }
+    if (oldOne != $one) {
+      return new PathEvent<_One_>(OrderedToOneBeanPath.this, oldOne, $one, edit);
+    }
+    else {
+      return null;
+    }
   }
 
   /*</section>*/
@@ -182,12 +135,12 @@ public class OrderedToOneBeanPath<_One_ extends BeanBeed>
 
   private void setToOneBeed(EditableOrderedBidirToOneBeed<_One_, ?> toOneBeed) {
     if ($toOneBeed != null) {
-      $dependent.removeUpdateSource($toOneBeed);
+      removeUpdateSource($toOneBeed);
     }
     $toOneBeed = toOneBeed;
     if ($toOneBeed != null) {
       $one = $toOneBeed.getOne();
-      $dependent.addUpdateSource($toOneBeed);
+      addUpdateSource($toOneBeed);
     }
     else {
       $one = null;

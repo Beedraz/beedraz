@@ -26,13 +26,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.path.PathFactory;
+import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.property.bool.BooleanBeed;
 import org.beedra_II.property.bool.BooleanEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -287,7 +287,7 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
    * @invar getElement() != null;
    */
   private class ElementCriterion
-      extends AbstractBeed<BooleanEvent>
+      extends AbstractDependentBeed<BooleanEvent>
       implements BooleanBeed {
 
     /**
@@ -307,79 +307,49 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
       $value = ($bb == null) ? false : $bb.getboolean();
     }
 
-    private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      /**
-       * There are two update sources:
-       * - {@link ElementCriterion#$bbPath} and
-       * - {@link ElementCriterion#$bb} (if it is effective)
-       * If {@link ElementCriterion#$bbPath} changes, then it sends a {@link PathEvent},
-       * containing the old and new value of the path, i.e. containing the old and new
-       * {@link BooleanBeed}. We remove the old {@link BooleanBeed} as {@link UpdateSource}
-       * and add the new {@link BooleanBeed} as {@link UpdateSource}. The value of
-       * {@link ElementCriterion#$bb} is replaced by the new {@link BooleanBeed}. The
-       * {@link ElementCriterion#$value} is updated to the value of the new
-       * {@link BooleanBeed}.
-       * If {@link ElementCriterion#$bb} changes, then it sends a {@link BooleanEvent},
-       * containing the old and new value of the {@link BooleanBeed}. The
-       * {@link ElementCriterion#$value} is updated to the new value of the
-       * {@link ElementCriterion#$bb}.
-       *
-       * If the {@link ElementCriterion#$value} has changed, then we return a
-       * {@link BooleanEvent} containing the old and new value.
-       */
-      @Override
-      protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        // events are from the $bbPath or the $bb (if it is effective)
-        assert events != null;
-        assert events.size() > 0;
-        boolean oldValue = getboolean();
-        PathEvent<BooleanBeed> pathEvent = (PathEvent<BooleanBeed>)events.get($bbPath);
-        if (pathEvent != null) {
-          if ($bb != null) {
-            $dependent.removeUpdateSource($bb);
-          }
-          $bb = pathEvent.getNewValue();
-          if ($bb != null) {
-            $dependent.addUpdateSource($bb);
-          }
+    /**
+     * There are two update sources:
+     * - {@link ElementCriterion#$bbPath} and
+     * - {@link ElementCriterion#$bb} (if it is effective)
+     * If {@link ElementCriterion#$bbPath} changes, then it sends a {@link PathEvent},
+     * containing the old and new value of the path, i.e. containing the old and new
+     * {@link BooleanBeed}. We remove the old {@link BooleanBeed} as {@link UpdateSource}
+     * and add the new {@link BooleanBeed} as {@link UpdateSource}. The value of
+     * {@link ElementCriterion#$bb} is replaced by the new {@link BooleanBeed}. The
+     * {@link ElementCriterion#$value} is updated to the value of the new
+     * {@link BooleanBeed}.
+     * If {@link ElementCriterion#$bb} changes, then it sends a {@link BooleanEvent},
+     * containing the old and new value of the {@link BooleanBeed}. The
+     * {@link ElementCriterion#$value} is updated to the new value of the
+     * {@link ElementCriterion#$bb}.
+     *
+     * If the {@link ElementCriterion#$value} has changed, then we return a
+     * {@link BooleanEvent} containing the old and new value.
+     */
+    @Override
+    protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+      // events are from the $bbPath or the $bb (if it is effective)
+      assert events != null;
+      assert events.size() > 0;
+      boolean oldValue = getboolean();
+      PathEvent<BooleanBeed> pathEvent = (PathEvent<BooleanBeed>)events.get($bbPath);
+      if (pathEvent != null) {
+        if ($bb != null) {
+          $dependent.removeUpdateSource($bb);
         }
-        $value = $bb == null ? false : $bb.getboolean();
-        if (oldValue != $value) {
-          return new BooleanEvent(ElementCriterion.this, oldValue, $value, edit);
-        }
-        else {
-          return null;
+        $bb = pathEvent.getNewValue();
+        if ($bb != null) {
+          $dependent.addUpdateSource($bb);
         }
       }
-
-    };
-
-    public final int getMaximumRootUpdateSourceDistance() {
-      /* FIX FOR CONSTRUCTION PROBLEM
-       * At construction, the super constructor is called with the future owner
-       * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-       * this object is registered as update source with the dependent of the
-       * aggregate beed. During that registration process, the dependent
-       * checks to see if we need to ++ our maximum root update source distance.
-       * This involves a call to this method getMaximumRootUpdateSourceDistance.
-       * Since however, we are still doing initialization in AbstractPropertyBeed,
-       * initialization code (and construction code) further down is not yet executed.
-       * This means that our $dependent is still null, and this results in a NullPointerException.
-       * On the other hand, we cannot move the concept of $dependent up, since not all
-       * property beeds have a dependent.
-       * The fix implemented here is the following:
-       * This problem only occurs during construction. During construction, we will
-       * not have any update sources, so our maximum root update source distance is
-       * effectively 0.
-       */
-      /*
-       * TODO This only works if we only add 1 update source during construction,
-       *      so a better solution should be sought.
-       */
-      return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+      $value = $bb == null ? false : $bb.getboolean();
+      if (oldValue != $value) {
+        return new BooleanEvent(ElementCriterion.this, oldValue, $value, edit);
+      }
+      else {
+        return null;
+      }
     }
-
 
     /**
      * The element we are the criterion for.
@@ -428,18 +398,6 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
 
     public Boolean get() {
       return $value;
-    }
-
-    public Set<? extends UpdateSource> getUpdateSources() {
-      return $dependent.getUpdateSources();
-    }
-
-    public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-      /* fixed to make it possible to use this method during construction,
-       * before $dependent is initialized. But that is bad code, and should be
-       * fixed.
-       */
-      return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
     }
 
   }

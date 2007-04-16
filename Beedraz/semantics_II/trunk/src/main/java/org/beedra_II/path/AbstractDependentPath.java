@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedra_II.path;
 
 
-import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
+import org.beedra_II.property.AbstractDependentBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -31,8 +31,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractPath<_SelectedBeed_ extends Beed<?>>
-    extends AbstractBeed<PathEvent<_SelectedBeed_>>
+public abstract class AbstractDependentPath<_SelectedBeed_ extends Beed<?>>
+    extends AbstractDependentBeed<PathEvent<_SelectedBeed_>>
     implements Path<_SelectedBeed_> {
 
   @Override

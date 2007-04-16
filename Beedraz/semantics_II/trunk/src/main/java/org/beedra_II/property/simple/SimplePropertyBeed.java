@@ -34,6 +34,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author Jan Dockx
  *
  * @mudo rename to SimpleBeed
+ *
+ * @note This interface has little use in its own, but is important
+ *       for reuse in, e.g., the SWT peripherals.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

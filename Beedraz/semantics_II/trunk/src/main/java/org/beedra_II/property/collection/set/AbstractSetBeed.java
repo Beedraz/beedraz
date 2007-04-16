@@ -20,20 +20,17 @@ package org.beedra_II.property.collection.set;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.property.AbstractDependentBeed;
 import org.beedra_II.property.collection.CollectionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.LongBeed;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.MathUtil;
@@ -59,7 +56,7 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
    * @invar  get() == EditableSetBeed.this.get().size();
    */
   protected class SizeBeed
-      extends AbstractBeed<ActualLongEvent>
+      extends AbstractDependentBeed<ActualLongEvent>
       implements LongBeed {
 
     /**
@@ -67,61 +64,33 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
      * owner of the {@link SetBeed}.
      */
     SizeBeed() {
-      $dependent.addUpdateSource(AbstractSetBeed.this);
+      addUpdateSource(AbstractSetBeed.this);
     }
 
     public final boolean isEffective() {
       return true;
     }
 
-    private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected ActualLongEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        // We only get events from our set beed, and that can only be 1
-        assert events.size() == 1;
-        Iterator<Event> iter = events.values().iterator();
-        Event event = iter.next();
-        SetEvent<?> setEvent = (SetEvent<?>)event;
-        if (setEvent.getAddedElements().size() != setEvent.getRemovedElements().size()) {
-          long oldSize = $size;
-          $size += setEvent.getAddedElements().size();
-          $size -= setEvent.getRemovedElements().size();
-          assert AbstractSetBeed.this.get().size() == $size :
-                  "size in size beed should be " + AbstractSetBeed.this.get().size() +
-                  " but is " + $size;
-          return new ActualLongEvent(SizeBeed.this, oldSize, (long)$size, edit);
-        }
-        else { // the size didn't change
-          assert AbstractSetBeed.this.get().size() == $size;
-          return null;
-        }
+    @Override
+    protected ActualLongEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+      // We only get events from our set beed, and that can only be 1
+      assert events.size() == 1;
+      Iterator<Event> iter = events.values().iterator();
+      Event event = iter.next();
+      SetEvent<?> setEvent = (SetEvent<?>)event;
+      if (setEvent.getAddedElements().size() != setEvent.getRemovedElements().size()) {
+        long oldSize = $size;
+        $size += setEvent.getAddedElements().size();
+        $size -= setEvent.getRemovedElements().size();
+        assert AbstractSetBeed.this.get().size() == $size :
+                "size in size beed should be " + AbstractSetBeed.this.get().size() +
+                " but is " + $size;
+        return new ActualLongEvent(SizeBeed.this, oldSize, (long)$size, edit);
       }
-    };
-
-    public final int getMaximumRootUpdateSourceDistance() {
-      /* FIX FOR CONSTRUCTION PROBLEM
-       * At construction, the super constructor is called with the future owner
-       * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-       * this object is registered as update source with the dependent of the
-       * aggregate beed. During that registration process, the dependent
-       * checks to see if we need to ++ our maximum root update source distance.
-       * This involves a call to this method getMaximumRootUpdateSourceDistance.
-       * Since however, we are still doing initialization in AbstractPropertyBeed,
-       * initialization code (and construction code) further down is not yet executed.
-       * This means that our $dependent is still null, and this results in a NullPointerException.
-       * On the other hand, we cannot move the concept of $dependent up, since not all
-       * property beeds have a dependent.
-       * The fix implemented here is the following:
-       * This problem only occurs during construction. During construction, we will
-       * not have any update sources, so our maximum root update source distance is
-       * effectively 0.
-       */
-      /*
-       * TODO This only works if we add no update sources during construction,
-       *      so a better solution should be sought.
-       */
-      return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+      else { // the size didn't change
+        assert AbstractSetBeed.this.get().size() == $size;
+        return null;
+      }
     }
 
     public final int get() {
@@ -154,24 +123,11 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       return MathUtil.castToBigDecimal(get());
     }
 
-    public final Set<? extends UpdateSource> getUpdateSources() {
-      return $dependent.getUpdateSources();
-    }
-
-    public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-      /* fixed to make it possible to use this method during construction,
-       * before $dependent is initialized. But that is bad code, and should be
-       * fixed.
-       */
-      return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
-    }
-
     public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
       sb.append(numberFormat.format(getdouble()));
     }
-  }
 
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+  }
 
   /**
    * See {@link CollectionBeed#getSize()}.

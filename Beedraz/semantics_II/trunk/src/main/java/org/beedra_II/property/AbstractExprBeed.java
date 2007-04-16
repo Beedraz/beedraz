@@ -19,16 +19,8 @@ package org.beedra_II.property;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-
-import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
-import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -47,7 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractExprBeed<_Result_ extends Object,
                                        _ResultEvent_ extends Event>
-    extends AbstractBeed<_ResultEvent_> {
+    extends AbstractDependentBeed<_ResultEvent_> {
 
   /**
    * Return the value of this beed, as an object.
@@ -66,13 +58,6 @@ public abstract class AbstractExprBeed<_Result_ extends Object,
    * @todo Why don't we use r1.equals(r2)?
    */
   protected abstract boolean equalValue(_Result_ r1, _Result_ r2);
-
-  /**
-   * This method is called by the dependent when it is asked to update.
-   * Subtypes should implement with code that deals with events from any update source
-   * they have registered with the dependent.
-   */
-  protected abstract _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit);
 
 
 
@@ -97,55 +82,6 @@ public abstract class AbstractExprBeed<_Result_ extends Object,
   private boolean $effective = false;
 
   /*</property>*/
-
-
-
-  /*<section name="dependent">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @mudo must be private, but protected now to force errors in subtypes
-   */
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-    @Override
-    protected _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-      return AbstractExprBeed.this.filteredUpdate(events, edit);
-    }
-
-  };
-
-  protected final void addUpdateSource(UpdateSource us) {
-    $dependent.addUpdateSource(us);
-  }
-
-  protected final void removeUpdateSource(UpdateSource us) {
-    $dependent.removeUpdateSource(us);
-  }
-
-
-  /*<section name="update source">*/
-  //------------------------------------------------------------------
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    return $dependent.getMaximumRootUpdateSourceDistance();
-  }
-
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
-
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
-  }
-
-  /*</section>*/
 
 
 

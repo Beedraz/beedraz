@@ -97,7 +97,7 @@ public abstract class AbstractBooleanBinaryLogicalExpressionBeed
   /**
    * @post getRightArgumentPath() == rightArgumentPath;
    */
-  public final void setRightArgument(Path<? extends BooleanBeed> rightArgumentPath) {
+  public final void setRightArgumentPath(Path<? extends BooleanBeed> rightArgumentPath) {
     setRightArgPath(rightArgumentPath);
   }
 

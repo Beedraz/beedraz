@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.collection.set.SetBeed;
@@ -70,8 +69,8 @@ public abstract class AbstractDoubleSetComputationBeed
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public AbstractDoubleSetComputationBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractDoubleSetComputationBeed() {
+    super(null);
   }
 
   public final boolean isEffective() {

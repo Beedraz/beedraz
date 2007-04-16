@@ -54,7 +54,7 @@ public class DoubleSampleVarianceBeed extends AbstractDoubleCommonsMathSetComput
    * @post  getDouble() == null;
    */
   public DoubleSampleVarianceBeed() {
-    super(null, new Variance(true));
+    super(new Variance(true));
   }
 
   @Override

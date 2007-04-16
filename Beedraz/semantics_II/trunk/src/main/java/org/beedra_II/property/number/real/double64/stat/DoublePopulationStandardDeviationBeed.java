@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -56,8 +55,8 @@ public class DoublePopulationStandardDeviationBeed extends AbstractDoubleCommons
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoublePopulationStandardDeviationBeed(AggregateBeed owner) {
-    super(owner, new StandardDeviation(false));
+  public DoublePopulationStandardDeviationBeed() {
+    super(new StandardDeviation(false));
   }
 
   @Override

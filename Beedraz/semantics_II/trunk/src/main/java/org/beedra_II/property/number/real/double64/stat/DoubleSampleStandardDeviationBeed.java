@@ -54,7 +54,7 @@ public class DoubleSampleStandardDeviationBeed extends AbstractDoubleCommonsMath
    * @post  getDouble() == null;
    */
   public DoubleSampleStandardDeviationBeed() {
-    super(null, new StandardDeviation(true));
+    super(new StandardDeviation(true));
   }
 
   @Override

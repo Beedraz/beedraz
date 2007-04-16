@@ -83,22 +83,6 @@ public class TestDoubleSetSumBeed {
     assertNull($doubleSetSumBeed.getOwner());
     assertEquals($doubleSetSumBeed.getSource(), null);
     assertEquals($doubleSetSumBeed.getDouble(), null);
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $doubleSetSumBeed.publicUpdateDependents($event1);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event1));
-    assertTrue($listener2.$event.getComponentevents().contains($event1));
-    // no terms registered (cannot be tested)
   }
 
   /**

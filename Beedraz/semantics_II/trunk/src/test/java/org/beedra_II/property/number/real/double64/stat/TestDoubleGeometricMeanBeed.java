@@ -18,8 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.stat.DoubleGeometricMeanBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
@@ -38,8 +36,8 @@ public class TestDoubleGeometricMeanBeed
   }
 
   @Override
-  protected MyDoubleGeometricMeanBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleGeometricMeanBeed(owner);
+  protected MyDoubleGeometricMeanBeed createSubject() {
+    return new MyDoubleGeometricMeanBeed();
   }
 
   @Override
@@ -55,8 +53,8 @@ public class TestDoubleGeometricMeanBeed
 }
 
 class MyDoubleGeometricMeanBeed extends DoubleGeometricMeanBeed {
-  public MyDoubleGeometricMeanBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoubleGeometricMeanBeed() {
+    super();
   }
 
   /**

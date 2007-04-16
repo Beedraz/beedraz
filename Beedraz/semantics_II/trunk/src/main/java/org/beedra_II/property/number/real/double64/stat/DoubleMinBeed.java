@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.rank.Min;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -47,8 +46,8 @@ public class DoubleMinBeed extends AbstractDoubleCommonsMathSetComputationBeed {
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleMinBeed(AggregateBeed owner) {
-    super(owner, new Min());
+  public DoubleMinBeed() {
+    super(new Min());
   }
 
   @Override

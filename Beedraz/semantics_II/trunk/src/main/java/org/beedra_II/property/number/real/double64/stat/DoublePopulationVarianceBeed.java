@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.moment.Variance;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -56,8 +55,8 @@ public class DoublePopulationVarianceBeed extends AbstractDoubleCommonsMathSetCo
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoublePopulationVarianceBeed(AggregateBeed owner) {
-    super(owner, new Variance(false));
+  public DoublePopulationVarianceBeed() {
+    super(new Variance(false));
   }
 
   @Override

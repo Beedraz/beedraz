@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import org.beedra_II.Event;
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -34,7 +33,6 @@ import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEdit;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
-import org.beedra_II.property.number.real.double64.ActualDoubleEvent;
 import org.beedra_II.property.number.real.double64.DoubleEdit;
 import org.beedra_II.property.number.real.double64.EditableDoubleBeed;
 import org.junit.After;
@@ -45,7 +43,7 @@ import org.ppeew.smallfries_I.MathUtil;
 
 public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ extends AbstractDoubleCommonsMathSetComputationBeed> {
 
-  protected abstract _CMSCB_ createSubject(AggregateBeed owner);
+  protected abstract _CMSCB_ createSubject();
   protected abstract double computeStatistic(double... values);
   protected abstract void updateDependents(_CMSCB_ subject, Event event);
   protected abstract void recalculate(_CMSCB_ subject);
@@ -61,32 +59,14 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
   }
 
   private AggregateBeed $owner = new StubBeanBeed();
-  private _CMSCB_ $subject = createSubject($owner);
-  private ActualDoubleEvent $event1 = new ActualDoubleEvent($subject, new Double(0), new Double(1), null);
-  private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
-  private StubListener<AggregateEvent> $listener2 = new StubListener<AggregateEvent>();
+  private _CMSCB_ $subject = createSubject();
   private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
   @Test
   public void constructor() {
-    assertEquals($subject.getOwner(), $owner);
+    assertNull($subject.getOwner());
     assertEquals($subject.getSource(), null);
     assertEquals($subject.getDouble(), null);
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    updateDependents($subject, $event1);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event1));
-    assertTrue($listener2.$event.getComponentevents().contains($event1));
   }
 
   /**

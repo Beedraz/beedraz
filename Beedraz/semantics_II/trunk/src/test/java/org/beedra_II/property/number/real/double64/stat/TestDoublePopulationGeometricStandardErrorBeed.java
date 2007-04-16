@@ -18,8 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.stat.DoublePopulationGeometricStandardErrorBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
@@ -38,8 +36,8 @@ public class TestDoublePopulationGeometricStandardErrorBeed
   }
 
   @Override
-  protected MyDoublePopulationGeometricStandardErrorBeed createSubject(AggregateBeed owner) {
-    return new MyDoublePopulationGeometricStandardErrorBeed(owner);
+  protected MyDoublePopulationGeometricStandardErrorBeed createSubject() {
+    return new MyDoublePopulationGeometricStandardErrorBeed();
   }
 
   @Override
@@ -55,8 +53,8 @@ public class TestDoublePopulationGeometricStandardErrorBeed
 }
 
 class MyDoublePopulationGeometricStandardErrorBeed extends DoublePopulationGeometricStandardErrorBeed {
-  public MyDoublePopulationGeometricStandardErrorBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoublePopulationGeometricStandardErrorBeed() {
+    super();
   }
 
   /**

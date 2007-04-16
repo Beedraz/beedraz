@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.rank.Max;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -47,8 +46,8 @@ public class DoubleMaxBeed extends AbstractDoubleCommonsMathSetComputationBeed {
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleMaxBeed(AggregateBeed owner) {
-    super(owner, new Max());
+  public DoubleMaxBeed() {
+    super(new Max());
   }
 
   @Override

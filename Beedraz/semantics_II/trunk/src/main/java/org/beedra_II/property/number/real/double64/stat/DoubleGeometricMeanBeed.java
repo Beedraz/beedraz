@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -46,8 +45,8 @@ public class DoubleGeometricMeanBeed extends AbstractDoubleCommonsMathSetComputa
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleGeometricMeanBeed(AggregateBeed owner) {
-    super(owner, new GeometricMean());
+  public DoubleGeometricMeanBeed() {
+    super(new GeometricMean());
   }
 
   @Override

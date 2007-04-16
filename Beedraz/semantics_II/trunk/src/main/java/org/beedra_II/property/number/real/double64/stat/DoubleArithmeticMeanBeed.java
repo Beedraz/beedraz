@@ -45,7 +45,7 @@ public class DoubleArithmeticMeanBeed extends AbstractDoubleCommonsMathSetComput
    * @post  getDouble() == null;
    */
   public DoubleArithmeticMeanBeed() {
-    super(null, new Mean());
+    super(new Mean());
   }
 
   @Override

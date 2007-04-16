@@ -18,8 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.stat.DoublePopulationVarianceBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
@@ -38,8 +36,8 @@ public class TestDoublePopulationVarianceBeed
   }
 
   @Override
-  protected MyDoublePopulationVarianceBeed createSubject(AggregateBeed owner) {
-    return new MyDoublePopulationVarianceBeed(owner);
+  protected MyDoublePopulationVarianceBeed createSubject() {
+    return new MyDoublePopulationVarianceBeed();
   }
 
   @Override
@@ -55,8 +53,8 @@ public class TestDoublePopulationVarianceBeed
 }
 
 class MyDoublePopulationVarianceBeed extends DoublePopulationVarianceBeed {
-  public MyDoublePopulationVarianceBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoublePopulationVarianceBeed() {
+    super();
   }
 
   /**

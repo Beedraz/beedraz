@@ -45,7 +45,7 @@ public class DoubleSetSumBeed extends AbstractDoubleSetComputationBeed {
    * @post  getDouble() == null;
    */
   public DoubleSetSumBeed() {
-    super(null);
+    super();
   }
 
   /**

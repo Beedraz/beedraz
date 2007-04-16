@@ -18,8 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.property.number.real.double64.stat.DoubleMaxBeed;
 import org.junit.Test;
 import org.ppeew.smallfries_I.MathUtil;
 
@@ -38,8 +36,8 @@ public class TestDoubleMaxBeed
   }
 
   @Override
-  protected MyDoubleMaxBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleMaxBeed(owner);
+  protected MyDoubleMaxBeed createSubject() {
+    return new MyDoubleMaxBeed();
   }
 
   @Override
@@ -55,8 +53,8 @@ public class TestDoubleMaxBeed
 }
 
 class MyDoubleMaxBeed extends DoubleMaxBeed {
-  public MyDoubleMaxBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoubleMaxBeed() {
+    super();
   }
 
   /**

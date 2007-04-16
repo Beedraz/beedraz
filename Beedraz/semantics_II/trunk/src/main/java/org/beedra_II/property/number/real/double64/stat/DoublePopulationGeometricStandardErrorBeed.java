@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64.stat;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.GeometricStandardError;
@@ -51,8 +50,8 @@ public class DoublePopulationGeometricStandardErrorBeed extends AbstractDoubleCo
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoublePopulationGeometricStandardErrorBeed(AggregateBeed owner) {
-    super(owner, new GeometricStandardError(false));
+  public DoublePopulationGeometricStandardErrorBeed() {
+    super(new GeometricStandardError(false));
   }
 
   @Override

@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.StorelessUnivariateStatistic;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.double64.AbstractDoubleSetComputationBeed;
@@ -41,8 +40,8 @@ public abstract class AbstractDoubleCommonsMathSetComputationBeed extends Abstra
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public AbstractDoubleCommonsMathSetComputationBeed(AggregateBeed owner, StorelessUnivariateStatistic sus) {
-    super(owner);
+  public AbstractDoubleCommonsMathSetComputationBeed(StorelessUnivariateStatistic sus) {
+    super();
     assert sus != null;
     $calculator = sus;
   }

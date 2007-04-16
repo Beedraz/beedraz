@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.StubListener;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -63,7 +64,7 @@ public class TestSimpleEdit {
 
     @Override
     protected ActualLongEvent createEvent() {
-      LongBeed source = new EditableLongBeed();
+      LongBeed source = new EditableLongBeed(new StubBeanBeed());
       $createdEvent = new ActualLongEvent(source, new Long(0), new Long(1), null);
       return $createdEvent;
     }
@@ -78,8 +79,8 @@ public class TestSimpleEdit {
 
   public class MyEditableIntegerBeed extends EditableLongBeed {
 
-    public MyEditableIntegerBeed() {
-      super();
+    public MyEditableIntegerBeed(AggregateBeed owner) {
+      super(owner);
     }
 
     @Override
@@ -100,7 +101,7 @@ public class TestSimpleEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  MyEditableIntegerBeed $target = new MyEditableIntegerBeed();
+  MyEditableIntegerBeed $target = new MyEditableIntegerBeed($beanBeed);
   private MySimpleEdit $simpleEdit = new MySimpleEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

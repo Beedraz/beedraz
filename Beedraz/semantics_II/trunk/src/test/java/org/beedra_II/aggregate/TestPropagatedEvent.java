@@ -50,13 +50,12 @@ public class TestPropagatedEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new StubAggregateBeed();
 //    LongBeed eventSource = new EditableLongBeed(owner);
 //    // old and new value
 //    Long oldValue = 0L;
 //    Long newValue = 1L;
     // edit
-    EditableLongBeed target = new EditableLongBeed(owner);
+    EditableLongBeed target = new EditableLongBeed();
     LongEdit edit = new LongEdit(target);
     edit.perform();
     // cause

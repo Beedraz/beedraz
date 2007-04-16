@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -26,10 +25,9 @@ public class EditableLongBeed
     implements LongBeed {
 
   /**
-   * @pre owner != null;
    */
-  public EditableLongBeed(AggregateBeed owner) {
-    super(owner);
+  public EditableLongBeed() {
+    super(null);
   }
 
   public Double getDouble() {

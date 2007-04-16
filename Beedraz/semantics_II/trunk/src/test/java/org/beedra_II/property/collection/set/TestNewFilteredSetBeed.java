@@ -84,6 +84,10 @@ public class TestNewFilteredSetBeed {
 
   public class WellBeanBeed extends AbstractBeanBeed {
 
+    public WellBeanBeed() {
+      registerAggregateElement(cq);
+    }
+
     /**
      * The run in which the well is contained.
      */
@@ -93,8 +97,7 @@ public class TestNewFilteredSetBeed {
     /**
      * The Cq value of the well.
      */
-    public final EditableLongBeed cq =
-      new EditableLongBeed(this);
+    public final EditableLongBeed cq = new EditableLongBeed();
 
   }
 

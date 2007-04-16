@@ -54,7 +54,7 @@ public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
 
   @Override
   protected EditableLongBeed createEditableArgumentBeed(AggregateBeed owner) {
-    return new EditableLongBeed(owner);
+    return new EditableLongBeed();
   }
 
   @Override

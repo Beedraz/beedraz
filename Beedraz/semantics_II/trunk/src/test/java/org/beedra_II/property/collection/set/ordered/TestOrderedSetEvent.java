@@ -68,7 +68,7 @@ public class TestOrderedSetEvent {
     newValue.add(new ManyBeanBeed());
     newValue.add(new ManyBeanBeed());
     // edit
-    EditableLongBeed target = new EditableLongBeed(owner);
+    EditableLongBeed target = new EditableLongBeed();
     LongEdit edit = new LongEdit(target);
     edit.perform();
     // test constructor

@@ -26,7 +26,7 @@ public class TestEditableLongBeed {
   @Before
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
-    $editableIntegerBeed = new StubEditableLongBeed($owner);
+    $editableIntegerBeed = new StubEditableLongBeed();
     $stringEdit = new LongEdit($editableIntegerBeed);
     $stringEdit.perform();
     $event1 = new ActualLongEvent($editableIntegerBeed, 0L, 1L, $stringEdit);

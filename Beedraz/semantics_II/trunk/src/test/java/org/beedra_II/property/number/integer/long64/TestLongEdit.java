@@ -49,7 +49,7 @@ public class TestLongEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableLongBeed $target = new StubEditableLongBeed($beanBeed);
+  StubEditableLongBeed $target = new StubEditableLongBeed();
   private LongEdit $longEdit = new LongEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

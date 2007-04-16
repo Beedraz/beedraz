@@ -19,15 +19,9 @@ package org.beedra_II.property.number.integer.long64;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.number.integer.IntegerEvent;
-import org.beedra_II.property.number.integer.long64.ActualLongEvent;
-import org.beedra_II.property.number.integer.long64.EditableLongBeed;
-import org.beedra_II.property.number.integer.long64.LongBeed;
-import org.beedra_II.property.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,13 +42,12 @@ public class TestLongEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    AggregateBeed owner = new StubAggregateBeed();
-    LongBeed source = new EditableLongBeed(owner);
+    LongBeed source = new EditableLongBeed();
     // old and new value
     Long oldValue = 0L;
     Long newValue = 1L;
     // edit
-    EditableLongBeed target = new EditableLongBeed(owner);
+    EditableLongBeed target = new EditableLongBeed();
     LongEdit edit = new LongEdit(target);
     edit.perform();
     // test constructor

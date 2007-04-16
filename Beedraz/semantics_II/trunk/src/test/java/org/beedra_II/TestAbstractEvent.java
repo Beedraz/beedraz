@@ -46,7 +46,7 @@ public class TestAbstractEvent {
   }
 
   AggregateBeed $owner = new StubBeanBeed();
-  EditableLongBeed $target = new EditableLongBeed($owner);
+  EditableLongBeed $target = new EditableLongBeed();
   LongEdit $edit = new LongEdit($target);
   Beed<?> $source = new EditableStringBeed($owner);
   Event $event;

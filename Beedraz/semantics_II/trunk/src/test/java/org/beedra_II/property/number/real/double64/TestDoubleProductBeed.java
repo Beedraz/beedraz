@@ -604,7 +604,7 @@ public class TestDoubleProductBeed {
 
   private EditableLongBeed createEditableLongBeed(Long value) {
     try {
-      EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
+      EditableLongBeed editableLongBeed = new EditableLongBeed();
       LongEdit edit = new LongEdit(editableLongBeed);
       edit.setGoal(value);
       edit.perform();

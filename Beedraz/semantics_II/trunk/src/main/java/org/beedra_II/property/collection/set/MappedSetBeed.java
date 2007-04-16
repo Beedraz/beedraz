@@ -77,7 +77,6 @@ public class MappedSetBeed<_From_ extends Beed<?>,
     implements SetBeed<_To_, SetEvent<_To_>> {
 
   /**
-   * @pre   owner != null;
    * @pre   mapping != null;
    * @post  getBeedMapping() == mapping;
    * @post  getSource() == null;

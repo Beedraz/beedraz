@@ -17,7 +17,6 @@
 package org.beedra_II.property.number.real.double64;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
@@ -81,29 +80,10 @@ public class TestDoubleSumBeed {
 
   private AggregateBeed $owner = new MyBeanBeed();
   private MyDoubleSumBeed $doubleSumBeed = new MyDoubleSumBeed();
-  private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleSumBeed, new Double(0), new Double(1), null);
-      // @mudo Laatste argument mag niet null zijn??
-  private PropagatedEventListener $listener1 = new PropagatedEventListener();
-  private PropagatedEventListener $listener2 = new PropagatedEventListener();
 
   @Test
   public void constructor() {
     assertNull($doubleSumBeed.getOwner());
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $doubleSumBeed.publicUpdateDependents($event1);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event1));
-    assertTrue($listener2.$event.getComponentevents().contains($event1));
     // the value should be 0
     assertEquals($doubleSumBeed.getDouble(), 0.0);
     // no terms registered (cannot be tested)

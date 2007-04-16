@@ -87,12 +87,9 @@ public class TestMappedSetBeed {
     $cq1 = new Long(1);
     $cq2 = new Long(2);
     $cq3 = new Long(3);
-    $listener1 = new StubListener<AggregateEvent>();
-    $listener2 = new StubListener<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<LongBeed>>();
     $listener4 = new StubListener<SetEvent<Long>>();
     $listener5 = new StubListener<ActualLongEvent>();
-    $event = new ActualSetEvent<LongBeed>($mappedSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit1 =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($well1.run);
@@ -133,35 +130,17 @@ public class TestMappedSetBeed {
   private BeedMapping<WellBeanBeed, LongBeed> $mapping;
   private MyMappedSetBeed $mappedSetBeed;
   private MyBeanBeed $owner;
-  private StubListener<AggregateEvent> $listener1;
-  private StubListener<AggregateEvent> $listener2;
   private StubListener<SetEvent<LongBeed>> $listener3;
   private StubListener<SetEvent<Long>> $listener4;
   private StubListener<ActualLongEvent> $listener5;
-  private SetEvent<LongBeed> $event;
 
   @Test
   public void constructor() {
-    assertEquals($mappedSetBeed.getOwner(), $owner);
+    assertNull($mappedSetBeed.getOwner());
     assertEquals($mappedSetBeed.getMapping(), $mapping);
     assertNull($mappedSetBeed.getSource());
     assertNotNull($mappedSetBeed.get());
     assertTrue($mappedSetBeed.get().isEmpty());
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $mappedSetBeed.publicUpdateDependents($event);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event));
-    assertTrue($listener2.$event.getComponentevents().contains($event));
   }
 
   /**

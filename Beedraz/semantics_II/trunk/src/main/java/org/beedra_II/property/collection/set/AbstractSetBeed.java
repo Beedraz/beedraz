@@ -25,9 +25,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.collection.CollectionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
@@ -50,14 +50,8 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_Element_>>
-    extends AbstractPropertyBeed<_SetEvent_>
+    extends AbstractBeed<_SetEvent_>
     implements SetBeed<_Element_, _SetEvent_> {
-
-  /**
-   */
-  public AbstractSetBeed() {
-    super(null);
-  }
 
   /**
    * A beed representing the size of this set beed.
@@ -65,7 +59,7 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
    * @invar  get() == EditableSetBeed.this.get().size();
    */
   protected class SizeBeed
-      extends AbstractPropertyBeed<ActualLongEvent>
+      extends AbstractBeed<ActualLongEvent>
       implements LongBeed {
 
     /**
@@ -73,7 +67,6 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
      * owner of the {@link SetBeed}.
      */
     SizeBeed() {
-      super(AbstractSetBeed.this.getOwner());
       $dependent.addUpdateSource(AbstractSetBeed.this);
     }
 

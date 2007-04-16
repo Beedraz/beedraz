@@ -20,16 +20,16 @@ package org.beedra_II.property;
 import java.util.Collections;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.StubEvent;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 
 
-public class StubPropertyBeed extends AbstractPropertyBeed<StubEvent> {
-
-  protected StubPropertyBeed(AggregateBeed owner) {
-    super(owner);
-  }
+/**
+ * @deprecated use stub beed
+ */
+@Deprecated
+public class StubPropertyBeed extends AbstractBeed<StubEvent> {
 
   /**
    * Makes the updateDependents method public for testing reasons.

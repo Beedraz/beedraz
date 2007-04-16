@@ -20,7 +20,7 @@ package org.beedra_II.property.number.real;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-import org.beedra_II.property.PropertyBeed;
+import org.beedra_II.Beed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -39,32 +39,36 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar isEffective() ?? getBigDecimal() != null;
  * @invar isEffective() ?? getDouble() != null;
  * @invar equalValue(getDouble(), getBigDecimal());
+ * @invar isEffective() ? getDouble().doubleValue() == getdouble();
+ *
+ * @mudo describe semantics if real is to big (or to small) for double
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public interface RealBeed<_Event_ extends RealEvent>
-    extends PropertyBeed<_Event_> {
+    extends Beed<_Event_> {
 
   /**
    * @basic
    */
   BigDecimal getBigDecimal();
 
+  /**
+   * @basic
+   */
+  Double getDouble();
+
+  /**
+   * @basic
+   */
   boolean isEffective();
 
   /**
    * @pre  isEffective();
    */
   double getdouble();
-
-  /**
-   * @basic
-   */
-  Double getDouble();
-
-//  void refresh();
 
   void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat);
 

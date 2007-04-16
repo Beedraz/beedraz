@@ -21,6 +21,10 @@ import org.beedra_II.property.simple.SimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
+/**
+ * @invar isEffective() ?? getBoolean() != null;
+ * @invar isEffective() ? getBoolean().booleaValue() == getboolean();
+ */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
@@ -28,6 +32,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public interface BooleanBeed
     extends SimplePropertyBeed<Boolean, BooleanEvent> {
 
+  /**
+   * @basic
+   */
   boolean isEffective();
 
   /**

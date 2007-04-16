@@ -17,7 +17,6 @@
 package org.beedra_II.property.bool;
 
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -29,8 +28,8 @@ public class TestBooleanEQBeed
 
   @Test
   public void testConstructor() {
-    BooleanEQBeed beed = new BooleanEQBeed($aggregateBeed);
-    assertEquals($aggregateBeed, beed.getOwner());
+    BooleanEQBeed beed = new BooleanEQBeed();
+    assertNull(beed.getOwner());
     assertNull(beed.getLeftArgument());
     assertNull(beed.getRightArgument());
     assertNull(beed.get());
@@ -43,7 +42,7 @@ public class TestBooleanEQBeed
 
   @Override
   protected BooleanEQBeed createSubject(AggregateBeed owner) {
-    return new BooleanEQBeed(owner);
+    return new BooleanEQBeed();
   }
 
 }

@@ -110,8 +110,8 @@ public class TestNewFilteredSetBeed {
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
           // construct the %
           DoubleModBeed modBeed = new DoubleModBeed($owner);
-          modBeed.setDividend(startBeed.cq);
-          modBeed.setDivisor(new DoubleConstantBeed(2));
+          modBeed.setDividendPath(fix(startBeed.cq));
+          modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
           // construct the ==
           BooleanEQBeed eqBeed = new BooleanEQBeed();
           eqBeed.setLeftArgumentPath(fix(modBeed));

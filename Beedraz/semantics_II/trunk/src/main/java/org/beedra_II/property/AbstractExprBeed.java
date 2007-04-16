@@ -39,6 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @mudo Isn't the clue of this class originally that is works for expressions of primitive type?
  *       Where we use a isEffective method? Shouldn't the name reflect this?
+ *       And now the clue is also that the beed is dependent! Name should reflect this too.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

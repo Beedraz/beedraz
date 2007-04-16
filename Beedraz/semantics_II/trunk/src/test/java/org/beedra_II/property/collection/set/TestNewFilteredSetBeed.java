@@ -106,7 +106,6 @@ public class TestNewFilteredSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    $owner = new MyBeanBeed();
     $criterion = new PathFactory<WellBeanBeed, BooleanBeed>() {
         // filter the wells whose cq value is effective and even
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
@@ -133,11 +132,8 @@ public class TestNewFilteredSetBeed {
     $cq1 = new Long(1);
     $cq2 = new Long(2);
     $cq3 = new Long(3);
-    $listener1 = new StubListener<AggregateEvent>();
-    $listener2 = new StubListener<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
     $listener5 = new StubListener<ActualLongEvent>();
-    $event = new ActualSetEvent<WellBeanBeed>($filteredSetBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($wellNull.run);
@@ -191,35 +187,16 @@ public class TestNewFilteredSetBeed {
   private Long $cq3;
   private PathFactory<WellBeanBeed, BooleanBeed> $criterion;
   private MyNewFilteredSetBeed $filteredSetBeed;
-  private MyBeanBeed $owner;
-  private StubListener<AggregateEvent> $listener1;
-  private StubListener<AggregateEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
   private StubListener<ActualLongEvent> $listener5;
-  private SetEvent<WellBeanBeed> $event;
 
   @Test
   public void constructor() {
-    assertEquals($filteredSetBeed.getOwner(), $owner);
+    assertNull($filteredSetBeed.getOwner());
     assertEquals($filteredSetBeed.getCriterion(), $criterion);
     assertEquals($filteredSetBeed.getSource(), null);
     assertEquals($filteredSetBeed.getSourcePath(), null);
     assertTrue($filteredSetBeed.get().isEmpty());
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $filteredSetBeed.publicUpdateDependents($event);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event));
-    assertTrue($listener2.$event.getComponentevents().contains($event));
   }
 
   /**

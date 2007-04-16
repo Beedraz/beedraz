@@ -69,7 +69,6 @@ public class TestUnionSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    $owner = new MyBeanBeed();
     $unionSetBeed = new MyUnionBeed();
     $runA = new RunBeanBeed();
     $runB = new RunBeanBeed();
@@ -92,11 +91,8 @@ public class TestUnionSetBeed {
     $cqC2 = new Long(6);
     $cqC3 = new Long(7);
     $cqC4 = new Long(8);
-    $listener1 = new StubListener<AggregateEvent>();
-    $listener2 = new StubListener<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
     $listener5 = new StubListener<ActualLongEvent>();
-    $event = new ActualSetEvent<WellBeanBeed>($unionSetBeed, null, null, null);
     // add the wells to the runs
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($wellA1.run);
@@ -183,33 +179,14 @@ public class TestUnionSetBeed {
   private Long $cqC3;
   private Long $cqC4;
   private MyUnionBeed $unionSetBeed;
-  private MyBeanBeed $owner;
-  private StubListener<AggregateEvent> $listener1;
-  private StubListener<AggregateEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
   private StubListener<ActualLongEvent> $listener5;
-  private SetEvent<WellBeanBeed> $event;
 
   @Test
   public void constructor() {
-    assertEquals($unionSetBeed.getOwner(), $owner);
+    assertNull($unionSetBeed.getOwner());
     assertTrue($unionSetBeed.getSources().isEmpty());
     assertTrue($unionSetBeed.get().isEmpty());
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $unionSetBeed.publicUpdateDependents($event);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event));
-    assertTrue($listener2.$event.getComponentevents().contains($event));
   }
 
   @Test

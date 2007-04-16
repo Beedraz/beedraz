@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.RunBeanBeed;
 import org.beedra_II.bean.WellBeanBeed;
@@ -67,7 +66,6 @@ public class TestUnionBeed {
 
   @Before
   public void setUp() throws Exception {
-    $owner = new MyBeanBeed();
     $unionBeed = new MyUnionBeed();
     $run = new RunBeanBeed();
     $wellNull = new WellBeanBeed();
@@ -80,11 +78,8 @@ public class TestUnionBeed {
     $cq1 = new Long(1);
     $cq2 = new Long(2);
     $cq3 = new Long(3);
-    $listener1 = new StubListener<AggregateEvent>();
-    $listener2 = new StubListener<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<WellBeanBeed>>();
     $listener5 = new StubListener<ActualLongEvent>();
-    $event = new ActualSetEvent<WellBeanBeed>($unionBeed, null, null, null);
     // add the wells to the run
     BidirToOneEdit<RunBeanBeed, WellBeanBeed> edit =
       new BidirToOneEdit<RunBeanBeed, WellBeanBeed>($wellNull.run);
@@ -150,33 +145,14 @@ public class TestUnionBeed {
   private EditableSetBeed<WellBeanBeed> $setBeed2;
   private EditableSetBeed<WellBeanBeed> $setBeed3;
   private EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>> $source;
-  private MyBeanBeed $owner;
-  private StubListener<AggregateEvent> $listener1;
-  private StubListener<AggregateEvent> $listener2;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
   private StubListener<ActualLongEvent> $listener5;
-  private SetEvent<WellBeanBeed> $event;
 
   @Test
   public void constructor() {
-    assertEquals($unionBeed.getOwner(), $owner);
+    assertNull($unionBeed.getOwner());
     assertEquals($unionBeed.getSource(), null);
     assertTrue($unionBeed.get().isEmpty());
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $unionBeed.publicUpdateDependents($event);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event));
-    assertTrue($listener2.$event.getComponentevents().contains($event));
   }
 
   /**

@@ -19,15 +19,11 @@ package org.beedra_II.property.collection.set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.StubListenerMultiple;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -56,15 +52,12 @@ public class TestEditableSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    $owner = new MyBeanBeed();
     $editableSetBeed = new StubEditableSetBeed();
     $addedElements = new HashSet<Integer>();
     $removedElements = new HashSet<Integer>();
     $setEdit = new SetEdit<Integer>($editableSetBeed);
     $setEdit.perform();
     $event1 = new ActualSetEvent<Integer>($editableSetBeed, $addedElements, $removedElements, $setEdit);
-    $listener1 = new StubListenerMultiple<AggregateEvent>();
-    $listener2 = new StubListenerMultiple<AggregateEvent>();
     $listener3 = new StubListener<SetEvent<Integer>>();
     $listener4 = new StubListener<SetEvent<Integer>>();
   }
@@ -74,40 +67,18 @@ public class TestEditableSetBeed {
     // NOP
   }
 
-  private AggregateBeed $owner;
   private StubEditableSetBeed $editableSetBeed;
   private Set<Integer> $addedElements;
   private Set<Integer> $removedElements;
   private SetEdit<Integer> $setEdit;
   private SetEvent<Integer> $event1;
-  private StubListenerMultiple<AggregateEvent> $listener1;
-  private StubListenerMultiple<AggregateEvent> $listener2;
   private StubListener<SetEvent<Integer>> $listener3;
   private StubListener<SetEvent<Integer>> $listener4;
 
   @Test
   public void constructor() {
-    assertEquals($editableSetBeed.getOwner(), $owner);
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event1);
-    assertNull($listener1.$event2);
-    assertNull($listener2.$event1);
-    assertNull($listener2.$event2);
-    // fire a change on the registered beed
-    $editableSetBeed.publicUpdateDependents($event1);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event1);
-    assertNotNull($listener2.$event1);
-    assertNull($listener1.$event2); // the size has not changed, so the size beed sends no event
-    assertNull($listener2.$event2); // the size has not changed, so the size beed sends no event
-    assertEquals(1, $listener1.$event1.getComponentevents().size());
-    assertEquals(1, $listener2.$event1.getComponentevents().size());
-    assertTrue($listener1.$event1.getComponentevents().contains($event1));
-    assertTrue($listener2.$event1.getComponentevents().contains($event1));
-    }
+    assertNull($editableSetBeed.getOwner());
+  }
 
   @Test
   public void addElements() {
@@ -179,19 +150,6 @@ public class TestEditableSetBeed {
     assertEquals($event1, $listener3.$event);
     assertEquals($event1, $listener4.$event);
   }
-
-  @Test
-  public void fireEvent2() {
-    // add listener to owner
-    $owner.addListener($listener1);
-    // fire $editableSetBeed
-    $editableSetBeed.publicUpdateDependents($event1);
-    // checks
-    assertNotNull($listener1.$event1);
-    assertEquals(1, $listener1.$event1.getComponentevents().size());
-    assertTrue($listener1.$event1.getComponentevents().contains($event1));
-    assertNull($listener1.$event2); // the size has not changed, so the size beed sends no event
-    }
 
   @Test
   public void getSizeAndCardinality() throws EditStateException, IllegalEditException {

@@ -42,7 +42,7 @@ public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    */
   public DoubleProductBeed() {
-    super(null);
+    super();
   }
 
   @Override

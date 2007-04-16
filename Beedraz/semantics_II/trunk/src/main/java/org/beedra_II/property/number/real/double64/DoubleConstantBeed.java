@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Set;
 
-import org.beedra_II.property.AbstractPropertyBeed;
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -40,14 +40,13 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class DoubleConstantBeed
-    extends AbstractPropertyBeed<ActualDoubleEvent>
+    extends AbstractBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
   /**
    * @post  getdouble() == constant;
    */
   public DoubleConstantBeed(double constant) {
-    super(null);
     $constant = constant;
   }
 

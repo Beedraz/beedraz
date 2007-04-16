@@ -30,10 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
@@ -60,7 +59,7 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleCommutativeOperationBeed
-    extends AbstractPropertyBeed<ActualDoubleEvent>
+    extends AbstractBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
   /**
@@ -69,8 +68,8 @@ public abstract class AbstractDoubleCommutativeOperationBeed
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    * @post  isEffective();
    */
-  protected AbstractDoubleCommutativeOperationBeed(AggregateBeed owner) {
-    super(owner);
+  protected AbstractDoubleCommutativeOperationBeed() {
+    super();
   }
 
   public final boolean isEffective() {

@@ -22,6 +22,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -48,8 +49,8 @@ public class EditableDoubleBeed
    * @pre   owner != null;
    * @post  getOwner() == owner;
    */
-  public EditableDoubleBeed() {
-    super(null);
+  public EditableDoubleBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /**

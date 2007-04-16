@@ -27,9 +27,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.collection.set.SetEvent;
 import org.beedra_II.property.number.real.RealBeed;
@@ -60,18 +60,8 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractDoubleSetComputationBeed
-    extends AbstractPropertyBeed<ActualDoubleEvent>
+    extends AbstractBeed<ActualDoubleEvent>
     implements DoubleBeed {
-
-
-  /**
-   * @pre   owner != null;
-   * @post  getSource() == null;
-   * @post  getDouble() == null;
-   */
-  public AbstractDoubleSetComputationBeed() {
-    super(null);
-  }
 
   public final boolean isEffective() {
     return $effective;

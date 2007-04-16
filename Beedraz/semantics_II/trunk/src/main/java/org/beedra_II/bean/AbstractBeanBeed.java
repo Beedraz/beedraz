@@ -36,13 +36,13 @@ public abstract class AbstractBeanBeed
 
   @Override
   protected String otherToStringInformation() {
-    return "hashCode: " + hashCode();
+    return "hashCode: " + Integer.toHexString(hashCode());
   }
 
   @Override
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
-    sb.append(indent(level + 1) + "hashCode: " + hashCode() + "\n");
+    sb.append(indent(level + 1) + "hashCode: " + Integer.toHexString(hashCode()) + "\n");
   }
 
 }

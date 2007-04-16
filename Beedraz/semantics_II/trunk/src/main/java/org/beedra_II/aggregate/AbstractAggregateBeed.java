@@ -17,17 +17,15 @@ limitations under the License.
 package org.beedra_II.aggregate;
 
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedra_II.AbstractBeed;
+import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -40,59 +38,51 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractAggregateBeed
-    extends AbstractBeed<AggregateEvent>
+    extends AbstractDependentBeed<AggregateEvent>
     implements AggregateBeed {
 
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected AggregateEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?>  edit) {
-        assert events.size() > 0;
-        AggregateEvent result = new AggregateEvent(AbstractAggregateBeed.this, edit);
-        for (Event event : events.values()) {
-         try {
-          result.addComponentEvent(event);
-        }
-        catch (AggregateEventStateException exc) {
-          assert false : "AggregateEventStateException should not happen: we are not closed. " + exc;
-        }
-        }
-        result.close();
-        return result;
-      }
-
-    };
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    return $dependent.getMaximumRootUpdateSourceDistance();
+  @Override
+  protected AggregateEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?>  edit) {
+    assert events.size() > 0;
+    AggregateEvent result = new AggregateEvent(AbstractAggregateBeed.this, edit);
+    for (Event event : events.values()) {
+     try {
+      result.addComponentEvent(event);
+    }
+    catch (AggregateEventStateException exc) {
+      assert false : "AggregateEventStateException should not happen: we are not closed. " + exc;
+    }
+    }
+    result.close();
+    return result;
   }
 
   public final boolean isAggregateElement(Beed<?> b) {
-    return (b != null) && b.isDependent($dependent);
+    return $aggregateElements.contains(b);
   }
 
+  /**
+   * @pre b != null;
+   * @post isAggregateElement(b);
+   */
   public final void registerAggregateElement(Beed<?> b) {
     assert b != null;
-    $dependent.addUpdateSource(b);
+    $aggregateElements.add(b);
+    addUpdateSource(b);
   }
 
+  /**
+   * @post ! isAggregateElement(b);
+   */
   public final void deregisterAggregateElement(Beed<?> b) {
-    assert b != null;
-    $dependent.removeUpdateSource(b);
+    removeUpdateSource(b);
+    $aggregateElements.remove(b);
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
-
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
-  }
+  /**
+   * @invar $aggregateElements != null;
+   * @invar Collections.noNull($aggregateElements);
+   */
+  private final Set<Beed<?>> $aggregateElements = new HashSet<Beed<?>>();
 
 }

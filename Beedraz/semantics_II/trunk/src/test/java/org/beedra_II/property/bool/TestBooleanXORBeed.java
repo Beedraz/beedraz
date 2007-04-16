@@ -27,7 +27,7 @@ public class TestBooleanXORBeed
   @Test
   public void testConstructor() {
     BooleanXORBeed beed = new BooleanXORBeed();
-    assertEquals($aggregateBeed, beed.getOwner());
+    assertEquals(null, beed.getOwner());
     assertNull(beed.getLeftArgument());
     assertNull(beed.getRightArgument());
     assertNull(beed.get());

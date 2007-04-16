@@ -36,7 +36,7 @@ public class TestDoubleModBeed
   @Test
   public void testConstructor() {
     DoubleModBeed beed = new DoubleModBeed();
-    assertEquals($aggregateBeed, beed.getOwner());
+    assertEquals(null, beed.getOwner());
     assertNull(beed.getDividend());
     assertNull(beed.getDivisor());
     assertNull(beed.getDouble());

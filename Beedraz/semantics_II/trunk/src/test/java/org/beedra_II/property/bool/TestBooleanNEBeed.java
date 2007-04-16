@@ -29,7 +29,7 @@ public class TestBooleanNEBeed
   @Test
   public void testConstructor() {
     BooleanGTBeed beed = new BooleanGTBeed();
-    assertEquals($aggregateBeed, beed.getOwner());
+    assertEquals(null, beed.getOwner());
     assertNull(beed.getLeftArgument());
     assertNull(beed.getRightArgument());
     assertNull(beed.get());

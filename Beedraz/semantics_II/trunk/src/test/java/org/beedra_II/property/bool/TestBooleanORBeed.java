@@ -27,7 +27,7 @@ public class TestBooleanORBeed
   @Test
   public void testConstructor() {
     BooleanORBeed beed = new BooleanORBeed();
-    assertEquals($aggregateBeed, beed.getOwner());
+    assertEquals(null, beed.getOwner());
     assertNull(beed.getLeftArgument());
     assertNull(beed.getRightArgument());
     assertNull(beed.get());

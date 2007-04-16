@@ -30,7 +30,7 @@ public class TestDoubleEBeed
   @Test
   public void testConstructor() {
     DoubleEBeed beed = new DoubleEBeed();
-    assertEquals($aggregateBeed, beed.getOwner());
+    assertEquals(null, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
   }

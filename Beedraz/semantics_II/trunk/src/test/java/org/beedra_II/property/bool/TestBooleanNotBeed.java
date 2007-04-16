@@ -29,7 +29,7 @@ public class TestBooleanNotBeed
   @Test
   public void testConstructor() {
     BooleanNotBeed beed = new BooleanNotBeed();
-    assertEquals($aggregateBeed, beed.getOwner());
+    assertEquals(null, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.get());
   }

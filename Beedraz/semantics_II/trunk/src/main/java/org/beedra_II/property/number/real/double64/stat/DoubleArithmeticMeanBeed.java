@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.moment.Mean;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -42,12 +41,11 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class DoubleArithmeticMeanBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleArithmeticMeanBeed(AggregateBeed owner) {
-    super(owner, new Mean());
+  public DoubleArithmeticMeanBeed() {
+    super(null, new Mean());
   }
 
   @Override

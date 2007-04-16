@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -39,12 +38,11 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == 0;
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    */
-  public DoubleProductBeed(AggregateBeed owner) {
-    super(owner);
+  public DoubleProductBeed() {
+    super(null);
   }
 
   @Override

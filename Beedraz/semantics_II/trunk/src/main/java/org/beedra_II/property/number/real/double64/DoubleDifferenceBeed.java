@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -37,56 +38,72 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
   //------------------------------------------------------------------
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == null;
    * @post  getLeftArgument() == null;
    * @post  getRightArgument() == null;
    */
-  public DoubleDifferenceBeed(AggregateBeed owner) {
-    super(owner);
+  public DoubleDifferenceBeed() {
+    super(null);
   }
 
   /*</construction>*/
 
 
-  /*<property name="leftArgument">*/
+
+  /*<property name="positive term">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final RealBeed<?> getLeftArgument() {
+  public final Path<? extends RealBeed<?>> getPositiveTermPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getPositiveTermPath() == null ? null : getPositiveTermPath().get();
+   */
+  public final RealBeed<?> getPositiveTerm() {
     return getLeftArg();
   }
 
   /**
-   * @post getLeftArgument() == leftArgument;
+   * @post getPositiveTermPath() == positiveTermPath;
    */
-  public final void setLeftArgument(RealBeed<?> leftArgument) {
-    setLeftArg(leftArgument);
+  public final void setPositiveTermPath(Path<? extends RealBeed<?>> positiveTermPath) {
+    setLeftArgPath(positiveTermPath);
   }
 
   /*</property>*/
 
 
-  /*<property name="rightArgument">*/
+
+  /*<property name="positive term">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final RealBeed<?> getRightArgument() {
+  public final Path<? extends RealBeed<?>> getNegativeTermPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getNegativeTermPath() == null ? null : getNegativeTermPath().get();
+   */
+  public final RealBeed<?> getNegativeTerm() {
     return getRightArg();
   }
 
   /**
-   * @post getRightArgument() == rightArgument;
+   * @post getNegativeTermPath() == negativeTermPath;
    */
-  public final void setRightArgument(RealBeed<?> rightArgument) {
-    setRightArg(rightArgument);
+  public final void setNegativeTermPath(Path<? extends RealBeed<?>> negativeTermPath) {
+    setRightArgPath(negativeTermPath);
   }
 
   /*</property>*/
+
 
 
   /**

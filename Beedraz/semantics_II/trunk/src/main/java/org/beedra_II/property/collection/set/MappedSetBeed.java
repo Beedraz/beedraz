@@ -29,7 +29,6 @@ import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.BeedMapping;
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
@@ -80,14 +79,13 @@ public class MappedSetBeed<_From_ extends Beed<?>,
   /**
    * @pre   owner != null;
    * @pre   mapping != null;
-   * @post  getOwner() == owner;
    * @post  getBeedMapping() == mapping;
    * @post  getSource() == null;
    * @post  get() != null;
    * @post  get().isEmpty();
    */
-  public MappedSetBeed(BeedMapping<_From_, _To_> mapping, AggregateBeed owner) {
-    super(owner);
+  public MappedSetBeed(BeedMapping<_From_, _To_> mapping) {
+    super(null);
     $mapping = mapping;
   }
 

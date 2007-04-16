@@ -22,6 +22,9 @@ import static org.junit.Assert.assertNull;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.path.ConstantPath;
+import org.beedra_II.path.NullPath;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Test;
 
@@ -35,8 +38,8 @@ public class TestDoubleDifferenceBeed
   public void testConstructor() {
     DoubleDifferenceBeed beed = new DoubleDifferenceBeed($aggregateBeed);
     assertEquals($aggregateBeed, beed.getOwner());
-    assertNull(beed.getLeftArgument());
-    assertNull(beed.getRightArgument());
+    assertNull(beed.getPositiveTerm());
+    assertNull(beed.getNegativeTerm());
     assertNull(beed.getDouble());
   }
 
@@ -57,22 +60,22 @@ public class TestDoubleDifferenceBeed
 
   @Override
   protected RealBeed<?> getLeftArgument() {
-    return $subject.getLeftArgument();
+    return $subject.getPositiveTerm();
   }
 
   @Override
   protected RealBeed<?> getRightArgument() {
-    return $subject.getRightArgument();
+    return $subject.getNegativeTerm();
   }
 
   @Override
-  protected void setLeftArgument(EditableDoubleBeed leftArgument) {
-    $subject.setLeftArgument(leftArgument);
+  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
+    $subject.setPositiveTermPath(leftArgumentPath);
   }
 
   @Override
-  protected void setRightArgument(EditableDoubleBeed rightArgument) {
-    $subject.setRightArgument(rightArgument);
+  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
+    $subject.setNegativeTermPath(rightArgumentPath);
   }
 
   /**
@@ -81,12 +84,12 @@ public class TestDoubleDifferenceBeed
   @Test
   public void testBug1() throws EditStateException, IllegalEditException {
     DoubleDifferenceBeed ddb = new DoubleDifferenceBeed($aggregateBeed);
-    ddb.setLeftArgument(null);
+    ddb.setPositiveTermPath(new NullPath<RealBeed<?>>());
     EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
     DoubleEdit edit = new DoubleEdit(edb);
     edit.setGoal(Double.NaN);
     edit.perform();
-    ddb.setRightArgument(edb);
+    ddb.setNegativeTermPath(new ConstantPath<RealBeed<?>>(edb));
     assertNull(ddb.getDouble());
   }
 

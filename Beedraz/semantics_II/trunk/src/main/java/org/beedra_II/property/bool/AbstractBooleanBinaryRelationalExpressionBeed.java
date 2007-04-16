@@ -18,6 +18,7 @@ package org.beedra_II.property.bool;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -56,15 +57,22 @@ public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends Abst
   /**
    * @basic
    */
+  public final Path<? extends RealBeed<?>> getLeftArgumentPath() {
+    return getLeftArgPath();
+  }
+
+  /**
+   * @return getLeftArgumentPath() == null ? null : getLeftArgumentPath().get();
+   */
   public final RealBeed<?> getLeftArgument() {
     return getLeftArg();
   }
 
   /**
-   * @post getLeftArgument() == leftArgument;
+   * @post getLeftArgumentPath() == leftArgumentPath;
    */
-  public final void setLeftArgument(RealBeed<?> leftArgument) {
-    setLeftArg(leftArgument);
+  public final void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
+    setLeftArgPath(leftArgumentPath);
   }
 
   /*</property>*/
@@ -76,15 +84,22 @@ public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends Abst
   /**
    * @basic
    */
+  public final Path<? extends RealBeed<?>> getRightArgumentPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getRightArgumentPath() == null ? null : getRightArgumentPath().get();
+   */
   public final RealBeed<?> getRightArgument() {
     return getRightArg();
   }
 
   /**
-   * @post getRightArgument() == rightArgument;
+   * @post getRightArgumentPath() == rightArgumentPath;
    */
-  public final void setRightArgument(RealBeed<?> rightArgument) {
-    setRightArg(rightArgument);
+  public final void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
+    setRightArgPath(rightArgumentPath);
   }
 
   /*</property>*/

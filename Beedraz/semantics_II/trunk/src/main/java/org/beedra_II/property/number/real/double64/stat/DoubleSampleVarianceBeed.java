@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64.stat;
 
 
 import org.apache.commons.math.stat.descriptive.moment.Variance;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -51,13 +50,11 @@ public class DoubleSampleVarianceBeed extends AbstractDoubleCommonsMathSetComput
 
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleSampleVarianceBeed(AggregateBeed owner) {
-    super(owner, new Variance(true));
+  public DoubleSampleVarianceBeed() {
+    super(null, new Variance(true));
   }
 
   @Override

@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -34,42 +34,71 @@ public class DoubleExponentBeed
     extends AbstractRealArgDoubleBinaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == null;
    * @post  getBase() == null;
    * @post  getExponent() == null;
    */
-  public DoubleExponentBeed(AggregateBeed owner) {
-    super(owner);
+  public DoubleExponentBeed() {
+    super(null);
   }
+
+
+
+  /*<property name="base">*/
+  //------------------------------------------------------------------
 
   /**
    * @basic
+   */
+  public final Path<? extends RealBeed<?>> getBasePath() {
+    return getLeftArgPath();
+  }
+
+  /**
+   * @return getBasePath() == null ? null : getBasePath().get();
    */
   public final RealBeed<?> getBase() {
     return getLeftArg();
   }
 
   /**
-   * @post getBase() == base;
+   * @post getBasePath() == basePath;
    */
-  public final void setBase(RealBeed<?> base) {
-    setLeftArg(base);
+  public final void setBasePath(Path<? extends RealBeed<?>> basePath) {
+    setLeftArgPath(basePath);
   }
+
+  /*</property>*/
+
+
+
+  /*<property name="exponent">*/
+  //------------------------------------------------------------------
 
   /**
    * @basic
+   */
+  public final Path<? extends RealBeed<?>> getExponentPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getExponentPath() == null ? null : getExponentPath().get();
    */
   public final RealBeed<?> getExponent() {
     return getRightArg();
   }
 
   /**
-   * @post getExponent() == exponent;
+   * @post getExponentPath() == exponentPath;
    */
-  public final void setExponent(RealBeed<?> exponent) {
-    setRightArg(exponent);
+  public final void setExponentPath(Path<? extends RealBeed<?>> exponentPath) {
+    setRightArgPath(exponentPath);
   }
+
+  /*</property>*/
+
+
 
   /**
    * @pre base != null;

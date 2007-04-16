@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Test;
 
@@ -64,13 +65,13 @@ public class TestDoubleQuotientBeed
   }
 
   @Override
-  protected void setLeftArgument(EditableDoubleBeed leftArgument) {
-    $subject.setNumerator(leftArgument);
+  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
+    $subject.setNumeratorPath(leftArgumentPath);
   }
 
   @Override
-  protected void setRightArgument(EditableDoubleBeed rightArgument) {
-    $subject.setDenominator(rightArgument);
+  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
+    $subject.setDenominatorPath(rightArgumentPath);
   }
 
 }

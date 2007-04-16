@@ -17,8 +17,8 @@
 package org.beedra_II.property.bool;
 
 
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.double64.EditableDoubleBeed;
 
 
 public abstract class AbstractTestBooleanBinaryRelationalExpressionBeed<
@@ -41,13 +41,13 @@ public abstract class AbstractTestBooleanBinaryRelationalExpressionBeed<
   }
 
   @Override
-  protected void setLeftArgument(EditableDoubleBeed leftArgument) {
-    $subject.setLeftArgument(leftArgument);
+  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
+    $subject.setLeftArgumentPath(leftArgumentPath);
   }
 
   @Override
-  protected void setRightArgument(EditableDoubleBeed rightArgument) {
-    $subject.setRightArgument(rightArgument);
+  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
+    $subject.setRightArgumentPath(rightArgumentPath);
   }
 
 }

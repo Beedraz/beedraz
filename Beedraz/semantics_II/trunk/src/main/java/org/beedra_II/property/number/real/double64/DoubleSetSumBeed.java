@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -43,11 +42,10 @@ public class DoubleSetSumBeed extends AbstractDoubleSetComputationBeed {
 
   /**
    * @pre   owner != null;
-   * @post  getSource() == null;
    * @post  getDouble() == null;
    */
-  public DoubleSetSumBeed(AggregateBeed owner) {
-    super(owner);
+  public DoubleSetSumBeed() {
+    super(null);
   }
 
   /**

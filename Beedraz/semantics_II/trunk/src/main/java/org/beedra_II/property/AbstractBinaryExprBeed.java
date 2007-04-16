@@ -27,6 +27,8 @@ import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.Path;
+import org.beedra_II.path.PathEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -73,8 +75,19 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
       @Override
       protected _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        assert $leftArgument != null || $rightArgument != null;
+        /* Events are from the argument, the left argument path, the right argument path, or
+         * any combination.
+         * React to event from paths first, setting the arguments. Then do a recalculate.
+         */
         _Result_ oldValue = get();
+        PathEvent<_LeftArgumentBeed_> leftPathEvent = (PathEvent<_LeftArgumentBeed_>)events.get($leftArgumentPath);
+        if (leftPathEvent != null) {
+          setLeftArg(leftPathEvent.getNewValue());
+        }
+        PathEvent<_RightArgumentBeed_> rightPathEvent = (PathEvent<_RightArgumentBeed_>)events.get($rightArgumentPath);
+        if (rightPathEvent != null) {
+          setRightArg(rightPathEvent.getNewValue());
+        }
         recalculate();
         if (! equalValue(oldValue, get())) {
           return createNewEvent(oldValue, get(), edit);
@@ -120,14 +133,39 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   /**
    * @basic
    */
+  protected final Path<? extends _LeftArgumentBeed_> getLeftArgPath() {
+    return $leftArgumentPath;
+  }
+
+  /**
+   * @return getLeftArgPath() == null ? null : getLeftArgPath().get();
+   */
   protected final _LeftArgumentBeed_ getLeftArg() {
     return $leftArgument;
   }
 
+  protected final void setLeftArgPath(Path<? extends _LeftArgumentBeed_> beedPath) {
+    _LeftArgumentBeed_ oldLeftArgument = $leftArgument;
+    if ($leftArgumentPath != null) {
+      $dependent.removeUpdateSource($leftArgumentPath);
+    }
+    $leftArgumentPath = beedPath;
+    _LeftArgumentBeed_ leftArgument = null;
+    if ($leftArgumentPath != null) {
+      leftArgument = $leftArgumentPath.get();
+      $dependent.addUpdateSource($leftArgumentPath);
+    }
+    if (leftArgument != oldLeftArgument) {
+      setLeftArg(leftArgument);
+    }
+  }
+
+  private Path<? extends _LeftArgumentBeed_> $leftArgumentPath;
+
   /**
    * @post getLeftArg() == leftArgument;
    */
-  protected final void setLeftArg(_LeftArgumentBeed_ leftArgument) {
+  private final void setLeftArg(_LeftArgumentBeed_ leftArgument) {
     _Result_ oldValue = get();
     if ($leftArgument != null) {
       $dependent.removeUpdateSource($leftArgument);
@@ -147,20 +185,46 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   /*</property>*/
 
 
+
   /*<property name="right argument">*/
   //-----------------------------------------------------------------
 
   /**
    * @basic
    */
+  protected final Path<? extends _RightArgumentBeed_> getRightArgPath() {
+    return $rightArgumentPath;
+  }
+
+  /**
+   * @return getRightArgPath() == null ? null : getRightArgPath().get();
+   */
   protected final _RightArgumentBeed_ getRightArg() {
     return $rightArgument;
   }
 
+  protected final void setRightArgPath(Path<? extends _RightArgumentBeed_> beedPath) {
+    _RightArgumentBeed_ oldRightArgument = $rightArgument;
+    if ($rightArgumentPath != null) {
+      $dependent.removeUpdateSource($rightArgumentPath);
+    }
+    $rightArgumentPath = beedPath;
+    _RightArgumentBeed_ rightArgument = null;
+    if ($rightArgumentPath != null) {
+      rightArgument = $rightArgumentPath.get();
+      $dependent.addUpdateSource($rightArgumentPath);
+    }
+    if (rightArgument != oldRightArgument) {
+      setRightArg(rightArgument);
+    }
+  }
+
+  private Path<? extends _RightArgumentBeed_> $rightArgumentPath;
+
   /**
    * @post getRightArg() == rightArgument;
    */
-  protected final void setRightArg(_RightArgumentBeed_ rightArgument) {
+  private final void setRightArg(_RightArgumentBeed_ rightArgument) {
     _Result_ oldValue = get();
     if ($rightArgument != null) {
       $dependent.removeUpdateSource($rightArgument);

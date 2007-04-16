@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Set;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -45,11 +44,10 @@ public class DoubleConstantBeed
     implements DoubleBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
+   * @post  getdouble() == constant;
    */
-  public DoubleConstantBeed(AggregateBeed owner, double constant) {
-    super(owner);
+  public DoubleConstantBeed(double constant) {
+    super(null);
     $constant = constant;
   }
 

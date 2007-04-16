@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -33,13 +32,12 @@ public class DoublePowerBeed
     extends AbstractDoubleConstantUnaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == null;
    * @post  getArgument() == null;
    * @post  getConstant() == constant;
    */
-  public DoublePowerBeed(AggregateBeed owner, double constant) {
-    super(owner, constant);
+  public DoublePowerBeed(double constant) {
+    super(null, constant);
   }
 
   /**

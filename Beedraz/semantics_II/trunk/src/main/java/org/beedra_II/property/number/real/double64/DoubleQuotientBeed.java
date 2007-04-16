@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -34,42 +34,72 @@ public class DoubleQuotientBeed
     extends AbstractRealArgDoubleBinaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == null;
    * @post  getNumerator() == null;
    * @post  getDenominator() == null;
    */
-  public DoubleQuotientBeed(AggregateBeed owner) {
-    super(owner);
+  public DoubleQuotientBeed() {
+    super(null);
   }
+
+
+
+  /*<property name="numerator">*/
+  //------------------------------------------------------------------
 
   /**
    * @basic
+   */
+  public final Path<? extends RealBeed<?>> getNumeratorPath() {
+    return getLeftArgPath();
+  }
+
+  /**
+   * @return getNumeratorPath() == null ? null : getNumeratorPath().get();
    */
   public final RealBeed<?> getNumerator() {
     return getLeftArg();
   }
 
   /**
-   * @post getNumerator() == numerator;
+   * @post getNumeratorPath() == numeratorPath;
    */
-  public final void setNumerator(RealBeed<?> numerator) {
-    setLeftArg(numerator);
+  public final void setNumeratorPath(Path<? extends RealBeed<?>> numeratorPath) {
+    setLeftArgPath(numeratorPath);
   }
+
+  /*</property>*/
+
+
+
+  /*<property name="denominator">*/
+  //------------------------------------------------------------------
 
   /**
    * @basic
+   */
+  public final Path<? extends RealBeed<?>> getDenominatorPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getDenominatorPath() == null ? null : getDenominatorPath().get();
    */
   public final RealBeed<?> getDenominator() {
     return getRightArg();
   }
 
   /**
-   * @post getDenominator() == denominator;
+   * @post getDenominatorPath() == denominatorPath;
    */
-  public final void setDenominator(RealBeed<?> denominator) {
-    setRightArg(denominator);
+  public final void setDenominatorPath(Path<? extends RealBeed<?>> denominatorPath) {
+    setRightArgPath(denominatorPath);
   }
+
+  /*</property>*/
+
+
+
 
   /**
    * @pre numerator != null;

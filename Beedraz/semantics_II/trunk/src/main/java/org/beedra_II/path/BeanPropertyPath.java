@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Event;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.PropertyBeed;
@@ -53,7 +54,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBeed_ extends PropertyBeed<?>>
+public abstract class BeanPropertyPath<_AggregateBeed_ extends AggregateBeed, _PropertyBeed_ extends PropertyBeed<?>>
     extends AbstractPath<_PropertyBeed_> {
 
   /*<construction>*/
@@ -64,10 +65,10 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
    * @post getBeanBeedPath() == beanBeedPath;
    * @post getBeanBeed() == beanBeedPath.get();
    */
-  public BeanPropertyPath(Path<? extends _BeanBeed_> beanBeedPath) {
+  public BeanPropertyPath(Path<? extends _AggregateBeed_> beanBeedPath) {
     assert beanBeedPath != null;
     $beanPath = beanBeedPath;
-    _BeanBeed_ beanBeed = beanBeedPath.get();
+    _AggregateBeed_ beanBeed = beanBeedPath.get();
     $propertyBeed = beanBeed == null ? null : selectPropertyBeedFromBeanBeed(beanBeed);
     $dependent.addUpdateSource(beanBeedPath);
   }
@@ -91,10 +92,10 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
       protected PathEvent<_PropertyBeed_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
         assert events != null;
         assert events.size() == 1;
-        PathEvent<_BeanBeed_> event = (PathEvent<_BeanBeed_>)events.get($beanPath);
+        PathEvent<_AggregateBeed_> event = (PathEvent<_AggregateBeed_>)events.get($beanPath);
         assert event != null;
         _PropertyBeed_ oldPropertyBeed = $propertyBeed;
-        _BeanBeed_ newBeanBeed = event.getNewValue();
+        _AggregateBeed_ newBeanBeed = event.getNewValue();
         assert newBeanBeed == $beanPath.get();
         $propertyBeed = newBeanBeed == null ? null : selectPropertyBeedFromBeanBeed(newBeanBeed);
         if (oldPropertyBeed != $propertyBeed) {
@@ -156,11 +157,11 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
   /**
    * @basic
    */
-  public final Path<? extends _BeanBeed_> getBeanPath() {
+  public final Path<? extends _AggregateBeed_> getBeanPath() {
     return $beanPath;
   }
 
-  private final Path<? extends _BeanBeed_> $beanPath;
+  private final Path<? extends _AggregateBeed_> $beanPath;
 
   /*</property>*/
 
@@ -172,7 +173,7 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
   /**
    * @basic
    */
-  public final _BeanBeed_ getBeanBeed() {
+  public final _AggregateBeed_ getBeanBeed() {
     return $beanPath.get();
   }
 
@@ -190,7 +191,7 @@ public abstract class BeanPropertyPath<_BeanBeed_ extends BeanBeed, _PropertyBee
   /**
    * @pre beanBeed != null;
    */
-  protected abstract _PropertyBeed_ selectPropertyBeedFromBeanBeed(_BeanBeed_ beanBeed);
+  protected abstract _PropertyBeed_ selectPropertyBeedFromBeanBeed(_AggregateBeed_ beanBeed);
 
   private _PropertyBeed_ $propertyBeed;
 

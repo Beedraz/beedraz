@@ -59,10 +59,10 @@ public abstract class AbstractTestDoubleLogNBeed
     double[] values =
       new double[] {1, 3.3, 4.4, 55.55, Double.NaN,
                     Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
-    DoubleLnBeed lnBeed = new DoubleLnBeed(new StubBeanBeed());
+    DoubleLnBeed lnBeed = new DoubleLnBeed();
     DoubleLogNBeed logNBeed = new DoubleLogNBeed(new StubBeanBeed(), Math.E);
     for (double d : values) {
-      DoubleConstantBeed constantBeed = new DoubleConstantBeed(new StubBeanBeed(), d);
+      DoubleConstantBeed constantBeed = new DoubleConstantBeed(d);
       Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
       lnBeed.setArgumentPath(constantBeedPath);
       logNBeed.setArgumentPath(constantBeedPath);
@@ -75,10 +75,10 @@ public abstract class AbstractTestDoubleLogNBeed
     double[] values =
       new double[] {1, 3.3, 4.4, 55.55, Double.NaN,
                     Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
-    DoubleLog10Beed log10Beed = new DoubleLog10Beed(new StubBeanBeed());
+    DoubleLog10Beed log10Beed = new DoubleLog10Beed();
     DoubleLogNBeed logNBeed = new DoubleLogNBeed(new StubBeanBeed(), 10);
     for (double d : values) {
-      DoubleConstantBeed constantBeed = new DoubleConstantBeed(new StubBeanBeed(), d);
+      DoubleConstantBeed constantBeed = new DoubleConstantBeed(d);
       Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
       log10Beed.setArgumentPath(constantBeedPath);
       logNBeed.setArgumentPath(constantBeedPath);

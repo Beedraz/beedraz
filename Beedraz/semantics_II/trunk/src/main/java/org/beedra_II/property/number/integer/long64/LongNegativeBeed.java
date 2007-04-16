@@ -46,7 +46,7 @@ public class LongNegativeBeed
    * @post  getArgument() == null;
    */
   public LongNegativeBeed() {
-    super(null);
+    super();
   }
 
   /**

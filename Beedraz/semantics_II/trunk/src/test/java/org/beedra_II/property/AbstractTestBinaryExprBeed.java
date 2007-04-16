@@ -312,7 +312,6 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   private void validateSubjectFromArgument(_LeftEAB_ leftArgument, _RightEAB_ rightArgument) {
 //    System.out.println("argument: " + leftArgument + "  ##  $subject: "+ $subject);
-    System.out.println("leftArgument: " + leftArgument + ", rightArgument: " + rightArgument + ", result: " + $subject.get());
     assertEquals(leftArgument, getLeftArgument());
     assertEquals(rightArgument, getRightArgument());
     _Argument_ leftArgumentValue = null;

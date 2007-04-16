@@ -19,7 +19,6 @@ package org.beedra_II.property.number.real.double64;
 
 import java.text.NumberFormat;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -48,8 +47,8 @@ public class DoubleLogNBeed
    * @post  getArgument() == null;
    * @post  getConstant() == constant;
    */
-  public DoubleLogNBeed(AggregateBeed owner, double constant) {
-    super(owner, constant);
+  public DoubleLogNBeed(double constant) {
+    super(constant);
   }
 
   @Override

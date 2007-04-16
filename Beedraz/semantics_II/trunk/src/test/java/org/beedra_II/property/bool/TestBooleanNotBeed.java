@@ -28,7 +28,7 @@ public class TestBooleanNotBeed
 
   @Test
   public void testConstructor() {
-    BooleanNotBeed beed = new BooleanNotBeed($aggregateBeed);
+    BooleanNotBeed beed = new BooleanNotBeed();
     assertEquals($aggregateBeed, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.get());
@@ -41,7 +41,7 @@ public class TestBooleanNotBeed
 
   @Override
   protected BooleanNotBeed createSubject() {
-    return new BooleanNotBeed(null);
+    return new BooleanNotBeed();
   }
 
   @Override

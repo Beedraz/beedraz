@@ -19,7 +19,6 @@ package org.beedra_II.property.number;
 
 import java.text.NumberFormat;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractRealArgUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
@@ -46,13 +45,11 @@ public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number
     implements RealBeed<_NumberEvent_>{
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getArgument() == null;
    * @post  get() == null;
    */
-  public AbstractRealArgUnaryExpressionBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractRealArgUnaryExpressionBeed() {
+    super();
   }
 
   public final Double getDouble() {

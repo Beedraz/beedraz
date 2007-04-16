@@ -39,7 +39,7 @@ public class DoubleLnBeed
    * @post  getArgument() == null;
    */
   public DoubleLnBeed() {
-    super(null);
+    super();
   }
 
   /**

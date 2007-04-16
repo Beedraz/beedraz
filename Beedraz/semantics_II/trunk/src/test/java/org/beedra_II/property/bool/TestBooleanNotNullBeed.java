@@ -28,7 +28,7 @@ public class TestBooleanNotNullBeed
 
   @Test
   public void testConstructor() {
-    BooleanNotNullBeed beed = new BooleanNotNullBeed($aggregateBeed);
+    BooleanNotNullBeed beed = new BooleanNotNullBeed();
     assertEquals($aggregateBeed, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.get());
@@ -46,7 +46,7 @@ public class TestBooleanNotNullBeed
 
   @Override
   protected BooleanNotNullBeed createSubject() {
-    return new BooleanNotNullBeed(null);
+    return new BooleanNotNullBeed();
   }
 
   @Override

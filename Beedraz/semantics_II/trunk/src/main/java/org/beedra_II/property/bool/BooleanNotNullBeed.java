@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -35,13 +34,11 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanNotNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getArgument() == null;
    * @post  get() == null;
    */
-  public BooleanNotNullBeed(AggregateBeed owner) {
-    super(owner);
+  public BooleanNotNullBeed() {
+    super();
   }
 
 

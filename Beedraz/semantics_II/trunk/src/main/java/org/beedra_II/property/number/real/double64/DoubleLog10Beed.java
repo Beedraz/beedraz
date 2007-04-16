@@ -39,7 +39,7 @@ public class DoubleLog10Beed
    * @post  getArgument() == null;
    */
   public DoubleLog10Beed() {
-    super(null);
+    super();
   }
 
   /**

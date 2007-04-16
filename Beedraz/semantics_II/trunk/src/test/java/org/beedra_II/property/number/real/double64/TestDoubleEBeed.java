@@ -29,7 +29,7 @@ public class TestDoubleEBeed
 
   @Test
   public void testConstructor() {
-    DoubleEBeed beed = new DoubleEBeed($aggregateBeed);
+    DoubleEBeed beed = new DoubleEBeed();
     assertEquals($aggregateBeed, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
@@ -42,7 +42,7 @@ public class TestDoubleEBeed
 
   @Override
   protected DoubleEBeed createSubject() {
-    return new DoubleEBeed(null);
+    return new DoubleEBeed();
   }
 
   @Override

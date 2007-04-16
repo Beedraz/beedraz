@@ -37,7 +37,7 @@ public class DoubleNegativeBeed
    * @post  getArgument() == null;
    */
   public DoubleNegativeBeed() {
-    super(null);
+    super();
   }
 
   /**

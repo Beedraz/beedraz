@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractBooleanArgUnaryExprBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -37,12 +36,11 @@ public abstract class AbstractBooleanArgBooleanUnaryExpressionBeed
     implements BooleanBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getBoolean() == null;
    * @post  getArgument() == null;
    */
-  protected AbstractBooleanArgBooleanUnaryExpressionBeed(AggregateBeed owner) {
-    super(owner);
+  protected AbstractBooleanArgBooleanUnaryExpressionBeed() {
+    super();
   }
 
   public final Boolean getBoolean() {

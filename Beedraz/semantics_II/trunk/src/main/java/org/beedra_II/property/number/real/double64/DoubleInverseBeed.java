@@ -40,7 +40,7 @@ public class DoubleInverseBeed
    * @post  getArgument() == null;
    */
   public DoubleInverseBeed() {
-    super(null);
+    super();
   }
 
   /**

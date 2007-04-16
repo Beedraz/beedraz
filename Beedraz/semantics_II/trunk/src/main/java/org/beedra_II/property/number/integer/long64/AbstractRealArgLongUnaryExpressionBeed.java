@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractRealArgUnaryExpressionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
@@ -41,12 +40,11 @@ public abstract class AbstractRealArgLongUnaryExpressionBeed
     implements LongBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getInteger() == null;
    * @post  getArgument() == null;
    */
-  public AbstractRealArgLongUnaryExpressionBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractRealArgLongUnaryExpressionBeed() {
+    super();
   }
 
   public final long getlong() {

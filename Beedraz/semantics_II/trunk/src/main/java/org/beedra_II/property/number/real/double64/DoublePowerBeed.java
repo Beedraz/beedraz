@@ -37,7 +37,7 @@ public class DoublePowerBeed
    * @post  getConstant() == constant;
    */
   public DoublePowerBeed(double constant) {
-    super(null, constant);
+    super(constant);
   }
 
   /**

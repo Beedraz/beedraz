@@ -18,7 +18,6 @@ package org.beedra_II.property;
 
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -43,13 +42,11 @@ public abstract class AbstractRealArgUnaryExprBeed<
                                   _ArgumentEvent_>  {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getArgument() == null;
    * @post  get() == null;
    */
-  public AbstractRealArgUnaryExprBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractRealArgUnaryExprBeed() {
+    super();
   }
 
   @Override

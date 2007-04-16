@@ -497,7 +497,7 @@ public class TestNewFilteredSetBeed {
         // filter the wells whose cq value is null
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
           // construct the ==
-          BooleanNullBeed nullBeed = new BooleanNullBeed($owner);
+          BooleanNullBeed nullBeed = new BooleanNullBeed();
           nullBeed.setArgumentPath(Paths.fix(startBeed.cq));
           return new ConstantPath<BooleanBeed>(nullBeed);
         }

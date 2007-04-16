@@ -30,7 +30,7 @@ public class TestLongNegativeBeed
   @Test
   public void testConstructor() {
     LongNegativeBeed inb = new LongNegativeBeed();
-    assertEquals($aggregateBeed, inb.getOwner());
+    assertEquals(null, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getLong());
     assertNull(inb.getLong());

@@ -19,7 +19,6 @@ package org.beedra_II.property.number.real.double64.doublelognbeed;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.path.ConstantPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.double64.AbstractTestDoubleConstantUnaryExpressionBeed;
@@ -39,13 +38,13 @@ public abstract class AbstractTestDoubleLogNBeed
 
   @Test
   public void testConstructor() {
-    DoubleLogNBeed lb = new DoubleLogNBeed($aggregateBeed, $constant);
+    DoubleLogNBeed lb = new DoubleLogNBeed($constant);
     validateConstructor(lb);
   }
 
   @Override
   protected DoubleLogNBeed createSubject() {
-    return new DoubleLogNBeed(null, $constant);
+    return new DoubleLogNBeed($constant);
   }
 
   @Override
@@ -59,7 +58,7 @@ public abstract class AbstractTestDoubleLogNBeed
       new double[] {1, 3.3, 4.4, 55.55, Double.NaN,
                     Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
     DoubleLnBeed lnBeed = new DoubleLnBeed();
-    DoubleLogNBeed logNBeed = new DoubleLogNBeed(new StubBeanBeed(), Math.E);
+    DoubleLogNBeed logNBeed = new DoubleLogNBeed(Math.E);
     for (double d : values) {
       DoubleConstantBeed constantBeed = new DoubleConstantBeed(d);
       Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
@@ -75,7 +74,7 @@ public abstract class AbstractTestDoubleLogNBeed
       new double[] {1, 3.3, 4.4, 55.55, Double.NaN,
                     Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
     DoubleLog10Beed log10Beed = new DoubleLog10Beed();
-    DoubleLogNBeed logNBeed = new DoubleLogNBeed(new StubBeanBeed(), 10);
+    DoubleLogNBeed logNBeed = new DoubleLogNBeed(10);
     for (double d : values) {
       DoubleConstantBeed constantBeed = new DoubleConstantBeed(d);
       Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);

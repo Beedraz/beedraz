@@ -19,7 +19,6 @@ package org.beedra_II.property.number.real.double64;
 
 import java.text.NumberFormat;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.number.AbstractRealArgUnaryExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -36,13 +35,12 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
     extends AbstractRealArgDoubleUnaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == null;
    * @post  getArgument() == null;
    * @post  getConstant() == constant;
    */
-  public AbstractDoubleConstantUnaryExpressionBeed(AggregateBeed owner, Double constant) {
-    super(owner);
+  public AbstractDoubleConstantUnaryExpressionBeed(Double constant) {
+    super();
     $constant = constant;
   }
 

@@ -48,7 +48,7 @@ public class TestAbstractSimpleEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableSimplePropertyBeed $target = new StubEditableSimplePropertyBeed($beanBeed);
+  StubEditableSimplePropertyBeed $target = new StubEditableSimplePropertyBeed();
   private StubEdit $edit =
       new StubEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();

@@ -19,9 +19,6 @@ package org.beedra_II;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.AbstractEvent;
-import org.beedra_II.Beed;
-import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -48,7 +45,7 @@ public class TestAbstractEvent {
   AggregateBeed $owner = new StubBeanBeed();
   EditableLongBeed $target = new EditableLongBeed();
   LongEdit $edit = new LongEdit($target);
-  Beed<?> $source = new EditableStringBeed($owner);
+  Beed<?> $source = new EditableStringBeed();
   Event $event;
 
   @Test

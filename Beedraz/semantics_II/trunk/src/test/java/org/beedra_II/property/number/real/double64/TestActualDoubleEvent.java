@@ -19,7 +19,6 @@ package org.beedra_II.property.number.real.double64;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -47,13 +46,12 @@ public class TestActualDoubleEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    AggregateBeed owner = new MyBeanBeed();
-    DoubleBeed source = new EditableDoubleBeed(owner);
+    DoubleBeed source = new EditableDoubleBeed();
     // old and new value
     Double oldValue = 0.0;
     Double newValue = 1.0;
     // edit
-    EditableDoubleBeed target = new EditableDoubleBeed(owner);
+    EditableDoubleBeed target = new EditableDoubleBeed();
     DoubleEdit edit = new DoubleEdit(target);
     edit.perform();
     // test constructor

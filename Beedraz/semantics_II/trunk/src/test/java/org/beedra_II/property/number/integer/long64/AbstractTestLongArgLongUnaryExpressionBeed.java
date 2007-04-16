@@ -17,7 +17,6 @@
 package org.beedra_II.property.number.integer.long64;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractTestUnaryExprBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.junit.Assert;
@@ -53,7 +52,7 @@ public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableLongBeed createEditableArgumentBeed(AggregateBeed owner) {
+  protected EditableLongBeed createEditableArgumentBeed() {
     return new EditableLongBeed();
   }
 

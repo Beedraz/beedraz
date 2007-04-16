@@ -19,13 +19,11 @@ package org.beedra_II.property.date;
 
 import java.util.Date;
 
-import org.beedra_II.aggregate.AggregateBeed;
-
 
 public class StubEditableDateBeed extends EditableDateBeed {
 
-  public StubEditableDateBeed(AggregateBeed owner) {
-    super(owner);
+  public StubEditableDateBeed() {
+    super();
   }
 
   @Override

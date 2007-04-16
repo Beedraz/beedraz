@@ -49,7 +49,7 @@ public class TestDateEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableDateBeed $target = new StubEditableDateBeed($beanBeed);
+  StubEditableDateBeed $target = new StubEditableDateBeed();
   private DateEdit $dateEdit = new DateEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.simple.EditableSimplePropertyBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -31,10 +30,9 @@ public class EditableBooleanBeed
     implements BooleanBeed {
 
   /**
-   * @pre owner != null;
    */
-  public EditableBooleanBeed(AggregateBeed owner) {
-    super(owner);
+  public EditableBooleanBeed() {
+    super(null);
   }
 
   public Boolean getBoolean() {

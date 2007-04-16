@@ -168,7 +168,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
 
   private EditableDoubleBeed createEditableDoubleBeed(Double value) {
     try {
-      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed($owner);
+      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed();
       DoubleEdit edit = new DoubleEdit(editableDoubleBeed);
       edit.setGoal(value);
       edit.perform();

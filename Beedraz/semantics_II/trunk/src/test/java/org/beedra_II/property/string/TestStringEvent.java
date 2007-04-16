@@ -19,8 +19,6 @@ package org.beedra_II.property.string;
 
 import static org.junit.Assert.assertEquals;
 
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
@@ -42,13 +40,12 @@ public class TestStringEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    AggregateBeed owner = new StubBeanBeed();
-    StringBeed source = new EditableStringBeed(owner);
+    StringBeed source = new EditableStringBeed();
     // old and new value
     String oldValue = "old";
     String newValue = "new";
     // edit
-    EditableStringBeed target = new EditableStringBeed(owner);
+    EditableStringBeed target = new EditableStringBeed();
     StringEdit edit = new StringEdit(target);
     edit.perform();
     // test constructor

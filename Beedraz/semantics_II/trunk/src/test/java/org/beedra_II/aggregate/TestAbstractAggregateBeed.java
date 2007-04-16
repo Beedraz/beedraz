@@ -36,11 +36,10 @@ public class TestAbstractAggregateBeed {
   @Before
   public void setUp() throws Exception {
     $aggregateBeed1 = new StubAggregateBeed();
-    $aggregateBeed2 = new StubAggregateBeed();
 
-    $beed1 = new StubEditableSimplePropertyBeed($aggregateBeed1);
+    $beed1 = new StubEditableSimplePropertyBeed();
 //    $beed2 = new MyIntegerSumBeed($subject);
-    $beed3 = new StubEditableSimplePropertyBeed($aggregateBeed2);
+    $beed3 = new StubEditableSimplePropertyBeed();
 
     $edit1 = new StubEdit($beed1);
     $edit1.perform();
@@ -61,7 +60,6 @@ public class TestAbstractAggregateBeed {
   }
 
   private StubAggregateBeed $aggregateBeed1;
-  private StubAggregateBeed $aggregateBeed2;
 
   private StubEditableSimplePropertyBeed $beed1;
 //  private MyIntegerSumBeed $beed2;

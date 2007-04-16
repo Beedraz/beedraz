@@ -17,7 +17,6 @@
 package org.beedra_II.property.bool;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.AbstractTestBinaryExprBeed;
@@ -68,13 +67,13 @@ public abstract class AbstractTestBooleanArgBooleanBinaryExpressionBeed<
   }
 
   @Override
-  protected EditableBooleanBeed createEditableLeftArgumentBeed(AggregateBeed owner) {
-    return new EditableBooleanBeed(owner);
+  protected EditableBooleanBeed createEditableLeftArgumentBeed() {
+    return new EditableBooleanBeed();
   }
 
   @Override
-  protected EditableBooleanBeed createEditableRightArgumentBeed(AggregateBeed owner) {
-    return createEditableLeftArgumentBeed(owner);
+  protected EditableBooleanBeed createEditableRightArgumentBeed() {
+    return createEditableLeftArgumentBeed();
   }
 
   @Override

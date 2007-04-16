@@ -17,7 +17,6 @@
 package org.beedra_II.property.bool;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractTestUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.beedra_II.property.number.real.double64.DoubleEdit;
@@ -55,8 +54,8 @@ public abstract class AbstractTestRealArgBooleanUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableDoubleBeed createEditableArgumentBeed(AggregateBeed owner) {
-    return new EditableDoubleBeed(owner);
+  protected EditableDoubleBeed createEditableArgumentBeed() {
+    return new EditableDoubleBeed();
   }
 
   @Override

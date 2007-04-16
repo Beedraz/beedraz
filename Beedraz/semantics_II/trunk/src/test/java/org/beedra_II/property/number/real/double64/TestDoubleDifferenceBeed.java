@@ -83,7 +83,7 @@ public class TestDoubleDifferenceBeed
   public void testBug1() throws EditStateException, IllegalEditException {
     DoubleDifferenceBeed ddb = new DoubleDifferenceBeed();
     ddb.setPositiveTermPath(new NullPath<RealBeed<?>>());
-    EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
+    EditableDoubleBeed edb = new EditableDoubleBeed();
     DoubleEdit edit = new DoubleEdit(edb);
     edit.setGoal(Double.NaN);
     edit.perform();

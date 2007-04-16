@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
 import org.beedra_II.Listener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -78,7 +77,6 @@ public class TestDoubleProductBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new MyBeanBeed();
   private MyDoubleProductBeed $doubleProductBeed = new MyDoubleProductBeed();
 
   @Test
@@ -565,7 +563,7 @@ public class TestDoubleProductBeed {
 
   private EditableDoubleBeed createEditableDoubleBeed(Double value) {
     try {
-      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed($owner);
+      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed();
       DoubleEdit edit = new DoubleEdit(editableDoubleBeed);
       edit.setGoal(value);
       edit.perform();

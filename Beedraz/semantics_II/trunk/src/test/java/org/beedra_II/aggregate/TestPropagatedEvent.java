@@ -74,13 +74,12 @@ public class TestPropagatedEvent {
   @Test
   public void constructor2() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new StubAggregateBeed();
 //    StringBeed eventSource = new EditableStringBeed(owner);
 //    // old and new value
 //    String oldValue = "0";
 //    String newValue = "1";
     // edit
-    EditableStringBeed target = new EditableStringBeed(owner);
+    EditableStringBeed target = new EditableStringBeed();
     StringEdit edit = new StringEdit(target);
     edit.perform();
     // cause
@@ -98,13 +97,12 @@ public class TestPropagatedEvent {
   @Test
   public void close() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new StubAggregateBeed();
 //    StringBeed eventSource = new EditableStringBeed(owner);
 //    // old and new value
 //    String oldValue = "0";
 //    String newValue = "1";
     // edit
-    EditableStringBeed target = new EditableStringBeed(owner);
+    EditableStringBeed target = new EditableStringBeed();
     StringEdit edit = new StringEdit(target);
     edit.perform();
     // cause
@@ -119,10 +117,9 @@ public class TestPropagatedEvent {
   @Test
   public void addComponentEvent1() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new StubAggregateBeed();
-    StringBeed eventSource = new EditableStringBeed(owner);
+    StringBeed eventSource = new EditableStringBeed();
     // edit
-    EditableStringBeed target = new EditableStringBeed(owner);
+    EditableStringBeed target = new EditableStringBeed();
     StringEdit edit = new StringEdit(target);
     edit.perform();
     // propagated event source
@@ -149,10 +146,9 @@ public class TestPropagatedEvent {
   @Test
   public void addComponentEvent2() throws EditStateException, IllegalEditException {
     // event source
-    AggregateBeed owner = new StubAggregateBeed();
-    StringBeed eventSource = new EditableStringBeed(owner);
+    StringBeed eventSource = new EditableStringBeed();
     // edit
-    EditableStringBeed target = new EditableStringBeed(owner);
+    EditableStringBeed target = new EditableStringBeed();
     StringEdit edit = new StringEdit(target);
     edit.perform();
     // propagated event source

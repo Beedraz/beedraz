@@ -7,13 +7,8 @@
 package org.beedra_II.property.number.real.double64;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.junit.After;
 import org.junit.Before;
@@ -24,8 +19,8 @@ import org.junit.Test;
 public class TestEditableDoubleBeed {
 
   public class MyEditableDoubleBeed extends EditableDoubleBeed {
-    public MyEditableDoubleBeed(AggregateBeed owner) {
-      super(owner);
+    public MyEditableDoubleBeed() {
+      super();
     }
 
     /**
@@ -43,13 +38,9 @@ public class TestEditableDoubleBeed {
 
   @Before
   public void setUp() throws Exception {
-    $owner = new MyBeanBeed();
-    $editableDoubleBeed = new MyEditableDoubleBeed($owner);
+    $editableDoubleBeed = new MyEditableDoubleBeed();
     $stringEdit = new DoubleEdit($editableDoubleBeed);
     $stringEdit.perform();
-    $event1 = new ActualDoubleEvent($editableDoubleBeed, new Double(0), new Double(1), $stringEdit);
-    $listener1 = new StubListener<AggregateEvent>();
-    $listener2 = new StubListener<AggregateEvent>();
   }
 
   @After
@@ -57,31 +48,13 @@ public class TestEditableDoubleBeed {
     // NOP
   }
 
-  private AggregateBeed $owner;
   private MyEditableDoubleBeed $editableDoubleBeed;
   private DoubleEdit $stringEdit;
-  private ActualDoubleEvent $event1;
-  private StubListener<AggregateEvent> $listener1;
-  private StubListener<AggregateEvent> $listener2;
 
   @Test
   public void constructor() {
-    assertEquals($editableDoubleBeed.getOwner(), $owner);
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $editableDoubleBeed.publicUpdateDependents($event1);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event1));
-    assertTrue($listener2.$event.getComponentevents().contains($event1));
+    assertNull($editableDoubleBeed.getOwner());
+    assertEquals(null, $editableDoubleBeed.get());
   }
 
 }

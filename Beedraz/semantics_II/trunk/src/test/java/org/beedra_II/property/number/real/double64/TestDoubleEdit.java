@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.Listener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
@@ -41,8 +40,8 @@ public class TestDoubleEdit {
 
   public class MyEditableDoubleBeed extends EditableDoubleBeed {
 
-    public MyEditableDoubleBeed(AggregateBeed owner) {
-      super(owner);
+    public MyEditableDoubleBeed() {
+      super();
     }
 
     @Override
@@ -107,7 +106,7 @@ public class TestDoubleEdit {
   }
 
   BeanBeed $beanBeed = new MyBeanBeed();
-  MyEditableDoubleBeed $target = new MyEditableDoubleBeed($beanBeed);
+  MyEditableDoubleBeed $target = new MyEditableDoubleBeed();
   private DoubleEdit $doubleEdit = new DoubleEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

@@ -49,9 +49,9 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   protected abstract _UEB_ createSubject();
 
-  protected abstract _LeftEAB_ createEditableLeftArgumentBeed(AggregateBeed owner);
+  protected abstract _LeftEAB_ createEditableLeftArgumentBeed();
 
-  protected abstract _RightEAB_ createEditableRightArgumentBeed(AggregateBeed owner);
+  protected abstract _RightEAB_ createEditableRightArgumentBeed();
 
   protected abstract StubListener<_ResultEvent_> createStubListener();
 
@@ -85,13 +85,13 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   public void setUp() throws Exception {
     initGoals();
     $aggregateBeed = new StubAggregateBeed();
-    $leftArgumentDoubleBeed = createEditableLeftArgumentBeed($aggregateBeed);
+    $leftArgumentDoubleBeed = createEditableLeftArgumentBeed();
     $leftArgumentDoubleBeedPath = new ConstantPath<_LeftEAB_>($leftArgumentDoubleBeed);
-    $leftArgumentDoubleBeed2 = createEditableLeftArgumentBeed($aggregateBeed);
+    $leftArgumentDoubleBeed2 = createEditableLeftArgumentBeed();
     $leftArgumentDoubleBeedPath2 = new ConstantPath<_LeftEAB_>($leftArgumentDoubleBeed2);
-    $rightArgumentDoubleBeed = createEditableRightArgumentBeed($aggregateBeed);
+    $rightArgumentDoubleBeed = createEditableRightArgumentBeed();
     $rightArgumentDoubleBeedPath = new ConstantPath<_RightEAB_>($rightArgumentDoubleBeed);
-    $rightArgumentDoubleBeed2 = createEditableRightArgumentBeed($aggregateBeed);
+    $rightArgumentDoubleBeed2 = createEditableRightArgumentBeed();
     $rightArgumentDoubleBeedPath2 = new ConstantPath<_RightEAB_>($rightArgumentDoubleBeed2);
     $subject = createSubject();
     $listener = createStubListener();

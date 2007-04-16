@@ -30,7 +30,6 @@ import java.util.Set;
 
 import org.beedra_II.BeedMapping;
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.RunBeanBeed;
@@ -51,8 +50,8 @@ public class TestMappedSetBeed {
 
   public class MyMappedSetBeed extends MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed> {
 
-    public MyMappedSetBeed(BeedMapping<WellBeanBeed, LongBeed> mapping, AggregateBeed owner) {
-      super(mapping, owner);
+    public MyMappedSetBeed(BeedMapping<WellBeanBeed, LongBeed> mapping) {
+      super(mapping);
     }
 
     /**
@@ -80,7 +79,7 @@ public class TestMappedSetBeed {
           return true;
         }
     };
-    $mappedSetBeed = new MyMappedSetBeed($mapping, $owner);
+    $mappedSetBeed = new MyMappedSetBeed($mapping);
     $run = new RunBeanBeed();
     $well1 = new WellBeanBeed();
     $well2 = new WellBeanBeed();
@@ -286,7 +285,7 @@ public class TestMappedSetBeed {
     };
     // define a new mapped set beed
     MappedSetBeed<WellBeanBeed, AggregateEvent, Long> mappedSetBeed =
-      new MappedSetBeed<WellBeanBeed, AggregateEvent, Long>(mapping, $owner);
+      new MappedSetBeed<WellBeanBeed, AggregateEvent, Long>(mapping);
     // register listeners to the MappedSetBeed
     mappedSetBeed.addListener($listener4);
     assertNull($listener4.$event);

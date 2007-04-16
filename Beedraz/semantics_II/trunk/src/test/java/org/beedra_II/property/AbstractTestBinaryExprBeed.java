@@ -29,6 +29,11 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.path.ConstantPath;
+import org.beedra_II.path.NullPath;
+import org.beedra_II.path.Path;
+import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,9 +59,9 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   protected abstract void initGoals();
 
-  protected abstract void setLeftArgument(_LeftEAB_ leftArgument);
+  protected abstract void setLeftArgumentPath(Path<? extends _LeftArgumentBeed_> leftArgumentPath);
 
-  protected abstract void setRightArgument(_RightEAB_ rightArgument);
+  protected abstract void setRightArgumentPath(Path<? extends _RightArgumentBeed_> rightArgumentPath);
 
   protected abstract _LeftArgumentBeed_ getLeftArgument();
 
@@ -83,9 +88,13 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
     initGoals();
     $aggregateBeed = new StubAggregateBeed();
     $leftArgumentDoubleBeed = createEditableLeftArgumentBeed($aggregateBeed);
+    $leftArgumentDoubleBeedPath = new ConstantPath<_LeftEAB_>($leftArgumentDoubleBeed);
     $leftArgumentDoubleBeed2 = createEditableLeftArgumentBeed($aggregateBeed);
+    $leftArgumentDoubleBeedPath2 = new ConstantPath<_LeftEAB_>($leftArgumentDoubleBeed2);
     $rightArgumentDoubleBeed = createEditableRightArgumentBeed($aggregateBeed);
+    $rightArgumentDoubleBeedPath = new ConstantPath<_RightEAB_>($rightArgumentDoubleBeed);
     $rightArgumentDoubleBeed2 = createEditableRightArgumentBeed($aggregateBeed);
+    $rightArgumentDoubleBeedPath2 = new ConstantPath<_RightEAB_>($rightArgumentDoubleBeed2);
     $subject = createSubject($aggregateBeed);
     $listener = createStubListener();
   }
@@ -93,7 +102,13 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @After
   public void tearDown() throws Exception {
     $leftArgumentDoubleBeed = null;
+    $leftArgumentDoubleBeedPath = null;
     $leftArgumentDoubleBeed2 = null;
+    $leftArgumentDoubleBeedPath2 = null;
+    $rightArgumentDoubleBeed = null;
+    $rightArgumentDoubleBeedPath = null;
+    $rightArgumentDoubleBeed2 = null;
+    $rightArgumentDoubleBeedPath2 = null;
     $subject = null;
     $aggregateBeed = null;
     $listener = null;
@@ -110,9 +125,13 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   protected _UEB_ $subject;
   protected AggregateBeed $aggregateBeed;
   private _LeftEAB_ $leftArgumentDoubleBeed;
+  private Path<_LeftEAB_> $leftArgumentDoubleBeedPath;
   private _LeftEAB_ $leftArgumentDoubleBeed2;
+  private Path<_LeftEAB_> $leftArgumentDoubleBeedPath2;
   private _RightEAB_ $rightArgumentDoubleBeed;
+  private Path<_RightEAB_> $rightArgumentDoubleBeedPath;
   private _RightEAB_ $rightArgumentDoubleBeed2;
+  private Path<_RightEAB_> $rightArgumentDoubleBeedPath2;
   protected _Argument_ $leftGoal1;
   protected _Argument_ $leftGoal2;
   protected _Argument_ $leftGoalMIN;
@@ -126,7 +145,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @Test
   public void testSetArgument_1L() {
     $subject.addListener($listener);
-    setLeftArgument(null);
+    setLeftArgumentPath(new NullPath<_LeftArgumentBeed_>());
     validateSubjectFromArgument(null, null);
     validateEvent(null, null, null, null);
   }
@@ -134,7 +153,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @Test
   public void testSetArgument_1R() {
     $subject.addListener($listener);
-    setRightArgument(null);
+    setRightArgumentPath(new NullPath<_RightArgumentBeed_>());
     validateSubjectFromArgument(null, null);
     validateEvent(null, null, null, null);
   }
@@ -142,8 +161,8 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @Test
   public void testSetArgument_1LR() {
     $subject.addListener($listener);
-    setLeftArgument(null);
-    setRightArgument(null);
+    setLeftArgumentPath(new NullPath<_LeftArgumentBeed_>());
+    setRightArgumentPath(new NullPath<_RightArgumentBeed_>());
     validateSubjectFromArgument(null, null);
     validateEvent(null, null, null, null);
   }
@@ -151,7 +170,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @Test
   public void testSetArgument_2L() {
     $subject.addListener($listener);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, null);
     validateEvent(null, null, null, null);
   }
@@ -159,7 +178,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @Test
   public void testSetArgument_2R() {
     $subject.addListener($listener);
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument(null, $rightArgumentDoubleBeed);
     validateEvent(null, null, null, null);
   }
@@ -167,68 +186,68 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   @Test
   public void testSetArgument_2LR() {
     $subject.addListener($listener);
-    setLeftArgument($leftArgumentDoubleBeed);
-    setRightArgument($rightArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent(null, null, null, null);
   }
 
   @Test
   public void testSetArgument_3L() {
-    $subject.addListener($listener);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     changeRightArgument($rightArgumentDoubleBeed, $rightGoal1);
-    setLeftArgument($leftArgumentDoubleBeed);
+    $subject.addListener($listener);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, null);
     validateEvent(null, $leftGoal1, null, null);
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, $leftGoal1, null, $rightGoal1);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent(null, null, $rightGoal1, $rightGoal1);
-    setLeftArgument(null);
+    setLeftArgumentPath(new NullPath<_LeftArgumentBeed_>());
     validateSubjectFromArgument(null, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, null, $rightGoal1, $rightGoal1);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent(null, $leftGoal1, $rightGoal1, $rightGoal1);
     changeLeftArgument($leftArgumentDoubleBeed2, $leftGoal2);
-    setLeftArgument($leftArgumentDoubleBeed2);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath2);
     validateSubjectFromArgument($leftArgumentDoubleBeed2, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, $leftGoal2, $rightGoal1, $rightGoal1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal2);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent(null, null, $rightGoal1, $rightGoal1);
   }
 
   @Test
   public void testSetArgument_3R() {
-    $subject.addListener($listener);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     changeRightArgument($rightArgumentDoubleBeed, $rightGoal1);
-    setRightArgument($rightArgumentDoubleBeed);
+    $subject.addListener($listener);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument(null, $rightArgumentDoubleBeed);
     validateEvent(null, null, null, $rightGoal1);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent(null, $leftGoal1, $rightGoal1, $rightGoal1);
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, $leftGoal1, null, null);
-    setRightArgument(null);
+    setRightArgumentPath(new NullPath<_RightArgumentBeed_>());
     validateSubjectFromArgument($leftArgumentDoubleBeed, null);
     validateEvent($leftGoal1, $leftGoal1, $rightGoal1, null);
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, $leftGoal1, null, $rightGoal1);
     changeRightArgument($rightArgumentDoubleBeed2, $rightGoal2);
-    setRightArgument($rightArgumentDoubleBeed2);
+    setRightArgumentPath($rightArgumentDoubleBeedPath2);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed2);
     validateEvent($leftGoal1, $leftGoal1, $rightGoal1, $rightGoal2);
     changeRightArgument($rightArgumentDoubleBeed, $rightGoal2);
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, $leftGoal1, null, null);
   }
@@ -239,11 +258,11 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
     $subject.addListener($listener);
     assertTrue($subject.isListener($listener));
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, null);
     validateEvent(null, null, null, null);
     changeRightArgument($rightArgumentDoubleBeed, $rightGoal1);
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
     validateEvent($leftGoal1, $leftGoal1, null, $rightGoal1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal2);
@@ -342,17 +361,17 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   public void testToString_StringBuffer_int_2L() throws EditStateException, IllegalEditException {
     StringBuffer stub = new StringBuffer();
     $subject.toString(stub, 1);
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     $subject.toString(stub, 1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     $subject.toString(stub, 1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal2);
     $subject.toString(stub, 1);
 
-    setRightArgument($rightArgumentDoubleBeed);
+    setRightArgumentPath($rightArgumentDoubleBeedPath);
     $subject.toString(stub, 1);
 
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     $subject.toString(stub, 1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     $subject.toString(stub, 1);
@@ -362,7 +381,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
     changeRightArgument($rightArgumentDoubleBeed, $leftGoal1);
     $subject.toString(stub, 1);
 
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     $subject.toString(stub, 1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     $subject.toString(stub, 1);
@@ -372,7 +391,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
     changeRightArgument($rightArgumentDoubleBeed, $leftGoal2);
     $subject.toString(stub, 1);
 
-    setLeftArgument($leftArgumentDoubleBeed);
+    setLeftArgumentPath($leftArgumentDoubleBeedPath);
     $subject.toString(stub, 1);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     $subject.toString(stub, 1);

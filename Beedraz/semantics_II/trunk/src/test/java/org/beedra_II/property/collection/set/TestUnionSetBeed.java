@@ -791,7 +791,7 @@ public class TestUnionSetBeed {
         }
     };
     MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed> mappedSetBeed =
-      new MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed>(mapping, $owner);
+      new MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed>(mapping);
     mappedSetBeed.setSource($unionSetBeed);
     Long sum = 0L;
     for (LongBeed cq : mappedSetBeed.get()) {

@@ -18,6 +18,7 @@ package org.beedra_II.property;
 
 
 import org.beedra_II.AbstractBeed;
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -28,16 +29,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @deprecated
+ * @mudo used as superclass for editable beeds, that always have an owner and are root update source
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-@Deprecated
 public abstract class AbstractPropertyBeed<_Event_ extends Event>
     extends AbstractBeed<_Event_>
-    implements PropertyBeed<_Event_> {
+    implements Beed<_Event_> {
 
   /**
    * @post getOwner() == owner;
@@ -50,8 +50,6 @@ public abstract class AbstractPropertyBeed<_Event_ extends Event>
   }
 
   /**
-   * {@inheritDoc}
-   *
    * This method should be final, but it is overwritten in
    * BidirToManyBeed for a cast. If the owner types
    * was generic, this would not be necessary, and this

@@ -39,14 +39,6 @@ public abstract class AbstractRealArgLongUnaryExpressionBeed
                                         IntegerEvent>
     implements LongBeed {
 
-  /**
-   * @post  getInteger() == null;
-   * @post  getArgument() == null;
-   */
-  public AbstractRealArgLongUnaryExpressionBeed() {
-    super();
-  }
-
   public final long getlong() {
     return $value;
   }

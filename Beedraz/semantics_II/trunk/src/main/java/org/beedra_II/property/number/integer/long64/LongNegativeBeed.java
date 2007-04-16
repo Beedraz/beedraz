@@ -42,14 +42,6 @@ public class LongNegativeBeed
     extends AbstractRealArgLongUnaryExpressionBeed {
 
   /**
-   * @post  getInteger() == null;
-   * @post  getArgument() == null;
-   */
-  public LongNegativeBeed() {
-    super();
-  }
-
-  /**
    * @pre argumentValue != null;
    */
   @Override

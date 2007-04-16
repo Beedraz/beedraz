@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.IntegerEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -64,7 +64,7 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public class LongSumBeed
-    extends AbstractPropertyBeed<ActualLongEvent>
+    extends AbstractBeed<ActualLongEvent>
     implements LongBeed {
 
   /**
@@ -73,7 +73,7 @@ public class LongSumBeed
    * @post  isEffective();
    */
   public LongSumBeed() {
-    super(null);
+    super();
   }
 
   public final boolean isEffective() {

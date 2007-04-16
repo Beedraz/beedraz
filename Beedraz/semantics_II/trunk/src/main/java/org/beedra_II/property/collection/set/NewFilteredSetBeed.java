@@ -26,15 +26,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AbstractAggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.path.PathFactory;
-import org.beedra_II.property.AbstractPropertyBeed;
-import org.beedra_II.property.PropertyBeed;
 import org.beedra_II.property.bool.BooleanBeed;
 import org.beedra_II.property.bool.BooleanEvent;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
@@ -83,7 +81,6 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
    * @post  get().isEmpty();
    */
   public NewFilteredSetBeed(PathFactory<_Element_, BooleanBeed> criterion) {
-    super();
     $criterion = criterion;
   }
 
@@ -269,15 +266,6 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
   }
 
   /**
-   * {@link BooleanBeed}s are {@link PropertyBeed}s and need an owner.
-   * We don't want that for {@link ElementCriterion} in the real
-   * semantic graph, so whe use this stub.
-   */
-  private final static AbstractAggregateBeed ELEMENT_CRITERION_OWNER = new AbstractAggregateBeed() {
-    // NOP
-  };
-
-  /**
    * Fabricated class. This {@link BooleanBeed} uses a
    * {@link Path} to a true {@link BooleanBeed} for an
    * {@code _Element_} (created by {@link #getCriterion()}).
@@ -299,7 +287,7 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
    * @invar getElement() != null;
    */
   private class ElementCriterion
-      extends AbstractPropertyBeed<BooleanEvent>
+      extends AbstractBeed<BooleanEvent>
       implements BooleanBeed {
 
     /**
@@ -307,7 +295,6 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
      * @post  getElement() == element;
      */
     public ElementCriterion(_Element_ element) {
-      super(ELEMENT_CRITERION_OWNER);
       assert element != null;
       $element = element;
       $bbPath = getCriterion().createPath(element);

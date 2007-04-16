@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -46,12 +45,10 @@ public class EditableSetBeed<_Element_>
 
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  get().isEmpty();
    */
-  public EditableSetBeed(AggregateBeed owner) {
-    super(owner);
+  public EditableSetBeed() {
+    super();
   }
 
   /**

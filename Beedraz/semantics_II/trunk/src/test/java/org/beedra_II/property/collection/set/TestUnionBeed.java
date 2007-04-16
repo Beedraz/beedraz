@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.RunBeanBeed;
@@ -48,8 +47,8 @@ public class TestUnionBeed {
 
   public class MyUnionBeed extends UnionBeed<WellBeanBeed> {
 
-    public MyUnionBeed(AggregateBeed owner) {
-      super(owner);
+    public MyUnionBeed() {
+      super();
     }
 
     /**
@@ -69,7 +68,7 @@ public class TestUnionBeed {
   @Before
   public void setUp() throws Exception {
     $owner = new MyBeanBeed();
-    $unionBeed = new MyUnionBeed($owner);
+    $unionBeed = new MyUnionBeed();
     $run = new RunBeanBeed();
     $wellNull = new WellBeanBeed();
     $well0 = new WellBeanBeed();
@@ -124,7 +123,7 @@ public class TestUnionBeed {
     $setBeed2 = createSetBeed($well3);
     $setBeed3 = createSetBeed($well0, $well1, $well3);
     // initialise the source
-    $source = new EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>($owner);
+    $source = new EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>();
     addElement($source, $setBeed1);
     addElement($source, $setBeed2);
     addElement($source, $setBeed3);
@@ -358,7 +357,7 @@ public class TestUnionBeed {
       assertTrue(true);
     }
     // add another source
-    $source = new EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>($owner);
+    $source = new EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>();
     addElement($source, $setBeed1);
     addElement($source, $setBeed2);
     $unionBeed.setSource($source);
@@ -411,7 +410,7 @@ public class TestUnionBeed {
     assertTrue($unionBeed.get().isEmpty());
     // create source
     EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>> source =
-      new EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>($owner);
+      new EditableSetBeed<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>();
     // add source to mean beed
     $unionBeed.setSource(source); // {}
     // recalculate (source contains no elements)
@@ -500,7 +499,7 @@ public class TestUnionBeed {
     $listener5.reset();
     assertNull($listener5.$event);
     // add elements
-    EditableSetBeed<WellBeanBeed> setBeed = new EditableSetBeed<WellBeanBeed>($owner);
+    EditableSetBeed<WellBeanBeed> setBeed = new EditableSetBeed<WellBeanBeed>();
     addElement(setBeed, $well1);
     sourceEdit = new SetEdit<SetBeed<WellBeanBeed, SetEvent<WellBeanBeed>>>($source);
     sourceEdit.addElementToAdd(setBeed);
@@ -538,7 +537,7 @@ public class TestUnionBeed {
    */
 
   private <T> EditableSetBeed<T> createSetBeed(final T... elements) throws EditStateException, IllegalEditException {
-    EditableSetBeed<T> setBeed = new EditableSetBeed<T>($owner);
+    EditableSetBeed<T> setBeed = new EditableSetBeed<T>();
     for (T element : elements) {
       addElement(setBeed, element);
     }

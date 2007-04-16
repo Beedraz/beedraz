@@ -28,7 +28,6 @@ import java.util.Set;
 import org.beedra_II.Beed;
 import org.beedra_II.BeedFilter;
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
@@ -60,15 +59,13 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
-   * @pre   owner != null;
    * @pre   filter != null;
-   * @post  getOwner() == owner;
    * @post  getFilter() == filter;
    * @post  getSource() == null;
    * @post  get().isEmpty();
    */
-  public FilteredSetBeed(BeedFilter<_Element_> filter, AggregateBeed owner) {
-    super(owner);
+  public FilteredSetBeed(BeedFilter<_Element_> filter) {
+    super();
     $filter = filter;
   }
 

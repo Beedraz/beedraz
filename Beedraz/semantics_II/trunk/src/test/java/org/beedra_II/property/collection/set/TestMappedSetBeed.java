@@ -70,7 +70,6 @@ public class TestMappedSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    $owner = new MyBeanBeed();
     $mapping = new BeedMapping<WellBeanBeed, LongBeed>() {
         public LongBeed map(WellBeanBeed from) {
           return from.cq;
@@ -129,7 +128,6 @@ public class TestMappedSetBeed {
   private Long $cq3;
   private BeedMapping<WellBeanBeed, LongBeed> $mapping;
   private MyMappedSetBeed $mappedSetBeed;
-  private MyBeanBeed $owner;
   private StubListener<SetEvent<LongBeed>> $listener3;
   private StubListener<SetEvent<Long>> $listener4;
   private StubListener<ActualLongEvent> $listener5;
@@ -414,7 +412,7 @@ public class TestMappedSetBeed {
     assertTrue($mappedSetBeed.get().isEmpty());
     // create source
     EditableSetBeed<WellBeanBeed> source =
-      new EditableSetBeed<WellBeanBeed>($owner);
+      new EditableSetBeed<WellBeanBeed>();
     // add source to mean beed
     $mappedSetBeed.setSource(source);
     // recalculate (setBeed contains no elements)
@@ -503,14 +501,14 @@ public class TestMappedSetBeed {
     $mappedSetBeed.setSource(null);
     assertEquals($mappedSetBeed.get().size(), 0);
     // change the source
-    $mappedSetBeed.setSource(new EditableSetBeed<WellBeanBeed>($owner));
+    $mappedSetBeed.setSource(new EditableSetBeed<WellBeanBeed>());
     assertEquals($mappedSetBeed.get().size(), 0);
   }
 
   private EditableSetBeed<WellBeanBeed> createSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>($owner);
+      new EditableSetBeed<WellBeanBeed>();
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well1);

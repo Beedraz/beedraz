@@ -45,13 +45,16 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
     implements SetBeed<_Many_, SetEvent<_Many_>> {
 
   public BidirToManyBeed(_One_ bean) {
-    super(bean);
+    super();
+    $bean = bean;
   }
+
+  private _One_ $bean;
 
   @Override
   @SuppressWarnings("unchecked")
   public final _One_ getOwner() {
-    return (_One_)super.getOwner();
+    return $bean;
   }
 
   /**

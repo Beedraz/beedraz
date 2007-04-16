@@ -84,7 +84,7 @@ public class MappedSetBeed<_From_ extends Beed<?>,
    * @post  get().isEmpty();
    */
   public MappedSetBeed(BeedMapping<_From_, _To_> mapping) {
-    super(null);
+    super();
     $mapping = mapping;
   }
 

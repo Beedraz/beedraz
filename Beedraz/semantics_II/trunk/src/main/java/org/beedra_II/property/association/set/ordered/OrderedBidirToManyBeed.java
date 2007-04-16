@@ -56,13 +56,16 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
     implements OrderedSetBeed<_Many_, OrderedSetEvent<_Many_>> {
 
   public OrderedBidirToManyBeed(_One_ bean) {
-    super(bean);
+    super();
+    $bean = bean;
   }
+
+  private _One_ $bean;
 
   @Override
   @SuppressWarnings("unchecked")
   public final _One_ getOwner() {
-    return (_One_)super.getOwner();
+    return $bean;
   }
 
   /**

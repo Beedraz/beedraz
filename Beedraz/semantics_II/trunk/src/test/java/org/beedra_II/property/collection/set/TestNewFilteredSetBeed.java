@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -60,8 +59,8 @@ public class TestNewFilteredSetBeed {
 
   public class MyNewFilteredSetBeed extends NewFilteredSetBeed<WellBeanBeed, AggregateEvent> {
 
-    public MyNewFilteredSetBeed(PathFactory<WellBeanBeed, BooleanBeed> criterion, AggregateBeed owner) {
-      super(criterion, owner);
+    public MyNewFilteredSetBeed(PathFactory<WellBeanBeed, BooleanBeed> criterion) {
+      super(criterion);
     }
 
     /**
@@ -122,7 +121,7 @@ public class TestNewFilteredSetBeed {
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
-    $filteredSetBeed = new MyNewFilteredSetBeed($criterion, $owner);
+    $filteredSetBeed = new MyNewFilteredSetBeed($criterion);
     $run = new RunBeanBeed();
     $wellNull = new WellBeanBeed();
     $well0 = new WellBeanBeed();
@@ -470,7 +469,7 @@ public class TestNewFilteredSetBeed {
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
-    $filteredSetBeed = new MyNewFilteredSetBeed(criterion, $owner);
+    $filteredSetBeed = new MyNewFilteredSetBeed(criterion);
     $filteredSetBeed.setSourcePath(sourcePath);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 2);
@@ -502,7 +501,7 @@ public class TestNewFilteredSetBeed {
           return new ConstantPath<BooleanBeed>(nullBeed);
         }
     };
-    $filteredSetBeed = new MyNewFilteredSetBeed(criterion, $owner);
+    $filteredSetBeed = new MyNewFilteredSetBeed(criterion);
     $filteredSetBeed.setSourcePath(sourcePath);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 1);
@@ -539,7 +538,7 @@ public class TestNewFilteredSetBeed {
   private EditableSetBeed<WellBeanBeed> createSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>($owner);
+      new EditableSetBeed<WellBeanBeed>();
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well1);
@@ -559,7 +558,7 @@ public class TestNewFilteredSetBeed {
   private EditableSetBeed<WellBeanBeed> createOtherSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>($owner);
+      new EditableSetBeed<WellBeanBeed>();
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well0);

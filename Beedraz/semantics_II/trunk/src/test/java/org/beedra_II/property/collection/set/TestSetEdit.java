@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.beedra_II.Listener;
 import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -110,8 +109,7 @@ public class TestSetEdit {
 
   @Before
   public void setUp() throws Exception {
-    $beanBeed = new MyBeanBeed();
-    $target = new EditableSetBeed<Integer>($beanBeed) {
+    $target = new EditableSetBeed<Integer>() {
       @Override
       public boolean isAcceptable(Set<Integer> elementsToAdd, Set<Integer> elementsToRemove) {
         // all integers in the set of added elements are positive
@@ -135,7 +133,6 @@ public class TestSetEdit {
     // NOP
   }
 
-  private BeanBeed $beanBeed;
   private EditableSetBeed<Integer> $target;
   private MySetEdit $setEdit;
   private StubValidityListener $listener1;

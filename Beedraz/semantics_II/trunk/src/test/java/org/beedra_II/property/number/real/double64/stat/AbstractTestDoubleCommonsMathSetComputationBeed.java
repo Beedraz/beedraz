@@ -24,8 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.Event;
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.collection.set.EditableSetBeed;
@@ -58,7 +56,6 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     // NOP
   }
 
-  private AggregateBeed $owner = new StubBeanBeed();
   private _CMSCB_ $subject = createSubject();
   private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
@@ -198,7 +195,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     assertEquals($subject.getDouble(), null);
     // create source
     EditableSetBeed<RealBeed<?>> source =
-      new EditableSetBeed<RealBeed<?>>($owner);
+      new EditableSetBeed<RealBeed<?>>();
     // add source to beed
     $subject.setSource(source);
     // recalculate (setBeed contains no elements)
@@ -267,7 +264,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     // create set beed
     EditableSetBeed<RealBeed<?>> setBeed =
-      new EditableSetBeed<RealBeed<?>>($owner);
+      new EditableSetBeed<RealBeed<?>>();
     // add set beed to beed
     $subject.setSource(setBeed);
     // add beed
@@ -322,7 +319,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     setEdit.perform();
     assertEquals($subject.getDouble(), Double.NaN);
     // change beeds of the source
-    setBeed = new EditableSetBeed<RealBeed<?>>($owner);
+    setBeed = new EditableSetBeed<RealBeed<?>>();
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
@@ -373,7 +370,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
   private EditableSetBeed<RealBeed<?>> createSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<RealBeed<?>> setBeed =
-      new EditableSetBeed<RealBeed<?>>($owner);
+      new EditableSetBeed<RealBeed<?>>();
     // create beeds
     EditableDoubleBeed beed1 = createEditableDoubleBeed(1.0);
     EditableDoubleBeed beed2 = createEditableDoubleBeed(2.0);

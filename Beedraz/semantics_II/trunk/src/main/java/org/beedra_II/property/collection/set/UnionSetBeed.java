@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
@@ -62,13 +61,11 @@ public class UnionSetBeed<_Element_>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getSources().isEmpty();
    * @post  get().isEmpty();
    */
-  public UnionSetBeed(AggregateBeed owner) {
-    super(owner);
+  public UnionSetBeed() {
+    super();
   }
 
 

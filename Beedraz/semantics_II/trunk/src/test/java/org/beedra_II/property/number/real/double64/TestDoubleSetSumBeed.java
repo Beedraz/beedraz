@@ -23,8 +23,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.collection.set.EditableSetBeed;
@@ -69,7 +67,6 @@ public class TestDoubleSetSumBeed {
     // NOP
   }
 
-  private AggregateBeed $owner = new StubBeanBeed();
   private MyDoubleSetSumBeed $doubleSetSumBeed = new MyDoubleSetSumBeed();
   private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
@@ -201,7 +198,7 @@ public class TestDoubleSetSumBeed {
     assertEquals($doubleSetSumBeed.getDouble(), null);
     // create source
     EditableSetBeed<RealBeed<?>> source =
-      new EditableSetBeed<RealBeed<?>>($owner);
+      new EditableSetBeed<RealBeed<?>>();
     // add source to sum beed
     $doubleSetSumBeed.setSource(source);
     // recalculate (setBeed contains no elements)
@@ -265,7 +262,7 @@ public class TestDoubleSetSumBeed {
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     // create set beed
     EditableSetBeed<RealBeed<?>> setBeed =
-      new EditableSetBeed<RealBeed<?>>($owner);
+      new EditableSetBeed<RealBeed<?>>();
     // add set beed to sum beed
     $doubleSetSumBeed.setSource(setBeed);
     // add beed
@@ -312,7 +309,7 @@ public class TestDoubleSetSumBeed {
     setEdit.perform();
     assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     // change beeds of the source
-    setBeed = new EditableSetBeed<RealBeed<?>>($owner);
+    setBeed = new EditableSetBeed<RealBeed<?>>();
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
@@ -355,7 +352,7 @@ public class TestDoubleSetSumBeed {
   private EditableSetBeed<RealBeed<?>> createSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<RealBeed<?>> setBeed =
-      new EditableSetBeed<RealBeed<?>>($owner);
+      new EditableSetBeed<RealBeed<?>>();
     // create beeds
     EditableDoubleBeed beed1 = createEditableDoubleBeed(1.0);
     EditableDoubleBeed beed2 = createEditableDoubleBeed(2.0);

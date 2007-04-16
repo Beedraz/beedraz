@@ -45,7 +45,7 @@ public class TestEditableSetBeed {
   public class StubEditableSetBeed extends EditableSetBeed<Integer> {
 
     public StubEditableSetBeed() {
-      super($owner);
+      super();
     }
 
     public void publicUpdateDependents(SetEvent<Integer> event) {

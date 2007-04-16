@@ -29,7 +29,6 @@ import java.util.Set;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AbstractAggregateBeed;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
@@ -77,16 +76,14 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
-   * @pre   owner != null;
    * @pre   criterion != null;
-   * @post  getOwner() == owner;
    * @post  getCriterion() == criterion;
    * @post  getSource() == null;
    * @post  getSourcePath() == null;
    * @post  get().isEmpty();
    */
-  public NewFilteredSetBeed(PathFactory<_Element_, BooleanBeed> criterion, AggregateBeed owner) {
-    super(owner);
+  public NewFilteredSetBeed(PathFactory<_Element_, BooleanBeed> criterion) {
+    super();
     $criterion = criterion;
   }
 

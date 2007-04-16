@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.collection.CollectionBeed;
@@ -55,10 +54,9 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
     implements SetBeed<_Element_, _SetEvent_> {
 
   /**
-   * @pre ownerBeed != null;
    */
-  public AbstractSetBeed(AggregateBeed ownerBeed) {
-    super(ownerBeed);
+  public AbstractSetBeed() {
+    super(null);
   }
 
   /**

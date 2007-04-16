@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -51,13 +50,12 @@ public class TestSetEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    AggregateBeed owner = new MyBeanBeed();
-    SetBeed<Integer, ?> source = new EditableSetBeed<Integer>(owner);
+    SetBeed<Integer, ?> source = new EditableSetBeed<Integer>();
     // old and new value
     Set<Integer> addedElements = null;
     Set<Integer> removedElements = null;
     // edit
-    EditableSetBeed<Integer> target = new EditableSetBeed<Integer>(owner);
+    EditableSetBeed<Integer> target = new EditableSetBeed<Integer>();
     SetEdit<Integer> edit = new SetEdit<Integer>(target);
     edit.perform();
     // test constructor

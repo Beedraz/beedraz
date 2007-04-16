@@ -32,8 +32,6 @@ import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.path.ConstantPath;
 import org.beedra_II.path.NullPath;
 import org.beedra_II.path.Path;
-import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

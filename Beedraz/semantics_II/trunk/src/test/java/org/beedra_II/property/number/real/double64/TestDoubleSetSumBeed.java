@@ -42,8 +42,8 @@ import org.ppeew.smallfries_I.MathUtil;
 public class TestDoubleSetSumBeed {
 
   public class MyDoubleSetSumBeed extends DoubleSetSumBeed {
-    public MyDoubleSetSumBeed(AggregateBeed owner) {
-      super(owner);
+    public MyDoubleSetSumBeed() {
+      super();
     }
 
     /**
@@ -71,7 +71,7 @@ public class TestDoubleSetSumBeed {
   }
 
   private AggregateBeed $owner = new StubBeanBeed();
-  private MyDoubleSetSumBeed $doubleSetSumBeed = new MyDoubleSetSumBeed($owner);
+  private MyDoubleSetSumBeed $doubleSetSumBeed = new MyDoubleSetSumBeed();
   private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleSetSumBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
@@ -80,7 +80,7 @@ public class TestDoubleSetSumBeed {
 
   @Test
   public void constructor() {
-    assertEquals($doubleSetSumBeed.getOwner(), $owner);
+    assertNull($doubleSetSumBeed.getOwner());
     assertEquals($doubleSetSumBeed.getSource(), null);
     assertEquals($doubleSetSumBeed.getDouble(), null);
     // the abstract property beed should be registered with the owner:

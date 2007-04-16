@@ -39,7 +39,7 @@ public class TestDoubleSampleVarianceBeed
 
   @Override
   protected MyDoubleSampleVarianceBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleSampleVarianceBeed(owner);
+    return new MyDoubleSampleVarianceBeed();
   }
 
   @Override
@@ -55,8 +55,8 @@ public class TestDoubleSampleVarianceBeed
 }
 
 class MyDoubleSampleVarianceBeed extends DoubleSampleVarianceBeed {
-  public MyDoubleSampleVarianceBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoubleSampleVarianceBeed() {
+    super();
   }
 
   /**

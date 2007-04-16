@@ -39,7 +39,7 @@ public class TestDoubleSampleStandardDeviationBeed
 
   @Override
   protected MyDoubleSampleStandardDeviationBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleSampleStandardDeviationBeed(owner);
+    return new MyDoubleSampleStandardDeviationBeed();
   }
 
   @Override
@@ -55,8 +55,8 @@ public class TestDoubleSampleStandardDeviationBeed
 }
 
 class MyDoubleSampleStandardDeviationBeed extends DoubleSampleStandardDeviationBeed {
-  public MyDoubleSampleStandardDeviationBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoubleSampleStandardDeviationBeed() {
+    super();
   }
 
   /**

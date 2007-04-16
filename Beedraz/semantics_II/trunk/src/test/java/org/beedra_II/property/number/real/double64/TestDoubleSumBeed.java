@@ -38,8 +38,8 @@ import org.junit.Test;
 public class TestDoubleSumBeed {
 
   public class MyDoubleSumBeed extends DoubleSumBeed {
-    public MyDoubleSumBeed(AggregateBeed owner) {
-      super(owner);
+    public MyDoubleSumBeed() {
+      super();
     }
 
     /**
@@ -80,7 +80,7 @@ public class TestDoubleSumBeed {
   }
 
   private AggregateBeed $owner = new MyBeanBeed();
-  private MyDoubleSumBeed $doubleSumBeed = new MyDoubleSumBeed($owner);
+  private MyDoubleSumBeed $doubleSumBeed = new MyDoubleSumBeed();
   private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleSumBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private PropagatedEventListener $listener1 = new PropagatedEventListener();
@@ -88,7 +88,7 @@ public class TestDoubleSumBeed {
 
   @Test
   public void constructor() {
-    assertEquals($doubleSumBeed.getOwner(), $owner);
+    assertNull($doubleSumBeed.getOwner());
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);
@@ -349,7 +349,7 @@ public class TestDoubleSumBeed {
     assertTrue($doubleSumBeed.getNbOccurrences(term5) == 1);
     assertTrue(equalValue($doubleSumBeed.getDouble(), goal5));
     // create another sum beed
-    DoubleSumBeed doubleSumBeed2 = new DoubleSumBeed($owner);
+    DoubleSumBeed doubleSumBeed2 = new DoubleSumBeed();
     // check (sum has no terms)
     assertTrue(equalValue(doubleSumBeed2.getDouble(), 0));
     // add term30
@@ -381,7 +381,7 @@ public class TestDoubleSumBeed {
     EditableDoubleBeed term3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed term4 = createEditableDoubleBeed(4.0);
     // create another sum beed
-    DoubleSumBeed doubleSumBeed2plus3 = new DoubleSumBeed($owner);
+    DoubleSumBeed doubleSumBeed2plus3 = new DoubleSumBeed();
     doubleSumBeed2plus3.addArgument(term2);
     doubleSumBeed2plus3.addArgument(term3);
     // check (sum = 2 + 3)
@@ -389,7 +389,7 @@ public class TestDoubleSumBeed {
     assertTrue(doubleSumBeed2plus3.getNbOccurrences(term3) == 1);
     assertEquals(doubleSumBeed2plus3.getDouble(), 5.0);
     // create another sum beed
-    DoubleSumBeed doubleSumBeed2plus3plus4 = new DoubleSumBeed($owner);
+    DoubleSumBeed doubleSumBeed2plus3plus4 = new DoubleSumBeed();
     doubleSumBeed2plus3plus4.addArgument(doubleSumBeed2plus3);
     doubleSumBeed2plus3plus4.addArgument(term4);
     // check (sum = (2 + 3) + 4)
@@ -712,7 +712,7 @@ public class TestDoubleSumBeed {
     EditableDoubleBeed term30 = createEditableDoubleBeed(30.0);
     // create sum beed: 5 + (30 + null)
     $doubleSumBeed.addArgument(term5);
-    DoubleSumBeed doubleSumBeed2 = new DoubleSumBeed($owner);
+    DoubleSumBeed doubleSumBeed2 = new DoubleSumBeed();
     doubleSumBeed2.addArgument(term30);
     doubleSumBeed2.addArgument(termNull);
     $doubleSumBeed.addArgument(doubleSumBeed2);
@@ -765,10 +765,10 @@ public class TestDoubleSumBeed {
     EditableDoubleBeed term3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed term4 = createEditableDoubleBeed(4.0);
     // create sum beed
-    DoubleSumBeed doubleSumBeed2plus3 = new DoubleSumBeed($owner);
+    DoubleSumBeed doubleSumBeed2plus3 = new DoubleSumBeed();
     doubleSumBeed2plus3.addArgument(term2);
     doubleSumBeed2plus3.addArgument(term3);
-    DoubleSumBeed doubleSumBeed2plus3plus4 = new DoubleSumBeed($owner);
+    DoubleSumBeed doubleSumBeed2plus3plus4 = new DoubleSumBeed();
     doubleSumBeed2plus3plus4.addArgument(doubleSumBeed2plus3);
     doubleSumBeed2plus3plus4.addArgument(term4);
     $doubleSumBeed.addArgument(term1);

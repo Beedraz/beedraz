@@ -16,7 +16,6 @@
 
 package org.beedra_II.property.number.real.double64;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -36,8 +35,8 @@ public class TestDoubleDifferenceBeed
 
   @Test
   public void testConstructor() {
-    DoubleDifferenceBeed beed = new DoubleDifferenceBeed($aggregateBeed);
-    assertEquals($aggregateBeed, beed.getOwner());
+    DoubleDifferenceBeed beed = new DoubleDifferenceBeed();
+    assertNull(beed.getOwner());
     assertNull(beed.getPositiveTerm());
     assertNull(beed.getNegativeTerm());
     assertNull(beed.getDouble());
@@ -50,7 +49,7 @@ public class TestDoubleDifferenceBeed
 
   @Override
   protected DoubleDifferenceBeed createSubject(AggregateBeed owner) {
-    return new DoubleDifferenceBeed(owner);
+    return new DoubleDifferenceBeed();
   }
 
   @Override
@@ -83,7 +82,7 @@ public class TestDoubleDifferenceBeed
    */
   @Test
   public void testBug1() throws EditStateException, IllegalEditException {
-    DoubleDifferenceBeed ddb = new DoubleDifferenceBeed($aggregateBeed);
+    DoubleDifferenceBeed ddb = new DoubleDifferenceBeed();
     ddb.setPositiveTermPath(new NullPath<RealBeed<?>>());
     EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
     DoubleEdit edit = new DoubleEdit(edb);

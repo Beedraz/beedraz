@@ -39,7 +39,7 @@ public class TestDoubleArithmeticMeanBeed
 
   @Override
   protected MyDoubleArithmeticMeanBeed createSubject(AggregateBeed owner) {
-    return new MyDoubleArithmeticMeanBeed(owner);
+    return new MyDoubleArithmeticMeanBeed();
   }
 
   @Override
@@ -55,8 +55,8 @@ public class TestDoubleArithmeticMeanBeed
 }
 
 class MyDoubleArithmeticMeanBeed extends DoubleArithmeticMeanBeed {
-  public MyDoubleArithmeticMeanBeed(AggregateBeed owner) {
-    super(owner);
+  public MyDoubleArithmeticMeanBeed() {
+    super();
   }
 
   /**

@@ -38,8 +38,8 @@ import org.junit.Test;
 public class TestDoubleProductBeed {
 
   public class MyDoubleProductBeed extends DoubleProductBeed {
-    public MyDoubleProductBeed(AggregateBeed owner) {
-      super(owner);
+    public MyDoubleProductBeed() {
+      super();
     }
 
     /**
@@ -80,7 +80,7 @@ public class TestDoubleProductBeed {
   }
 
   private AggregateBeed $owner = new MyBeanBeed();
-  private MyDoubleProductBeed $doubleProductBeed = new MyDoubleProductBeed($owner);
+  private MyDoubleProductBeed $doubleProductBeed = new MyDoubleProductBeed();
   private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleProductBeed, new Double(0), new Double(1), null);
       // @mudo Laatste argument mag niet null zijn??
   private PropagatedEventListener $listener1 = new PropagatedEventListener();
@@ -349,7 +349,7 @@ public class TestDoubleProductBeed {
     assertTrue($doubleProductBeed.getNbOccurrences(factor5) == 1);
     assertTrue(equalValue($doubleProductBeed.getDouble(), goal5));
     // create another product beed
-    DoubleProductBeed doubleProductBeed2 = new DoubleProductBeed($owner);
+    DoubleProductBeed doubleProductBeed2 = new DoubleProductBeed();
     // check (product has no factors)
     assertTrue(equalValue(doubleProductBeed2.getDouble(), 1.0));
     // add factor30
@@ -381,7 +381,7 @@ public class TestDoubleProductBeed {
     EditableDoubleBeed factor3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed factor4 = createEditableDoubleBeed(4.0);
     // create another product beed
-    DoubleProductBeed doubleProductBeed2times3 = new DoubleProductBeed($owner);
+    DoubleProductBeed doubleProductBeed2times3 = new DoubleProductBeed();
     doubleProductBeed2times3.addArgument(factor2);
     doubleProductBeed2times3.addArgument(factor3);
     // check (product = 2 * 3)
@@ -389,7 +389,7 @@ public class TestDoubleProductBeed {
     assertTrue(doubleProductBeed2times3.getNbOccurrences(factor3) == 1);
     assertEquals(doubleProductBeed2times3.getDouble(), 6.0);
     // create another product beed
-    DoubleProductBeed doubleProductBeed2times3times4 = new DoubleProductBeed($owner);
+    DoubleProductBeed doubleProductBeed2times3times4 = new DoubleProductBeed();
     doubleProductBeed2times3times4.addArgument(doubleProductBeed2times3);
     doubleProductBeed2times3times4.addArgument(factor4);
     // check (product = (2 * 3) * 4)
@@ -717,7 +717,7 @@ public class TestDoubleProductBeed {
     EditableDoubleBeed factor30 = createEditableDoubleBeed(30.0);
     // create product beed: 5 * (30 * null)
     $doubleProductBeed.addArgument(factor5);
-    DoubleProductBeed doubleProductBeed2 = new DoubleProductBeed($owner);
+    DoubleProductBeed doubleProductBeed2 = new DoubleProductBeed();
     doubleProductBeed2.addArgument(factor30);
     doubleProductBeed2.addArgument(factorNull);
     $doubleProductBeed.addArgument(doubleProductBeed2);
@@ -770,10 +770,10 @@ public class TestDoubleProductBeed {
     EditableDoubleBeed factor3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed factor4 = createEditableDoubleBeed(4.0);
     // create product beed
-    DoubleProductBeed doubleProductBeed2times3 = new DoubleProductBeed($owner);
+    DoubleProductBeed doubleProductBeed2times3 = new DoubleProductBeed();
     doubleProductBeed2times3.addArgument(factor2);
     doubleProductBeed2times3.addArgument(factor3);
-    DoubleProductBeed doubleProductBeed2times3times4 = new DoubleProductBeed($owner);
+    DoubleProductBeed doubleProductBeed2times3times4 = new DoubleProductBeed();
     doubleProductBeed2times3times4.addArgument(doubleProductBeed2times3);
     doubleProductBeed2times3times4.addArgument(factor4);
     $doubleProductBeed.addArgument(factor1);

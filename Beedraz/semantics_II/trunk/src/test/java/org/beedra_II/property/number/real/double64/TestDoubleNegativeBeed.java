@@ -16,7 +16,6 @@
 
 package org.beedra_II.property.number.real.double64;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.aggregate.AggregateBeed;
@@ -30,8 +29,8 @@ public class TestDoubleNegativeBeed
 
   @Test
   public void testConstructor() {
-    DoubleNegativeBeed beed = new DoubleNegativeBeed($aggregateBeed);
-    assertEquals($aggregateBeed, beed.getOwner());
+    DoubleNegativeBeed beed = new DoubleNegativeBeed();
+    assertNull(beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
   }
@@ -43,7 +42,7 @@ public class TestDoubleNegativeBeed
 
   @Override
   protected DoubleNegativeBeed createSubject(AggregateBeed owner) {
-    return new DoubleNegativeBeed(owner);
+    return new DoubleNegativeBeed();
   }
 
   @Override

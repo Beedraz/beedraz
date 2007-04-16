@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Test;
 
@@ -66,13 +67,13 @@ public class TestDoubleModBeed
   }
 
   @Override
-  protected void setLeftArgument(EditableDoubleBeed leftArgument) {
-    $subject.setDividend(leftArgument);
+  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
+    $subject.setDividendPath(leftArgumentPath);
   }
 
   @Override
-  protected void setRightArgument(EditableDoubleBeed rightArgument) {
-    $subject.setDivisor(rightArgument);
+  protected void setRightArgumentPath(Path<?extends RealBeed<?>> rightArgumentPath) {
+    $subject.setDivisor(rightArgumentPath);
   }
 
   /**

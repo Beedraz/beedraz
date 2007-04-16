@@ -32,7 +32,7 @@ public abstract class AbstractTestDoubleRootBeed
 
   @Override
   protected DoubleRootBeed createSubject(AggregateBeed owner) {
-    return new DoubleRootBeed(owner, $constant);
+    return new DoubleRootBeed($constant);
   }
 
   @Override
@@ -42,7 +42,7 @@ public abstract class AbstractTestDoubleRootBeed
 
   @Test
   public void testConstructor() {
-    DoubleRootBeed drb = new DoubleRootBeed($aggregateBeed, $constant);
+    DoubleRootBeed drb = new DoubleRootBeed($constant);
     validateConstructor(drb);
   }
 

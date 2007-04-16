@@ -17,6 +17,7 @@
 package org.beedra_II.property.collection.set;
 
 
+import static org.beedra_II.path.Paths.fix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -110,11 +111,11 @@ public class TestNewFilteredSetBeed {
           // construct the %
           DoubleModBeed modBeed = new DoubleModBeed($owner);
           modBeed.setDividend(startBeed.cq);
-          modBeed.setDivisor(new DoubleConstantBeed($owner, 2));
+          modBeed.setDivisor(new DoubleConstantBeed(2));
           // construct the ==
-          BooleanEQBeed eqBeed = new BooleanEQBeed($owner);
-          eqBeed.setLeftArgument(modBeed);
-          eqBeed.setRightArgument(new DoubleConstantBeed($owner, 0));
+          BooleanEQBeed eqBeed = new BooleanEQBeed();
+          eqBeed.setLeftArgumentPath(fix(modBeed));
+          eqBeed.setRightArgumentPath(fix(new DoubleConstantBeed(0)));
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
@@ -457,12 +458,12 @@ public class TestNewFilteredSetBeed {
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
           // construct the %
           DoubleModBeed modBeed = new DoubleModBeed($owner);
-          modBeed.setDividend(startBeed.cq);
-          modBeed.setDivisor(new DoubleConstantBeed($owner, 2));
+          modBeed.setDividendPath(fix(startBeed.cq));
+          modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
           // construct the ==
-          BooleanEQBeed eqBeed = new BooleanEQBeed($owner);
-          eqBeed.setLeftArgument(modBeed);
-          eqBeed.setRightArgument(new DoubleConstantBeed($owner, 1));
+          BooleanEQBeed eqBeed = new BooleanEQBeed();
+          eqBeed.setLeftArgumentPath(fix(modBeed));
+          eqBeed.setRightArgumentPath(fix(new DoubleConstantBeed(1)));
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };

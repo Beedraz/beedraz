@@ -40,7 +40,7 @@ public abstract class AbstractTestDoubleConstantUnaryExpressionBeed<_DoubleBeed_
   }
 
   protected final void validateConstructor(_DoubleBeed_ inb) {
-    assertEquals($aggregateBeed, inb.getOwner());
+    assertEquals(null, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getDouble());
     assertEquals($constant, inb.getConstant());

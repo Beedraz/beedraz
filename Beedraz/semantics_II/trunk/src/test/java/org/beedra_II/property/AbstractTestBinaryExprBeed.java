@@ -22,14 +22,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.StubAggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +36,10 @@ import org.junit.Test;
 
 public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
                                                  _ResultEvent_ extends Event,
-                                                 _Number_ extends Number,
-                                                 _LeftArgumentBeed_ extends RealBeed<? extends RealEvent>,
-                                                 _RightArgumentBeed_ extends RealBeed<? extends RealEvent>,
-                                                 _UEB_ extends AbstractBinaryExprBeed<_Result_, _ResultEvent_, _LeftArgumentBeed_, ? extends RealEvent, _RightArgumentBeed_, ? extends RealEvent>,
+                                                 _Argument_ extends Object,
+                                                 _LeftArgumentBeed_ extends Beed<?>,
+                                                 _RightArgumentBeed_ extends Beed<?>,
+                                                 _UEB_ extends AbstractBinaryExprBeed<_Result_, _ResultEvent_, _LeftArgumentBeed_, ? extends Event, _RightArgumentBeed_, ? extends Event>,
                                                  _LeftEAB_ extends _LeftArgumentBeed_,
                                                  _RightEAB_ extends _RightArgumentBeed_> {
 
@@ -63,17 +62,17 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   protected abstract _RightArgumentBeed_ getRightArgument();
 
-  protected abstract void changeLeftArgument(_LeftEAB_ editableArgumentBeed, _Number_ newValue);
+  protected abstract void changeLeftArgument(_LeftEAB_ editableArgumentBeed, _Argument_ newValue);
 
-  protected abstract void changeRightArgument(_RightEAB_ editableArgumentBeed, _Number_ newValue);
+  protected abstract void changeRightArgument(_RightEAB_ editableArgumentBeed, _Argument_ newValue);
 
-  protected abstract _Result_ expectedValue(_Number_ leftArgumentValue, _Number_ rightArgumentValue);
+  protected abstract _Result_ expectedValue(_Argument_ leftArgumentValue, _Argument_ rightArgumentValue);
 
   protected abstract _Result_ valueFromSubject(_UEB_ argumentBeed);
 
-  protected abstract _Number_ valueFromLeft(_LeftArgumentBeed_ argumentBeed);
+  protected abstract _Argument_ valueFromLeft(_LeftArgumentBeed_ argumentBeed);
 
-  protected abstract _Number_ valueFromRight(_RightArgumentBeed_ argumentBeed);
+  protected abstract _Argument_ valueFromRight(_RightArgumentBeed_ argumentBeed);
 
   protected abstract _Result_ oldValueFrom(_ResultEvent_ argumentBeed);
 
@@ -114,18 +113,19 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
   private _LeftEAB_ $leftArgumentDoubleBeed2;
   private _RightEAB_ $rightArgumentDoubleBeed;
   private _RightEAB_ $rightArgumentDoubleBeed2;
-  protected _Number_ $leftGoal1;
-  protected _Number_ $leftGoal2;
-  protected _Number_ $leftGoalMIN;
-  protected _Number_ $leftGoalMAX;
-  protected _Number_ $rightGoal1;
-  protected _Number_ $rightGoal2;
-  protected _Number_ $rightGoalMIN;
-  protected _Number_ $rightGoalMAX;
+  protected _Argument_ $leftGoal1;
+  protected _Argument_ $leftGoal2;
+  protected _Argument_ $leftGoalMIN;
+  protected _Argument_ $leftGoalMAX;
+  protected _Argument_ $rightGoal1;
+  protected _Argument_ $rightGoal2;
+  protected _Argument_ $rightGoalMIN;
+  protected _Argument_ $rightGoalMAX;
   StubListener<_ResultEvent_> $listener;
 
   @Test
   public void testSetArgument_1L() {
+    $subject.addListener($listener);
     setLeftArgument(null);
     validateSubjectFromArgument(null, null);
     validateEvent(null, null, null, null);
@@ -133,6 +133,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_1R() {
+    $subject.addListener($listener);
     setRightArgument(null);
     validateSubjectFromArgument(null, null);
     validateEvent(null, null, null, null);
@@ -140,6 +141,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_1LR() {
+    $subject.addListener($listener);
     setLeftArgument(null);
     setRightArgument(null);
     validateSubjectFromArgument(null, null);
@@ -148,6 +150,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_2L() {
+    $subject.addListener($listener);
     setLeftArgument($leftArgumentDoubleBeed);
     validateSubjectFromArgument($leftArgumentDoubleBeed, null);
     validateEvent(null, null, null, null);
@@ -155,6 +158,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_2R() {
+    $subject.addListener($listener);
     setRightArgument($rightArgumentDoubleBeed);
     validateSubjectFromArgument(null, $rightArgumentDoubleBeed);
     validateEvent(null, null, null, null);
@@ -162,6 +166,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_2LR() {
+    $subject.addListener($listener);
     setLeftArgument($leftArgumentDoubleBeed);
     setRightArgument($rightArgumentDoubleBeed);
     validateSubjectFromArgument($leftArgumentDoubleBeed, $rightArgumentDoubleBeed);
@@ -170,9 +175,9 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_3L() {
+    $subject.addListener($listener);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     changeRightArgument($rightArgumentDoubleBeed, $rightGoal1);
-    $subject.addListener($listener);
     setLeftArgument($leftArgumentDoubleBeed);
     validateSubjectFromArgument($leftArgumentDoubleBeed, null);
     validateEvent(null, $leftGoal1, null, null);
@@ -200,9 +205,9 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   @Test
   public void testSetArgument_3R() {
+    $subject.addListener($listener);
     changeLeftArgument($leftArgumentDoubleBeed, $leftGoal1);
     changeRightArgument($rightArgumentDoubleBeed, $rightGoal1);
-    $subject.addListener($listener);
     setRightArgument($rightArgumentDoubleBeed);
     validateSubjectFromArgument(null, $rightArgumentDoubleBeed);
     validateEvent(null, null, null, $rightGoal1);
@@ -262,7 +267,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
     // MUDO more tests changing right argument
   }
 
-  private void validateEvent(_Number_ oldLeftV, _Number_ newLeftV, _Number_ oldRightV, _Number_ newRightV) {
+  private void validateEvent(_Argument_ oldLeftV, _Argument_ newLeftV, _Argument_ oldRightV, _Argument_ newRightV) {
     _Result_ expectedOldValue = ((oldLeftV == null) || (oldRightV == null)) ? null : expectedValue(oldLeftV, oldRightV);
     _Result_ expectedNewValue = ((newLeftV == null) || (newRightV == null)) ? null : expectedValue(newLeftV, newRightV);
     if (! $subject.equalValue(expectedOldValue, expectedNewValue)) {
@@ -290,10 +295,11 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
 
   private void validateSubjectFromArgument(_LeftEAB_ leftArgument, _RightEAB_ rightArgument) {
 //    System.out.println("argument: " + leftArgument + "  ##  $subject: "+ $subject);
+    System.out.println("leftArgument: " + leftArgument + ", rightArgument: " + rightArgument + ", result: " + $subject.get());
     assertEquals(leftArgument, getLeftArgument());
     assertEquals(rightArgument, getRightArgument());
-    _Number_ leftArgumentValue = null;
-    _Number_ rightArgumentValue = null;
+    _Argument_ leftArgumentValue = null;
+    _Argument_ rightArgumentValue = null;
     if (leftArgument != null) {
       assertNotNull(getLeftArgument());
       leftArgumentValue = valueFromLeft(leftArgument);

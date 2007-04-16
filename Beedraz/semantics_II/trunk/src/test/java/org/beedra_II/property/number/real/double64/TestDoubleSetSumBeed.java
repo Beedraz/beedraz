@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -72,10 +71,6 @@ public class TestDoubleSetSumBeed {
 
   private AggregateBeed $owner = new StubBeanBeed();
   private MyDoubleSetSumBeed $doubleSetSumBeed = new MyDoubleSetSumBeed();
-  private ActualDoubleEvent $event1 = new ActualDoubleEvent($doubleSetSumBeed, new Double(0), new Double(1), null);
-      // @mudo Laatste argument mag niet null zijn??
-  private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
-  private StubListener<AggregateEvent> $listener2 = new StubListener<AggregateEvent>();
   private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
   @Test

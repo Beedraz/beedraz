@@ -18,6 +18,7 @@ package org.beedra_II.property.number.real.double64;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.beedra_II.property.number.real.RealBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -56,15 +57,22 @@ public class DoubleModBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
   /**
    * @basic
    */
+  public final Path<? extends RealBeed<?>> getDividendPath() {
+    return getLeftArgPath();
+  }
+
+  /**
+   * @return getDividendPath().get();
+   */
   public final RealBeed<?> getDividend() {
     return getLeftArg();
   }
 
   /**
-   * @post getDividend() == dividend;
+   * @post getDividendPath() == dividendPath;
    */
-  public final void setDividend(RealBeed<?> dividend) {
-    setLeftArg(dividend);
+  public final void setDividendPath(Path<? extends RealBeed<?>> dividendPath) {
+    setLeftArgPath(dividendPath);
   }
 
   /*</property>*/
@@ -76,15 +84,22 @@ public class DoubleModBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
   /**
    * @basic
    */
+  public final Path<? extends RealBeed<?>> getDivisorPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getDivisorPath().get();
+   */
   public final RealBeed<?> getDivisor() {
     return getRightArg();
   }
 
   /**
-   * @post getDivisor() == divisor;
+   * @post getDivisorPath() == divisorPath;
    */
-  public final void setDivisor(RealBeed<?> divisor) {
-    setRightArg(divisor);
+  public final void setDivisorPath(Path<? extends RealBeed<?>> divisorPath) {
+    setRightArgPath(divisorPath);
   }
 
   /*</property>*/

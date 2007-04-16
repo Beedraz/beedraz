@@ -21,11 +21,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.PropertyBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -54,7 +54,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class BeanPropertyPath<_AggregateBeed_ extends AggregateBeed, _PropertyBeed_ extends PropertyBeed<?>>
+public abstract class BeanPropertyPath<_AggregateBeed_ extends AggregateBeed, _PropertyBeed_ extends Beed<?>>
     extends AbstractPath<_PropertyBeed_> {
 
   /*<construction>*/
@@ -72,12 +72,6 @@ public abstract class BeanPropertyPath<_AggregateBeed_ extends AggregateBeed, _P
     $propertyBeed = beanBeed == null ? null : selectPropertyBeedFromBeanBeed(beanBeed);
     $dependent.addUpdateSource(beanBeedPath);
   }
-
-//  When does this go away?
-//  public final void terminate() {
-//    assert $beanPath != null;
-//    $dependent.removeUpdateSource($beanPath);
-//  }
 
   /*</construction>*/
 

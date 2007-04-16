@@ -51,7 +51,7 @@ public class TestBooleanEqualBeanBeedsBeed {
     $leftArgumentPath1 = new ConstantPath<RunBeanBeed>($leftArgument1);
     $rightArgument1 = new RunBeanBeed();
     $rightArgumentPath1 = new ConstantPath<RunBeanBeed>($rightArgument1);
-    $subject = new BooleanEqualBeanBeedsBeed<RunBeanBeed>($aggregateBeed);
+    $subject = new BooleanEqualBeanBeedsBeed<RunBeanBeed>();
     $listener = new StubListener<BooleanEvent>();
     // initialise runs
     $run1 = new RunBeanBeed();

@@ -31,8 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractEditableBeed<_Event_ extends Event>
-    extends AbstractBeed<_Event_>
-    implements Beed<_Event_> {
+    extends AbstractBeed<_Event_> {
 
   /**
    * @post getOwner() == owner;

@@ -35,14 +35,6 @@ public abstract class AbstractBooleanArgBooleanUnaryExpressionBeed
                                             BooleanEvent>
     implements BooleanBeed {
 
-  /**
-   * @post  getBoolean() == null;
-   * @post  getArgument() == null;
-   */
-  protected AbstractBooleanArgBooleanUnaryExpressionBeed() {
-    super();
-  }
-
   public final Boolean getBoolean() {
     return isEffective() ? Boolean.valueOf(getboolean()) : null;
   }

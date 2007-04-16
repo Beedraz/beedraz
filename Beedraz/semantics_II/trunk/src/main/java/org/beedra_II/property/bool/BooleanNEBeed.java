@@ -30,23 +30,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class BooleanNEBeed extends AbstractBooleanBinaryRelationalExpressionBeed {
 
-
-  /*<construction>*/
-  //------------------------------------------------------------------
-
-  /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
-   * @post  getBoolean() == null;
-   */
-  public BooleanNEBeed() {
-    super();
-  }
-
-  /*</construction>*/
-
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;

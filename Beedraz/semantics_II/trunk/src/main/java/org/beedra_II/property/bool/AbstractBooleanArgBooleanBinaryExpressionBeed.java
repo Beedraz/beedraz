@@ -37,15 +37,6 @@ public abstract class AbstractBooleanArgBooleanBinaryExpressionBeed
                                    BooleanEvent>
     implements BooleanBeed {
 
-  /**
-   * @post  getBoolean() == null;
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
-   */
-  protected AbstractBooleanArgBooleanBinaryExpressionBeed() {
-    super();
-  }
-
   public final Boolean getBoolean() {
     return isEffective() ? Boolean.valueOf(getboolean()) : null;
   }

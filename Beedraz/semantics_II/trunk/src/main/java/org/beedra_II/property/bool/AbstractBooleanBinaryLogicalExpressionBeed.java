@@ -23,6 +23,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * A binary logical expression with two operands of type {@link BooleanBeed}.
+ *
+ *
+ *
+ * @mudo same code as AbstractBooleanBinaryRelationalExpressionBeed; generalize
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -31,20 +35,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public abstract class AbstractBooleanBinaryLogicalExpressionBeed
     extends AbstractBooleanArgBooleanBinaryExpressionBeed {
 
-
-  /*<construction>*/
-  //------------------------------------------------------------------
-
-  /**
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
-   * @post  getBoolean() == null;
-   */
-  public AbstractBooleanBinaryLogicalExpressionBeed() {
-    super();
-  }
-
-  /*</construction>*/
 
 
   /*<property name="leftArgument">*/

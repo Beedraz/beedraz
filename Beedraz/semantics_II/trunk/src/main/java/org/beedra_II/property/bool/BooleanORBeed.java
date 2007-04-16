@@ -44,22 +44,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class BooleanORBeed extends AbstractBooleanBinaryLogicalExpressionBeed {
 
-
-  /*<construction>*/
-  //------------------------------------------------------------------
-
-  /**
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
-   * @post  getBoolean() == null;
-   */
-  public BooleanORBeed() {
-    super();
-  }
-
-  /*</construction>*/
-
-
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;

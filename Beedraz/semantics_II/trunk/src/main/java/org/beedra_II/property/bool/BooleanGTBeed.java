@@ -30,21 +30,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public class BooleanGTBeed extends AbstractBooleanBinaryRelationalExpressionBeed {
 
-
-  /*<construction>*/
-  //------------------------------------------------------------------
-
-  /**
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
-   * @post  getBoolean() == null;
-   */
-  public BooleanGTBeed() {
-    super();
-  }
-
-  /*</construction>*/
-
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;

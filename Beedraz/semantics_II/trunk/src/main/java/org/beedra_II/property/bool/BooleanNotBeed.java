@@ -34,14 +34,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanNotBeed extends AbstractBooleanArgBooleanUnaryExpressionBeed {
 
   /**
-   * @post  getArgument() == null;
-   * @post  get() == null;
-   */
-  public BooleanNotBeed() {
-    super();
-  }
-
-  /**
    * The operator of this binary expression.
    */
   @Override

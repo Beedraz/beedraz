@@ -39,14 +39,6 @@ public abstract class AbstractRealArgBooleanUnaryExpressionBeed
                                               RealEvent>
     implements BooleanBeed {
 
-  /**
-   * @post  getBoolean() == null;
-   * @post  getArgument() == null;
-   */
-  protected AbstractRealArgBooleanUnaryExpressionBeed() {
-    super();
-  }
-
   public final Boolean getBoolean() {
     return isEffective() ? Boolean.valueOf(getboolean()) : null;
   }
@@ -60,6 +52,11 @@ public abstract class AbstractRealArgBooleanUnaryExpressionBeed
     return $value;
   }
 
+  /**
+   * @post getboolean() == value;
+   *
+   * @mudo rename to assign
+   */
   protected final void setValue(boolean value) {
     $value = value;
   }

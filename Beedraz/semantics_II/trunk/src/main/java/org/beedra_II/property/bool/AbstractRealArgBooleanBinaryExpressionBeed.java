@@ -43,15 +43,6 @@ public abstract class AbstractRealArgBooleanBinaryExpressionBeed
                                    RealEvent>
     implements BooleanBeed {
 
-  /**
-   * @post  getBoolean() == null;
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
-   */
-  protected AbstractRealArgBooleanBinaryExpressionBeed() {
-    super();
-  }
-
   public final Boolean getBoolean() {
     return isEffective() ? Boolean.valueOf(getboolean()) : null;
   }

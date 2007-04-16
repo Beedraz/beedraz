@@ -42,8 +42,7 @@ public class BooleanInstanceofBeed<_BeanBeed_ extends BeanBeed>
    * @post  getBeed() == null;
    * @post  get() == false;
    */
-  public BooleanInstanceofBeed(Class beedClass) {
-    super();
+  public BooleanInstanceofBeed(Class<?> beedClass) {
     assert BeanBeed.class.isAssignableFrom(beedClass);
     $beedClass = beedClass;
   }
@@ -55,11 +54,11 @@ public class BooleanInstanceofBeed<_BeanBeed_ extends BeanBeed>
   /**
    * @basic
    */
-  protected final Class getBeedClass() {
+  protected final Class<?> getBeedClass() {
     return $beedClass;
   }
 
-  private Class $beedClass;
+  private Class<?> $beedClass;
 
   /*</property>*/
 

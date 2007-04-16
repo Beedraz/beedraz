@@ -34,29 +34,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanNotNullBeanBeedBeed<_BeanBeed_ extends BeanBeed>
     extends AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_> {
 
-  /**
-   * @post  getBeed() == null;
-   * @post  get() == false;
-   */
-  public BooleanNotNullBeanBeedBeed() {
-    super();
-  }
-
-
-  /*<property name="beedClass">*/
-  //-----------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  protected final Class getBeedClass() {
-    return $beedClass;
-  }
-
-  private Class $beedClass;
-
-  /*</property>*/
-
   @Override
   protected void recalculate() {
     setValue(getBeed() != null);

@@ -34,15 +34,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
 
   /**
-   * @post  getArgument() == null;
-   * @post  get() == null;
-   */
-  public BooleanNullBeed() {
-    super();
-  }
-
-
-  /**
    * @pre $argument != null;
    */
   @Override

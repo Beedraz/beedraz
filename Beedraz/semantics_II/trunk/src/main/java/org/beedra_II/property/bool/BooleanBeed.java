@@ -34,6 +34,7 @@ public interface BooleanBeed
 
   /**
    * @basic
+   * @init false;
    */
   boolean isEffective();
 

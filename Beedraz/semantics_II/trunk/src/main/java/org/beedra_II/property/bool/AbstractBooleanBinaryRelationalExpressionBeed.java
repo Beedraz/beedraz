@@ -25,27 +25,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A binary relation expression or equality expression
  * with two operands of type {@link RealBeed}.
+ *
+ * @mudo same code as AbstractBooleanBinaryLogicalExpressionBeed; generalize
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends AbstractRealArgBooleanBinaryExpressionBeed {
-
-
-  /*<construction>*/
-  //------------------------------------------------------------------
-
-  /**
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
-   * @post  getBoolean() == null;
-   */
-  public AbstractBooleanBinaryRelationalExpressionBeed() {
-    super();
-  }
-
-  /*</construction>*/
 
 
   /*<property name="leftArgument">*/

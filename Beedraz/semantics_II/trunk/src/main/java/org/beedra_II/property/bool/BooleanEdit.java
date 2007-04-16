@@ -50,6 +50,5 @@ public final class BooleanEdit
     return new BooleanEvent(getTarget(), getOldValue(), getNewValue(), this);
   }
 
-
 }
 

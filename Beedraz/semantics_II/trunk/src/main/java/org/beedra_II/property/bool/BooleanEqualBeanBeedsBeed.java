@@ -23,12 +23,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedra_II.AbstractBeed;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
-import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -46,18 +46,8 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
-    extends AbstractPropertyBeed<BooleanEvent>
+    extends AbstractBeed<BooleanEvent>
     implements BooleanBeed {
-
-  /**
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
-   * @post  get() == true;
-   */
-  public BooleanEqualBeanBeedsBeed() {
-    super(null);
-    $value = true;
-  }
 
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 

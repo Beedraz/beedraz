@@ -64,6 +64,20 @@ public final class OrderedBidirToOneEvent<_One_ extends BeanBeed,
     super(source, oldValue, newValue, edit);
   }
 
+  /**
+   * @return getOldValue().getOwner();
+   */
+  public final _One_ getOldOne() {
+    return (getOldValue() == null) ? null : getOldValue().getOwner();
+  }
+
+  /**
+   * @return getNewValue().getOwner();
+   */
+  public final _One_ getNewOne() {
+    return (getNewValue() == null) ? null : getNewValue().getOwner();
+  }
+
   @Override
   protected void toStringOldNew(StringBuffer sb, int level) {
     sb.append(indent(level) + "old value:");

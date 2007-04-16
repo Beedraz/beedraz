@@ -256,13 +256,5 @@ public class BooleanInstanceofBeed<_BeanBeed_ extends BeanBeed>
     }
   }
 
-
-  /**
-   * The operator of this binary expression.
-   */
-  public String getOperatorString() {
-    return "==";
-  }
-
 }
 

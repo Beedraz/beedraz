@@ -52,7 +52,6 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
 
   private _One_ $bean;
 
-  @Override
   @SuppressWarnings("unchecked")
   public final _One_ getOwner() {
     return $bean;

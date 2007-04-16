@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -38,15 +37,13 @@ public class BooleanInstanceofBeed<_BeanBeed_ extends BeanBeed>
     extends AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_> {
 
   /**
-   * @pre   owner != null;
    * @pre   beedClass != null;
    * @pre   BeanBeed.class.isAssignableFrom(beedClass);
-   * @post  getOwner() == owner;
    * @post  getBeed() == null;
    * @post  get() == false;
    */
-  public BooleanInstanceofBeed(AggregateBeed owner, Class beedClass) {
-    super(owner);
+  public BooleanInstanceofBeed(Class beedClass) {
+    super();
     assert BeanBeed.class.isAssignableFrom(beedClass);
     $beedClass = beedClass;
   }

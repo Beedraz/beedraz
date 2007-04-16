@@ -49,7 +49,7 @@ public class TestBooleanInstanceofBeed
 
   @Override
   protected BooleanInstanceofBeed<?> initSubject() {
-    return new BooleanInstanceofBeed<RunBeanBeed>($aggregateBeed, MyRunBeanBeed.class);
+    return new BooleanInstanceofBeed<RunBeanBeed>(MyRunBeanBeed.class);
   }
 
   @Override

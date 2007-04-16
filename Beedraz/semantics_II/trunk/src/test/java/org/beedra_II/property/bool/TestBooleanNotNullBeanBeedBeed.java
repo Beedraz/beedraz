@@ -41,7 +41,7 @@ public class TestBooleanNotNullBeanBeedBeed
 
   @Override
   protected BooleanNotNullBeanBeedBeed<?> initSubject() {
-    return new BooleanNotNullBeanBeedBeed<RunBeanBeed>($aggregateBeed);
+    return new BooleanNotNullBeanBeedBeed<RunBeanBeed>();
   }
 
   @Override

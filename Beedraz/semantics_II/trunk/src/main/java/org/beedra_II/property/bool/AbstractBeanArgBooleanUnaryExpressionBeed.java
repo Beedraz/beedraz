@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
@@ -50,13 +49,11 @@ public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ exten
     implements BooleanBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getBeed() == null;
    * @post  get() == false;
    */
-  public AbstractBeanArgBooleanUnaryExpressionBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractBeanArgBooleanUnaryExpressionBeed() {
+    super(null);
   }
 
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {

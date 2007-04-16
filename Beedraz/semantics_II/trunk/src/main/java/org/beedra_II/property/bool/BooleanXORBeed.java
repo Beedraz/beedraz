@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -50,14 +49,12 @@ public class BooleanXORBeed extends AbstractBooleanBinaryLogicalExpressionBeed {
   //------------------------------------------------------------------
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getLeftArgument() == null;
    * @post  getRightArgument() == null;
    * @post  getBoolean() == null;
    */
-  public BooleanXORBeed(AggregateBeed owner) {
-    super(owner);
+  public BooleanXORBeed() {
+    super();
   }
 
   /*</construction>*/

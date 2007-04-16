@@ -25,7 +25,6 @@ import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
@@ -61,14 +60,12 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     extends AbstractExprBeed<_Result_, _ResultEvent_>  {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getLeftArg() == null;
    * @post  getRightArg() == null;
    * @post  get() == null;
    */
-  public AbstractBinaryExprBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractBinaryExprBeed() {
+    super(null);
   }
 
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {

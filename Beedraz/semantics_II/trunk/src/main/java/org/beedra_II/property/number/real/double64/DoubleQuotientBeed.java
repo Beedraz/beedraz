@@ -39,7 +39,7 @@ public class DoubleQuotientBeed
    * @post  getDenominator() == null;
    */
   public DoubleQuotientBeed() {
-    super(null);
+    super();
   }
 
 

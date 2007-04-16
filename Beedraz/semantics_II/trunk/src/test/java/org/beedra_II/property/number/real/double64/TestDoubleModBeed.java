@@ -20,7 +20,6 @@ import static org.beedra_II.path.Paths.fix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.path.NullPath;
@@ -36,7 +35,7 @@ public class TestDoubleModBeed
 
   @Test
   public void testConstructor() {
-    DoubleModBeed beed = new DoubleModBeed($aggregateBeed);
+    DoubleModBeed beed = new DoubleModBeed();
     assertEquals($aggregateBeed, beed.getOwner());
     assertNull(beed.getDividend());
     assertNull(beed.getDivisor());
@@ -49,8 +48,8 @@ public class TestDoubleModBeed
   }
 
   @Override
-  protected DoubleModBeed createSubject(AggregateBeed owner) {
-    return new DoubleModBeed(owner);
+  protected DoubleModBeed createSubject() {
+    return new DoubleModBeed();
   }
 
   @Override
@@ -83,7 +82,7 @@ public class TestDoubleModBeed
    */
   @Test
   public void testBug1() throws EditStateException, IllegalEditException {
-    DoubleModBeed dmb = new DoubleModBeed($aggregateBeed);
+    DoubleModBeed dmb = new DoubleModBeed();
     dmb.setDividendPath(new NullPath<RealBeed<?>>());
     EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
     DoubleEdit edit = new DoubleEdit(edb);

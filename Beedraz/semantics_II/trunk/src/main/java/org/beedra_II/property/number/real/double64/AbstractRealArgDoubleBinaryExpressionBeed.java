@@ -21,7 +21,6 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 
 import java.math.BigDecimal;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractRealArgBinaryExpressionBeed;
 import org.beedra_II.property.number.real.RealBeed;
@@ -47,13 +46,11 @@ public abstract class AbstractRealArgDoubleBinaryExpressionBeed
     implements DoubleBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getDouble() == null;
    * @post  getArgument() == null;
    */
-  protected AbstractRealArgDoubleBinaryExpressionBeed(AggregateBeed owner) {
-    super(owner);
+  protected AbstractRealArgDoubleBinaryExpressionBeed() {
+    super();
   }
 
   public final double getdouble() {

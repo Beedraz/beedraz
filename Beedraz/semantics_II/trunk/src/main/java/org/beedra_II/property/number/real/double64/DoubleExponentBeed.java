@@ -39,7 +39,7 @@ public class DoubleExponentBeed
    * @post  getExponent() == null;
    */
   public DoubleExponentBeed() {
-    super(null);
+    super();
   }
 
 

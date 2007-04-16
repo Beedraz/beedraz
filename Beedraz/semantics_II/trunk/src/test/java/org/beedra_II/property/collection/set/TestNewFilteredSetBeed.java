@@ -112,7 +112,7 @@ public class TestNewFilteredSetBeed {
         // filter the wells whose cq value is effective and even
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
           // construct the %
-          DoubleModBeed modBeed = new DoubleModBeed($owner);
+          DoubleModBeed modBeed = new DoubleModBeed();
           modBeed.setDividendPath(fix(startBeed.cq));
           modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
           // construct the ==
@@ -460,7 +460,7 @@ public class TestNewFilteredSetBeed {
         // filter the wells whose cq value is effective and odd
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
           // construct the %
-          DoubleModBeed modBeed = new DoubleModBeed($owner);
+          DoubleModBeed modBeed = new DoubleModBeed();
           modBeed.setDividendPath(fix(startBeed.cq));
           modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
           // construct the ==

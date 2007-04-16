@@ -47,7 +47,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
                                                  _RightEAB_ extends _RightArgumentBeed_> {
 
 
-  protected abstract _UEB_ createSubject(AggregateBeed owner);
+  protected abstract _UEB_ createSubject();
 
   protected abstract _LeftEAB_ createEditableLeftArgumentBeed(AggregateBeed owner);
 
@@ -93,7 +93,7 @@ public abstract class AbstractTestBinaryExprBeed<_Result_ extends Object,
     $rightArgumentDoubleBeedPath = new ConstantPath<_RightEAB_>($rightArgumentDoubleBeed);
     $rightArgumentDoubleBeed2 = createEditableRightArgumentBeed($aggregateBeed);
     $rightArgumentDoubleBeedPath2 = new ConstantPath<_RightEAB_>($rightArgumentDoubleBeed2);
-    $subject = createSubject($aggregateBeed);
+    $subject = createSubject();
     $listener = createStubListener();
   }
 

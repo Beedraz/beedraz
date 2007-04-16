@@ -18,7 +18,6 @@ package org.beedra_II.property;
 
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.bool.BooleanBeed;
 import org.beedra_II.property.bool.BooleanEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -43,13 +42,11 @@ public abstract class AbstractBooleanArgBinaryExprBeed<
                                    BooleanEvent>  {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getArgument() == null;
    * @post  get() == null;
    */
-  public AbstractBooleanArgBinaryExprBeed(AggregateBeed owner) {
-    super(owner);
+  public AbstractBooleanArgBinaryExprBeed() {
+    super();
   }
 
   @Override

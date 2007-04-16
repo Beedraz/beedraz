@@ -40,7 +40,7 @@ public class BooleanEQBeed extends AbstractBooleanBinaryRelationalExpressionBeed
    * @post  getBoolean() == null;
    */
   public BooleanEQBeed() {
-    super(null);
+    super();
   }
 
   /*</construction>*/

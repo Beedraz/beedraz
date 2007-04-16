@@ -42,7 +42,7 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
    * @post  getRightArgument() == null;
    */
   public DoubleDifferenceBeed() {
-    super(null);
+    super();
   }
 
   /*</construction>*/

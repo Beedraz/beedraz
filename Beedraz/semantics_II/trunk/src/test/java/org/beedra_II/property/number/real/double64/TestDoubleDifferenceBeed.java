@@ -18,7 +18,6 @@ package org.beedra_II.property.number.real.double64;
 
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.path.ConstantPath;
@@ -48,7 +47,7 @@ public class TestDoubleDifferenceBeed
   }
 
   @Override
-  protected DoubleDifferenceBeed createSubject(AggregateBeed owner) {
+  protected DoubleDifferenceBeed createSubject() {
     return new DoubleDifferenceBeed();
   }
 

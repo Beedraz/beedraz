@@ -17,7 +17,6 @@ limitations under the License.
 package org.beedra_II.property.bool;
 
 
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractBooleanArgBinaryExprBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -39,14 +38,12 @@ public abstract class AbstractBooleanArgBooleanBinaryExpressionBeed
     implements BooleanBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getBoolean() == null;
    * @post  getLeftArg() == null;
    * @post  getRightArg() == null;
    */
-  protected AbstractBooleanArgBooleanBinaryExpressionBeed(AggregateBeed owner) {
-    super(owner);
+  protected AbstractBooleanArgBooleanBinaryExpressionBeed() {
+    super();
   }
 
   public final Boolean getBoolean() {

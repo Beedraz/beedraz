@@ -29,11 +29,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * {@link #getOwner owner}, to which changes are delegated.
  *
  * @author Jan Dockx
+ *
+ * @deprecated
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
+@Deprecated
 public abstract class AbstractAggregatePropertyBeed
     extends AbstractAggregateBeed
     implements PropertyBeed<AggregateEvent> {

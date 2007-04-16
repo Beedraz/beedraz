@@ -23,7 +23,7 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.junit.Test;
 
 public class TestBooleanANDBeed
-    extends AbstractTestBooleanArgBooleanBinaryExpressionBeed<BooleanANDBeed> {
+    extends AbstractTestBooleanBinaryLogicalExpressionBeed<BooleanANDBeed> {
 
   @Test
   public void testConstructor() {
@@ -35,8 +35,7 @@ public class TestBooleanANDBeed
   }
 
   @Override
-  protected Boolean expectedValue(Boolean leftArgumentValue,
-      Boolean rightArgumentValue) {
+  protected Boolean expectedValue(Boolean leftArgumentValue, Boolean rightArgumentValue) {
     return leftArgumentValue && rightArgumentValue;
   }
 
@@ -45,28 +44,4 @@ public class TestBooleanANDBeed
     return new BooleanANDBeed(owner);
   }
 
-  @Override
-  protected Boolean valueFromSubject(BooleanANDBeed argumentBeed) {
-    return argumentBeed.get();
-  }
-
-  @Override
-  protected BooleanBeed getLeftArgument() {
-    return $subject.getLeftArgument();
-  }
-
-  @Override
-  protected BooleanBeed getRightArgument() {
-    return $subject.getRightArgument();
-  }
-
-  @Override
-  protected void setLeftArgument(EditableBooleanBeed leftArgument) {
-    $subject.setLeftArgument(leftArgument);
-  }
-
-  @Override
-  protected void setRightArgument(EditableBooleanBeed rightArgument) {
-    $subject.setRightArgument(rightArgument);
-  }
 }

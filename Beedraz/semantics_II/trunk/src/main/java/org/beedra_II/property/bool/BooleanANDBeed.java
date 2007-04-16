@@ -24,6 +24,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A binary expression representing the logical AND.
  *
+ * The truth table of p AND q:
+ *
+ *   p    |  q    |  p AND q
+ * -------------------------
+ *   F    |  F    |     F
+ *   F    |  T    |     F
+ *   T    |  F    |     F
+ *   T    |  T    |     T
+ *
  * @invar getLeftArg() != null && getRightArg() != null
  *          ? ( getLeftArg().get() == null || getRightArg().get() == null
  *                ? get() == null
@@ -34,7 +43,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class BooleanANDBeed extends AbstractBooleanArgBooleanBinaryExpressionBeed {
+public class BooleanANDBeed extends AbstractBooleanBinaryLogicalExpressionBeed {
 
 
   /*<construction>*/
@@ -54,45 +63,6 @@ public class BooleanANDBeed extends AbstractBooleanArgBooleanBinaryExpressionBee
   /*</construction>*/
 
 
-  /*<property name="leftArgument">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  public final BooleanBeed getLeftArgument() {
-    return getLeftArg();
-  }
-
-  /**
-   * @post getLeftArgument() == leftArgument;
-   */
-  public final void setLeftArgument(BooleanBeed leftArgument) {
-    setLeftArg(leftArgument);
-  }
-
-  /*</property>*/
-
-
-  /*<property name="rightArgument">*/
-  //------------------------------------------------------------------
-
-  /**
-   * @basic
-   */
-  public final BooleanBeed getRightArgument() {
-    return getRightArg();
-  }
-
-  /**
-   * @post getRightArgument() == rightArgument;
-   */
-  public final void setRightArgument(BooleanBeed rightArgument) {
-    setRightArg(rightArgument);
-  }
-
-  /*</property>*/
-
   /**
    * @pre leftArgument != null;
    * @pre rightArgument != null;
@@ -107,5 +77,6 @@ public class BooleanANDBeed extends AbstractBooleanArgBooleanBinaryExpressionBee
   public final String getOperatorString() {
     return "&&";
   }
+
 }
 

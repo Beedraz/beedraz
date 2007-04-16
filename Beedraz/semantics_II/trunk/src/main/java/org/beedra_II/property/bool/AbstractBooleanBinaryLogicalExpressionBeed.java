@@ -18,6 +18,7 @@ package org.beedra_II.property.bool;
 
 
 import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -55,15 +56,22 @@ public abstract class AbstractBooleanBinaryLogicalExpressionBeed
   /**
    * @basic
    */
+  public final Path<? extends BooleanBeed> getLeftArgumentPath() {
+    return getLeftArgPath();
+  }
+
+  /**
+   * @return getLeftArgumentPath().get();
+   */
   public final BooleanBeed getLeftArgument() {
     return getLeftArg();
   }
 
   /**
-   * @post getLeftArgument() == leftArgument;
+   * @post getLeftArgumentPath() == leftArgumentPath;
    */
-  public final void setLeftArgument(BooleanBeed leftArgument) {
-    setLeftArg(leftArgument);
+  public final void setLeftArgumentPath(Path<? extends BooleanBeed> leftArgumentPath) {
+    setLeftArgPath(leftArgumentPath);
   }
 
   /*</property>*/
@@ -75,15 +83,22 @@ public abstract class AbstractBooleanBinaryLogicalExpressionBeed
   /**
    * @basic
    */
+  public final Path<? extends BooleanBeed> getRightArgumentPath() {
+    return getRightArgPath();
+  }
+
+  /**
+   * @return getRightArgumentPath().get();
+   */
   public final BooleanBeed getRightArgument() {
     return getRightArg();
   }
 
   /**
-   * @post getRightArgument() == rightArgument;
+   * @post getRightArgumentPath() == rightArgumentPath;
    */
-  public final void setRightArgument(BooleanBeed rightArgument) {
-    setRightArg(rightArgument);
+  public final void setRightArgument(Path<? extends BooleanBeed> rightArgumentPath) {
+    setRightArgPath(rightArgumentPath);
   }
 
   /*</property>*/

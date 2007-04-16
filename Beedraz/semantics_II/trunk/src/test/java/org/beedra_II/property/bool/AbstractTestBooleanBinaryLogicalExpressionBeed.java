@@ -16,6 +16,8 @@
 
 package org.beedra_II.property.bool;
 
+import org.beedra_II.path.Path;
+
 
 public abstract class AbstractTestBooleanBinaryLogicalExpressionBeed<
                       _UEB_ extends AbstractBooleanBinaryLogicalExpressionBeed> extends
@@ -37,13 +39,13 @@ public abstract class AbstractTestBooleanBinaryLogicalExpressionBeed<
   }
 
   @Override
-  protected void setLeftArgument(EditableBooleanBeed leftArgument) {
-    $subject.setLeftArgument(leftArgument);
+  protected void setLeftArgumentPath(Path<? extends BooleanBeed> leftArgumentPath) {
+    $subject.setLeftArgumentPath(leftArgumentPath);
   }
 
   @Override
-  protected void setRightArgument(EditableBooleanBeed rightArgument) {
-    $subject.setRightArgument(rightArgument);
+  protected void setRightArgumentPath(Path<? extends BooleanBeed> rightArgumentPath) {
+    $subject.setRightArgumentPath(rightArgumentPath);
   }
 
 }

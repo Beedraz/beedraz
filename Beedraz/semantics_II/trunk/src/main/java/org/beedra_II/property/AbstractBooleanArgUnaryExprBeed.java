@@ -39,14 +39,6 @@ public abstract class AbstractBooleanArgUnaryExprBeed<
                                   BooleanBeed,
                                   BooleanEvent>  {
 
-  /**
-   * @post  getArgument() == null;
-   * @post  get() == null;
-   */
-  public AbstractBooleanArgUnaryExprBeed() {
-    super();
-  }
-
   @Override
   protected boolean hasEffectiveArgument() {
     return getArgument().isEffective();

@@ -19,17 +19,13 @@ package org.beedra_II.property;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -59,69 +55,30 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
                                              _RightArgumentEvent_ extends Event>
     extends AbstractExprBeed<_Result_, _ResultEvent_>  {
 
-  /**
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
-   * @post  get() == null;
-   */
-  public AbstractBinaryExprBeed() {
-    super(null);
+  @Override
+  protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+    /* Events are from the argument, the left argument path, the right argument path, or
+     * any combination.
+     * React to event from paths first, setting the arguments. Then do a recalculate.
+     */
+    _Result_ oldValue = get();
+    PathEvent<_LeftArgumentBeed_> leftPathEvent = (PathEvent<_LeftArgumentBeed_>)events.get($leftArgumentPath);
+    if (leftPathEvent != null) {
+      setLeftArg(leftPathEvent.getNewValue());
+    }
+    PathEvent<_RightArgumentBeed_> rightPathEvent = (PathEvent<_RightArgumentBeed_>)events.get($rightArgumentPath);
+    if (rightPathEvent != null) {
+      setRightArg(rightPathEvent.getNewValue());
+    }
+    recalculate();
+    if (! equalValue(oldValue, get())) {
+      return createNewEvent(oldValue, get(), edit);
+    }
+    else {
+      return null;
+    }
   }
 
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        /* Events are from the argument, the left argument path, the right argument path, or
-         * any combination.
-         * React to event from paths first, setting the arguments. Then do a recalculate.
-         */
-        _Result_ oldValue = get();
-        PathEvent<_LeftArgumentBeed_> leftPathEvent = (PathEvent<_LeftArgumentBeed_>)events.get($leftArgumentPath);
-        if (leftPathEvent != null) {
-          setLeftArg(leftPathEvent.getNewValue());
-        }
-        PathEvent<_RightArgumentBeed_> rightPathEvent = (PathEvent<_RightArgumentBeed_>)events.get($rightArgumentPath);
-        if (rightPathEvent != null) {
-          setRightArg(rightPathEvent.getNewValue());
-        }
-        recalculate();
-        if (! equalValue(oldValue, get())) {
-          return createNewEvent(oldValue, get(), edit);
-        }
-        else {
-          return null;
-        }
-      }
-
-    };
-
-  protected abstract boolean equalValue(_Result_ r1, _Result_ r2);
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
-     */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
-  }
 
 
   /*<property name="left argument">*/
@@ -129,6 +86,7 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
   /**
    * @basic
+   * @init null;
    */
   protected final Path<? extends _LeftArgumentBeed_> getLeftArgPath() {
     return $leftArgumentPath;
@@ -144,13 +102,13 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   protected final void setLeftArgPath(Path<? extends _LeftArgumentBeed_> beedPath) {
     _LeftArgumentBeed_ oldLeftArgument = $leftArgument;
     if ($leftArgumentPath != null) {
-      $dependent.removeUpdateSource($leftArgumentPath);
+      removeUpdateSource($leftArgumentPath);
     }
     $leftArgumentPath = beedPath;
     _LeftArgumentBeed_ leftArgument = null;
     if ($leftArgumentPath != null) {
       leftArgument = $leftArgumentPath.get();
-      $dependent.addUpdateSource($leftArgumentPath);
+      addUpdateSource($leftArgumentPath);
     }
     if (leftArgument != oldLeftArgument) {
       setLeftArg(leftArgument);
@@ -165,12 +123,12 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   private final void setLeftArg(_LeftArgumentBeed_ leftArgument) {
     _Result_ oldValue = get();
     if ($leftArgument != null) {
-      $dependent.removeUpdateSource($leftArgument);
+      removeUpdateSource($leftArgument);
     }
     $leftArgument = leftArgument;
     recalculate();
     if ($leftArgument != null) {
-      $dependent.addUpdateSource($leftArgument);
+      addUpdateSource($leftArgument);
     }
     if (! equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
@@ -188,6 +146,7 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
   /**
    * @basic
+   * @init null;
    */
   protected final Path<? extends _RightArgumentBeed_> getRightArgPath() {
     return $rightArgumentPath;
@@ -203,13 +162,13 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   protected final void setRightArgPath(Path<? extends _RightArgumentBeed_> beedPath) {
     _RightArgumentBeed_ oldRightArgument = $rightArgument;
     if ($rightArgumentPath != null) {
-      $dependent.removeUpdateSource($rightArgumentPath);
+      removeUpdateSource($rightArgumentPath);
     }
     $rightArgumentPath = beedPath;
     _RightArgumentBeed_ rightArgument = null;
     if ($rightArgumentPath != null) {
       rightArgument = $rightArgumentPath.get();
-      $dependent.addUpdateSource($rightArgumentPath);
+      addUpdateSource($rightArgumentPath);
     }
     if (rightArgument != oldRightArgument) {
       setRightArg(rightArgument);
@@ -224,12 +183,12 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   private final void setRightArg(_RightArgumentBeed_ rightArgument) {
     _Result_ oldValue = get();
     if ($rightArgument != null) {
-      $dependent.removeUpdateSource($rightArgument);
+      removeUpdateSource($rightArgument);
     }
     $rightArgument = rightArgument;
     recalculate();
     if ($rightArgument != null) {
-      $dependent.addUpdateSource($rightArgument);
+      addUpdateSource($rightArgument);
     }
     if (! equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
@@ -256,31 +215,28 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     }
   }
 
+  /**
+   * Implement like {@code getLeftArg().isEffective()}, with
+   * appropriate methods offered by {@code _LeftArgumentBeed_}.
+   */
   protected abstract boolean hasEffectiveLeftArgument();
 
+  /**
+   * Implement like {@code getRightArg().isEffective()}, with
+   * appropriate methods offered by {@code _RightArgumentBeed_}.
+   */
   protected abstract boolean hasEffectiveRightArgument();
 
   /**
+   * Recalculate the value of this beed, and store the result, where
+   * implementations that return the result can pick it up.
+   *
    * @pre $leftArgument != null;
    * @pre leftArgument.isEffective();
    * @pre $rightArgument != null;
    * @pre $rightArgument.isEffective();
    */
   protected abstract void recalculateFrom(_LeftArgumentBeed_ leftArgument, _RightArgumentBeed_ rightArgument);
-
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
-
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
-  }
 
   @Override
   public final void toString(StringBuffer sb, int level) {

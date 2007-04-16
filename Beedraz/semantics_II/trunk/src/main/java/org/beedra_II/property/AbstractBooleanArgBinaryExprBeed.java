@@ -41,14 +41,6 @@ public abstract class AbstractBooleanArgBinaryExprBeed<
                                    BooleanBeed,
                                    BooleanEvent>  {
 
-  /**
-   * @post  getArgument() == null;
-   * @post  get() == null;
-   */
-  public AbstractBooleanArgBinaryExprBeed() {
-    super();
-  }
-
   @Override
   protected boolean hasEffectiveLeftArgument() {
     return getLeftArg().isEffective();

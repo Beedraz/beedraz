@@ -41,14 +41,6 @@ public abstract class AbstractRealArgUnaryExprBeed<
                                   _ArgumentBeed_,
                                   _ArgumentEvent_>  {
 
-  /**
-   * @post  getArgument() == null;
-   * @post  get() == null;
-   */
-  public AbstractRealArgUnaryExprBeed() {
-    super();
-  }
-
   @Override
   protected boolean hasEffectiveArgument() {
     return getArgument().isEffective();

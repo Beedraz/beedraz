@@ -46,15 +46,6 @@ public abstract class AbstractRealArgBinaryExprBeed<
                                   _RightArgumentBeed_,
                                   _RightArgumentEvent_>  {
 
-  /**
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
-   * @post  get() == null;
-   */
-  public AbstractRealArgBinaryExprBeed() {
-    super();
-  }
-
   @Override
   protected boolean hasEffectiveLeftArgument() {
     return getLeftArg().isEffective();

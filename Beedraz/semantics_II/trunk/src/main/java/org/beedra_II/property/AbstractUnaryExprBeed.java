@@ -19,17 +19,13 @@ package org.beedra_II.property;
 
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
-import org.beedra_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedra_II.topologicalupdate.Dependent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -55,63 +51,23 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ArgumentEvent_ extends Event>
     extends AbstractExprBeed<_Result_, _ResultEvent_>  {
 
-  /**
-   * @post  getArgument() == null;
-   * @post  get() == null;
-   */
-  public AbstractUnaryExprBeed() {
-    super(null);
-  }
-
-
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-        /* Events are from the argument or the argument path, or both.
-         * React to event from path first, setting the argument. Then do a recalculate.
-         */
-        _Result_ oldValue = get();
-        PathEvent<_ArgumentBeed_> pathEvent = (PathEvent<_ArgumentBeed_>)events.get($argumentPath);
-        if (pathEvent != null) {
-          setArgument(pathEvent.getNewValue());
-        }
-        recalculate();
-        if (! equalValue(oldValue, get())) {
-          return createNewEvent(oldValue, get(), edit);
-        }
-        else {
-          return null;
-        }
-      }
-
-    };
-
-  protected abstract boolean equalValue(_Result_ r1, _Result_ r2);
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
+  @Override
+  protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+    /* Events are from the argument or the argument path, or both.
+     * React to event from path first, setting the argument. Then do a recalculate.
      */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+    _Result_ oldValue = get();
+    PathEvent<_ArgumentBeed_> pathEvent = (PathEvent<_ArgumentBeed_>)events.get($argumentPath);
+    if (pathEvent != null) {
+      setArgument(pathEvent.getNewValue());
+    }
+    recalculate();
+    if (! equalValue(oldValue, get())) {
+      return createNewEvent(oldValue, get(), edit);
+    }
+    else {
+      return null;
+    }
   }
 
 
@@ -120,6 +76,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
   /**
    * @basic
+   * @init null;
    */
   public final Path<? extends _ArgumentBeed_> getArgumentPath() {
     return $argumentPath;
@@ -135,13 +92,13 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
   public final void setArgumentPath(Path<? extends _ArgumentBeed_> beedPath) {
     _ArgumentBeed_ oldArgument = $argument;
     if ($argumentPath != null) {
-      $dependent.removeUpdateSource($argumentPath);
+      removeUpdateSource($argumentPath);
     }
     $argumentPath = beedPath;
     _ArgumentBeed_ argument = null;
     if ($argumentPath != null) {
       argument = $argumentPath.get();
-      $dependent.addUpdateSource($argumentPath);
+      addUpdateSource($argumentPath);
     }
     if (argument != oldArgument) {
       setArgument(argument);
@@ -156,12 +113,12 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
   private final void setArgument(_ArgumentBeed_ argument) {
     _Result_ oldValue = get();
     if ($argument != null) {
-      $dependent.removeUpdateSource($argument);
+      removeUpdateSource($argument);
     }
     $argument = argument;
     if ($argument != null) {
       recalculate();
-      $dependent.addUpdateSource($argument);
+      addUpdateSource($argument);
     }
     else {
       assignEffective(false);
@@ -193,6 +150,10 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
     }
   }
 
+  /**
+   * Implement like {@code getArgument().isEffective()}, with
+   * appropriate methods offered by {@code _ArgumentBeed_}.
+   */
   protected abstract boolean hasEffectiveArgument();
 
   /**
@@ -200,20 +161,6 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
    * @pre argument.isEffective();
    */
   protected abstract void recalculateFrom(_ArgumentBeed_ argument);
-
-  public final Set<? extends UpdateSource> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
-
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
-  }
 
   @Override
   public final void toString(StringBuffer sb, int level) {

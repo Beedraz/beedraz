@@ -41,7 +41,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class DoubleGeometricMeanBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */

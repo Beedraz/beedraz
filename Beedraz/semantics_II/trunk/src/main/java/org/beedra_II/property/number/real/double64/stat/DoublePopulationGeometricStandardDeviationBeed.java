@@ -45,8 +45,6 @@ public class DoublePopulationGeometricStandardDeviationBeed extends AbstractDoub
 
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */

@@ -60,7 +60,6 @@ public abstract class AbstractDoubleCommutativeOperationBeed
     implements DoubleBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getdouble() == initialValue();
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    * @post  isEffective();

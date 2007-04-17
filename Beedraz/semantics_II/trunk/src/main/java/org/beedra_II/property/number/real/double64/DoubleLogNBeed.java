@@ -41,8 +41,6 @@ public class DoubleLogNBeed
     extends AbstractDoubleConstantUnaryExpressionBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getDouble() == null;
    * @post  getArgument() == null;
    * @post  getConstant() == constant;

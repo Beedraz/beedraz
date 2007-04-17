@@ -45,8 +45,6 @@ public class DoubleSampleGeometricStandardErrorBeed extends AbstractDoubleCommon
 
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */

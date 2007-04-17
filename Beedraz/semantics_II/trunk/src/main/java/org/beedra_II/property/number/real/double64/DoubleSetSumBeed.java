@@ -41,7 +41,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class DoubleSetSumBeed extends AbstractDoubleSetComputationBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getDouble() == null;
    */
   public DoubleSetSumBeed() {

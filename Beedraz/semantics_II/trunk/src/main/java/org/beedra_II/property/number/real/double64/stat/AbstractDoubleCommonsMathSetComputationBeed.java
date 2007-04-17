@@ -35,7 +35,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public abstract class AbstractDoubleCommonsMathSetComputationBeed extends AbstractDoubleSetComputationBeed {
 
   /**
-   * @pre   owner != null;
    * @pre   sus != null;
    * @post  getSource() == null;
    * @post  getDouble() == null;

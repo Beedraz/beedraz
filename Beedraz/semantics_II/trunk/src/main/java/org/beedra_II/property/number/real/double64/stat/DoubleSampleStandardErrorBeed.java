@@ -50,8 +50,6 @@ public class DoubleSampleStandardErrorBeed extends AbstractDoubleCommonsMathSetC
 
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */

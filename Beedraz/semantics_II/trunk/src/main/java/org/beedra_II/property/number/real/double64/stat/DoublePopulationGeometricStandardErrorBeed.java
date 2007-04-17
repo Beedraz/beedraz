@@ -45,8 +45,6 @@ public class DoublePopulationGeometricStandardErrorBeed extends AbstractDoubleCo
 
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */

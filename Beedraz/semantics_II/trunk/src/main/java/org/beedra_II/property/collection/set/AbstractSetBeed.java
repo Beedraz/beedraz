@@ -60,8 +60,9 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
       implements LongBeed {
 
     /**
-     * Creates a new SizeBeed. The owner of this beed is the
-     * owner of the {@link SetBeed}.
+     * Creates a new SizeBeed. The {@link AbstractSetBeed#this} is
+     * an update source of this SizeBeed: when the set changes, the
+     * size is updated accordingly.
      */
     SizeBeed() {
       addUpdateSource(AbstractSetBeed.this);

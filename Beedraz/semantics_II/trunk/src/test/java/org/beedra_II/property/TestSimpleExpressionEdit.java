@@ -40,12 +40,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestSimpleEdit {
+public class TestSimpleExpressionEdit {
 
-  public class MySimpleEdit
+  public class MySimpleExpressionEdit
        extends SimpleExpressionEdit<Long, MyEditableIntegerBeed, ActualLongEvent> {
 
-    public MySimpleEdit(MyEditableIntegerBeed target) {
+    public MySimpleExpressionEdit(MyEditableIntegerBeed target) {
       super(target);
     }
 
@@ -103,7 +103,7 @@ public class TestSimpleEdit {
 
   BeanBeed $beanBeed = new StubBeanBeed();
   MyEditableIntegerBeed $target = new MyEditableIntegerBeed($beanBeed);
-  private MySimpleEdit $simpleEdit = new MySimpleEdit($target);
+  private MySimpleExpressionEdit $simpleEdit = new MySimpleExpressionEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();
   StubListener<IntegerEvent> $listener3 = new StubListener<IntegerEvent>();
@@ -281,21 +281,21 @@ public class TestSimpleEdit {
   public void perform8() {
     try {
       // perform
-      MySimpleEdit edit1 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit1 = new MySimpleExpressionEdit($target);
       assertNull(edit1.getInitial());
       Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       assertNull(edit1.getInitial());
       // perform
-      MySimpleEdit edit2 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit2 = new MySimpleExpressionEdit($target);
       assertNull(edit2.getInitial());
       Long goal2 = 7L;
       edit2.setGoal(goal2);
       edit2.perform();
       assertEquals(edit2.getInitial(), goal1);
       // perform - no change
-      MySimpleEdit edit3 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit3 = new MySimpleExpressionEdit($target);
       assertNull(edit3.getInitial());
       edit3.setGoal(goal2);
       edit3.perform();
@@ -449,15 +449,15 @@ public class TestSimpleEdit {
   @Test
   // when the goal state does not match the current state, an exception should be thrown
   public void undo7() {
-    MySimpleEdit edit1 = null;
+    MySimpleExpressionEdit edit1 = null;
     try {
       // edit1
-      edit1 = new MySimpleEdit($target);
+      edit1 = new MySimpleExpressionEdit($target);
       Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       // edit2
-      MySimpleEdit edit2 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit2 = new MySimpleExpressionEdit($target);
       Long goal2 = 7L;
       edit2.setGoal(goal2);
       edit2.perform();
@@ -481,7 +481,7 @@ public class TestSimpleEdit {
   public void undo8() {
     try {
       // edit1
-      MySimpleEdit edit1 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit1 = new MySimpleExpressionEdit($target);
       Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
@@ -620,16 +620,16 @@ public class TestSimpleEdit {
   @Test
   // when the goal state does not match the current state, an exception should be thrown
   public void redo7() {
-    MySimpleEdit edit1 = null;
+    MySimpleExpressionEdit edit1 = null;
     try {
       // edit1
-      edit1 = new MySimpleEdit($target);
+      edit1 = new MySimpleExpressionEdit($target);
       Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
       edit1.undo();
       // edit2
-      MySimpleEdit edit2 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit2 = new MySimpleExpressionEdit($target);
       Long goal2 = 7L;
       edit2.setGoal(goal2);
       edit2.perform();
@@ -653,7 +653,7 @@ public class TestSimpleEdit {
   public void redo8() {
     try {
       // edit1
-      MySimpleEdit edit1 = new MySimpleEdit($target);
+      MySimpleExpressionEdit edit1 = new MySimpleExpressionEdit($target);
       Long goal1 = 5L;
       edit1.setGoal(goal1);
       edit1.perform();
@@ -876,7 +876,7 @@ public class TestSimpleEdit {
   public void getOldValue() throws EditStateException, IllegalEditException {
     // set value of target
     Long init = 3L;
-    MySimpleEdit edit = new MySimpleEdit($target);
+    MySimpleExpressionEdit edit = new MySimpleExpressionEdit($target);
     edit.setGoal(init);
     edit.perform();
     // check
@@ -921,7 +921,7 @@ public class TestSimpleEdit {
   public void getNewValue() throws EditStateException, IllegalEditException {
     // set value of target
     Long init = 3L;
-    MySimpleEdit edit = new MySimpleEdit($target);
+    MySimpleExpressionEdit edit = new MySimpleExpressionEdit($target);
     edit.setGoal(init);
     edit.perform();
     // check
@@ -1011,7 +1011,7 @@ public class TestSimpleEdit {
     assertTrue($simpleEdit.isChange());
     // perform
     Long goal2 = goal;
-    MySimpleEdit edit2 = new MySimpleEdit($target);
+    MySimpleExpressionEdit edit2 = new MySimpleExpressionEdit($target);
     edit2.setGoal(goal2);
     edit2.perform();
     assertEquals(edit2.getInitial(), goal);
@@ -1083,7 +1083,7 @@ public class TestSimpleEdit {
     $simpleEdit.setGoal(goal);
     $simpleEdit.perform();
     // change initial
-    MySimpleEdit edit = new MySimpleEdit($target);
+    MySimpleExpressionEdit edit = new MySimpleExpressionEdit($target);
     assertNull(edit.getInitial());
     assertEquals($target.get(), goal);
     edit.unperformance();

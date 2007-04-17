@@ -30,7 +30,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestEditableSimplePropertyBeed {
+public class TestEditableSimpleExpressionBeed {
 
   @Before
   public void setUp() throws Exception {
@@ -43,8 +43,9 @@ public class TestEditableSimplePropertyBeed {
   }
 
   private AggregateBeed $owner = new StubBeanBeed();
-  private StubEditableSimplePropertyBeed $editableSimplePropertyBeed = new StubEditableSimplePropertyBeed($owner);
-  private StubEvent $event1 = new StubEvent($editableSimplePropertyBeed);
+  private StubEditableSimpleExpressionBeed $editableSimpleExpressionBeed =
+    new StubEditableSimpleExpressionBeed($owner);
+  private StubEvent $event1 = new StubEvent($editableSimpleExpressionBeed);
   private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
   private StubListener<AggregateEvent> $listener2 = new StubListener<AggregateEvent>();
   private StubListener<StubEvent> $listener3 = new StubListener<StubEvent>();
@@ -52,15 +53,15 @@ public class TestEditableSimplePropertyBeed {
 
   @Test
   public void constructor() {
-    assertEquals($editableSimplePropertyBeed.getOwner(), $owner);
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
+    assertEquals($editableSimpleExpressionBeed.getOwner(), $owner);
+    // the beed should be registered with the owner:
+    // add listeners to the beed
     $owner.addListener($listener1);
     $owner.addListener($listener2);
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableSimplePropertyBeed.publicUpdateDependents($event1);
+    $editableSimpleExpressionBeed.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
@@ -73,30 +74,30 @@ public class TestEditableSimplePropertyBeed {
   @Test
   public void assign() {
     Integer newValue = new Integer(5);
-    $editableSimplePropertyBeed.assign(newValue);
-    assertEquals($editableSimplePropertyBeed.get(), newValue);
+    $editableSimpleExpressionBeed.assign(newValue);
+    assertEquals($editableSimpleExpressionBeed.get(), newValue);
   }
 
   @Test
   public void safeValueCopy() {
     Object newValue = new Object();
-    Object copy = $editableSimplePropertyBeed.publicSafeValueCopy(newValue);
+    Object copy = $editableSimpleExpressionBeed.publicSafeValueCopy(newValue);
     assertEquals(newValue, copy);
   }
 
   @Test
   public void isAcceptable() {
-    boolean isAcceptable = $editableSimplePropertyBeed.isAcceptable(new Integer(5));
+    boolean isAcceptable = $editableSimpleExpressionBeed.isAcceptable(new Integer(5));
     assertEquals(isAcceptable, true);
   }
 
   @Test
   public void fireEvent() {
     // register listeners
-    $editableSimplePropertyBeed.addListener($listener3);
-    $editableSimplePropertyBeed.addListener($listener4);
+    $editableSimpleExpressionBeed.addListener($listener3);
+    $editableSimpleExpressionBeed.addListener($listener4);
     // fire event
-    $editableSimplePropertyBeed.publicUpdateDependents($event1);
+    $editableSimpleExpressionBeed.publicUpdateDependents($event1);
     // checks
     assertNotNull($listener3.$event);
     assertNotNull($listener4.$event);

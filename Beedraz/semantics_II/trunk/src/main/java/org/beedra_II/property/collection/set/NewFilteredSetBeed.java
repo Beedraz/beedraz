@@ -299,10 +299,10 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
       $element = element;
       $bbPath = getCriterion().createPath(element);
       assert $bbPath != null;
-      $dependent.addUpdateSource($bbPath);
+      addUpdateSource($bbPath);
       $bb = $bbPath.get();
       if ($bb != null) {
-        $dependent.addUpdateSource($bb);
+        addUpdateSource($bb);
       }
       $value = ($bb == null) ? false : $bb.getboolean();
     }
@@ -335,11 +335,11 @@ public class NewFilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends
       PathEvent<BooleanBeed> pathEvent = (PathEvent<BooleanBeed>)events.get($bbPath);
       if (pathEvent != null) {
         if ($bb != null) {
-          $dependent.removeUpdateSource($bb);
+          removeUpdateSource($bb);
         }
         $bb = pathEvent.getNewValue();
         if ($bb != null) {
-          $dependent.addUpdateSource($bb);
+          addUpdateSource($bb);
         }
       }
       $value = $bb == null ? false : $bb.getboolean();

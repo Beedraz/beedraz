@@ -25,6 +25,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * Support for implementations of {@link PropertyBeed}.
  *
  * @author Jan Dockx
+ *
+ * @invar  getOwner() != null;
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -34,13 +36,12 @@ public abstract class AbstractEditableBeed<_Event_ extends Event>
     extends AbstractBeed<_Event_> {
 
   /**
+   * @pre  owner != null;
    * @post getOwner() == owner;
    */
   protected AbstractEditableBeed(AggregateBeed owner) {
     $owner = owner;
-    if (owner != null) {
-      owner.registerAggregateElement(this);
-    }
+    owner.registerAggregateElement(this);
   }
 
   /**

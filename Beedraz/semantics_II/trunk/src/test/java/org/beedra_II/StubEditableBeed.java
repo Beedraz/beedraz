@@ -23,7 +23,7 @@ import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 
 
-public class StubEditableBeed extends AbstractEditableBeed {
+public class StubEditableBeed extends AbstractEditableBeed<StubEvent> {
 
   public StubEditableBeed(AggregateBeed owner) {
     super(owner);

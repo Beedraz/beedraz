@@ -28,7 +28,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   by one {@link #get() reference} of type {@code _Type_}.
  *   In general, the state can be {@link #get() retrieved},
  *   but explicitly setting state requires a subtype.</p>
- * <p>Most, but not all, {@code SimplePropertyBeed SimplePropertyBeeds}
+ * <p>Most, but not all, {@code SimpleExpressionBeed SimpleExpressionBeeds}
  *   send {@link OldNewEvent OldNewBeedEvents}.</p>
  *
  * @author Jan Dockx

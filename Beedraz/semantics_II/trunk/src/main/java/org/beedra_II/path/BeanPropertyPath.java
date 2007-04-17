@@ -36,6 +36,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   {@code BeanPropertyPath} might change too. When this happens, this
  *   will update dependents and send events to listeners.</p>
  *
+ * @mudo PropertyBeed does not exist any longer: change the comments above.
+ *
  * @protected
  * <p>Subclasses must implement {@link #selectPropertyBeedFromBeanBeed(BeanBeed)},
  *   to select the appropriate property beed from the bean beed given by the

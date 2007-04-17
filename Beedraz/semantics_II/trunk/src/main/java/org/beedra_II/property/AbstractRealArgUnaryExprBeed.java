@@ -19,7 +19,6 @@ package org.beedra_II.property;
 
 import org.beedra_II.Event;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -31,15 +30,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public abstract class AbstractRealArgUnaryExprBeed<
-                                            _Result_ extends Object,
-                                            _ResultEvent_ extends Event,
-                                            _ArgumentBeed_ extends RealBeed<? extends _ArgumentEvent_>,
-                                            _ArgumentEvent_ extends RealEvent>
-    extends AbstractUnaryExprBeed<_Result_,
-                                  _ResultEvent_,
-                                  _ArgumentBeed_,
-                                  _ArgumentEvent_>  {
+public abstract class AbstractRealArgUnaryExprBeed<_Result_ extends Object,
+                                                   _ResultEvent_ extends Event,
+                                                   _ArgumentBeed_ extends RealBeed<?>>
+    extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_>  {
 
   @Override
   protected boolean hasEffectiveArgument() {

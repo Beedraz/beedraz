@@ -39,7 +39,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractPrimitiveDependentExprBeed<_Result_ extends Object,
-                                       _ResultEvent_ extends Event>
+                                                         _ResultEvent_ extends Event>
     extends AbstractDependentBeed<_ResultEvent_> {
 
   /**

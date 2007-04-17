@@ -47,8 +47,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
-                                            _ArgumentBeed_ extends Beed<? extends _ArgumentEvent_>,
-                                            _ArgumentEvent_ extends Event>
+                                            _ArgumentBeed_ extends Beed<?>>
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
   @Override
@@ -153,6 +152,8 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
   /**
    * Implement like {@code getArgument().isEffective()}, with
    * appropriate methods offered by {@code _ArgumentBeed_}.
+   *
+   * @pre getArgument() != null;
    */
   protected abstract boolean hasEffectiveArgument();
 

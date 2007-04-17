@@ -20,7 +20,6 @@ package org.beedra_II.property.number.integer.long64;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractRealArgUnaryExpressionBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
-import org.beedra_II.property.number.integer.IntegerEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -32,11 +31,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractRealArgLongUnaryExpressionBeed
-    extends AbstractRealArgUnaryExpressionBeed<
-                                        Long,
-                                        ActualLongEvent,
-                                        IntegerBeed<?>,
-                                        IntegerEvent>
+    extends AbstractRealArgUnaryExpressionBeed<Long, ActualLongEvent, IntegerBeed<?>>
     implements LongBeed {
 
   public final long getlong() {

@@ -35,13 +35,9 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number,
-                                                  _NumberEvent_ extends RealEvent,
-                                                  _ArgumentBeed_ extends RealBeed<? extends _ArgumentEvent_>,
-                                                  _ArgumentEvent_ extends RealEvent>
-    extends AbstractRealArgUnaryExprBeed<_Number_,
-                                              _NumberEvent_,
-                                              _ArgumentBeed_,
-                                              _ArgumentEvent_>
+                                                         _NumberEvent_ extends RealEvent,
+                                                         _ArgumentBeed_ extends RealBeed<?>>
+    extends AbstractRealArgUnaryExprBeed<_Number_, _NumberEvent_, _ArgumentBeed_>
     implements RealBeed<_NumberEvent_>{
 
   /**

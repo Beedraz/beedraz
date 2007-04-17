@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.number.AbstractRealArgUnaryExpressionBeed;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -36,11 +35,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractRealArgDoubleUnaryExpressionBeed
-    extends AbstractRealArgUnaryExpressionBeed<
-                                        Double,
-                                        ActualDoubleEvent,
-                                        RealBeed<?>,
-                                        RealEvent>
+    extends AbstractRealArgUnaryExpressionBeed<Double, ActualDoubleEvent, RealBeed<?>>
     implements DoubleBeed {
 
   /**

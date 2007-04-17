@@ -20,7 +20,6 @@ package org.beedra_II.property.bool;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractRealArgUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
-import org.beedra_II.property.number.real.RealEvent;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.MathUtil;
 
@@ -33,10 +32,7 @@ import org.ppeew.smallfries_I.MathUtil;
          state    = "$State$",
          tag      = "$Name$")
 public abstract class AbstractRealArgBooleanUnaryExpressionBeed
-    extends AbstractRealArgUnaryExprBeed<Boolean,
-                                              BooleanEvent,
-                                              RealBeed<?>,
-                                              RealEvent>
+    extends AbstractRealArgUnaryExprBeed<Boolean, BooleanEvent, RealBeed<?>>
     implements BooleanBeed {
 
   public final Boolean getBoolean() {

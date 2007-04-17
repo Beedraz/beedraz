@@ -22,9 +22,9 @@ import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.property.StubEditableSimpleExpressionBeed;
 
 
-public class StubEdit extends AbstractSimpleEdit<StubEditableSimpleExpressionBeed, StubEvent> {
+public class StubSimpleEdit extends AbstractSimpleEdit<StubEditableSimpleExpressionBeed, StubEvent> {
 
-  public StubEdit(StubEditableSimpleExpressionBeed target) {
+  public StubSimpleEdit(StubEditableSimpleExpressionBeed target) {
     super(target);
   }
 

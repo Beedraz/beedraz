@@ -22,7 +22,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * Support for implementations of {@link PropertyBeed}.
+ * A beed that has an owner.
  *
  * @author Jan Dockx
  *

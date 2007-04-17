@@ -47,7 +47,7 @@ public class TestStringEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableStringBeed $target = new StubEditableStringBeed();
+  StubEditableStringBeed $target = new StubEditableStringBeed($beanBeed);
   private StringEdit $stringEdit = new StringEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

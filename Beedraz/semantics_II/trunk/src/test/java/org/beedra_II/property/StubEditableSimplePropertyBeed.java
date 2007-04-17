@@ -1,4 +1,4 @@
-package org.beedra_II.property.simple;
+package org.beedra_II.property;
 
 
 import org.beedra_II.StubEvent;

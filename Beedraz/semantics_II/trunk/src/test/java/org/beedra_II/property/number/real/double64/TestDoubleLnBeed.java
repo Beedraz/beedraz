@@ -29,7 +29,6 @@ public class TestDoubleLnBeed
   @Test
   public void testConstructor() {
     DoubleLnBeed beed = new DoubleLnBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
   }

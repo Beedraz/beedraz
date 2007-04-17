@@ -17,6 +17,7 @@
 package org.beedra_II.property.bool;
 
 import org.beedra_II.StubListener;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractTestUnaryExprBeed;
 import org.junit.Assert;
 
@@ -51,8 +52,8 @@ public abstract class AbstractTestBooleanArgBooleanUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableBooleanBeed createEditableArgumentBeed() {
-    return new EditableBooleanBeed();
+  protected EditableBooleanBeed createEditableArgumentBeed(AggregateBeed owner) {
+    return new EditableBooleanBeed(owner);
   }
 
   @Override

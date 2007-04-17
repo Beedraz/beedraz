@@ -17,7 +17,6 @@
 package org.beedra_II.property.number.real.double64;
 
 import static org.beedra_II.path.Paths.fix;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.edit.EditStateException;
@@ -36,7 +35,6 @@ public class TestDoubleModBeed
   @Test
   public void testConstructor() {
     DoubleModBeed beed = new DoubleModBeed();
-    assertEquals(null, beed.getOwner());
     assertNull(beed.getDividend());
     assertNull(beed.getDivisor());
     assertNull(beed.getDouble());
@@ -84,7 +82,7 @@ public class TestDoubleModBeed
   public void testBug1() throws EditStateException, IllegalEditException {
     DoubleModBeed dmb = new DoubleModBeed();
     dmb.setDividendPath(new NullPath<RealBeed<?>>());
-    EditableDoubleBeed edb = new EditableDoubleBeed();
+    EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
     DoubleEdit edit = new DoubleEdit(edb);
     edit.setGoal(Double.NaN);
     edit.perform();

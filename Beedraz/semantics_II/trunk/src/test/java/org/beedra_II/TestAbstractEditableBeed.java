@@ -14,15 +14,13 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property;
+package org.beedra_II;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.beedra_II.StubEvent;
-import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
@@ -30,7 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestAbstractPropertyBeed {
+public class TestAbstractEditableBeed {
 
   @Before
   public void setUp() throws Exception {
@@ -43,14 +41,14 @@ public class TestAbstractPropertyBeed {
   }
 
   private AggregateBeed $owner = new StubBeanBeed();
-  private StubPropertyBeed $propertyBeed = new StubPropertyBeed($owner);
-  private StubEvent $event1 = new StubEvent($propertyBeed);
+  private StubEditableBeed $editableBeed = new StubEditableBeed($owner);
+  private StubEvent $event1 = new StubEvent($editableBeed);
   private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
   private StubListener<AggregateEvent> $listener2 = new StubListener<AggregateEvent>();
 
   @Test
   public void constructor() {
-    assertEquals($propertyBeed.getOwner(), $owner);
+    assertEquals($editableBeed.getOwner(), $owner);
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);
@@ -58,7 +56,7 @@ public class TestAbstractPropertyBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $propertyBeed.publicUpdateDependents($event1);
+    $editableBeed.publicUpdateDependents($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

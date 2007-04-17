@@ -29,7 +29,6 @@ public class TestDoubleNegativeBeed
   @Test
   public void testConstructor() {
     DoubleNegativeBeed beed = new DoubleNegativeBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
   }

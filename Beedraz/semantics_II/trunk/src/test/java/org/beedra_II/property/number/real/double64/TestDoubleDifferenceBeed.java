@@ -35,7 +35,6 @@ public class TestDoubleDifferenceBeed
   @Test
   public void testConstructor() {
     DoubleDifferenceBeed beed = new DoubleDifferenceBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getPositiveTerm());
     assertNull(beed.getNegativeTerm());
     assertNull(beed.getDouble());
@@ -83,7 +82,7 @@ public class TestDoubleDifferenceBeed
   public void testBug1() throws EditStateException, IllegalEditException {
     DoubleDifferenceBeed ddb = new DoubleDifferenceBeed();
     ddb.setPositiveTermPath(new NullPath<RealBeed<?>>());
-    EditableDoubleBeed edb = new EditableDoubleBeed();
+    EditableDoubleBeed edb = new EditableDoubleBeed($aggregateBeed);
     DoubleEdit edit = new DoubleEdit(edb);
     edit.setGoal(Double.NaN);
     edit.perform();

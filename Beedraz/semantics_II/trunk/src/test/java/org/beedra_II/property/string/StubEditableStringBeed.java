@@ -16,11 +16,13 @@
 
 package org.beedra_II.property.string;
 
+import org.beedra_II.aggregate.AggregateBeed;
+
 
 public class StubEditableStringBeed extends EditableStringBeed {
 
-  public StubEditableStringBeed() {
-    super();
+  public StubEditableStringBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /**

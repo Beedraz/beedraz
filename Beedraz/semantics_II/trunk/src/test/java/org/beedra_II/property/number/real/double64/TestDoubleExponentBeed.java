@@ -31,7 +31,6 @@ public class TestDoubleExponentBeed
   @Test
   public void testConstructor() {
     DoubleExponentBeed beed = new DoubleExponentBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getBase());
     assertNull(beed.getExponent());
     assertNull(beed.getDouble());

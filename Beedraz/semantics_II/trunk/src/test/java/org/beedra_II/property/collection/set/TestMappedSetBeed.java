@@ -134,7 +134,6 @@ public class TestMappedSetBeed {
 
   @Test
   public void constructor() {
-    assertNull($mappedSetBeed.getOwner());
     assertEquals($mappedSetBeed.getMapping(), $mapping);
     assertNull($mappedSetBeed.getSource());
     assertNotNull($mappedSetBeed.get());

@@ -17,11 +17,11 @@
 package org.beedra_II.property.number.real.double64;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
 import org.beedra_II.Listener;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
@@ -77,11 +77,11 @@ public class TestDoubleProductBeed {
     // NOP
   }
 
+  private AggregateBeed $owner = new MyBeanBeed();
   private MyDoubleProductBeed $doubleProductBeed = new MyDoubleProductBeed();
 
   @Test
   public void constructor() {
-    assertNull($doubleProductBeed.getOwner());
     // the value should be 1
     assertEquals($doubleProductBeed.getDouble(), 1.0);
     // no factors registered (cannot be tested)
@@ -563,7 +563,7 @@ public class TestDoubleProductBeed {
 
   private EditableDoubleBeed createEditableDoubleBeed(Double value) {
     try {
-      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed();
+      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed($owner);
       DoubleEdit edit = new DoubleEdit(editableDoubleBeed);
       edit.setGoal(value);
       edit.perform();
@@ -582,7 +582,7 @@ public class TestDoubleProductBeed {
 
   private EditableLongBeed createEditableLongBeed(Long value) {
     try {
-      EditableLongBeed editableLongBeed = new EditableLongBeed();
+      EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
       LongEdit edit = new LongEdit(editableLongBeed);
       edit.setGoal(value);
       edit.perform();

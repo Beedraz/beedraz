@@ -29,7 +29,6 @@ public class TestDoubleInverseBeed
   @Test
   public void testConstructor() {
     DoubleInverseBeed beed = new DoubleInverseBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
   }

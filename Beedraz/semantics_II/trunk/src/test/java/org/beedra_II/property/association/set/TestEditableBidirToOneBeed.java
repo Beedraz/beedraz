@@ -153,11 +153,7 @@ public class TestEditableBidirToOneBeed {
 
   public class ManyBean extends AbstractBeanBeed {
 
-    public ManyBean() {
-      registerAggregateElement(lb);
-    }
-
-    public final EditableLongBeed lb = new EditableLongBeed();
+    public final EditableLongBeed lb = new EditableLongBeed(this);
 
     public final EditableBidirToOneBeed<OneBean, ManyBean> toOne = new EditableBidirToOneBeed<OneBean, ManyBean>(this);
 

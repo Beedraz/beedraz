@@ -28,7 +28,6 @@ public class TestBooleanLTBeed
   @Test
   public void testConstructor() {
     BooleanLTBeed beed = new BooleanLTBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getLeftArgument());
     assertNull(beed.getRightArgument());
     assertNull(beed.get());

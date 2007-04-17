@@ -73,10 +73,6 @@ public class TestFilteredSetBeed {
 
   public class WellBeanBeed extends AbstractBeanBeed {
 
-    public WellBeanBeed() {
-      registerAggregateElement(cq);
-    }
-
     /**
      * The run in which the well is contained.
      */
@@ -86,7 +82,7 @@ public class TestFilteredSetBeed {
     /**
      * The Cq value of the well.
      */
-    public final EditableLongBeed cq = new EditableLongBeed();
+    public final EditableLongBeed cq = new EditableLongBeed(this);
 
   }
 
@@ -177,7 +173,6 @@ public class TestFilteredSetBeed {
 
   @Test
   public void constructor() {
-    assertNull($filteredSetBeed.getOwner());
     assertEquals($filteredSetBeed.getFilter(), $filter);
     assertEquals($filteredSetBeed.getSource(), null);
     assertTrue($filteredSetBeed.get().isEmpty());

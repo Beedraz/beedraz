@@ -28,7 +28,6 @@ public class TestBooleanEQBeed
   @Test
   public void testConstructor() {
     BooleanEQBeed beed = new BooleanEQBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getLeftArgument());
     assertNull(beed.getRightArgument());
     assertNull(beed.get());

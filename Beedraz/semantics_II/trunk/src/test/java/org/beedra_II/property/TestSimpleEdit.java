@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedra_II.property.simple;
+package org.beedra_II.property;
 
 
 import static org.junit.Assert.assertEquals;

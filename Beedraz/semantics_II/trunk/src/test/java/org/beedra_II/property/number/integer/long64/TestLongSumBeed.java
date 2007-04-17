@@ -22,6 +22,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
+import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.junit.After;
@@ -47,19 +49,21 @@ public class TestLongSumBeed {
 
   @Before
   public void setUp() throws Exception {
+    $owner = new StubBeanBeed();
     $longSumBeed = new MyIntegerSumBeed();
   }
 
   @After
   public void tearDown() throws Exception {
+    $owner = null;
     $longSumBeed = null;
   }
 
+  private AggregateBeed $owner;
   private MyIntegerSumBeed $longSumBeed;
 
   @Test
   public void constructor() {
-    assertEquals($longSumBeed.getOwner(), null);
     // the value should be 0
     assertEquals($longSumBeed.getLong(), 0L);
     assertTrue(equalValue($longSumBeed.getDouble(), $longSumBeed.getLong()));
@@ -485,7 +489,7 @@ public class TestLongSumBeed {
 
   private EditableLongBeed createEditableIntegerBeed(Long value) {
     try {
-      EditableLongBeed editableLongBeed = new EditableLongBeed();
+      EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
       LongEdit edit = new LongEdit(editableLongBeed);
       edit.setGoal(value);
       edit.perform();

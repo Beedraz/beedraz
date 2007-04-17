@@ -7,12 +7,13 @@
 package org.beedra_II.property.number.integer.long64;
 
 
+import org.beedra_II.aggregate.AggregateBeed;
 
 
 public class StubEditableLongBeed extends EditableLongBeed {
 
-  public StubEditableLongBeed() {
-    super();
+  public StubEditableLongBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /**

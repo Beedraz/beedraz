@@ -83,10 +83,6 @@ public class TestNewFilteredSetBeed {
 
   public class WellBeanBeed extends AbstractBeanBeed {
 
-    public WellBeanBeed() {
-      registerAggregateElement(cq);
-    }
-
     /**
      * The run in which the well is contained.
      */
@@ -96,7 +92,7 @@ public class TestNewFilteredSetBeed {
     /**
      * The Cq value of the well.
      */
-    public final EditableLongBeed cq = new EditableLongBeed();
+    public final EditableLongBeed cq = new EditableLongBeed(this);
 
   }
 
@@ -192,7 +188,6 @@ public class TestNewFilteredSetBeed {
 
   @Test
   public void constructor() {
-    assertNull($filteredSetBeed.getOwner());
     assertEquals($filteredSetBeed.getCriterion(), $criterion);
     assertEquals($filteredSetBeed.getSource(), null);
     assertEquals($filteredSetBeed.getSourcePath(), null);
@@ -270,6 +265,8 @@ public class TestNewFilteredSetBeed {
     // The NewFilteredSetBeed is registered as listener of all beeds
     // in the source (i.e. of the corresponding filter criteria),
     // so when one of them changes, the beed should be notified
+    $listener3.reset();
+    assertNull($listener3.$event);
     LongEdit longEdit = new LongEdit(well4.cq);
     longEdit.setGoal(5L);
     longEdit.perform();

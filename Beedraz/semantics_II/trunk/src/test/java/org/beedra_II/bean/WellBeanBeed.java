@@ -14,10 +14,6 @@ public class WellBeanBeed extends AbstractBeanBeed {
   /**
    * The Cq value of the well.
    */
-  public final EditableLongBeed cq = new EditableLongBeed();
-
-  {
-    registerAggregateElement(cq);
-  }
+  public final EditableLongBeed cq = new EditableLongBeed(this);
 
 }

@@ -46,7 +46,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
 
   protected abstract _UEB_ createSubject();
 
-  protected abstract _EAB_ createEditableArgumentBeed();
+  protected abstract _EAB_ createEditableArgumentBeed(AggregateBeed owner);
 
   protected abstract StubListener<_ResultEvent_> createStubListener();
 
@@ -87,9 +87,9 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
   public void setUp() throws Exception {
     initGoals();
     $aggregateBeed = new StubAggregateBeed();
-    $argumentDoubleBeed = createEditableArgumentBeed();
+    $argumentDoubleBeed = createEditableArgumentBeed($aggregateBeed);
     $argumentDoubleBeedPath = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed);
-    $argumentDoubleBeed2 = createEditableArgumentBeed();
+    $argumentDoubleBeed2 = createEditableArgumentBeed($aggregateBeed);
     $argumentDoubleBeedPath2 = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed2);
     $subject = createSubject();
     $listener = createStubListener();

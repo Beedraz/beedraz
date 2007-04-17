@@ -18,7 +18,6 @@ package org.beedra_II.property.collection.set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -77,7 +76,7 @@ public class TestEditableSetBeed {
 
   @Test
   public void constructor() {
-    assertNull($editableSetBeed.getOwner());
+    // NOP
   }
 
   @Test
@@ -154,7 +153,6 @@ public class TestEditableSetBeed {
   @Test
   public void getSizeAndCardinality() throws EditStateException, IllegalEditException {
     IntegerBeed<?> sizeBeed = $editableSetBeed.getSize();
-    assertEquals(sizeBeed.getOwner(), $editableSetBeed.getOwner());
     assertEquals(sizeBeed.getLong(), 0L);
     assertEquals($editableSetBeed.getSize().getLong(), 0L);
     assertEquals($editableSetBeed.getCardinality().getLong(), 0L);

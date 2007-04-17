@@ -19,6 +19,7 @@ package org.beedra_II.property.bool;
 
 import static org.junit.Assert.assertEquals;
 
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -45,12 +46,13 @@ public class TestBooleanEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    BooleanBeed source = new EditableBooleanBeed();
+    AggregateBeed owner = new MyBeanBeed();
+    BooleanBeed source = new EditableBooleanBeed(owner);
     // old and new value
     Boolean oldValue = true;
     Boolean newValue = false;
     // edit
-    EditableBooleanBeed target = new EditableBooleanBeed();
+    EditableBooleanBeed target = new EditableBooleanBeed(owner);
     BooleanEdit edit = new BooleanEdit(target);
     edit.perform();
     // test constructor

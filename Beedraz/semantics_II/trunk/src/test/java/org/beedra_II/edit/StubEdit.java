@@ -19,7 +19,7 @@ package org.beedra_II.edit;
 import org.beedra_II.StubEvent;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
-import org.beedra_II.property.simple.StubEditableSimplePropertyBeed;
+import org.beedra_II.property.StubEditableSimplePropertyBeed;
 
 
 public class StubEdit extends AbstractSimpleEdit<StubEditableSimplePropertyBeed, StubEvent> {

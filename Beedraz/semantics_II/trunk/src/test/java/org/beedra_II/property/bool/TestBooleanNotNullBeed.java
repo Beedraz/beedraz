@@ -17,7 +17,6 @@
 package org.beedra_II.property.bool;
 
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
@@ -29,7 +28,6 @@ public class TestBooleanNotNullBeed
   @Test
   public void testConstructor() {
     BooleanNotNullBeed beed = new BooleanNotNullBeed();
-    assertEquals(null, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.get());
   }

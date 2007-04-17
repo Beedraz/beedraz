@@ -49,10 +49,6 @@ public class TestUnionSetBeed {
 
   public class MyUnionBeed extends UnionSetBeed<WellBeanBeed> {
 
-    public MyUnionBeed() {
-      super();
-    }
-
     /**
      * Made public for testing reasons.
      */
@@ -184,7 +180,6 @@ public class TestUnionSetBeed {
 
   @Test
   public void constructor() {
-    assertNull($unionSetBeed.getOwner());
     assertTrue($unionSetBeed.getSources().isEmpty());
     assertTrue($unionSetBeed.get().isEmpty());
   }

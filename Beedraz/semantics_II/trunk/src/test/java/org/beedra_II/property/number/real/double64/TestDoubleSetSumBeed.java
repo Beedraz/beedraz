@@ -23,6 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.StubListener;
+import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
 import org.beedra_II.property.collection.set.EditableSetBeed;
@@ -67,12 +69,12 @@ public class TestDoubleSetSumBeed {
     // NOP
   }
 
+  private AggregateBeed $owner = new StubBeanBeed();
   private MyDoubleSetSumBeed $doubleSetSumBeed = new MyDoubleSetSumBeed();
   private StubListener<RealEvent> $listener3 = new StubListener<RealEvent>();
 
   @Test
   public void constructor() {
-    assertNull($doubleSetSumBeed.getOwner());
     assertEquals($doubleSetSumBeed.getSource(), null);
     assertEquals($doubleSetSumBeed.getDouble(), null);
   }
@@ -166,7 +168,7 @@ public class TestDoubleSetSumBeed {
 
   private EditableDoubleBeed createEditableDoubleBeed(Double value) {
     try {
-      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed();
+      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed($owner);
       DoubleEdit edit = new DoubleEdit(editableDoubleBeed);
       edit.setGoal(value);
       edit.perform();

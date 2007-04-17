@@ -31,7 +31,6 @@ public class TestDoubleQuotientBeed
   @Test
   public void testConstructor() {
     DoubleQuotientBeed beed = new DoubleQuotientBeed();
-    assertNull(beed.getOwner());
     assertNull(beed.getNumerator());
     assertNull(beed.getDenominator());
     assertNull(beed.getDouble());

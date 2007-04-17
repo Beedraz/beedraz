@@ -16,7 +16,6 @@
 
 package org.beedra_II.property.number.integer.long64;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
@@ -30,7 +29,6 @@ public class TestLongNegativeBeed
   @Test
   public void testConstructor() {
     LongNegativeBeed inb = new LongNegativeBeed();
-    assertEquals(null, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getLong());
     assertNull(inb.getLong());

@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.beedra_II.Listener;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
@@ -39,8 +40,8 @@ public class TestBooleanEdit {
 
   public class MyEditableBooleanBeed extends EditableBooleanBeed {
 
-    public MyEditableBooleanBeed() {
-      super();
+    public MyEditableBooleanBeed(AggregateBeed owner) {
+      super(owner);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class TestBooleanEdit {
   }
 
   BeanBeed $beanBeed = new MyBeanBeed();
-  MyEditableBooleanBeed $target = new MyEditableBooleanBeed();
+  MyEditableBooleanBeed $target = new MyEditableBooleanBeed($beanBeed);
   private BooleanEdit $booleanEdit = new BooleanEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();
   StubValidityListener $listener2 = new StubValidityListener();

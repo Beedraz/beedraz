@@ -17,6 +17,7 @@
 package org.beedra_II.property.number.real.double64;
 
 import org.beedra_II.StubListener;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.AbstractTestUnaryExprBeed;
 import org.beedra_II.property.number.real.RealBeed;
 import org.junit.Assert;
@@ -52,8 +53,8 @@ public abstract class AbstractTestRealArgDoubleUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableDoubleBeed createEditableArgumentBeed() {
-    return new EditableDoubleBeed();
+  protected EditableDoubleBeed createEditableArgumentBeed(AggregateBeed owner) {
+    return new EditableDoubleBeed(owner);
   }
 
   @Override

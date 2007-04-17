@@ -29,7 +29,6 @@ public class TestDoubleLog10Beed
   @Test
   public void testConstructor() {
     DoubleLog10Beed log10Beed = new DoubleLog10Beed();
-    assertNull(log10Beed.getOwner());
     assertNull(log10Beed.getArgument());
     assertNull(log10Beed.getDouble());
   }

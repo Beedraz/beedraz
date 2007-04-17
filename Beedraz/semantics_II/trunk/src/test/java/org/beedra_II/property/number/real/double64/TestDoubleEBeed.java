@@ -16,7 +16,6 @@
 
 package org.beedra_II.property.number.real.double64;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
@@ -30,7 +29,6 @@ public class TestDoubleEBeed
   @Test
   public void testConstructor() {
     DoubleEBeed beed = new DoubleEBeed();
-    assertEquals(null, beed.getOwner());
     assertNull(beed.getArgument());
     assertNull(beed.getDouble());
   }

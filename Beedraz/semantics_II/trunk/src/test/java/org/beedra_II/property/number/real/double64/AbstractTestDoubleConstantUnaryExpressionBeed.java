@@ -19,8 +19,6 @@ package org.beedra_II.property.number.real.double64;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.beedra_II.property.number.real.double64.AbstractDoubleConstantUnaryExpressionBeed;
-
 
 
 
@@ -40,7 +38,6 @@ public abstract class AbstractTestDoubleConstantUnaryExpressionBeed<_DoubleBeed_
   }
 
   protected final void validateConstructor(_DoubleBeed_ inb) {
-    assertEquals(null, inb.getOwner());
     assertNull(inb.getArgument());
     assertNull(inb.getDouble());
     assertEquals($constant, inb.getConstant());

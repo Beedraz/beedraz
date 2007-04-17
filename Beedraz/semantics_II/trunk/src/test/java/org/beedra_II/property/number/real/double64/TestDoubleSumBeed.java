@@ -49,7 +49,7 @@ public class TestDoubleSumBeed {
 
   }
 
-  public class PropagatedEventListener implements Listener<AggregateEvent> {
+  public class AggregateEventListener implements Listener<AggregateEvent> {
 
     public void beedChanged(AggregateEvent event) {
       $event = event;

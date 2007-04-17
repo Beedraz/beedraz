@@ -31,8 +31,8 @@ public class EditableStringBeed
     implements StringBeed {
 
   /**
-   * @pre owner != null;
-   * @post getOwner() == owner
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
   public EditableStringBeed(AggregateBeed owner) {
     super(owner);

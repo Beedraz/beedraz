@@ -19,6 +19,7 @@ package org.beedra_II.property.date;
 
 import java.util.Date;
 
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -39,11 +40,11 @@ public class EditableDateBeed
     implements DateBeed {
 
   /**
-   * @pre   owner != null;
-   * @post  getOwner() == owner;
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
-  public EditableDateBeed() {
-    super(null);
+  public EditableDateBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   @Override

@@ -45,10 +45,11 @@ public abstract class EditableSimpleExpressionBeed<_Type_,
     implements SimpleExpressionBeed<_Type_, _Event_> {
 
   /**
-   * @pre ownerBeed != null;
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
-  public EditableSimpleExpressionBeed(AggregateBeed ownerBeed) {
-    super(ownerBeed);
+  public EditableSimpleExpressionBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /**

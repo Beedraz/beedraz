@@ -2,6 +2,7 @@ package org.beedra_II.property.simple;
 
 
 import org.beedra_II.StubEvent;
+import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.property.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -14,10 +15,11 @@ public class StubEditableSimplePropertyBeed
     extends EditableSimpleExpressionBeed<Object, StubEvent> {
 
   /**
-   * @pre owner != null;
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
-  public StubEditableSimplePropertyBeed() {
-    super(null);
+  public StubEditableSimplePropertyBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public Object publicSafeValueCopy(Object original) {

@@ -43,10 +43,11 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
     extends EditableSimpleExpressionBeed<BidirToManyBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
-   * @pre bean != null;
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
-  public EditableBidirToOneBeed(_Many_ bean) {
-    super(bean);
+  public EditableBidirToOneBeed(_Many_ owner) {
+    super(owner);
   }
 
   @Override

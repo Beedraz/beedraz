@@ -31,11 +31,11 @@ public class EditableBooleanBeed
     implements BooleanBeed {
 
   /**
-   * @pre ownerBeed != null;
-   * @post getOwner == null;
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
-  public EditableBooleanBeed(AggregateBeed ownerBeed) {
-    super(ownerBeed);
+  public EditableBooleanBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public Boolean getBoolean() {

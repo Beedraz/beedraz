@@ -43,10 +43,11 @@ public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
                                        OrderedBidirToOneEvent<_One_, _Many_>> {
 
   /**
-   * @pre bean != null;
+   * @pre  owner != null;
+   * @post getOwner() == owner;
    */
-  public EditableOrderedBidirToOneBeed(_Many_ bean) {
-    super(bean);
+  public EditableOrderedBidirToOneBeed(_Many_ owner) {
+    super(owner);
   }
 
   @Override

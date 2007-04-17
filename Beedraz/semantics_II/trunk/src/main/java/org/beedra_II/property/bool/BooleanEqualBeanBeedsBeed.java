@@ -45,6 +45,15 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
     extends AbstractDependentBeed<BooleanEvent>
     implements BooleanBeed {
 
+  /**
+   * @post  getLeftArgument() == null;
+   * @post  getRightArgument() == null;
+   * @post  get() == true;
+   */
+  public BooleanEqualBeanBeedsBeed() {
+    $value = true;
+  }
+
   @Override
   protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
     /* Events are from:

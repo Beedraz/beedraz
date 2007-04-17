@@ -41,7 +41,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
                                                 _ResultEvent_ extends Event,
                                                 _Argument_ extends Object,
                                                 _ArgumentBeed_ extends Beed<?>,
-                                                _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_, ? extends Event>,
+                                                _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_>,
                                                 _EAB_ extends _ArgumentBeed_> {
 
   protected abstract _UEB_ createSubject();

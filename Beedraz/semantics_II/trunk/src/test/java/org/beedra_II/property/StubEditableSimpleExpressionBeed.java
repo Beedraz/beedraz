@@ -11,14 +11,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class StubEditableSimplePropertyBeed
+public class StubEditableSimpleExpressionBeed
     extends EditableSimpleExpressionBeed<Object, StubEvent> {
 
   /**
    * @pre  owner != null;
    * @post getOwner() == owner;
    */
-  public StubEditableSimplePropertyBeed(AggregateBeed owner) {
+  public StubEditableSimpleExpressionBeed(AggregateBeed owner) {
     super(owner);
   }
 

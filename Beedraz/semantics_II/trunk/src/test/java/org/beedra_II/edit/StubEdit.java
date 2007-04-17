@@ -19,12 +19,12 @@ package org.beedra_II.edit;
 import org.beedra_II.StubEvent;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
-import org.beedra_II.property.StubEditableSimplePropertyBeed;
+import org.beedra_II.property.StubEditableSimpleExpressionBeed;
 
 
-public class StubEdit extends AbstractSimpleEdit<StubEditableSimplePropertyBeed, StubEvent> {
+public class StubEdit extends AbstractSimpleEdit<StubEditableSimpleExpressionBeed, StubEvent> {
 
-  public StubEdit(StubEditableSimplePropertyBeed target) {
+  public StubEdit(StubEditableSimpleExpressionBeed target) {
     super(target);
   }
 

@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.property.StubEditableSimplePropertyBeed;
+import org.beedra_II.property.StubEditableSimpleExpressionBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class TestAbstractSimpleEdit {
   }
 
   BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableSimplePropertyBeed $target = new StubEditableSimplePropertyBeed($beanBeed);
+  StubEditableSimpleExpressionBeed $target = new StubEditableSimpleExpressionBeed($beanBeed);
   private StubEdit $edit =
       new StubEdit($target);
   StubValidityListener $listener1 = new StubValidityListener();

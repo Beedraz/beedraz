@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 import org.beedra_II.StubEvent;
 import org.beedra_II.StubListener;
 import org.beedra_II.edit.StubEdit;
-import org.beedra_II.property.StubEditableSimplePropertyBeed;
+import org.beedra_II.property.StubEditableSimpleExpressionBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +38,9 @@ public class TestAbstractAggregateBeed {
     $aggregateBeed1 = new StubAggregateBeed();
     $aggregateBeed2 = new StubAggregateBeed();
 
-    $beed1 = new StubEditableSimplePropertyBeed($aggregateBeed1);
+    $beed1 = new StubEditableSimpleExpressionBeed($aggregateBeed1);
 //    $beed2 = new MyIntegerSumBeed($subject);
-    $beed3 = new StubEditableSimplePropertyBeed($aggregateBeed2);
+    $beed3 = new StubEditableSimpleExpressionBeed($aggregateBeed2);
 
     $edit1 = new StubEdit($beed1);
     $edit1.perform();
@@ -63,9 +63,9 @@ public class TestAbstractAggregateBeed {
   private StubAggregateBeed $aggregateBeed1;
   private StubAggregateBeed $aggregateBeed2;
 
-  private StubEditableSimplePropertyBeed $beed1;
+  private StubEditableSimpleExpressionBeed $beed1;
 //  private MyIntegerSumBeed $beed2;
-  private StubEditableSimplePropertyBeed $beed3;
+  private StubEditableSimpleExpressionBeed $beed3;
 
   private StubEdit $edit1;
   private StubEvent $event1;

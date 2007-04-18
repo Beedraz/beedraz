@@ -26,28 +26,28 @@ public abstract class AbstractTestBooleanBinaryRelationalExpressionBeed<
     extends AbstractTestRealArgBooleanBinaryExpressionBeed<_UEB_> {
 
   @Override
-  protected Boolean valueFromSubject(_UEB_ argumentBeed) {
-    return argumentBeed.get();
+  protected Boolean valueFromSubject(_UEB_ operandBeed) {
+    return operandBeed.get();
   }
 
   @Override
-  protected RealBeed<?> getLeftArgument() {
-    return $subject.getLeftArgument();
+  protected RealBeed<?> getLeftOperand() {
+    return $subject.getLeftOperand();
   }
 
   @Override
-  protected RealBeed<?> getRightArgument() {
-    return $subject.getRightArgument();
+  protected RealBeed<?> getRightOperand() {
+    return $subject.getRightOperand();
   }
 
   @Override
-  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
-    $subject.setLeftArgumentPath(leftArgumentPath);
+  protected void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    $subject.setLeftOperandPath(leftOperandPath);
   }
 
   @Override
-  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
-    $subject.setRightArgumentPath(rightArgumentPath);
+  protected void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    $subject.setRightOperandPath(rightOperandPath);
   }
 
 }

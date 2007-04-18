@@ -102,7 +102,7 @@ public abstract class AbstractTestBeanArgBooleanUnaryExpressionBeed<
   private ToOneBeanPath<RunBeanBeed> $pathToYourRun;
 
   @Test
-  public void testSetArgument_1() {
+  public void testSetOperand_1() {
     $subject.addListener($listener);
     $subject.setBeedPath(new NullPath<RunBeanBeed>());
     validateSubjectFromBeed(null);
@@ -110,7 +110,7 @@ public abstract class AbstractTestBeanArgBooleanUnaryExpressionBeed<
   }
 
   @Test
-  public void testSetArgument_2() {
+  public void testSetOperand_2() {
     $subject.addListener($listener);
     $subject.setBeedPath($beedPath);
     validateSubjectFromBeed($beed);
@@ -126,7 +126,7 @@ public abstract class AbstractTestBeanArgBooleanUnaryExpressionBeed<
   }
 
   @Test
-  public void testSetArgument_3() {
+  public void testSetOperand_3() {
     $subject.addListener($listener);
     changeBeedPath($pathToMyRun);
     $subject.setBeedPath($beedPath);

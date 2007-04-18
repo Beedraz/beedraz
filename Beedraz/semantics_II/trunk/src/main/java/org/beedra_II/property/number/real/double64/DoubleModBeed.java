@@ -56,21 +56,21 @@ public class DoubleModBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
    * @basic
    */
   public final Path<? extends RealBeed<?>> getDividendPath() {
-    return getLeftArgPath();
+    return getLeftOprndPath();
   }
 
   /**
    * @return getDividendPath().get();
    */
   public final RealBeed<?> getDividend() {
-    return getLeftArg();
+    return getLeftOprnd();
   }
 
   /**
    * @post getDividendPath() == dividendPath;
    */
   public final void setDividendPath(Path<? extends RealBeed<?>> dividendPath) {
-    setLeftArgPath(dividendPath);
+    setLeftOprndPath(dividendPath);
   }
 
   /*</property>*/
@@ -83,21 +83,21 @@ public class DoubleModBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
    * @basic
    */
   public final Path<? extends RealBeed<?>> getDivisorPath() {
-    return getRightArgPath();
+    return getRightOprndPath();
   }
 
   /**
    * @return getDivisorPath().get();
    */
   public final RealBeed<?> getDivisor() {
-    return getRightArg();
+    return getRightOprnd();
   }
 
   /**
    * @post getDivisorPath() == divisorPath;
    */
   public final void setDivisorPath(Path<? extends RealBeed<?>> divisorPath) {
-    setRightArgPath(divisorPath);
+    setRightOprndPath(divisorPath);
   }
 
   /*</property>*/

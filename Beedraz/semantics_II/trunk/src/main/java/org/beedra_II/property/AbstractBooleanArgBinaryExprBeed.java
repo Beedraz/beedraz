@@ -25,7 +25,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
- * from two arguments of type {@link BooleanBeed}.
+ * from two operands of type {@link BooleanBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -42,13 +42,13 @@ public abstract class AbstractBooleanArgBinaryExprBeed<
                                    BooleanEvent>  {
 
   @Override
-  protected boolean hasEffectiveLeftArgument() {
-    return getLeftArg().isEffective();
+  protected boolean hasEffectiveLeftOperand() {
+    return getLeftOprnd().isEffective();
   }
 
   @Override
-  protected boolean hasEffectiveRightArgument() {
-    return getRightArg().isEffective();
+  protected boolean hasEffectiveRightOperand() {
+    return getRightOprnd().isEffective();
   }
 
 }

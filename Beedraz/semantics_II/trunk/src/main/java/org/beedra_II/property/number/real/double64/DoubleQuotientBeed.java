@@ -51,21 +51,21 @@ public class DoubleQuotientBeed
    * @basic
    */
   public final Path<? extends RealBeed<?>> getNumeratorPath() {
-    return getLeftArgPath();
+    return getLeftOprndPath();
   }
 
   /**
    * @return getNumeratorPath() == null ? null : getNumeratorPath().get();
    */
   public final RealBeed<?> getNumerator() {
-    return getLeftArg();
+    return getLeftOprnd();
   }
 
   /**
    * @post getNumeratorPath() == numeratorPath;
    */
   public final void setNumeratorPath(Path<? extends RealBeed<?>> numeratorPath) {
-    setLeftArgPath(numeratorPath);
+    setLeftOprndPath(numeratorPath);
   }
 
   /*</property>*/
@@ -79,21 +79,21 @@ public class DoubleQuotientBeed
    * @basic
    */
   public final Path<? extends RealBeed<?>> getDenominatorPath() {
-    return getRightArgPath();
+    return getRightOprndPath();
   }
 
   /**
    * @return getDenominatorPath() == null ? null : getDenominatorPath().get();
    */
   public final RealBeed<?> getDenominator() {
-    return getRightArg();
+    return getRightOprnd();
   }
 
   /**
    * @post getDenominatorPath() == denominatorPath;
    */
   public final void setDenominatorPath(Path<? extends RealBeed<?>> denominatorPath) {
-    setRightArgPath(denominatorPath);
+    setRightOprndPath(denominatorPath);
   }
 
   /*</property>*/

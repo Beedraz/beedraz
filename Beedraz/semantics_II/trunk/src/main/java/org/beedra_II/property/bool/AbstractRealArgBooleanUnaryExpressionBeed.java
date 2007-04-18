@@ -65,11 +65,11 @@ public abstract class AbstractRealArgBooleanUnaryExpressionBeed
   }
 
   @Override
-  protected final void recalculateFrom(RealBeed<?> argument) {
-    $value = calculateValue(argument.getdouble());
+  protected final void recalculateFrom(RealBeed<?> operand) {
+    $value = calculateValue(operand.getdouble());
   }
 
-  protected abstract boolean calculateValue(double argument);
+  protected abstract boolean calculateValue(double operand);
 
   @Override
   public final Boolean get() {

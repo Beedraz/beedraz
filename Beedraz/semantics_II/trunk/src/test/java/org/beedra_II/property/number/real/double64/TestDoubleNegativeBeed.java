@@ -29,13 +29,13 @@ public class TestDoubleNegativeBeed
   @Test
   public void testConstructor() {
     DoubleNegativeBeed beed = new DoubleNegativeBeed();
-    assertNull(beed.getArgument());
+    assertNull(beed.getOperand());
     assertNull(beed.getDouble());
   }
 
   @Override
-  protected Double expectedValueNotNull(Double argumentValue) {
-    return - argumentValue;
+  protected Double expectedValueNotNull(Double operandValue) {
+    return - operandValue;
   }
 
   @Override
@@ -44,8 +44,8 @@ public class TestDoubleNegativeBeed
   }
 
   @Override
-  protected Double valueFromSubject(DoubleNegativeBeed argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFromSubject(DoubleNegativeBeed operandBeed) {
+    return operandBeed.getDouble();
   }
 
 }

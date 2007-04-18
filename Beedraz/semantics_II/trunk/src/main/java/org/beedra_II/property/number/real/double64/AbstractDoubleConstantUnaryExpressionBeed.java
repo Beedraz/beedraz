@@ -36,7 +36,7 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    * @post  getConstant() == constant;
    */
   public AbstractDoubleConstantUnaryExpressionBeed(Double constant) {
@@ -57,10 +57,10 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
   public void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getArgument().getdouble()));
+      sb.append(numberFormat.format(getOperand().getdouble()));
     }
     else {
-      getArgument().toStringDepth(sb, depth - 1, numberFormat);
+      getOperand().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
     sb.append(getOperatorString());

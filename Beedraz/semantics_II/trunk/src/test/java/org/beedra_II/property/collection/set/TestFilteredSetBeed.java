@@ -111,8 +111,8 @@ public class TestFilteredSetBeed {
           modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
           // construct the ==
           BooleanEQBeed eqBeed = new BooleanEQBeed();
-          eqBeed.setLeftArgumentPath(fix(modBeed));
-          eqBeed.setRightArgumentPath(fix(new DoubleConstantBeed(0)));
+          eqBeed.setLeftOperandPath(fix(modBeed));
+          eqBeed.setRightOperandPath(fix(new DoubleConstantBeed(0)));
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
@@ -438,8 +438,8 @@ public class TestFilteredSetBeed {
           modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
           // construct the ==
           BooleanEQBeed eqBeed = new BooleanEQBeed();
-          eqBeed.setLeftArgumentPath(fix(modBeed));
-          eqBeed.setRightArgumentPath(fix(new DoubleConstantBeed(1)));
+          eqBeed.setLeftOperandPath(fix(modBeed));
+          eqBeed.setRightOperandPath(fix(new DoubleConstantBeed(1)));
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
@@ -471,7 +471,7 @@ public class TestFilteredSetBeed {
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
           // construct the ==
           BooleanNullBeed nullBeed = new BooleanNullBeed();
-          nullBeed.setArgumentPath(Paths.fix(startBeed.cq));
+          nullBeed.setOperandPath(Paths.fix(startBeed.cq));
           return new ConstantPath<BooleanBeed>(nullBeed);
         }
     };

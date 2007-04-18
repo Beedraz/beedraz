@@ -41,9 +41,9 @@ public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
   }
 
   @Override
-  protected void changeArgument(EditableLongBeed editableArgumentBeed, Long newValue) {
+  protected void changeOperand(EditableLongBeed editableOperandBeed, Long newValue) {
     try {
-      LongEdit edit = new LongEdit(editableArgumentBeed);
+      LongEdit edit = new LongEdit(editableOperandBeed);
       edit.setGoal(newValue);
       edit.perform();
     }
@@ -53,7 +53,7 @@ public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableLongBeed createEditableArgumentBeed(AggregateBeed owner) {
+  protected EditableLongBeed createEditableOperandBeed(AggregateBeed owner) {
     return new EditableLongBeed(owner);
   }
 
@@ -73,8 +73,8 @@ public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
   }
 
   @Override
-  protected Long valueFrom(IntegerBeed<?> argumentBeed) {
-    return argumentBeed.getLong();
+  protected Long valueFrom(IntegerBeed<?> operandBeed) {
+    return operandBeed.getLong();
   }
 
 

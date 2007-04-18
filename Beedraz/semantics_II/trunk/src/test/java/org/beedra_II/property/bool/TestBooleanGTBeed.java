@@ -28,14 +28,14 @@ public class TestBooleanGTBeed
   @Test
   public void testConstructor() {
     BooleanGTBeed beed = new BooleanGTBeed();
-    assertNull(beed.getLeftArgument());
-    assertNull(beed.getRightArgument());
+    assertNull(beed.getLeftOperand());
+    assertNull(beed.getRightOperand());
     assertNull(beed.get());
   }
 
   @Override
-  protected Boolean expectedValue(Double leftArgumentValue, Double rightArgumentValue) {
-    return leftArgumentValue > rightArgumentValue;
+  protected Boolean expectedValue(Double leftOperandValue, Double rightOperandValue) {
+    return leftOperandValue > rightOperandValue;
   }
 
   @Override

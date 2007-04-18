@@ -24,7 +24,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
- * from one argument of type {@link BooleanBeed}.
+ * from one operand of type {@link BooleanBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -35,8 +35,8 @@ public abstract class AbstractBooleanArgUnaryExprBeed<_Result_ extends Object,
     extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, BooleanBeed>  {
 
   @Override
-  protected boolean hasEffectiveArgument() {
-    return getArgument().isEffective();
+  protected boolean hasEffectiveOperand() {
+    return getOperand().isEffective();
   }
 
 }

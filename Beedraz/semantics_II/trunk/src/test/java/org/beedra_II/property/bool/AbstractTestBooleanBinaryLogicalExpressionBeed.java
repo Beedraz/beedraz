@@ -24,28 +24,28 @@ public abstract class AbstractTestBooleanBinaryLogicalExpressionBeed<
     AbstractTestBooleanArgBooleanBinaryExpressionBeed<_UEB_> {
 
   @Override
-  protected Boolean valueFromSubject(_UEB_ argumentBeed) {
-    return argumentBeed.get();
+  protected Boolean valueFromSubject(_UEB_ operandBeed) {
+    return operandBeed.get();
   }
 
   @Override
-  protected BooleanBeed getLeftArgument() {
-    return $subject.getLeftArgument();
+  protected BooleanBeed getLeftOperand() {
+    return $subject.getLeftOperand();
   }
 
   @Override
-  protected BooleanBeed getRightArgument() {
-    return $subject.getRightArgument();
+  protected BooleanBeed getRightOperand() {
+    return $subject.getRightOperand();
   }
 
   @Override
-  protected void setLeftArgumentPath(Path<? extends BooleanBeed> leftArgumentPath) {
-    $subject.setLeftArgumentPath(leftArgumentPath);
+  protected void setLeftOperandPath(Path<? extends BooleanBeed> leftOperandPath) {
+    $subject.setLeftOperandPath(leftOperandPath);
   }
 
   @Override
-  protected void setRightArgumentPath(Path<? extends BooleanBeed> rightArgumentPath) {
-    $subject.setRightArgumentPath(rightArgumentPath);
+  protected void setRightOperandPath(Path<? extends BooleanBeed> rightOperandPath) {
+    $subject.setRightOperandPath(rightOperandPath);
   }
 
 }

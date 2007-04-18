@@ -24,7 +24,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
- * from one argument of type {@link RealBeed}.
+ * from one operand of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -32,12 +32,12 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractRealArgUnaryExprBeed<_Result_ extends Object,
                                                    _ResultEvent_ extends Event,
-                                                   _ArgumentBeed_ extends RealBeed<?>>
-    extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_>  {
+                                                   _OperandBeed_ extends RealBeed<?>>
+    extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _OperandBeed_>  {
 
   @Override
-  protected boolean hasEffectiveArgument() {
-    return getArgument().isEffective();
+  protected boolean hasEffectiveOperand() {
+    return getOperand().isEffective();
   }
 
 }

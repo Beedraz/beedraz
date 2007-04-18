@@ -33,12 +33,12 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
- * from one argument.
+ * from one operand.
  *
- * @invar getArgumentPath() != null
- *          ? getArgument() == getArgumentPath().get()
+ * @invar getOperandPath() != null
+ *          ? getOperand() == getOperandPath().get()
  *          : null;
- * @invar getArgument() == null
+ * @invar getOperand() == null
  *          ? get() == null
  *          : true;
  */
@@ -48,18 +48,18 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
-                                            _ArgumentBeed_ extends Beed<?>>
+                                            _OperandBeed_ extends Beed<?>>
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-    /* Events are from the argument or the argument path, or both.
-     * React to event from path first, setting the argument. Then do a recalculate.
+    /* Events are from the operand or the operand path, or both.
+     * React to event from path first, setting the operand. Then do a recalculate.
      */
     _Result_ oldValue = get();
-    PathEvent<_ArgumentBeed_> pathEvent = (PathEvent<_ArgumentBeed_>)events.get($argumentPath);
+    PathEvent<_OperandBeed_> pathEvent = (PathEvent<_OperandBeed_>)events.get($operandPath);
     if (pathEvent != null) {
-      setArgument(pathEvent.getNewValue());
+      setOperand(pathEvent.getNewValue());
     }
     recalculate();
     if (! equalValue(oldValue, get())) {
@@ -71,56 +71,56 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
   }
 
 
-  /*<property name="argument">*/
+  /*<property name="operand">*/
   //-----------------------------------------------------------------
 
   /**
    * @basic
    * @init null;
    */
-  public final Path<? extends _ArgumentBeed_> getArgumentPath() {
-    return $argumentPath;
+  public final Path<? extends _OperandBeed_> getOperandPath() {
+    return $operandPath;
   }
 
   /**
-   * @return getArgumentPath() == null ? null : getArgumentPath().get();
+   * @return getOperandPath() == null ? null : getOperandPath().get();
    */
-  public final _ArgumentBeed_ getArgument() {
-    return $argument;
+  public final _OperandBeed_ getOperand() {
+    return $operand;
   }
 
-  public final void setArgumentPath(Path<? extends _ArgumentBeed_> beedPath) {
-    _ArgumentBeed_ oldArgument = $argument;
-    if ($argumentPath instanceof AbstractDependentPath) {
-      removeUpdateSource($argumentPath);
+  public final void setOperandPath(Path<? extends _OperandBeed_> beedPath) {
+    _OperandBeed_ oldOperand = $operand;
+    if ($operandPath instanceof AbstractDependentPath) {
+      removeUpdateSource($operandPath);
     }
-    $argumentPath = beedPath;
-    _ArgumentBeed_ argument = null;
-    if ($argumentPath != null) {
-      argument = $argumentPath.get();
+    $operandPath = beedPath;
+    _OperandBeed_ operand = null;
+    if ($operandPath != null) {
+      operand = $operandPath.get();
     }
-    if ($argumentPath instanceof AbstractDependentPath) {
-      addUpdateSource($argumentPath);
+    if ($operandPath instanceof AbstractDependentPath) {
+      addUpdateSource($operandPath);
     }
-    if (argument != oldArgument) {
-      setArgument(argument);
+    if (operand != oldOperand) {
+      setOperand(operand);
     }
   }
 
-  private Path<? extends _ArgumentBeed_> $argumentPath;
+  private Path<? extends _OperandBeed_> $operandPath;
 
   /**
-   * @post getArgument() == argument;
+   * @post getOperand() == operand;
    */
-  private final void setArgument(_ArgumentBeed_ argument) {
+  private final void setOperand(_OperandBeed_ operand) {
     _Result_ oldValue = get();
-    if ($argument != null) {
-      removeUpdateSource($argument);
+    if ($operand != null) {
+      removeUpdateSource($operand);
     }
-    $argument = argument;
-    if ($argument != null) {
+    $operand = operand;
+    if ($operand != null) {
       recalculate();
-      addUpdateSource($argument);
+      addUpdateSource($operand);
     }
     else {
       assignEffective(false);
@@ -131,20 +131,20 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
     }
   }
 
-  private _ArgumentBeed_ $argument;
+  private _OperandBeed_ $operand;
 
   /*</property>*/
 
 
 
   /**
-   * @pre $argument != null;
+   * @pre $operand != null;
    *
    * @default  This method could be overriden in subclasses
    */
   protected void recalculate() {
-    if (hasEffectiveArgument()) {
-      recalculateFrom($argument);
+    if (hasEffectiveOperand()) {
+      recalculateFrom($operand);
       assignEffective(true);
     }
     else {
@@ -153,26 +153,26 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
   }
 
   /**
-   * Implement like {@code getArgument().isEffective()}, with
-   * appropriate methods offered by {@code _ArgumentBeed_}.
+   * Implement like {@code getOperand().isEffective()}, with
+   * appropriate methods offered by {@code _OperandBeed_}.
    *
-   * @pre getArgument() != null;
+   * @pre getOperand() != null;
    */
-  protected abstract boolean hasEffectiveArgument();
+  protected abstract boolean hasEffectiveOperand();
 
   /**
-   * @pre argument != null;
-   * @pre argument.isEffective();
+   * @pre operand != null;
+   * @pre operand.isEffective();
    */
-  protected abstract void recalculateFrom(_ArgumentBeed_ argument);
+  protected abstract void recalculateFrom(_OperandBeed_ operand);
 
   @Override
   public final void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + get() + "\n");
-    sb.append(indent(level + 1) + "argument:\n");
-    if (getArgument() != null) {
-      getArgument().toString(sb, level + 2);
+    sb.append(indent(level + 1) + "operand:\n");
+    if (getOperand() != null) {
+      getOperand().toString(sb, level + 2);
     }
     else {
       sb.append(indent(level + 2) + "null");

@@ -21,7 +21,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the negative of an {@link #getArgument() argument} {@link DoubleBeed}.
+ * A beed that is the negative of an {@link #getOperand() operand} {@link DoubleBeed}.
  *
  * @mudo overflow: -MIN_VALUE == MIN_VALUE
  */
@@ -34,18 +34,18 @@ public class DoubleNegativeBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    */
   public DoubleNegativeBeed() {
     super();
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected final double calculateValue(double argumentValue) {
-    return -argumentValue;
+  protected final double calculateValue(double operandValue) {
+    return -operandValue;
   }
 
   @Override

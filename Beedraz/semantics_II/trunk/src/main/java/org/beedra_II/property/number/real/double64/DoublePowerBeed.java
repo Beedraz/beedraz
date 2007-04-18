@@ -22,7 +22,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * A beed that is the {@link #getConstant()}-power of an
- * {@link #getArgument() argument} {@link DoubleBeed}.
+ * {@link #getOperand() operand} {@link DoubleBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -33,7 +33,7 @@ public class DoublePowerBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    * @post  getConstant() == constant;
    */
   public DoublePowerBeed(double constant) {
@@ -41,11 +41,11 @@ public class DoublePowerBeed
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected final double calculateValue(double argumentValue) {
-    return Math.pow(argumentValue, getConstant());
+  protected final double calculateValue(double operandValue) {
+    return Math.pow(operandValue, getConstant());
   }
 
   @Override

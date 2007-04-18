@@ -60,11 +60,11 @@ public abstract class AbstractRealArgLongUnaryExpressionBeed
   }
 
   @Override
-  protected final void recalculateFrom(IntegerBeed<?> argument) {
-    $value = calculateValue(argument.getlong());
+  protected final void recalculateFrom(IntegerBeed<?> operand) {
+    $value = calculateValue(operand.getlong());
   }
 
-  protected abstract long calculateValue(long argument);
+  protected abstract long calculateValue(long operand);
 
 }
 

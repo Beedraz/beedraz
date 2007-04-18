@@ -26,14 +26,14 @@ public class TestBooleanORBeed
   @Test
   public void testConstructor() {
     BooleanORBeed beed = new BooleanORBeed();
-    assertNull(beed.getLeftArgument());
-    assertNull(beed.getRightArgument());
+    assertNull(beed.getLeftOperand());
+    assertNull(beed.getRightOperand());
     assertNull(beed.get());
   }
 
   @Override
-  protected Boolean expectedValue(Boolean leftArgumentValue, Boolean rightArgumentValue) {
-    return leftArgumentValue || rightArgumentValue;
+  protected Boolean expectedValue(Boolean leftOperandValue, Boolean rightOperandValue) {
+    return leftOperandValue || rightOperandValue;
   }
 
   @Override

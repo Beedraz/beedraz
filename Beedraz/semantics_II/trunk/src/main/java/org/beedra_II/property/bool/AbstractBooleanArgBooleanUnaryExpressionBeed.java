@@ -60,11 +60,11 @@ public abstract class AbstractBooleanArgBooleanUnaryExpressionBeed
   }
 
   @Override
-  protected final void recalculateFrom(BooleanBeed argument) {
-    $value = calculateValue(argument.getboolean());
+  protected final void recalculateFrom(BooleanBeed operand) {
+    $value = calculateValue(operand.getboolean());
   }
 
-  protected abstract boolean calculateValue(boolean argument);
+  protected abstract boolean calculateValue(boolean operand);
 
   @Override
   public final Boolean get() {

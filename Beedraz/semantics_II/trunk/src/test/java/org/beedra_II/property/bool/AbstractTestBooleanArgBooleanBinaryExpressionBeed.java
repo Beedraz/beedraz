@@ -48,9 +48,9 @@ public abstract class AbstractTestBooleanArgBooleanBinaryExpressionBeed<
   }
 
   @Override
-  protected void changeLeftArgument(EditableBooleanBeed editableArgumentBeed, Boolean newValue) {
+  protected void changeLeftOperand(EditableBooleanBeed editableOperandBeed, Boolean newValue) {
     try {
-      BooleanEdit edit = new BooleanEdit(editableArgumentBeed);
+      BooleanEdit edit = new BooleanEdit(editableOperandBeed);
       edit.setGoal(newValue);
       edit.perform();
     }
@@ -63,18 +63,18 @@ public abstract class AbstractTestBooleanArgBooleanBinaryExpressionBeed<
   }
 
   @Override
-  protected void changeRightArgument(EditableBooleanBeed editableArgumentBeed, Boolean newValue) {
-    changeLeftArgument(editableArgumentBeed, newValue);
+  protected void changeRightOperand(EditableBooleanBeed editableOperandBeed, Boolean newValue) {
+    changeLeftOperand(editableOperandBeed, newValue);
   }
 
   @Override
-  protected EditableBooleanBeed createEditableLeftArgumentBeed(AggregateBeed owner) {
+  protected EditableBooleanBeed createEditableLeftOperandBeed(AggregateBeed owner) {
     return new EditableBooleanBeed(owner);
   }
 
   @Override
-  protected EditableBooleanBeed createEditableRightArgumentBeed(AggregateBeed owner) {
-    return createEditableLeftArgumentBeed(owner);
+  protected EditableBooleanBeed createEditableRightOperandBeed(AggregateBeed owner) {
+    return createEditableLeftOperandBeed(owner);
   }
 
   @Override
@@ -93,13 +93,13 @@ public abstract class AbstractTestBooleanArgBooleanBinaryExpressionBeed<
   }
 
   @Override
-  protected Boolean valueFromLeft(BooleanBeed argumentBeed) {
-    return argumentBeed.getBoolean();
+  protected Boolean valueFromLeft(BooleanBeed operandBeed) {
+    return operandBeed.getBoolean();
   }
 
   @Override
-  protected Boolean valueFromRight(BooleanBeed argumentBeed) {
-    return valueFromLeft(argumentBeed);
+  protected Boolean valueFromRight(BooleanBeed operandBeed) {
+    return valueFromLeft(operandBeed);
   }
 
 }

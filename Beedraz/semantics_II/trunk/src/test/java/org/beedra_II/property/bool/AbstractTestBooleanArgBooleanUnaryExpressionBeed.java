@@ -40,9 +40,9 @@ public abstract class AbstractTestBooleanArgBooleanUnaryExpressionBeed<
   }
 
   @Override
-  protected void changeArgument(EditableBooleanBeed editableArgumentBeed, Boolean newValue) {
+  protected void changeOperand(EditableBooleanBeed editableOperandBeed, Boolean newValue) {
     try {
-      BooleanEdit edit = new BooleanEdit(editableArgumentBeed);
+      BooleanEdit edit = new BooleanEdit(editableOperandBeed);
       edit.setGoal(newValue);
       edit.perform();
     }
@@ -52,7 +52,7 @@ public abstract class AbstractTestBooleanArgBooleanUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableBooleanBeed createEditableArgumentBeed(AggregateBeed owner) {
+  protected EditableBooleanBeed createEditableOperandBeed(AggregateBeed owner) {
     return new EditableBooleanBeed(owner);
   }
 
@@ -72,8 +72,8 @@ public abstract class AbstractTestBooleanArgBooleanUnaryExpressionBeed<
   }
 
   @Override
-  protected Boolean valueFrom(BooleanBeed argumentBeed) {
-    return argumentBeed.getBoolean();
+  protected Boolean valueFrom(BooleanBeed operandBeed) {
+    return operandBeed.getBoolean();
   }
 
 

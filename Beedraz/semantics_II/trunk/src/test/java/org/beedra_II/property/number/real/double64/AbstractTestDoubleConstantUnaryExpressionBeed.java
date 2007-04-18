@@ -33,12 +33,12 @@ public abstract class AbstractTestDoubleConstantUnaryExpressionBeed<_DoubleBeed_
   protected double $constant;
 
   @Override
-  protected final Double valueFromSubject(_DoubleBeed_ argumentBeed) {
-    return argumentBeed.getDouble();
+  protected final Double valueFromSubject(_DoubleBeed_ operandBeed) {
+    return operandBeed.getDouble();
   }
 
   protected final void validateConstructor(_DoubleBeed_ inb) {
-    assertNull(inb.getArgument());
+    assertNull(inb.getOperand());
     assertNull(inb.getDouble());
     assertEquals($constant, inb.getConstant());
   }

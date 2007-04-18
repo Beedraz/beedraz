@@ -24,7 +24,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * A beed that is the log with base {@link #getConstant()} of an
- * {@link #getArgument() argument} {@link DoubleBeed}.
+ * {@link #getOperand() operand} {@link DoubleBeed}.
  *
  * Notice that logN(x) = log(x)/log(N).
  * Java only provides the log with base 10 and the natural logarithm
@@ -42,7 +42,7 @@ public class DoubleLogNBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    * @post  getConstant() == constant;
    */
   public DoubleLogNBeed(double constant) {
@@ -50,9 +50,9 @@ public class DoubleLogNBeed
   }
 
   @Override
-  protected final double calculateValue(double argumentValue) {
+  protected final double calculateValue(double operandValue) {
     double base = getConstant();
-    return Math.log(argumentValue) / Math.log(base);
+    return Math.log(operandValue) / Math.log(base);
   }
 
   @Override
@@ -65,10 +65,10 @@ public class DoubleLogNBeed
     sb.append(getOperatorString());
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getArgument().getdouble()));
+      sb.append(numberFormat.format(getOperand().getdouble()));
     }
     else {
-      getArgument().toStringDepth(sb, depth - 1, numberFormat);
+      getOperand().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
   }

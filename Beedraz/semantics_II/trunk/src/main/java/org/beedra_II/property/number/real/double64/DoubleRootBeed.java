@@ -22,7 +22,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * A beed that is the {@link #getConstant()}-root of an
- * {@link #getArgument() argument} {@link DoubleBeed}.
+ * {@link #getOperand() operand} {@link DoubleBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -33,7 +33,7 @@ public class DoubleRootBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    * @post  getConstant() == constant;
    */
   public DoubleRootBeed(double constant) {
@@ -41,22 +41,22 @@ public class DoubleRootBeed
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected final double calculateValue(double argumentValue) {
+  protected final double calculateValue(double operandValue) {
     double root = getConstant();
     if (root == 1) {
-      return argumentValue;
+      return operandValue;
     }
     else if (root == 2) {
-      return Math.sqrt(argumentValue);
+      return Math.sqrt(operandValue);
     }
     else if (root == 3) {
-      return Math.cbrt(argumentValue);
+      return Math.cbrt(operandValue);
     }
     else {
-      return Math.pow(argumentValue, 1 / getConstant());
+      return Math.pow(operandValue, 1 / getConstant());
     }
   }
 

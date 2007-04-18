@@ -29,14 +29,14 @@ public class TestLongNegativeBeed
   @Test
   public void testConstructor() {
     LongNegativeBeed inb = new LongNegativeBeed();
-    assertNull(inb.getArgument());
+    assertNull(inb.getOperand());
     assertNull(inb.getLong());
     assertNull(inb.getLong());
   }
 
   @Override
-  protected Long expectedValueNotNull(Long argumentValue) {
-    return - argumentValue;
+  protected Long expectedValueNotNull(Long operandValue) {
+    return - operandValue;
   }
 
   @Override
@@ -45,8 +45,8 @@ public class TestLongNegativeBeed
   }
 
   @Override
-  protected Long valueFromSubject(LongNegativeBeed argumentBeed) {
-    return argumentBeed.getLong();
+  protected Long valueFromSubject(LongNegativeBeed operandBeed) {
+    return operandBeed.getLong();
   }
 
 }

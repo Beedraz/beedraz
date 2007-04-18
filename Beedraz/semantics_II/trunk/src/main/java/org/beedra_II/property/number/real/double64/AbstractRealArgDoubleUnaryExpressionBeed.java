@@ -40,7 +40,7 @@ public abstract class AbstractRealArgDoubleUnaryExpressionBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    */
   protected AbstractRealArgDoubleUnaryExpressionBeed() {
     super();
@@ -62,11 +62,11 @@ public abstract class AbstractRealArgDoubleUnaryExpressionBeed
   }
 
   @Override
-  protected final void recalculateFrom(RealBeed<?> argument) {
-    $value = calculateValue(argument.getdouble());
+  protected final void recalculateFrom(RealBeed<?> operand) {
+    $value = calculateValue(operand.getdouble());
   }
 
-  protected abstract double calculateValue(double argument);
+  protected abstract double calculateValue(double operand);
 
   @Override
   public final Double get() {

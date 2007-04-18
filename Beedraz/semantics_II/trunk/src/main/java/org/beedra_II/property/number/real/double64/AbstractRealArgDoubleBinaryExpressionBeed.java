@@ -46,8 +46,9 @@ public abstract class AbstractRealArgDoubleBinaryExpressionBeed
     implements DoubleBeed {
 
   /**
-   * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getLeftArg() == null;
+   * @post  getRightArg() == null;
+   * @post  get() == null;
    */
   protected AbstractRealArgDoubleBinaryExpressionBeed() {
     super();
@@ -74,11 +75,11 @@ public abstract class AbstractRealArgDoubleBinaryExpressionBeed
   }
 
   @Override
-  protected final void recalculateFrom(RealBeed<?> leftArgument, RealBeed<?> rightArgument) {
-    $value = calculateValue(leftArgument.getdouble(), rightArgument.getdouble());
+  protected final void recalculateFrom(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
+    $value = calculateValue(leftOperand.getdouble(), rightOperand.getdouble());
   }
 
-  protected abstract double calculateValue(double leftArgument, double rightArgument);
+  protected abstract double calculateValue(double leftOperand, double rightOperand);
 
 }
 

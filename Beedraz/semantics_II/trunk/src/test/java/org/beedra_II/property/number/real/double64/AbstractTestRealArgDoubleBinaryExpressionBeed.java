@@ -49,9 +49,9 @@ public abstract class AbstractTestRealArgDoubleBinaryExpressionBeed<
   }
 
   @Override
-  protected void changeLeftArgument(EditableDoubleBeed editableArgumentBeed, Double newValue) {
+  protected void changeLeftOperand(EditableDoubleBeed editableOperandBeed, Double newValue) {
     try {
-      DoubleEdit edit = new DoubleEdit(editableArgumentBeed);
+      DoubleEdit edit = new DoubleEdit(editableOperandBeed);
       edit.setGoal(newValue);
       edit.perform();
     }
@@ -64,18 +64,18 @@ public abstract class AbstractTestRealArgDoubleBinaryExpressionBeed<
   }
 
   @Override
-  protected void changeRightArgument(EditableDoubleBeed editableArgumentBeed, Double newValue) {
-    changeLeftArgument(editableArgumentBeed, newValue);
+  protected void changeRightOperand(EditableDoubleBeed editableOperandBeed, Double newValue) {
+    changeLeftOperand(editableOperandBeed, newValue);
   }
 
   @Override
-  protected EditableDoubleBeed createEditableLeftArgumentBeed(AggregateBeed owner) {
+  protected EditableDoubleBeed createEditableLeftOperandBeed(AggregateBeed owner) {
     return new EditableDoubleBeed(owner);
   }
 
   @Override
-  protected EditableDoubleBeed createEditableRightArgumentBeed(AggregateBeed owner) {
-    return createEditableLeftArgumentBeed(owner);
+  protected EditableDoubleBeed createEditableRightOperandBeed(AggregateBeed owner) {
+    return createEditableLeftOperandBeed(owner);
   }
 
   @Override
@@ -94,13 +94,13 @@ public abstract class AbstractTestRealArgDoubleBinaryExpressionBeed<
   }
 
   @Override
-  protected Double valueFromLeft(RealBeed<?> argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFromLeft(RealBeed<?> operandBeed) {
+    return operandBeed.getDouble();
   }
 
   @Override
-  protected Double valueFromRight(RealBeed<?> argumentBeed) {
-    return valueFromLeft(argumentBeed);
+  protected Double valueFromRight(RealBeed<?> operandBeed) {
+    return valueFromLeft(operandBeed);
   }
 
 }

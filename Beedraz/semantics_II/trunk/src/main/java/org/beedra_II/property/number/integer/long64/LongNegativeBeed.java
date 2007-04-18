@@ -27,10 +27,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the negative of a {@link #getArgument() argument} {@link LongBeed}.
+ * A beed that is the negative of a {@link #getOperand() operand} {@link LongBeed}.
  *
- * @invar getArgument() == null ? getInteger() == null;
- * @invar getArgument() != null ? getInteger() == - getArgument().getInteger();
+ * @invar getOperand() == null ? getInteger() == null;
+ * @invar getOperand() != null ? getInteger() == - getOperand().getInteger();
  *
  * @mudo overflow: -MIN_VALUE == MIN_VALUE
  */
@@ -42,11 +42,11 @@ public class LongNegativeBeed
     extends AbstractRealArgLongUnaryExpressionBeed {
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected long calculateValue(long argumentValue) {
-    return -argumentValue;
+  protected long calculateValue(long operandValue) {
+    return -operandValue;
   }
 
   public BigInteger getBigInteger() {

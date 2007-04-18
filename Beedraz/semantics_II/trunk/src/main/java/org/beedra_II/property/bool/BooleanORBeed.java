@@ -45,12 +45,12 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanORBeed extends AbstractBooleanBinaryLogicalExpressionBeed {
 
   /**
-   * @pre leftArgument != null;
-   * @pre rightArgument != null;
+   * @pre leftOperand != null;
+   * @pre rightOperand != null;
    */
   @Override
-  protected final boolean calculateValue(boolean leftArgument, boolean rightArgument) {
-    return leftArgument || rightArgument;
+  protected final boolean calculateValue(boolean leftOperand, boolean rightOperand) {
+    return leftOperand || rightOperand;
   }
 
 

@@ -41,8 +41,8 @@ public class TestDoubleDifferenceBeed
   }
 
   @Override
-  protected Double expectedValue(Double leftArgumentValue, Double rightArgumentValue) {
-    return leftArgumentValue - rightArgumentValue;
+  protected Double expectedValue(Double leftOperandValue, Double rightOperandValue) {
+    return leftOperandValue - rightOperandValue;
   }
 
   @Override
@@ -51,28 +51,28 @@ public class TestDoubleDifferenceBeed
   }
 
   @Override
-  protected Double valueFromSubject(DoubleDifferenceBeed argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFromSubject(DoubleDifferenceBeed operandBeed) {
+    return operandBeed.getDouble();
   }
 
   @Override
-  protected RealBeed<?> getLeftArgument() {
+  protected RealBeed<?> getLeftOperand() {
     return $subject.getPositiveTerm();
   }
 
   @Override
-  protected RealBeed<?> getRightArgument() {
+  protected RealBeed<?> getRightOperand() {
     return $subject.getNegativeTerm();
   }
 
   @Override
-  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
-    $subject.setPositiveTermPath(leftArgumentPath);
+  protected void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    $subject.setPositiveTermPath(leftOperandPath);
   }
 
   @Override
-  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
-    $subject.setNegativeTermPath(rightArgumentPath);
+  protected void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    $subject.setNegativeTermPath(rightOperandPath);
   }
 
   /**

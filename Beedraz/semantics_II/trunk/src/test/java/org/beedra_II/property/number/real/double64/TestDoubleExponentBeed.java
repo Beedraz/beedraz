@@ -37,8 +37,8 @@ public class TestDoubleExponentBeed
   }
 
   @Override
-  protected Double expectedValue(Double leftArgumentValue, Double rightArgumentValue) {
-    return Math.pow(leftArgumentValue, rightArgumentValue);
+  protected Double expectedValue(Double leftOperandValue, Double rightOperandValue) {
+    return Math.pow(leftOperandValue, rightOperandValue);
   }
 
   @Override
@@ -47,28 +47,28 @@ public class TestDoubleExponentBeed
   }
 
   @Override
-  protected Double valueFromSubject(DoubleExponentBeed argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFromSubject(DoubleExponentBeed operandBeed) {
+    return operandBeed.getDouble();
   }
 
   @Override
-  protected RealBeed<?> getLeftArgument() {
+  protected RealBeed<?> getLeftOperand() {
     return $subject.getBase();
   }
 
   @Override
-  protected RealBeed<?> getRightArgument() {
+  protected RealBeed<?> getRightOperand() {
     return $subject.getExponent();
   }
 
   @Override
-  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
-    $subject.setBasePath(leftArgumentPath);
+  protected void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    $subject.setBasePath(leftOperandPath);
   }
 
   @Override
-  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
-    $subject.setExponentPath(rightArgumentPath);
+  protected void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    $subject.setExponentPath(rightOperandPath);
   }
 
 }

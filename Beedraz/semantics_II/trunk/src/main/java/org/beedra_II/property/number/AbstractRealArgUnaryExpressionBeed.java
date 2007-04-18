@@ -28,7 +28,7 @@ import org.ppeew.smallfries_I.MathUtil;
 
 /**
  * Abstract implementation of unary expression beeds, that represent a value
- * of type {@link Number} derived from one argument of type {@link RealBeed}.
+ * of type {@link Number} derived from one operand of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -36,12 +36,12 @@ import org.ppeew.smallfries_I.MathUtil;
          tag      = "$Name$")
 public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number,
                                                          _NumberEvent_ extends RealEvent,
-                                                         _ArgumentBeed_ extends RealBeed<?>>
-    extends AbstractRealArgUnaryExprBeed<_Number_, _NumberEvent_, _ArgumentBeed_>
+                                                         _OperandBeed_ extends RealBeed<?>>
+    extends AbstractRealArgUnaryExprBeed<_Number_, _NumberEvent_, _OperandBeed_>
     implements RealBeed<_NumberEvent_>{
 
   /**
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    * @post  get() == null;
    */
   public AbstractRealArgUnaryExpressionBeed() {
@@ -61,10 +61,10 @@ public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number
     sb.append(getOperatorString());
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getArgument().getdouble()));
+      sb.append(numberFormat.format(getOperand().getdouble()));
     }
     else {
-      getArgument().toStringDepth(sb, depth - 1, numberFormat);
+      getOperand().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
   }

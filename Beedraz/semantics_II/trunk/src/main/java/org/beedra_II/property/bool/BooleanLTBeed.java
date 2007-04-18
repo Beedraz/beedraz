@@ -21,8 +21,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that expresses whether the first argument is strictly less than the
- * second argument.
+ * A beed that expresses whether the first operand is strictly less than the
+ * second operand.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -31,12 +31,12 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanLTBeed extends AbstractBooleanBinaryRelationalExpressionBeed {
 
   /**
-   * @pre leftArgument != null;
-   * @pre rightArgument != null;
+   * @pre leftOperand != null;
+   * @pre rightOperand != null;
    */
   @Override
-  protected final boolean calculateValue(double leftArgument, double rightArgument) {
-    return leftArgument < rightArgument;
+  protected final boolean calculateValue(double leftOperand, double rightOperand) {
+    return leftOperand < rightOperand;
   }
 
 

@@ -28,7 +28,7 @@ import org.ppeew.smallfries_I.MathUtil;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a number value derived
- * from 2 arguments of type {@link RealBeed}.
+ * from 2 operands of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -37,16 +37,16 @@ import org.ppeew.smallfries_I.MathUtil;
 public abstract class AbstractRealArgBinaryExpressionBeed<
                                                    _Number_ extends Number,
                                                    _NumberEvent_ extends RealEvent,
-                                                   _LeftArgumentBeed_ extends RealBeed<? extends _LeftArgumentEvent_>,
-                                                   _LeftArgumentEvent_ extends RealEvent,
-                                                   _RightArgumentBeed_ extends RealBeed<? extends _RightArgumentEvent_>,
-                                                   _RightArgumentEvent_ extends RealEvent>
+                                                   _LeftOperandBeed_ extends RealBeed<? extends _LeftOperandEvent_>,
+                                                   _LeftOperandEvent_ extends RealEvent,
+                                                   _RightOperandBeed_ extends RealBeed<? extends _RightOperandEvent_>,
+                                                   _RightOperandEvent_ extends RealEvent>
     extends AbstractRealArgBinaryExprBeed<_Number_,
                                           _NumberEvent_,
-                                          _LeftArgumentBeed_,
-                                          _LeftArgumentEvent_,
-                                          _RightArgumentBeed_,
-                                          _RightArgumentEvent_>
+                                          _LeftOperandBeed_,
+                                          _LeftOperandEvent_,
+                                          _RightOperandBeed_,
+                                          _RightOperandEvent_>
     implements RealBeed<_NumberEvent_> {
 
   /**
@@ -70,19 +70,19 @@ public abstract class AbstractRealArgBinaryExpressionBeed<
   public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getLeftArg().getdouble()));
+      sb.append(numberFormat.format(getLeftOprnd().getdouble()));
     }
     else {
-      getLeftArg().toStringDepth(sb, depth - 1, numberFormat);
+      getLeftOprnd().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
     sb.append(getOperatorString());
     sb.append("(");
     if (depth == 1) {
-      sb.append(numberFormat.format(getRightArg().getdouble()));
+      sb.append(numberFormat.format(getRightOprnd().getdouble()));
     }
     else {
-      getRightArg().toStringDepth(sb, depth - 1, numberFormat);
+      getRightOprnd().toStringDepth(sb, depth - 1, numberFormat);
     }
     sb.append(")");
   }

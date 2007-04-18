@@ -48,8 +48,8 @@ public abstract class AbstractTestDoubleLogNBeed
   }
 
   @Override
-  protected final Double expectedValueNotNull(Double argumentValue) {
-    return Math.log(argumentValue) / Math.log($constant);
+  protected final Double expectedValueNotNull(Double operandValue) {
+    return Math.log(operandValue) / Math.log($constant);
   }
 
   @Test
@@ -62,8 +62,8 @@ public abstract class AbstractTestDoubleLogNBeed
     for (double d : values) {
       DoubleConstantBeed constantBeed = new DoubleConstantBeed(d);
       Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
-      lnBeed.setArgumentPath(constantBeedPath);
-      logNBeed.setArgumentPath(constantBeedPath);
+      lnBeed.setOperandPath(constantBeedPath);
+      logNBeed.setOperandPath(constantBeedPath);
       assertEquals(lnBeed.getDouble(), logNBeed.getDouble());
     }
   }
@@ -78,8 +78,8 @@ public abstract class AbstractTestDoubleLogNBeed
     for (double d : values) {
       DoubleConstantBeed constantBeed = new DoubleConstantBeed(d);
       Path<DoubleConstantBeed> constantBeedPath = new ConstantPath<DoubleConstantBeed>(constantBeed);
-      log10Beed.setArgumentPath(constantBeedPath);
-      logNBeed.setArgumentPath(constantBeedPath);
+      log10Beed.setOperandPath(constantBeedPath);
+      logNBeed.setOperandPath(constantBeedPath);
       assertEquals(log10Beed.getDouble(), logNBeed.getDouble());
     }
   }

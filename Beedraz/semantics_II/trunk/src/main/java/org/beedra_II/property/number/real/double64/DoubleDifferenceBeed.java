@@ -23,8 +23,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the difference of a {@link #getLeftArg()}
- * and a {@link #getRightArg()}.
+ * A beed that is the difference of a {@link #getLeftOprnd()}
+ * and a {@link #getRightOprnd()}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -38,8 +38,8 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
 
   /**
    * @post  getDouble() == null;
-   * @post  getLeftArgument() == null;
-   * @post  getRightArgument() == null;
+   * @post  getLeftArg() == null;
+   * @post  getRightArg() == null;
    */
   public DoubleDifferenceBeed() {
     super();
@@ -56,21 +56,21 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
    * @basic
    */
   public final Path<? extends RealBeed<?>> getPositiveTermPath() {
-    return getRightArgPath();
+    return getRightOprndPath();
   }
 
   /**
    * @return getPositiveTermPath() == null ? null : getPositiveTermPath().get();
    */
   public final RealBeed<?> getPositiveTerm() {
-    return getLeftArg();
+    return getLeftOprnd();
   }
 
   /**
    * @post getPositiveTermPath() == positiveTermPath;
    */
   public final void setPositiveTermPath(Path<? extends RealBeed<?>> positiveTermPath) {
-    setLeftArgPath(positiveTermPath);
+    setLeftOprndPath(positiveTermPath);
   }
 
   /*</property>*/
@@ -84,21 +84,21 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
    * @basic
    */
   public final Path<? extends RealBeed<?>> getNegativeTermPath() {
-    return getRightArgPath();
+    return getRightOprndPath();
   }
 
   /**
    * @return getNegativeTermPath() == null ? null : getNegativeTermPath().get();
    */
   public final RealBeed<?> getNegativeTerm() {
-    return getRightArg();
+    return getRightOprnd();
   }
 
   /**
    * @post getNegativeTermPath() == negativeTermPath;
    */
   public final void setNegativeTermPath(Path<? extends RealBeed<?>> negativeTermPath) {
-    setRightArgPath(negativeTermPath);
+    setRightOprndPath(negativeTermPath);
   }
 
   /*</property>*/
@@ -106,12 +106,12 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
 
 
   /**
-   * @pre leftArgument != null;
-   * @pre rightArgument != null;
+   * @pre leftOperand != null;
+   * @pre rightOperand != null;
    */
   @Override
-  protected final double calculateValue(double leftArgument, double rightArgument) {
-    return leftArgument - rightArgument;
+  protected final double calculateValue(double leftOperand, double rightOperand) {
+    return leftOperand - rightOperand;
   }
 
   @Override

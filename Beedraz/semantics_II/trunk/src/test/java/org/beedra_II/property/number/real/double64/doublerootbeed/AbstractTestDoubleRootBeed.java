@@ -35,8 +35,8 @@ public abstract class AbstractTestDoubleRootBeed
   }
 
   @Override
-  protected final Double expectedValueNotNull(Double argumentValue) {
-    return Math.pow(argumentValue, 1 / $constant);
+  protected final Double expectedValueNotNull(Double operandValue) {
+    return Math.pow(operandValue, 1 / $constant);
   }
 
   @Test

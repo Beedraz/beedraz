@@ -21,7 +21,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>A beed that is the inverse of an {@link #getArgument() argument}
+ * <p>A beed that is the inverse of an {@link #getOperand() operand}
  *   {@link DoubleBeed}.</p>
  * <p><strong>Warning: division reduces the number of meaningful numbers in the quotient
  *   to a large degree.</strong> {@code 1 / (1 / x) != x} with floating point arithmetic.
@@ -37,18 +37,18 @@ public class DoubleInverseBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    */
   public DoubleInverseBeed() {
     super();
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected final double calculateValue(double argumentValue) {
-    return 1.0d / argumentValue;
+  protected final double calculateValue(double operandValue) {
+    return 1.0d / operandValue;
   }
 
   @Override

@@ -37,8 +37,8 @@ public class TestDoubleQuotientBeed
   }
 
   @Override
-  protected Double expectedValue(Double leftArgumentValue, Double rightArgumentValue) {
-    return leftArgumentValue / rightArgumentValue;
+  protected Double expectedValue(Double leftOperandValue, Double rightOperandValue) {
+    return leftOperandValue / rightOperandValue;
   }
 
   @Override
@@ -47,28 +47,28 @@ public class TestDoubleQuotientBeed
   }
 
   @Override
-  protected Double valueFromSubject(DoubleQuotientBeed argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFromSubject(DoubleQuotientBeed operandBeed) {
+    return operandBeed.getDouble();
   }
 
   @Override
-  protected RealBeed<?> getLeftArgument() {
+  protected RealBeed<?> getLeftOperand() {
     return $subject.getNumerator();
   }
 
   @Override
-  protected RealBeed<?> getRightArgument() {
+  protected RealBeed<?> getRightOperand() {
     return $subject.getDenominator();
   }
 
   @Override
-  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
-    $subject.setNumeratorPath(leftArgumentPath);
+  protected void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    $subject.setNumeratorPath(leftOperandPath);
   }
 
   @Override
-  protected void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
-    $subject.setDenominatorPath(rightArgumentPath);
+  protected void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    $subject.setDenominatorPath(rightOperandPath);
   }
 
 }

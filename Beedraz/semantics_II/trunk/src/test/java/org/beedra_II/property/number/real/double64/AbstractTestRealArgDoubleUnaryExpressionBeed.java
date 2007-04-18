@@ -41,9 +41,9 @@ public abstract class AbstractTestRealArgDoubleUnaryExpressionBeed<
   }
 
   @Override
-  protected void changeArgument(EditableDoubleBeed editableArgumentBeed, Double newValue) {
+  protected void changeOperand(EditableDoubleBeed editableOperandBeed, Double newValue) {
     try {
-      DoubleEdit edit = new DoubleEdit(editableArgumentBeed);
+      DoubleEdit edit = new DoubleEdit(editableOperandBeed);
       edit.setGoal(newValue);
       edit.perform();
     }
@@ -53,7 +53,7 @@ public abstract class AbstractTestRealArgDoubleUnaryExpressionBeed<
   }
 
   @Override
-  protected EditableDoubleBeed createEditableArgumentBeed(AggregateBeed owner) {
+  protected EditableDoubleBeed createEditableOperandBeed(AggregateBeed owner) {
     return new EditableDoubleBeed(owner);
   }
 
@@ -73,8 +73,8 @@ public abstract class AbstractTestRealArgDoubleUnaryExpressionBeed<
   }
 
   @Override
-  protected Double valueFrom(RealBeed<?> argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFrom(RealBeed<?> operandBeed) {
+    return operandBeed.getDouble();
   }
 
 

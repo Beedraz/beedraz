@@ -28,13 +28,13 @@ public class TestBooleanNotNullBeed
   @Test
   public void testConstructor() {
     BooleanNotNullBeed beed = new BooleanNotNullBeed();
-    assertNull(beed.getArgument());
+    assertNull(beed.getOperand());
     assertNull(beed.get());
   }
 
   @Override
-  protected Boolean expectedValueNotNull(Double argumentValue) {
-    return argumentValue != null;
+  protected Boolean expectedValueNotNull(Double operandValue) {
+    return operandValue != null;
   }
 
   @Override
@@ -48,8 +48,8 @@ public class TestBooleanNotNullBeed
   }
 
   @Override
-  protected final Boolean valueFromSubject(BooleanNotNullBeed argumentBeed) {
-    return argumentBeed.getBoolean();
+  protected final Boolean valueFromSubject(BooleanNotNullBeed operandBeed) {
+    return operandBeed.getBoolean();
   }
 
 }

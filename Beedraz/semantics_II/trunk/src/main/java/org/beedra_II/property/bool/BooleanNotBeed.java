@@ -23,8 +23,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A beed that returns the logical negation of another {@link BooleanBeed}.
  *
- * @invar getArgument() != null && getArgument().isEffective()
- *          ? get() == !getArgument().get()
+ * @invar getOperand() != null && getOperand().isEffective()
+ *          ? get() == !getOperand().get()
  *          : !isEffective();
  */
 @CvsInfo(revision = "$Revision$",
@@ -42,8 +42,8 @@ public class BooleanNotBeed extends AbstractBooleanArgBooleanUnaryExpressionBeed
   }
 
   @Override
-  protected boolean calculateValue(boolean argument) {
-    return !argument;
+  protected boolean calculateValue(boolean operand) {
+    return !operand;
   }
 }
 

@@ -41,8 +41,8 @@ public class TestDoubleModBeed
   }
 
   @Override
-  protected Double expectedValue(Double leftArgumentValue, Double rightArgumentValue) {
-    return leftArgumentValue % rightArgumentValue;
+  protected Double expectedValue(Double leftOperandValue, Double rightOperandValue) {
+    return leftOperandValue % rightOperandValue;
   }
 
   @Override
@@ -51,28 +51,28 @@ public class TestDoubleModBeed
   }
 
   @Override
-  protected Double valueFromSubject(DoubleModBeed argumentBeed) {
-    return argumentBeed.getDouble();
+  protected Double valueFromSubject(DoubleModBeed operandBeed) {
+    return operandBeed.getDouble();
   }
 
   @Override
-  protected RealBeed<?> getLeftArgument() {
+  protected RealBeed<?> getLeftOperand() {
     return $subject.getDividend();
   }
 
   @Override
-  protected RealBeed<?> getRightArgument() {
+  protected RealBeed<?> getRightOperand() {
     return $subject.getDivisor();
   }
 
   @Override
-  protected void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
-    $subject.setDividendPath(leftArgumentPath);
+  protected void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    $subject.setDividendPath(leftOperandPath);
   }
 
   @Override
-  protected void setRightArgumentPath(Path<?extends RealBeed<?>> rightArgumentPath) {
-    $subject.setDivisorPath(rightArgumentPath);
+  protected void setRightOperandPath(Path<?extends RealBeed<?>> rightOperandPath) {
+    $subject.setDivisorPath(rightOperandPath);
   }
 
   /**

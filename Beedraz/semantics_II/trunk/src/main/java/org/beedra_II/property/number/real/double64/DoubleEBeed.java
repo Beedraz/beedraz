@@ -21,7 +21,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>A beed that is the natural power of an {@link #getArgument() argument}
+ * <p>A beed that is the natural power of an {@link #getOperand() operand}
  *   {@link DoubleBeed} (<code>e<sup>x</sup></code>).</p>
  */
 @CvsInfo(revision = "$Revision$",
@@ -33,18 +33,18 @@ public class DoubleEBeed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    */
   public DoubleEBeed() {
     super();
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected final double calculateValue(double argumentValue) {
-    return Math.exp(argumentValue);
+  protected final double calculateValue(double operandValue) {
+    return Math.exp(operandValue);
   }
 
   @Override

@@ -23,7 +23,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 /**
  * A beed that expresses whether the given beed is effective or not.
  *
- * @invar getArgument() != null && getArgument().isEffective()
+ * @invar getOperand() != null && getOperand().isEffective()
  *          ? get() == true
  *          : get() == false;
  */
@@ -34,12 +34,12 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanNotNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
 
   /**
-   * @pre $argument != null;
+   * @pre $operand != null;
    */
   @Override
   protected void recalculate() {
     assignEffective(true);
-    setValue(getArgument().isEffective());
+    setValue(getOperand().isEffective());
   }
 
   /**
@@ -51,7 +51,7 @@ public class BooleanNotNullBeed extends AbstractRealArgBooleanUnaryExpressionBee
   }
 
   @Override
-  protected boolean calculateValue(double argument) {
+  protected boolean calculateValue(double operand) {
     throw new IllegalStateException();
   }
 }

@@ -37,55 +37,55 @@ public abstract class AbstractBooleanBinaryLogicalExpressionBeed
 
 
 
-  /*<property name="leftArgument">*/
+  /*<property name="leftOperand">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Path<? extends BooleanBeed> getLeftArgumentPath() {
-    return getLeftArgPath();
+  public final Path<? extends BooleanBeed> getLeftOperandPath() {
+    return getLeftOprndPath();
   }
 
   /**
-   * @return getLeftArgumentPath().get();
+   * @return getLeftOperandPath().get();
    */
-  public final BooleanBeed getLeftArgument() {
-    return getLeftArg();
+  public final BooleanBeed getLeftOperand() {
+    return getLeftOprnd();
   }
 
   /**
-   * @post getLeftArgumentPath() == leftArgumentPath;
+   * @post getLeftOperandPath() == leftOperandPath;
    */
-  public final void setLeftArgumentPath(Path<? extends BooleanBeed> leftArgumentPath) {
-    setLeftArgPath(leftArgumentPath);
+  public final void setLeftOperandPath(Path<? extends BooleanBeed> leftOperandPath) {
+    setLeftOprndPath(leftOperandPath);
   }
 
   /*</property>*/
 
 
-  /*<property name="rightArgument">*/
+  /*<property name="rightOperand">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Path<? extends BooleanBeed> getRightArgumentPath() {
-    return getRightArgPath();
+  public final Path<? extends BooleanBeed> getRightOperandPath() {
+    return getRightOprndPath();
   }
 
   /**
-   * @return getRightArgumentPath().get();
+   * @return getRightOperandPath().get();
    */
-  public final BooleanBeed getRightArgument() {
-    return getRightArg();
+  public final BooleanBeed getRightOperand() {
+    return getRightOprnd();
   }
 
   /**
-   * @post getRightArgumentPath() == rightArgumentPath;
+   * @post getRightOperandPath() == rightOperandPath;
    */
-  public final void setRightArgumentPath(Path<? extends BooleanBeed> rightArgumentPath) {
-    setRightArgPath(rightArgumentPath);
+  public final void setRightOperandPath(Path<? extends BooleanBeed> rightOperandPath) {
+    setRightOprndPath(rightOperandPath);
   }
 
   /*</property>*/

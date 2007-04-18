@@ -51,21 +51,21 @@ public class DoubleExponentBeed
    * @basic
    */
   public final Path<? extends RealBeed<?>> getBasePath() {
-    return getLeftArgPath();
+    return getLeftOprndPath();
   }
 
   /**
    * @return getBasePath() == null ? null : getBasePath().get();
    */
   public final RealBeed<?> getBase() {
-    return getLeftArg();
+    return getLeftOprnd();
   }
 
   /**
    * @post getBasePath() == basePath;
    */
   public final void setBasePath(Path<? extends RealBeed<?>> basePath) {
-    setLeftArgPath(basePath);
+    setLeftOprndPath(basePath);
   }
 
   /*</property>*/
@@ -79,21 +79,21 @@ public class DoubleExponentBeed
    * @basic
    */
   public final Path<? extends RealBeed<?>> getExponentPath() {
-    return getRightArgPath();
+    return getRightOprndPath();
   }
 
   /**
    * @return getExponentPath() == null ? null : getExponentPath().get();
    */
   public final RealBeed<?> getExponent() {
-    return getRightArg();
+    return getRightOprnd();
   }
 
   /**
    * @post getExponentPath() == exponentPath;
    */
   public final void setExponentPath(Path<? extends RealBeed<?>> exponentPath) {
-    setRightArgPath(exponentPath);
+    setRightOprndPath(exponentPath);
   }
 
   /*</property>*/

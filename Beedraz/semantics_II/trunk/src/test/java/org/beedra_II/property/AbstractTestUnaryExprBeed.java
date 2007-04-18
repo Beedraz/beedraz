@@ -39,34 +39,34 @@ import org.junit.Test;
 
 public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
                                                 _ResultEvent_ extends Event,
-                                                _Argument_ extends Object,
-                                                _ArgumentBeed_ extends Beed<?>,
-                                                _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _ArgumentBeed_>,
-                                                _EAB_ extends _ArgumentBeed_> {
+                                                _Operand_ extends Object,
+                                                _OperandBeed_ extends Beed<?>,
+                                                _UEB_ extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _OperandBeed_>,
+                                                _EdOpB_ extends _OperandBeed_> {
 
   protected abstract _UEB_ createSubject();
 
-  protected abstract _EAB_ createEditableArgumentBeed(AggregateBeed owner);
+  protected abstract _EdOpB_ createEditableOperandBeed(AggregateBeed owner);
 
   protected abstract StubListener<_ResultEvent_> createStubListener();
 
   protected abstract void initGoals();
 
-  protected abstract void changeArgument(_EAB_ editableArgumentBeed, _Argument_ newValue);
+  protected abstract void changeOperand(_EdOpB_ editableOperandBeed, _Operand_ newValue);
 
-  protected final _Result_ expectedValue(_Argument_ argumentValue) {
-    if (argumentValue == null) {
+  protected final _Result_ expectedValue(_Operand_ operandValue) {
+    if (operandValue == null) {
       return expectedValueNull();
     }
     else {
-      return expectedValueNotNull(argumentValue);
+      return expectedValueNotNull(operandValue);
     }
   }
 
   /**
-   * @pre  argumentValue != null;
+   * @pre  operandValue != null;
    */
-  protected abstract _Result_ expectedValueNotNull(_Argument_ argumentValue);
+  protected abstract _Result_ expectedValueNotNull(_Operand_ operandValue);
 
   /**
    * @default-return null;
@@ -75,32 +75,32 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     return null;
   }
 
-  protected abstract _Result_ valueFromSubject(_UEB_ argumentBeed);
+  protected abstract _Result_ valueFromSubject(_UEB_ operandBeed);
 
-  protected abstract _Argument_ valueFrom(_ArgumentBeed_ argumentBeed);
+  protected abstract _Operand_ valueFrom(_OperandBeed_ operandBeed);
 
-  protected abstract _Result_ oldValueFrom(_ResultEvent_ argumentBeed);
+  protected abstract _Result_ oldValueFrom(_ResultEvent_ operandBeed);
 
-  protected abstract _Result_ newValueFrom(_ResultEvent_ argumentBeed);
+  protected abstract _Result_ newValueFrom(_ResultEvent_ operandBeed);
 
   @Before
   public void setUp() throws Exception {
     initGoals();
     $aggregateBeed = new StubAggregateBeed();
-    $argumentDoubleBeed = createEditableArgumentBeed($aggregateBeed);
-    $argumentDoubleBeedPath = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed);
-    $argumentDoubleBeed2 = createEditableArgumentBeed($aggregateBeed);
-    $argumentDoubleBeedPath2 = new ConstantPath<_ArgumentBeed_>($argumentDoubleBeed2);
+    $operandDoubleBeed = createEditableOperandBeed($aggregateBeed);
+    $operandDoubleBeedPath = new ConstantPath<_OperandBeed_>($operandDoubleBeed);
+    $operandDoubleBeed2 = createEditableOperandBeed($aggregateBeed);
+    $operandDoubleBeedPath2 = new ConstantPath<_OperandBeed_>($operandDoubleBeed2);
     $subject = createSubject();
     $listener = createStubListener();
   }
 
   @After
   public void tearDown() throws Exception {
-    $argumentDoubleBeed = null;
-    $argumentDoubleBeedPath = null;
-    $argumentDoubleBeed2 = null;
-    $argumentDoubleBeedPath2 = null;
+    $operandDoubleBeed = null;
+    $operandDoubleBeedPath = null;
+    $operandDoubleBeed2 = null;
+    $operandDoubleBeedPath2 = null;
     $subject = null;
     $aggregateBeed = null;
     $listener = null;
@@ -112,92 +112,92 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
 
   protected _UEB_ $subject;
   protected AggregateBeed $aggregateBeed;
-  private _EAB_ $argumentDoubleBeed;
-  private Path<_ArgumentBeed_> $argumentDoubleBeedPath;
-  private _EAB_ $argumentDoubleBeed2;
-  private Path<_ArgumentBeed_> $argumentDoubleBeedPath2;
-  protected _Argument_ $goal1;
-  protected _Argument_ $goal2;
-  protected _Argument_ $goalMIN;
-  protected _Argument_ $goalMAX;
+  private _EdOpB_ $operandDoubleBeed;
+  private Path<_OperandBeed_> $operandDoubleBeedPath;
+  private _EdOpB_ $operandDoubleBeed2;
+  private Path<_OperandBeed_> $operandDoubleBeedPath2;
+  protected _Operand_ $goal1;
+  protected _Operand_ $goal2;
+  protected _Operand_ $goalMIN;
+  protected _Operand_ $goalMAX;
   StubListener<_ResultEvent_> $listener;
 
   @Test
-  public void testSetArgument_1() {
+  public void testSetOperand_1() {
     $subject.addListener($listener);
-    $subject.setArgumentPath(new NullPath<_ArgumentBeed_>());
-    validateSubjectFromArgument(null);
+    $subject.setOperandPath(new NullPath<_OperandBeed_>());
+    validateSubjectFromOperand(null);
     validateEvent(null, null, null, null);
   }
 
   @Test
-  public void testSetArgument_2() {
+  public void testSetOperand_2() {
     $subject.addListener($listener);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(null, null, $argumentDoubleBeed, null);
+    $subject.setOperandPath($operandDoubleBeedPath);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent(null, null, $operandDoubleBeed, null);
   }
 
   @Test
-  public void testSetArgument_3() {
-    changeArgument($argumentDoubleBeed, $goal1);
+  public void testSetOperand_3() {
+    changeOperand($operandDoubleBeed, $goal1);
     $subject.addListener($listener);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(null, null, $argumentDoubleBeed, $goal1);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed, $goal1, $argumentDoubleBeed, $goal1);
-    $subject.setArgumentPath(null);
-    validateSubjectFromArgument(null);
-    validateEvent($argumentDoubleBeed, $goal1, null, null);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(null, null, $argumentDoubleBeed, $goal1);
-    changeArgument($argumentDoubleBeed2, $goal2);
-    $subject.setArgumentPath($argumentDoubleBeedPath2);
-    validateSubjectFromArgument($argumentDoubleBeed2);
-    validateEvent($argumentDoubleBeed, $goal1, $argumentDoubleBeed2, $goal2);
-    changeArgument($argumentDoubleBeed, $goal2);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed2, $goal2, $argumentDoubleBeed, $goal2);
+    $subject.setOperandPath($operandDoubleBeedPath);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent(null, null, $operandDoubleBeed, $goal1);
+    $subject.setOperandPath($operandDoubleBeedPath);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, $goal1, $operandDoubleBeed, $goal1);
+    $subject.setOperandPath(null);
+    validateSubjectFromOperand(null);
+    validateEvent($operandDoubleBeed, $goal1, null, null);
+    $subject.setOperandPath($operandDoubleBeedPath);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent(null, null, $operandDoubleBeed, $goal1);
+    changeOperand($operandDoubleBeed2, $goal2);
+    $subject.setOperandPath($operandDoubleBeedPath2);
+    validateSubjectFromOperand($operandDoubleBeed2);
+    validateEvent($operandDoubleBeed, $goal1, $operandDoubleBeed2, $goal2);
+    changeOperand($operandDoubleBeed, $goal2);
+    $subject.setOperandPath($operandDoubleBeedPath);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed2, $goal2, $operandDoubleBeed, $goal2);
   }
 
   @Test
   public void testDynamics() {
     $subject.addListener($listener);
     assertTrue($subject.isListener($listener));
-    changeArgument($argumentDoubleBeed, $goal1);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent(null, null, $argumentDoubleBeed, $goal1);
-    changeArgument($argumentDoubleBeed, $goal2);
-    validateSubjectFromArgument($argumentDoubleBeed);
+    changeOperand($operandDoubleBeed, $goal1);
+    $subject.setOperandPath($operandDoubleBeedPath);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent(null, null, $operandDoubleBeed, $goal1);
+    changeOperand($operandDoubleBeed, $goal2);
+    validateSubjectFromOperand($operandDoubleBeed);
   //    System.out.println("$goal1: " + $goal1);
   //    System.out.println("ln($goal1): " + Math.log((Double)$goal1));
   //    System.out.println("$goal2: " + $goal2);
   //    System.out.println("ln($goal2): " + Math.log((Double)$goal2));
-    validateEvent($argumentDoubleBeed, $goal1, $argumentDoubleBeed, $goal2);
-    changeArgument($argumentDoubleBeed, $goal2);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed, $goal2, $argumentDoubleBeed, $goal2);
-    changeArgument($argumentDoubleBeed, null);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed, $goal2, $argumentDoubleBeed, null);
-    changeArgument($argumentDoubleBeed, null);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed, null, $argumentDoubleBeed, null);
-    changeArgument($argumentDoubleBeed, $goalMIN);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed, null, $argumentDoubleBeed, $goalMIN);
-    changeArgument($argumentDoubleBeed, $goalMAX);
-    validateSubjectFromArgument($argumentDoubleBeed);
-    validateEvent($argumentDoubleBeed, $goalMIN, $argumentDoubleBeed, $goalMAX);
+    validateEvent($operandDoubleBeed, $goal1, $operandDoubleBeed, $goal2);
+    changeOperand($operandDoubleBeed, $goal2);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, $goal2, $operandDoubleBeed, $goal2);
+    changeOperand($operandDoubleBeed, null);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, $goal2, $operandDoubleBeed, null);
+    changeOperand($operandDoubleBeed, null);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, null, $operandDoubleBeed, null);
+    changeOperand($operandDoubleBeed, $goalMIN);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, null, $operandDoubleBeed, $goalMIN);
+    changeOperand($operandDoubleBeed, $goalMAX);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, $goalMIN, $operandDoubleBeed, $goalMAX);
   }
 
-  private void validateEvent(_ArgumentBeed_ oldBeed, _Argument_ oldV,
-                             _ArgumentBeed_ newBeed, _Argument_ newV) {
+  private void validateEvent(_OperandBeed_ oldBeed, _Operand_ oldV,
+                             _OperandBeed_ newBeed, _Operand_ newV) {
     _Result_ expectedOldValue =
       oldBeed == null
         ? null
@@ -217,7 +217,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     $listener.$event = null;
   }
 
-  protected void checkOldValue(_ArgumentBeed_ oldBeed, _Argument_ oldV, _ResultEvent_ event) {
+  protected void checkOldValue(_OperandBeed_ oldBeed, _Operand_ oldV, _ResultEvent_ event) {
     if (oldBeed == null) {
       assertNull(oldValueFrom(event));
     }
@@ -234,7 +234,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     assertEquals(expectedValueNull(), value);
   }
 
-  protected void checkNewValue(_ArgumentBeed_ newBeed, _Argument_ newV, _ResultEvent_ event) {
+  protected void checkNewValue(_OperandBeed_ newBeed, _Operand_ newV, _ResultEvent_ event) {
     if (newBeed == null) {
       assertNull(newValueFrom(event));
     }
@@ -247,30 +247,30 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     }
   }
 
-  private void validateSubjectFromArgument(_EAB_ argument) {
-//    System.out.println("argument: " + argument + "  ##  $subject: "+ $subject);
-    assertEquals(argument, $subject.getArgument());
-    if (argument != null) {
-      assertNotNull($subject.getArgument());
-      _Argument_ argumentValue = valueFrom(argument);
-      checkArgumentValue(argument, argumentValue);
+  private void validateSubjectFromOperand(_EdOpB_ operand) {
+//    System.out.println("operand: " + operand + "  ##  $subject: "+ $subject);
+    assertEquals(operand, $subject.getOperand());
+    if (operand != null) {
+      assertNotNull($subject.getOperand());
+      _Operand_ operandValue = valueFrom(operand);
+      checkOperandValue(operand, operandValue);
 //      equalsWithNull($subject.getDouble(), $subject.getDouble());
     }
     else {
-      assertNull($subject.getArgument());
+      assertNull($subject.getOperand());
     }
   }
 
-  protected void checkArgumentValue(_ArgumentBeed_ argumentBeed, _Argument_ argumentValue) {
-    if (argumentBeed == null) {
+  protected void checkOperandValue(_OperandBeed_ operandBeed, _Operand_ operandValue) {
+    if (operandBeed == null) {
       assertNull($subject.get());
     }
-    else if (argumentValue == null) {
+    else if (operandValue == null) {
       checkValueNull($subject.get());
     }
     else {
       assertNotNull($subject.get());
-      assertTrue($subject.equalValue(expectedValue(argumentValue), valueFromSubject($subject)));
+      assertTrue($subject.equalValue(expectedValue(operandValue), valueFromSubject($subject)));
     }
   }
 
@@ -290,11 +290,11 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
   public void testToString_StringBuffer_int_2() throws EditStateException, IllegalEditException {
     StringBuffer stub = new StringBuffer();
     $subject.toString(stub, 1);
-    $subject.setArgumentPath($argumentDoubleBeedPath);
+    $subject.setOperandPath($operandDoubleBeedPath);
     $subject.toString(stub, 1);
-    changeArgument($argumentDoubleBeed, $goal1);
+    changeOperand($operandDoubleBeed, $goal1);
     $subject.toString(stub, 1);
-    changeArgument($argumentDoubleBeed, $goal2);
+    changeOperand($operandDoubleBeed, $goal2);
     $subject.toString(stub, 1);
   }
 

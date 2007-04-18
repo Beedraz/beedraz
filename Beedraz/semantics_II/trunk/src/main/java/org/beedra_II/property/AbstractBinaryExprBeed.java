@@ -33,16 +33,16 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
- * from 2 arguments.
+ * from 2 operands.
  *
- * @invar getLeftArg() == null || getRightArg() == null
+ * @invar getLeftOprnd() == null || getRightOprnd() == null
  *          ? get() == null
  *          : true;
  *
  * @protected
- * Accessor methods for the {@link #getLeftArg() left argument} and the {@link #getRightArg()
- * right argument} are kept protected, to force subclasses to provide meaningful public names for the
- * arguments.
+ * Accessor methods for the {@link #getLeftOprnd() left operand} and the {@link #getRightOprnd()
+ * right operand} are kept protected, to force subclasses to provide meaningful public names for the
+ * operands.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -50,26 +50,26 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          tag      = "$Name$")
 public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
                                              _ResultEvent_ extends Event,
-                                             _LeftArgumentBeed_ extends Beed<? extends _LeftArgumentEvent_>,
-                                             _LeftArgumentEvent_ extends Event,
-                                             _RightArgumentBeed_ extends Beed<? extends _RightArgumentEvent_>,
-                                             _RightArgumentEvent_ extends Event>
+                                             _LeftOperandBeed_ extends Beed<? extends _LeftOperandEvent_>,
+                                             _LeftOperandEvent_ extends Event,
+                                             _RightOperandBeed_ extends Beed<? extends _RightOperandEvent_>,
+                                             _RightOperandEvent_ extends Event>
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-    /* Events are from the argument, the left argument path, the right argument path, or
-     * any combination.
-     * React to event from paths first, setting the arguments. Then do a recalculate.
+    /* Events are from the left operand, the left operand path, the right operand, the
+     * right operand path, or any combination.
+     * React to event from paths first, setting the operands. Then do a recalculate.
      */
     _Result_ oldValue = get();
-    PathEvent<_LeftArgumentBeed_> leftPathEvent = (PathEvent<_LeftArgumentBeed_>)events.get($leftArgumentPath);
+    PathEvent<_LeftOperandBeed_> leftPathEvent = (PathEvent<_LeftOperandBeed_>)events.get($leftOperandPath);
     if (leftPathEvent != null) {
-      setLeftArg(leftPathEvent.getNewValue());
+      setLeftOprnd(leftPathEvent.getNewValue());
     }
-    PathEvent<_RightArgumentBeed_> rightPathEvent = (PathEvent<_RightArgumentBeed_>)events.get($rightArgumentPath);
+    PathEvent<_RightOperandBeed_> rightPathEvent = (PathEvent<_RightOperandBeed_>)events.get($rightOperandPath);
     if (rightPathEvent != null) {
-      setRightArg(rightPathEvent.getNewValue());
+      setRightOprnd(rightPathEvent.getNewValue());
     }
     recalculate();
     if (! equalValue(oldValue, get())) {
@@ -82,137 +82,137 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
 
 
-  /*<property name="left argument">*/
+  /*<property name="left operand">*/
   //-----------------------------------------------------------------
 
   /**
    * @basic
    * @init null;
    */
-  protected final Path<? extends _LeftArgumentBeed_> getLeftArgPath() {
-    return $leftArgumentPath;
+  protected final Path<? extends _LeftOperandBeed_> getLeftOprndPath() {
+    return $leftOperandPath;
   }
 
   /**
-   * @return getLeftArgPath() == null ? null : getLeftArgPath().get();
+   * @return getLeftOprndPath() == null ? null : getLeftOprndPath().get();
    */
-  protected final _LeftArgumentBeed_ getLeftArg() {
-    return $leftArgument;
+  protected final _LeftOperandBeed_ getLeftOprnd() {
+    return $leftOperand;
   }
 
-  protected final void setLeftArgPath(Path<? extends _LeftArgumentBeed_> beedPath) {
-    _LeftArgumentBeed_ oldLeftArgument = $leftArgument;
-    if ($leftArgumentPath instanceof AbstractDependentPath) {
-      removeUpdateSource($leftArgumentPath);
+  protected final void setLeftOprndPath(Path<? extends _LeftOperandBeed_> beedPath) {
+    _LeftOperandBeed_ oldLeftOperand = $leftOperand;
+    if ($leftOperandPath instanceof AbstractDependentPath) {
+      removeUpdateSource($leftOperandPath);
     }
-    $leftArgumentPath = beedPath;
-    _LeftArgumentBeed_ leftArgument = null;
-    if ($leftArgumentPath != null) {
-      leftArgument = $leftArgumentPath.get();
+    $leftOperandPath = beedPath;
+    _LeftOperandBeed_ leftOperand = null;
+    if ($leftOperandPath != null) {
+      leftOperand = $leftOperandPath.get();
     }
-    if ($leftArgumentPath instanceof AbstractDependentPath) {
-      addUpdateSource($leftArgumentPath);
+    if ($leftOperandPath instanceof AbstractDependentPath) {
+      addUpdateSource($leftOperandPath);
     }
-    if (leftArgument != oldLeftArgument) {
-      setLeftArg(leftArgument);
+    if (leftOperand != oldLeftOperand) {
+      setLeftOprnd(leftOperand);
     }
   }
 
-  private Path<? extends _LeftArgumentBeed_> $leftArgumentPath;
+  private Path<? extends _LeftOperandBeed_> $leftOperandPath;
 
   /**
-   * @post getLeftArg() == leftArgument;
+   * @post getLeftOprnd() == leftOperand;
    */
-  private final void setLeftArg(_LeftArgumentBeed_ leftArgument) {
+  private final void setLeftOprnd(_LeftOperandBeed_ leftOperand) {
     _Result_ oldValue = get();
-    if ($leftArgument != null) {
-      removeUpdateSource($leftArgument);
+    if ($leftOperand != null) {
+      removeUpdateSource($leftOperand);
     }
-    $leftArgument = leftArgument;
+    $leftOperand = leftOperand;
     recalculate();
-    if ($leftArgument != null) {
-      addUpdateSource($leftArgument);
+    if ($leftOperand != null) {
+      addUpdateSource($leftOperand);
     }
     if (! equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
     }
   }
 
-  private _LeftArgumentBeed_ $leftArgument;
+  private _LeftOperandBeed_ $leftOperand;
 
   /*</property>*/
 
 
 
-  /*<property name="right argument">*/
+  /*<property name="right operand">*/
   //-----------------------------------------------------------------
 
   /**
    * @basic
    * @init null;
    */
-  protected final Path<? extends _RightArgumentBeed_> getRightArgPath() {
-    return $rightArgumentPath;
+  protected final Path<? extends _RightOperandBeed_> getRightOprndPath() {
+    return $rightOperandPath;
   }
 
   /**
-   * @return getRightArgPath() == null ? null : getRightArgPath().get();
+   * @return getRightOprndPath() == null ? null : getRightOprndPath().get();
    */
-  protected final _RightArgumentBeed_ getRightArg() {
-    return $rightArgument;
+  protected final _RightOperandBeed_ getRightOprnd() {
+    return $rightOperand;
   }
 
-  protected final void setRightArgPath(Path<? extends _RightArgumentBeed_> beedPath) {
-    _RightArgumentBeed_ oldRightArgument = $rightArgument;
-    if ($rightArgumentPath instanceof AbstractDependentPath) {
-      removeUpdateSource($rightArgumentPath);
+  protected final void setRightOprndPath(Path<? extends _RightOperandBeed_> beedPath) {
+    _RightOperandBeed_ oldRightOperand = $rightOperand;
+    if ($rightOperandPath instanceof AbstractDependentPath) {
+      removeUpdateSource($rightOperandPath);
     }
-    $rightArgumentPath = beedPath;
-    _RightArgumentBeed_ rightArgument = null;
-    if ($rightArgumentPath != null) {
-      rightArgument = $rightArgumentPath.get();
+    $rightOperandPath = beedPath;
+    _RightOperandBeed_ rightOperand = null;
+    if ($rightOperandPath != null) {
+      rightOperand = $rightOperandPath.get();
     }
-    if ($rightArgumentPath instanceof AbstractDependentPath) {
-      addUpdateSource($rightArgumentPath);
+    if ($rightOperandPath instanceof AbstractDependentPath) {
+      addUpdateSource($rightOperandPath);
     }
-    if (rightArgument != oldRightArgument) {
-      setRightArg(rightArgument);
+    if (rightOperand != oldRightOperand) {
+      setRightOprnd(rightOperand);
     }
   }
 
-  private Path<? extends _RightArgumentBeed_> $rightArgumentPath;
+  private Path<? extends _RightOperandBeed_> $rightOperandPath;
 
   /**
-   * @post getRightArg() == rightArgument;
+   * @post getRightOprnd() == rightOperand;
    */
-  private final void setRightArg(_RightArgumentBeed_ rightArgument) {
+  private final void setRightOprnd(_RightOperandBeed_ rightOperand) {
     _Result_ oldValue = get();
-    if ($rightArgument != null) {
-      removeUpdateSource($rightArgument);
+    if ($rightOperand != null) {
+      removeUpdateSource($rightOperand);
     }
-    $rightArgument = rightArgument;
+    $rightOperand = rightOperand;
     recalculate();
-    if ($rightArgument != null) {
-      addUpdateSource($rightArgument);
+    if ($rightOperand != null) {
+      addUpdateSource($rightOperand);
     }
     if (! equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
     }
   }
 
-  private _RightArgumentBeed_ $rightArgument;
+  private _RightOperandBeed_ $rightOperand;
 
   /*</property>*/
 
 
 
   /**
-   * @pre $leftArgument != null || $rightArgument != null;
+   * @pre $leftOperand != null || $rightOperand != null;
    */
   private void recalculate() {
-    if (($leftArgument != null) && hasEffectiveLeftArgument() &&
-        ($rightArgument != null) && hasEffectiveRightArgument()) {
-      recalculateFrom($leftArgument, $rightArgument);
+    if (($leftOperand != null) && hasEffectiveLeftOperand() &&
+        ($rightOperand != null) && hasEffectiveRightOperand()) {
+      recalculateFrom($leftOperand, $rightOperand);
       assignEffective(true);
     }
     else {
@@ -221,41 +221,41 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   }
 
   /**
-   * Implement like {@code getLeftArg().isEffective()}, with
-   * appropriate methods offered by {@code _LeftArgumentBeed_}.
+   * Implement like {@code getLeftOprnd().isEffective()}, with
+   * appropriate methods offered by {@code _LeftOperandBeed_}.
    */
-  protected abstract boolean hasEffectiveLeftArgument();
+  protected abstract boolean hasEffectiveLeftOperand();
 
   /**
-   * Implement like {@code getRightArg().isEffective()}, with
-   * appropriate methods offered by {@code _RightArgumentBeed_}.
+   * Implement like {@code getRightOprnd().isEffective()}, with
+   * appropriate methods offered by {@code _RightOperandBeed_}.
    */
-  protected abstract boolean hasEffectiveRightArgument();
+  protected abstract boolean hasEffectiveRightOperand();
 
   /**
    * Recalculate the value of this beed, and store the result, where
    * implementations that return the result can pick it up.
    *
-   * @pre $leftArgument != null;
-   * @pre leftArgument.isEffective();
-   * @pre $rightArgument != null;
-   * @pre $rightArgument.isEffective();
+   * @pre $leftOperand != null;
+   * @pre leftOperand.isEffective();
+   * @pre $rightOperand != null;
+   * @pre $rightOperand.isEffective();
    */
-  protected abstract void recalculateFrom(_LeftArgumentBeed_ leftArgument, _RightArgumentBeed_ rightArgument);
+  protected abstract void recalculateFrom(_LeftOperandBeed_ leftOperand, _RightOperandBeed_ rightOperand);
 
   @Override
   public final void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + get() + "\n");
-    sb.append(indent(level + 1) + "arguments:\n");
-    if (getLeftArg() == null && getRightArg() == null) {
+    sb.append(indent(level + 1) + "operands:\n");
+    if (getLeftOprnd() == null && getRightOprnd() == null) {
       sb.append(indent(level + 2) + "null");
     }
-    if (getLeftArg() != null) {
-      getLeftArg().toString(sb, level + 2);
+    if (getLeftOprnd() != null) {
+      getLeftOprnd().toString(sb, level + 2);
     }
-    if (getRightArg() != null) {
-      getRightArg().toString(sb, level + 2);
+    if (getRightOprnd() != null) {
+      getRightOprnd().toString(sb, level + 2);
     }
   }
 

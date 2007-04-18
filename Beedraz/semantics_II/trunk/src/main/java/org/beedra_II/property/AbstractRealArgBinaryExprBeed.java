@@ -25,7 +25,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
- * from two arguments of type {@link RealBeed}.
+ * from two operands of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -34,26 +34,26 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public abstract class AbstractRealArgBinaryExprBeed<
                                             _Result_ extends Object,
                                             _ResultEvent_ extends Event,
-                                            _LeftArgumentBeed_ extends RealBeed<? extends _LeftArgumentEvent_>,
-                                            _LeftArgumentEvent_ extends RealEvent,
-                                            _RightArgumentBeed_ extends RealBeed<? extends _RightArgumentEvent_>,
-                                            _RightArgumentEvent_ extends RealEvent>
+                                            _LeftOperandBeed_ extends RealBeed<? extends _LeftOperandEvent_>,
+                                            _LeftOperandEvent_ extends RealEvent,
+                                            _RightOperandBeed_ extends RealBeed<? extends _RightOperandEvent_>,
+                                            _RightOperandEvent_ extends RealEvent>
 
     extends AbstractBinaryExprBeed<_Result_,
                                   _ResultEvent_,
-                                  _LeftArgumentBeed_,
-                                  _LeftArgumentEvent_,
-                                  _RightArgumentBeed_,
-                                  _RightArgumentEvent_>  {
+                                  _LeftOperandBeed_,
+                                  _LeftOperandEvent_,
+                                  _RightOperandBeed_,
+                                  _RightOperandEvent_>  {
 
   @Override
-  protected boolean hasEffectiveLeftArgument() {
-    return getLeftArg().isEffective();
+  protected boolean hasEffectiveLeftOperand() {
+    return getLeftOprnd().isEffective();
   }
 
   @Override
-  protected boolean hasEffectiveRightArgument() {
-    return getRightArg().isEffective();
+  protected boolean hasEffectiveRightOperand() {
+    return getRightOprnd().isEffective();
   }
 
 }

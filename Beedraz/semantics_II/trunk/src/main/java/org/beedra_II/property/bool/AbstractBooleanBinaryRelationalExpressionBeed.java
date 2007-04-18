@@ -35,55 +35,55 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends AbstractRealArgBooleanBinaryExpressionBeed {
 
 
-  /*<property name="leftArgument">*/
+  /*<property name="leftOperand">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Path<? extends RealBeed<?>> getLeftArgumentPath() {
-    return getLeftArgPath();
+  public final Path<? extends RealBeed<?>> getLeftOperandPath() {
+    return getLeftOprndPath();
   }
 
   /**
-   * @return getLeftArgumentPath() == null ? null : getLeftArgumentPath().get();
+   * @return getLeftOperandPath() == null ? null : getLeftOperandPath().get();
    */
-  public final RealBeed<?> getLeftArgument() {
-    return getLeftArg();
+  public final RealBeed<?> getLeftOperand() {
+    return getLeftOprnd();
   }
 
   /**
-   * @post getLeftArgumentPath() == leftArgumentPath;
+   * @post getLeftOperandPath() == leftOperandPath;
    */
-  public final void setLeftArgumentPath(Path<? extends RealBeed<?>> leftArgumentPath) {
-    setLeftArgPath(leftArgumentPath);
+  public final void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    setLeftOprndPath(leftOperandPath);
   }
 
   /*</property>*/
 
 
-  /*<property name="rightArgument">*/
+  /*<property name="rightOperand">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final Path<? extends RealBeed<?>> getRightArgumentPath() {
-    return getRightArgPath();
+  public final Path<? extends RealBeed<?>> getRightOperandPath() {
+    return getRightOprndPath();
   }
 
   /**
-   * @return getRightArgumentPath() == null ? null : getRightArgumentPath().get();
+   * @return getRightOperandPath() == null ? null : getRightOperandPath().get();
    */
-  public final RealBeed<?> getRightArgument() {
-    return getRightArg();
+  public final RealBeed<?> getRightOperand() {
+    return getRightOprnd();
   }
 
   /**
-   * @post getRightArgumentPath() == rightArgumentPath;
+   * @post getRightOperandPath() == rightOperandPath;
    */
-  public final void setRightArgumentPath(Path<? extends RealBeed<?>> rightArgumentPath) {
-    setRightArgPath(rightArgumentPath);
+  public final void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    setRightOprndPath(rightOperandPath);
   }
 
   /*</property>*/

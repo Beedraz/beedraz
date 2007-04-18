@@ -22,7 +22,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 /**
  * A beed that is the base 10 logarithm (<em>log10</em>) of an
- * {@link #getArgument() argument} {@link DoubleBeed}. In Java
+ * {@link #getOperand() operand} {@link DoubleBeed}. In Java
  * the natural logarithm is {@link Math#log10(double)}.
  *
  * @mudo overflow: -MIN_VALUE == MIN_VALUE
@@ -36,18 +36,18 @@ public class DoubleLog10Beed
 
   /**
    * @post  getDouble() == null;
-   * @post  getArgument() == null;
+   * @post  getOperand() == null;
    */
   public DoubleLog10Beed() {
     super();
   }
 
   /**
-   * @pre argumentValue != null;
+   * @pre operandValue != null;
    */
   @Override
-  protected final double calculateValue(double argumentValue) {
-    return Math.log10(argumentValue);
+  protected final double calculateValue(double operandValue) {
+    return Math.log10(operandValue);
   }
 
   @Override

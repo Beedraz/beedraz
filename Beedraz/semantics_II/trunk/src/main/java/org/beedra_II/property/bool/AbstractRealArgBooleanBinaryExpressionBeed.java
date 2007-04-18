@@ -27,7 +27,7 @@ import org.ppeew.smallfries_I.MathUtil;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a boolean value derived
- * from 2 arguments of type {@link RealBeed}.
+ * from 2 operands of type {@link RealBeed}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -69,11 +69,11 @@ public abstract class AbstractRealArgBooleanBinaryExpressionBeed
   }
 
   @Override
-  protected final void recalculateFrom(RealBeed<?> leftArgument, RealBeed<?> rightArgument) {
-    $value = calculateValue(leftArgument.getdouble(), rightArgument.getdouble());
+  protected final void recalculateFrom(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
+    $value = calculateValue(leftOperand.getdouble(), rightOperand.getdouble());
   }
 
-  protected abstract boolean calculateValue(double leftArgument, double rightArgument);
+  protected abstract boolean calculateValue(double leftOperand, double rightOperand);
 
 }
 

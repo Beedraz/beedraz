@@ -24,6 +24,7 @@ import java.util.Map;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -101,13 +102,15 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
   protected final void setLeftArgPath(Path<? extends _LeftArgumentBeed_> beedPath) {
     _LeftArgumentBeed_ oldLeftArgument = $leftArgument;
-    if ($leftArgumentPath != null) {
+    if ($leftArgumentPath instanceof AbstractDependentPath) {
       removeUpdateSource($leftArgumentPath);
     }
     $leftArgumentPath = beedPath;
     _LeftArgumentBeed_ leftArgument = null;
     if ($leftArgumentPath != null) {
       leftArgument = $leftArgumentPath.get();
+    }
+    if ($leftArgumentPath instanceof AbstractDependentPath) {
       addUpdateSource($leftArgumentPath);
     }
     if (leftArgument != oldLeftArgument) {
@@ -161,13 +164,15 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
   protected final void setRightArgPath(Path<? extends _RightArgumentBeed_> beedPath) {
     _RightArgumentBeed_ oldRightArgument = $rightArgument;
-    if ($rightArgumentPath != null) {
+    if ($rightArgumentPath instanceof AbstractDependentPath) {
       removeUpdateSource($rightArgumentPath);
     }
     $rightArgumentPath = beedPath;
     _RightArgumentBeed_ rightArgument = null;
     if ($rightArgumentPath != null) {
       rightArgument = $rightArgumentPath.get();
+    }
+    if ($rightArgumentPath instanceof AbstractDependentPath) {
       addUpdateSource($rightArgumentPath);
     }
     if (rightArgument != oldRightArgument) {

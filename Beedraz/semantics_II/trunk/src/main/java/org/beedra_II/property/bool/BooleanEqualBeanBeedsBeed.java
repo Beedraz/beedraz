@@ -25,6 +25,7 @@ import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -100,12 +101,14 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
    * The left argument is replaced by the new left argument: see {@link #setLeftArg(BeanBeed)}.
    */
   public final void setLeftArgumentPath(Path<? extends _BeanBeed_> leftArgumentPath) {
-    if ($leftArgumentPath != null) {
+    if ($leftArgumentPath instanceof AbstractDependentPath) {
       removeUpdateSource($leftArgumentPath);
     }
     $leftArgumentPath = leftArgumentPath;
-    if ($leftArgumentPath != null) {
+    if ($leftArgumentPath instanceof AbstractDependentPath) {
       addUpdateSource($leftArgumentPath);
+    }
+    if ($leftArgumentPath != null) {
       setLeftArg($leftArgumentPath.get());
     }
     else {
@@ -155,12 +158,14 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
    * The right argument is replaced by the new right argument: see {@link #setRightArg(BeanBeed)}.
    */
   public final void setRightArgumentPath(Path<? extends _BeanBeed_> rightArgumentPath) {
-    if ($rightArgumentPath != null) {
+    if ($rightArgumentPath instanceof AbstractDependentPath) {
       removeUpdateSource($rightArgumentPath);
     }
     $rightArgumentPath = rightArgumentPath;
-    if ($rightArgumentPath != null) {
+    if ($rightArgumentPath instanceof AbstractDependentPath) {
       addUpdateSource($rightArgumentPath);
+    }
+    if ($rightArgumentPath != null) {
       setRightArg($rightArgumentPath.get());
     }
     else {

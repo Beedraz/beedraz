@@ -24,6 +24,7 @@ import java.util.Map;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -90,13 +91,15 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
   public final void setArgumentPath(Path<? extends _ArgumentBeed_> beedPath) {
     _ArgumentBeed_ oldArgument = $argument;
-    if ($argumentPath != null) {
+    if ($argumentPath instanceof AbstractDependentPath) {
       removeUpdateSource($argumentPath);
     }
     $argumentPath = beedPath;
     _ArgumentBeed_ argument = null;
     if ($argumentPath != null) {
       argument = $argumentPath.get();
+    }
+    if ($argumentPath instanceof AbstractDependentPath) {
       addUpdateSource($argumentPath);
     }
     if (argument != oldArgument) {

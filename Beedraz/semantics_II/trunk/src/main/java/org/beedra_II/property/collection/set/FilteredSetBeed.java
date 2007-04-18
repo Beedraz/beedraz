@@ -30,6 +30,7 @@ import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.path.PathFactory;
@@ -299,7 +300,9 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
       $element = element;
       $bbPath = getCriterion().createPath(element);
       assert $bbPath != null;
-      addUpdateSource($bbPath);
+      if ($bbPath instanceof AbstractDependentPath) {
+        addUpdateSource($bbPath);
+      }
       $bb = $bbPath.get();
       if ($bb != null) {
         addUpdateSource($bb);
@@ -431,12 +434,14 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    * The source is replaced by the new source: see {@link #setSource(SetBeed)}.
    */
   public final void setSourcePath(Path<? extends SetBeed<_Element_, ?>> sourcePath) {
-    if ($sourcePath != null) {
+    if ($sourcePath instanceof AbstractDependentPath) {
       $dependent.removeUpdateSource($sourcePath);
     }
     $sourcePath = sourcePath;
-    if ($sourcePath != null) {
+    if ($sourcePath instanceof AbstractDependentPath) {
       $dependent.addUpdateSource($sourcePath);
+    }
+    if ($sourcePath != null) {
       setSource($sourcePath.get());
     }
     else {

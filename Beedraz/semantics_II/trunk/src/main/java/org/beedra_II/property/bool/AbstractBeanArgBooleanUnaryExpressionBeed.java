@@ -25,6 +25,7 @@ import org.beedra_II.AbstractDependentBeed;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
+import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
@@ -83,12 +84,14 @@ public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ exten
    * The beed is replaced by the new beed: see {@link #setBeed(BeanBeed)}.
    */
   public final void setBeedPath(Path<? extends _BeanBeed_> beedPath) {
-    if ($beedPath != null) {
+    if ($beedPath instanceof AbstractDependentPath) {
       removeUpdateSource($beedPath);
     }
     $beedPath = beedPath;
-    if ($beedPath != null) {
+    if ($beedPath instanceof AbstractDependentPath) {
       addUpdateSource($beedPath);
+    }
+    if ($beedPath != null) {
       setBeed($beedPath.get());
     }
     else {

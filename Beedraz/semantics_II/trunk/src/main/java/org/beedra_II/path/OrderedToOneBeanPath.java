@@ -58,14 +58,18 @@ public class OrderedToOneBeanPath<_One_ extends BeanBeed>
   public OrderedToOneBeanPath(Path<? extends EditableOrderedBidirToOneBeed<_One_, ?>> toOneBeedPath) {
     assert toOneBeedPath != null;
     $toOnePath = toOneBeedPath;
-    addUpdateSource($toOnePath);
+    if ($toOnePath instanceof AbstractDependentPath) {
+      addUpdateSource($toOnePath);
+    }
     setToOneBeed(toOneBeedPath.get());
   }
 
 //      When does this go away?
   public final void terminate() {
     assert $toOnePath != null;
-    removeUpdateSource($toOnePath);
+    if ($toOnePath instanceof AbstractDependentPath) {
+      removeUpdateSource($toOnePath);
+    }
     if ($toOneBeed != null) {
       removeUpdateSource($toOneBeed);
     }

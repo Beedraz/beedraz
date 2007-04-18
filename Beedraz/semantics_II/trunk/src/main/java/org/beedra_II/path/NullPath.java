@@ -34,8 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State$",
          tag      = "$Name$")
 public class NullPath<_SelectedBeed_ extends Beed<?>>
-    extends AbstractIndependentPath<_SelectedBeed_>
-    implements Path<_SelectedBeed_> {
+    extends AbstractIndependentPath<_SelectedBeed_> {
 
   public final _SelectedBeed_ get() {
     return null;

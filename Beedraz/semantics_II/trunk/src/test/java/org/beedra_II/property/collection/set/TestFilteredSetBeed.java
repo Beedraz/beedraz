@@ -17,6 +17,7 @@
 package org.beedra_II.property.collection.set;
 
 
+import static org.beedra_II.path.Paths.fix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -28,29 +29,38 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.beedra_II.BeedFilter;
 import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
+import org.beedra_II.path.ConstantPath;
+import org.beedra_II.path.Path;
+import org.beedra_II.path.PathFactory;
+import org.beedra_II.path.Paths;
 import org.beedra_II.property.association.set.BidirToManyBeed;
 import org.beedra_II.property.association.set.BidirToOneEdit;
 import org.beedra_II.property.association.set.EditableBidirToOneBeed;
+import org.beedra_II.property.bool.BooleanBeed;
+import org.beedra_II.property.bool.BooleanEQBeed;
+import org.beedra_II.property.bool.BooleanNullBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
 import org.beedra_II.property.number.integer.long64.ActualLongEvent;
 import org.beedra_II.property.number.integer.long64.EditableLongBeed;
 import org.beedra_II.property.number.integer.long64.LongEdit;
+import org.beedra_II.property.number.real.double64.DoubleConstantBeed;
+import org.beedra_II.property.number.real.double64.DoubleModBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class TestFilteredSetBeed {
 
-  public class MyFilteredSetBeed extends FilteredSetBeed<WellBeanBeed, AggregateEvent> {
+  public class MyNewFilteredSetBeed extends FilteredSetBeed<WellBeanBeed, AggregateEvent> {
 
-    public MyFilteredSetBeed(BeedFilter<WellBeanBeed> filter) {
-      super(filter);
+    public MyNewFilteredSetBeed(PathFactory<WellBeanBeed, BooleanBeed> criterion) {
+      super(criterion);
     }
 
     /**
@@ -92,16 +102,21 @@ public class TestFilteredSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    $filter = new BeedFilter<WellBeanBeed>() {
-        public boolean filter(WellBeanBeed element) {
-          return element.cq.get() != null &&
-          element.cq.get().intValue() % 2 == 0;
-        }
-        public boolean dependsOnBeed() {
-          return true;
+    $criterion = new PathFactory<WellBeanBeed, BooleanBeed>() {
+        // filter the wells whose cq value is effective and even
+        public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
+          // construct the %
+          DoubleModBeed modBeed = new DoubleModBeed();
+          modBeed.setDividendPath(fix(startBeed.cq));
+          modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
+          // construct the ==
+          BooleanEQBeed eqBeed = new BooleanEQBeed();
+          eqBeed.setLeftArgumentPath(fix(modBeed));
+          eqBeed.setRightArgumentPath(fix(new DoubleConstantBeed(0)));
+          return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
-    $filteredSetBeed = new MyFilteredSetBeed($filter);
+    $filteredSetBeed = new MyNewFilteredSetBeed($criterion);
     $run = new RunBeanBeed();
     $wellNull = new WellBeanBeed();
     $well0 = new WellBeanBeed();
@@ -166,15 +181,16 @@ public class TestFilteredSetBeed {
   private Long $cq1;
   private Long $cq2;
   private Long $cq3;
-  private BeedFilter<WellBeanBeed> $filter;
-  private MyFilteredSetBeed $filteredSetBeed;
+  private PathFactory<WellBeanBeed, BooleanBeed> $criterion;
+  private MyNewFilteredSetBeed $filteredSetBeed;
   private StubListener<SetEvent<WellBeanBeed>> $listener3;
   private StubListener<ActualLongEvent> $listener5;
 
   @Test
   public void constructor() {
-    assertEquals($filteredSetBeed.getFilter(), $filter);
+    assertEquals($filteredSetBeed.getCriterion(), $criterion);
     assertEquals($filteredSetBeed.getSource(), null);
+    assertEquals($filteredSetBeed.getSourcePath(), null);
     assertTrue($filteredSetBeed.get().isEmpty());
   }
 
@@ -182,14 +198,16 @@ public class TestFilteredSetBeed {
    * Source is null.
    */
   @Test
-  public void setSource1() throws EditStateException, IllegalEditException {
-    // register listeners to the FilteredSetBeed
+  public void setSourcePath1() throws EditStateException, IllegalEditException {
+    // register listeners to the NewFilteredSetBeed
     $filteredSetBeed.addListener($listener3);
     assertNull($listener3.$event);
-    // check setSource
-    SetBeed<WellBeanBeed, ?> source = null;
-    $filteredSetBeed.setSource(source);
-    assertEquals($filteredSetBeed.getSource(), source);
+    // set the sourcePath
+    Path<? extends SetBeed<WellBeanBeed, ?>> sourcePath = null;
+    $filteredSetBeed.setSourcePath(sourcePath);
+    // source path and source should be set, beed should be updated
+    assertEquals($filteredSetBeed.getSourcePath(), sourcePath);
+    assertEquals($filteredSetBeed.getSource(), null);
     assertTrue($filteredSetBeed.get().isEmpty());
     // value has not changed, so the listeners are not notified
     assertNull($listener3.$event);
@@ -199,17 +217,21 @@ public class TestFilteredSetBeed {
    * Source is effective.
    */
   @Test
-  public void setSource2() throws EditStateException, IllegalEditException {
-    // register listeners to the FilteredSetBeed
+  public void setSourcePath2() throws EditStateException, IllegalEditException {
+    // register listeners to the NewFilteredSetBeed
     $filteredSetBeed.addListener($listener3);
     assertNull($listener3.$event);
-    // check setSource
+    // set the source path
     EditableSetBeed<WellBeanBeed> source = createSource();
-    $filteredSetBeed.setSource(source);
+    Path<? extends SetBeed<WellBeanBeed, ?>> sourcePath =
+      new ConstantPath<SetBeed<WellBeanBeed,?>>(source);
+    $filteredSetBeed.setSourcePath(sourcePath);
+    // source path and source should be set, beed should be updated
+    assertEquals($filteredSetBeed.getSourcePath(), sourcePath);
     assertEquals($filteredSetBeed.getSource(), source);
     assertEquals($filteredSetBeed.get().size(), 1);
     assertTrue($filteredSetBeed.get().contains($well2));
-    // value has changed, so the listeners of the filtered set beed are notified
+    // value has changed, so the listeners of the beed are notified
     Set<WellBeanBeed> added = new HashSet<WellBeanBeed>();
     added.add($well2);
     Set<WellBeanBeed> removed = new HashSet<WellBeanBeed>();
@@ -218,12 +240,15 @@ public class TestFilteredSetBeed {
     assertEquals($listener3.$event.getAddedElements(), added);
     assertEquals($listener3.$event.getRemovedElements(), removed);
     assertEquals($listener3.$event.getEdit(), null);
-    // The FilteredSetBeed is registered as listener of the source, so when
+    // the FilteretSetBeed is registered as listener of the source path,
+    // so when the source path changes
+    // @mudo How can I construct a path to a source that can change?
+    // The NewFilteredSetBeed is registered as listener of the source, so when
     // the source changes, the beed should be notified
     $listener3.reset();
     assertNull($listener3.$event);
-    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
     WellBeanBeed well4 = createWellBeanBeed(4L);
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
     setEdit.addElementToAdd(well4);
     setEdit.perform();
     removed = new HashSet<WellBeanBeed>();
@@ -237,8 +262,11 @@ public class TestFilteredSetBeed {
     assertEquals($filteredSetBeed.get().size(), 2);
     assertTrue($filteredSetBeed.get().contains($well2));
     assertTrue($filteredSetBeed.get().contains(well4));
-    // The FilteredSetBeed is registered as listener of all beeds in the source,
+    // The NewFilteredSetBeed is registered as listener of all beeds
+    // in the source (i.e. of the corresponding filter criteria),
     // so when one of them changes, the beed should be notified
+    $listener3.reset();
+    assertNull($listener3.$event);
     LongEdit longEdit = new LongEdit(well4.cq);
     longEdit.setGoal(5L);
     longEdit.perform();
@@ -270,7 +298,7 @@ public class TestFilteredSetBeed {
     assertTrue($filteredSetBeed.get().contains($well2));
     assertTrue($filteredSetBeed.get().contains(well4));
 
-    // When a beed is removed from the source, the FilteredSetBeed is removed as listener
+    // When a beed is removed from the source, the NewFilteredSetBeed is removed as listener
     // of that beed.
     $listener3.reset();
     assertNull($listener3.$event);
@@ -293,17 +321,96 @@ public class TestFilteredSetBeed {
     longEdit = new LongEdit(well4.cq);
     longEdit.setGoal(7L);
     longEdit.perform();
-    assertNull($listener3.$event); // the FilteredSetBeed is NOT notified
+    assertNull($listener3.$event); // the NewFilteredSetBeed is NOT notified
     // and the value of the filtered set beed is correct
     assertEquals($filteredSetBeed.get().size(), 1);
     assertTrue($filteredSetBeed.get().contains($well2));
+
+    // the filter criterion of an element could return a new beed
+    // @mudo construct a test
+  }
+
+  /**
+   * Are update sources removed properly?
+   */
+  @Test
+  public void setSourcePath3() throws EditStateException, IllegalEditException {
+    // register listeners to the NewFilteredSetBeed
+    $filteredSetBeed.addListener($listener3);
+    assertNull($listener3.$event);
+    // set the source path
+    EditableSetBeed<WellBeanBeed> source = createSource();
+    Path<? extends SetBeed<WellBeanBeed, ?>> sourcePath =
+      new ConstantPath<SetBeed<WellBeanBeed,?>>(source);
+    $filteredSetBeed.setSourcePath(sourcePath);
+    // source path and source should be set, beed should be updated
+    assertEquals($filteredSetBeed.getSourcePath(), sourcePath);
+    assertEquals($filteredSetBeed.getSource(), source);
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well2));
+
+    // when the source path is replaced by another one, it should be removed
+    // as update source
+    EditableSetBeed<WellBeanBeed> sourceOther = createOtherSource();
+    Path<? extends SetBeed<WellBeanBeed, ?>> sourcePathOther =
+      new ConstantPath<SetBeed<WellBeanBeed,?>>(sourceOther);
+    $filteredSetBeed.setSourcePath(sourcePathOther);
+    // source path and source should be set, beed should be updated
+    assertEquals($filteredSetBeed.getSourcePath(), sourcePathOther);
+    assertEquals($filteredSetBeed.getSource(), sourceOther);
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well0));
+
+    // when the old source path is changed, the beed should not be
+    // notified
+    $listener3.reset();
+    assertNull($listener3.$event);
+    // @mudo the source path cannot be changed
+
+    // when the source is replaced by another one, it should be removed
+    // as update source
+    // so, when the old source is changed, the beed should not be
+    // notified
+    $listener3.reset();
+    assertNull($listener3.$event);
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(source);
+    setEdit.addElementToRemove($well1);
+    setEdit.perform();
+    // listener is not notified
+    assertNull($listener3.$event);
+    // beed has not changed
+    assertEquals($filteredSetBeed.getSourcePath(), sourcePathOther);
+    assertEquals($filteredSetBeed.getSource(), sourceOther);
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well0));
+
+    // when the beeds are replaced by other beeds, they are removed
+    // as update source (i.e. the corresponding filter criteria are removed)
+    // so, when one of those beeds is changed, the beed should not be
+    // notified
+    $listener3.reset();
+    assertNull($listener3.$event);
+
+    LongEdit longEdit = new LongEdit($well1.cq);
+    longEdit.setGoal(6L);
+    longEdit.perform();
+    // listener is not notified
+    assertNull($listener3.$event);
+    // beed has not changed
+    assertEquals($filteredSetBeed.getSourcePath(), sourcePathOther);
+    assertEquals($filteredSetBeed.getSource(), sourceOther);
+    assertEquals($filteredSetBeed.get().size(), 1);
+    assertTrue($filteredSetBeed.get().contains($well0));
+
   }
 
   @Test
   public void get() throws EditStateException, IllegalEditException {
     // filter the even wells
     SetBeed<WellBeanBeed, ?> source = createSource();
-    $filteredSetBeed.setSource(source);
+    Path<? extends SetBeed<WellBeanBeed, ?>> sourcePath =
+      new ConstantPath<SetBeed<WellBeanBeed,?>>(source);
+    $filteredSetBeed.setSourcePath(sourcePath);
     Set<WellBeanBeed> result = $filteredSetBeed.get();
     assertEquals(result.size(), 1);
     assertTrue(result.contains($well2));
@@ -321,18 +428,23 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // filter the odd wells
-    BeedFilter<WellBeanBeed> filter =
-      new BeedFilter<WellBeanBeed>() {
-        public boolean filter(WellBeanBeed element) {
-          return element.cq.get() != null &&
-                 element.cq.get().intValue() % 2 == 1;
-        }
-        public boolean dependsOnBeed() {
-          return true;
+    PathFactory<WellBeanBeed, BooleanBeed> criterion =
+      new PathFactory<WellBeanBeed, BooleanBeed>() {
+        // filter the wells whose cq value is effective and odd
+        public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
+          // construct the %
+          DoubleModBeed modBeed = new DoubleModBeed();
+          modBeed.setDividendPath(fix(startBeed.cq));
+          modBeed.setDivisorPath(fix(new DoubleConstantBeed(2)));
+          // construct the ==
+          BooleanEQBeed eqBeed = new BooleanEQBeed();
+          eqBeed.setLeftArgumentPath(fix(modBeed));
+          eqBeed.setRightArgumentPath(fix(new DoubleConstantBeed(1)));
+          return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
-    $filteredSetBeed = new MyFilteredSetBeed(filter);
-    $filteredSetBeed.setSource(source);
+    $filteredSetBeed = new MyNewFilteredSetBeed(criterion);
+    $filteredSetBeed.setSourcePath(sourcePath);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 2);
     assertTrue(result.contains($well1));
@@ -354,17 +466,17 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // filter the wells whose cq value is empty
-    filter = new BeedFilter<WellBeanBeed>() {
-
-      public boolean filter(WellBeanBeed element) {
-        return element.cq.get() == null;
-      }
-      public boolean dependsOnBeed() {
-        return true;
-      }
+    criterion = new PathFactory<WellBeanBeed, BooleanBeed>() {
+        // filter the wells whose cq value is null
+        public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
+          // construct the ==
+          BooleanNullBeed nullBeed = new BooleanNullBeed();
+          nullBeed.setArgumentPath(Paths.fix(startBeed.cq));
+          return new ConstantPath<BooleanBeed>(nullBeed);
+        }
     };
-    $filteredSetBeed = new MyFilteredSetBeed(filter);
-    $filteredSetBeed.setSource(source);
+    $filteredSetBeed = new MyNewFilteredSetBeed(criterion);
+    $filteredSetBeed.setSourcePath(sourcePath);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 1);
     assertTrue(result.contains($wellNull));
@@ -381,8 +493,8 @@ public class TestFilteredSetBeed {
       assertTrue(true);
     }
     // source = null
-    source = null;
-    $filteredSetBeed.setSource(source);
+    sourcePath = null;
+    $filteredSetBeed.setSourcePath(sourcePath);
     result = $filteredSetBeed.get();
     assertEquals(result.size(), 0);
     iterator = result.iterator();
@@ -395,53 +507,6 @@ public class TestFilteredSetBeed {
     catch(NoSuchElementException exc) {
       assertTrue(true);
     }
-  }
-
-
-  @Test
-  public void recalculate() throws EditStateException, IllegalEditException {
-    // double mean beed has no source
-    $filteredSetBeed.recalculate();
-    assertTrue($filteredSetBeed.get().isEmpty());
-    // create source
-    EditableSetBeed<WellBeanBeed> source =
-      new EditableSetBeed<WellBeanBeed>();
-    // add source to mean beed
-    $filteredSetBeed.setSource(source);
-    // recalculate (setBeed contains no elements)
-    $filteredSetBeed.recalculate();
-    assertTrue($filteredSetBeed.get().isEmpty());
-    // add beed
-    SetEdit<WellBeanBeed> setEdit =
-      new SetEdit<WellBeanBeed>(source);
-    setEdit.addElementToAdd($well1);
-    setEdit.perform();
-    // recalculate (setBeed contains beed 1)
-    $filteredSetBeed.recalculate();
-    assertEquals($filteredSetBeed.get().size(), 0);
-    // recalculate (setBeed contains beed 1)
-    $filteredSetBeed.recalculate();
-    assertEquals($filteredSetBeed.get().size(), 0);
-    // add beed
-    setEdit = new SetEdit<WellBeanBeed>(source);
-    setEdit.addElementToAdd($well2);
-    setEdit.perform();
-    // recalculate (setBeed contains beed 1 and 2)
-    $filteredSetBeed.recalculate();
-    assertEquals($filteredSetBeed.get().size(), 1);
-    assertTrue($filteredSetBeed.get().contains($well2));
-    // recalculate (setBeed contains beed 1 and 2)
-    $filteredSetBeed.recalculate();
-    assertEquals($filteredSetBeed.get().size(), 1);
-    assertTrue($filteredSetBeed.get().contains($well2));
-    // add beed
-    setEdit = new SetEdit<WellBeanBeed>(source);
-    setEdit.addElementToAdd($well3);
-    setEdit.perform();
-    // recalculate (setBeed contains beed 1, 2 and 3)
-    $filteredSetBeed.recalculate();
-    assertEquals($filteredSetBeed.get().size(), 1);
-    assertTrue($filteredSetBeed.get().contains($well2));
   }
 
   private EditableSetBeed<WellBeanBeed> createSource() throws EditStateException, IllegalEditException {
@@ -460,6 +525,17 @@ public class TestFilteredSetBeed {
     setEdit.perform();
     setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($wellNull);
+    setEdit.perform();
+    return setBeed;
+  }
+
+  private EditableSetBeed<WellBeanBeed> createOtherSource() throws EditStateException, IllegalEditException {
+    // create set beed
+    EditableSetBeed<WellBeanBeed> setBeed =
+      new EditableSetBeed<WellBeanBeed>();
+    // add beeds to set
+    SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
+    setEdit.addElementToAdd($well0);
     setEdit.perform();
     return setBeed;
   }
@@ -494,7 +570,9 @@ public class TestFilteredSetBeed {
     assertEquals($filteredSetBeed.getCardinality().getLong(), 0L);
     // add source
     EditableSetBeed<WellBeanBeed> source = createSource();
-    $filteredSetBeed.setSource(source);
+    Path<? extends SetBeed<WellBeanBeed, ?>> sourcePath =
+      new ConstantPath<SetBeed<WellBeanBeed,?>>(source);
+    $filteredSetBeed.setSourcePath(sourcePath);
     // check the size
     assertEquals($filteredSetBeed.getSize().getLong(), 1L);
     assertEquals($filteredSetBeed.getCardinality().getLong(), 1L);

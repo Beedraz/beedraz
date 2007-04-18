@@ -127,14 +127,8 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
    */
   private final void setLeftArg(_BeanBeed_ leftArgument) {
     Boolean oldValue = get();
-    if ($leftArgument != null) {
-      removeUpdateSource($leftArgument);
-    }
     $leftArgument = leftArgument;
     recalculate();
-    if ($leftArgument != null) {
-      addUpdateSource($leftArgument);
-    }
     if (! MathUtil.equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
     }
@@ -188,14 +182,8 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
    */
   private final void setRightArg(_BeanBeed_ rightArgument) {
     Boolean oldValue = get();
-    if ($rightArgument != null) {
-      removeUpdateSource($rightArgument);
-    }
     $rightArgument = rightArgument;
     recalculate();
-    if ($rightArgument != null) {
-      addUpdateSource($rightArgument);
-    }
     if (! MathUtil.equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
     }

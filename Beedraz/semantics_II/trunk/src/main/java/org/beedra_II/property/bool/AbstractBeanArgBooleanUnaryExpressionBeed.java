@@ -110,14 +110,8 @@ public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ exten
    */
   private final void setBeed(_BeanBeed_ beed) {
     Boolean oldValue = get();
-    if ($beed != null) {
-      removeUpdateSource($beed);
-    }
     $beed = beed;
     recalculate();
-    if ($beed != null) {
-      addUpdateSource($beed);
-    }
     if (! MathUtil.equalValue(oldValue, get())) {
       updateDependents(createNewEvent(oldValue, get(), null));
     }

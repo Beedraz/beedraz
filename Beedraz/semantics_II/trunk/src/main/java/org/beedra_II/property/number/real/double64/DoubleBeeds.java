@@ -40,7 +40,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Convenience methods for working with {@link DoubleBeed double beeds}.</p>
+ * <p>Convenience methods for working with {@link DoubleBeed DoubleBeeds}.</p>
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.

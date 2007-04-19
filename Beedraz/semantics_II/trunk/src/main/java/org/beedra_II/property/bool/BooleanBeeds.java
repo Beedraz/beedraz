@@ -26,7 +26,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Convenience methods for working with {@link BooleanBeed boolean beeds}.</p>
+ * <p>Convenience methods for working with {@link BooleanBeed BooleanBeeds}.</p>
  *
  * @author  Jan Dockx
  * @author  Nele Smeets

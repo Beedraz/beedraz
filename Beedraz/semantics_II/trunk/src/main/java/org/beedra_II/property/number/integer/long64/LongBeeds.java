@@ -25,7 +25,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Convenience methods for working with {@link LongBeed long beeds}.</p>
+ * <p>Convenience methods for working with {@link LongBeed LongBeeds}.</p>
  *
  * @author  Nele Smeets
  * @author  Peopleware n.v.

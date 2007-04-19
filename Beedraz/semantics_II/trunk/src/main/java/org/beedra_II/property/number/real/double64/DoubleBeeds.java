@@ -327,10 +327,10 @@ public class DoubleBeeds {
   /*</section>*/
 
 
-  /*<section name="a">*/
+  /*<section name="avg">*/
   //------------------------------------------------------------------
 
-  public static DoubleBeed a(SetBeed<RealBeed<?>, ?> source) {
+  public static DoubleBeed avg(SetBeed<RealBeed<?>, ?> source) {
     DoubleArithmeticMeanBeed meanBeed = new DoubleArithmeticMeanBeed();
     meanBeed.setSource(source);
     return meanBeed;
@@ -411,10 +411,10 @@ public class DoubleBeeds {
   /*</section>*/
 
 
-  /*<section name="g">*/
+  /*<section name="gavg">*/
   //------------------------------------------------------------------
 
-  public static DoubleBeed g(SetBeed<RealBeed<?>, ?> source) {
+  public static DoubleBeed gavg(SetBeed<RealBeed<?>, ?> source) {
     DoubleGeometricMeanBeed meanBeed = new DoubleGeometricMeanBeed();
     meanBeed.setSource(source);
     return meanBeed;

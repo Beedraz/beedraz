@@ -27,6 +27,8 @@ import org.beedra_II.edit.Edit;
 import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
+import org.beedra_II.property.bool.BooleanNotNullBeed;
+import org.beedra_II.property.bool.BooleanNullBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -39,6 +41,13 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *          ? getOperand() == getOperandPath().get()
  *          : null;
  * @invar getOperand() == null
+ *          ? get() == null
+ *          : true;
+ * @invar getOperand() != null && getOperand().get() != null
+ *          ? get() != null
+ *          : true;
+ * @default (Overridden in {@link BooleanNotNullBeed} and {@link BooleanNullBeed})
+ * @invar getOperand() != null && getOperand().get() == null
  *          ? get() == null
  *          : true;
  */
@@ -61,7 +70,9 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
     if (pathEvent != null) {
       setOperand(pathEvent.getNewValue());
     }
-    recalculate();
+    recalculate(); // we know at this point that the operand path is effective; otherwise
+                   // it would be impossible to get an event from it (or from the operand),
+                   // so the precondition of the recalculate method is fulfilled
     if (! equalValue(oldValue, get())) {
       return createNewEvent(oldValue, get(), edit);
     }
@@ -138,9 +149,16 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
 
   /**
-   * @pre $operand != null;
+   * This method recalculates the value of the unary beed, when the operand
+   * has changed.
+   * When the operand is changed into null, then this method is not called,
+   * since in that case, the value of this beed should be changed into null,
+   * which is simply done by setting the value of {@link #isEffective()} to false.
    *
-   * @default  This method could be overriden in subclasses
+   * @pre getOperand() != null;
+   *
+   * This is the default implementation. The method is overridden in
+   * {@link BooleanNotNullBeed} and {@link BooleanNullBeed}.
    */
   protected void recalculate() {
     if (hasEffectiveOperand()) {
@@ -162,7 +180,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
   /**
    * @pre operand != null;
-   * @pre operand.isEffective();
+   * @pre operand.isEffective(); // @mudo isEffective() does not exist in _OperandBeed_
    */
   protected abstract void recalculateFrom(_OperandBeed_ operand);
 

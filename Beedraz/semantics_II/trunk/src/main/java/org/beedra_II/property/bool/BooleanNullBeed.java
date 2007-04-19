@@ -25,7 +25,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @invar getOperand() != null && !getOperand().isEffective()
  *          ? get() == true
- *          : get() == false;
+ *          : get() == false; // so, when the operand is effective, this beed is always effective
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public class BooleanNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
 
   /**
-   * @pre $operand != null;
+   * @pre getOperand() != null;
    */
   @Override
   protected void recalculate() {

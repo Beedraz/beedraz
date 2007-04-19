@@ -243,12 +243,12 @@ public class BooleanBeeds {
   //------------------------------------------------------------------
 
   public static <_BeanBeed_ extends BeanBeed> BooleanBeed instanceOf(
-      _BeanBeed_ beanBeed, Class beedClass) {
+      _BeanBeed_ beanBeed, Class<?> beedClass) {
     return instanceOf(fix(beanBeed), beedClass);
   }
 
   public static <_BeanBeed_ extends BeanBeed> BooleanBeed instanceOf(
-      Path<? extends _BeanBeed_> beanBeedPath, Class beedClass) {
+      Path<? extends _BeanBeed_> beanBeedPath, Class<?> beedClass) {
     BooleanInstanceofBeed<_BeanBeed_> instanceofBeed =
       new BooleanInstanceofBeed<_BeanBeed_>(beedClass);
     instanceofBeed.setBeedPath(beanBeedPath);

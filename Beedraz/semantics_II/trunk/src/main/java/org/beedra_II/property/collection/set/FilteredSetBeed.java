@@ -126,9 +126,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
           HashSet<_Element_> removedFilteredElements) {
         assert event != null;
         assert addedFilteredElements != null;
-        assert addedFilteredElements.isEmpty();
         assert removedFilteredElements != null;
-        assert removedFilteredElements.isEmpty();
         try {
           @SuppressWarnings("unchecked")
           PathEvent<SetBeed<_Element_, ?>> pathEvent = (PathEvent<SetBeed<_Element_, ?>>)event;
@@ -161,9 +159,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
           HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
         assert event != null;
         assert addedFilteredElements != null;
-        assert addedFilteredElements.isEmpty();
         assert removedFilteredElements != null;
-        assert removedFilteredElements.isEmpty();
         try {
           @SuppressWarnings("unchecked")
           SetEvent<_Element_> setEvent = (SetEvent<_Element_>)event;
@@ -205,9 +201,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
           HashSet<_Element_> addedFilteredElements, HashSet<_Element_> removedFilteredElements) {
         assert event != null;
         assert addedFilteredElements != null;
-        assert addedFilteredElements.isEmpty();
         assert removedFilteredElements != null;
-        assert removedFilteredElements.isEmpty();
         try {
           BooleanEvent criterionEvent = (BooleanEvent)event;
           assert criterionEvent.getSource() instanceof FilteredSetBeed.ElementCriterion;

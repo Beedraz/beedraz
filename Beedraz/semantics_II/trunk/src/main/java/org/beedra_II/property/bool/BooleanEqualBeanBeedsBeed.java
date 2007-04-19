@@ -36,7 +36,7 @@ import org.ppeew.smallfries_I.MathUtil;
 /**
  * Beed that expresses whether two {@link BeanBeed bean beeds} are equal or not.
  *
- * @invar  get() == getLeftArg() == getRightArg();
+ * @invar  get() == getLeftOperand() == getRightOperand();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -47,8 +47,8 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
     implements BooleanBeed {
 
   /**
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
+   * @post  getLeftOperand() == null;
+   * @post  getRightOperand() == null;
    * @post  get() == true;
    */
   public BooleanEqualBeanBeedsBeed() {
@@ -68,11 +68,11 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
     Boolean oldValue = get();
     PathEvent<_BeanBeed_> leftOperandPathEvent = (PathEvent<_BeanBeed_>)events.get($leftOperandPath);
     if (leftOperandPathEvent != null) {
-      setLeftArg(leftOperandPathEvent.getNewValue());
+      setLeftOperand(leftOperandPathEvent.getNewValue());
     }
     PathEvent<_BeanBeed_> rightOperandPathEvent = (PathEvent<_BeanBeed_>)events.get($rightOperandPath);
     if (rightOperandPathEvent != null) {
-      setRightArg(rightOperandPathEvent.getNewValue());
+      setRightOperand(rightOperandPathEvent.getNewValue());
     }
     recalculate();
     if (! MathUtil.equalValue(oldValue, get())) {
@@ -98,7 +98,7 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
   /**
    * The old left operand path is removed as update source.
    * The new left operand path is added as update source.
-   * The left operand is replaced by the new left operand: see {@link #setLeftArg(BeanBeed)}.
+   * The left operand is replaced by the new left operand: see {@link #setLeftOperand(BeanBeed)}.
    */
   public final void setLeftOperandPath(Path<? extends _BeanBeed_> leftOperandPath) {
     if ($leftOperandPath instanceof AbstractDependentPath) {
@@ -109,10 +109,10 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
       addUpdateSource($leftOperandPath);
     }
     if ($leftOperandPath != null) {
-      setLeftArg($leftOperandPath.get());
+      setLeftOperand($leftOperandPath.get());
     }
     else {
-      setLeftArg(null);
+      setLeftOperand(null);
     }
   }
 
@@ -121,14 +121,14 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
   /**
    * @basic
    */
-  protected final _BeanBeed_ getLeftArg() {
+  public final _BeanBeed_ getLeftOperand() {
     return $leftOperand;
   }
 
   /**
-   * @post getLeftArg() == leftOperand;
+   * @post getLeftOperand() == leftOperand;
    */
-  private final void setLeftArg(_BeanBeed_ leftOperand) {
+  private final void setLeftOperand(_BeanBeed_ leftOperand) {
     Boolean oldValue = get();
     $leftOperand = leftOperand;
     recalculate();
@@ -155,7 +155,7 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
   /**
    * The old right operand path is removed as update source.
    * The new right operand path is added as update source.
-   * The right operand is replaced by the new right operand: see {@link #setRightArg(BeanBeed)}.
+   * The right operand is replaced by the new right operand: see {@link #setRightOperand(BeanBeed)}.
    */
   public final void setRightOperandPath(Path<? extends _BeanBeed_> rightOperandPath) {
     if ($rightOperandPath instanceof AbstractDependentPath) {
@@ -166,10 +166,10 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
       addUpdateSource($rightOperandPath);
     }
     if ($rightOperandPath != null) {
-      setRightArg($rightOperandPath.get());
+      setRightOperand($rightOperandPath.get());
     }
     else {
-      setRightArg(null);
+      setRightOperand(null);
     }
   }
 
@@ -178,14 +178,14 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
   /**
    * @basic
    */
-  protected final _BeanBeed_ getRightArg() {
+  public final _BeanBeed_ getRightOperand() {
     return $rightOperand;
   }
 
   /**
-   * @post getRightArg() == rightOperand;
+   * @post getRightOperand() == rightOperand;
    */
-  private final void setRightArg(_BeanBeed_ rightOperand) {
+  private final void setRightOperand(_BeanBeed_ rightOperand) {
     Boolean oldValue = get();
     $rightOperand = rightOperand;
     recalculate();
@@ -224,7 +224,7 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
 
 
   private void recalculate() {
-    $value = (getLeftArg() == getRightArg());
+    $value = (getLeftOperand() == getRightOperand());
   }
 
   @Override
@@ -232,14 +232,14 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
     super.toString(sb, level);
     sb.append(indent(level + 1) + "value:" + get() + "\n");
     sb.append(indent(level + 1) + "operands:\n");
-    if (getLeftArg() == null && getRightArg() == null) {
+    if (getLeftOperand() == null && getRightOperand() == null) {
       sb.append(indent(level + 2) + "null");
     }
-    if (getLeftArg() != null) {
-      getLeftArg().toString(sb, level + 2);
+    if (getLeftOperand() != null) {
+      getLeftOperand().toString(sb, level + 2);
     }
-    if (getRightArg() != null) {
-      getRightArg().toString(sb, level + 2);
+    if (getRightOperand() != null) {
+      getRightOperand().toString(sb, level + 2);
     }
   }
 

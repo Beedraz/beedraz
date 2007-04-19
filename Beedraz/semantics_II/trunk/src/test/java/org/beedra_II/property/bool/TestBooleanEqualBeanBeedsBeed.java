@@ -176,8 +176,8 @@ public class TestBooleanEqualBeanBeedsBeed {
   }
 
   private void validateSubjectFromOperand(RunBeanBeed leftOperand, RunBeanBeed rightOperand) {
-    assertEquals(leftOperand, $subject.getLeftArg());
-    assertEquals(rightOperand, $subject.getRightArg());
+    assertEquals(leftOperand, $subject.getLeftOperand());
+    assertEquals(rightOperand, $subject.getRightOperand());
     assertNotNull($subject.get());
     assertEquals(leftOperand == rightOperand, $subject.getboolean());
   }

@@ -20,7 +20,22 @@ package org.beedra_II.property.number.real.double64;
 import static org.beedra_II.path.Paths.fix;
 
 import org.beedra_II.path.Path;
+import org.beedra_II.property.collection.set.SetBeed;
 import org.beedra_II.property.number.real.RealBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleArithmeticMeanBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleGeometricMeanBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleMaxBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleMinBeed;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationGeometricStandardDeviationBeed;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationGeometricStandardErrorBeed;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationStandardDeviationBeed;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationStandardErrorBeed;
+import org.beedra_II.property.number.real.double64.stat.DoublePopulationVarianceBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleGeometricStandardDeviationBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleGeometricStandardErrorBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleStandardDeviationBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleStandardErrorBeed;
+import org.beedra_II.property.number.real.double64.stat.DoubleSampleVarianceBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -310,6 +325,182 @@ public class DoubleBeeds {
   }
 
   /*</section>*/
+
+
+  /*<section name="a">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed a(SetBeed<RealBeed<?>, ?> source) {
+    DoubleArithmeticMeanBeed meanBeed = new DoubleArithmeticMeanBeed();
+    meanBeed.setSource(source);
+    return meanBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="var_p">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed var_p(SetBeed<RealBeed<?>, ?> source) {
+    DoublePopulationVarianceBeed varBeed = new DoublePopulationVarianceBeed();
+    varBeed.setSource(source);
+    return varBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="var_s">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed var_s(SetBeed<RealBeed<?>, ?> source) {
+    DoubleSampleVarianceBeed varBeed = new DoubleSampleVarianceBeed();
+    varBeed.setSource(source);
+    return varBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="sd_p">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed sd_p(SetBeed<RealBeed<?>, ?> source) {
+    DoublePopulationStandardDeviationBeed sdBeed = new DoublePopulationStandardDeviationBeed();
+    sdBeed.setSource(source);
+    return sdBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="sd_s">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed sd_s(SetBeed<RealBeed<?>, ?> source) {
+    DoubleSampleStandardDeviationBeed sdBeed = new DoubleSampleStandardDeviationBeed();
+    sdBeed.setSource(source);
+    return sdBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="se_p">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed se_p(SetBeed<RealBeed<?>, ?> source) {
+    DoublePopulationStandardErrorBeed seBeed = new DoublePopulationStandardErrorBeed();
+    seBeed.setSource(source);
+    return seBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="se_s">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed se_s(SetBeed<RealBeed<?>, ?> source) {
+    DoubleSampleStandardErrorBeed seBeed = new DoubleSampleStandardErrorBeed();
+    seBeed.setSource(source);
+    return seBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="g">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed g(SetBeed<RealBeed<?>, ?> source) {
+    DoubleGeometricMeanBeed meanBeed = new DoubleGeometricMeanBeed();
+    meanBeed.setSource(source);
+    return meanBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="gsd_p">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed gsd_p(SetBeed<RealBeed<?>, ?> source) {
+    DoublePopulationGeometricStandardDeviationBeed sdBeed =
+      new DoublePopulationGeometricStandardDeviationBeed();
+    sdBeed.setSource(source);
+    return sdBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="gsd_s">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed gsd_s(SetBeed<RealBeed<?>, ?> source) {
+    DoubleSampleGeometricStandardDeviationBeed sdBeed =
+      new DoubleSampleGeometricStandardDeviationBeed();
+    sdBeed.setSource(source);
+    return sdBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="gse_p">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed gse_p(SetBeed<RealBeed<?>, ?> source) {
+    DoublePopulationGeometricStandardErrorBeed seBeed =
+      new DoublePopulationGeometricStandardErrorBeed();
+    seBeed.setSource(source);
+    return seBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="gse_s">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed gse_s(SetBeed<RealBeed<?>, ?> source) {
+    DoubleSampleGeometricStandardErrorBeed seBeed =
+      new DoubleSampleGeometricStandardErrorBeed();
+    seBeed.setSource(source);
+    return seBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="max">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed max(SetBeed<RealBeed<?>, ?> source) {
+    DoubleMaxBeed maxBeed = new DoubleMaxBeed();
+    maxBeed.setSource(source);
+    return maxBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="min">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed min(SetBeed<RealBeed<?>, ?> source) {
+    DoubleMinBeed minBeed = new DoubleMinBeed();
+    minBeed.setSource(source);
+    return minBeed;
+  }
+
+  /*</section>*/
+
+
+
+
 
 }
 

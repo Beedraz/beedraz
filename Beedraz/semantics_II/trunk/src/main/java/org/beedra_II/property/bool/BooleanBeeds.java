@@ -26,7 +26,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * <p>Convenience methods for working with paths.</p>
+ * <p>Convenience methods for working with {@link BooleanBeed boolean beeds}.</p>
  *
  * @author  Jan Dockx
  * @author  Nele Smeets
@@ -209,25 +209,25 @@ public class BooleanBeeds {
   /*</section>*/
 
 
-  /*<section name="equal">*/
+  /*<section name="equalB">*/
   //------------------------------------------------------------------
 
-  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equal(
+  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equalB(
       _BeanBeed_ beanBeed1, _BeanBeed_ beanBeed2) {
-    return equal(fix(beanBeed1), fix(beanBeed2));
+    return equalB(fix(beanBeed1), fix(beanBeed2));
   }
 
-  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equal(
+  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equalB(
       _BeanBeed_ beanBeed1, Path<? extends _BeanBeed_> beanBeedPath2) {
-    return equal(fix(beanBeed1), beanBeedPath2);
+    return equalB(fix(beanBeed1), beanBeedPath2);
   }
 
-  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equal(
+  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equalB(
       Path<? extends _BeanBeed_> beanBeedPath1, _BeanBeed_ beanBeed2) {
-    return equal(beanBeedPath1, fix(beanBeed2));
+    return equalB(beanBeedPath1, fix(beanBeed2));
   }
 
-  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equal(
+  public static <_BeanBeed_ extends BeanBeed> BooleanBeed equalB(
       Path<? extends _BeanBeed_> beanBeedPath1, Path<? extends _BeanBeed_> beanBeedPath2) {
     BooleanEqualBeanBeedsBeed<_BeanBeed_> equalBeed =
       new BooleanEqualBeanBeedsBeed<_BeanBeed_>();
@@ -276,14 +276,14 @@ public class BooleanBeeds {
   /*</section>*/
 
 
-  /*<section name="eq">*/
+  /*<section name="equalV">*/
   //------------------------------------------------------------------
 
-  public static BooleanBeed eq(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
-    return eq(fix(leftOperand), fix(rightOperand));
+  public static BooleanBeed equalV(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
+    return equalV(fix(leftOperand), fix(rightOperand));
   }
 
-  public static BooleanBeed eq(
+  public static BooleanBeed equalV(
       Path<? extends RealBeed<?>> leftOperandPath,
       Path<? extends RealBeed<?>> rightOperandPath) {
     BooleanEQBeed eqBeed = new BooleanEQBeed();

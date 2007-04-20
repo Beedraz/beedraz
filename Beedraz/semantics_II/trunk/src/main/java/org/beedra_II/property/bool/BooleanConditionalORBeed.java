@@ -33,17 +33,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *     not null   |      F       |   not null    |       F       |   F
  *     not null   |      F       |   not null    |       T       |   T
  *
- * @invar getLeftArg() == null || getLeftArg().get() == null
+ * @invar getLeftOperand() == null || getLeftOperand().get() == null
  *          ==> get() == null;
- * @invar getLeftArg() != null && getLeftArg().get() == true
+ * @invar getLeftOperand() != null && getLeftOperand().get() == true
  *          ==> get() == true;
- * @invar getLeftArg() != null && getLeftArg().get() == false && getRightArg() == null
+ * @invar getLeftOperand() != null && getLeftOperand().get() == false && getRightOperand() == null
  *          ==> get() == null;
- * @invar getLeftArg() != null && getLeftArg().get() == false && getRightArg().get() == null
+ * @invar getLeftOperand() != null && getLeftOperand().get() == false && getRightOperand().get() == null
  *          ==> get() == null;
- * @invar getLeftArg() != null && getLeftArg().get() == false && getRightArg().get() == false
+ * @invar getLeftOperand() != null && getLeftOperand().get() == false && getRightOperand().get() == false
  *          ==> get() == false;
- * @invar getLeftArg() != null && getLeftArg().get() == false && getRightArg().get() == true
+ * @invar getLeftOperand() != null && getLeftOperand().get() == false && getRightOperand().get() == true
  *          ==> get() == true;
  */
 @CvsInfo(revision = "$Revision$",

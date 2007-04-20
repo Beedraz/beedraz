@@ -32,10 +32,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *   T    |  F    |     F
  *   T    |  T    |     T
  *
- * @invar getLeftArg() != null && getRightArg() != null
- *          ? ( getLeftArg().get() == null || getRightArg().get() == null
+ * @invar getLeftOperand() != null && getRightOperand() != null
+ *          ? ( getLeftOperand().get() == null || getRightOperand().get() == null
  *                ? get() == null
- *                : get() == getLeftArg().get() && getRightArg().get() )
+ *                : get() == getLeftOperand().get() && getRightOperand().get() )
  *          : get() == null;
  */
 @CvsInfo(revision = "$Revision$",

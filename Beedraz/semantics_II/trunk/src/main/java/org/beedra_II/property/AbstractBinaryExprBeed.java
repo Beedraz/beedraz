@@ -27,6 +27,8 @@ import org.beedra_II.edit.Edit;
 import org.beedra_II.path.AbstractDependentPath;
 import org.beedra_II.path.Path;
 import org.beedra_II.path.PathEvent;
+import org.beedra_II.property.bool.AbstractBooleanBinaryLogicalExpressionBeed;
+import org.beedra_II.property.bool.AbstractBooleanConditionalBinaryExpressionBeed;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -36,6 +38,19 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * from 2 operands.
  *
  * @invar getLeftOprnd() == null || getRightOprnd() == null
+ *          ? get() == null
+ *          : true;
+ * @invar getLeftOprnd() != null && getRightOprnd() != null &&
+ *        getLeftOprnd().get() != null && getRightOprnd().get() != null
+ *          ? get() != null
+ *          : true;
+ * @invar getLeftOprnd() != null && getRightOprnd() != null &&
+ *        getLeftOprnd().get() == null
+ *          ? get() == null
+ *          : true;
+ * @default (Overridden in {@link AbstractBooleanConditionalBinaryExpressionBeed})
+ * @invar getLeftOprnd() != null && getRightOprnd() != null &&
+ *        getRightOprnd().get() == null
  *          ? get() == null
  *          : true;
  *
@@ -71,7 +86,10 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     if (rightPathEvent != null) {
       setRightOprnd(rightPathEvent.getNewValue());
     }
-    recalculate();
+    recalculate(); // we know at this point that the left operand path or the
+                   // right operand path is effective; otherwise it would be
+                   // impossible to get an event from one of them (or from the operands),
+                   // so the precondition of the recalculate method is fulfilled
     if (! equalValue(oldValue, get())) {
       return createNewEvent(oldValue, get(), edit);
     }
@@ -207,9 +225,18 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
 
 
   /**
-   * @pre $leftOperand != null || $rightOperand != null;
+   * This method recalculates the value of the binary beed, when one of
+   * the operands has changed.
+   * When the operands are both null, then this method is not called,
+   * since in that case, the value of this beed should be changed into null,
+   * which is simply done by setting the value of {@link #isEffective()} to false.
+   *
+   * @pre getLeftOperand() != null || getRightOperand() != null;
+   *
+   * This is the default implementation. The method is overridden in
+   * {@link AbstractBooleanBinaryLogicalExpressionBeed}.
    */
-  private void recalculate() {
+  protected void recalculate() {
     if (($leftOperand != null) && hasEffectiveLeftOperand() &&
         ($rightOperand != null) && hasEffectiveRightOperand()) {
       recalculateFrom($leftOperand, $rightOperand);
@@ -236,10 +263,10 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
    * Recalculate the value of this beed, and store the result, where
    * implementations that return the result can pick it up.
    *
-   * @pre $leftOperand != null;
-   * @pre leftOperand.isEffective();
-   * @pre $rightOperand != null;
-   * @pre $rightOperand.isEffective();
+   * @pre leftOperand != null;
+   * @pre leftOperand.isEffective(); // @mudo isEffective() does not exist in _OperandBeed_
+   * @pre rightOperand != null;
+   * @pre $rightOperand.isEffective(); // @mudo isEffective() does not exist in _OperandBeed_
    */
   protected abstract void recalculateFrom(_LeftOperandBeed_ leftOperand, _RightOperandBeed_ rightOperand);
 

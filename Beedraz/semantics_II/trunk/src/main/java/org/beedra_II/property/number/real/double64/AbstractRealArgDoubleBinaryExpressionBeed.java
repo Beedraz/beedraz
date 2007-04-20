@@ -46,8 +46,8 @@ public abstract class AbstractRealArgDoubleBinaryExpressionBeed
     implements DoubleBeed {
 
   /**
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
+   * @post  getLeftOprnd() == null;
+   * @post  getRightOprnd() == null;
    * @post  get() == null;
    */
   protected AbstractRealArgDoubleBinaryExpressionBeed() {

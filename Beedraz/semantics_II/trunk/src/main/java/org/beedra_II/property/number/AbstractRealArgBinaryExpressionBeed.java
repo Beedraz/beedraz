@@ -50,8 +50,8 @@ public abstract class AbstractRealArgBinaryExpressionBeed<
     implements RealBeed<_NumberEvent_> {
 
   /**
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
+   * @post  getLeftOprnd() == null;
+   * @post  getRightOprnd() == null;
    * @post  get() == null;
    */
   public AbstractRealArgBinaryExpressionBeed() {

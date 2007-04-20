@@ -38,8 +38,8 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
 
   /**
    * @post  getDouble() == null;
-   * @post  getLeftArg() == null;
-   * @post  getRightArg() == null;
+   * @post  getLeftOprnd() == null;
+   * @post  getRightOprnd() == null;
    */
   public DoubleDifferenceBeed() {
     super();

@@ -1,0 +1,8 @@
+TODO
+
+- Bij binaire en unaire expressies eerst het resultaat kiezen (100 lijnen code) en daarna de argumenten (10 lijnen code)
+- BooleanNotNullBeanBeedBeed is enkel zinvol bij een toOneBeed. We kunnen daar een BooleanBeed voorzien, net zoals we SizeBeed voorzien hebben in een SetBeed.
+- DoubleArithmeticMean (en andere statistische beeds): source moet path zijn
+- Zelfde voor MappedSetBeed, UnionBeed, ...
+- argument is hernoemd naar operand voor binaire en unaire expressies. Dit is echter enkel gebeurd in de code, en de klassennamen zelf zijn nog niet hernoemd (vb AbstractBooleanArgBooleanBinaryExpressionBeed)
+- in de user interface van qBasePlua moet het aantal target-sample combinaties getoond worden: scalair product beed nodig? Geen topprioriteit gezien nog niet volledig duidelijk is wat precies getoond moet worden.

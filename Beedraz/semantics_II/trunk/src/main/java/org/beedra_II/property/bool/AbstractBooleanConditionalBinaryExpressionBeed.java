@@ -96,6 +96,7 @@ public abstract class AbstractBooleanConditionalBinaryExpressionBeed
    *
    * @pre getLeftOperand() != null || getRightOperand() != null;
    */
+  @Override
   protected void recalculate() {
     if ((getLeftOperand() != null) && hasEffectiveLeftOperand()) {
       if (isDecisive(getLeftOperand()) ||

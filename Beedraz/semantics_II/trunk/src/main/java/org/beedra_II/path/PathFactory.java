@@ -39,7 +39,7 @@ public interface PathFactory<_StartBeed_ extends Beed<?>,
    * @pre startBeed != null;
    * @result result != null;
    */
-  Path<_ResultBeed_> createPath(_StartBeed_ startBeed);
+  Path<? extends _ResultBeed_> createPath(_StartBeed_ startBeed);
 
 }
 

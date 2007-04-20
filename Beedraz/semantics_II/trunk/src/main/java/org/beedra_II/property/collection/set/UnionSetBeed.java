@@ -134,7 +134,7 @@ public class UnionSetBeed<_Element_>
   /**
    * @basic
    */
-  public final Set<SetBeed<_Element_, ?>> getSources() {
+  public final Set<SetBeed<? extends _Element_, ?>> getSources() {
     return Collections.unmodifiableSet($sources);
   }
 
@@ -148,7 +148,7 @@ public class UnionSetBeed<_Element_>
    * @post   The listeners of the size beed are notified when the size of this
    *         set has changed.
    */
-  public final void addSource(SetBeed<_Element_, ?> source) {
+  public final void addSource(SetBeed<? extends _Element_, ?> source) {
     if (! $sources.contains(source)) {
       assert source != null;
       @SuppressWarnings("unchecked")
@@ -203,8 +203,8 @@ public class UnionSetBeed<_Element_>
     }
   }
 
-  static <_E_> boolean contains(Set<SetBeed<_E_, ?>> sources, _E_ element) {
-    for (SetBeed<_E_, ?> source : sources) {
+  static <_E_> boolean contains(Set<? extends SetBeed<? extends _E_, ?>> sources, _E_ element) {
+    for (SetBeed<? extends _E_, ?> source : sources) {
       if (source.get().contains(element)) {
         return true;
       }
@@ -212,7 +212,7 @@ public class UnionSetBeed<_Element_>
     return false;
   }
 
-  private Set<SetBeed<_Element_, ?>> $sources = new HashSet<SetBeed<_Element_, ?>>();
+  private Set<SetBeed<? extends _Element_, ?>> $sources = new HashSet<SetBeed<? extends _Element_, ?>>();
 
   /*</property>*/
 
@@ -220,7 +220,7 @@ public class UnionSetBeed<_Element_>
 
   private void recalculate() {
     $union.clear();
-    for (SetBeed<_Element_, ?> sb : getSources()) {
+    for (SetBeed<? extends _Element_, ?> sb : getSources()) {
       $union.addAll(sb.get());
     }
   }

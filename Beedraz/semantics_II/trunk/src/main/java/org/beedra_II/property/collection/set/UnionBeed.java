@@ -138,7 +138,7 @@ public class UnionBeed<_Element_>
   /**
    * @basic
    */
-  public final SetBeed<SetBeed<_Element_, SetEvent<_Element_>>, ?> getSource() {
+  public final SetBeed<? extends SetBeed<_Element_, ?>, ?> getSource() {
     return $source;
   }
 
@@ -155,9 +155,9 @@ public class UnionBeed<_Element_>
    * @post    The listeners of the size beed are notified when the size of this
    *          set has changed.
    */
-  public final void setSource(SetBeed<SetBeed<_Element_, SetEvent<_Element_>>, ?> source) {
+  public final void setSource(SetBeed<? extends SetBeed<_Element_, ?>, ?> source) {
     if ($source != null) {
-      for (SetBeed<_Element_, SetEvent<_Element_>> setBeed : $source.get()) {
+      for (SetBeed<_Element_, ?> setBeed : $source.get()) {
         $dependent.removeUpdateSource(setBeed);
       }
       $dependent.removeUpdateSource($source);
@@ -166,7 +166,7 @@ public class UnionBeed<_Element_>
     $source = source;
     if ($source != null) {
       $dependent.addUpdateSource($source);
-      for (SetBeed<_Element_, SetEvent<_Element_>> setBeed : $source.get()) {
+      for (SetBeed<_Element_, ?> setBeed : $source.get()) {
         $dependent.addUpdateSource(setBeed);
       }
     }
@@ -177,7 +177,7 @@ public class UnionBeed<_Element_>
     }
   }
 
-  private SetBeed<SetBeed<_Element_, SetEvent<_Element_>>, ?> $source;
+  private SetBeed<? extends SetBeed<_Element_, ?>, ?> $source;
 
   /*</property>*/
 
@@ -209,7 +209,7 @@ public class UnionBeed<_Element_>
   public void recalculate() {
     $union.clear();
     if (getSource() != null) {
-      for (SetBeed<_Element_, SetEvent<_Element_>> element : getSource().get()) {
+      for (SetBeed<_Element_, ?> element : getSource().get()) {
         $union.addAll(element.get());
       }
     }

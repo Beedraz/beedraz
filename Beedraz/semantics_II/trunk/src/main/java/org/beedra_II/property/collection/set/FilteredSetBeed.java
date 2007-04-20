@@ -383,7 +383,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
     /**
      * @invar $bbPath != null;
      */
-    private final Path<BooleanBeed> $bbPath;
+    private final Path<? extends BooleanBeed> $bbPath;
 
     /**
      * @invar $bb = $bbPath.get();

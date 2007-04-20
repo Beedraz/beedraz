@@ -70,7 +70,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Event> // MUDO remove _Event_ parameter
+public class FilteredSetBeed<_Element_ extends Beed<?>>
     extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 

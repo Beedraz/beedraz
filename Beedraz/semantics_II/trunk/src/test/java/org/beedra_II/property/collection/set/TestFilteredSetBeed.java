@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.beedra_II.StubListener;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.AbstractBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -57,7 +56,7 @@ import org.junit.Test;
 
 public class TestFilteredSetBeed {
 
-  public class MyNewFilteredSetBeed extends FilteredSetBeed<WellBeanBeed, AggregateEvent> {
+  public class MyNewFilteredSetBeed extends FilteredSetBeed<WellBeanBeed> {
 
     public MyNewFilteredSetBeed(PathFactory<WellBeanBeed, BooleanBeed> criterion) {
       super(criterion);

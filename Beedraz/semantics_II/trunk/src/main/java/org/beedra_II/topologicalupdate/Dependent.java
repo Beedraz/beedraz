@@ -146,6 +146,7 @@ public abstract class Dependent {
   protected final Event update(Map<UpdateSource, Event> events, Edit<?> edit) {
     Map<UpdateSource, Event> result = new HashMap<UpdateSource, Event>();
     for (UpdateSource us : $updateSources) {
+      assert us != null;
       Event event = events.get(us);
       if (event != null) {
         result.put(us, event);

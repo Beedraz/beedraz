@@ -50,6 +50,10 @@ public abstract class AbstractBooleanArgBooleanBinaryExpressionBeed
     return $value;
   }
 
+  protected final void setValue(final boolean value) {
+    $value = value;
+  }
+
   private boolean $value;
 
   @Override
@@ -62,8 +66,11 @@ public abstract class AbstractBooleanArgBooleanBinaryExpressionBeed
     return new BooleanEvent(this, oldValue, newValue, edit);
   }
 
+  /**
+   * This method is overridden in {@link AbstractBooleanBinaryLogicalExpressionBeed}.
+   */
   @Override
-  protected final void recalculateFrom(BooleanBeed leftOperand, BooleanBeed rightOperand) {
+  protected void recalculateFrom(BooleanBeed leftOperand, BooleanBeed rightOperand) {
     $value = calculateValue(leftOperand.getboolean(), rightOperand.getboolean());
   }
 

@@ -74,8 +74,18 @@ public abstract class AbstractBeed<_Event_ extends Event>
 
   @Override
   public final String toString() {
-    return getClass().getSimpleName() + //"@" + hashCode() +
+    return simpleClassName(getClass()) + //"@" + hashCode() +
            "[" + otherToStringInformation() + "]";
+  }
+
+  private String simpleClassName(Class<?> c) {
+    String simpleName = c.getSimpleName();
+    if (simpleName.equals("")) {
+      String fullName = c.getName();
+      String[] parts = fullName.split("\\.");
+      simpleName = simpleClassName(c.getSuperclass()) + "<" + parts[parts.length - 1];
+    }
+    return simpleName;
   }
 
   protected String otherToStringInformation() {

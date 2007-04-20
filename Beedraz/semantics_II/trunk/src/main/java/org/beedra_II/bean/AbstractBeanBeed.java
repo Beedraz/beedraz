@@ -36,7 +36,7 @@ public abstract class AbstractBeanBeed
 
   @Override
   protected String otherToStringInformation() {
-    return "hashCode: " + Integer.toHexString(hashCode());
+    return ""; // MUDO list properties
   }
 
   @Override

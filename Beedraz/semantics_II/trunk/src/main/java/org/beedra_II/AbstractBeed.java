@@ -74,7 +74,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
 
   @Override
   public final String toString() {
-    return simpleClassName(getClass()) + //"@" + hashCode() +
+    return simpleClassName(getClass()) + "@" + Integer.toHexString(hashCode()) +
            "[" + otherToStringInformation() + "]";
   }
 

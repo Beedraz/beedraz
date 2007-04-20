@@ -177,6 +177,79 @@ public class BooleanBeeds {
   /*</section>*/
 
 
+  /*<section name="cand">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @pre operands != null;
+   */
+  public static BooleanBeed cand(BooleanBeed... operands) {
+    switch (operands.length) {
+      case 0:
+        return new BooleanTrueBeed();
+      default:
+        return cand(operands, 0);
+    }
+  }
+
+  /**
+   * @pre operands != null;
+   * @pre operands.length >= 1;
+   * @pre start >= 0;
+   * @pre start < operands.length;
+   */
+  private static BooleanBeed cand(BooleanBeed[] operands, int start) {
+    if (start < operands.length - 1) {
+      // recursion: cand(operands, start) = operands[start] && cand(operands, start + 1);
+      BooleanConditionalANDBeed candBeed = new BooleanConditionalANDBeed();
+      candBeed.setLeftOperandPath(fix(operands[start]));
+      candBeed.setRightOperandPath(fix(cand(operands, start + 1)));
+      return candBeed;
+    }
+    else {
+      assert start == operands.length - 1;
+      return operands[start];
+    }
+  }
+
+  /*</section>*/
+
+
+  /*<section name="cor">*/
+  //------------------------------------------------------------------
+
+  public static BooleanBeed cor(BooleanBeed... operands) {
+    switch (operands.length) {
+      case 0:
+        return new BooleanFalseBeed();
+      default:
+        return cor(operands, 0);
+    }
+  }
+
+  /**
+   * @pre operands != null;
+   * @pre operands.length >= 1;
+   * @pre start >= 0;
+   * @pre start < operands.length;
+   */
+  private static BooleanBeed cor(BooleanBeed[] operands, int start) {
+    if (start < operands.length - 1) {
+      // recursion: cor(operands, start) = operands[start] || cor(operands, start + 1);
+      BooleanConditionalORBeed corBeed = new BooleanConditionalORBeed();
+      corBeed.setLeftOperandPath(fix(operands[start]));
+      corBeed.setRightOperandPath(fix(cor(operands, start + 1)));
+      return corBeed;
+    }
+    else {
+      assert start == operands.length - 1;
+      return operands[start];
+    }
+  }
+
+  /*</section>*/
+
+
   /*<section name="null">*/
   //------------------------------------------------------------------
 

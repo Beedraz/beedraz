@@ -92,8 +92,7 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
 
   @Override
   protected String otherToStringInformation() {
-    return "hashCode: " + hashCode() +
-           "; #: " + get().size();
+    return "#: " + get().size();
   }
 
   @Override

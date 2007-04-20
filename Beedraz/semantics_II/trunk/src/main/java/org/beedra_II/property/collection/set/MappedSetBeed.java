@@ -301,8 +301,7 @@ public class MappedSetBeed<_From_ extends Beed<?>,
 
   @Override
   protected String otherToStringInformation() {
-    return "hashCode: " + hashCode() +
-           "; #: " + get().size();
+    return "#: " + get().size();
   }
 
   @Override

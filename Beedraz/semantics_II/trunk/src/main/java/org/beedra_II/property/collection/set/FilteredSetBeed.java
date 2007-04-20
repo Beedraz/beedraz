@@ -70,7 +70,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Event>
+public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Event> // MUDO remove _Event_ parameter
     extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
@@ -611,7 +611,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
    *
    * @invar  $filteredSet != null;
    */
-  private HashSet<_Element_> $filteredSet = new HashSet<_Element_>();
+  private final HashSet<_Element_> $filteredSet = new HashSet<_Element_>();
 
 
   /**
@@ -637,8 +637,7 @@ public class FilteredSetBeed<_Element_ extends Beed<_Event_>, _Event_ extends Ev
 
   @Override
   protected String otherToStringInformation() {
-    return "hashCode: " + hashCode() +
-           "; #: " + get().size();
+    return "#: " + get().size();
   }
 
   @Override

@@ -504,7 +504,7 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
    *          p.get() != null ? $result.contains(p.get());
    *        };
    */
-  private HashSet<_To_> $result = new HashSet<_To_>();
+  private final HashSet<_To_> $result = new HashSet<_To_>();
 
 
   /**

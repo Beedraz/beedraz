@@ -16,7 +16,7 @@
 
 package org.beedra_II.property.number.real.double64;
 
-import static org.beedra_II.path.Paths.fix;
+import static org.beedra_II.path.Paths.path;
 import static org.junit.Assert.assertNull;
 
 import org.beedra_II.edit.EditStateException;
@@ -86,7 +86,7 @@ public class TestDoubleModBeed
     DoubleEdit edit = new DoubleEdit(edb);
     edit.setGoal(Double.NaN);
     edit.perform();
-    dmb.setDivisorPath(fix(edb));
+    dmb.setDivisorPath(path(edb));
     assertNull(dmb.getDouble());
   }
 }

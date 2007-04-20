@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.integer.long64;
 
 
-import static org.beedra_II.path.Paths.fix;
+import static org.beedra_II.path.Paths.path;
 
 import org.beedra_II.path.Path;
 import org.beedra_II.property.number.integer.IntegerBeed;
@@ -41,7 +41,7 @@ public class LongBeeds {
   //------------------------------------------------------------------
 
   public static LongBeed negative(IntegerBeed<?> operand) {
-    return negative(fix(operand));
+    return negative(path(operand));
   }
 
   public static LongBeed negative(Path<? extends IntegerBeed<?>> operandPath) {

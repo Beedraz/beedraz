@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II.property.number.real.double64;
 
 
-import static org.beedra_II.path.Paths.fix;
+import static org.beedra_II.path.Paths.path;
 
 import org.beedra_II.path.Path;
 import org.beedra_II.property.collection.set.SetBeed;
@@ -65,15 +65,15 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed diff(RealBeed<?> positiveTerm, RealBeed<?> negativeTerm) {
-    return diff(fix(positiveTerm), fix(negativeTerm));
+    return diff(path(positiveTerm), path(negativeTerm));
   }
 
   public static DoubleBeed diff(Path<? extends RealBeed<?>> positiveTermPath, RealBeed<?> negativeTerm) {
-    return diff(positiveTermPath, fix(negativeTerm));
+    return diff(positiveTermPath, path(negativeTerm));
   }
 
   public static DoubleBeed diff(RealBeed<?> positiveTerm, Path<? extends RealBeed<?>> negativeTermPath) {
-    return diff(fix(positiveTerm), negativeTermPath);
+    return diff(path(positiveTerm), negativeTermPath);
   }
 
   public static DoubleBeed diff(Path<? extends RealBeed<?>> positiveTermPath,
@@ -91,15 +91,15 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed exp(RealBeed<?> base, RealBeed<?> exponent) {
-    return exp(fix(base), fix(exponent));
+    return exp(path(base), path(exponent));
   }
 
   public static DoubleBeed exp(Path<? extends RealBeed<?>> basePath, RealBeed<?> exponent) {
-    return exp(basePath, fix(exponent));
+    return exp(basePath, path(exponent));
   }
 
   public static DoubleBeed exp(RealBeed<?> base, Path<? extends RealBeed<?>> exponentPath) {
-    return exp(fix(base), exponentPath);
+    return exp(path(base), exponentPath);
   }
 
   public static DoubleBeed exp(Path<? extends RealBeed<?>> basePath,
@@ -117,7 +117,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed exp(RealBeed<?> operand) {
-    return exp(fix(operand));
+    return exp(path(operand));
   }
 
   public static DoubleBeed exp(Path<? extends RealBeed<?>> operandPath) {
@@ -133,7 +133,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed inverse(RealBeed<?> operand) {
-    return inverse(fix(operand));
+    return inverse(path(operand));
   }
 
   public static DoubleBeed inverse(Path<? extends RealBeed<?>> operandPath) {
@@ -149,7 +149,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed ln(RealBeed<?> operand) {
-    return ln(fix(operand));
+    return ln(path(operand));
   }
 
   public static DoubleBeed ln(Path<? extends RealBeed<?>> operandPath) {
@@ -165,7 +165,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed log10(RealBeed<?> operand) {
-    return log10(fix(operand));
+    return log10(path(operand));
   }
 
   public static DoubleBeed log10(Path<? extends RealBeed<?>> operandPath) {
@@ -181,7 +181,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed logN(RealBeed<?> operand, double constant) {
-    return logN(fix(operand), constant);
+    return logN(path(operand), constant);
   }
 
   public static DoubleBeed logN(Path<? extends RealBeed<?>> operandPath, double constant) {
@@ -197,15 +197,15 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed mod(RealBeed<?> dividend, RealBeed<?> divisor) {
-    return mod(fix(dividend), fix(divisor));
+    return mod(path(dividend), path(divisor));
   }
 
   public static DoubleBeed mod(Path<? extends RealBeed<?>> dividendPath, RealBeed<?> divisor) {
-    return mod(dividendPath, fix(divisor));
+    return mod(dividendPath, path(divisor));
   }
 
   public static DoubleBeed mod(RealBeed<?> dividend, Path<? extends RealBeed<?>> divisorPath) {
-    return mod(fix(dividend), divisorPath);
+    return mod(path(dividend), divisorPath);
   }
 
   public static DoubleBeed mod(Path<? extends RealBeed<?>> dividendPath,
@@ -223,7 +223,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed negative(RealBeed<?> operand) {
-    return negative(fix(operand));
+    return negative(path(operand));
   }
 
   public static DoubleBeed negative(Path<? extends RealBeed<?>> operandPath) {
@@ -239,7 +239,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed power(RealBeed<?> operand, double constant) {
-    return power(fix(operand), constant);
+    return power(path(operand), constant);
   }
 
   public static DoubleBeed power(Path<? extends RealBeed<?>> operandPath, double constant) {
@@ -272,15 +272,15 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed quotient(RealBeed<?> numerator, RealBeed<?> denominator) {
-    return quotient(fix(numerator), fix(denominator));
+    return quotient(path(numerator), path(denominator));
   }
 
   public static DoubleBeed quotient(Path<? extends RealBeed<?>> numeratorPath, RealBeed<?> denominator) {
-    return quotient(numeratorPath, fix(denominator));
+    return quotient(numeratorPath, path(denominator));
   }
 
   public static DoubleBeed quotient(RealBeed<?> numerator, Path<? extends RealBeed<?>> denominatorPath) {
-    return quotient(fix(numerator), denominatorPath);
+    return quotient(path(numerator), denominatorPath);
   }
 
   public static DoubleBeed quotient(Path<? extends RealBeed<?>> numeratorPath,
@@ -298,7 +298,7 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed root(RealBeed<?> operand, double constant) {
-    return root(fix(operand), constant);
+    return root(path(operand), constant);
   }
 
   public static DoubleBeed root(Path<? extends RealBeed<?>> operandPath, double constant) {

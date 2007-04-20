@@ -70,8 +70,8 @@ public abstract class AbstractTestBeanArgBooleanUnaryExpressionBeed<
     edit.setGoal($yourRun.wells);
     edit.perform();
     // initialise paths
-    $pathToMyRun = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well1.run));
-    $pathToYourRun = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well2.run));
+    $pathToMyRun = new ToOneBeanPath<RunBeanBeed>(Paths.path($well1.run));
+    $pathToYourRun = new ToOneBeanPath<RunBeanBeed>(Paths.path($well2.run));
   }
 
   @After

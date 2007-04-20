@@ -76,10 +76,10 @@ public class TestBooleanEqualBeanBeedsBeed {
     edit.setGoal($run4.wells);
     edit.perform();
     // initialise paths
-    $leftPathToRun1 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well1.run));
-    $leftPathToRun2 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well2.run));
-    $rightPathToRun3 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well3.run));
-    $rightPathToRun4 = new ToOneBeanPath<RunBeanBeed>(Paths.fix($well4.run));
+    $leftPathToRun1 = new ToOneBeanPath<RunBeanBeed>(Paths.path($well1.run));
+    $leftPathToRun2 = new ToOneBeanPath<RunBeanBeed>(Paths.path($well2.run));
+    $rightPathToRun3 = new ToOneBeanPath<RunBeanBeed>(Paths.path($well3.run));
+    $rightPathToRun4 = new ToOneBeanPath<RunBeanBeed>(Paths.path($well4.run));
   }
 
   @After

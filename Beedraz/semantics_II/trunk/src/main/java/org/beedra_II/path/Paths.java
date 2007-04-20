@@ -35,7 +35,7 @@ public class Paths {
   /**
    * Quickly create a constant path for a beed we know.
    */
-  public static <_Beed_ extends Beed<?>> ConstantPath<_Beed_> fix(_Beed_ beed) {
+  public static <_Beed_ extends Beed<?>> ConstantPath<_Beed_> path(_Beed_ beed) {
     return new ConstantPath<_Beed_>(beed);
   }
 //

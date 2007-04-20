@@ -324,6 +324,13 @@ public class DoubleBeeds {
     return sumBeed;
   }
 
+
+  public static DoubleBeed sum(SetBeed<RealBeed<?>, ?> terms) {
+    DoubleSetSumBeed setSumBeed = new DoubleSetSumBeed();
+    setSumBeed.setSource(terms);
+    return setSumBeed;
+  }
+
   /*</section>*/
 
 

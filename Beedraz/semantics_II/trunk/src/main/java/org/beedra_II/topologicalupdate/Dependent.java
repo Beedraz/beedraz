@@ -26,6 +26,7 @@ import java.util.Set;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.smallfries_I.MultiLineToStringUtil;
 
 
 /**
@@ -203,10 +204,24 @@ public abstract class Dependent {
    */
   public final void addUpdateSource(UpdateSource updateSource) {
     assert updateSource != null;
-    // TODO assert against loop
     $updateSources.add(updateSource);
     updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
+    if (getMaximumRootUpdateSourceDistance() <= updateSource.getMaximumRootUpdateSourceDistance()) {
+      System.out.println("DEPENDENCY LOOP while adding " + updateSource + " as update source to dependency tree:");
+      StringBuffer sb = new StringBuffer();
+      dependentToString(this, sb, 0);
+      System.out.println(sb);
+      assert false : "if this fails, it means we have a dependency loop";
+    }
     updateSource.addDependent(this);
+  }
+
+  private static void dependentToString(Dependent d, StringBuffer sb, int level) {
+    System.out.println(MultiLineToStringUtil.indent(level) + d.getDependentUpdateSource().toString());
+    int level2 = level + 1;
+    for (Dependent d2 : d.getDependents()) {
+      dependentToString(d2, sb, level2);
+    }
   }
 
   /**

@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra_II;
 
 
-import org.beedra_II.property.SimpleExpressionBeed;
+import org.beedra_II.expression.SimpleExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

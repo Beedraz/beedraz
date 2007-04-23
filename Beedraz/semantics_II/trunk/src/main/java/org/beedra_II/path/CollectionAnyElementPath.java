@@ -24,8 +24,8 @@ import java.util.Map;
 import org.beedra_II.Beed;
 import org.beedra_II.Event;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.collection.CollectionBeed;
-import org.beedra_II.property.collection.set.SetEvent;
+import org.beedra_II.expression.collection.CollectionBeed;
+import org.beedra_II.expression.collection.set.SetEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

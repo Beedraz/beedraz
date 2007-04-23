@@ -1,6 +1,6 @@
 package org.beedra_II.bean;
 
-import org.beedra_II.property.association.set.BidirToManyBeed;
+import org.beedra_II.expression.association.set.BidirToManyBeed;
 
 public class RunBeanBeed extends AbstractBeanBeed {
   /**

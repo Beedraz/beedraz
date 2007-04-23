@@ -22,8 +22,8 @@ import java.util.Map;
 import org.beedra_II.Event;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.edit.Edit;
-import org.beedra_II.property.association.set.ordered.EditableOrderedBidirToOneBeed;
-import org.beedra_II.property.association.set.ordered.OrderedBidirToOneEvent;
+import org.beedra_II.expression.association.set.ordered.EditableOrderedBidirToOneBeed;
+import org.beedra_II.expression.association.set.ordered.OrderedBidirToOneEvent;
 import org.beedra_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 

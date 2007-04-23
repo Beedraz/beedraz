@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 import org.beedra_II.StubEvent;
 import org.beedra_II.StubListener;
 import org.beedra_II.edit.StubSimpleEdit;
-import org.beedra_II.property.StubEditableSimpleExpressionBeed;
+import org.beedra_II.expression.StubEditableSimpleExpressionBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package org.beedra_II.bean;
 
-import org.beedra_II.property.association.set.EditableBidirToOneBeed;
-import org.beedra_II.property.number.integer.long64.EditableLongBeed;
+import org.beedra_II.expression.association.set.EditableBidirToOneBeed;
+import org.beedra_II.expression.number.integer.long64.EditableLongBeed;
 
 public class WellBeanBeed extends AbstractBeanBeed {
 

@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
 import org.beedra_II.bean.BeanBeed;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.Edit.State;
-import org.beedra_II.property.StubEditableSimpleExpressionBeed;
+import org.beedra_II.expression.StubEditableSimpleExpressionBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

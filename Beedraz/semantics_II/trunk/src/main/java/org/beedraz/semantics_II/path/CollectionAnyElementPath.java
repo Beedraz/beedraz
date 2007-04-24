@@ -37,8 +37,9 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  *
- * @invar getBeanBeedPath() != null;
- * @invar getBeanBeed() == getBeanBeedPath().get();
+ * @invar getCollectionBeedPath() != null;
+ * @invar getCollectionBeed() == getCollectionBeedPath().get();
+ * @invar getCollectionBeedPath() = old.getCollectionBeedPath();
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -51,9 +52,9 @@ public class CollectionAnyElementPath<_Beed_ extends Beed<?>>
   //-----------------------------------------------------------------
 
   /**
-   * @pre beanBeedPath != null;
-   * @post getBeanBeedPath() == beanBeedPath;
-   * @post getBeanBeed() == beanBeedPath.get();
+   * @pre  collectionBeedPath != null;
+   * @post getCollectionBeedPath() == collectionBeedPath;
+   * @post getCollectionBeed() == collectionBeedPath.get();
    */
   public CollectionAnyElementPath(Path<? extends CollectionBeed<_Beed_, ?>> collectionBeedPath) {
     assert collectionBeedPath != null;
@@ -78,13 +79,24 @@ public class CollectionAnyElementPath<_Beed_ extends Beed<?>>
     assert events != null;
     _Beed_ oldElement = $selectedBeed;
     @SuppressWarnings("unchecked")
+    /*
+     * Events can come from:
+     * - collection beed path: replace the collection beed and recalculate the selected beed
+     * - collection beed: recalculate the selected beed when:
+     *       1. the currently selected beed has been removed
+     *       2. the collection beed was empty, and some elements have been added
+     *          (so the selected beed changes from null to an effective beed)
+     */
     SetEvent<_Beed_> setEvent = (SetEvent<_Beed_>)events.get($collectionBeed);
     PathEvent<CollectionBeed<_Beed_, ?>> pathEvent =
         (PathEvent<CollectionBeed<_Beed_, ?>>)events.get($collectionBeedPath);
     if (pathEvent != null) {
       $collectionBeed = pathEvent.getNewValue();
     }
-    if ((pathEvent != null) || ((setEvent != null) && setEvent.getRemovedElements().contains($selectedBeed))) {
+    if (( pathEvent != null) ||
+        ( (setEvent != null) &&
+          (setEvent.getRemovedElements().contains($selectedBeed) || // the currently selected beed is removed
+           $selectedBeed == null && !setEvent.getAddedElements().isEmpty()))) { // the set is no longer empty
       select();
     }
     if (oldElement != $selectedBeed) {

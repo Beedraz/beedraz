@@ -759,8 +759,8 @@ public class TestUnionSetBeed {
           return path(well.cq);
         }
     };
-    NewMappedSetBeed<WellBeanBeed, LongBeed> mappedSetBeed =
-      new NewMappedSetBeed<WellBeanBeed, LongBeed>(mapping);
+    MappedSetBeed<WellBeanBeed, LongBeed> mappedSetBeed =
+      new MappedSetBeed<WellBeanBeed, LongBeed>(mapping);
     mappedSetBeed.setSourcePath(path($unionSetBeed));
     Long sum = 0L;
     for (LongBeed cq : mappedSetBeed.get()) {

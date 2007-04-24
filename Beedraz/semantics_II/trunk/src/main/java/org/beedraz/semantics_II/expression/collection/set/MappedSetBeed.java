@@ -77,7 +77,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
+public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     extends AbstractSetBeed<_To_, SetEvent<_To_>> {
 
   /**
@@ -87,7 +87,7 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
    * @post  getSourcePath() == null;
    * @post  get() == null;
    */
-  public NewMappedSetBeed(PathFactory<_From_, _To_> mapping) {
+  public MappedSetBeed(PathFactory<_From_, _To_> mapping) {
     $mapping = mapping;
   }
 
@@ -131,7 +131,7 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
 
       /**
        * If the given event is of type {@link PathEvent}, then it is caused by
-       * the {@link NewMappedSetBeed#getSourcePath()}. In this case, we
+       * the {@link MappedSetBeed#getSourcePath()}. In this case, we
        * replace the old source by the new value in the given event.
        * The elements that are added by this operation are gathered in
        * <code>addedFilteredElements</code>.
@@ -155,12 +155,12 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
 
       /**
        * If the given event is of type {@link SetEvent}, then it is caused by
-       * the {@link NewMappedSetBeed#getSource()}.
+       * the {@link MappedSetBeed#getSource()}.
        * In this case, we remove the elements in {@link SetEvent#getRemovedElements()}
        * and we add the elements in {@link SetEvent#getAddedElements()}.
-       * The elements that are added to {@link NewMappedSetBeed#$filteredSet}
+       * The elements that are added to {@link MappedSetBeed#$filteredSet}
        * by this operation are gathered in <code>addedFilteredElements</code>.
-       * The elements that are removed from {@link NewMappedSetBeed#$filteredSet}
+       * The elements that are removed from {@link MappedSetBeed#$filteredSet}
        * by this operation are gathered in <code>removedFilteredElements</code>.
        *
        * @pre  event != null;
@@ -191,10 +191,10 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
        * to false, or from false to true.
        * When the {@link BooleanEvent#getNewValue() new value} of the event is true,
        * we add the element of the {@link ElementCriterion filter criterion} to
-       * {@link NewMappedSetBeed#$filteredSet} and to <code>addedFilteredElements</code>.
+       * {@link MappedSetBeed#$filteredSet} and to <code>addedFilteredElements</code>.
        * When the {@link BooleanEvent#getNewValue() new value} of the event is false,
        * we remove the element of the {@link ElementCriterion filter criterion} from
-       * {@link NewMappedSetBeed#$filteredSet} and add it to
+       * {@link MappedSetBeed#$filteredSet} and add it to
        * <code>removedFilteredElements</code>.
        * We don't handle events of sources that are already in {@code removedFilteredElements}.
        *
@@ -312,8 +312,8 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
    * @param   source
    * @post    getSource() == source;
    * @post    get() == the result of applying this operation on the given source
-   * @post    The {@link NewMappedSetBeed} is registered as a dependent of the given SetBeed.
-   * @post    The {@link NewMappedSetBeed} is registered as a dependent of paths created
+   * @post    The {@link MappedSetBeed} is registered as a dependent of the given SetBeed.
+   * @post    The {@link MappedSetBeed} is registered as a dependent of paths created
    *          with {@link #getMapping()} for all beeds in the given source.
    *          (The reason is that this instance should be notified (and then recalculate) when
    *          one of the beeds in the source changes.)
@@ -380,7 +380,7 @@ public class NewMappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     addedResultingElements.removeAll(removedResultingElements);
     removedResultingElements.removeAll(addedClone);
     if ((! removedResultingElements.isEmpty()) || (! addedResultingElements.isEmpty())) {
-      event = new ActualSetEvent<_To_>(NewMappedSetBeed.this,
+      event = new ActualSetEvent<_To_>(MappedSetBeed.this,
                                        addedResultingElements,
                                        removedResultingElements,
                                        edit);

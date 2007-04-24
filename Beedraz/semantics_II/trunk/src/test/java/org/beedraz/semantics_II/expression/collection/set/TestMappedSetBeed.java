@@ -49,10 +49,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TestNewMappedSetBeed {
+public class TestMappedSetBeed {
 
 
-  public class MyNewMappedSetBeed extends NewMappedSetBeed<WellBeanBeed, LongBeed> {
+  public class MyNewMappedSetBeed extends MappedSetBeed<WellBeanBeed, LongBeed> {
 
     public MyNewMappedSetBeed(PathFactory<WellBeanBeed, LongBeed> mapping) {
       super(mapping);
@@ -155,7 +155,7 @@ public class TestNewMappedSetBeed {
    */
   @Test
   public void setSourcePath1() throws EditStateException, IllegalEditException {
-    // register listeners to the NewMappedSetBeed
+    // register listeners to the MappedSetBeed
     $mappedSetBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
@@ -173,7 +173,7 @@ public class TestNewMappedSetBeed {
    */
   @Test
   public void setSourcePath2() throws EditStateException, IllegalEditException {
-    // register listeners to the NewMappedSetBeed
+    // register listeners to the MappedSetBeed
     $mappedSetBeed.addListener($listener3);
     assertNull($listener3.$event);
     // check setSource
@@ -197,7 +197,7 @@ public class TestNewMappedSetBeed {
     assertEquals($listener3.$event.getAddedElements(), added);
     assertEquals($listener3.$event.getRemovedElements(), removed);
     assertEquals($listener3.$event.getEdit(), null);
-    // The NewMappedSetBeed is registered as listener of the source, so when
+    // The MappedSetBeed is registered as listener of the source, so when
     // the source changes, the beed should be notified
     $listener3.reset();
     assertNull($listener3.$event);
@@ -218,15 +218,15 @@ public class TestNewMappedSetBeed {
     assertTrue($mappedSetBeed.get().contains($well2.cq));
     assertTrue($mappedSetBeed.get().contains($well3.cq));
     assertTrue($mappedSetBeed.get().contains(goal.cq));
-    // The NewMappedSetBeed is registered as listener of all beeds in the source,
+    // The MappedSetBeed is registered as listener of all beeds in the source,
     // so when one of them changes, the beed should be notified
     // This cannot be tested with this mapping, because the cq beed cannot be changed.
     // See setSource3
 
-    // When a new beed is added to the source, the NewMappedSetBeed is added as a listener
+    // When a new beed is added to the source, the MappedSetBeed is added as a listener
     // of that beed. See setSource3.
 
-    // When a beed is removed from the source, the NewMappedSetBeed is removed as listener
+    // When a beed is removed from the source, the MappedSetBeed is removed as listener
     // of that beed.
     $listener3.reset();
     assertNull($listener3.$event);
@@ -247,7 +247,7 @@ public class TestNewMappedSetBeed {
     LongEdit longEdit = new LongEdit(goal.cq);
     longEdit.setGoal(7L);
     longEdit.perform();
-    assertNull($listener3.$event); // the NewMappedSetBeed is NOT notified
+    assertNull($listener3.$event); // the MappedSetBeed is NOT notified
     // and the value of the mapped set beed is correct
     Set<LongBeed> result = new HashSet<LongBeed>();
     result.add($well1.cq);
@@ -283,9 +283,9 @@ public class TestNewMappedSetBeed {
       }
     };
     // define a new mapped set beed
-    NewMappedSetBeed<WellBeanBeed, RunBeanBeed> mappedSetBeed =
-      new NewMappedSetBeed<WellBeanBeed, RunBeanBeed>(mapping);
-    // register listeners to the NewMappedSetBeed
+    MappedSetBeed<WellBeanBeed, RunBeanBeed> mappedSetBeed =
+      new MappedSetBeed<WellBeanBeed, RunBeanBeed>(mapping);
+    // register listeners to the MappedSetBeed
     mappedSetBeed.addListener($listener4);
     assertNull($listener4.$event);
 
@@ -331,7 +331,7 @@ public class TestNewMappedSetBeed {
     assertTrue($listener4.$event.getRemovedElements().isEmpty());
     assertEquals(setEdit, $listener4.$event.getEdit());
 
-    // The NewMappedSetBeed is registered as listener of all beeds in the source,
+    // The MappedSetBeed is registered as listener of all beeds in the source,
     // so when one of them changes, the beed should be notified
     $listener4.reset();
     assertNull($listener4.$event);
@@ -351,7 +351,7 @@ public class TestNewMappedSetBeed {
     assertTrue(mappedSetBeed.get().contains($run2));
     assertTrue(mappedSetBeed.get().contains($run3));
     assertTrue(mappedSetBeed.get().contains($run));
-    // When a new beed is added to the source, the NewMappedSetBeed is added as a listener
+    // When a new beed is added to the source, the MappedSetBeed is added as a listener
     // of that beed. See above.
 
     // remove a extra beed from the source

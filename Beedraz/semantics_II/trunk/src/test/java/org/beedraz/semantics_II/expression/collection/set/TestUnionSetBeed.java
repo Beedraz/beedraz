@@ -17,6 +17,7 @@
 package org.beedraz.semantics_II.expression.collection.set;
 
 
+import static org.beedraz.semantics_II.path.Paths.path;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -28,25 +29,19 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.beedraz.semantics_II.BeedMapping;
 import org.beedraz.semantics_II.StubListener;
-import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.RunBeanBeed;
 import org.beedraz.semantics_II.bean.WellBeanBeed;
 import org.beedraz.semantics_II.edit.EditStateException;
 import org.beedraz.semantics_II.edit.IllegalEditException;
 import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
-import org.beedraz.semantics_II.expression.collection.set.EditableSetBeed;
-import org.beedraz.semantics_II.expression.collection.set.MappedSetBeed;
-import org.beedraz.semantics_II.expression.collection.set.SetBeed;
-import org.beedraz.semantics_II.expression.collection.set.SetEdit;
-import org.beedraz.semantics_II.expression.collection.set.SetEvent;
-import org.beedraz.semantics_II.expression.collection.set.UnionSetBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
+import org.beedraz.semantics_II.path.Path;
+import org.beedraz.semantics_II.path.PathFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -755,21 +750,18 @@ public class TestUnionSetBeed {
     $unionSetBeed.addSource($runA.wells);
     $unionSetBeed.addSource($runB.wells);
     $unionSetBeed.addSource($runC.wells);
-    BeedMapping<WellBeanBeed, LongBeed> mapping =
-      new BeedMapping<WellBeanBeed, LongBeed>() {
+    PathFactory<WellBeanBeed, LongBeed> mapping =
+      new PathFactory<WellBeanBeed, LongBeed>() {
         /**
-         * @pre  from != null;
+         * @pre  well != null;
          */
-        public LongBeed map(WellBeanBeed from) {
-          return from.cq;
-        }
-        public boolean dependsOnBeed() {
-          return true;
+        public Path<? extends LongBeed> createPath(WellBeanBeed well) {
+          return path(well.cq);
         }
     };
-    MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed> mappedSetBeed =
-      new MappedSetBeed<WellBeanBeed, AggregateEvent, LongBeed>(mapping);
-    mappedSetBeed.setSource($unionSetBeed);
+    NewMappedSetBeed<WellBeanBeed, LongBeed> mappedSetBeed =
+      new NewMappedSetBeed<WellBeanBeed, LongBeed>(mapping);
+    mappedSetBeed.setSourcePath(path($unionSetBeed));
     Long sum = 0L;
     for (LongBeed cq : mappedSetBeed.get()) {
       sum += cq.getLong();

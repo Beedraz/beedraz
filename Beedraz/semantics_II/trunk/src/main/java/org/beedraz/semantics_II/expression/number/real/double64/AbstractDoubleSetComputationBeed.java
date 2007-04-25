@@ -32,6 +32,8 @@ import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
+import org.beedraz.semantics_II.path.Path;
+import org.beedraz.semantics_II.path.PathEvent;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 import org.ppeew.smallfries_I.MathUtil;
@@ -40,6 +42,9 @@ import org.ppeew.smallfries_I.MathUtil;
 /**
  * A beed that does a computation on a given set of beeds of type {@link DoubleBeed}.
  *
+ * @invar getSourcePath() != null
+ *          ? getSource() == getSourcePath().get()
+ *          : getSource() == null;
  * @invar getSource() == null ==> getDouble() == null;
  * @invar getSource() != null ==>
  *        (exists DoubleBeed db; getSource().get().contains(db); db.getDouble() == null)
@@ -70,22 +75,38 @@ public abstract class AbstractDoubleSetComputationBeed
 
   private boolean $effective = false;
 
+  /**
+   * Events can come from the {@link #$source} or the {@link #$sourcePath}.
+   * When the path changes, change the source to the new value, register the source and the
+   * beeds in the source and recalculate.
+   * When the source changes, consider the beeds that are removed and remove them as
+   * update source; consider the beeds that are added and add them as update source;
+   * recalculate.
+   * When the value of this beed changes, return an event containing the old and new value.
+   */
   @Override
   protected ActualDoubleEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
-    // if the source changes (elements added and / or removed
-    if (events.keySet().contains($source)) {
-      @SuppressWarnings("unchecked")
-      SetEvent<RealBeed<?>> setEvent = (SetEvent<RealBeed<?>>)events.get($source);
-      sourceChanged(setEvent);
-    }
-    // if the value of one of the elements changes
-    // we do nothing special here, just a total recalculate
-    // IDEA there is room for optimalization here
-    // recalculate and notify the listeners if the value has changed
     boolean oldEffective = $effective;
     double oldValue = $value;
-    assert $source != null;
-    recalculate($source);
+    PathEvent<SetBeed<RealBeed<?>, ?>> pathEvent =
+      (PathEvent<SetBeed<RealBeed<?>, ?>>)events.get($sourcePath); // we know this cast is correct
+    if (pathEvent != null) {
+      setSource(pathEvent.getNewValue());
+    }
+    else {
+      // if the source changes (elements added and / or removed
+      if (events.keySet().contains($source)) {
+        @SuppressWarnings("unchecked")
+        SetEvent<RealBeed<?>> setEvent = (SetEvent<RealBeed<?>>)events.get($source);
+        sourceChanged(setEvent);
+      }
+      // if the value of one of the elements changes
+      // we do nothing special here, just a total recalculate
+      // IDEA there is room for optimalization here
+      // recalculate and notify the listeners if the value has changed
+      assert $source != null;
+      recalculate($source);
+    }
     if ((oldEffective != $effective) || ! MathUtil.equalPrimitiveValue(oldValue, $value)) {
       return new ActualDoubleEvent(
           AbstractDoubleSetComputationBeed.this,
@@ -138,6 +159,43 @@ public abstract class AbstractDoubleSetComputationBeed
   /**
    * @basic
    */
+  public final Path<? extends SetBeed<RealBeed<?>, ?>> getSourcePath() {
+    return $sourcePath;
+  }
+
+  /**
+   * @post  getSourcePath() == sourcePath;
+   * @post
+   */
+  public final void setSourcePath(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
+    boolean oldEffective = isEffective();
+    double oldValue = $value;
+    if ($sourcePath != null) {
+      removeUpdateSource($sourcePath);
+    }
+    $sourcePath = sourcePath;
+    if ($sourcePath != null) {
+      addUpdateSource($sourcePath);
+      setSource($sourcePath.get());
+    }
+    else {
+      setSource(null);
+    }
+    if ((oldEffective != isEffective()) || (oldValue != $value)) {
+      updateDependents(
+          new ActualDoubleEvent(
+              AbstractDoubleSetComputationBeed.this,
+              oldEffective ? oldValue : null,
+              isEffective() ? $value : null,
+              null)); // edit = null
+    }
+  }
+
+  private Path<? extends SetBeed<RealBeed<?>, ?>> $sourcePath;
+
+  /**
+   * @return getSourcePath() == null ? null : getSourcePath().get();
+   */
   public final SetBeed<RealBeed<?>, ?> getSource() {
     return $source;
   }
@@ -145,16 +203,15 @@ public abstract class AbstractDoubleSetComputationBeed
   /**
    * @param   source
    * @post    getSource() == source;
-   * @post    getDouble() == the mean of the given source
-   * @post    The AbstractDoubleSetComputationBeed is registered as a listener of the
-   *          given SetBeed.
-   * @post    The AbstractDoubleSetComputationBeed is registered as a listener of all
-   *          DoubleBeeds in the given SetBeed. (The reason is that the
-   *          AbstractDoubleSetComputationBeed should be notified (and then recalculate)
-   *          when one of the DoubleBeeds changes.)
-   * @post    The listeners of this beed are notified when the value changes.
+   * @post    getDouble() == the value resulting from the given source
+   * @post    The given source is added as update source (if it is effective).
+   * @post    The previous source is removed as update source (if it is effective).
+   * @post    All beeds in the given source are added as update sources. (The reason
+   *          is that this source should be notified (and then recalculate)
+   *          when one of the beeds in the given source changes.)
+   * @post    All beeds in the previous source are removed as update sources.
    */
-  public final void setSource(SetBeed<RealBeed<?>, ?> source) {
+  private void setSource(SetBeed<RealBeed<?>, ?> source) {
     if ($source != null) {
       for (RealBeed<?> beed : $source.get()) {
         removeUpdateSource(beed);
@@ -163,8 +220,6 @@ public abstract class AbstractDoubleSetComputationBeed
     }
     // set the source
     $source = source;
-    boolean oldEffective = isEffective();
-    double oldValue = $value;
     if ($source != null) {
       addUpdateSource($source);
       for (RealBeed<?> beed : $source.get()) {
@@ -174,14 +229,6 @@ public abstract class AbstractDoubleSetComputationBeed
     }
     else {
       assignEffective(false);
-    }
-    if ((oldEffective != isEffective()) || (oldValue != $value)) {
-      updateDependents(
-          new ActualDoubleEvent(
-              AbstractDoubleSetComputationBeed.this,
-              oldEffective ? oldValue : null,
-              isEffective() ? $value : null,
-              null)); // edit = null
     }
   }
 

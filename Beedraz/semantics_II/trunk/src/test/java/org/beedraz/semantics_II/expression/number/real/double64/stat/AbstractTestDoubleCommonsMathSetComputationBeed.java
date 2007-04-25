@@ -17,6 +17,7 @@
 package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 
+import static org.beedraz.semantics_II.path.Paths.path;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -35,7 +36,7 @@ import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleEdit;
 import org.beedraz.semantics_II.expression.number.real.double64.EditableDoubleBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.AbstractDoubleCommonsMathSetComputationBeed;
+import org.beedraz.semantics_II.path.Path;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +80,9 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     assertNull($listener3.$event);
     // check setSource
     SetBeed<RealBeed<?>, ?> source = null;
-    $subject.setSource(source);
+    Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
+    $subject.setSourcePath(sourcePath);
+    assertEquals($subject.getSourcePath(), sourcePath);
     assertEquals($subject.getSource(), source);
     assertEquals($subject.getDouble(), null);
     // value has not changed, so the listeners are not notified
@@ -96,7 +99,9 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     assertNull($listener3.$event);
     // check setSource
     EditableSetBeed<RealBeed<?>> source = createSource();
-    $subject.setSource(source);
+    Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
+    $subject.setSourcePath(sourcePath);
+    assertEquals($subject.getSourcePath(), sourcePath);
     assertEquals($subject.getSource(), source);
     Double statistic1 = computeStatistic(1.0, 2.0, 3.0, 4.0);
     assertTrue(MathUtil.equalValue($subject.getDouble(), statistic1, Math.ulp($subject.getDouble()) * 2));
@@ -199,8 +204,9 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     // create source
     EditableSetBeed<RealBeed<?>> source =
       new EditableSetBeed<RealBeed<?>>();
+    Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
     // add source to beed
-    $subject.setSource(source);
+    $subject.setSourcePath(sourcePath);
     // recalculate (setBeed contains no elements)
     recalculate($subject);
     double statistic = computeStatistic();
@@ -268,8 +274,9 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     // create set beed
     EditableSetBeed<RealBeed<?>> setBeed =
       new EditableSetBeed<RealBeed<?>>();
+    Path<? extends SetBeed<RealBeed<?>, ?>> setBeedPath = path(setBeed);
     // add set beed to beed
-    $subject.setSource(setBeed);
+    $subject.setSourcePath(setBeedPath);
     // add beed
     assertEquals($subject.getDouble(), Double.NaN);
     SetEdit<RealBeed<?>> setEdit =
@@ -323,13 +330,14 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     assertEquals($subject.getDouble(), Double.NaN);
     // change beeds of the source
     setBeed = new EditableSetBeed<RealBeed<?>>();
+    setBeedPath = path(setBeed);
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
-    $subject.setSource(setBeed);
+    $subject.setSourcePath(setBeedPath);
     statistic = computeStatistic(1.0, 2.0);
     assertTrue(MathUtil.equalValue($subject.getDouble(), statistic));
     DoubleEdit doubleEdit = new DoubleEdit(beed1);

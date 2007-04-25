@@ -17,6 +17,7 @@
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
+import static org.beedraz.semantics_II.path.Paths.path;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -32,10 +33,7 @@ import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetEdit;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
-import org.beedraz.semantics_II.expression.number.real.double64.ActualDoubleEvent;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleEdit;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleSetSumBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.EditableDoubleBeed;
+import org.beedraz.semantics_II.path.Path;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +77,7 @@ public class TestDoubleSetSumBeed {
 
   @Test
   public void constructor() {
+    assertEquals($doubleSetSumBeed.getSourcePath(), null);
     assertEquals($doubleSetSumBeed.getSource(), null);
     assertEquals($doubleSetSumBeed.getDouble(), null);
   }
@@ -93,7 +92,9 @@ public class TestDoubleSetSumBeed {
     assertNull($listener3.$event);
     // check setSource
     SetBeed<RealBeed<?>, ?> source = null;
-    $doubleSetSumBeed.setSource(source);
+    Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
+    $doubleSetSumBeed.setSourcePath(sourcePath);
+    assertEquals($doubleSetSumBeed.getSourcePath(), sourcePath);
     assertEquals($doubleSetSumBeed.getSource(), source);
     assertEquals($doubleSetSumBeed.getDouble(), null);
     // value has not changed, so the listeners are not notified
@@ -110,7 +111,9 @@ public class TestDoubleSetSumBeed {
     assertNull($listener3.$event);
     // check setSource
     EditableSetBeed<RealBeed<?>> source = createSource();
-    $doubleSetSumBeed.setSource(source);
+    Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
+    $doubleSetSumBeed.setSourcePath(sourcePath);
+    assertEquals($doubleSetSumBeed.getSourcePath(), sourcePath);
     assertEquals($doubleSetSumBeed.getSource(), source);
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0, 2.0, 3.0, 4.0));
     // value has changed, so the listeners of the sum beed are notified
@@ -205,8 +208,9 @@ public class TestDoubleSetSumBeed {
     // create source
     EditableSetBeed<RealBeed<?>> source =
       new EditableSetBeed<RealBeed<?>>();
+    Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
     // add source to sum beed
-    $doubleSetSumBeed.setSource(source);
+    $doubleSetSumBeed.setSourcePath(sourcePath);
     // recalculate (setBeed contains no elements)
     $doubleSetSumBeed.publicRecalculate();
     assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
@@ -269,8 +273,9 @@ public class TestDoubleSetSumBeed {
     // create set beed
     EditableSetBeed<RealBeed<?>> setBeed =
       new EditableSetBeed<RealBeed<?>>();
+    Path<? extends SetBeed<RealBeed<?>, ?>> setBeedPath = path(setBeed);
     // add set beed to sum beed
-    $doubleSetSumBeed.setSource(setBeed);
+    $doubleSetSumBeed.setSourcePath(setBeedPath);
     // add beed
     assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     SetEdit<RealBeed<?>> setEdit =
@@ -316,13 +321,14 @@ public class TestDoubleSetSumBeed {
     assertEquals($doubleSetSumBeed.getDouble(), 0.0d);
     // change beeds of the source
     setBeed = new EditableSetBeed<RealBeed<?>>();
+    setBeedPath = path(setBeed);
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
     setEdit.perform();
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed2);
     setEdit.perform();
-    $doubleSetSumBeed.setSource(setBeed);
+    $doubleSetSumBeed.setSourcePath(setBeedPath);
     assertEquals($doubleSetSumBeed.getDouble(), MathUtil.sum(1.0, 2.0));
     DoubleEdit doubleEdit = new DoubleEdit(beed1);
     doubleEdit.setGoal(1.5);

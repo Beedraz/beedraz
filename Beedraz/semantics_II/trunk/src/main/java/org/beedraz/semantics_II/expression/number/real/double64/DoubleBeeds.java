@@ -324,10 +324,13 @@ public class DoubleBeeds {
     return sumBeed;
   }
 
-
   public static DoubleBeed sum(SetBeed<RealBeed<?>, ?> terms) {
+    return sum(path(terms));
+  }
+
+  public static DoubleBeed sum(Path<? extends SetBeed<RealBeed<?>, ?>> termsPath) {
     DoubleSetSumBeed setSumBeed = new DoubleSetSumBeed();
-    setSumBeed.setSource(terms);
+    setSumBeed.setSourcePath(termsPath);
     return setSumBeed;
   }
 
@@ -338,8 +341,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed avg(SetBeed<RealBeed<?>, ?> source) {
+    return avg(path(source));
+  }
+
+  public static DoubleBeed avg(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleArithmeticMeanBeed meanBeed = new DoubleArithmeticMeanBeed();
-    meanBeed.setSource(source);
+    meanBeed.setSourcePath(sourcePath);
     return meanBeed;
   }
 
@@ -350,8 +357,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed var_p(SetBeed<RealBeed<?>, ?> source) {
+    return var_p(path(source));
+  }
+
+  public static DoubleBeed var_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoublePopulationVarianceBeed varBeed = new DoublePopulationVarianceBeed();
-    varBeed.setSource(source);
+    varBeed.setSourcePath(sourcePath);
     return varBeed;
   }
 
@@ -362,8 +373,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed var_s(SetBeed<RealBeed<?>, ?> source) {
+    return var_s(path(source));
+  }
+
+  public static DoubleBeed var_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleSampleVarianceBeed varBeed = new DoubleSampleVarianceBeed();
-    varBeed.setSource(source);
+    varBeed.setSourcePath(sourcePath);
     return varBeed;
   }
 
@@ -374,8 +389,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed sd_p(SetBeed<RealBeed<?>, ?> source) {
+    return sd_p(path(source));
+  }
+
+  public static DoubleBeed sd_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoublePopulationStandardDeviationBeed sdBeed = new DoublePopulationStandardDeviationBeed();
-    sdBeed.setSource(source);
+    sdBeed.setSourcePath(sourcePath);
     return sdBeed;
   }
 
@@ -386,8 +405,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed sd_s(SetBeed<RealBeed<?>, ?> source) {
+    return sd_s(path(source));
+  }
+
+  public static DoubleBeed sd_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleSampleStandardDeviationBeed sdBeed = new DoubleSampleStandardDeviationBeed();
-    sdBeed.setSource(source);
+    sdBeed.setSourcePath(sourcePath);
     return sdBeed;
   }
 
@@ -398,8 +421,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed se_p(SetBeed<RealBeed<?>, ?> source) {
+    return se_p(path(source));
+  }
+
+  public static DoubleBeed se_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoublePopulationStandardErrorBeed seBeed = new DoublePopulationStandardErrorBeed();
-    seBeed.setSource(source);
+    seBeed.setSourcePath(sourcePath);
     return seBeed;
   }
 
@@ -410,8 +437,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed se_s(SetBeed<RealBeed<?>, ?> source) {
+    return se_s(path(source));
+  }
+
+  public static DoubleBeed se_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleSampleStandardErrorBeed seBeed = new DoubleSampleStandardErrorBeed();
-    seBeed.setSource(source);
+    seBeed.setSourcePath(sourcePath);
     return seBeed;
   }
 
@@ -422,11 +453,14 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed gavg(SetBeed<RealBeed<?>, ?> source) {
-    DoubleGeometricMeanBeed meanBeed = new DoubleGeometricMeanBeed();
-    meanBeed.setSource(source);
-    return meanBeed;
+    return gavg(path(source));
   }
 
+  public static DoubleBeed gavg(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
+    DoubleGeometricMeanBeed meanBeed = new DoubleGeometricMeanBeed();
+    meanBeed.setSourcePath(sourcePath);
+    return meanBeed;
+  }
   /*</section>*/
 
 
@@ -434,9 +468,13 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed gsd_p(SetBeed<RealBeed<?>, ?> source) {
+    return gsd_p(path(source));
+  }
+
+  public static DoubleBeed gsd_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoublePopulationGeometricStandardDeviationBeed sdBeed =
       new DoublePopulationGeometricStandardDeviationBeed();
-    sdBeed.setSource(source);
+    sdBeed.setSourcePath(sourcePath);
     return sdBeed;
   }
 
@@ -447,9 +485,13 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed gsd_s(SetBeed<RealBeed<?>, ?> source) {
+    return gsd_s(path(source));
+  }
+
+  public static DoubleBeed gsd_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleSampleGeometricStandardDeviationBeed sdBeed =
       new DoubleSampleGeometricStandardDeviationBeed();
-    sdBeed.setSource(source);
+    sdBeed.setSourcePath(sourcePath);
     return sdBeed;
   }
 
@@ -460,12 +502,15 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed gse_p(SetBeed<RealBeed<?>, ?> source) {
-    DoublePopulationGeometricStandardErrorBeed seBeed =
-      new DoublePopulationGeometricStandardErrorBeed();
-    seBeed.setSource(source);
-    return seBeed;
+    return gse_p(path(source));
   }
 
+  public static DoubleBeed gse_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
+    DoublePopulationGeometricStandardErrorBeed seBeed =
+      new DoublePopulationGeometricStandardErrorBeed();
+    seBeed.setSourcePath(sourcePath);
+    return seBeed;
+  }
   /*</section>*/
 
 
@@ -473,9 +518,13 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed gse_s(SetBeed<RealBeed<?>, ?> source) {
+    return gse_s(path(source));
+  }
+
+  public static DoubleBeed gse_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleSampleGeometricStandardErrorBeed seBeed =
       new DoubleSampleGeometricStandardErrorBeed();
-    seBeed.setSource(source);
+    seBeed.setSourcePath(sourcePath);
     return seBeed;
   }
 
@@ -486,11 +535,14 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed max(SetBeed<RealBeed<?>, ?> source) {
-    DoubleMaxBeed maxBeed = new DoubleMaxBeed();
-    maxBeed.setSource(source);
-    return maxBeed;
+    return max(path(source));
   }
 
+  public static DoubleBeed max(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
+    DoubleMaxBeed maxBeed = new DoubleMaxBeed();
+    maxBeed.setSourcePath(sourcePath);
+    return maxBeed;
+  }
   /*</section>*/
 
 
@@ -498,8 +550,12 @@ public class DoubleBeeds {
   //------------------------------------------------------------------
 
   public static DoubleBeed min(SetBeed<RealBeed<?>, ?> source) {
+    return min(path(source));
+  }
+
+  public static DoubleBeed min(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
     DoubleMinBeed minBeed = new DoubleMinBeed();
-    minBeed.setSource(source);
+    minBeed.setSourcePath(sourcePath);
     return minBeed;
   }
 

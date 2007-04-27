@@ -25,18 +25,18 @@ import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleArith
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleGeometricMeanBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleMaxBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleMinBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetProductBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationGeometricStandardDeviationBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationGeometricStandardErrorBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationStandardDeviationBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationStandardErrorBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationVarianceBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetSumBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleGeometricStandardDeviationBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleGeometricStandardErrorBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleStandardDeviationBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleStandardErrorBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleVarianceBeed;
+import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetProductBeed;
+import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetSumBeed;
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
@@ -256,6 +256,38 @@ public class DoubleBeeds {
   /*<section name="product">*/
   //------------------------------------------------------------------
 
+  /**
+   * @pre operands != null;
+   */
+  public static RealBeed<?> product(RealBeed<?>... operands) {
+    switch (operands.length) {
+      case 0:
+        return constant(1);
+      default:
+        return product(operands, 0);
+    }
+  }
+
+  /**
+   * @pre operands != null;
+   * @pre operands.length >= 1;
+   * @pre start >= 0;
+   * @pre start < operands.length;
+   */
+  private static RealBeed<?> product(RealBeed<?>[] operands, int start) {
+    if (start < operands.length - 1) {
+      // recursion: product(operands, start) = operands[start] AND product(operands, start + 1);
+      DoubleProductBeed productBeed = new DoubleProductBeed();
+      productBeed.setLeftOperandPath(path(operands[start]));
+      productBeed.setRightOperandPath(path(product(operands, start + 1)));
+      return productBeed;
+    }
+    else {
+      assert start == operands.length - 1;
+      return operands[start];
+    }
+  }
+
   public static DoubleBeed product(SetBeed<RealBeed<?>, ?> factors) {
     return product(path(factors));
   }
@@ -332,6 +364,38 @@ public class DoubleBeeds {
 
   /*<section name="sum">*/
   //------------------------------------------------------------------
+
+  /**
+   * @pre operands != null;
+   */
+  public static RealBeed<?> sum(RealBeed<?>... operands) {
+    switch (operands.length) {
+      case 0:
+        return constant(1);
+      default:
+        return sum(operands, 0);
+    }
+  }
+
+  /**
+   * @pre operands != null;
+   * @pre operands.length >= 1;
+   * @pre start >= 0;
+   * @pre start < operands.length;
+   */
+  private static RealBeed<?> sum(RealBeed<?>[] operands, int start) {
+    if (start < operands.length - 1) {
+      // recursion: product(operands, start) = operands[start] AND product(operands, start + 1);
+      DoubleProductBeed productBeed = new DoubleProductBeed();
+      productBeed.setLeftOperandPath(path(operands[start]));
+      productBeed.setRightOperandPath(path(product(operands, start + 1)));
+      return productBeed;
+    }
+    else {
+      assert start == operands.length - 1;
+      return operands[start];
+    }
+  }
 
   public static DoubleBeed sum(SetBeed<RealBeed<?>, ?> terms) {
     return sum(path(terms));

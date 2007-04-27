@@ -356,11 +356,11 @@ public class BooleanBeeds {
     return equalV(path(leftOperand), path(rightOperand));
   }
 
-  public static BooleanBeed equalV(RealBeed<?> leftOperand, Path<RealBeed<?>> rightOperandPath) {
+  public static BooleanBeed equalV(RealBeed<?> leftOperand, Path<? extends RealBeed<?>> rightOperandPath) {
     return equalV(path(leftOperand), rightOperandPath);
   }
 
-  public static BooleanBeed equalV(Path<RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
+  public static BooleanBeed equalV(Path<? extends RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
     return equalV(leftOperandPath, path(rightOperand));
   }
 
@@ -383,11 +383,11 @@ public class BooleanBeeds {
     return ne(path(leftOperand), path(rightOperand));
   }
 
-  public static BooleanBeed ne(RealBeed<?> leftOperand, Path<RealBeed<?>> rightOperandPath) {
+  public static BooleanBeed ne(RealBeed<?> leftOperand, Path<? extends RealBeed<?>> rightOperandPath) {
     return ne(path(leftOperand), rightOperandPath);
   }
 
-  public static BooleanBeed ne(Path<RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
+  public static BooleanBeed ne(Path<? extends RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
     return ne(leftOperandPath, path(rightOperand));
   }
 
@@ -410,11 +410,11 @@ public class BooleanBeeds {
     return ge(path(leftOperand), path(rightOperand));
   }
 
-  public static BooleanBeed ge(RealBeed<?> leftOperand, Path<RealBeed<?>> rightOperandPath) {
+  public static BooleanBeed ge(RealBeed<?> leftOperand, Path<? extends RealBeed<?>> rightOperandPath) {
     return ge(path(leftOperand), rightOperandPath);
   }
 
-  public static BooleanBeed ge(Path<RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
+  public static BooleanBeed ge(Path<? extends RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
     return ge(leftOperandPath, path(rightOperand));
   }
 
@@ -441,7 +441,7 @@ public class BooleanBeeds {
     return gt(path(leftOperand), rightOperandPath);
   }
 
-  public static BooleanBeed gt(Path<RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
+  public static BooleanBeed gt(Path<? extends RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
     return gt(leftOperandPath, path(rightOperand));
   }
 
@@ -464,11 +464,11 @@ public class BooleanBeeds {
     return le(path(leftOperand), path(rightOperand));
   }
 
-  public static BooleanBeed le(RealBeed<?> leftOperand, Path<RealBeed<?>> rightOperandPath) {
+  public static BooleanBeed le(RealBeed<?> leftOperand, Path<? extends RealBeed<?>> rightOperandPath) {
     return le(path(leftOperand), rightOperandPath);
   }
 
-  public static BooleanBeed le(Path<RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
+  public static BooleanBeed le(Path<? extends RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
     return le(leftOperandPath, path(rightOperand));
   }
 
@@ -491,11 +491,11 @@ public class BooleanBeeds {
     return lt(path(leftOperand), path(rightOperand));
   }
 
-  public static BooleanBeed lt(RealBeed<?> leftOperand, Path<RealBeed<?>> rightOperandPath) {
+  public static BooleanBeed lt(RealBeed<?> leftOperand, Path<? extends RealBeed<?>> rightOperandPath) {
     return lt(path(leftOperand), rightOperandPath);
   }
 
-  public static BooleanBeed lt(Path<RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
+  public static BooleanBeed lt(Path<? extends RealBeed<?>> leftOperandPath, RealBeed<?> rightOperand) {
     return lt(leftOperandPath, path(rightOperand));
   }
 

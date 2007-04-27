@@ -29,6 +29,8 @@ import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math.stat.descriptive.moment.Variance;
 import org.apache.commons.math.stat.descriptive.rank.Max;
 import org.apache.commons.math.stat.descriptive.rank.Min;
+import org.apache.commons.math.stat.descriptive.summary.Product;
+import org.apache.commons.math.stat.descriptive.summary.Sum;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -453,11 +455,17 @@ public final class MathUtil {
    */
   public static double sum(double... doubles) {
     assert doubles != null;
-    double sum = 0.0;
-    for (double value : doubles) {
-      sum += value;
-    }
-    return sum;
+    Sum sum = new Sum();
+    return sum.evaluate(doubles);
+  }
+
+  /**
+   * @pre  doubles != null;
+   */
+  public static double product(double... doubles) {
+    assert doubles != null;
+    Product product = new Product();
+    return product.evaluate(doubles);
   }
 
   /**

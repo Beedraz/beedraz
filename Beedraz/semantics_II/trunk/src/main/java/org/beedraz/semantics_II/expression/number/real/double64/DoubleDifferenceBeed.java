@@ -23,8 +23,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the difference of a {@link #getLeftOprnd()}
- * and a {@link #getRightOprnd()}.
+ * A beed that is the difference of a {@link #getPositiveTerm()}
+ * and a {@link #getNegativeTerm()}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -38,8 +38,8 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
 
   /**
    * @post  getDouble() == null;
-   * @post  getLeftOprnd() == null;
-   * @post  getRightOprnd() == null;
+   * @post  getPositiveTerm() == null;
+   * @post  getNegativeTerm() == null;
    */
   public DoubleDifferenceBeed() {
     super();
@@ -56,7 +56,7 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
    * @basic
    */
   public final Path<? extends RealBeed<?>> getPositiveTermPath() {
-    return getRightOprndPath();
+    return getLeftOprndPath();
   }
 
   /**
@@ -77,7 +77,7 @@ public class DoubleDifferenceBeed extends AbstractRealArgDoubleBinaryExpressionB
 
 
 
-  /*<property name="positive term">*/
+  /*<property name="negative term">*/
   //------------------------------------------------------------------
 
   /**

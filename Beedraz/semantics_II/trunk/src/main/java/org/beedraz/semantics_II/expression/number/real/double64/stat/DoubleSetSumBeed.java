@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.expression.number.real.double64;
+package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 
-import org.beedraz.semantics_II.expression.collection.set.SetBeed;
-import org.beedraz.semantics_II.expression.number.real.RealBeed;
+import org.apache.commons.math.stat.descriptive.summary.Sum;
+import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -30,45 +30,27 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)
  *            ==> getDouble() == sum { db.getDouble() | getSource().get().contains(db)};
  *        If the values of all beeds in the given set are effective,
- *        then the value of the sum beed is the sum of the values of all beeds
- *        in the given set. The sum of an empty set is zero.
- *        e.g. getDouble() = 5.1 + 3.2 + 4.9
+ *        then the value of the sum beed is the sum of
+ *        the values of all beeds in the given set. The sum of an empty set is NaN.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleSetSumBeed extends AbstractDoubleSetComputationBeed {
+public class DoubleSetSumBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
   /**
-   * @post  getSourcePath() == null;
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
   public DoubleSetSumBeed() {
-    super();
-  }
-
-  /**
-   * The value of this beed is recalculated.
-   */
-  @Override
-  protected final void recalculate(SetBeed<RealBeed<?>, ?> source) {
-    double acc = 0.0;
-    for (RealBeed<?> realBeed : source.get()) {
-      if (! realBeed.isEffective()) {
-        assignEffective(false);
-        return;
-      }
-      acc += realBeed.getdouble();
-    }
-    assignValue(acc);
-    assignEffective(true);
+    super(new Sum());
   }
 
   @Override
   public final String getOperatorString() {
     return "sum";
   }
+
 }
 

@@ -17,57 +17,105 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
+import org.beedraz.semantics_II.expression.number.real.RealBeed;
+import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the sum of zero or more other beeds of type
- * {@link DoubleBeed}.
- *
- * @invar (forAll DoubleBeed db; ; getNbOccurrences(db) > 0 ==> db.getDouble() != null)
- *            ==> getDouble() == sum { db.getDouble() * getNbOccurrences(db) | db instanceof DoubleBeed};
- *        If all terms are effective, then the value of the sum beed is the
- *        sum of the value of each term multiplied by the corresponding
- *        number of occurrences.
- *        e.g. getDouble() = 3 * 5.2 + 2 * 11.3
+ * A beed that is the sum of a {@link #getLeftOperand()} and a {@link #getRightOperand()}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleSumBeed extends AbstractDoubleCommutativeOperationBeed {
+public class DoubleSumBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
+
+
+  /*<construction>*/
+  //------------------------------------------------------------------
 
   /**
-   * @post  getDouble() == 0;
-   * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
+   * @post  getDouble() == null;
+   * @post  getLeftOperand() == null;
+   * @post  getRightOperand() == null;
    */
   public DoubleSumBeed() {
     super();
   }
 
-  @Override
-  protected double operation(double arg1, double arg2) {
-    return arg1 + arg2;
+  /*</construction>*/
+
+
+
+  /*<property name="left operand">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final Path<? extends RealBeed<?>> getLeftOperandPath() {
+    return getLeftOperandPath();
   }
 
-  @Override
-  public double initialValue() {
-    return 0.0;
+  /**
+   * @return getLeftOperandPath() == null ? null : getLeftOperandPath().get();
+   */
+  public final RealBeed<?> getLeftOperand() {
+    return getLeftOprnd();
   }
 
+  /**
+   * @post getLeftOperandPath() == leftOperandPath;
+   */
+  public final void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    setLeftOprndPath(leftOperandPath);
+  }
+
+  /*</property>*/
+
+
+
+  /*<property name="right operand">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final Path<? extends RealBeed<?>> getRightOperandPath() {
+    return getRightOprndPath();
+  }
+
+  /**
+   * @return getRightOperandPath() == null ? null : getRightOperandPath().get();
+   */
+  public final RealBeed<?> getRightOperand() {
+    return getRightOprnd();
+  }
+
+  /**
+   * @post getRightOperandPath() == rightOperandPath;
+   */
+  public final void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    setRightOprndPath(rightOperandPath);
+  }
+
+  /*</property>*/
+
+
+
+  /**
+   * @pre leftOperand != null;
+   * @pre rightOperand != null;
+   */
   @Override
-  public String argumentsToString() {
-    return "terms";
+  protected final double calculateValue(double leftOperand, double rightOperand) {
+    return leftOperand + rightOperand;
   }
 
   @Override
   public final String getOperatorString() {
     return "+";
-  }
-
-  @Override
-  public final String getNbOccurrencesOperatorString() {
-    return "*";
   }
 
 }

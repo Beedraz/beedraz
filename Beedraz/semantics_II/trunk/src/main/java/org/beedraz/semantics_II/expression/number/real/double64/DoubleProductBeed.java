@@ -17,47 +17,100 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
+import org.beedraz.semantics_II.expression.number.real.RealBeed;
+import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * A beed that is the product of zero or more other beeds of type
- * {@link DoubleBeed}.
- *
- * @invar (forAll DoubleBeed db; ; getNbOccurrences(db) > 0 ==> db.getDouble() != null)
- *            ==> getDouble() == product { Math.pow(db.getDouble(), getNbOccurrences(db)) | db instanceof DoubleBeed};
- *        If all terms are effective, then the value of the product beed is the
- *        product of the value of each term raised to a certain power, namely the corresponding
- *        number of occurrences.
- *        e.g. getDouble() = Math.pow(5.2, 3) * Math.pow(11.3, 5);
+ * A beed that is the product of a {@link #getLeftOperand()} and a {@link #getRightOperand()}.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
          state    = "$State$",
          tag      = "$Name$")
-public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
+public class DoubleProductBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
+
+
+  /*<construction>*/
+  //------------------------------------------------------------------
 
   /**
-   * @post  getDouble() == 0;
-   * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
+   * @post  getDouble() == null;
+   * @post  getLeftOperand() == null;
+   * @post  getRightOperand() == null;
    */
   public DoubleProductBeed() {
     super();
   }
 
-  @Override
-  protected double operation(double arg1, double arg2) {
-    return arg1 * arg2;
+  /*</construction>*/
+
+
+
+  /*<property name="left operand">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final Path<? extends RealBeed<?>> getLeftOperandPath() {
+    return getLeftOperandPath();
   }
 
-  @Override
-  public double initialValue() {
-    return 1.0;
+  /**
+   * @return getLeftOperandPath() == null ? null : getLeftOperandPath().get();
+   */
+  public final RealBeed<?> getLeftOperand() {
+    return getLeftOprnd();
   }
 
+  /**
+   * @post getLeftOperandPath() == leftOperandPath;
+   */
+  public final void setLeftOperandPath(Path<? extends RealBeed<?>> leftOperandPath) {
+    setLeftOprndPath(leftOperandPath);
+  }
+
+  /*</property>*/
+
+
+
+  /*<property name="right operand">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  public final Path<? extends RealBeed<?>> getRightOperandPath() {
+    return getRightOprndPath();
+  }
+
+  /**
+   * @return getRightOperandPath() == null ? null : getRightOperandPath().get();
+   */
+  public final RealBeed<?> getRightOperand() {
+    return getRightOprnd();
+  }
+
+  /**
+   * @post getRightOperandPath() == rightOperandPath;
+   */
+  public final void setRightOperandPath(Path<? extends RealBeed<?>> rightOperandPath) {
+    setRightOprndPath(rightOperandPath);
+  }
+
+  /*</property>*/
+
+
+
+  /**
+   * @pre leftOperand != null;
+   * @pre rightOperand != null;
+   */
   @Override
-  public String argumentsToString() {
-    return "factors";
+  protected final double calculateValue(double leftOperand, double rightOperand) {
+    return leftOperand * rightOperand;
   }
 
   @Override
@@ -65,9 +118,5 @@ public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
     return "*";
   }
 
-  @Override
-  public final String getNbOccurrencesOperatorString() {
-    return "^";
-  }
 }
 

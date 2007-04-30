@@ -38,8 +38,13 @@ public class BooleanNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
    */
   @Override
   protected void recalculate() {
-    assignEffective(true);
-    setValue(!getOperand().isEffective());
+    if (getOperand() != null) {
+      assignEffective(true);
+      setValue(!getOperand().isEffective());
+    }
+    else {
+      assignEffective(false);
+    }
   }
 
   /**

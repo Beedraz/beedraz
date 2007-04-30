@@ -70,9 +70,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
     if (pathEvent != null) {
       setOperand(pathEvent.getNewValue());
     }
-    recalculate(); // we know at this point that the operand path is effective; otherwise
-                   // it would be impossible to get an event from it (or from the operand),
-                   // so the precondition of the recalculate method is fulfilled
+    recalculate();
     if (! equalValue(oldValue, get())) {
       return createNewEvent(oldValue, get(), edit);
     }
@@ -129,12 +127,9 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
       removeUpdateSource($operand);
     }
     $operand = operand;
+    recalculate();
     if ($operand != null) {
-      recalculate();
       addUpdateSource($operand);
-    }
-    else {
-      assignEffective(false);
     }
     if (! equalValue(oldValue, get())) {
       _ResultEvent_ event = createNewEvent(oldValue, get(), null);
@@ -150,18 +145,16 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
 
   /**
    * This method recalculates the value of the unary beed, when the operand
-   * has changed.
+   * or the operand value has changed.
    * When the operand is changed into null, then this method is not called,
    * since in that case, the value of this beed should be changed into null,
    * which is simply done by setting the value of {@link #isEffective()} to false.
-   *
-   * @pre getOperand() != null;
    *
    * This is the default implementation. The method is overridden in
    * {@link BooleanNotNullBeed} and {@link BooleanNullBeed}.
    */
   protected void recalculate() {
-    if (hasEffectiveOperand()) {
+    if (getOperand() != null && hasEffectiveOperandValue()) {
       recalculateFrom($operand);
       assignEffective(true);
     }
@@ -176,7 +169,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
    *
    * @pre getOperand() != null;
    */
-  protected abstract boolean hasEffectiveOperand();
+  protected abstract boolean hasEffectiveOperandValue();
 
   /**
    * @pre operand != null;

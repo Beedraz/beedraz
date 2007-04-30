@@ -36,7 +36,7 @@ public abstract class AbstractRealArgUnaryExprBeed<_Result_ extends Object,
     extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _OperandBeed_>  {
 
   @Override
-  protected boolean hasEffectiveOperand() {
+  protected boolean hasEffectiveOperandValue() {
     return getOperand().isEffective();
   }
 

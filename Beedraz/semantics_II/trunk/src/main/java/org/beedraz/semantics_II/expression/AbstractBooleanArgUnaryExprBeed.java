@@ -35,7 +35,7 @@ public abstract class AbstractBooleanArgUnaryExprBeed<_Result_ extends Object,
     extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, BooleanBeed>  {
 
   @Override
-  protected boolean hasEffectiveOperand() {
+  protected boolean hasEffectiveOperandValue() {
     return getOperand().isEffective();
   }
 

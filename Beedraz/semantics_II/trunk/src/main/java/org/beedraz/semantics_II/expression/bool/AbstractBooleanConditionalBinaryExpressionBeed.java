@@ -93,8 +93,6 @@ public abstract class AbstractBooleanConditionalBinaryExpressionBeed
    * left operand is sometimes enough to know the result of the whole expression.
    * In this case, it is not necessary that the value of the
    * right operand is effective.
-   *
-   * @pre getLeftOperand() != null || getRightOperand() != null;
    */
   @Override
   protected void recalculate() {

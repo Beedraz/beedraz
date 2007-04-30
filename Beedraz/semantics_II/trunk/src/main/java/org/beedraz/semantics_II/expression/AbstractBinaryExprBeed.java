@@ -24,7 +24,6 @@ import java.util.Map;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.edit.Edit;
-import org.beedraz.semantics_II.expression.bool.AbstractBooleanBinaryLogicalExpressionBeed;
 import org.beedraz.semantics_II.expression.bool.AbstractBooleanConditionalBinaryExpressionBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
@@ -86,10 +85,7 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     if (rightPathEvent != null) {
       setRightOprnd(rightPathEvent.getNewValue());
     }
-    recalculate(); // we know at this point that the left operand path or the
-                   // right operand path is effective; otherwise it would be
-                   // impossible to get an event from one of them (or from the operands),
-                   // so the precondition of the recalculate method is fulfilled
+    recalculate();
     if (! equalValue(oldValue, get())) {
       return createNewEvent(oldValue, get(), edit);
     }
@@ -227,14 +223,12 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
   /**
    * This method recalculates the value of the binary beed, when one of
    * the operands has changed.
-   * When the operands are both null, then this method is not called,
-   * since in that case, the value of this beed should be changed into null,
+   * When one of the operands is null, or when the value of one of the operands
+   * is null, the value of this beed should be changed into null,
    * which is simply done by setting the value of {@link #isEffective()} to false.
    *
-   * @pre getLeftOperand() != null || getRightOperand() != null;
-   *
    * This is the default implementation. The method is overridden in
-   * {@link AbstractBooleanBinaryLogicalExpressionBeed}.
+   * {@link AbstractBooleanConditionalBinaryExpressionBeed}.
    */
   protected void recalculate() {
     if (($leftOperand != null) && hasEffectiveLeftOperand() &&

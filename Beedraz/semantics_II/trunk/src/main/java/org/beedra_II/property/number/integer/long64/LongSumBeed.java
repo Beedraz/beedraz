@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedra_II.Event;
-import org.beedra_II.aggregate.AggregateBeed;
 import org.beedra_II.edit.Edit;
 import org.beedra_II.property.AbstractPropertyBeed;
 import org.beedra_II.property.number.integer.IntegerBeed;
@@ -69,13 +68,12 @@ public class LongSumBeed
     implements LongBeed {
 
   /**
-   * @pre   owner != null;
    * @post  getLong() == 0;
    * @post  (forall LongBeed lb; ; getNbOccurrences(lb) == 0};
    * @post  isEffective();
    */
-  public LongSumBeed(AggregateBeed owner) {
-    super(owner);
+  public LongSumBeed() {
+    super(null);
   }
 
   public final boolean isEffective() {

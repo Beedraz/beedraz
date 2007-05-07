@@ -18,14 +18,11 @@ package org.beedra_II.property.number.integer.long64;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
-import org.beedra_II.StubListener;
 import org.beedra_II.aggregate.AggregateBeed;
-import org.beedra_II.aggregate.AggregateEvent;
 import org.beedra_II.bean.StubBeanBeed;
 import org.beedra_II.edit.EditStateException;
 import org.beedra_II.edit.IllegalEditException;
@@ -37,8 +34,8 @@ import org.junit.Test;
 public class TestLongSumBeed {
 
   public class MyIntegerSumBeed extends LongSumBeed {
-    public MyIntegerSumBeed(AggregateBeed owner) {
-      super(owner);
+    public MyIntegerSumBeed() {
+      super();
     }
 
     /**
@@ -53,45 +50,21 @@ public class TestLongSumBeed {
   @Before
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
-    $longSumBeed = new MyIntegerSumBeed($owner);
-    $event1 = new ActualLongEvent($longSumBeed, 0L, 1L, null);
-    $listener1 = new StubListener<AggregateEvent>();
-    $listener2 = new StubListener<AggregateEvent>();
+    $longSumBeed = new MyIntegerSumBeed();
   }
 
   @After
   public void tearDown() throws Exception {
     $owner = null;
     $longSumBeed = null;
-    $event1 = null;
-    $listener1 = null;
-    $listener2 = null;
   }
 
   private AggregateBeed $owner;
   private MyIntegerSumBeed $longSumBeed;
-  private ActualLongEvent $event1;
-  private StubListener<AggregateEvent> $listener1;
-  private StubListener<AggregateEvent> $listener2;
 
   @Test
   public void constructor() {
-    assertEquals($longSumBeed.getOwner(), $owner);
-    // the abstract property beed should be registered with the owner:
-    // add listeners to the property beed
-    $owner.addListener($listener1);
-    $owner.addListener($listener2);
-    assertNull($listener1.$event);
-    assertNull($listener2.$event);
-    // fire a change on the registered beed
-    $longSumBeed.publicUpdateDependents($event1);
-    // listeners of the aggregate beed should be notified
-    assertNotNull($listener1.$event);
-    assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event1));
-    assertTrue($listener2.$event.getComponentevents().contains($event1));
+    assertEquals($longSumBeed.getOwner(), null);
     // the value should be 0
     assertEquals($longSumBeed.getLong(), 0L);
     assertTrue(equalValue($longSumBeed.getDouble(), $longSumBeed.getLong()));
@@ -207,7 +180,7 @@ public class TestLongSumBeed {
     assertEquals($longSumBeed.getLong(), 5L);
     assertTrue(equalValue($longSumBeed.getDouble(), $longSumBeed.getLong()));
     // create another sum beed
-    LongSumBeed integerSumBeed2 = new LongSumBeed($owner);
+    LongSumBeed integerSumBeed2 = new LongSumBeed();
     // check (sum has no terms)
     assertEquals(integerSumBeed2.getLong(), 0L);
     assertTrue(equalValue(integerSumBeed2.getDouble(), integerSumBeed2.getLong()));
@@ -288,7 +261,7 @@ public class TestLongSumBeed {
     EditableLongBeed term3 = createEditableIntegerBeed(3L);
     EditableLongBeed term4 = createEditableIntegerBeed(4L);
     // create another sum beed
-    LongSumBeed integerSumBeed2plus3 = new LongSumBeed($owner);
+    LongSumBeed integerSumBeed2plus3 = new LongSumBeed();
     integerSumBeed2plus3.addTerm(term2);
     integerSumBeed2plus3.addTerm(term3);
     // check (sum = 2 + 3)
@@ -297,7 +270,7 @@ public class TestLongSumBeed {
     assertEquals(integerSumBeed2plus3.getLong(), 5L);
     assertTrue(equalValue(integerSumBeed2plus3.getDouble(), integerSumBeed2plus3.getLong()));
     // create another sum beed
-    LongSumBeed integerSumBeed2plus3plus4 = new LongSumBeed($owner);
+    LongSumBeed integerSumBeed2plus3plus4 = new LongSumBeed();
     integerSumBeed2plus3plus4.addTerm(integerSumBeed2plus3);
     integerSumBeed2plus3plus4.addTerm(term4);
     // check (sum = (2 + 3) + 4)
@@ -639,7 +612,7 @@ public class TestLongSumBeed {
     EditableLongBeed term30 = createEditableIntegerBeed(30L);
     // create sum beed: 5 + (30 + null)
     $longSumBeed.addTerm(term5);
-    LongSumBeed integerSumBeed2 = new LongSumBeed($owner);
+    LongSumBeed integerSumBeed2 = new LongSumBeed();
     integerSumBeed2.addTerm(term30);
     integerSumBeed2.addTerm(termNull);
     $longSumBeed.addTerm(integerSumBeed2);
@@ -697,10 +670,10 @@ public class TestLongSumBeed {
     EditableLongBeed term3 = createEditableIntegerBeed(3L);
     EditableLongBeed term4 = createEditableIntegerBeed(4L);
     // create sum beed
-    LongSumBeed integerSumBeed2plus3 = new LongSumBeed($owner);
+    LongSumBeed integerSumBeed2plus3 = new LongSumBeed();
     integerSumBeed2plus3.addTerm(term2);
     integerSumBeed2plus3.addTerm(term3);
-    LongSumBeed integerSumBeed2plus3plus4 = new LongSumBeed($owner);
+    LongSumBeed integerSumBeed2plus3plus4 = new LongSumBeed();
     integerSumBeed2plus3plus4.addTerm(integerSumBeed2plus3);
     integerSumBeed2plus3plus4.addTerm(term4);
     $longSumBeed.addTerm(term1);

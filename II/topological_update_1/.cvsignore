@@ -1,0 +1,10 @@
+.project
+.classpath
+target
+.settings
+.packaging
+reports
+.checkstyle
+.pmd
+.xdoclet
+bin

@@ -22,7 +22,7 @@ import org.beedraz.semantics_II.edit.Edit.State;
 
 /**
  * Thrown when an {@link Edit} is told to {@link Edit#perform()},
- * {@link Edit#undo()} or {@link Edit#redo()}  and can't,
+ * {@link Edit#undo()} or {@link Edit#redo()} and can't,
  * for reasons inherent to the Edit object, e.g., it is in the wrong
  * state.
  *

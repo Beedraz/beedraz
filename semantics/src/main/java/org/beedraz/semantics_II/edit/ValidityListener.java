@@ -21,20 +21,32 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * MUDO docs
+ * <p>Implementations can be registered with {@link Edit Edits},
+ *   and are warned when the <em>edit target goal state validity</em>
+ *   ({@link #isValid()}) changes. Since we observe merely changes
+ *   in a boolean value, we do not employ an event, but use
+ *   a 2-argument method {@link #validityChanged(Edit, boolean)}.</p>
+ * <p>Implementations are also warned when the state of an {@link Edit Edit}
+ *   they are registered with changes from {@link State#NOT_YET_PERFORMED}.
+ *   When this happens, all registered validity listeners are removed from
+ *   the edit. With this warning, they can do clean-up and make themselves
+ *   ready for gc.</p>
  *
  * @author Jan Dockx
+ * @author  PeopleWare n.v.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+         state    = "$State: Exp $",
+         tag      = "$Name:  $")
 public interface ValidityListener {
 
   /**
+   * The {@link Edit#isValid() validity} of {@code edit} changed.
+   *
    * @pre target != null;
    */
-  void validityChanged(Edit<?> target, boolean newValidity);
+  void validityChanged(Edit<?> edit, boolean newValidity);
 
   /**
    * Tells the listener that he has been removed as a validity listener

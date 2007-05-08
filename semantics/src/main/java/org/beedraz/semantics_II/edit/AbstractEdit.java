@@ -23,23 +23,21 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * The top class for the edit framework.
+ * <p>Implementation of some general methods for {@link #Edit Edits} that
+ *   benefit from generics.</p>
+ * <p>This class and {@link Edit} were separated, because the methods in
+ *   this class need a generic parameter that is only needed by protected
+ *   methods, and is of no importance to public users, who see {@link Edit}.
+ *   In general, there should be no reason for concrete edit implementations to
+ *   avoid extending this class.</p>
  *
  * @author  Jan Dockx
- *
- * @invar getTarget() != null;
- * @invar getState() != null;
- * @invar getState() != NOT_YET_PERFORMED ?
- *          forall (ValidityListener vl) {
- *            ! isValidityListener(vl)
- *          };
- *
- * @mudo absorbing other edits; note: only if DONE or UNDONE (in NOT_YET_PERFORMED, goals can change)
+ * @author  PeopleWare n.v.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+         state    = "$State: Exp $",
+         tag      = "$Name:  $")
 public abstract class AbstractEdit<_Target_ extends Beed<?>,
                                    _Event_ extends Event>
     extends Edit<_Target_> {
@@ -51,6 +49,7 @@ public abstract class AbstractEdit<_Target_ extends Beed<?>,
   /**
    * @pre target != null;
    * @post getTarget() == target;
+   * @post getState() == NOT_YET_PERFORMED;
    */
   protected AbstractEdit(_Target_ target) {
     super(target);
@@ -71,8 +70,30 @@ public abstract class AbstractEdit<_Target_ extends Beed<?>,
     updateDependents(createEvent());
   }
 
+  /**
+   * <p>Start the topological update algorithm propating changes and warning
+   *   listeners of these changes, with {@code event} expressing the final
+   *   change executed by this edit (either by {@link #perform()},
+   *   {@link #undo()}, or {@link #redo()}).</p>
+   *
+   * @pre event != null;
+   */
   protected abstract void updateDependents(_Event_ event);
 
+  /**
+   * <p>Create a fresh event describing the state change of the {@link #getTarget()}
+   *   that is the result of this edit being {@link #perform() performed},
+   *   {@link #undo() undone} or {@link #redo() redone}.</p>
+   * <p>This method is called as part of the {@link #perform()} protocol,
+   *   as part of the {@link #undo()} protocol, and as part of the {@link #redo()}
+   *   protocol. Before this method is called, the state of the edit is already
+   *   changed, so when the method is called as part of the {@link #perform()}
+   *   or {@link #redo()} protocol, {@link #getState()} returns {@link State#DONE},
+   *   and when the method is called as part of the {@link #undo()} protocol,
+   *   {@link #getState()} returns {@link State#UNDONE}.</p>
+   *
+   * @result result != null;
+   */
   protected abstract _Event_ createEvent();
 
 }

@@ -6,10 +6,12 @@
 
 package org.beedraz.semantics_II.expression.number.real.double64;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
@@ -21,9 +23,15 @@ import org.beedraz.semantics_II.expression.number.real.double64.EditableDoubleBe
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
-
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestEditableDoubleBeed {
 
   public class MyEditableDoubleBeed extends EditableDoubleBeed {

@@ -17,11 +17,21 @@
 package org.beedraz.semantics_II.expression.date;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
+
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class Util {
 
   public static Date createDate(int day, int month, int year) {

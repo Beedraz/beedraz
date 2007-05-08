@@ -17,12 +17,21 @@
 package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationGeometricStandardErrorBeed;
 import org.junit.Test;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.MathUtil;
 
 
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestDoublePopulationGeometricStandardErrorBeed
     extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoublePopulationGeometricStandardErrorBeed> {
 

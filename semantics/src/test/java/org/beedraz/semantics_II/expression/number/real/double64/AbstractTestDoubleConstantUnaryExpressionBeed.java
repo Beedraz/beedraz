@@ -16,15 +16,21 @@
 
 package org.beedraz.semantics_II.expression.number.real.double64;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.expression.number.real.double64.AbstractDoubleConstantUnaryExpressionBeed;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
-
-
-
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractTestDoubleConstantUnaryExpressionBeed<_DoubleBeed_ extends AbstractDoubleConstantUnaryExpressionBeed>
     extends AbstractTestRealArgDoubleUnaryExpressionBeed<_DoubleBeed_> {
 

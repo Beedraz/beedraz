@@ -6,11 +6,13 @@
 
 package org.ppeew.collection;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.collection_I.CollectionUtil.intersection;
 
 import java.util.Collections;
@@ -23,12 +25,18 @@ import java.util.TreeSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.collection_I.CollectionUtil;
 import org.ppeew.collection_I.LinkedListOrderedSet;
 import org.ppeew.collection_I.OrderedSet;
 
 
-
+@Copyright("2007 - $Date$, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestCollectionUtil {
 
 //  @BeforeClass

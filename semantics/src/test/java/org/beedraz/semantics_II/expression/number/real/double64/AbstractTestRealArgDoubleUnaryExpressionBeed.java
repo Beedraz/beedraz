@@ -16,6 +16,9 @@
 
 package org.beedraz.semantics_II.expression.number.real.double64;
 
+
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.AbstractTestUnaryExprBeed;
@@ -25,8 +28,15 @@ import org.beedraz.semantics_II.expression.number.real.double64.ActualDoubleEven
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleEdit;
 import org.beedraz.semantics_II.expression.number.real.double64.EditableDoubleBeed;
 import org.junit.Assert;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractTestRealArgDoubleUnaryExpressionBeed<
                                       _UEB_ extends AbstractRealArgDoubleUnaryExpressionBeed>
     extends AbstractTestUnaryExprBeed<Double,

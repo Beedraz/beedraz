@@ -17,13 +17,22 @@ limitations under the License.
 package org.beedraz.semantics_II.topologicalupdate;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.StubEvent;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractStubUpdateSource
     extends AbstractUpdateSource
     implements Beed<StubEvent> {

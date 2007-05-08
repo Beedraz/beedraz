@@ -17,11 +17,20 @@
 package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.Event;
 import org.junit.Test;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.MathUtil;
 
 
+@Copyright("2007 - $Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision: 846 $",
+         date     = "$Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $")
 public class TestDoubleSetSumBeed
     extends AbstractTestDoubleCommonsMathSetComputationBeed<MyDoubleSumBeed> {
 

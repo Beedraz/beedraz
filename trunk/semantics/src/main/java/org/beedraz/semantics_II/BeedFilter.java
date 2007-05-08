@@ -17,7 +17,11 @@ limitations under the License.
 package org.beedraz.semantics_II;
 
 
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.Filter;
 
 
@@ -27,10 +31,10 @@ import org.ppeew.smallfries_I.Filter;
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface BeedFilter<_Element_ extends Beed<?>>
     extends Filter<_Element_> {
 

@@ -17,10 +17,15 @@ limitations under the License.
 package org.beedraz.semantics_II;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.lang.ref.WeakReference;
 
+import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -73,10 +78,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @todo to be added: validation, civilization?
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface Beed<_Event_ extends Event> extends UpdateSource {
 
   /**

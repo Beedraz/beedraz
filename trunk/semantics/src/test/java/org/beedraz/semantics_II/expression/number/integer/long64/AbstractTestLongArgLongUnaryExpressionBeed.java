@@ -16,6 +16,9 @@
 
 package org.beedraz.semantics_II.expression.number.integer.long64;
 
+
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.AbstractTestUnaryExprBeed;
@@ -25,8 +28,15 @@ import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent
 import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
 import org.junit.Assert;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractTestLongArgLongUnaryExpressionBeed<
                                       _UEB_ extends AbstractRealArgLongUnaryExpressionBeed>
     extends AbstractTestUnaryExprBeed<Long,

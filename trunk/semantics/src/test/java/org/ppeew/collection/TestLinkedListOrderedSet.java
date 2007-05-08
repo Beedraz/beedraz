@@ -6,10 +6,12 @@
 
 package org.ppeew.collection;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Iterator;
 import java.util.List;
@@ -17,10 +19,16 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.collection_I.LinkedListOrderedSet;
 
 
-
+@Copyright("2007 - $Date$, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestLinkedListOrderedSet {
 
 //  @BeforeClass

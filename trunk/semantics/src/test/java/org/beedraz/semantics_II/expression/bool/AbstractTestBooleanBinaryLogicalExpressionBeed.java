@@ -16,11 +16,21 @@
 
 package org.beedraz.semantics_II.expression.bool;
 
+
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.expression.bool.AbstractBooleanBinaryLogicalExpressionBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanBeed;
 import org.beedraz.semantics_II.path.Path;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractTestBooleanBinaryLogicalExpressionBeed<
                       _UEB_ extends AbstractBooleanBinaryLogicalExpressionBeed> extends
     AbstractTestBooleanArgBooleanBinaryExpressionBeed<_UEB_> {

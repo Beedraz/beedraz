@@ -16,9 +16,17 @@ limitations under the License.
 
 package org.ppeew.smallfries;
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
-
+@Copyright("2007 - $Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision: 846 $",
+         date     = "$Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $")
 public class Util {
 
   public static boolean containsNegative(double... values) {

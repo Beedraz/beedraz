@@ -24,10 +24,10 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.GeometricStandardError;
 
 
-@Copyright("2007 - $Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $, PeopleWare n.v.")
+@Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision: 846 $",
-         date     = "$Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestGeometricStandardError {
 
   @Before

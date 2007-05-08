@@ -39,10 +39,10 @@ import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
-@Copyright("2007 - $Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $, Beedraz authors")
+@Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision: 846 $",
-         date     = "$Date: 2007-05-08 14:01:06 +0200 (Tue, 08 May 2007) $")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestCollectionAnyElementPath {
 
   @Before

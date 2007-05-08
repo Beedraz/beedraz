@@ -1,0 +1,96 @@
+/*<license>
+Copyright 2007 - $Date$ by the authors mentioned below.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</license>*/
+
+package org.beedra_II.property.number.real.double64;
+
+
+import java.util.Map;
+
+import org.beedra_II.aggregate.AggregateBeed;
+import org.beedra_II.property.number.real.RealBeed;
+import org.ppeew.annotations_I.vcs.CvsInfo;
+
+
+/**
+ * A beed that is the product of zero or more other beeds of type
+ * {@link DoubleBeed}.
+ *
+ * @invar (forAll DoubleBeed db; ; getNbOccurrences(db) > 0 ==> db.getDouble() != null)
+ *            ==> getDouble() == product { Math.pow(db.getDouble(), getNbOccurrences(db)) | db instanceof DoubleBeed};
+ *        If all terms are effective, then the value of the product beed is the
+ *        product of the value of each term raised to a certain power, namely the corresponding
+ *        number of occurrences.
+ *        e.g. getDouble() = Math.pow(5.2, 3) * Math.pow(11.3, 5);
+ */
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
+         state    = "$State$",
+         tag      = "$Name$")
+public class DoubleProductBeed extends AbstractDoubleCommutativeOperationBeed {
+
+  /**
+   * @pre   owner != null;
+   * @post  getDouble() == 0;
+   * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
+   */
+  public DoubleProductBeed(AggregateBeed owner) {
+    super(owner);
+  }
+
+  @Override
+  protected double recalculateValue(double oldValueBeed, double oldValueArgument, double newValueArgument, int nbOccurrences) {
+    if (oldValueArgument == 0.0) {
+      // when the old value of the argument is zero, the value of the beed was zero and should
+      // be recalculated fully; the new value cannot be computed using the old and new value of the
+      // argument
+      // TODO this is dirty code
+      double value = initialValue();
+      for(Map.Entry<RealBeed<?>, Integer> entry : getArgumentMap().entrySet()) {
+        RealBeed<?> argument = entry.getKey();
+        int nrOfOccurences = entry.getValue();
+        value = recalculateValueAdded(value, argument.getdouble(), nrOfOccurences);
+      }
+      return value;
+    }
+    else {
+      // no division by zero (see if-condition!!)
+      double result = oldValueBeed * Math.pow(newValueArgument / oldValueArgument, nbOccurrences);
+      return result;
+    }
+  }
+
+  @Override
+  protected double recalculateValueAdded(double oldValueBeed, double valueArgument, int nbOccurrences) {
+    return oldValueBeed * Math.pow(valueArgument, nbOccurrences);
+  }
+
+  @Override
+  protected double recalculateValueRemoved(double oldValueBeed, double valueArgument, int nbOccurrences) {
+    return oldValueBeed / Math.pow(valueArgument, nbOccurrences);
+  }
+
+  @Override
+  public double initialValue() {
+    return 1.0;
+  }
+
+  @Override
+  public String argumentsToString() {
+    return "factors";
+  }
+
+}
+

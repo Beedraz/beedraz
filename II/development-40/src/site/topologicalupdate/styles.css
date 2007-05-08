@@ -1,0 +1,40 @@
+body {  font-family: Utopia, Times, "Times New Roman", serif; color: #000000; background-color: #FFFFFF}
+a { color: #6685A4; text-decoration: none}
+.siteTitle a:link, .siteTitle a:visited  { color: #000000 }
+.siteSubTitle { font-size: 14px}
+
+.department { background-color: #003366 }
+
+P.pageTitle { color: #003366 ; font-size: 36px; width: 100%; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; font-weight: normal}
+table.menu a { color: #000000}
+table.menu td.selected, table.menu td.selected a { font-weight: bold; color: #003366}
+table.menu a:hover, table.menu a:active {  color: #6685A4}
+table.menu td.separator { background-color: #969696 ; height: 2px}
+table.menu td.na { color: #6685A4}
+
+.underConstruction {color: red; background-color: yellow}
+
+samp.fileName {  font-family: Geneva, Helvetica, sans-serif}
+samp.menuItem {  font-family: Charcoal, Sand, Skia, Techno, Textile, Chicago, Univers, sans-serif}
+.enormouslyStrongEmphasis {  color: #3333FF; background-color: #FFFF00}
+.enormouslyStrongEmphasis strong {  font-style: italic; font-weight: bolder; color: #FF3333}
+blockquote {  background-color: #FFFF00}
+blockquote cite {  font-style: normal; font-weight: bold; color: #000000}
+.menu { font-size: 10px; font-weight: normal; color: #000000; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; width: 100% ; background-color: #FFFF00}
+
+.siteTitle { color: #000000 ; font-size: 18px; font-weight: bold ; margin-left: 5px; margin-top: 2px; margin-right: 5px; margin-bottom: 2px} .siteTitleAuthor {  font-size: 12px; clip:    rect(   ); font-style: normal; font-weight: normal}
+.messageDate {  font-weight: bold; color: #003366; width: 80px}
+table.table {  background-color: #ffff00}
+table.table tr td { border: #003366; border-style: groove; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px}
+table.table tr td.separator {  background-color: #003366; height: 3px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-style: none}
+.footnoteReference {  font-size: smaller; color: #CC9900; background-color: #33FFFF; vertical-align: super}
+.qAndA {  background-color: #FFFF00}
+.edNote {  color: #336600; background-color: #FFFF33}
+dir li { list-style-type: square ; font-family: monospace; margin-left: 0px; padding-left: 10px}
+div.errors {  background-color: #FF9999; color: #CC0000; font-family: Helvetica, Arial, sans-serif; font-weight: bold; width: 400px; border: #FFFF00; border-style: dashed; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px}
+h1 {
+	font-size: 24px;
+}
+h2 {
+	font-size: 18px;
+}

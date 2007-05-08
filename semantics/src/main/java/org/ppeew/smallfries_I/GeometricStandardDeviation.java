@@ -25,41 +25,40 @@ import org.apache.commons.math.stat.descriptive.AbstractStorelessUnivariateStati
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * Computes the geometric standard deviation.
- * The geometric standard deviation can be computed using the arithmetic standard deviation:
- * 1. Take the natural logarithm of all values
- * 2. Compute the standard deviation of the new values
- * 3. Take the exponential value of the result
- *
- * This implementation wraps a {@link StandardDeviation} instance.
- * The <code>isBiasCorrected</code> property of the wrapped {@link StandardDeviation}
- * instance is exposed, so that this class can be used to
- * compute both the "sample geometric standard deviation" (using the sample standard deviation)
- * or the "population geometric standard deviation" (using the population standard deviation).
- * See {@link StandardDeviation} for more information.
- *
- * The geometric standard deviation of an empty set is {@link Double#NaN}.
- * The geometric standard deviation of a set containing one element is 1.
- * If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
- * If one of the elements is negative (including {@link Double#NEGATIVE_INFINITY}),
- * the result is {@link Double#NaN}.
- * If none of the elements is {@link Double#NaN} or negative, and at least one value is 0,
- * then the result is {@link Double#POSITIVE_INFINITY}.
- * If none of the elements is {@link Double#NaN} or negative, and at least one value is
- * {@link Double.POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.
+ * <p>Computes the geometric standard deviation.
+ *   The geometric standard deviation can be computed using the
+ *   arithmetic standard deviation:</p>
+ * <ol>
+ *   <li>Take the natural logarithm of all values</li>
+ *   <li>Compute the standard deviation of the new values</li>
+ *   <li>Take the exponential value of the result</li>
+ * </ol>
+ * <p>This implementation wraps a {@link StandardDeviation} instance.
+ *   The <code>isBiasCorrected</code> property of the wrapped {@link StandardDeviation}
+ *   instance is exposed, so that this class can be used to
+ *   compute both the "sample geometric standard deviation" (using the sample standard deviation)
+ *   or the "population geometric standard deviation" (using the population standard deviation).
+ *   See {@link StandardDeviation} for more information.</p>
+ * <p>The geometric standard deviation of an empty set is {@link Double#NaN}.
+ *   The geometric standard deviation of a set containing one element is 1.
+ *   If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
+ *   If one of the elements is negative (including {@link Double#NEGATIVE_INFINITY}),
+ *   the result is {@link Double#NaN}.
+ *   If none of the elements is {@link Double#NaN} or negative, and at least one value is 0,
+ *   then the result is {@link Double#POSITIVE_INFINITY}.
+ *   If none of the elements is {@link Double#NaN} or negative, and at least one value is
+ *   {@link Double.POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.</p>
  *
  * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class GeometricStandardDeviation extends AbstractStorelessUnivariateStatistic
     implements Serializable {
 

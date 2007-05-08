@@ -17,12 +17,16 @@ limitations under the License.
 package org.ppeew.collection_I.algebra;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.collection_I.AbstractUnmodifiableSet;
 import org.ppeew.smallfries_I.Filter;
 
@@ -36,13 +40,12 @@ import org.ppeew.smallfries_I.Filter;
  * @invar getFilter() != null;
  * @invar ! containsValue(null);
  *
- * @deprecated Not use in the Beedra code, and no unit test.
+ * @todo Not use in the Beedra code, and no unit test.
  */
-@Deprecated
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class FilteredSet<E> extends AbstractUnmodifiableSet<E> {
 
   /**

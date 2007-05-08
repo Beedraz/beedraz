@@ -17,14 +17,21 @@ limitations under the License.
 package org.ppeew.collection_I;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
+
 
 /**
- * @mudo doc
- *
+ * <p>Set that keeps a user defined order (in contrast to a sorted set,
+ *   where the order is defined algorithmically by a comparator). Elements
+ *   have a position in an {@code OrderedSet}.</p>
  * <p>Based on <a href="http://svn.apache.org/viewvc/jakarta/commons/proper/collections/branches/collections_jdk5_branch/src/java/org/apache/commons/collections/set/AbstractSerializableSetDecorator.java?view=markup">Apache Jakarta Commons SVN repository d.d. 2007/3/12</a>,
  *   by Stephen Colebourne and Henning P. Schmiedehausen.</p>
  *
@@ -54,6 +61,10 @@ import java.util.Set;
  *
  * @author Jan Dockx
  */
+@Copyright("2007 - $Date$, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface OrderedSet<E> extends Set<E> {
 
     /**

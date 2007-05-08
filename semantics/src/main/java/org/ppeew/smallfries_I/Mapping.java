@@ -21,7 +21,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -36,10 +36,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface Mapping<_From_, _To_> {
 
   /**

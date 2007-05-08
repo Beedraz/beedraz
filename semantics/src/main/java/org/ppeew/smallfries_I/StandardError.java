@@ -25,35 +25,32 @@ import org.apache.commons.math.stat.descriptive.AbstractStorelessUnivariateStati
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * Computes the standard error.
- * The standard error is the standard deviation divided by the square root
- * of the number of elements.
- * This implementation wraps a {@link StandardDeviation} instance.
- * The <code>isBiasCorrected</code> property of the wrapped {@link StandardDeviation}
- * instance is exposed, so that this class can be used to
- * compute both the "sample standard error" (using the sample standard deviation)
- * or the "population standard deviation" (using the population standard deviation).
- * See {@link StandardDeviation} for more information.
- *
- * The standard error of an empty set is {@link Double#NaN}.
- * The standard error of a set containing one element is 0.
- * If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
- * If none of the elements is {@link Double#NaN}, but one of the elements is
- * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}, then the result
- * is {@link Double#POSITIVE_INFINITY}.
+ * <p>Computes the standard error.
+ *   The standard error is the standard deviation divided by the square root
+ *   of the number of elements.
+ *   This implementation wraps a {@link StandardDeviation} instance.
+ *   The <code>isBiasCorrected</code> property of the wrapped {@link StandardDeviation}
+ *   instance is exposed, so that this class can be used to
+ *   compute both the "sample standard error" (using the sample standard deviation)
+ *   or the "population standard deviation" (using the population standard deviation).
+ *   See {@link StandardDeviation} for more information.</p>
+ * <p>The standard error of an empty set is {@link Double#NaN}.
+ *   The standard error of a set containing one element is 0.
+ *   If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
+ *   If none of the elements is {@link Double#NaN}, but one of the elements is
+ *   {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}, then the result
+ *   is {@link Double#POSITIVE_INFINITY}.</p>
  *
  * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class StandardError extends AbstractStorelessUnivariateStatistic
     implements Serializable {
 

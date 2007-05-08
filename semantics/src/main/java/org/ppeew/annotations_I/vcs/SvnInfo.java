@@ -37,8 +37,7 @@ import org.ppeew.annotations_I.License;
  * Usage pattern:
  * <pre>
  * ATSvnInfo(revision = &quot;$Revision$&quot;,
- *           date     = &quot;$Date$&quot;,
- *           url      = &quot;$URL$&quot;)
+ *           date     = &quot;$Date$&quot;)
  * public class ... {
  *  ...
  * }
@@ -48,10 +47,8 @@ import org.ppeew.annotations_I.License;
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)

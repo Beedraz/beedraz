@@ -18,6 +18,7 @@ package org.beedraz.semantics_II.expression.collection.list;
 
 
 import static java.util.Collections.unmodifiableList;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +27,9 @@ import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.AbstractOrderedCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -34,10 +37,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public final class ActualListEvent<_Element_>
     extends AbstractOrderedCollectionEvent<_Element_, List<_Element_>>
     implements ListEvent<_Element_> {

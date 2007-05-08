@@ -18,6 +18,7 @@ package org.beedraz.semantics_II.expression.collection;
 
 
 import static java.util.Collections.unmodifiableCollection;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +26,9 @@ import java.util.LinkedList;
 
 import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -33,10 +36,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 final class ActualCollectionEvent<_Element_>
     extends AbstractCollectionEvent<_Element_, Collection<_Element_>>
     implements CollectionEvent<_Element_>{

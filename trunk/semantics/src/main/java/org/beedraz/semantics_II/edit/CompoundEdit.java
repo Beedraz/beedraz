@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.edit;
 
 import static org.beedraz.semantics_II.edit.Edit.State.DONE;
 import static org.beedraz.semantics_II.edit.Edit.State.NOT_YET_PERFORMED;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,9 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -53,10 +56,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *          componentTarget.getUpdateSourcesTransitiveClosure()
  *        }.contains(getTarget());
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State: Exp $",
-         tag      = "$Name:  $")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public final class CompoundEdit<_Target_ extends Beed<_Event_>,
                                 _Event_ extends Event>
     extends AbstractEdit<_Target_, _Event_> {

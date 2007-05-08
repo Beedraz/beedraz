@@ -17,10 +17,14 @@ limitations under the License.
 package org.beedraz.semantics_II.expression;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.OldNewEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -36,10 +40,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @note This interface has little use in its own, but is important
  *       for reuse in, e.g., the SWT peripherals.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface SimpleExpressionBeed<_Type_,
                                     _Event_ extends Event>
     extends Beed<_Event_> {

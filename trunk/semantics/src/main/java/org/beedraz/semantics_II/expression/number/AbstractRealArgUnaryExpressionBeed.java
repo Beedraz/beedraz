@@ -17,12 +17,16 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.text.NumberFormat;
 
 import org.beedraz.semantics_II.expression.AbstractRealArgUnaryExprBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.MathUtil;
 
 
@@ -30,10 +34,10 @@ import org.ppeew.smallfries_I.MathUtil;
  * Abstract implementation of unary expression beeds, that represent a value
  * of type {@link Number} derived from one operand of type {@link RealBeed}.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number,
                                                          _NumberEvent_ extends RealEvent,
                                                          _OperandBeed_ extends RealBeed<?>>

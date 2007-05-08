@@ -17,17 +17,21 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
  * A beed that is the {@link #getConstant()}-root of an
  * {@link #getOperand() operand} {@link DoubleBeed}.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class DoubleRootBeed
     extends AbstractDoubleConstantUnaryExpressionBeed {
 

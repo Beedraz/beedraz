@@ -17,9 +17,10 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.integer.long64;
 
 
-import static org.ppeew.smallfries_I.MathUtil.castToDouble;
-import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
+import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
+import static org.ppeew.smallfries_I.MathUtil.castToDouble;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
@@ -29,7 +30,9 @@ import org.beedraz.semantics_II.ActualOldNewEvent;
 import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -40,10 +43,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @mudo should be package accesible; only public because it is used in a number of tests
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public final class ActualLongEvent
     extends ActualOldNewEvent<Long>
     implements IntegerEvent {

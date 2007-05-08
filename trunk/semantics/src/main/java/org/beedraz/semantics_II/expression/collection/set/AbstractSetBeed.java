@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.set;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
@@ -32,7 +34,9 @@ import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.MathUtil;
 
 
@@ -42,10 +46,10 @@ import org.ppeew.smallfries_I.MathUtil;
  * @author Nele Smeets
  * @author  Peopleware n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_Element_>>
     extends AbstractBeed<_SetEvent_>
     implements SetBeed<_Element_, _SetEvent_> {

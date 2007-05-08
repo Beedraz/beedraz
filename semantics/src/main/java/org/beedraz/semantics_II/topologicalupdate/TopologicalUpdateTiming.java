@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-
 package org.beedraz.semantics_II.topologicalupdate;
 
+
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,8 +26,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.beedraz.semantics_II.Event;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
+/**
+ * @mudo doc
+ *
+ * @author Jan Dockx
+ */
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TopologicalUpdateTiming {
 
   public static boolean _active = false;

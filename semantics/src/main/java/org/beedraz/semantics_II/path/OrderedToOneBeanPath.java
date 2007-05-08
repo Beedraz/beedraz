@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedraz.semantics_II.path;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.Map;
 
 import org.beedraz.semantics_II.Event;
@@ -25,7 +27,9 @@ import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.association.set.ordered.EditableOrderedBidirToOneBeed;
 import org.beedraz.semantics_II.expression.association.set.ordered.OrderedBidirToOneEvent;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -39,10 +43,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Jan Dockx
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class OrderedToOneBeanPath<_One_ extends BeanBeed>
     extends AbstractDependentPath<_One_> {
 

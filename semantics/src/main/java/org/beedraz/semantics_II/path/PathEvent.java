@@ -17,11 +17,15 @@ limitations under the License.
 package org.beedraz.semantics_II.path;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.ActualOldNewEvent;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.edit.Edit;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -37,10 +41,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *       {@link ActualOldNewEvent}. Or, we could loosen
  *       {@link ActualOldNewEvent} to accept any beed in the constructor.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class PathEvent<_SelectedBeed_ extends Beed<?>>
     extends ActualOldNewEvent<_SelectedBeed_> {
 

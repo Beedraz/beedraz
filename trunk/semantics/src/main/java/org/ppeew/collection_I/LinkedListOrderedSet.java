@@ -17,6 +17,8 @@ limitations under the License.
 package org.ppeew.collection_I;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,6 +27,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
 
@@ -33,6 +38,10 @@ import org.ppeew.smallfries_I.ComparisonUtil;
  *
  * @author Jan Dockx
  */
+@Copyright("2007 - $Date$, PeopleWare n.v.")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class LinkedListOrderedSet<E>
     extends AbstractSet<E>
     implements OrderedSet<E> {

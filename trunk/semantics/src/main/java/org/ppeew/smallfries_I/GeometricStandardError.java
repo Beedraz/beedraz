@@ -24,47 +24,43 @@ import java.io.Serializable;
 import org.apache.commons.math.stat.descriptive.AbstractStorelessUnivariateStatistic;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * Computes the geometric standard error.
- * The geometric standard error can be computed using the arithmetic standard error:
- * 1. Take the natural logarithm of all values
- * 2. Compute the standard error of the new values
- * 3. Take the exponential value of the result
- *
- * This implementation wraps a {@link StandardError} instance.
- * The <code>isBiasCorrected</code> property of the wrapped {@link StandardError}
- * instance is exposed, so that this class can be used to
- * compute both the "sample geometric standard error" (using the sample standard error)
- * or the "population geometric standard deviation" (using the population standard error).
- * See {@link StandardError} for more information.
- *
- * The geometric standard error of an empty set is {@link Double#NaN}.
- * The geometric standard error of a set containing one element is 1.
- * If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
- * If one of the elements is negative (including {@link Double#NEGATIVE_INFINITY}),
- * the result is {@link Double#NaN}.
- * If none of the elements is {@link Double#NaN} or negative, and at least one value is 0,
- * then the result is {@link Double#POSITIVE_INFINITY}.
- * If none of the elements is {@link Double#NaN} or negative, and at least one value is
- * {@link Double.POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.
+ * <p>Computes the geometric standard error.
+ *   The geometric standard error can be computed using the
+ *   arithmetic standard error:</p>
+ * <ol>
+ *   <li>Take the natural logarithm of all values</li>
+ *   <li>Compute the standard error of the new values</li>
+ *   <li>Take the exponential value of the result</li>
+ * </ol>
+ * <p>This implementation wraps a {@link StandardError} instance.
+ *   The <code>isBiasCorrected</code> property of the wrapped {@link StandardError}
+ *   instance is exposed, so that this class can be used to
+ *   compute both the "sample geometric standard error" (using the sample standard error)
+ *   or the "population geometric standard deviation" (using the population standard error).
+ *   See {@link StandardError} for more information.</p>
+ * <p>The geometric standard error of an empty set is {@link Double#NaN}.
+ *   The geometric standard error of a set containing one element is 1.
+ *   If one of the elements is {@link Double#NaN}, then the result is {@link Double#NaN}.
+ *   If one of the elements is negative (including {@link Double#NEGATIVE_INFINITY}),
+ *   the result is {@link Double#NaN}.
+ *   If none of the elements is {@link Double#NaN} or negative, and at least one value is 0,
+ *   then the result is {@link Double#POSITIVE_INFINITY}.
+ *   If none of the elements is {@link Double#NaN} or negative, and at least one value is
+ *   {@link Double.POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.</p>
  *
  * @author Nele Smeets
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class GeometricStandardError extends AbstractStorelessUnivariateStatistic
     implements Serializable {
 
-  /**
-   *
-   */
   private static final long serialVersionUID = -7832903942699783021L;
 
   /**

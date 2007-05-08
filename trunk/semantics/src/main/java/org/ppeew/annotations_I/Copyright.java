@@ -18,13 +18,14 @@ package org.ppeew.annotations_I;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -43,10 +44,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)

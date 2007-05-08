@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.Filter;
 
 
@@ -33,15 +33,12 @@ import org.ppeew.smallfries_I.Filter;
  * @author Jan Dockx
  * @author PeopleWare n.v.
  *
- * @deprecated Not use in the Beedra code, and no unit test.
+ * @todo Not use in the Beedra code, and no unit test.
  */
-@Deprecated
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
-@CvsInfo(revision    = "$Revision$",
-         date        = "$Date$",
-         state       = "$State$",
-         tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface MapFilter<K, V> {
 
   /**

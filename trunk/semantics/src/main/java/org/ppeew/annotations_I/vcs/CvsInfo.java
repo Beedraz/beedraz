@@ -53,6 +53,8 @@ import org.ppeew.annotations_I.License;
          date        = "$Date$",
          state       = "$State$",
          tag         = "$Name$")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)

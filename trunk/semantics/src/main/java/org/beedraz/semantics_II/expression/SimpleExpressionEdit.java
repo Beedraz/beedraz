@@ -29,27 +29,62 @@ import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 /**
- * @mudo definition
+ * <p>Generic edit for {@link EditableSimpleExpressionBeed EditableSimpleExpressionBeeds}.
+ *   The <em>edit target state</em> of {@link SimpleExpressionBeed SimpleExpressionBeeds}
+ *   is simple, i.e., not compound (that is the definition of
+ *   {@link SimpleExpressionBeed SimpleExpressionBeeds}). Therefor, the
+ *   <em>edit target goal state</em> and the <em>edit target initial state</em>
+ *   can be expressed with a simple inspector, {@link #getGoal()} and
+ *   {@link #getInitial()} respectively.</p>
+ * <p>Alternatively, the <em>edit target state</em> can be inspected using
+ *   {@link #getNewValue()} and {@link #getOldValue()}, which return the appropriate
+ *   <em>edit target state</em> depending on the {@link #getState() state} of the edit.
+ *   When the edit is {@link State#DONE}, the {@link #getNewValue() new state} is
+ *   the {@link #getGoal() <em>edit target goal state</em>} and the
+ *   {@link #getOldValue() old state} is the {@link #getInitial() <em>edit target initial
+ *   state</em>}.
+ *   When the edit is {@link State#UNDONE} however, the {@link #getNewValue() new state} is
+ *   the {@link #getInitial() <em>edit target initial state</em>} and the
+ *   {@link #getOldValue() old state} is the {@link #getGoal() <em>edit target goal
+ *   state</em>}.
+ *   When the edit is {@link State#NOT_YET_PERFORMED}, the {@link #getNewValue() new state}
+ *   is the {@link #getGoal() <em>edit target goal state</em>} and the
+ *   {@link #getOldValue() old state} is undefined.
+ *   When the edit is {@link State#DEAD}, both the {@link #getNewValue() new state}
+ *   and the {@link #getOldValue() old state} are undefined.</p>
+ *
+ * @protected
  *
  * @author Jan Dockx
+ * @author PeopleWare n.v.
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+         state    = "$State: Exp $",
+         tag      = "$Name:  $")
 public abstract class SimpleExpressionEdit<_Type_,
                                          _Target_ extends EditableSimpleExpressionBeed<_Type_, _Event_>,
                                          _Event_ extends Event>
     extends AbstractSimpleEdit<_Target_, _Event_> {
 
+  /*<construction>*/
+  //-------------------------------------------------------
+
   /**
    * @pre target != null;
    * @post getTarget() == target;
+   * @post getState() == NOT_YET_PERFORMED;
    */
   public SimpleExpressionEdit(_Target_ target) {
     super(target);
   }
 
+  /*</construction>*/
+
+
+
+  /*<property name="goal">*/
+  //-------------------------------------------------------
 
   /**
    * @basic
@@ -57,6 +92,7 @@ public abstract class SimpleExpressionEdit<_Type_,
   public final _Type_ getGoal() {
     return $goal;
   }
+
   /**
    * @post ComparisonUtil.equalsWithNull(goalValue, getGoalValue());
    */
@@ -70,6 +106,13 @@ public abstract class SimpleExpressionEdit<_Type_,
 
   private _Type_ $goal;
 
+  /*</property>*/
+
+
+
+  /*<property name="initial">*/
+  //-------------------------------------------------------
+
   /**
    * @basic
    */
@@ -78,6 +121,13 @@ public abstract class SimpleExpressionEdit<_Type_,
   }
 
   private _Type_ $initial;
+
+  /*</property>*/
+
+
+
+  /*<section name="old and new">*/
+  //-------------------------------------------------------
 
   /**
    * @return return getState() == DONE ? getInitial() : getGoal();
@@ -93,7 +143,29 @@ public abstract class SimpleExpressionEdit<_Type_,
     return getState() == DONE ? getGoal() : getInitial();
   }
 
-  // generalize with event
+  /*</section>*/
+
+
+
+  /*<section name="hook methods">*/
+  //-------------------------------------------------------
+
+  /**
+   * Check whether {@link #getGoal()} would be acceptable currently
+   * as value for the {@link #getTarget()}. This implementation
+   * delegates to the target itself, and subtypes can add more
+   * conditions by overriding this method.
+   *
+   * @result result ? getTarget().isAcceptable(getGoal());
+   *
+   * @idea generalize with event, that describes the change
+   *
+   * @protected
+   * When this method is overridden, this implementation should
+   * always be called.
+   *
+   * @todo non-final for BidirToOneEdit; try to fix that
+   */
   @Override
   protected boolean isAcceptable() {
     return getTarget().isAcceptable(getGoal());
@@ -101,27 +173,28 @@ public abstract class SimpleExpressionEdit<_Type_,
 
   /**
    * @post ComparisonUtil.equalsWithNull(getTarget().get(), getInitial());
+   *
+   * @todo non-final for OrderedBidirToOneEdit; try to fix that
    */
   @Override
   protected void storeInitialState() {
     $initial = getTarget().get();
   }
 
+  /**
+   * @return ! ComparisonUtil.equalsWithNull(getInitial(), getGoal());
+   *
+   * @todo non-final for OrderedBidirToOneEdit; try to fix that
+   */
   @Override
   public boolean isChange() {
     return ! ComparisonUtil.equalsWithNull(getInitial(), getGoal());
   }
 
   /**
-   * @return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
-   */
-  @Override
-  protected boolean isInitialStateCurrent() {
-    return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
-  }
-
-  /**
    * @post ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
+   *
+   * @todo non-final for BidirToOneEdit; try to fix that
    */
   @Override
   protected void performance() {
@@ -129,30 +202,46 @@ public abstract class SimpleExpressionEdit<_Type_,
   }
 
   /**
-   * @return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
+   * @post getTarget().packageUpdateDependents(event);
    */
   @Override
-  protected boolean isGoalStateCurrent() {
-    return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
+  protected final void updateDependents(_Event_ event) {
+    getTarget().packageUpdateDependents(event);
+  }
+
+  /**
+   * @return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
+   *
+   * @todo non-final for OrderedBidirToOneEdit; try to fix that
+   */
+  @Override
+  protected boolean isInitialStateCurrent() {
+    return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
   }
 
   /**
    * @post ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
+   *
+   * @todo non-final for BidirToOneEdit; try to fix that
    */
   @Override
   protected void unperformance() {
     getTarget().assign(getInitial());
   }
 
+  /**
+   * @return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
+   *
+   * @todo non-final for OrderedBidirToOneEdit; try to fix that
+   */
   @Override
-  protected final void updateDependents(_Event_ event) {
-    getTarget().packageUpdateDependents(event);
+  protected boolean isGoalStateCurrent() {
+    return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get());
   }
 
-//  @Override
-//  protected void notifyListeners() {
-//    getTarget().fireEdit(this);
-//  }
+  /*</section>*/
+
+
 
   @Override
   protected String otherToStringInformation() {

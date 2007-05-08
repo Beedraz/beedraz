@@ -22,8 +22,10 @@ import static org.beedraz.semantics_II.edit.Edit.State.NOT_YET_PERFORMED;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
@@ -31,7 +33,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
 /**
- * Assembles little edits into great big ones.
+ * <p>Assembles little edits into great big ones.</p>
  * <p>Normally, our state and the state for all our component edits is the same.
  *   This is only untrue if a component edit goes solo. In that case, we are dead.
  *   If we are dead, the state of the component edits can be different.</p>
@@ -47,12 +49,15 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *        if we are done, all components are done
  * @invar getState() == UNDONE ? for (Edit e : getEdits()) {e.getState() == UNDONE};
  *        if we are undone, all components are undone
+ * @invar intersection (Beed<?> componentTarget : getComponentEditTargets()) {
+ *          componentTarget.getUpdateSourcesTransitiveClosure()
+ *        }.contains(getTarget());
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
-public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not be editable
+         state    = "$State: Exp $",
+         tag      = "$Name:  $")
+public final class CompoundEdit<_Target_ extends Beed<_Event_>,
                                 _Event_ extends Event>
     extends AbstractEdit<_Target_, _Event_> {
 
@@ -65,7 +70,6 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
    *        If the targets of the element edits differ, this target should be
    *        an object that is upstream of all child targets.
    *
-   *
    * @pre target != null;
    * @post getTarget() == target;
    */
@@ -77,51 +81,54 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
 
 
 
-  /*<section name="validity">*/
+  /*<section name="component edits">*/
   //------------------------------------------------------------------
 
   /**
    * @basic
    */
-  public final List<Edit<?>> getEdits() {
-    return Collections.unmodifiableList($edits);
+  public final List<Edit<?>> getComponentEdits() {
+    return Collections.unmodifiableList($componentEdits);
   }
 
   /**
-   * Component edits might even be invalid when added.
+   * @return map (Edit<?> componentEdit : getComponentEdits()) {
+   *           componentEdit.getTarget();
+   *         }
+   */
+  public final Set<Beed<?>> getComponentEditTargets() {
+    Set<Beed<?>> result = new HashSet<Beed<?>>();
+    for (Edit<?> componentEdit : $componentEdits) {
+      result.add(componentEdit.getTarget());
+    }
+    return result;
+  }
+
+  /**
+   * Component edits might even be invalid when added. When a component edit is added,
+   * validity of the compound edit is recalculated.
    *
    * @pre componentEdit != null;
    * @pre componentEdit.getState() == NOT_YET_PERFORMED;
+   * @pre componentEdit.getTarget().getUpdateSourcesTransitiveClosure().contains(getTarget());
+   * @throws EditStateException
+   *         getState() != NOT_YET_PERFORMED;
    */
   public final void addComponentEdit(Edit<?> componentEdit) throws EditStateException {
     assert componentEdit != null;
     assert componentEdit.getState() == NOT_YET_PERFORMED;
+    assert componentEdit.getTarget().getUpdateSourcesTransitiveClosure().contains(getTarget());
     if (getState() != NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     componentEdit.addValidityListener($componentEditListener); // for dead
-    $edits.add(componentEdit);
+    $componentEdits.add(componentEdit);
     recalculateValidity();
   }
 
-  private final List<Edit<?>> $edits = new ArrayList<Edit<?>>();
+  private final List<Edit<?>> $componentEdits = new ArrayList<Edit<?>>();
 
   /*</section>*/
-
-
-
-  /*<property name="state">*/
-  //-------------------------------------------------------
-
-  @Override
-  public final void kill() {
-    for (Edit<?> e : $edits) {
-      e.kill();
-    }
-    localKill();
-  }
-
-  /*</property>*/
 
 
 
@@ -130,20 +137,29 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
 
   /**
    * Ask component edits to stare initial state;
+   *
+   * @pre  getState() == NOT_YET_PERFORMED;
+   * @pre  for (Edit<?> edit : getComponentEdits()) {
+   *         edit.getState() == NOT_YET_PERFORMED;
+   *       }
    */
   @Override
   protected final void storeInitialState() {
-    for (Edit<?> e : $edits) {
+    for (Edit<?> e : $componentEdits) {
       e.storeInitialState();
     }
+    // there is no local initial state to store, is there?
   }
 
   /**
    * There is a change if there is at least one component that is a change.
+   * When performing the edit, only component edits that represent a change
+   * are actually performed. Component edits that do not represent a change
+   * are skipped.
    */
   @Override
   public final boolean isChange() {
-    for (Edit<?> e : $edits) {
+    for (Edit<?> e : $componentEdits) {
       if (e.isChange()) {
         return true;
       }
@@ -161,13 +177,13 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
    */
   @Override
   final protected void performance() throws IllegalEditException {
-    ListIterator<Edit<?>> iter = $edits.listIterator();
+    ListIterator<Edit<?>> iter = $componentEdits.listIterator();
     try {
       while (iter.hasNext()) {
         Edit<?> e = iter.next();
         e.recalculateValidity();
         e.checkValidity(); // throws IllegalEditException
-        e.performance(); // throws IllegalEditException
+        e.performance(); // throws IllegalEditException; this doesn't change the state yet, and doesn't send events
       }
     }
     catch (IllegalEditException eExc) {
@@ -190,7 +206,7 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
 
   @Override
   protected final void markPerformed() {
-    for (Edit<?> e : $edits) {
+    for (Edit<?> e : $componentEdits) {
       e.markPerformed();
     }
     localMarkPerformed();
@@ -208,7 +224,7 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
    * MUDO validity of component edits must be evaluated in context of
    *       earlier edits; this requires a validation expression that allows
    *       for subsitution; a component edit might be invalid (beforehand)
-   *       if isolation, but it might be valid by the time we reach it;
+   *       in isolation, but it might be valid by the time we reach it;
    *       so the compound might be valid even if some components are not
    *       (before performance) -- and vice versa.
    *       So, changes in validity of components are not really relevant.
@@ -220,7 +236,7 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
   @Override
   protected final boolean isAcceptable() {
     // MUDO, for now, all component edits need to be valid, but that is not true
-    for (Edit<?> e : $edits) {
+    for (Edit<?> e : $componentEdits) {
       if (! e.isAcceptable()) {
         return false;
       }
@@ -257,7 +273,7 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
 
     public void listenerRemoved(Edit<?> target) {
       // the sneaking component edit performed without us! we are dead!
-      for (Edit<?> e : $edits) {
+      for (Edit<?> e : $componentEdits) {
         e.removeValidityListener($componentEditListener);
       }
       kill();
@@ -283,14 +299,20 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
 
   }
 
+  /*<section name="undo">*/
+  //-------------------------------------------------------
+
+  /**
+   * The initial state of a compound edit is current
+   * if the initial state of all component edits
+   * is current.
+   *
+   * @mudo This is not true: a previous edit can change conditions
+   *       for a later edit, making the initial state current for
+   *       that edit.
+   */
   @Override
   protected boolean isGoalStateCurrent() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  protected boolean isInitialStateCurrent() {
     // TODO Auto-generated method stub
     return false;
   }
@@ -301,6 +323,60 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>, // MUDO must not
 
   }
 
+  /*</section>*/
 
+
+
+  /*<section name="redo">*/
+  //-------------------------------------------------------
+
+  /**
+   * The initial state of a compound edit is current
+   * if the initial state of all component edits
+   * is current.
+   *
+   * @mudo This is not true: a previous edit can change conditions
+   *       for a later edit, making the initial state current for
+   *       that edit.
+   */
+  @Override
+  protected boolean isInitialStateCurrent() {
+    for (Edit<?> edit : $componentEdits) {
+      if (! edit.isInitialStateCurrent()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /*</section>*/
+
+
+
+  /*<section name="kill">*/
+  //-------------------------------------------------------
+
+  /**
+   * Kill this edit and all {@link #getComponentEdits() component edits}.
+   *
+   * @post for (Edit<?> edit : #getComponentEdits()) {
+   *         edit.getState() = DEAD;
+   *       }
+   * @post for (Edit<?> edit : #getComponentEdits()) {
+   *         for (ValidityListener vl) {! edit.isValidityListener(vl)}
+   *       };
+   * @post for (Edit<?> edit : #getComponentEdits()) {
+   *         for (ValidityListener vl) {vl.isRemoved()}
+   *       };
+   */
+  @Override
+  public final void kill() {
+    for (Edit<?> e : $componentEdits) {
+      e.kill();
+    }
+    localKill();
+  }
+
+  /*</section>*/
 
 }

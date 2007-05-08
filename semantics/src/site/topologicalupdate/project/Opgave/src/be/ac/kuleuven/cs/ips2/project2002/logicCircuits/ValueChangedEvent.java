@@ -30,7 +30,7 @@ public class ValueChangedEvent extends EventObject {
 	static final public String CVS_TAG =
 	    /*<indoc name="CVS Tag">*/"$Name$"/*</indoc>*/;
 	static final public String CVS_AUTHOR =
-	    /*<indoc name="CVS Revision Author">*/"$Author$"/*</indoc>*/;
+	    /*<indoc name="CVS Revision Author">*/"$Author: jand $"/*</indoc>*/;
 
   /*</section>*/
 

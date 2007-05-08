@@ -17,13 +17,16 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collection;
 
 import org.beedraz.semantics_II.AbstractEvent;
 import org.beedraz.semantics_II.edit.Edit;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -35,10 +38,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar getAddedElements() != null;
  * @invar getRemovedElements() != null;
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Collection<_Element_>>
     extends AbstractEvent
     implements CollectionEvent<_Element_> {

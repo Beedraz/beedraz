@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
@@ -26,7 +27,9 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -35,10 +38,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class DoubleConstantBeed
     extends AbstractBeed<ActualDoubleEvent>
     implements DoubleBeed {

@@ -17,9 +17,13 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.apache.commons.math.stat.descriptive.moment.Variance;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -42,10 +46,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *             and   dividend = (1-mean)^2 + (2-mean)^2 + (3-mean)^2 + (4-mean)^2)
  *             and   mean = (1 + 2 + 3 + 4)/4
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class DoublePopulationVarianceBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
 

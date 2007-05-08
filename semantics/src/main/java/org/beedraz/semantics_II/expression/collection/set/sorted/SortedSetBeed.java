@@ -17,21 +17,25 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.set.sorted;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.Comparator;
 import java.util.SortedSet;
 
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
  * @author  Jan Dockx
  * @author  Peopleware n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface SortedSetBeed<_Element_>
     extends SetBeed<_Element_, SortedSetEvent<_Element_>> {
 

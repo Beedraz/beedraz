@@ -17,11 +17,16 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 import org.beedraz.semantics_II.Beed;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.beedraz.semantics_II.expression.SimpleExpressionBeed;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -44,10 +49,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @mudo describe semantics if real is too big (or too small) for double
  * @mudo why don't we extend {@link SimpleExpressionBeed}?
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface RealBeed<_Event_ extends RealEvent>
     extends Beed<_Event_> {
 

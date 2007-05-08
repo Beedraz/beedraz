@@ -17,9 +17,13 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.set.ordered;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.expression.collection.OrderedCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.collection_I.OrderedSet;
 
 
@@ -41,10 +45,10 @@ import org.ppeew.collection_I.OrderedSet;
  *
  * @invar getSource() instanceof OrderedSetBeed
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface OrderedSetEvent<_Element_>
     extends SetEvent<_Element_>,
             OrderedCollectionEvent<_Element_, OrderedSet<_Element_>> {

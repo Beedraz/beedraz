@@ -17,7 +17,12 @@ limitations under the License.
 package org.beedraz.semantics_II.edit;
 
 
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
+import org.beedraz.semantics_II.edit.Edit.State;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -35,10 +40,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author Jan Dockx
  * @author  PeopleWare n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State: Exp $",
-         tag      = "$Name:  $")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface ValidityListener {
 
   /**

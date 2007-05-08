@@ -17,6 +17,8 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.association.set;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import java.util.Map;
 
 import org.beedraz.semantics_II.Event;
@@ -24,7 +26,9 @@ import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.EditableSimpleExpressionBeed;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -34,10 +38,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @mudo implement event propagation to ONE
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class EditableBidirToOneBeed<_One_ extends BeanBeed,
                                     _Many_ extends BeanBeed>
     extends EditableSimpleExpressionBeed<BidirToManyBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {

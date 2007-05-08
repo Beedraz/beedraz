@@ -17,9 +17,13 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.apache.commons.math.stat.descriptive.moment.Mean;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -34,10 +38,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *        the values of all beeds in the given set. The mean of an empty set is NaN.
  *        e.g. getDouble() = (5.1 + 3.2 + 4.9) / 3
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class DoubleArithmeticMeanBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
   /**

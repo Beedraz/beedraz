@@ -17,9 +17,13 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -30,10 +34,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author Nele Smeets
  * @author PeopleWare n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public interface DoubleBeed
     extends RealBeed<ActualDoubleEvent> {
 

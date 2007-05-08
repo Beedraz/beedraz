@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 
 import java.math.BigDecimal;
@@ -25,7 +26,9 @@ import java.text.NumberFormat;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.EditableSimpleExpressionBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -37,10 +40,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @mudo break link with editable simple property beed and use double instead of Double internally.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class EditableDoubleBeed
     extends EditableSimpleExpressionBeed<Double, ActualDoubleEvent>
     implements DoubleBeed {

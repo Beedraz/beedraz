@@ -18,6 +18,7 @@ package org.beedraz.semantics_II.expression.collection.set.sorted;
 
 
 import static java.util.Collections.unmodifiableSortedSet;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -25,7 +26,9 @@ import java.util.TreeSet;
 import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.collection_I.CollectionUtil;
 
 
@@ -34,10 +37,10 @@ import org.ppeew.collection_I.CollectionUtil;
  *
  * @author Jan Dockx
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public final class ActualSortedSetEvent<_Element_>
     extends AbstractCollectionEvent<_Element_, SortedSet<_Element_>>
     implements SortedSetEvent<_Element_> {

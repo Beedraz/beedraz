@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Map;
@@ -30,7 +31,9 @@ import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -51,10 +54,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *          ? get() == null
  *          : true;
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
                                             _OperandBeed_ extends Beed<?>>

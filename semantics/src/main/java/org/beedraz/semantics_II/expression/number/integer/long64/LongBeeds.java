@@ -18,10 +18,13 @@ package org.beedraz.semantics_II.expression.number.integer.long64;
 
 
 import static org.beedraz.semantics_II.path.Paths.path;
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.path.Path;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
@@ -30,10 +33,10 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class LongBeeds {
 
 

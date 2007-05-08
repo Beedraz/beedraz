@@ -17,20 +17,24 @@ limitations under the License.
 package org.beedraz.semantics_II.expression;
 
 
+import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.expression.bool.BooleanBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanEvent;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppeew.annotations_I.Copyright;
+import org.ppeew.annotations_I.License;
+import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
  * from two operands of type {@link BooleanBeed}.
  */
-@CvsInfo(revision = "$Revision$",
-         date     = "$Date$",
-         state    = "$State$",
-         tag      = "$Name$")
+@Copyright("2007 - $Date$, Beedraz authors")
+@License(APACHE_V2)
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractBooleanArgBinaryExprBeed<
                                             _Result_ extends Object,
                                             _ResultEvent_ extends Event>

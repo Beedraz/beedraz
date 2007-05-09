@@ -28,7 +28,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * The top interface for the edit framework. We advise the use of the actual
- * classes in this package. If the do not provide the functionality you need,
+ * classes in this package. If they do not provide the functionality you need,
  * you can implement your own version implementing this interface.
  *
  * @author  Jan Dockx

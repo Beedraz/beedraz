@@ -31,15 +31,15 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>Event that notifies of changes in a {@link SetBeed}.
  *   The changes are represented by a set of {@link #getAddedElements()
  *   added elements} and a set of {@link #getRemovedElements()}.</p>
- * <p>This interface doubles as the generalized super type for events send by
- *   set beeds and subtypes, and as actual event type send by actual
+ * <p>This interface acts as the generalized super type for events sent by
+ *   set beeds and subtypes, and as actual event type sent by actual
  *   {@link SetBeed} instances. The generic parameter {@code _Set_}
  *   is necessary to be able to use this type as the generalized super type
- *   for events send by set beeds and subtypes.</p>
- * <p>Users interested in these events as generalized events sends by
+ *   for events sent by set beeds and subtypes.</p>
+ * <p>Users interested in these events as generalized events sent by
  *   set beeds in general, should use the type as
  *   <code>SetEvent&lt;<var>MyElement</var>, ?&gt;</code>.</p>
- * <p>Users interested in the events send by actual {@link SetBeed}
+ * <p>Users interested in the events sent by actual {@link SetBeed}
  *   instances should use this type as <code>SetEvent&lt;<var>MyElement</var>,
  *   Set&gt;</code>.</p>
  *

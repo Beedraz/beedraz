@@ -24,16 +24,11 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.aggregate.StubAggregateBeed;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
-import org.beedraz.semantics_II.expression.bool.AbstractBooleanConditionalBinaryExpressionBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanEdit;
-import org.beedraz.semantics_II.expression.bool.BooleanEvent;
-import org.beedraz.semantics_II.expression.bool.EditableBooleanBeed;
 import org.beedraz.semantics_II.path.ConstantPath;
 import org.beedraz.semantics_II.path.NullPath;
 import org.beedraz.semantics_II.path.Path;

@@ -27,8 +27,8 @@ import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.collection.CollectionBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;

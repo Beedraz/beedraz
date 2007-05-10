@@ -23,7 +23,7 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Collection;
 
 import org.beedraz.semantics_II.AbstractEvent;
-import org.beedraz.semantics_II.edit.Edit;
+import org.beedraz.semantics_II.Edit;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

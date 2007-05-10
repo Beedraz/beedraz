@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;

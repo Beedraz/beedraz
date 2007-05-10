@@ -21,9 +21,9 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Map;
 
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.association.set.BidirToOneEvent;
 import org.beedraz.semantics_II.expression.association.set.EditableBidirToOneBeed;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;

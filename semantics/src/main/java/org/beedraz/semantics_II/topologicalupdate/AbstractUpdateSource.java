@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.edit.Edit;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

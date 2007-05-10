@@ -26,8 +26,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.topologicalupdate.Dependent;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;

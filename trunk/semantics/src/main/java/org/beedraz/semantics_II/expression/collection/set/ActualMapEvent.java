@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractEvent;
-import org.beedraz.semantics_II.edit.Edit;
+import org.beedraz.semantics_II.Edit;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 

@@ -19,7 +19,7 @@ package org.beedraz.semantics_II.expression.bool;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.edit.Edit;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.AbstractRealArgUnaryExprBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.ppeew.annotations_I.Copyright;

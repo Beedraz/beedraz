@@ -22,8 +22,8 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.Date;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.OldNewEvent;
-import org.beedraz.semantics_II.edit.Edit;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

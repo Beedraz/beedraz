@@ -20,7 +20,7 @@ package org.beedraz.semantics_II.expression.collection.set.ordered;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.collection_I.CollectionUtil.unmodifiableOrderedSet;
 
-import org.beedraz.semantics_II.edit.Edit;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.AbstractOrderedCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.list.ListBeed;

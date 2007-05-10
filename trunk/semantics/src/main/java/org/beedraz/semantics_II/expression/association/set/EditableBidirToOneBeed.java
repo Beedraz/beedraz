@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.edit.Edit;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.EditableSimpleExpressionBeed;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.Copyright;

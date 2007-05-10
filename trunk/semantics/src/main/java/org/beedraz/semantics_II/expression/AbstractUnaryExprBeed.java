@@ -23,8 +23,8 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Map;
 
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.expression.bool.BooleanNotNullBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanNullBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;

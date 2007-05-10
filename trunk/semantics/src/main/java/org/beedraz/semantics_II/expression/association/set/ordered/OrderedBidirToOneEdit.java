@@ -16,18 +16,15 @@ limitations under the License.
 
 package org.beedraz.semantics_II.expression.association.set.ordered;
 
-
-import static org.beedraz.semantics_II.edit.Edit.State.DONE;
-import static org.beedraz.semantics_II.edit.Edit.State.NOT_YET_PERFORMED;
-import static org.beedraz.semantics_II.edit.Edit.State.UNDONE;
+import static org.beedraz.semantics_II.Edit.State.*;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
 
+import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.edit.EditStateException;
 import org.beedraz.semantics_II.expression.SimpleExpressionEdit;
 import org.beedraz.semantics_II.expression.collection.set.ordered.ActualOrderedSetEvent;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;

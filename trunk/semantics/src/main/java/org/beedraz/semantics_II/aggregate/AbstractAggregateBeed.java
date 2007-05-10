@@ -25,9 +25,9 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;

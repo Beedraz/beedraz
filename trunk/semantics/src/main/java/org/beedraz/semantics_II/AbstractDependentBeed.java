@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.topologicalupdate.Dependent;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;

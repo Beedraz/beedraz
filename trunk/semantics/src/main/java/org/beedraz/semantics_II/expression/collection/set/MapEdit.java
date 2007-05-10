@@ -17,8 +17,8 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.set;
 
 
-import static org.beedraz.semantics_II.edit.Edit.State.DONE;
-import static org.beedraz.semantics_II.edit.Edit.State.NOT_YET_PERFORMED;
+import static org.beedraz.semantics_II.Edit.State.DONE;
+import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
 import static org.ppeew.collection_I.CollectionUtil.intersection;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
@@ -28,8 +28,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.edit.AbstractEdit;
-import org.beedraz.semantics_II.edit.EditStateException;
+import org.beedraz.semantics_II.AbstractEdit;
+import org.beedraz.semantics_II.EditStateException;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -82,7 +82,7 @@ public class MapEdit<_Key_, _Value_>
   }
 
   public final void addElementToAdd(_Key_ key, _Value_ value) throws EditStateException {
-    if (getState() != NOT_YET_PERFORMED) {
+    if (getState() != State.NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
     $elementsToAdd.put(key, value);

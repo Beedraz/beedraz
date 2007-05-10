@@ -21,7 +21,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.lang.ref.WeakReference;
 
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;

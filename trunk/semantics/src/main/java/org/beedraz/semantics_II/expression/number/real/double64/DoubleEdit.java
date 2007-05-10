@@ -19,7 +19,7 @@ package org.beedraz.semantics_II.expression.number.real.double64;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.edit.Edit;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.SimpleExpressionEdit;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.ppeew.annotations_I.Copyright;

@@ -23,12 +23,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.aggregate.AggregateEvent;
-import org.beedraz.semantics_II.aggregate.AggregateEventStateException;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
 import org.beedraz.semantics_II.expression.string.EditableStringBeed;

@@ -20,12 +20,9 @@ package org.beedraz.semantics_II.expression.number.real.double64;
 import static org.junit.Assert.assertNull;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleDifferenceBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleEdit;
-import org.beedraz.semantics_II.expression.number.real.double64.EditableDoubleBeed;
 import org.beedraz.semantics_II.path.ConstantPath;
 import org.beedraz.semantics_II.path.NullPath;
 import org.beedraz.semantics_II.path.Path;

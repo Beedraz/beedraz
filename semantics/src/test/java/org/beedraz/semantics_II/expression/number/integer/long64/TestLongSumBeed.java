@@ -23,14 +23,10 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MathUtil.equalValue;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
-import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
-import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
-import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
-import org.beedraz.semantics_II.expression.number.integer.long64.LongSumBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

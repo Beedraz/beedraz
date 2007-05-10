@@ -24,15 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.StubValidityListener;
+import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
-import org.beedraz.semantics_II.edit.Edit.State;
-import org.beedraz.semantics_II.expression.string.StringEdit;
-import org.beedraz.semantics_II.expression.string.StringEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

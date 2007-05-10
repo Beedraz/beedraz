@@ -25,13 +25,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
+import org.beedraz.semantics_II.Edit;
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.Listener;
+import org.beedraz.semantics_II.ValidityListener;
+import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
-import org.beedraz.semantics_II.edit.Edit;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
-import org.beedraz.semantics_II.edit.ValidityListener;
-import org.beedraz.semantics_II.edit.Edit.State;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

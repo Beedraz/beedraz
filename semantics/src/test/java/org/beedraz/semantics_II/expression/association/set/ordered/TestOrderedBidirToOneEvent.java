@@ -20,13 +20,9 @@ package org.beedraz.semantics_II.expression.association.set.ordered;
 import static org.junit.Assert.assertEquals;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
-import org.beedraz.semantics_II.expression.association.set.ordered.EditableOrderedBidirToOneBeed;
-import org.beedraz.semantics_II.expression.association.set.ordered.OrderedBidirToManyBeed;
-import org.beedraz.semantics_II.expression.association.set.ordered.OrderedBidirToOneEdit;
-import org.beedraz.semantics_II.expression.association.set.ordered.OrderedBidirToOneEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

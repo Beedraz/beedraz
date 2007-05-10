@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.edit;
+package org.beedraz.semantics_II;
 
 
-import static org.beedraz.semantics_II.edit.Edit.State.DEAD;
-import static org.beedraz.semantics_II.edit.Edit.State.DONE;
-import static org.beedraz.semantics_II.edit.Edit.State.NOT_YET_PERFORMED;
-import static org.beedraz.semantics_II.edit.Edit.State.UNDONE;
+import static org.beedraz.semantics_II.Edit.State.DEAD;
+import static org.beedraz.semantics_II.Edit.State.DONE;
+import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
+import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
@@ -28,7 +28,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;

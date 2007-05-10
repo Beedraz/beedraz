@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.edit;
+package org.beedraz.semantics_II;
 
 
-import static org.beedraz.semantics_II.edit.Edit.State.DONE;
-import static org.beedraz.semantics_II.edit.Edit.State.NOT_YET_PERFORMED;
+import static org.beedraz.semantics_II.Edit.State.DONE;
+import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.ArrayList;
@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

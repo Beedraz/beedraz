@@ -25,8 +25,8 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.StubEvent;
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.StubSimpleEdit;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
-import org.beedraz.semantics_II.edit.StubSimpleEdit;
 import org.beedraz.semantics_II.expression.StubEditableSimpleExpressionBeed;
 import org.junit.After;
 import org.junit.Before;

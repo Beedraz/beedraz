@@ -14,15 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.edit;
+package org.beedraz.semantics_II;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.StubEvent;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.edit.AbstractSimpleEdit;
 import org.beedraz.semantics_II.expression.StubEditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;

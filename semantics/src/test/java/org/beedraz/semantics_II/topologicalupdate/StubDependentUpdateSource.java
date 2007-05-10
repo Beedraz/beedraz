@@ -24,12 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.StubEvent;
-import org.beedraz.semantics_II.edit.Edit;
-import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
-import org.beedraz.semantics_II.topologicalupdate.Dependent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

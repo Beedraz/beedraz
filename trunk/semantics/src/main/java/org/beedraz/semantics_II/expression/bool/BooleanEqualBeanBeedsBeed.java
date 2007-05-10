@@ -23,9 +23,9 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.edit.Edit;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;

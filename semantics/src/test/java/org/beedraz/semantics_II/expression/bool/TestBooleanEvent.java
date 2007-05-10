@@ -20,14 +20,10 @@ package org.beedraz.semantics_II.expression.bool;
 import static org.junit.Assert.assertEquals;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
-import org.beedraz.semantics_II.edit.EditStateException;
-import org.beedraz.semantics_II.edit.IllegalEditException;
-import org.beedraz.semantics_II.expression.bool.BooleanBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanEdit;
-import org.beedraz.semantics_II.expression.bool.BooleanEvent;
-import org.beedraz.semantics_II.expression.bool.EditableBooleanBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

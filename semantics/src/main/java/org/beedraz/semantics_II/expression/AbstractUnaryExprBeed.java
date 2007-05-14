@@ -63,6 +63,14 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _OperandBeed_ extends Beed<?>>
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
+  public static int countAbstractUnaryExprBeed = 0;
+//  public static Set<AbstractUnaryExprBeed> instancesAbstractUnaryExprBeed = new HashSet<AbstractUnaryExprBeed>();
+
+  public AbstractUnaryExprBeed() {
+    countAbstractUnaryExprBeed++;
+//    instancesAbstractUnaryExprBeed.add(this);
+  }
+
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
     /* Events are from the operand or the operand path, or both.

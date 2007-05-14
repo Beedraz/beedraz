@@ -73,6 +73,14 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
                                              _RightOperandEvent_ extends Event>
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
+  public static int countAbstractBinaryExprBeed = 0;
+//  public static Set<AbstractBinaryExprBeed> instancesAbstractBinaryExprBeed = new HashSet<AbstractBinaryExprBeed>();
+
+  public AbstractBinaryExprBeed() {
+    countAbstractBinaryExprBeed++;
+//    instancesAbstractBinaryExprBeed.add(this);
+  }
+
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
     /* Events are from the left operand, the left operand path, the right operand, the

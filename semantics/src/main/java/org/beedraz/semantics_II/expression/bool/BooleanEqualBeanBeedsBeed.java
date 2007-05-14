@@ -49,6 +49,9 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
     extends AbstractDependentBeed<BooleanEvent>
     implements BooleanBeed {
 
+  public static int countBooleanEqualBeanBeedsBeed = 0;
+//  public static Set<BooleanEqualBeanBeedsBeed> instancesBooleanEqualBeanBeedsBeed = new HashSet<BooleanEqualBeanBeedsBeed>();
+
   /**
    * @post  getLeftOperand() == null;
    * @post  getRightOperand() == null;
@@ -56,6 +59,8 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
    */
   public BooleanEqualBeanBeedsBeed() {
     $value = true;
+    countBooleanEqualBeanBeedsBeed++;
+//    instancesBooleanEqualBeanBeedsBeed.add(this);
   }
 
   @Override

@@ -51,6 +51,14 @@ public abstract class AbstractIndependentPath<_SelectedBeed_ extends Beed<?>>
     extends AbstractBeed<PathEvent<_SelectedBeed_>>
     implements Path<_SelectedBeed_> {
 
+  public static int countAbstractIndependentPath = 0;
+//  public static Set<AbstractIndependentPath> instancesAbstractIndependentPath = new HashSet<AbstractIndependentPath>();
+
+  public AbstractIndependentPath() {
+    countAbstractIndependentPath++;
+//    instancesAbstractIndependentPath.add(this);
+  }
+
   @Override
   protected String otherToStringInformation() {
     _SelectedBeed_ selected = get();

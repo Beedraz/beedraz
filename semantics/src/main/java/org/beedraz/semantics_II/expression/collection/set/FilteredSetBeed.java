@@ -77,6 +77,9 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
     extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
+  public static int countElementCriterion = 0;
+//  public static Set<Beed> instancesElementCriterion = new HashSet<Beed>();
+
   /**
    * @pre   criterion != null;
    * @post  getCriterion() == criterion;
@@ -322,6 +325,8 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
         addUpdateSource($bb);
       }
       $value = ($bb == null) ? false : $bb.getboolean();
+      countElementCriterion++;
+//      instancesElementCriterion.add(this);
     }
 
     /**

@@ -68,6 +68,14 @@ public abstract class AbstractDoubleSetComputationBeed
     extends AbstractDependentBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
+  public static int countAbstractDoubleSetComputationBeed = 0;
+//  public static Set<AbstractDoubleSetComputationBeed> instancesAbstractDoubleSetComputationBeed = new HashSet<AbstractDoubleSetComputationBeed>();
+
+  public AbstractDoubleSetComputationBeed() {
+    countAbstractDoubleSetComputationBeed++;
+//    instancesAbstractDoubleSetComputationBeed.add(this);
+  }
+
   public final boolean isEffective() {
     return $effective;
   }

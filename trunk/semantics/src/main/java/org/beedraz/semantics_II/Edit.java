@@ -177,6 +177,9 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   /*<construction>*/
   //-------------------------------------------------------
 
+  public static int countEdit = 0;
+//  public static Set<Edit> instancesEdit = new HashSet<Edit>();
+
   /**
    * @pre target != null;
    * @post getTarget() == target;
@@ -185,6 +188,8 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   protected Edit(_Target_ target) {
     assert target != null;
     $target = target;
+    countEdit++;
+//    instancesEdit.add(this);
   }
 
   /*</construction>*/

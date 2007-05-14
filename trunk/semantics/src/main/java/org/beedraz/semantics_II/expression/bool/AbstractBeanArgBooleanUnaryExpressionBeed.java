@@ -48,6 +48,14 @@ public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ exten
     extends AbstractDependentBeed<BooleanEvent>
     implements BooleanBeed {
 
+  public static int countAbstractBeanArgBooleanUnaryExpressionBeed = 0;
+//  public static Set<AbstractBeanArgBooleanUnaryExpressionBeed> instancesAbstractBeanArgBooleanUnaryExpressionBeed = new HashSet<AbstractBeanArgBooleanUnaryExpressionBeed>();
+
+  public AbstractBeanArgBooleanUnaryExpressionBeed() {
+    countAbstractBeanArgBooleanUnaryExpressionBeed++;
+//    instancesAbstractBeanArgBooleanUnaryExpressionBeed.add(this);
+  }
+
   @Override
   protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
     /* Events are from:

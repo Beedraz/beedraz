@@ -54,6 +54,16 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
     extends AbstractBeed<_SetEvent_>
     implements SetBeed<_Element_, _SetEvent_> {
 
+  public static int countAbstractSetBeed = 0;
+//  public static Set<AbstractSetBeed> instancesAbstractSetBeed = new HashSet<AbstractSetBeed>();
+  public static int countSizeBeed = 0;
+//  public static Set<Beed> instancesSizeBeed = new HashSet<Beed>();
+
+  public AbstractSetBeed() {
+    countAbstractSetBeed++;
+//    instancesAbstractSetBeed.add(this);
+  }
+
   /**
    * A beed representing the size of this set beed.
    *
@@ -70,6 +80,8 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
      */
     SizeBeed() {
       addUpdateSource(AbstractSetBeed.this);
+      countSizeBeed++;
+//      instancesSizeBeed.add(this);
     }
 
     public final boolean isEffective() {

@@ -39,6 +39,14 @@ public abstract class AbstractDependentPath<_SelectedBeed_ extends Beed<?>>
     extends AbstractDependentBeed<PathEvent<_SelectedBeed_>>
     implements Path<_SelectedBeed_> {
 
+  public static int countAbstractDependentPath = 0;
+//  public static Set<AbstractDependentPath> instancesAbstractDependentPath = new HashSet<AbstractDependentPath>();
+
+  public AbstractDependentPath() {
+    countAbstractDependentPath++;
+//    instancesAbstractDependentPath.add(this);
+  }
+
   @Override
   protected String otherToStringInformation() {
     _SelectedBeed_ selected = get();

@@ -46,11 +46,16 @@ public class DoubleConstantBeed
     extends AbstractBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
+  public static int countDoubleConstantBeed = 0;
+//  public static Set<DoubleConstantBeed> instancesDoubleConstantBeed = new HashSet<DoubleConstantBeed>();
+
   /**
    * @post  getdouble() == constant;
    */
   public DoubleConstantBeed(double constant) {
     $constant = constant;
+    countDoubleConstantBeed++;
+//    instancesDoubleConstantBeed.add(this);
   }
 
   /**

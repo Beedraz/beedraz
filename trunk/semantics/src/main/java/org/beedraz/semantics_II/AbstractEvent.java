@@ -40,6 +40,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public abstract class AbstractEvent implements Event {
 
+  public static int countAbstractEvent = 0;
+//  public static Set<AbstractEvent> instancesAbstractEvent = new HashSet<AbstractEvent>();
+
   /**
    * @pre  source != null;
    * @pre  (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE);
@@ -54,6 +57,8 @@ public abstract class AbstractEvent implements Event {
     $source = source;
     $edit = edit;
     $editState = (edit != null) ? edit.getState() : null;
+    countAbstractEvent++;
+//    instancesAbstractEvent.add(this);
   }
 
   public final Beed<?> getSource() {

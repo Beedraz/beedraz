@@ -55,7 +55,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   {@link State#DONE} and {@link State#UNDONE}, the edit can be made
  *   inoperative by calling the {@link #kill()}, which brings the edit
  *   to state {@link State#DEAD}. An edit can never leave this state anymore.</p>
- * <img src="doc-files/EditStateMachine.png" />
+ * <img src="doc-files/edit/img/EditStateMachine.png" />
  * <p>The <em>edit target goal state</em> is the state the edit will bring the
  *   target in once {@link #perform() performed} or {@link #redo() redone}. As long
  *   as the edit is {@link State#NOT_YET_PERFORMED}, the <em>edit target goal
@@ -177,9 +177,6 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   /*<construction>*/
   //-------------------------------------------------------
 
-  public static int countEdit = 0;
-//  public static Set<Edit> instancesEdit = new HashSet<Edit>();
-
   /**
    * @pre target != null;
    * @post getTarget() == target;
@@ -188,8 +185,6 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   protected Edit(_Target_ target) {
     assert target != null;
     $target = target;
-    countEdit++;
-//    instancesEdit.add(this);
   }
 
   /*</construction>*/

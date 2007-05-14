@@ -78,6 +78,9 @@ public abstract class AbstractDependentBeed<_Event_ extends Event>
     $dependent.removeUpdateSource(us);
   }
 
+  /*</section>*/
+
+
 
   /*<section name="update source">*/
   //------------------------------------------------------------------

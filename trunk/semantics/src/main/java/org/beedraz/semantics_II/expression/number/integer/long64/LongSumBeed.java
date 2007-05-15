@@ -66,9 +66,6 @@ public class LongSumBeed
     extends AbstractDependentBeed<ActualLongEvent>
     implements LongBeed {
 
-  public static int countLongSumBeed = 0;
-//  public static Set<LongSumBeed> instancesLongSumBeed = new HashSet<LongSumBeed>();
-
   /**
    * @post  getLong() == 0;
    * @post  (forall LongBeed lb; ; getNbOccurrences(lb) == 0};
@@ -76,8 +73,6 @@ public class LongSumBeed
    */
   public LongSumBeed() {
     super();
-    countLongSumBeed++;
-//    instancesLongSumBeed.add(this);
   }
 
   public final boolean isEffective() {

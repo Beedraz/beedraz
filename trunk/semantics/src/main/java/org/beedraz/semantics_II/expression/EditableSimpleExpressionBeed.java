@@ -47,17 +47,12 @@ public abstract class EditableSimpleExpressionBeed<_Type_,
     extends AbstractEditableBeed<_Event_>
     implements SimpleExpressionBeed<_Type_, _Event_> {
 
-  public static int countEditableSimpleExpressionBeed = 0;
-//  public static Set<EditableSimpleExpressionBeed> instancesEditableSimpleExpressionBeed = new HashSet<EditableSimpleExpressionBeed>();
-
   /**
    * @pre  owner != null;
    * @post getOwner() == owner;
    */
   public EditableSimpleExpressionBeed(AggregateBeed owner) {
     super(owner);
-    countEditableSimpleExpressionBeed++;
-//    instancesEditableSimpleExpressionBeed.add(this);
   }
 
   /**

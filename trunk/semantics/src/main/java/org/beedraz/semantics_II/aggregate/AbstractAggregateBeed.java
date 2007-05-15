@@ -45,14 +45,6 @@ public abstract class AbstractAggregateBeed
     extends AbstractDependentBeed<AggregateEvent>
     implements AggregateBeed {
 
-  public static int countAbstractAggregateBeed = 0;
-//  public static Set<AbstractAggregateBeed> instancesAbstractAggregateBeed = new HashSet<AbstractAggregateBeed>();
-
-  public AbstractAggregateBeed() {
-    countAbstractAggregateBeed++;
-//    instancesAbstractAggregateBeed.add(this);
-  }
-
   @Override
   protected AggregateEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?>  edit) {
     assert events.size() > 0;

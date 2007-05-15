@@ -92,14 +92,6 @@ import org.ppeew.smallfries_I.MultiLineToStringUtil;
          date     = "$Date$")
 public abstract class Dependent {
 
-  public static int countDependent = 0;
-//  public static Set<Dependent> instancesDependent = new HashSet<Dependent>();
-
-  public Dependent() {
-    countDependent++;
-//    instancesDependent.add(this);
-  }
-
   /*<property name="dependent update source">*/
   //-----------------------------------------------------------------
 

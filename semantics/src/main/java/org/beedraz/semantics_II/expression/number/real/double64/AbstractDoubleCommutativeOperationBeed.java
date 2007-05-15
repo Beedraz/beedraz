@@ -62,10 +62,6 @@ public abstract class AbstractDoubleCommutativeOperationBeed
     extends AbstractDependentBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
-  public static int countAbstractDoubleCommutativeOperationBeed = 0;
-//  public static Set<AbstractDoubleCommutativeOperationBeed> instancesAbstractDoubleCommutativeOperationBeed =
-//    new HashSet<AbstractDoubleCommutativeOperationBeed>();
-
   /**
    * @post  getdouble() == initialValue();
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
@@ -73,8 +69,6 @@ public abstract class AbstractDoubleCommutativeOperationBeed
    */
   protected AbstractDoubleCommutativeOperationBeed() {
     super();
-    countAbstractDoubleCommutativeOperationBeed++;
-//    instancesAbstractDoubleCommutativeOperationBeed.add(this);
   }
 
   public final boolean isEffective() {

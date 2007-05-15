@@ -44,17 +44,12 @@ public class EditableMapBeed<_Key_, _Value_>
     extends AbstractBeed<MapEvent<_Key_, _Value_>>
     implements MapBeed<_Key_, _Value_, MapEvent<_Key_, _Value_>> {
 
-  public static int countEditableMapBeed = 0;
-//  public static Set<EditableMapBeed> instancesEditableMapBeed = new HashSet<EditableMapBeed>();
-
 
   /**
    * @post  keySet().isEmpty();
    */
   public EditableMapBeed() {
     super();
-    countEditableMapBeed++;
-//    instancesEditableMapBeed.add(this);
   }
 
   /**

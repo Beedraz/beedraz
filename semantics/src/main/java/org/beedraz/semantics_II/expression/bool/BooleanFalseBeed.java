@@ -47,14 +47,6 @@ public class BooleanFalseBeed
     extends AbstractBeed<BooleanEvent>
     implements BooleanBeed {
 
-  public static int countBooleanFalseBeed = 0;
-//  public static Set<BooleanFalseBeed> instancesBooleanFalseBeed = new HashSet<BooleanFalseBeed>();
-
-  public BooleanFalseBeed() {
-    countBooleanFalseBeed++;
-//    instancesBooleanFalseBeed.add(this);
-  }
-
   public Boolean getBoolean() {
     return Boolean.FALSE;
   }

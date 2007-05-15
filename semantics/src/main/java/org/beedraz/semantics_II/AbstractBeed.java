@@ -42,14 +42,6 @@ public abstract class AbstractBeed<_Event_ extends Event>
     extends AbstractUpdateSource
     implements Beed<_Event_> {
 
-  public static int countAbstractBeed = 0;
-//  public static Set<AbstractBeed> instancesAbstractBeed = new HashSet<AbstractBeed>();
-
-  public AbstractBeed() {
-    countAbstractBeed++;
-//    instancesAbstractBeed.add(this);
-  }
-
   public final boolean isListener(Listener<? super _Event_> listener) {
     return $changeListeners.contains(listener);
   }

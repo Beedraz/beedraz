@@ -12,7 +12,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.Collections;
 import java.util.Set;
 
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
+import org.beedraz.semantics_II.Beed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -40,11 +40,11 @@ public final class StubUpdateSource extends AbstractStubUpdateSource {
     return $mrusd;
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return Collections.emptySet();
   }
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     return Collections.emptySet();
   }
 

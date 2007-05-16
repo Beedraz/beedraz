@@ -108,7 +108,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
    */
   @Override
   protected final void updateDependents() {
-    HashMap<AbstractUpdateSource, Event> events = new HashMap<AbstractUpdateSource, Event>();
+    HashMap<AbstractUpdateSource<?>, Event> events = new HashMap<AbstractUpdateSource<?>, Event>();
     events.put(getTarget(), createEvent());
     assert (getState() == DONE) || (getState() == UNDONE);
     BidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();

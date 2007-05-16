@@ -29,7 +29,6 @@ import org.beedraz.semantics_II.expression.bool.AbstractBooleanConditionalBinary
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -74,7 +73,7 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
 
   @Override
-  protected final _ResultEvent_ filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected final _ResultEvent_ filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     /* Events are from the left operand, the left operand path, the right operand, the
      * right operand path, or any combination.
      * React to event from paths first, setting the operands. Then do a recalculate.

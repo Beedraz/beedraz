@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.StubEvent;
@@ -49,9 +50,9 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
   public final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
     @Override
-    public StubEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+    public StubEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
       $updated++;
-      $events = new HashMap<UpdateSource, Event>(events);
+      $events = new HashMap<Beed<?>, Event>(events);
       return $myEvent;
     }
 
@@ -59,7 +60,7 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
 
   public int $updated = 0;
 
-  public Map<UpdateSource, Event> $events;
+  public Map<Beed<?>, Event> $events;
 
   public StubEvent $firedEvent;
 
@@ -67,21 +68,21 @@ public class StubDependentUpdateSource extends AbstractStubUpdateSource {
     return $dependent.getMaximumRootUpdateSourceDistance();
   }
 
-  public void addUpdateSource(UpdateSource updateSource) {
+  public void addUpdateSource(Beed<?> updateSource) {
     $dependent.addUpdateSource(updateSource);
   }
 
-  public void removeUpdateSource(UpdateSource updateSource) {
+  public void removeUpdateSource(Beed<?> updateSource) {
     $dependent.removeUpdateSource(updateSource);
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return $dependent.getUpdateSources();
   }
 
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+  private final static Set<? extends Beed<?>> PHI = Collections.emptySet();
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     /* fixed to make it possible to use this method during construction,
      * before $dependent is initialized. But that is bad code, and should be
      * fixed.

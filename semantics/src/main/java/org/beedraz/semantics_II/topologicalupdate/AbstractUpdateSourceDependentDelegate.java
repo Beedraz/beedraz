@@ -22,6 +22,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
@@ -59,7 +60,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
    * @pre dependentUpdateSource != null;
    * @post getDependentUpdateSource() == dependentUpdateSource;
    */
-  protected AbstractUpdateSourceDependentDelegate(AbstractUpdateSource dependentUpdateSource) {
+  protected AbstractUpdateSourceDependentDelegate(AbstractUpdateSource<?> dependentUpdateSource) {
     $dependentUpdateSource = dependentUpdateSource;
   }
 
@@ -67,7 +68,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
   //-----------------------------------------------------------------
 
   @Override
-  public final AbstractUpdateSource getDependentUpdateSource() {
+  public final AbstractUpdateSource<?> getDependentUpdateSource() {
     return $dependentUpdateSource;
   }
 
@@ -81,7 +82,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
     $dependentUpdateSource.fireEvent(event);
   }
 
-  private final AbstractUpdateSource $dependentUpdateSource;
+  private final AbstractUpdateSource<?> $dependentUpdateSource;
 
   /*</property>*/
 
@@ -90,7 +91,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
   //-----------------------------------------------------------------
 
   @Override
-  protected abstract Event filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit);
+  protected abstract Event filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit);
 
   /*</section>*/
 

@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
+import org.beedraz.semantics_II.Beed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -119,11 +119,11 @@ public class EditableMapBeed<_Key_, _Value_>
     return 0;
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return Collections.emptySet();
   }
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     return Collections.emptySet();
   }
 

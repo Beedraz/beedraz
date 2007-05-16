@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractStubUpdateSource
-    extends AbstractUpdateSource
+    extends AbstractUpdateSource<StubEvent>
     implements Beed<StubEvent> {
 
   protected AbstractStubUpdateSource(boolean event) {

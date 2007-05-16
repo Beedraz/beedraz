@@ -24,11 +24,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.expression.collection.set.AbstractSetBeed;
 import org.beedraz.semantics_II.expression.collection.set.ordered.OrderedSetBeed;
 import org.beedraz.semantics_II.expression.collection.set.ordered.OrderedSetEvent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -144,11 +144,11 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
     return 0;
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return Collections.emptySet();
   }
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     return Collections.emptySet();
   }
 

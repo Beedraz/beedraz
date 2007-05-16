@@ -46,7 +46,7 @@ public class StubDependent extends Dependent implements Beed<StubEvent> {
   }
 
   @Override
-  public UpdateSource getDependentUpdateSource() {
+  public Beed<?> getDependentUpdateSource() {
     return $myDependentUpdateSource;
   }
 
@@ -56,7 +56,7 @@ public class StubDependent extends Dependent implements Beed<StubEvent> {
   }
 
   @Override
-  protected Event filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected Event filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     $updated++;
     $events = events;
     return $myEvent;
@@ -64,7 +64,7 @@ public class StubDependent extends Dependent implements Beed<StubEvent> {
 
   public int $updated = 0;
 
-  public Map<UpdateSource, Event> $events;
+  public Map<Beed<?>, Event> $events;
 
   public final StubUpdateSource $myDependentUpdateSource = new StubUpdateSource();
 
@@ -108,9 +108,9 @@ public class StubDependent extends Dependent implements Beed<StubEvent> {
     // NOP
   }
 
-  public Set<? extends UpdateSource> getRootUpdateSources() {
-    HashSet<UpdateSource> result = new HashSet<UpdateSource>();
-    for (UpdateSource us : getUpdateSourcesTransitiveClosure()) {
+  public Set<? extends Beed<?>> getRootUpdateSources() {
+    HashSet<Beed<?>> result = new HashSet<Beed<?>>();
+    for (Beed<?> us : getUpdateSourcesTransitiveClosure()) {
       if (us.getMaximumRootUpdateSourceDistance() == 0) {
         result.add(us);
       }

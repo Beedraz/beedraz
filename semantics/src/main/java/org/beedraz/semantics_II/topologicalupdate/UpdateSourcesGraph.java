@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -47,17 +48,17 @@ public class UpdateSourcesGraph {
     // NOP
   }
 
-  public static void writeUpdateSourcesDotFile(Set<? extends UpdateSource> updateSources, PrintStream out) {
+  public static void writeUpdateSourcesDotFile(Set<? extends Beed<?>> updateSources, PrintStream out) {
     assert updateSources != null;
     writeDotHeader(updateSources, out);
 
     int nrOfFirstOrderUpdateSources = updateSources.size();
     if (nrOfFirstOrderUpdateSources >= 1) {
       assert nrOfFirstOrderUpdateSources >= 1 : "initial size of priority queue must be >= 1";
-      PriorityQueue<UpdateSource> queue =
-        new PriorityQueue<UpdateSource>(nrOfFirstOrderUpdateSources,
-          new Comparator<UpdateSource>() {
-                public int compare(UpdateSource us1, UpdateSource us2) {
+      PriorityQueue<Beed<?>> queue =
+        new PriorityQueue<Beed<?>>(nrOfFirstOrderUpdateSources,
+          new Comparator<Beed<?>>() {
+                public int compare(Beed<?> us1, Beed<?> us2) {
                   assert us1 != null;
                   assert us2 != null;
                   int mrusd1 = us1.getMaximumRootUpdateSourceDistance();
@@ -66,10 +67,10 @@ public class UpdateSourcesGraph {
                 }
               });
       queue.addAll(updateSources);
-      UpdateSource us = queue.poll();
+      Beed<?> us = queue.poll();
       while (us != null) {
         writeUpdateSourcesToDotFile(us, out);
-        Set<UpdateSource> secondDependents = new HashSet<UpdateSource>(us.getUpdateSources());
+        Set<Beed<?>> secondDependents = new HashSet<Beed<?>>(us.getUpdateSources());
         secondDependents.removeAll(queue);
         queue.addAll(secondDependents);
         us = queue.poll();
@@ -79,21 +80,21 @@ public class UpdateSourcesGraph {
     writeDotFooter(updateSources, out);
   }
 
-  private static void writeDotHeader(Set<? extends UpdateSource> updateSources, PrintStream out) {
+  private static void writeDotHeader(Set<? extends Beed<?>> updateSources, PrintStream out) {
     assert updateSources != null;
     out.println("digraph " + "\"Update Sources of " + updateSources.size() + " UpdateSource instances\" {");
   }
 
-  private static void writeDotFooter(Set<? extends UpdateSource> updateSources, PrintStream out) {
+  private static void writeDotFooter(Set<? extends Beed<?>> updateSources, PrintStream out) {
     out.println("}");
   }
 
-  private static void writeUpdateSourcesToDotFile(UpdateSource us, PrintStream out) {
+  private static void writeUpdateSourcesToDotFile(Beed<?> us, PrintStream out) {
       out.print(MultiLineToStringUtil.indent(1));
       out.print(updateSourceDotId(us));
       if (us.getMaximumRootUpdateSourceDistance() > 0) {
         out.print(" -> {");
-        for (UpdateSource usus : us.getUpdateSources()) {
+        for (Beed<?> usus : us.getUpdateSources()) {
           out.print(updateSourceDotId(usus) + "; ");
         }
         out.print("}");
@@ -101,7 +102,7 @@ public class UpdateSourcesGraph {
       out.println(";");
   }
 
-  private static String updateSourceDotId(UpdateSource us) {
+  private static String updateSourceDotId(Beed<?> us) {
     String className = us.getClass().getSimpleName();
     if (className.equals("")) {
       className = us.getClass().getName();

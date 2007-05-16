@@ -24,7 +24,6 @@ import java.util.Map;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -88,7 +87,7 @@ public class MutablePath<_Beed_ extends Beed<?>>
    * in a wrong way. This is a quick fix that must be solved in the operand-path-setting code.
    */
   @Override
-  protected PathEvent<_Beed_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected PathEvent<_Beed_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     // TODO Auto-generated method stub
     return null;
   }

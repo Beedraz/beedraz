@@ -28,7 +28,6 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -46,7 +45,7 @@ public abstract class AbstractAggregateBeed
     implements AggregateBeed {
 
   @Override
-  protected AggregateEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?>  edit) {
+  protected AggregateEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?>  edit) {
     assert events.size() > 0;
     AggregateEvent result = new AggregateEvent(AbstractAggregateBeed.this, edit);
     for (Event event : events.values()) {

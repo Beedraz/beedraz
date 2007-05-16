@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractEditableBeed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -47,11 +46,11 @@ public class StubEditableBeed extends AbstractEditableBeed<StubEvent> {
     return 0;
   }
 
-  public Set<? extends UpdateSource> getUpdateSources() {
+  public Set<? extends Beed<?>> getUpdateSources() {
     return null;
   }
 
-  public Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     return null;
   }
 

@@ -24,9 +24,9 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractEditableBeed;
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -99,11 +99,11 @@ public abstract class EditableSimpleExpressionBeed<_Type_,
 
   private final static String NULL_STRING = "null";
 
-  public final Set<UpdateSource> getUpdateSources() {
+  public final Set<Beed<?>> getUpdateSources() {
     return Collections.emptySet();
   }
 
-  public final Set<UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<Beed<?>> getUpdateSourcesTransitiveClosure() {
     return Collections.emptySet();
   }
 

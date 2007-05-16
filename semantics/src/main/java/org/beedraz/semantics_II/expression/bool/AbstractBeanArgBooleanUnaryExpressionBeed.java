@@ -23,13 +23,13 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -49,7 +49,7 @@ public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ exten
     implements BooleanBeed {
 
   @Override
-  protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected BooleanEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     /* Events are from:
      * - the beed,
      * - the beed path

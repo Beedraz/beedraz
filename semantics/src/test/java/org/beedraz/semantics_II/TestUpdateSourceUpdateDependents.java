@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.topologicalupdate;
+package org.beedraz.semantics_II;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.StubEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

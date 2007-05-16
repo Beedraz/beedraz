@@ -14,16 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.topologicalupdate;
+package org.beedraz.semantics_II;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.Listener;
-import org.beedraz.semantics_II.StubEvent;
-import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -34,7 +29,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractStubUpdateSource
-    extends AbstractUpdateSource<StubEvent>
+    extends AbstractBeed<StubEvent>
     implements Beed<StubEvent> {
 
   protected AbstractStubUpdateSource(boolean event) {
@@ -44,6 +39,7 @@ public abstract class AbstractStubUpdateSource
     else {
       $myEvent = null;
     }
+    addListener($listener);
   }
 
   protected AbstractStubUpdateSource() {
@@ -56,30 +52,14 @@ public abstract class AbstractStubUpdateSource
 
   public final StubEvent $myEvent;
 
-  @Override
-  protected void fireEvent(Event event) {
-    $firedEvent = (StubEvent)event;
-  }
-
   public StubEvent $firedEvent;
 
+  private Listener<StubEvent> $listener = new Listener<StubEvent>() {
 
-  // stub beed methods
+    public void beedChanged(StubEvent event) {
+      $firedEvent = event;
+    }
 
-  public void addListener(Listener<? super StubEvent> listener) {
-    // NOP
-  }
-
-  public boolean isListener(Listener<? super StubEvent> listener) {
-    return false;
-  }
-
-  public void removeListener(Listener<? super StubEvent> listener) {
-    // NOP
-  }
-
-  public void toString(StringBuffer sb, int i) {
-    // NOP
-  }
+  };
 
 }

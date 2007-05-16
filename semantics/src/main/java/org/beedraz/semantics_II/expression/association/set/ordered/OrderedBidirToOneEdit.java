@@ -22,12 +22,12 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.expression.SimpleExpressionEdit;
 import org.beedraz.semantics_II.expression.collection.set.ordered.ActualOrderedSetEvent;
-import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -268,7 +268,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
    */
   @Override
   protected final void updateDependents() {
-    HashMap<AbstractUpdateSource<?>, Event> events = new HashMap<AbstractUpdateSource<?>, Event>();
+    HashMap<AbstractBeed<?>, Event> events = new HashMap<AbstractBeed<?>, Event>();
     events.put(getTarget(), createEvent());
     assert (getState() == DONE) || (getState() == UNDONE);
     OrderedBidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();

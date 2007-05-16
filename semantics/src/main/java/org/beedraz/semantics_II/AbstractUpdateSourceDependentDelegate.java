@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.topologicalupdate;
+package org.beedraz.semantics_II;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -22,9 +22,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Edit;
-import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -60,7 +57,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
    * @pre dependentUpdateSource != null;
    * @post getDependentUpdateSource() == dependentUpdateSource;
    */
-  protected AbstractUpdateSourceDependentDelegate(AbstractUpdateSource<?> dependentUpdateSource) {
+  protected AbstractUpdateSourceDependentDelegate(AbstractBeed<?> dependentUpdateSource) {
     $dependentUpdateSource = dependentUpdateSource;
   }
 
@@ -68,7 +65,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
   //-----------------------------------------------------------------
 
   @Override
-  public final AbstractUpdateSource<?> getDependentUpdateSource() {
+  public final AbstractBeed<?> getDependentUpdateSource() {
     return $dependentUpdateSource;
   }
 
@@ -82,7 +79,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
     $dependentUpdateSource.fireEvent(event);
   }
 
-  private final AbstractUpdateSource<?> $dependentUpdateSource;
+  private final AbstractBeed<?> $dependentUpdateSource;
 
   /*</property>*/
 

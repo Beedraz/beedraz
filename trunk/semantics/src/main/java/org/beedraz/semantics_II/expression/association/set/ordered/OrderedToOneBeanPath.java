@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.path;
+package org.beedraz.semantics_II.expression.association.set.ordered;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -25,8 +25,9 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.expression.association.set.ordered.EditableOrderedBidirToOneBeed;
-import org.beedraz.semantics_II.expression.association.set.ordered.OrderedBidirToOneEvent;
+import org.beedraz.semantics_II.path.AbstractDependentPath;
+import org.beedraz.semantics_II.path.Path;
+import org.beedraz.semantics_II.path.PathEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

@@ -28,6 +28,7 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
+import org.beedraz.semantics_II.expression.collection.CollectionAnyElementPath;
 import org.beedraz.semantics_II.expression.collection.CollectionBeed;
 import org.beedraz.semantics_II.expression.collection.set.EditableSetBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetEdit;

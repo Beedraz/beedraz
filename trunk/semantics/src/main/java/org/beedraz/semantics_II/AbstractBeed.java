@@ -39,7 +39,7 @@ import org.ppeew.collection_I.WeakArraySet;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractBeed<_Event_ extends Event>
-    extends AbstractUpdateSource
+    extends AbstractUpdateSource<_Event_>
     implements Beed<_Event_> {
 
   public final boolean isListener(Listener<? super _Event_> listener) {

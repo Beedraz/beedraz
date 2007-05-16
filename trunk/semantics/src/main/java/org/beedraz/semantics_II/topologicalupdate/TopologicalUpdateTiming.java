@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -131,11 +132,11 @@ public class TopologicalUpdateTiming {
 
   private int $count = 1;
 
-  public final UpdateSource getUpdateSource() {
+  public final Beed<?> getUpdateSource() {
     return $updateSource;
   }
 
-  private final UpdateSource $updateSource;
+  private final Beed<?> $updateSource;
 
   public final long getTotalDuration() {
     return $duration;

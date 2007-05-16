@@ -27,13 +27,13 @@ import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.expression.collection.CollectionBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -77,7 +77,7 @@ public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_El
     }
 
     @Override
-    protected ActualLongEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+    protected ActualLongEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
       // We only get events from our set beed, and that can only be 1
       assert events.size() == 1;
       Iterator<Event> iter = events.values().iterator();

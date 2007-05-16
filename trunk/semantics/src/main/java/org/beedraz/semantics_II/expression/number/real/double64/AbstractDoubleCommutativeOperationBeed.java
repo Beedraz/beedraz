@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -82,7 +82,7 @@ public abstract class AbstractDoubleCommutativeOperationBeed
   private boolean $effective = true;
 
   @Override
-  protected ActualDoubleEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected ActualDoubleEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     boolean oldEffective = $effective;
     double oldValue = $value;
     /* optimization is worse than not optimized;

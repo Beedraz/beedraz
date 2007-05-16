@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.Edit;
 import org.ppeew.annotations_I.Copyright;
@@ -60,8 +61,8 @@ class TopologicalUpdate {
    * @pre us != null;
    * @pre event != null;
    */
-  static void updateDependents(AbstractUpdateSource us, Event event) {
-    HashMap<AbstractUpdateSource, Event> sourceEvents = new HashMap<AbstractUpdateSource, Event>(1);
+  static void updateDependents(AbstractUpdateSource<?> us, Event event) {
+    HashMap<AbstractUpdateSource<?>, Event> sourceEvents = new HashMap<AbstractUpdateSource<?>, Event>(1);
     sourceEvents.put(us, event);
     updateDependents(sourceEvents, event.getEdit());
   }
@@ -78,10 +79,10 @@ class TopologicalUpdate {
    * @pre sourceEvents != null;
    * @pre sourceEvents.size() > 0;
    */
-  static void updateDependents(Map<AbstractUpdateSource, Event> sourceEvents, Edit<?> edit) {
+  static void updateDependents(Map<AbstractUpdateSource<?>, Event> sourceEvents, Edit<?> edit) {
     assert sourceEvents != null;
     assert sourceEvents.size() > 0;
-    Map<UpdateSource, Event> events = new HashMap<UpdateSource, Event>(sourceEvents);
+    Map<Beed<?>, Event> events = new HashMap<Beed<?>, Event>(sourceEvents);
     /* most efficient structure to store the events to give them to the dependents
      * when they need to update themselves
      */
@@ -94,10 +95,10 @@ class TopologicalUpdate {
     fireDependentEvents(topologicalOrder, events);
   }
 
-  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<AbstractUpdateSource, Event> sourceEvents) {
+  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<AbstractUpdateSource<?>, Event> sourceEvents) {
     assert sourceEvents != null;
     ArrayList<HashSet<Dependent>> topologicalOrder = new ArrayList<HashSet<Dependent>>(TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE);
-    for (AbstractUpdateSource aus : sourceEvents.keySet()) {
+    for (AbstractUpdateSource<?> aus : sourceEvents.keySet()) {
       assert aus != null;
       for (Dependent d : aus.getDependents()) {
         putDependent(topologicalOrder, d);
@@ -124,7 +125,7 @@ class TopologicalUpdate {
     dMrusdDependents.add(d);
   }
 
-  private static void topologicalUpdate(ArrayList<HashSet<Dependent>> topologicalOrder, Map<UpdateSource, Event> events, Edit<?> edit) {
+  private static void topologicalUpdate(ArrayList<HashSet<Dependent>> topologicalOrder, Map<Beed<?>, Event> events, Edit<?> edit) {
     int mrusd = 1; // 0 is not used
     while (mrusd < topologicalOrder.size()) {
       HashSet<Dependent> currentDependents = topologicalOrder.get(mrusd);
@@ -161,13 +162,13 @@ class TopologicalUpdate {
     }
   }
 
-  private static void fireInitialUpdateSourcesEvents(Map<AbstractUpdateSource, Event> sourceEvents) {
-    for (Map.Entry<AbstractUpdateSource, Event> entry : sourceEvents.entrySet()) {
+  private static void fireInitialUpdateSourcesEvents(Map<AbstractUpdateSource<?>, Event> sourceEvents) {
+    for (Map.Entry<AbstractUpdateSource<?>, Event> entry : sourceEvents.entrySet()) {
       entry.getKey().fireEvent(entry.getValue());
     }
   }
 
-  private static void fireDependentEvents(ArrayList<HashSet<Dependent>> topologicalOrder, Map<UpdateSource, Event> events) {
+  private static void fireDependentEvents(ArrayList<HashSet<Dependent>> topologicalOrder, Map<Beed<?>, Event> events) {
     for (Set<Dependent> ds : topologicalOrder) {
       if (ds != null) {
         for (Dependent d: ds) {

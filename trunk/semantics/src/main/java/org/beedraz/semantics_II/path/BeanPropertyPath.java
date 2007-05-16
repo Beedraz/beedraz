@@ -26,7 +26,6 @@ import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -83,7 +82,7 @@ public abstract class BeanPropertyPath<_AggregateBeed_ extends AggregateBeed, _P
   //-----------------------------------------------------------------
 
   @Override
-  protected PathEvent<_PropertyBeed_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected PathEvent<_PropertyBeed_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     assert events != null;
     assert events.size() == 1;
     PathEvent<_AggregateBeed_> event = (PathEvent<_AggregateBeed_>)events.get($beanPath);

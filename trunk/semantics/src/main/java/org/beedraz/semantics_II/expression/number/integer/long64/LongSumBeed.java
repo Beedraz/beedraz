@@ -31,11 +31,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractDependentBeed;
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -83,12 +83,12 @@ public class LongSumBeed
 
 
   @Override
-  protected ActualLongEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+  protected ActualLongEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     // recalculate(); optimization
     boolean oldEffective = $effective;
     long oldValue = $value;
     if ($effective) {
-      for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
+      for (Map.Entry<Beed<?>, Event> entry : events.entrySet()) {
         IntegerEvent event = (IntegerEvent)entry.getValue();
         assert event.getOldLong() != null :
           "The old value contained in the event must be effective since $value != null.";

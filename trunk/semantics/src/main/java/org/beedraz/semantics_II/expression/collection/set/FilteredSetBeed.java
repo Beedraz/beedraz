@@ -39,7 +39,6 @@ import org.beedraz.semantics_II.path.PathEvent;
 import org.beedraz.semantics_II.path.PathFactory;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.topologicalupdate.Dependent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -91,7 +90,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected SetEvent<_Element_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+      protected SetEvent<_Element_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
         assert events != null;
         assert events.size() > 0;
         /* Events can come:
@@ -108,7 +107,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
          */
 //        System.out.println("=================");
 //        System.out.println(events.size() + "{{" + events + "}}");
-//        for (Map.Entry<UpdateSource, Event> entry : events.entrySet()) {
+//        for (Map.Entry<Beed<?>, Event> entry : events.entrySet()) {
 //          System.out.println(entry);
 ////          System.out.println(us.getClass());
 ////          System.out.println(Integer.toHexString(us.hashCode()));
@@ -330,8 +329,8 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
      * - {@link ElementCriterion#$bb} (if it is effective)
      * If {@link ElementCriterion#$bbPath} changes, then it sends a {@link PathEvent},
      * containing the old and new value of the path, i.e. containing the old and new
-     * {@link BooleanBeed}. We remove the old {@link BooleanBeed} as {@link UpdateSource}
-     * and add the new {@link BooleanBeed} as {@link UpdateSource}. The value of
+     * {@link BooleanBeed}. We remove the old {@link BooleanBeed} as {@link Beed}
+     * and add the new {@link BooleanBeed} as {@link Beed}. The value of
      * {@link ElementCriterion#$bb} is replaced by the new {@link BooleanBeed}. The
      * {@link ElementCriterion#$value} is updated to the value of the new
      * {@link BooleanBeed}.
@@ -344,7 +343,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
      * {@link BooleanEvent} containing the old and new value.
      */
     @Override
-    protected BooleanEvent filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+    protected BooleanEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
       // events are from the $bbPath or the $bb (if it is effective)
       assert events != null;
       assert events.size() > 0;
@@ -488,9 +487,9 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
    * Replace the old {@link #getSource() source} by the given source.
    * Remove the old {@link #getSource() source} and all the
    * {@link ElementCriterion filter criteria} of its elements as
-   * {@link UpdateSource}.
+   * {@link Beed}.
    * Add the given source and all the {@link ElementCriterion filter criteria}
-   * of its elements as {@link UpdateSource}.
+   * of its elements as {@link Beed}.
    * Update the {@link #$filteredSet}:
    * - remove the elements that were there, and put them in
    *   <code>removedFilteredElements</code>.
@@ -555,7 +554,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
 
   /**
    * Add the {@link ElementCriterion filter criterion} of the given element as
-   * {@link UpdateSource}.
+   * {@link Beed}.
    * Update the {@link #$filteredSet}: add the element if it satisfies
    * the {@link ElementCriterion filter criterion} and put it in
    * <code>addedFilteredElements</code>.
@@ -580,7 +579,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
 
   /**
    * Remove the {@link ElementCriterion filter criterion} of the given element as
-   * {@link UpdateSource}.
+   * {@link Beed}.
    * Update the {@link #$filteredSet}: remove the element (if it was there)
    * and then put it in <code>removedFilteredElements</code>.
    * Update the {@link #$elementCriteria}: remove the given element.
@@ -624,13 +623,13 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
     return Collections.unmodifiableSet($filteredSet);
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return $dependent.getUpdateSources();
   }
 
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+  private final static Set<? extends Beed<?>> PHI = Collections.emptySet();
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     /* fixed to make it possible to use this method during construction,
      * before $dependent is initialized. But that is bad code, and should be
      * fixed.

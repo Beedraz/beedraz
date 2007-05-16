@@ -39,7 +39,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class TestAbstractUpdateSource {
 
-  private AbstractUpdateSource $subject;
+  private AbstractUpdateSource<?> $subject;
 
   private Dependent $dependent1;
 

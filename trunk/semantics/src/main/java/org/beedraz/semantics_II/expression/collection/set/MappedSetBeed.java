@@ -38,7 +38,6 @@ import org.beedraz.semantics_II.path.PathEvent;
 import org.beedraz.semantics_II.path.PathFactory;
 import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.topologicalupdate.Dependent;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -97,7 +96,7 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
       @Override
-      protected SetEvent<_To_> filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit) {
+      protected SetEvent<_To_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
         assert events != null;
         assert events.size() > 0;
         /* Events can come:
@@ -518,13 +517,13 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     return Collections.unmodifiableSet($result);
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return $dependent.getUpdateSources();
   }
 
-  private final static Set<? extends UpdateSource> PHI = Collections.emptySet();
+  private final static Set<? extends Beed<?>> PHI = Collections.emptySet();
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     /* fixed to make it possible to use this method during construction,
      * before $dependent is initialized. But that is bad code, and should be
      * fixed.

@@ -26,7 +26,7 @@ import java.text.NumberFormat;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
+import org.beedraz.semantics_II.Beed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -78,11 +78,11 @@ public class DoubleConstantBeed
     return 0;
   }
 
-  public Set<? extends UpdateSource> getUpdateSources() {
+  public Set<? extends Beed<?>> getUpdateSources() {
     return null;
   }
 
-  public Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     return null;
   }
 

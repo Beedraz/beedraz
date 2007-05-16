@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
@@ -103,7 +104,7 @@ public abstract class Dependent {
    *
    * @protected Implement preferably as <code>return <var>OuterClassName</var>.this</code>.
    */
-  public abstract UpdateSource getDependentUpdateSource();
+  public abstract Beed<?> getDependentUpdateSource();
 
   /**
    * <p>This method is used by the topological update algorithm in
@@ -149,9 +150,9 @@ public abstract class Dependent {
    *        for structural changes.
    * @pre events != null;
    */
-  protected final Event update(Map<UpdateSource, Event> events, Edit<?> edit) {
-    Map<UpdateSource, Event> result = new HashMap<UpdateSource, Event>();
-    for (UpdateSource us : $updateSources) {
+  protected final Event update(Map<Beed<?>, Event> events, Edit<?> edit) {
+    Map<Beed<?>, Event> result = new HashMap<Beed<?>, Event>();
+    for (Beed<?> us : $updateSources) {
       assert us != null;
       Event event = events.get(us);
       if (event != null) {
@@ -169,7 +170,7 @@ public abstract class Dependent {
    *
    * @pre events != null;
    */
-  protected abstract Event filteredUpdate(Map<UpdateSource, Event> events, Edit<?> edit);
+  protected abstract Event filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit);
 
   /*</section>*/
 
@@ -180,20 +181,20 @@ public abstract class Dependent {
   /**
    * @return getUpdateSourcesSet().contains(updateSource);
    */
-  public final boolean isUpdateSource(UpdateSource updateSource) {
+  public final boolean isUpdateSource(Beed<?> updateSource) {
     return $updateSources.contains(updateSource);
   }
 
   /**
    * @return result.equals(getUpdateSourcesOccurencesMap().keySet());
    */
-  public final Set<UpdateSource> getUpdateSources() {
+  public final Set<Beed<?>> getUpdateSources() {
     return Collections.unmodifiableSet($updateSources);
   }
 
-  public final Set<UpdateSource> getUpdateSourcesTransitiveClosure() {
-    HashSet<UpdateSource> result = new HashSet<UpdateSource>($updateSources);
-    for (UpdateSource us : $updateSources) {
+  public final Set<Beed<?>> getUpdateSourcesTransitiveClosure() {
+    HashSet<Beed<?>> result = new HashSet<Beed<?>>($updateSources);
+    for (Beed<?> us : $updateSources) {
       result.addAll(us.getUpdateSourcesTransitiveClosure());
     }
     return result;
@@ -207,7 +208,7 @@ public abstract class Dependent {
    * @post updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  public final void addUpdateSource(UpdateSource updateSource) {
+  public final void addUpdateSource(Beed<?> updateSource) {
     assert updateSource != null;
     $updateSources.add(updateSource);
     updateMaximumRootUpdateSourceDistanceUp(updateSource.getMaximumRootUpdateSourceDistance());
@@ -235,7 +236,7 @@ public abstract class Dependent {
    * @post ! updateSource.getDependents().contains(this);
    * @post updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
    */
-  public final void removeUpdateSource(UpdateSource updateSource) {
+  public final void removeUpdateSource(Beed<?> updateSource) {
     assert updateSource != null;
     updateSource.removeDependent(this);
     updateMaximumRootUpdateSourceDistanceDown(updateSource.getMaximumRootUpdateSourceDistance());
@@ -246,7 +247,7 @@ public abstract class Dependent {
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
    */
-  private final Set<UpdateSource> $updateSources = new ArraySet<UpdateSource>();
+  private final Set<Beed<?>> $updateSources = new ArraySet<Beed<?>>();
 
   /*</section>*/
 
@@ -298,7 +299,7 @@ public abstract class Dependent {
         // no overflow problem in if
       int oldMaximumFinalSourceDistance = $maximumRootUpdateSourceDistance;
       $maximumRootUpdateSourceDistance = 0;
-      for (UpdateSource otherUpdateSource : getUpdateSources()) {
+      for (Beed<?> otherUpdateSource : getUpdateSources()) {
         int potentialNewMaxDistance = otherUpdateSource.getMaximumRootUpdateSourceDistance() + 1;
           // no overflow problem due to invariant
         if (potentialNewMaxDistance > $maximumRootUpdateSourceDistance) {

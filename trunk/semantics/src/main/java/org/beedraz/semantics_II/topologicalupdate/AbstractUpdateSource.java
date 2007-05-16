@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
@@ -41,7 +42,7 @@ import org.ppeew.collection_I.ArraySet;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public abstract class AbstractUpdateSource implements UpdateSource {
+public abstract class AbstractUpdateSource<_Event_ extends Event> implements Beed<_Event_> {
 
   public final boolean isDependent(Dependent dependent) {
     return ($dependents != null) && $dependents.contains(dependent);
@@ -139,7 +140,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    *       solution is to put edits in the same package as {@link TopologicalUpdate},
    *       which would then be the beedra core top package.
    */
-  protected static void updateDependents(Map<AbstractUpdateSource, Event> sourceEvents, Edit<?> edit) {
+  protected static void updateDependents(Map<AbstractUpdateSource<?>, Event> sourceEvents, Edit<?> edit) {
     TopologicalUpdate.updateDependents(sourceEvents, edit);
   }
 
@@ -153,10 +154,10 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    */
   private ArraySet<Dependent> $dependents = null;
 
-  public final Set<? extends UpdateSource> getRootUpdateSources() {
-    Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();
-    HashSet<UpdateSource> result = new HashSet<UpdateSource>();
-    for (UpdateSource us : uss) {
+  public final Set<? extends Beed<?>> getRootUpdateSources() {
+    Set<? extends Beed<?>> uss = getUpdateSourcesTransitiveClosure();
+    HashSet<Beed<?>> result = new HashSet<Beed<?>>();
+    for (Beed<?> us : uss) {
       if (us.getMaximumRootUpdateSourceDistance() == 0) {
         result.add(us);
       }

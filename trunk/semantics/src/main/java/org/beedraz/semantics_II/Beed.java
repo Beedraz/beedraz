@@ -20,8 +20,9 @@ package org.beedraz.semantics_II;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.lang.ref.WeakReference;
+import java.util.Set;
 
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
+import org.beedraz.semantics_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -77,44 +78,55 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   observable.</p>
  *
  * <h3>Events and Listeners</h3>
- * <p>Generic type invocations define the type of the events Beeds send.
+ * <p>The {@code Beed} - {@link Listener} - {@link Event} structure implements the
+ *   traditional <a href="http://en.wikipedia.org/wiki/Observer_pattern">Model -
+ *   View -Controller (a.k.a. Oserver - Observable, a.k.a.
+ *   <acronym title="Model - View - Controller">MVC</acronym>) design pattern</a>.
+ *   Generic type invocations define the type of the events {@code Beeds} send.
  *   This static type is defined by the type parameter {@code _Event_}.
  *   Registered listeners should be able to accept events of type
  *   {@code _Event_} or its subtypes (a beed might send an event with a more specific
  *   dynamic type). Since the type of events being send is only guaranteed to be
- *   {@code _Event_}, only listeners that are content with events of type
- *   {@code _Event_} or more general event types, are accepted.
+ *   {@code _Event_}, only listeners that are content with <em>events of type
+ *   {@code _Event_} or more general event types</em>, are accepted.
  *   The type {@code Listener<? super _Event_>} is an interface with all
  *   the methods defined in {@link Listener}. It is used as the polymorph type
  *   for listener registration.</p>
  * <p>Listener registration (see {@link #addListener(Listener)},
- *   {@link #removeListener(Listener)}, and {@link #isListener(Listener)}),is
+ *   {@link #removeListener(Listener)}, and {@link #isListener(Listener)}) is
  *   implemented by concrete implementations of this interface using
  *   {@linkplain WeakReference weak references}. This means that when an object is
  *   only registered as a listener with a beed, and not referenced by any other
- *   object using a <em>strong reference</em>, it will be garbage collected.</p>
+ *   object using a <em>strong reference</em>, it will be garbage collected.
+ *   However, users should explicitly remove listeners when possible (it keeps
+ *   the mind clean).</p>
  * <p>See {@link Event} and {@link Listener} for more information.</p>
  *
  * <h3>Update of Dependents</h3>
  * <p>Where {@linkplain Listener listeners} implement the traditional
- *   Model - View - Controller (or Observer - Observable) pattern,
+ *   <acronym title="Model - View - Controller">MVC</acronym> pattern,
  *   the {@linkplain Dependent dependents mechanism} extends this notion
  *   with a <dfn>topological walk</dfn> through the beed structure.
  *   Dependent beeds are asked, in <em>topological order</em>, to update
  *   themselves, and to describe their change with an {@link Event}.</p>
- * <img src="doc-files/TopologicalUpdate.png" />
+ * <img src="doc-files/topologicalUpdate/img/TopologicalUpdate.png" />
  * <p>When all dependent beeds are updated in topological order.
  *   all changed beeds are visited again in topological order, and asked
  *   to send their event to registered listeners.</p>
- * <p>
- *
+ * <p>The need for the topological update mechanism, and the algorithm,
+ *   is explained in a <a href="doc-files/topologicalUpdate/why.html">separate
+ *   document</a>.</p>
  * <p>Dependent registration is implemented by concrete implementations of this
- *   interface using {@linkplain WeakReference weak references}. This means that
- *   when an object is only registered as a listener with a beed, and not referenced
- *   by any other object using a <em>strong reference</em>, it will be garbage
- *   collected.</p>
+ *   interface using regular (strong) references. To avoid memory leaks,
+ *   users that add a dependent must also remove that dependent at some time.</p>
  *
  * @author Jan Dockx
+ *
+ * @invar getMaximumRootUpdateSourceDistance() >= 0;
+ * @invar getMaximumRootUpdateSourceDistance() == 0 ? getUpdateSources().isEmpty();
+ * @invar for (Beed<?> us : getUpdateSources()) {
+ *          getMaximumRootUpdateSourceDistance() > us.getMaximumRootUpdateSourceDistance()
+ *        };
  *
  * @todo to be added: validation, civilization?
  */
@@ -122,7 +134,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public interface Beed<_Event_ extends Event> extends UpdateSource {
+public interface Beed<_Event_ extends Event> {
 
   /*<section name="listeners">*/
   //------------------------------------------------------------------
@@ -143,6 +155,82 @@ public interface Beed<_Event_ extends Event> extends UpdateSource {
    * @post ! isListener(listener);
    */
   void removeListener(Listener<? super _Event_> listener);
+
+  /*</section>*/
+
+
+
+  /*<section name="dependents">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   * @init foreach (Dependent d) { ! isDependent(d)};
+   */
+  boolean isDependent(Dependent dependent);
+
+  /**
+   * @result isDependent(dependent) ||
+   *           exists (Dependent d) {isDependent(d) && d.isTransitiveDependent(dependent)};
+   */
+  boolean isTransitiveDependent(Dependent dependent);
+
+  /**
+   * @pre dependent != null;
+   * @pre ! isTransitiveDependent(dependent);
+   *      no loops
+   * @pre dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
+   * @post isDependent(dependent);
+   *
+   * @note {@code dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();}
+   *       is obviously a weird and hard precondition for a public method.
+   *       It is however crucial for the topological update algorithm. We would have liked
+   *       it better if we could limit access to this method for that reason, but the method
+   *       has to be declared in this type, and this type has to be an interface, because
+   *       beeds need multiple inheritance. Thus, the method must be public.
+   *       It is ill-advised to use the method yourself, though. If you make structural
+   *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
+   *       only, everything will be cared for.
+   */
+  void addDependent(Dependent dependent);
+
+  /**
+   * @post ! isDependent(dependent);
+   *
+   * @note It is ill-advised to use the method yourself, though. If you make structural
+   *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
+   *       only, everything will be cared for.
+   */
+  void removeDependent(Dependent dependent);
+
+  /**
+   * @basic
+   */
+  int getMaximumRootUpdateSourceDistance();
+
+  /*</section>*/
+
+
+
+  /*<section name="update sources">*/
+  //------------------------------------------------------------------
+
+  /**
+   * @basic
+   */
+  Set<? extends Beed<?>> getUpdateSources();
+
+  /**
+   * @result union(getUpdateSources,
+   *               map(Beed<?> beed : getUpdateSources) {beed.getUpdateSourcesTransitiveClosure()});
+   */
+  Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure();
+
+  /**
+   * @result filter(getUpdateSourcesTransitiveClosure(),
+   *                boolean lambda(Beed<?> beed) {beed.getMaximumRootUpdateSourceDistance() == 0});
+   */
+  Set<? extends Beed<?>> getRootUpdateSources();
 
   /*</section>*/
 

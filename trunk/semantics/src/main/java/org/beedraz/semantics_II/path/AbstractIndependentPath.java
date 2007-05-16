@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.topologicalupdate.UpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -66,11 +65,11 @@ public abstract class AbstractIndependentPath<_SelectedBeed_ extends Beed<?>>
     return 0;
   }
 
-  public final Set<? extends UpdateSource> getUpdateSources() {
+  public final Set<? extends Beed<?>> getUpdateSources() {
     return Collections.emptySet();
   }
 
-  public final Set<? extends UpdateSource> getUpdateSourcesTransitiveClosure() {
+  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
     return Collections.emptySet();
   }
 

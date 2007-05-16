@@ -64,7 +64,7 @@ public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
     return get() == null ? null : get().getOwner();
   }
 
-  static void packageUpdateDependents(Map<AbstractUpdateSource, Event> events, Edit<?> edit) {
+  static void packageUpdateDependents(Map<AbstractUpdateSource<?>, Event> events, Edit<?> edit) {
     AbstractUpdateSource.updateDependents(events, edit);
   }
 

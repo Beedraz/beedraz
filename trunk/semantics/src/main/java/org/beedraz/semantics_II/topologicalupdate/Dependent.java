@@ -30,6 +30,7 @@ import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppeew.collection_I.ArraySet;
 import org.ppeew.smallfries_I.MultiLineToStringUtil;
 
 
@@ -245,7 +246,7 @@ public abstract class Dependent {
    * @invar $updateSources != null;
    * @invar Collections.noNull($updateSources);
    */
-  private final Set<UpdateSource> $updateSources = new HashSet<UpdateSource>();
+  private final Set<UpdateSource> $updateSources = new ArraySet<UpdateSource>();
 
   /*</section>*/
 

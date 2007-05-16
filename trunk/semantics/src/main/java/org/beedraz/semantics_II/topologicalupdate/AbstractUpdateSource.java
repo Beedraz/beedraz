@@ -29,7 +29,7 @@ import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.collection_I.WeakArraySet;
+import org.ppeew.collection_I.ArraySet;
 
 
 /**
@@ -55,7 +55,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
       return true;
     }
     else {
-      for (Dependent d : $dependents.strongClone()) {
+      for (Dependent d : $dependents) {
         if (d.getDependentUpdateSource().isTransitiveDependent(dependent)) {
           return true;
         }
@@ -74,7 +74,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @result for (Dependent d) {isDependent(d) ?? result.contains(d)};
    */
   protected final Set<Dependent> getDependents() {
-    return ($dependents == null) ? EMPTY_DEPENDENTS : $dependents.strongClone();
+    return ($dependents == null) ? EMPTY_DEPENDENTS : $dependents.clone();
   }
 
   /**
@@ -90,7 +90,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     */
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     if ($dependents == null) {
-      $dependents = new WeakArraySet<Dependent>();
+      $dependents = new ArraySet<Dependent>();
     }
     $dependents.add(dependent);
   }
@@ -151,7 +151,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
   /**
    * If the set is empty, it is set to null, to save memory.
    */
-  private WeakArraySet<Dependent> $dependents = null;
+  private ArraySet<Dependent> $dependents = null;
 
   public final Set<? extends UpdateSource> getRootUpdateSources() {
     Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();

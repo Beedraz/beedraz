@@ -29,7 +29,7 @@ import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.collection_I.WeakHashSet;
+import org.ppeew.collection_I.WeakArraySet;
 
 
 /**
@@ -90,7 +90,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     */
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
     if ($dependents == null) {
-      $dependents = new WeakHashSet<Dependent>();
+      $dependents = new WeakArraySet<Dependent>();
     }
     $dependents.add(dependent);
   }
@@ -151,7 +151,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
   /**
    * If the set is empty, it is set to null, to save memory.
    */
-  private WeakHashSet<Dependent> $dependents = null;
+  private WeakArraySet<Dependent> $dependents = null;
 
   public final Set<? extends UpdateSource> getRootUpdateSources() {
     Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();

@@ -46,7 +46,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class WeakHashSet<E extends Object> extends AbstractSet<E> {
+public class WeakArraySet<E extends Object> extends AbstractSet<E> {
 
   private final static int INITIAL_SIZE = 1;
 
@@ -116,7 +116,7 @@ public class WeakHashSet<E extends Object> extends AbstractSet<E> {
       if ($position <= 0) {
         throw new IllegalStateException();
       }
-      WeakHashSet.this.remove($localData[$position -  1]);
+      WeakArraySet.this.remove($localData[$position -  1]);
     }
 
   }

@@ -26,7 +26,7 @@ import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.collection_I.WeakHashSet;
+import org.ppeew.collection_I.WeakArraySet;
 
 
 /**
@@ -49,7 +49,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
   public final void addListener(Listener<? super _Event_> listener) {
     assert listener != null;
     if ($changeListeners == null) {
-      $changeListeners = new WeakHashSet<Listener<? super _Event_>>();
+      $changeListeners = new WeakArraySet<Listener<? super _Event_>>();
     }
     $changeListeners.add(listener);
   }
@@ -81,7 +81,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
   /**
    * If the set is empty, it is discarded to save memory.
    */
-  private WeakHashSet<Listener<? super _Event_>> $changeListeners = null;
+  private WeakArraySet<Listener<? super _Event_>> $changeListeners = null;
 
   @Override
   public final String toString() {

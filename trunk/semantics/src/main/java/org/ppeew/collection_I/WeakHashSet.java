@@ -48,7 +48,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class WeakHashSet<E extends Object> extends AbstractSet<E> {
 
-  private final static int INITIAL_SIZE = 2;
+  private final static int INITIAL_SIZE = 1;
 
   private final static int GROWTH = 2;
 

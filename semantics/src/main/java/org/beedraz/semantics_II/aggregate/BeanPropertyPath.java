@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.path;
+package org.beedraz.semantics_II.aggregate;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -24,16 +24,18 @@ import java.util.Map;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
+import org.beedraz.semantics_II.path.AbstractDependentPath;
+import org.beedraz.semantics_II.path.Path;
+import org.beedraz.semantics_II.path.PathEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * <p>{@link Path} that selects a {@link PropertyBeed} from a
- *   {@link BeanBeed}. The {@link #getBeanBeed() bean beed} is the result of
+ * <p>{@link Path} that selects a {@link Beed property beed} from an
+ *   {@link AggregateBeed}. The {@link #getBeanBeed() bean beed} is the result of
  *   a {@link #getBeanPath() bean beed path}. When the result of the
  *   {@link #getBeanPath() bean beed path} changes, the result of this
  *   {@code BeanPropertyPath} might change too. When this happens, this

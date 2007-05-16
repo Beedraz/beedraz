@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.topologicalupdate;
+package org.beedraz.semantics_II;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -24,10 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.StubEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

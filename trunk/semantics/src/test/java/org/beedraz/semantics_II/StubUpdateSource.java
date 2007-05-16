@@ -4,7 +4,7 @@
   TO SELECTED PARTIES.
 </license>*/
 
-package org.beedraz.semantics_II.topologicalupdate;
+package org.beedraz.semantics_II;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;

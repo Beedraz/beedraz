@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.topologicalupdate;
+package org.beedraz.semantics_II;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -26,9 +26,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.Edit;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -61,8 +58,8 @@ class TopologicalUpdate {
    * @pre us != null;
    * @pre event != null;
    */
-  static void updateDependents(AbstractUpdateSource<?> us, Event event) {
-    HashMap<AbstractUpdateSource<?>, Event> sourceEvents = new HashMap<AbstractUpdateSource<?>, Event>(1);
+  static void updateDependents(AbstractBeed<?> us, Event event) {
+    HashMap<AbstractBeed<?>, Event> sourceEvents = new HashMap<AbstractBeed<?>, Event>(1);
     sourceEvents.put(us, event);
     updateDependents(sourceEvents, event.getEdit());
   }
@@ -79,7 +76,7 @@ class TopologicalUpdate {
    * @pre sourceEvents != null;
    * @pre sourceEvents.size() > 0;
    */
-  static void updateDependents(Map<AbstractUpdateSource<?>, Event> sourceEvents, Edit<?> edit) {
+  static void updateDependents(Map<AbstractBeed<?>, Event> sourceEvents, Edit<?> edit) {
     assert sourceEvents != null;
     assert sourceEvents.size() > 0;
     Map<Beed<?>, Event> events = new HashMap<Beed<?>, Event>(sourceEvents);
@@ -95,10 +92,10 @@ class TopologicalUpdate {
     fireDependentEvents(topologicalOrder, events);
   }
 
-  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<AbstractUpdateSource<?>, Event> sourceEvents) {
+  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<AbstractBeed<?>, Event> sourceEvents) {
     assert sourceEvents != null;
     ArrayList<HashSet<Dependent>> topologicalOrder = new ArrayList<HashSet<Dependent>>(TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE);
-    for (AbstractUpdateSource<?> aus : sourceEvents.keySet()) {
+    for (AbstractBeed<?> aus : sourceEvents.keySet()) {
       assert aus != null;
       for (Dependent d : aus.getDependents()) {
         putDependent(topologicalOrder, d);
@@ -162,8 +159,8 @@ class TopologicalUpdate {
     }
   }
 
-  private static void fireInitialUpdateSourcesEvents(Map<AbstractUpdateSource<?>, Event> sourceEvents) {
-    for (Map.Entry<AbstractUpdateSource<?>, Event> entry : sourceEvents.entrySet()) {
+  private static void fireInitialUpdateSourcesEvents(Map<AbstractBeed<?>, Event> sourceEvents) {
+    for (Map.Entry<AbstractBeed<?>, Event> entry : sourceEvents.entrySet()) {
       entry.getKey().fireEvent(entry.getValue());
     }
   }

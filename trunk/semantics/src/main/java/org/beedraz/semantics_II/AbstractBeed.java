@@ -20,12 +20,15 @@ package org.beedraz.semantics_II;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.topologicalupdate.AbstractUpdateSource;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppeew.collection_I.ArraySet;
 import org.ppeew.collection_I.WeakArraySet;
 
 
@@ -39,8 +42,10 @@ import org.ppeew.collection_I.WeakArraySet;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractBeed<_Event_ extends Event>
-    extends AbstractUpdateSource<_Event_>
     implements Beed<_Event_> {
+
+  /*<section name="listeners">*/
+  //------------------------------------------------------------------
 
   public final boolean isListener(Listener<? super _Event_> listener) {
     return ($changeListeners != null) && $changeListeners.contains(listener);
@@ -63,8 +68,17 @@ public abstract class AbstractBeed<_Event_ extends Event>
     }
   }
 
-  @Override
+  /**
+   * @pre event != null;
+   * @pre event instanceof _Event_
+   * @post for (Listener<? super _Event_> l : isListener(l)) {
+   *         l.beedChanged(event)
+   *       }
+   *
+   * @mudo use _Event_???
+   */
   protected final void fireEvent(Event event) {
+    assert event != null;
     if ($changeListeners != null) {
       @SuppressWarnings("unchecked")
       _Event_ eEvent = (_Event_)event;
@@ -82,6 +96,141 @@ public abstract class AbstractBeed<_Event_ extends Event>
    * If the set is empty, it is discarded to save memory.
    */
   private WeakArraySet<Listener<? super _Event_>> $changeListeners = null;
+
+  /*</section>*/
+
+
+
+
+  /*<section name="dependents">*/
+  //------------------------------------------------------------------
+
+  public final boolean isDependent(Dependent dependent) {
+    return ($dependents != null) && $dependents.contains(dependent);
+  }
+
+  public final boolean isTransitiveDependent(Dependent dependent) {
+    if ($dependents == null) {
+      return false;
+    }
+    if (isDependent(dependent)) {
+      return true;
+    }
+    else {
+      for (Dependent d : $dependents) {
+        if (d.getDependentUpdateSource().isTransitiveDependent(dependent)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
+  private final static Set<Dependent> EMPTY_DEPENDENTS = Collections.emptySet();
+
+  /**
+   * Don't expose the collection of dependents publicly. It's
+   * a secret shared between us and the dependent. This collection
+   * uses strong references.
+   *
+   * @result for (Dependent d) {isDependent(d) ?? result.contains(d)};
+   */
+  protected final Set<Dependent> getDependents() {
+    return ($dependents == null) ? EMPTY_DEPENDENTS : $dependents.clone();
+  }
+
+  /**
+   * @pre dependent != null;
+   * @pre dependent.getDependentUpdateSource() != this;
+   * @pre ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
+   */
+  public final void addDependent(Dependent dependent) {
+    assert dependent != null;
+    assert dependent.getDependentUpdateSource() != this;
+    /* MUDO incredible slowdown, and -da doesn't work ???
+    assert ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
+    */
+    assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
+    if ($dependents == null) {
+      $dependents = new ArraySet<Dependent>();
+    }
+    $dependents.add(dependent);
+  }
+
+  public final void removeDependent(Dependent dependent) {
+    if ($dependents != null) {
+      $dependents.remove(dependent);
+      if ($dependents.isEmpty()) {
+        $dependents = null;
+      }
+    }
+  }
+
+  /**
+   * The topological update method. First change this update source locally,
+   * then described the change in an event, then call this method with that event.
+   *
+   * @pre event != null;
+   *
+   * @mudo This method is only here to make the method
+   *       {@link TopologicalUpdate#updateDependents(AbstractUpdateSource, Event)}
+   *       accessible in other packates for subtypes.
+   *       The method actually needs to be accessible by edits. The correct
+   *       solution is to put edits in the same package as {@link TopologicalUpdate},
+   *       which would then be the beedra core top package.
+   */
+  protected final void updateDependents(Event event) {
+    org.beedraz.semantics_II.TopologicalUpdate.updateDependents(this, event);
+  }
+
+
+  /**
+   * The topological update method. First change this update source locally,
+   * then described the change in an event, then call this method with that event.
+   *
+   * @param edit
+   *        The edit that causes this update. This may be {@code null},
+   *        for structural changes.
+   * @pre sourceEvents != null;
+   * @pre sourceEvents.size() > 0;
+   *
+   * @mudo This method is only here to make the method
+   *       {@link TopologicalUpdate#updateDependents(AbstractUpdateSource, Event)}
+   *       accessible in other packates for subtypes.
+   *       The method actually needs to be accessible by edits. The correct
+   *       solution is to put edits in the same package as {@link TopologicalUpdate},
+   *       which would then be the beedra core top package.
+   */
+  protected static void updateDependents(Map<AbstractBeed<?>, Event> sourceEvents, Edit<?> edit) {
+    TopologicalUpdate.updateDependents(sourceEvents, edit);
+  }
+
+  /**
+   * If the set is empty, it is set to null, to save memory.
+   */
+  private ArraySet<Dependent> $dependents = null;
+
+  /*</section>*/
+
+
+
+  /*<section name="update sources">*/
+  //------------------------------------------------------------------
+
+  public final Set<? extends Beed<?>> getRootUpdateSources() {
+    Set<? extends Beed<?>> uss = getUpdateSourcesTransitiveClosure();
+    HashSet<Beed<?>> result = new HashSet<Beed<?>>();
+    for (Beed<?> us : uss) {
+      if (us.getMaximumRootUpdateSourceDistance() == 0) {
+        result.add(us);
+      }
+    }
+    return result;
+  }
+
+  /*</section>*/
+
+
 
   @Override
   public final String toString() {

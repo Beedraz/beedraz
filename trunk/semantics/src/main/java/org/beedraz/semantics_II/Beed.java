@@ -22,7 +22,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
-import org.beedraz.semantics_II.topologicalupdate.Dependent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -31,7 +30,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * <p>Beeds are the declarative unit of semantic state, relevant for the system.
  *   Beeds warn {@linkplain Listener registered Listeners} and invite
- *   {@linkplain org.beedraz.semantics_II.topologicalupdate.Dependent
+ *   {@linkplain org.beedraz.semantics_II.Dependent
  *   registered dependents} to update themselves when they change, using an
  *   {@link Event} that describes the change. Some beeds can be
  *   {@linkplain org.beedraz.semantics_II.edit.Edit edited}
@@ -67,7 +66,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>When the opererands of a dependent beed changes, the semantic state of
  *   the dependent beed will possibly change too. If this happens, the dependent
  *   beed will warn {@linkplain Listener registered listeners} and invite
- *   {@linkplain org.beedraz.semantics_II.topologicalupdate.Dependent registered
+ *   {@linkplain org.beedraz.semantics_II.Dependent registered
  *   dependents} to update themselves, like an editable beed. However, since
  *   the final reason for the change is now a structural change, which is
  *   implemented as a regular Java mutator, there is no {@link Edit} involved.

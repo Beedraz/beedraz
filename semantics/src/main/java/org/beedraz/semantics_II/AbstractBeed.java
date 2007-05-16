@@ -43,37 +43,45 @@ public abstract class AbstractBeed<_Event_ extends Event>
     implements Beed<_Event_> {
 
   public final boolean isListener(Listener<? super _Event_> listener) {
-    return $changeListeners.contains(listener);
+    return ($changeListeners != null) && $changeListeners.contains(listener);
   }
 
   public final void addListener(Listener<? super _Event_> listener) {
     assert listener != null;
+    if ($changeListeners == null) {
+      $changeListeners = new WeakHashSet<Listener<? super _Event_>>();
+    }
     $changeListeners.add(listener);
   }
 
   public final void removeListener(Listener<? super _Event_> listener) {
-    $changeListeners.remove(listener);
+    if ($changeListeners != null) {
+      $changeListeners.remove(listener);
+      if ($changeListeners.isEmpty()) {
+        $changeListeners = null;
+      }
+    }
   }
 
   @Override
   protected final void fireEvent(Event event) {
-    @SuppressWarnings("unchecked")
-    _Event_ eEvent = (_Event_)event;
-    @SuppressWarnings("unchecked")
-    Set<Listener<? super _Event_>> listeners = $changeListeners.strongClone();
-    for (Listener<? super _Event_> listener : listeners) {
-      listener.beedChanged(eEvent);
-      // same event, because is immutable
-      // mudo unlock event
+    if ($changeListeners != null) {
+      @SuppressWarnings("unchecked")
+      _Event_ eEvent = (_Event_)event;
+      @SuppressWarnings("unchecked")
+      Set<Listener<? super _Event_>> listeners = $changeListeners.strongClone();
+      for (Listener<? super _Event_> listener : listeners) {
+        listener.beedChanged(eEvent);
+        // same event, because is immutable
+        // mudo unlock event
+      }
     }
   }
 
   /**
-   * @invar $changeListeners != null;
-   * @invar Collections.noNull($changeListeners);
+   * If the set is empty, it is discarded to save memory.
    */
-  private final WeakHashSet<Listener<? super _Event_>> $changeListeners =
-      new WeakHashSet<Listener<? super _Event_>>();
+  private WeakHashSet<Listener<? super _Event_>> $changeListeners = null;
 
   @Override
   public final String toString() {

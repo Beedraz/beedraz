@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.topologicalupdate;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,10 +44,13 @@ import org.ppeew.collection_I.WeakHashSet;
 public abstract class AbstractUpdateSource implements UpdateSource {
 
   public final boolean isDependent(Dependent dependent) {
-    return $dependents.contains(dependent);
+    return ($dependents != null) && $dependents.contains(dependent);
   }
 
   public final boolean isTransitiveDependent(Dependent dependent) {
+    if ($dependents == null) {
+      return false;
+    }
     if (isDependent(dependent)) {
       return true;
     }
@@ -60,6 +64,8 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     }
   }
 
+  private final static Set<Dependent> EMPTY_DEPENDENTS = Collections.emptySet();
+
   /**
    * Don't expose the collection of dependents publicly. It's
    * a secret shared between us and the dependent. This collection
@@ -68,7 +74,7 @@ public abstract class AbstractUpdateSource implements UpdateSource {
    * @result for (Dependent d) {isDependent(d) ?? result.contains(d)};
    */
   protected final Set<Dependent> getDependents() {
-    return $dependents.strongClone();
+    return ($dependents == null) ? EMPTY_DEPENDENTS : $dependents.strongClone();
   }
 
   /**
@@ -83,11 +89,19 @@ public abstract class AbstractUpdateSource implements UpdateSource {
     assert ! getUpdateSourcesTransitiveClosure().contains(dependent.getDependentUpdateSource());
     */
     assert dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
+    if ($dependents == null) {
+      $dependents = new WeakHashSet<Dependent>();
+    }
     $dependents.add(dependent);
   }
 
   public final void removeDependent(Dependent dependent) {
-    $dependents.remove(dependent);
+    if ($dependents != null) {
+      $dependents.remove(dependent);
+      if ($dependents.isEmpty()) {
+        $dependents = null;
+      }
+    }
   }
 
   /**
@@ -135,10 +149,9 @@ public abstract class AbstractUpdateSource implements UpdateSource {
   protected abstract void fireEvent(Event event);
 
   /**
-   * @invar $dependents != null;
-   * @invar Collections.noNull($dependents);
+   * If the set is empty, it is set to null, to save memory.
    */
-  private final WeakHashSet<Dependent> $dependents = new WeakHashSet<Dependent>();
+  private WeakHashSet<Dependent> $dependents = null;
 
   public final Set<? extends UpdateSource> getRootUpdateSources() {
     Set<? extends UpdateSource> uss = getUpdateSourcesTransitiveClosure();

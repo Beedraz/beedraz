@@ -54,6 +54,8 @@ public interface AggregateBeed extends Beed<AggregateEvent> {
    * @post isAggregateBeed(beed);
    *
    * @idea having this public is not such a good idea; make this a class?
+   * @mudo change type of argument to expression beed; but this introduces
+   *       a circular dependency!
    */
   void registerAggregateElement(Beed<?> beed);
 

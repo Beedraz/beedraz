@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2007 - $Date: 2007-05-16 16:21:58 +0200 (Wed, 16 May 2007) $ by the authors mentioned below.
+Copyright 2007 - $Date$ by the authors mentioned below.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -32,10 +32,10 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * Aggregate expression beeds are expression beeds that are build
  * by composition of other expression beeds.
  */
-@Copyright("2007 - $Date: 2007-05-16 16:21:58 +0200 (Wed, 16 May 2007) $, Beedraz authors")
+@Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision: 902 $",
-         date     = "$Date: 2007-05-16 16:21:58 +0200 (Wed, 16 May 2007) $")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public abstract class AbstractAggregateExpressionBeed
     extends AbstractAggregateBeed
     implements ExpressionBeed<AggregateEvent> {

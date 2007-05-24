@@ -1,5 +1,5 @@
 /*<license>
- Copyright 2007 - $Date: 2007-05-08 16:33:08 +0200 (Tue, 08 May 2007) $ by the authors mentioned below.
+ Copyright 2007 - $Date$ by the authors mentioned below.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
-@Copyright("2007 - $Date: 2007-05-08 16:33:08 +0200 (Tue, 08 May 2007) $, Beedraz authors")
+@Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision: 857 $",
-         date     = "$Date: 2007-05-08 16:33:08 +0200 (Tue, 08 May 2007) $")
+@SvnInfo(revision = "$Revision$",
+         date     = "$Date$")
 public class TestAbstractEditableExpressionBeed {
 
   @Before

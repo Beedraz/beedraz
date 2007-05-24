@@ -21,7 +21,8 @@
       <li>In Beedraz, mutation of beeds is reified into edit objects. The <a href="#edits">edit framework</a> is the third pilar of Beedraz.</li>
     </ul>
     <p>These parts are gathered in one package, <code>org.beedraz.semantics_II</code>, because they mutually dependent, and use package accessible methods to communicate. </p>
-    <p><a href="#subpackages">Subpackages</a> are used for parts of Beedraz that are not mutually dependent on beeds, notification and update, and edits. </p>
+    <p><a href="#subpackages">Subpackages</a> are used for parts of Beedraz that are not mutually dependent on beeds, notification and update, and edits.</p>
+    <img src="doc-files/img/org.beedraz.semantics_II.UML.png" alt="org.beedraz.semantics_II UML" style="width:100%" />
     <ul>
       <h3 id="beeds">Beeds</h3>
       <p>What is general about beeds is defined in the interface {@link org.beedraz.semantics_II.Beed}. In code, what is general to beeds, is only support for the notification and update framework. Other common points are only on the level of design, patterns and idioms, and are described in the documentation of {@link org.beedraz.semantics_II.Beed}. There are no other interfaces in the general beed framework. </p>

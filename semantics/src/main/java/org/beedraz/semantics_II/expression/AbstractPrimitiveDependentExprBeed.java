@@ -20,9 +20,9 @@ package org.beedraz.semantics_II.expression;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -43,7 +43,15 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public abstract class AbstractPrimitiveDependentExprBeed<_Result_ extends Object,
                                                          _ResultEvent_ extends Event>
-    extends AbstractDependentBeed<_ResultEvent_> {
+    extends AbstractDependentExpressionBeed<_ResultEvent_> {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractPrimitiveDependentExprBeed(AggregateBeed owner) {
+    super(owner);
+  }
+
 
   /**
    * Return the value of this beed, as an object.

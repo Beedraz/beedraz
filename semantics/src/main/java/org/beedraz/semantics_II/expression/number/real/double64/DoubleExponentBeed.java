@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.number.real.double64;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
@@ -43,9 +44,18 @@ public class DoubleExponentBeed
    * @post  getExponent() == null;
    */
   public DoubleExponentBeed() {
-    super();
+    this(null);
   }
 
+  /**
+   * @post  getDouble() == null;
+   * @post  getBase() == null;
+   * @post  getExponent() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public DoubleExponentBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
 
   /*<property name="base">*/

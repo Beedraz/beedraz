@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -29,6 +30,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
  * from one operand of type {@link RealBeed}.
+ *
+ * @mudo this makes for a cyclic dependency expression <--> expression.number.real
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -38,6 +41,13 @@ public abstract class AbstractRealArgUnaryExprBeed<_Result_ extends Object,
                                                    _ResultEvent_ extends Event,
                                                    _OperandBeed_ extends RealBeed<?>>
     extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _OperandBeed_>  {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractRealArgUnaryExprBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   @Override
   protected boolean hasEffectiveOperandValue() {

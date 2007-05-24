@@ -35,6 +35,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * @mudo description
  *
  * @invar  getOwner() instanceof _Many_;
+ * @invar  getMany() != null;
  *
  * @mudo implement event propagation to ONE
  */
@@ -47,23 +48,39 @@ public class EditableBidirToOneBeed<_One_ extends BeanBeed,
     extends EditableSimpleExpressionBeed<BidirToManyBeed<_One_, _Many_>, BidirToOneEvent<_One_, _Many_>> {
 
   /**
-   * @pre  owner != null;
-   * @post getOwner() == owner;
+   * @pre  many != null;
+   * @post getMany() == many;
+   * @post many.registerAggregateElement(this);
    */
-  public EditableBidirToOneBeed(_Many_ owner) {
-    super(owner);
+  public EditableBidirToOneBeed(_Many_ many) {
+    super(many);
+    $many = many;
   }
 
-  @Override
-  @SuppressWarnings("unchecked")
+  /**
+   * @basic
+   *
+   * @mudo Rename to getMany()
+   */
   public final _Many_ getOwner() {
-    return (_Many_)super.getOwner();
+    return $many;
   }
 
+  /**
+   * @invar $many != null;
+   */
+  private final _Many_ $many;
+
+  /**
+   * @return get() == null ? null : get().getOwner();
+   */
   public final _One_ getOne() {
     return get() == null ? null : get().getOwner();
   }
 
+  /**
+   * @mudo check this; this look fishy and wrong
+   */
   static void packageUpdateDependents(Map<AbstractBeed<?>, Event> events, Edit<?> edit) {
     AbstractBeed.updateDependents(events, edit);
   }

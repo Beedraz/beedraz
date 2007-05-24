@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression.number.real.double64.stat;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -52,18 +53,27 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class DoubleSampleStandardDeviationBeed extends AbstractDoubleCommonsMathSetComputationBeed {
 
-
   /**
    * @post  getSource() == null;
    * @post  getDouble() == null;
    */
   public DoubleSampleStandardDeviationBeed() {
-    super(new StandardDeviation(true));
+    this(null);
+  }
+
+  /**
+   * @post  getSource() == null;
+   * @post  getDouble() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public DoubleSampleStandardDeviationBeed(AggregateBeed owner) {
+    super(new StandardDeviation(true), owner);
   }
 
   @Override
   public final String getOperatorString() {
     return "sample_standard_deviation";
   }
+
 }
 

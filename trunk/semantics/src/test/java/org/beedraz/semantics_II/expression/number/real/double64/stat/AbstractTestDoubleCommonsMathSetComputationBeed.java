@@ -210,8 +210,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     // double beed has no source
     assertEquals($subject.getDouble(), null);
     // create source
-    EditableSetBeed<RealBeed<?>> source =
-      new EditableSetBeed<RealBeed<?>>();
+    EditableSetBeed<RealBeed<?>> source = new EditableSetBeed<RealBeed<?>>($owner);
     Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath = path(source);
     // add source to beed
     $subject.setSourcePath(sourcePath);
@@ -280,8 +279,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     EditableDoubleBeed beed3 = createEditableDoubleBeed(3.0);
     EditableDoubleBeed beed4 = createEditableDoubleBeed(4.0);
     // create set beed
-    EditableSetBeed<RealBeed<?>> setBeed =
-      new EditableSetBeed<RealBeed<?>>();
+    EditableSetBeed<RealBeed<?>> setBeed = new EditableSetBeed<RealBeed<?>>($owner);
     Path<? extends SetBeed<RealBeed<?>, ?>> setBeedPath = path(setBeed);
     // add set beed to beed
     $subject.setSourcePath(setBeedPath);
@@ -337,7 +335,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
     setEdit.perform();
     assertEquals($subject.getDouble(), Double.NaN);
     // change beeds of the source
-    setBeed = new EditableSetBeed<RealBeed<?>>();
+    setBeed = new EditableSetBeed<RealBeed<?>>($owner);
     setBeedPath = path(setBeed);
     setEdit = new SetEdit<RealBeed<?>>(setBeed);
     setEdit.addElementToAdd(beed1);
@@ -388,8 +386,7 @@ public abstract class AbstractTestDoubleCommonsMathSetComputationBeed<_CMSCB_ ex
 
   private EditableSetBeed<RealBeed<?>> createSource() throws EditStateException, IllegalEditException {
     // create set beed
-    EditableSetBeed<RealBeed<?>> setBeed =
-      new EditableSetBeed<RealBeed<?>>();
+    EditableSetBeed<RealBeed<?>> setBeed = new EditableSetBeed<RealBeed<?>>($owner);
     // create beeds
     EditableDoubleBeed beed1 = createEditableDoubleBeed(1.0);
     EditableDoubleBeed beed2 = createEditableDoubleBeed(2.0);

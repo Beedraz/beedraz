@@ -30,10 +30,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
+import org.beedraz.semantics_II.expression.AbstractDependentExpressionBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -59,16 +60,17 @@ import org.ppeew.smallfries_I.MathUtil;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractDoubleCommutativeOperationBeed
-    extends AbstractDependentBeed<ActualDoubleEvent>
+    extends AbstractDependentExpressionBeed<ActualDoubleEvent>
     implements DoubleBeed {
 
   /**
    * @post  getdouble() == initialValue();
    * @post  (forall DoubleBeed db; ; getNbOccurrences(db) == 0};
    * @post  isEffective();
+   * @post  owner != null ? owner.registerAggregateElement(this);
    */
-  protected AbstractDoubleCommutativeOperationBeed() {
-    super();
+  protected AbstractDoubleCommutativeOperationBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public final boolean isEffective() {

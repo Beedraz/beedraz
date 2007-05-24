@@ -32,6 +32,7 @@ import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.ValidityListener;
 import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +114,8 @@ public class TestMapEdit {
 
   @Before
   public void setUp() throws Exception {
-    $target = new EditableMapBeed<String, Integer>() {
+    $owner = new StubBeanBeed();
+    $target = new EditableMapBeed<String, Integer>($owner) {
       @Override
       public boolean isAcceptable(Map<String, Integer> elementsToAdd, Map<String, Integer> elementsToRemove) {
         // all keys in the map of added element are effective
@@ -140,9 +142,10 @@ public class TestMapEdit {
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $owner = null;
   }
 
+  private StubBeanBeed $owner;
   private EditableMapBeed<String, Integer> $target;
   private MyMapEdit $mapEdit;
   private StubValidityListener $listener1;

@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -46,12 +47,14 @@ public class EditableSetBeed<_Element_>
     extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
     implements SetBeed<_Element_, SetEvent<_Element_>> {
 
-
   /**
-   * @post  get().isEmpty();
+   * @pre owner != null;
+   * @post get().isEmpty();
+   * @post owner.registerAggregateElement(this);
    */
-  public EditableSetBeed() {
-    super();
+  public EditableSetBeed(AggregateBeed owner) {
+    super(owner);
+    assert owner != null;
   }
 
   /**

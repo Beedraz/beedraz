@@ -58,7 +58,7 @@ public class TestEditableDateBeed {
 
   @Test
   public void constructor() {
-    assertEquals($editableDateBeed.getOwner(), $owner);
+    assertTrue($owner.isAggregateElement($editableDateBeed));
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);

@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression.number.real.double64.stat;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.apache.commons.math.stat.descriptive.moment.GeometricMean;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -49,7 +50,16 @@ public class DoubleGeometricMeanBeed extends AbstractDoubleCommonsMathSetComputa
    * @post  getDouble() == null;
    */
   public DoubleGeometricMeanBeed() {
-    super(new GeometricMean());
+    this(null);
+  }
+
+  /**
+   * @post  getSource() == null;
+   * @post  getDouble() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public DoubleGeometricMeanBeed(AggregateBeed owner) {
+    super(new GeometricMean(), owner);
   }
 
   @Override

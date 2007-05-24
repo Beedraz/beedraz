@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression.bool;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Edit;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.AbstractBooleanArgBinaryExprBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -40,6 +41,13 @@ public abstract class AbstractBooleanArgBooleanBinaryExpressionBeed
                                    Boolean,
                                    BooleanEvent>
     implements BooleanBeed {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractBooleanArgBooleanBinaryExpressionBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   public final Boolean getBoolean() {
     return isEffective() ? Boolean.valueOf(getboolean()) : null;

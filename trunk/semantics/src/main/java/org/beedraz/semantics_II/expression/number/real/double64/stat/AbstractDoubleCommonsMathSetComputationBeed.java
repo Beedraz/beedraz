@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression.number.real.double64.stat;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.apache.commons.math.stat.descriptive.StorelessUnivariateStatistic;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.AbstractDoubleSetComputationBeed;
@@ -42,9 +43,10 @@ public abstract class AbstractDoubleCommonsMathSetComputationBeed extends Abstra
    * @pre   sus != null;
    * @post  getSource() == null;
    * @post  getDouble() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
    */
-  public AbstractDoubleCommonsMathSetComputationBeed(StorelessUnivariateStatistic sus) {
-    super();
+  protected AbstractDoubleCommonsMathSetComputationBeed(StorelessUnivariateStatistic sus, AggregateBeed owner) {
+    super(owner);
     assert sus != null;
     $calculator = sus;
   }

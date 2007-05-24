@@ -23,6 +23,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import java.math.BigDecimal;
 
 import org.beedraz.semantics_II.Edit;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.AbstractRealArgBinaryExpressionBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
@@ -52,9 +53,10 @@ public abstract class AbstractRealArgDoubleBinaryExpressionBeed
    * @post  getLeftOprnd() == null;
    * @post  getRightOprnd() == null;
    * @post  get() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
    */
-  protected AbstractRealArgDoubleBinaryExpressionBeed() {
-    super();
+  protected AbstractRealArgDoubleBinaryExpressionBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public final double getdouble() {

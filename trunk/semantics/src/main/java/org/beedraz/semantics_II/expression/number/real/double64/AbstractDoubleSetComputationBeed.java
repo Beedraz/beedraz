@@ -27,10 +27,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
+import org.beedraz.semantics_II.expression.AbstractDependentExpressionBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
@@ -65,8 +66,15 @@ import org.ppeew.smallfries_I.MathUtil;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractDoubleSetComputationBeed
-    extends AbstractDependentBeed<ActualDoubleEvent>
+    extends AbstractDependentExpressionBeed<ActualDoubleEvent>
     implements DoubleBeed {
+
+  /**
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractDoubleSetComputationBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   public final boolean isEffective() {
     return $effective;

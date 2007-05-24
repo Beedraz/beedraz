@@ -27,7 +27,9 @@ import java.util.Set;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.junit.After;
 import org.junit.Before;
@@ -49,8 +51,8 @@ public class TestEditableSetBeed {
 
   public class StubEditableSetBeed extends EditableSetBeed<Integer> {
 
-    public StubEditableSetBeed() {
-      super();
+    public StubEditableSetBeed(AggregateBeed owner) {
+      super(owner);
     }
 
     public void publicUpdateDependents(SetEvent<Integer> event) {
@@ -61,7 +63,8 @@ public class TestEditableSetBeed {
 
   @Before
   public void setUp() throws Exception {
-    $editableSetBeed = new StubEditableSetBeed();
+    $owner = new StubBeanBeed();
+    $editableSetBeed = new StubEditableSetBeed($owner);
     $addedElements = new HashSet<Integer>();
     $removedElements = new HashSet<Integer>();
     $setEdit = new SetEdit<Integer>($editableSetBeed);
@@ -76,6 +79,7 @@ public class TestEditableSetBeed {
     // NOP
   }
 
+  private AggregateBeed $owner;
   private StubEditableSetBeed $editableSetBeed;
   private Set<Integer> $addedElements;
   private Set<Integer> $removedElements;

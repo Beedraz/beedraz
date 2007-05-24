@@ -21,6 +21,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.text.NumberFormat;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.AbstractRealArgBinaryExprBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
@@ -33,6 +34,8 @@ import org.ppeew.smallfries_I.MathUtil;
 /**
  * Abstract implementation of binary expression beeds, that represent a number value derived
  * from 2 operands of type {@link RealBeed}.
+ *
+ * @mudo move to real package to break circular dependency
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -57,9 +60,10 @@ public abstract class AbstractRealArgBinaryExpressionBeed<
    * @post  getLeftOprnd() == null;
    * @post  getRightOprnd() == null;
    * @post  get() == null;
+   * @post owner != null ? owner.registerAggregateElement(this);
    */
-  public AbstractRealArgBinaryExpressionBeed() {
-    super();
+  protected AbstractRealArgBinaryExpressionBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public final Double getDouble() {

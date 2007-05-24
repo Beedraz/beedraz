@@ -30,7 +30,7 @@ public class EditableLongBeed
 
   /**
    * @pre owner != null;
-   * @post getOwner() == owner;
+   * @post owner.registerAggregateElement(this);
    */
   public EditableLongBeed(AggregateBeed owner) {
     super(owner);

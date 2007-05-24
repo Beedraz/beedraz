@@ -35,6 +35,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar   !getAddedElements().keySet().contains(null);
  * @invar   getRemovedElements() != null;
  * @invar   !getRemovedElements().keySet().contains(null);
+ *
+ * @mudo move to collection package; map is not a set
  */
 @CvsInfo(revision = "$Revision: 1.1 $",
          date     = "$Date: 2007/04/23 16:00:23 $",

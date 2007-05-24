@@ -30,10 +30,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
+import org.beedraz.semantics_II.expression.AbstractDependentExpressionBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -63,7 +64,7 @@ import org.ppeew.smallfries_I.MathUtil;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class LongSumBeed
-    extends AbstractDependentBeed<ActualLongEvent>
+    extends AbstractDependentExpressionBeed<ActualLongEvent>
     implements LongBeed {
 
   /**
@@ -72,7 +73,17 @@ public class LongSumBeed
    * @post  isEffective();
    */
   public LongSumBeed() {
-    super();
+    this(null);
+  }
+
+  /**
+   * @post  getLong() == 0;
+   * @post  (forall LongBeed lb; ; getNbOccurrences(lb) == 0};
+   * @post  isEffective();
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public LongSumBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public final boolean isEffective() {

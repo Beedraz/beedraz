@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.bool;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -47,6 +48,18 @@ public class BooleanInstanceofBeed<_BeanBeed_ extends BeanBeed>
    * @post  get() == false;
    */
   public BooleanInstanceofBeed(Class<?> beedClass) {
+    this(beedClass, null);
+  }
+
+  /**
+   * @pre   beedClass != null;
+   * @pre   BeanBeed.class.isAssignableFrom(beedClass);
+   * @post  getBeed() == null;
+   * @post  get() == false;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public BooleanInstanceofBeed(Class<?> beedClass, AggregateBeed owner) {
+    super(owner);
     assert BeanBeed.class.isAssignableFrom(beedClass);
     $beedClass = beedClass;
   }

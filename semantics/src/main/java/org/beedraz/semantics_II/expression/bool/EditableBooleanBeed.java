@@ -36,7 +36,7 @@ public class EditableBooleanBeed
 
   /**
    * @pre  owner != null;
-   * @post getOwner() == owner;
+   * @post owner.registerAggregateElement(this);
    */
   public EditableBooleanBeed(AggregateBeed owner) {
     super(owner);

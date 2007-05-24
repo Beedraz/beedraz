@@ -34,6 +34,7 @@ import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.ValidityListener;
 import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,7 +118,8 @@ public class TestSetEdit {
 
   @Before
   public void setUp() throws Exception {
-    $target = new EditableSetBeed<Integer>() {
+    $owner = new StubBeanBeed();
+    $target = new EditableSetBeed<Integer>($owner) {
       @Override
       public boolean isAcceptable(Set<Integer> elementsToAdd, Set<Integer> elementsToRemove) {
         // all integers in the set of added elements are positive
@@ -138,9 +140,10 @@ public class TestSetEdit {
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $owner = null;
   }
 
+  private StubBeanBeed $owner;
   private EditableSetBeed<Integer> $target;
   private MySetEdit $setEdit;
   private StubValidityListener $listener1;

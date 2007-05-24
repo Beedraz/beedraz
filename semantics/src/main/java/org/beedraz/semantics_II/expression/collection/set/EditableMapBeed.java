@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -35,6 +36,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @author Nele Smeets
  * @author Peopleware n.v.
+ *
+ * @mudo move to collection package; map is not a set
  */
 @CvsInfo(revision = "$Revision: 1.1 $",
          date     = "$Date: 2007/04/23 16:00:23 $",
@@ -46,10 +49,13 @@ public class EditableMapBeed<_Key_, _Value_>
 
 
   /**
+   * @pre owner != null;
    * @post  keySet().isEmpty();
+   * @post owner.registerAggregateElement(this);
    */
-  public EditableMapBeed() {
-    super();
+  public EditableMapBeed(AggregateBeed owner) {
+    assert owner != null;
+    owner.registerAggregateElement(this);
   }
 
   /**

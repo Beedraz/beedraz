@@ -21,6 +21,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.text.NumberFormat;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.AbstractRealArgUnaryExprBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
@@ -33,6 +34,8 @@ import org.ppeew.smallfries_I.MathUtil;
 /**
  * Abstract implementation of unary expression beeds, that represent a value
  * of type {@link Number} derived from one operand of type {@link RealBeed}.
+ *
+ * @mudo move to real package, to break circular dependency
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -47,9 +50,10 @@ public abstract class AbstractRealArgUnaryExpressionBeed<_Number_ extends Number
   /**
    * @post  getOperand() == null;
    * @post  get() == null;
+   * @post owner != null ? owner.registerAggregateElement(this);
    */
-  public AbstractRealArgUnaryExpressionBeed() {
-    super();
+  protected AbstractRealArgUnaryExpressionBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public final Double getDouble() {

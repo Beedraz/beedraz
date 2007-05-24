@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.bool;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
@@ -37,6 +38,13 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractBooleanBinaryRelationalExpressionBeed extends AbstractRealArgBooleanBinaryExpressionBeed {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractBooleanBinaryRelationalExpressionBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
 
   /*<property name="leftOperand">*/

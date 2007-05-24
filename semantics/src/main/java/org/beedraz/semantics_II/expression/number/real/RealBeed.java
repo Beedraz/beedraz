@@ -22,7 +22,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.expression.ExpressionBeed;
 import org.beedraz.semantics_II.expression.SimpleExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -54,7 +54,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public interface RealBeed<_Event_ extends RealEvent>
-    extends Beed<_Event_> {
+    extends ExpressionBeed<_Event_> {
 
   /**
    * @basic

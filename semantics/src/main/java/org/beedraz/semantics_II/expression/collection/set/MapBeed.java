@@ -19,7 +19,7 @@ package org.beedraz.semantics_II.expression.collection.set;
 
 import java.util.Set;
 
-import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.expression.ExpressionBeed;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -33,6 +33,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar   keySet() != null;
  * @invar   !keySet().contains(null);
  * @invar   (forAll _Key_ key; !keySet().contains(key); get(key) == null);
+ *
+ * @mudo move to collection package; this is not a set
  */
 @CvsInfo(revision = "$Revision: 1.1 $",
          date     = "$Date: 2007/04/23 16:00:23 $",
@@ -41,7 +43,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
 public interface MapBeed<_Key_,
                          _Value_,
                          _Event_ extends MapEvent<_Key_, _Value_>>
-  extends Beed<_Event_> {
+  extends ExpressionBeed<_Event_> {
 
   /**
    * @basic

@@ -26,6 +26,7 @@ import java.util.Map;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,23 +40,25 @@ public class TestMapEvent {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $owner = new StubBeanBeed();
   }
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $owner = null;
   }
+
+  private StubBeanBeed $owner;
 
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    MapBeed<String, Integer, ?> source = new EditableMapBeed<String, Integer>();
+    MapBeed<String, Integer, ?> source = new EditableMapBeed<String, Integer>($owner);
     // added and removed elements (null)
     Map<String, Integer> addedElements = null;
     Map<String, Integer> removedElements = null;
     // edit
-    EditableMapBeed<String, Integer> target = new EditableMapBeed<String, Integer>();
+    EditableMapBeed<String, Integer> target = new EditableMapBeed<String, Integer>($owner);
     MapEdit<String, Integer> edit = new MapEdit<String, Integer>(target);
     edit.perform();
     // test constructor

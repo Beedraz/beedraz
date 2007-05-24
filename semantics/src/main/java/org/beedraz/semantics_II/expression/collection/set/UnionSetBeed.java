@@ -31,6 +31,7 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -68,9 +69,17 @@ public class UnionSetBeed<_Element_>
    * @post  get().isEmpty();
    */
   public UnionSetBeed() {
-    super();
+    this(null);
   }
 
+  /**
+   * @post  getSources().isEmpty();
+   * @post  get().isEmpty();
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public UnionSetBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 

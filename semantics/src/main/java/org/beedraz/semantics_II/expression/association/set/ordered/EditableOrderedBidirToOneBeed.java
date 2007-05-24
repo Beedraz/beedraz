@@ -36,6 +36,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * @author  Peopleware n.v.
  *
  * @invar   getOwner() instanceof _Many_;
+ * @invar   getMany() != null;
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -47,18 +48,29 @@ public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
                                        OrderedBidirToOneEvent<_One_, _Many_>> {
 
   /**
-   * @pre  owner != null;
-   * @post getOwner() == owner;
+   * @pre  many != null;
+   * @post getMany() == many;
+   * @post many.registerAggregateElement(this);
    */
-  public EditableOrderedBidirToOneBeed(_Many_ owner) {
-    super(owner);
+  public EditableOrderedBidirToOneBeed(_Many_ many) {
+    super(many);
+    assert many != null;
+    $many = many;
   }
 
-  @Override
-  @SuppressWarnings("unchecked")
+  /**
+   * @basic
+   *
+   * @mudo rename to getMany
+   */
   public final _Many_ getOwner() {
-    return (_Many_)super.getOwner();
+    return $many;
   }
+
+  /**
+   * @invar $many != null;
+   */
+  private final _Many_ $many;
 
   public final _One_ getOne() {
     return get() == null ? null : get().getOwner();

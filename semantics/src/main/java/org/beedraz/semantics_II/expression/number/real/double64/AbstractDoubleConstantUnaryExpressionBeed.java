@@ -21,6 +21,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.text.NumberFormat;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.AbstractRealArgUnaryExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -42,9 +43,10 @@ public abstract class AbstractDoubleConstantUnaryExpressionBeed
    * @post  getDouble() == null;
    * @post  getOperand() == null;
    * @post  getConstant() == constant;
+   * @post  owner != null ? owner.registerAggregateElement(this);
    */
-  public AbstractDoubleConstantUnaryExpressionBeed(Double constant) {
-    super();
+  protected AbstractDoubleConstantUnaryExpressionBeed(Double constant, AggregateBeed owner) {
+    super(owner);
     $constant = constant;
   }
 

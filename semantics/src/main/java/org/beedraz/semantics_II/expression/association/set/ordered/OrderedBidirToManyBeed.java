@@ -45,6 +45,7 @@ import org.ppeew.collection_I.OrderedSet;
  * @author  Peopleware n.v.
  *
  * @invar  getOwner() instanceof _One_;
+ * @invar  getOne() != null;
  * @invar  (forAll _Many_ m1; get().contains(m1);
  *            (forAll _Many_ m2; get().contains(m2);
  *               m1 != m2));
@@ -58,17 +59,29 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
     extends AbstractSetBeed<_Many_, OrderedSetEvent<_Many_>>
     implements OrderedSetBeed<_Many_, OrderedSetEvent<_Many_>> {
 
-  public OrderedBidirToManyBeed(_One_ bean) {
-    super();
-    $bean = bean;
-    $bean.registerAggregateElement(this);
+  /**
+   * @pre one != null;
+   * @post getOne() == one;
+   * @post one.registerAggregateElement(this);
+   */
+  public OrderedBidirToManyBeed(_One_ one) {
+    super(one);
+    assert one != null;
+    $one = one;
   }
 
-  private _One_ $bean;
+  /**
+   * @invar $one != null;
+   */
+  private final _One_ $one;
 
-  @SuppressWarnings("unchecked")
+  /**
+   * @basic
+   * 
+   * @mudo rename to getOne();
+   */
   public final _One_ getOwner() {
-    return $bean;
+    return $one;
   }
 
   /**

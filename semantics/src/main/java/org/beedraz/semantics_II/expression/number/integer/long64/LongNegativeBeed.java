@@ -24,6 +24,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -43,6 +44,17 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class LongNegativeBeed
     extends AbstractRealArgLongUnaryExpressionBeed {
+
+  public LongNegativeBeed() {
+    super(null);
+  }
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  public LongNegativeBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   /**
    * @pre operandValue != null;

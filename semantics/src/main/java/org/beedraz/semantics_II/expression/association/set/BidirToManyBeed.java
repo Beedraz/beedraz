@@ -37,6 +37,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * @invar getOwner() instanceof _One_;
+ * @invar getOne() != null;
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -47,18 +48,30 @@ public class BidirToManyBeed<_One_ extends BeanBeed,
     extends AbstractSetBeed<_Many_, SetEvent<_Many_>>
     implements SetBeed<_Many_, SetEvent<_Many_>> {
 
-  public BidirToManyBeed(_One_ bean) {
-    super();
-    $bean = bean;
-    $bean.registerAggregateElement(this);
+  /**
+   * @pre one != null;
+   * @post getOne() == one;
+   * @post one.registerAggregateElement(this);
+   */
+  public BidirToManyBeed(_One_ one) {
+    super(one);
+    assert one != null;
+    $one = one;
   }
 
-  private _One_ $bean;
-
-  @SuppressWarnings("unchecked")
+  /**
+   * @basic
+   *
+   * @mudo rename to getOne()
+   */
   public final _One_ getOwner() {
-    return $bean;
+    return $one;
   }
+
+  /**
+   * @invar $one != null;
+   */
+  private final _One_ $one;
 
   /**
    * @default  true;

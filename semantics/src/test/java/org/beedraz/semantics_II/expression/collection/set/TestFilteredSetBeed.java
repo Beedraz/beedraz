@@ -34,6 +34,7 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.beedraz.semantics_II.expression.association.set.BidirToManyBeed;
 import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
 import org.beedraz.semantics_II.expression.association.set.EditableBidirToOneBeed;
@@ -109,6 +110,7 @@ public class TestFilteredSetBeed {
 
   @Before
   public void setUp() throws Exception {
+    $owner = new StubBeanBeed();
     $criterion = new PathFactory<WellBeanBeed, BooleanBeed>() {
         // filter the wells whose cq value is effective and even
         public Path<BooleanBeed> createPath(WellBeanBeed startBeed) {
@@ -177,6 +179,7 @@ public class TestFilteredSetBeed {
     // NOP
   }
 
+  private StubBeanBeed $owner;
   private RunBeanBeed $run;
   private WellBeanBeed $wellNull;
   private WellBeanBeed $well0;
@@ -519,7 +522,7 @@ public class TestFilteredSetBeed {
   private EditableSetBeed<WellBeanBeed> createSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>();
+      new EditableSetBeed<WellBeanBeed>($owner);
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well1);
@@ -539,7 +542,7 @@ public class TestFilteredSetBeed {
   private EditableSetBeed<WellBeanBeed> createOtherSource() throws EditStateException, IllegalEditException {
     // create set beed
     EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>();
+      new EditableSetBeed<WellBeanBeed>($owner);
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well0);

@@ -58,7 +58,7 @@ public class TestEditableLongBeed {
 
   @Test
   public void constructor() {
-    assertEquals($editableIntegerBeed.getOwner(), $owner);
+    assertTrue($owner.isAggregateElement($editableIntegerBeed));
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);

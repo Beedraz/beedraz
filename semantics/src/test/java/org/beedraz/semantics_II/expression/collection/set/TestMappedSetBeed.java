@@ -35,6 +35,7 @@ import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.RunBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.beedraz.semantics_II.bean.WellBeanBeed;
 import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
 import org.beedraz.semantics_II.expression.association.set.ToOneBeanPath;
@@ -82,6 +83,7 @@ public class TestMappedSetBeed {
 
   @Before
   public void setUp() throws Exception {
+    $owner = new StubBeanBeed();
     $mapping = new PathFactory<WellBeanBeed, LongBeed>() {
         public Path<? extends LongBeed> createPath(WellBeanBeed well) {
           return path(well.cq);
@@ -132,6 +134,7 @@ public class TestMappedSetBeed {
     // NOP
   }
 
+  private StubBeanBeed $owner;
   private RunBeanBeed $run;
   private RunBeanBeed $run1;
   private RunBeanBeed $run2;
@@ -447,8 +450,7 @@ public class TestMappedSetBeed {
 
   private EditableSetBeed<WellBeanBeed> createSource() throws EditStateException, IllegalEditException {
     // create set beed
-    EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed = new EditableSetBeed<WellBeanBeed>($owner);
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($well1);

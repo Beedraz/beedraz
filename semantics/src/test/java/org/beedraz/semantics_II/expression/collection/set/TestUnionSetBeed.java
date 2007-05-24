@@ -35,6 +35,7 @@ import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.RunBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.beedraz.semantics_II.bean.WellBeanBeed;
 import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
@@ -75,6 +76,7 @@ public class TestUnionSetBeed {
 
   @Before
   public void setUp() throws Exception {
+    $owner = new StubBeanBeed();
     $unionSetBeed = new MyUnionBeed();
     $runA = new RunBeanBeed();
     $runB = new RunBeanBeed();
@@ -163,6 +165,7 @@ public class TestUnionSetBeed {
     // NOP
   }
 
+  private StubBeanBeed $owner;
   private RunBeanBeed $runA;
   private WellBeanBeed $wellA1;
   private WellBeanBeed $wellA2;
@@ -482,13 +485,13 @@ public class TestUnionSetBeed {
   @Test
   public void get2() throws EditStateException, IllegalEditException {
     // create two set beeds whose sets overlap
-    EditableSetBeed<WellBeanBeed> setBeed1 = new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed1 = new EditableSetBeed<WellBeanBeed>($owner);
     SetEdit<WellBeanBeed> setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
     setEdit1.addElementToAdd($wellC1);
     setEdit1.addElementToAdd($wellC2);
     setEdit1.addElementToAdd($wellC3);
     setEdit1.perform();
-    EditableSetBeed<WellBeanBeed> setBeed2 = new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed2 = new EditableSetBeed<WellBeanBeed>($owner);
     SetEdit<WellBeanBeed> setEdit2 = new SetEdit<WellBeanBeed>(setBeed2);
     setEdit2.addElementToAdd($wellC3);
     setEdit2.addElementToAdd($wellC4);
@@ -520,13 +523,13 @@ public class TestUnionSetBeed {
   @Test
   public void testSetBeedListener() throws EditStateException, IllegalEditException {
     // create two set beeds whose sets overlap
-    EditableSetBeed<WellBeanBeed> setBeed1 = new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed1 = new EditableSetBeed<WellBeanBeed>($owner);
     SetEdit<WellBeanBeed> setEdit1 = new SetEdit<WellBeanBeed>(setBeed1);
     setEdit1.addElementToAdd($wellC1);
     setEdit1.addElementToAdd($wellC2);
     setEdit1.addElementToAdd($wellC3);
     setEdit1.perform();
-    EditableSetBeed<WellBeanBeed> setBeed2 = new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed2 = new EditableSetBeed<WellBeanBeed>($owner);
     SetEdit<WellBeanBeed> setEdit2 = new SetEdit<WellBeanBeed>(setBeed2);
     setEdit2.addElementToAdd($wellC3);
     setEdit2.addElementToAdd($wellC4);
@@ -780,8 +783,7 @@ public class TestUnionSetBeed {
 
   private EditableSetBeed<WellBeanBeed> createSourceA() throws EditStateException, IllegalEditException {
     // create set beed
-    EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed = new EditableSetBeed<WellBeanBeed>($owner);
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($wellA1);
@@ -797,8 +799,7 @@ public class TestUnionSetBeed {
 
   private EditableSetBeed<WellBeanBeed> createSourceB() throws EditStateException, IllegalEditException {
     // create set beed
-    EditableSetBeed<WellBeanBeed> setBeed =
-      new EditableSetBeed<WellBeanBeed>();
+    EditableSetBeed<WellBeanBeed> setBeed = new EditableSetBeed<WellBeanBeed>($owner);
     // add beeds to set
     SetEdit<WellBeanBeed> setEdit = new SetEdit<WellBeanBeed>(setBeed);
     setEdit.addElementToAdd($wellB1);

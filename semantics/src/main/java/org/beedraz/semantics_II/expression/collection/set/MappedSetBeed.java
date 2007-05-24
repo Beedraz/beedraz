@@ -32,6 +32,7 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanEvent;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
@@ -90,6 +91,19 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
    * @post  get() == null;
    */
   public MappedSetBeed(PathFactory<_From_, _To_> mapping) {
+    this(mapping, null);
+  }
+
+  /**
+   * @pre   mapping != null;
+   * @post  getMapping() == mapping;
+   * @post  getSource() == null;
+   * @post  getSourcePath() == null;
+   * @post  get() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public MappedSetBeed(PathFactory<_From_, _To_> mapping, AggregateBeed owner) {
+    super(owner);
     $mapping = mapping;
   }
 

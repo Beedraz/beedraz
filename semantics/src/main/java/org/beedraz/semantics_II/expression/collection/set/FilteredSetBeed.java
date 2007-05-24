@@ -33,6 +33,7 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanEvent;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
@@ -84,6 +85,19 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
    * @post  get().isEmpty();
    */
   public FilteredSetBeed(PathFactory<_Element_, BooleanBeed> criterion) {
+    this(criterion, null);
+  }
+
+  /**
+   * @pre   criterion != null;
+   * @post  getCriterion() == criterion;
+   * @post  getSource() == null;
+   * @post  getSourcePath() == null;
+   * @post  get().isEmpty();
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public FilteredSetBeed(PathFactory<_Element_, BooleanBeed> criterion, AggregateBeed owner) {
+    super(owner);
     $criterion = criterion;
   }
 

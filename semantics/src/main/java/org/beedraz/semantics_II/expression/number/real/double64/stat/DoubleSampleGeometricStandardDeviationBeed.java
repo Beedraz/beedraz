@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.number.real.double64.stat;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -53,7 +54,16 @@ public class DoubleSampleGeometricStandardDeviationBeed extends AbstractDoubleCo
    * @post  getDouble() == null;
    */
   public DoubleSampleGeometricStandardDeviationBeed() {
-    super(new GeometricStandardDeviation(true));
+    this(null);
+  }
+
+  /**
+   * @post  getSource() == null;
+   * @post  getDouble() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public DoubleSampleGeometricStandardDeviationBeed(AggregateBeed owner) {
+    super(new GeometricStandardDeviation(true), owner);
   }
 
   @Override

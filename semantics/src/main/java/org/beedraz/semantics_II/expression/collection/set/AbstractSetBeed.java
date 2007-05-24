@@ -30,6 +30,7 @@ import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.collection.CollectionBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
@@ -42,6 +43,9 @@ import org.ppeew.smallfries_I.MathUtil;
 
 /**
  * Support for implementations of {@link SetBeed}.
+ * We inherit directly from {@link AbstractBeed}, because we have important
+ * general functionality that is common to both editable and dependent
+ * set beeds.
  *
  * @author Nele Smeets
  * @author  Peopleware n.v.
@@ -53,6 +57,15 @@ import org.ppeew.smallfries_I.MathUtil;
 public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_Element_>>
     extends AbstractBeed<_SetEvent_>
     implements SetBeed<_Element_, _SetEvent_> {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractSetBeed(AggregateBeed owner) {
+    if (owner != null) {
+      owner.registerAggregateElement(this);
+    }
+  }
 
   /**
    * A beed representing the size of this set beed.

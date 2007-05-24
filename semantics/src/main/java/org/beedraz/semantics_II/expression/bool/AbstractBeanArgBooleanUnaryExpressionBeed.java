@@ -22,11 +22,12 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Map;
 
-import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
+import org.beedraz.semantics_II.expression.AbstractDependentExpressionBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
@@ -45,8 +46,15 @@ import org.ppeew.smallfries_I.MathUtil;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ extends BeanBeed>
-    extends AbstractDependentBeed<BooleanEvent>
+    extends AbstractDependentExpressionBeed<BooleanEvent>
     implements BooleanBeed {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractBeanArgBooleanUnaryExpressionBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   @Override
   protected BooleanEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {

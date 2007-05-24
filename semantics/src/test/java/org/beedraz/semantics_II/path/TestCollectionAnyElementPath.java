@@ -48,6 +48,7 @@ public class TestCollectionAnyElementPath {
 
   @Before
   public void setUp() throws Exception {
+    $owner = new StubBeanBeed();
     $element1 = new StubBeanBeed();
     $element2 = new StubBeanBeed();
     $collectionBeed = createCollection($element1, $element2);
@@ -58,6 +59,7 @@ public class TestCollectionAnyElementPath {
 
   @After
   public void tearDown() throws Exception {
+    $owner = null;
     $element1 = null;
     $element2 = null;
     $collectionBeed = null;
@@ -66,6 +68,7 @@ public class TestCollectionAnyElementPath {
     $listener1 = null;
   }
 
+  private StubBeanBeed $owner;
   private StubBeanBeed $element1;
   private StubBeanBeed $element2;
   private CollectionAnyElementPath<StubBeanBeed> $collectionAnyElementPath;
@@ -140,7 +143,7 @@ public class TestCollectionAnyElementPath {
   }
 
   private EditableSetBeed<StubBeanBeed> createCollection(StubBeanBeed... elements) throws EditStateException, IllegalEditException {
-    EditableSetBeed<StubBeanBeed> setBeed = new EditableSetBeed<StubBeanBeed>();
+    EditableSetBeed<StubBeanBeed> setBeed = new EditableSetBeed<StubBeanBeed>($owner);
     for (StubBeanBeed element : elements) {
       addElement(setBeed, element);
     }

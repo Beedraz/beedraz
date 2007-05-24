@@ -27,6 +27,7 @@ import java.util.Set;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,23 +48,25 @@ public class TestSetEvent {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $owner = new StubBeanBeed();
   }
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $owner = null;
   }
+
+  private StubBeanBeed $owner;
 
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    SetBeed<Integer, ?> source = new EditableSetBeed<Integer>();
+    SetBeed<Integer, ?> source = new EditableSetBeed<Integer>($owner);
     // old and new value
     Set<Integer> addedElements = null;
     Set<Integer> removedElements = null;
     // edit
-    EditableSetBeed<Integer> target = new EditableSetBeed<Integer>();
+    EditableSetBeed<Integer> target = new EditableSetBeed<Integer>($owner);
     SetEdit<Integer> edit = new SetEdit<Integer>(target);
     edit.perform();
     // test constructor

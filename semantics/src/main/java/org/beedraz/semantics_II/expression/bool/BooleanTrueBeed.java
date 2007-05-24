@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -46,6 +47,22 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 public class BooleanTrueBeed
     extends AbstractBeed<BooleanEvent>
     implements BooleanBeed {
+
+  public BooleanTrueBeed() {
+    this(null);
+  }
+
+  /**
+   * This constructor is added for reasons of consistency,
+   * but, since this beed is constact, i.e., its value never
+   * changes, it will never send events or start a topological
+   * update, so there is no reason to register the beed
+   * with the owner. This constructor does nothing with
+   * the {@code owner}.
+   */
+  public BooleanTrueBeed(AggregateBeed owner) {
+    // NOP
+  }
 
   public Boolean getBoolean() {
     return Boolean.TRUE;

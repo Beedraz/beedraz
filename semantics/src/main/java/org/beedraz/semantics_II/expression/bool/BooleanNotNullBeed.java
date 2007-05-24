@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.bool;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -36,6 +37,17 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class BooleanNotNullBeed extends AbstractRealArgBooleanUnaryExpressionBeed {
+
+  public BooleanNotNullBeed() {
+    this(null);
+  }
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  public BooleanNotNullBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   /**
    * @pre getOperand() != null;

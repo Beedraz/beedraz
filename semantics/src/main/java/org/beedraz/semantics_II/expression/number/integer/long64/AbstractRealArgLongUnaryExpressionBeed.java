@@ -21,8 +21,8 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.AbstractRealArgUnaryExpressionBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
+import org.beedraz.semantics_II.expression.number.real.AbstractRealArgUnaryExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;

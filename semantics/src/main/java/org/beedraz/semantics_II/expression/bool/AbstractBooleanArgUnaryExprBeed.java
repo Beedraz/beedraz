@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.expression;
+package org.beedraz.semantics_II.expression.bool;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.real.RealBeed;
+import org.beedraz.semantics_II.expression.AbstractUnaryExprBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -29,23 +29,20 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
- * from one operand of type {@link RealBeed}.
- *
- * @mudo this makes for a cyclic dependency expression <--> expression.number.real
+ * from one operand of type {@link BooleanBeed}.
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public abstract class AbstractRealArgUnaryExprBeed<_Result_ extends Object,
-                                                   _ResultEvent_ extends Event,
-                                                   _OperandBeed_ extends RealBeed<?>>
-    extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, _OperandBeed_>  {
+public abstract class AbstractBooleanArgUnaryExprBeed<_Result_ extends Object,
+                                                      _ResultEvent_ extends Event>
+    extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, BooleanBeed>  {
 
   /**
    * @post owner != null ? owner.registerAggregateElement(this);
    */
-  protected AbstractRealArgUnaryExprBeed(AggregateBeed owner) {
+  protected AbstractBooleanArgUnaryExprBeed(AggregateBeed owner) {
     super(owner);
   }
 

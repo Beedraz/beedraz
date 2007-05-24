@@ -46,7 +46,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public interface SimpleExpressionBeed<_Type_,
                                     _Event_ extends Event>
-    extends Beed<_Event_> {
+    extends ExpressionBeed<_Event_> {
 
   /**
    * @basic

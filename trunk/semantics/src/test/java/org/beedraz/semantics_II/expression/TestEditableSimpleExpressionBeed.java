@@ -63,7 +63,7 @@ public class TestEditableSimpleExpressionBeed {
 
   @Test
   public void constructor() {
-    assertEquals($editableSimpleExpressionBeed.getOwner(), $owner);
+    assertTrue($owner.isAggregateElement($editableSimpleExpressionBeed));
     // the beed should be registered with the owner:
     // add listeners to the beed
     $owner.addListener($listener1);

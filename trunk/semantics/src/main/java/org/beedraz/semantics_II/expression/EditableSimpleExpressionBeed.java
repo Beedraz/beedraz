@@ -23,7 +23,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.util.Collections;
 import java.util.Set;
 
-import org.beedraz.semantics_II.AbstractEditableBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
@@ -44,12 +43,12 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public abstract class EditableSimpleExpressionBeed<_Type_,
                                                  _Event_ extends Event>
-    extends AbstractEditableBeed<_Event_>
+    extends AbstractEditableExpressionBeed<_Event_>
     implements SimpleExpressionBeed<_Type_, _Event_> {
 
   /**
    * @pre  owner != null;
-   * @post getOwner() == owner;
+   * @post owner.registerAggregateElement(this);
    */
   public EditableSimpleExpressionBeed(AggregateBeed owner) {
     super(owner);

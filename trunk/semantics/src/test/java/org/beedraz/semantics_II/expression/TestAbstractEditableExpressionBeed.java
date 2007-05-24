@@ -1,5 +1,5 @@
 /*<license>
- Copyright 2007 - $Date$ by the authors mentioned below.
+ Copyright 2007 - $Date: 2007-05-08 16:33:08 +0200 (Tue, 08 May 2007) $ by the authors mentioned below.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedraz.semantics_II;
+package org.beedraz.semantics_II.expression;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.StubEvent;
+import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
@@ -34,11 +36,11 @@ import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
-@Copyright("2007 - $Date$, Beedraz authors")
+@Copyright("2007 - $Date: 2007-05-08 16:33:08 +0200 (Tue, 08 May 2007) $, Beedraz authors")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "$Date$")
-public class TestAbstractEditableBeed {
+@SvnInfo(revision = "$Revision: 857 $",
+         date     = "$Date: 2007-05-08 16:33:08 +0200 (Tue, 08 May 2007) $")
+public class TestAbstractEditableExpressionBeed {
 
   @Before
   public void setUp() throws Exception {
@@ -51,14 +53,14 @@ public class TestAbstractEditableBeed {
   }
 
   private AggregateBeed $owner = new StubBeanBeed();
-  private StubEditableBeed $editableBeed = new StubEditableBeed($owner);
+  private StubEditableExpressionBeed $editableBeed = new StubEditableExpressionBeed($owner);
   private StubEvent $event1 = new StubEvent($editableBeed);
   private StubListener<AggregateEvent> $listener1 = new StubListener<AggregateEvent>();
   private StubListener<AggregateEvent> $listener2 = new StubListener<AggregateEvent>();
 
   @Test
   public void constructor() {
-    assertEquals($editableBeed.getOwner(), $owner);
+    assertTrue($owner.isAggregateElement($editableBeed));
     // the abstract property beed should be registered with the owner:
     // add listeners to the property beed
     $owner.addListener($listener1);

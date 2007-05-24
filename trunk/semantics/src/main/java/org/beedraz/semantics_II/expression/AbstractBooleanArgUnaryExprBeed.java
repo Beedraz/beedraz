@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -29,6 +30,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * Abstract implementation of unary expression beeds, that represent a value derived
  * from one operand of type {@link BooleanBeed}.
+ *
+ * @mudo this makes for a cyclic dependency expression <--> expression.bool
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -37,6 +40,13 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 public abstract class AbstractBooleanArgUnaryExprBeed<_Result_ extends Object,
                                                       _ResultEvent_ extends Event>
     extends AbstractUnaryExprBeed<_Result_, _ResultEvent_, BooleanBeed>  {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractBooleanArgUnaryExprBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   @Override
   protected boolean hasEffectiveOperandValue() {

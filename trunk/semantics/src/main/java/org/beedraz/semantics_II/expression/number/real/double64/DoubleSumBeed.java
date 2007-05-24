@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.number.real.double64;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
@@ -45,7 +46,17 @@ public class DoubleSumBeed extends AbstractRealArgDoubleBinaryExpressionBeed {
    * @post  getRightOperand() == null;
    */
   public DoubleSumBeed() {
-    super();
+    this(null);
+  }
+
+  /**
+   * @post  getDouble() == null;
+   * @post  getLeftOperand() == null;
+   * @post  getRightOperand() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public DoubleSumBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   /*</construction>*/

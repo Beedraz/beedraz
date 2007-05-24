@@ -25,6 +25,7 @@ import java.util.Map;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanNotNullBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanNullBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
@@ -61,6 +62,13 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
                                             _ResultEvent_ extends Event,
                                             _OperandBeed_ extends Beed<?>>
     extends AbstractPrimitiveDependentExprBeed<_Result_, _ResultEvent_>  {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractUnaryExprBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   @Override
   protected final _ResultEvent_ filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {

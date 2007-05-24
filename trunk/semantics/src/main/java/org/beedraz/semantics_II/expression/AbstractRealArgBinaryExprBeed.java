@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -30,6 +31,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
  * from two operands of type {@link RealBeed}.
+ *
+ * @mudo this makes for a cyclic dependency expression <--> expression.number.real
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -49,6 +52,13 @@ public abstract class AbstractRealArgBinaryExprBeed<
                                   _LeftOperandEvent_,
                                   _RightOperandBeed_,
                                   _RightOperandEvent_>  {
+
+  /**
+   * @post owner != null ? owner.registerAggregateElement(this);
+   */
+  protected AbstractRealArgBinaryExprBeed(AggregateBeed owner) {
+    super(owner);
+  }
 
   @Override
   protected boolean hasEffectiveLeftOperand() {

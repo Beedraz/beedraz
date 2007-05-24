@@ -50,7 +50,7 @@ public class EditableDoubleBeed
 
   /**
    * @pre   owner != null;
-   * @post  getOwner() == owner;
+   * @post  owner.registerAggregateElement(this);
    */
   public EditableDoubleBeed(AggregateBeed owner) {
     super(owner);

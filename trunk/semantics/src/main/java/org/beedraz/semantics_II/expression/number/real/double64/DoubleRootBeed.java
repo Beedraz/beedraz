@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression.number.real.double64;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -41,7 +42,17 @@ public class DoubleRootBeed
    * @post  getConstant() == constant;
    */
   public DoubleRootBeed(double constant) {
-    super(constant);
+    this(constant, null);
+  }
+
+  /**
+   * @post  getDouble() == null;
+   * @post  getOperand() == null;
+   * @post  getConstant() == constant;
+   * @post  owner != null ? owner.registerAggregateElement(this);
+   */
+  public DoubleRootBeed(double constant, AggregateBeed owner) {
+    super(constant, owner);
   }
 
   /**

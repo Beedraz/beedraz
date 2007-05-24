@@ -23,6 +23,7 @@ import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import java.math.BigDecimal;
 
 import org.beedraz.semantics_II.Edit;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.AbstractRealArgUnaryExpressionBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.ppeew.annotations_I.Copyright;
@@ -44,9 +45,10 @@ public abstract class AbstractRealArgDoubleUnaryExpressionBeed
   /**
    * @post  getDouble() == null;
    * @post  getOperand() == null;
+   * @post  owner != null ? owner.registerAggregateElement(this);
    */
-  protected AbstractRealArgDoubleUnaryExpressionBeed() {
-    super();
+  protected AbstractRealArgDoubleUnaryExpressionBeed(AggregateBeed owner) {
+    super(owner);
   }
 
   public final double getdouble() {

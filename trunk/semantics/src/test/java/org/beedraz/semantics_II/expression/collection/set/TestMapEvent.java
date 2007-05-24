@@ -1,5 +1,5 @@
 /*<license>
- Copyright 2007 - $Date: 2007/04/23 16:00:26 $ by the authors mentioned below.
+ Copyright 2007 - $Date$ by the authors mentioned below.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.

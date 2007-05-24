@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2007 - $Date: 2007/04/23 16:00:23 $ by the authors mentioned below.
+Copyright 2007 - $Date$ by the authors mentioned below.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -57,8 +57,8 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @mudo move to collection package; map is not a set
  */
-@CvsInfo(revision = "$Revision: 1.1 $",
-         date     = "$Date: 2007/04/23 16:00:23 $",
+@CvsInfo(revision = "$Revision$",
+         date     = "$Date$",
          state    = "$State: Exp $",
          tag      = "$Name:  $")
 public class MapEdit<_Key_, _Value_>

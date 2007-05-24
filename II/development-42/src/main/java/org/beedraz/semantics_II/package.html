@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>Beedra II</title>
+  </head>
+  <body>
+    <table class="svninfo">
+      <tr>
+        <th>Revision</th>
+        <td>$Revision$</td>
+      </tr>
+      <tr>
+        <th>Date</th>
+        <td>$Date$</td>
+      </tr>
+    </table>
+    <p><img src="doc-files/img/beedra94x89.jpg" alt="Beedraz" width="94" height="89" align="right"/>      </p>
+    <p>The package <code>org.beedraz.semantics_II</code> contains the core framework of Beedraz. The core framework consists of 3 interconnected parts:</p>
+    <ul>
+      <li><a href="#beeds">Beeds</a> are the core components of the Beedraz framework</li>
+      <li>Beeds communicate changes to listeners and dependents via events; this is supported by the <a href="#events">notification and update framework</a></li>
+      <li>In Beedraz, mutation of beeds is reified into edit objects. The <a href="#edits">edit framework</a> is the third pilar of Beedraz.</li>
+    </ul>
+    <p>These parts are gathered in one package, <code>org.beedraz.semantics_II</code>, because they mutually dependent, and use package accessible methods to communicate. </p>
+    <p><a href="#subpackages">Subpackages</a> are used for parts of Beedraz that are not mutually dependent on beeds, notification and update, and edits.</p>
+    <img src="doc-files/img/org.beedraz.semantics_II.UML.png" alt="org.beedraz.semantics_II UML" style="width:100%" />
+    <ul>
+      <h3 id="beeds">Beeds</h3>
+      <p>What is general about beeds is defined in the interface {@link org.beedraz.semantics_II.Beed}. In code, what is general to beeds, is only support for the notification and update framework. Other common points are only on the level of design, patterns and idioms, and are described in the documentation of {@link org.beedraz.semantics_II.Beed}. There are no other interfaces in the general beed framework. </p>
+      <p>In {@link org.beedraz.semantics_II.AbstractBeed}, most of the methods defined in {@link org.beedraz.semantics_II.Beed} are implemented. {@link org.beedraz.semantics_II.AbstractDependentBeed} adds support for beeds that depend on other beeds (operands) for their semantic state. </p>
+      <p>BeedMapping.java<br>
+        BeedFilter.java<br>
+        AbstractUpdateSourceDependentDelegate.java<br>
+      AbstractEditableBeed.java</p>
+      <h3> Notification and update framework </h3>
+      <p>Beeds implement the classic
+        <a href="http://en.wikipedia.org/wiki/Observer_pattern">Model - View -Controller (a.k.a. Oserver - Observable,
+        a.k.a. <acronym title="Model - View - Controller">MVC</acronym>) design pattern</a> with {@link org.beedraz.semantics_II.Listener}. To update dependent beeds, a topological algorithm is needed. This is implemented using {@link org.beedraz.semantics_II.Dependent}. A <a href="doc-files/topologicalUpdate/why.html">separate document</a> describes the need for the topological algorithm, and the implementation. </p>
+      <p>The exact nature of a change is  communicated to  {@link org.beedraz.semantics_II.Listener Listeners} and {@link org.beedraz.semantics_II.Dependent Dependents} using an {@link org.beedraz.semantics_II.Event}. {@link org.beedraz.semantics_II.Event} is an interface, because multiple inheritance is needed for events. {@link org.beedraz.semantics_II.AbstractEvent} holds the implementations of the interface methods that are common for all events. {@link org.beedraz.semantics_II.OldNewEvent} is an often used kind of event, that can be used where the change is easily described as the state before the change (old) and the state after the change (new), if the state is a simple object reference. {@link org.beedraz.semantics_II.ActualOldNewEvent} is an implementation of {@link org.beedraz.semantics_II.OldNewEvent} that can be used directly. </p>
+      <p>{@link org.beedraz.semantics_II.TopologicalUpdate} contains the topological update algorithm in static methods. The Beedraz code supports a limited form of profiling of the topological update algorithm. Timing information is gathered in {@link org.beedraz.semantics_II.TopologicalUpdateTiming}. </p>
+      <h3 id="edits">Edit framework</h3>
+      <p>{@link org.beedraz.semantics_II.Edit Edits} are the reified form of mutators in Beedraz. Core semantic state of editable beeds cannot be changed directly via mutators in Beedraz, but has to be changed through {@link org.beedraz.semantics_II.Edit Edits}. {@link org.beedraz.semantics_II.Edit Edits} implement the classic <a href="http://en.wikipedia.org/wiki/Action_pattern">Action design pattern</a>. TODO CHECK LINK They are also the core support for undoability. </p>
+      <p>{@link org.beedraz.semantics_II.Edit Edit} is a class, and not an interface, because package accessible methods are required. The core edit protocols (perform, undo, redo) are implemented as template methods in {@link org.beedraz.semantics_II.Edit}, with limited genericity useful for users. Genericity that is interesting for implementation reasons is implemented in {@link org.beedraz.semantics_II.AbstractEdit}. {@link org.beedraz.semantics_II.AbstractSimpleEdit} adds support for edits for editable beeds that express their semantic state as a simple, single reference.</p>
+      <p>ValidityListener.java<br>
+UpdateSourcesGraph.java<br>
+IllegalEditException.java<br>
+EditStateException.java<br>
+EditException.java<br>
+Edit.java<br>
+CompoundEdit.java<br>
+</p>
+      <h3 id="subpackages">Subpackages</h3>
+      <h4>Aggregate</h4>
+      <h4>Bean</h4>
+      <h4>Path</h4>
+      <h4>Expression</h4>
+      <h4>&nbsp;</h4>
+    </ul>
+    <p><br clear="all" />
+    </p>
+    <div class="license">
+      <p>Copyright 2007 - $Date$
+        by the Beedraz authors.</p>
+      <p>Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+        <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+      <p>Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an <strong>&quot;AS IS&quot;
+        BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</strong>, either
+        express or implied. See the License for the specific language governing
+        permissions and limitations under the License.</p>
+    </div>
+  </body>
+</html>

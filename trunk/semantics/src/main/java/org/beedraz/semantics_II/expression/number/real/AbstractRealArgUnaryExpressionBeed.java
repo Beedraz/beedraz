@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.expression.number;
+package org.beedraz.semantics_II.expression.number.real;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -22,9 +22,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.text.NumberFormat;
 
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.AbstractRealArgUnaryExprBeed;
-import org.beedraz.semantics_II.expression.number.real.RealBeed;
-import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -34,8 +31,6 @@ import org.ppeew.smallfries_I.MathUtil;
 /**
  * Abstract implementation of unary expression beeds, that represent a value
  * of type {@link Number} derived from one operand of type {@link RealBeed}.
- *
- * @mudo move to real package, to break circular dependency
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)

@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.AbstractRealArgUnaryExpressionBeed;
+import org.beedraz.semantics_II.expression.number.real.AbstractRealArgUnaryExpressionBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;

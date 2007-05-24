@@ -14,15 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.expression;
+package org.beedraz.semantics_II.expression.bool;
 
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.real.RealBeed;
-import org.beedraz.semantics_II.expression.number.real.RealEvent;
+import org.beedraz.semantics_II.expression.AbstractBinaryExprBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -30,33 +29,26 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * Abstract implementation of binary expression beeds, that represent a value derived
- * from two operands of type {@link RealBeed}.
- *
- * @mudo this makes for a cyclic dependency expression <--> expression.number.real
+ * from two operands of type {@link BooleanBeed}.
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public abstract class AbstractRealArgBinaryExprBeed<
+public abstract class AbstractBooleanArgBinaryExprBeed<
                                             _Result_ extends Object,
-                                            _ResultEvent_ extends Event,
-                                            _LeftOperandBeed_ extends RealBeed<? extends _LeftOperandEvent_>,
-                                            _LeftOperandEvent_ extends RealEvent,
-                                            _RightOperandBeed_ extends RealBeed<? extends _RightOperandEvent_>,
-                                            _RightOperandEvent_ extends RealEvent>
-
+                                            _ResultEvent_ extends Event>
     extends AbstractBinaryExprBeed<_Result_,
-                                  _ResultEvent_,
-                                  _LeftOperandBeed_,
-                                  _LeftOperandEvent_,
-                                  _RightOperandBeed_,
-                                  _RightOperandEvent_>  {
+                                   _ResultEvent_,
+                                   BooleanBeed,
+                                   BooleanEvent,
+                                   BooleanBeed,
+                                   BooleanEvent>  {
 
   /**
    * @post owner != null ? owner.registerAggregateElement(this);
    */
-  protected AbstractRealArgBinaryExprBeed(AggregateBeed owner) {
+  protected AbstractBooleanArgBinaryExprBeed(AggregateBeed owner) {
     super(owner);
   }
 

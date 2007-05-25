@@ -174,6 +174,31 @@ limitations under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>announcement-generate</goal>
+            </goals>
+            <id>announcement-generate</id>
+          </execution>
+          <execution>
+            <goals>
+              <goal>announcement-mail</goal>
+            </goals>
+            <id>announcement-mail</id>
+          </execution>
+        </executions>
+        <configuration>
+          <smtpHost>localhost</smtpHost>
+          <smtpPort implementation="java.lang.Integer">33125</smtpPort>
+          <toAddresses>
+            <toAddress implementation="java.lang.String">beedraz@googlegroups.com</toAddress>
+          </toAddresses>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -181,10 +206,9 @@ limitations under the License.
   <reporting>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>surefire-report-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
       <plugin>
@@ -206,8 +230,8 @@ limitations under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jxr-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -217,10 +241,6 @@ limitations under the License.
         <!-- jdepend-2-dot exists! -->
         <!-- there is currently no way to provide jdepend with configuration (properties file); for the time being, it
              is stored in ${basedir}/toolProperties, but not used -->
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changes-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -360,36 +380,47 @@ limitations under the License.
           </tags>
         </configuration>
       </plugin>
+      <!--  fails with an exception at 25/5/2007
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <!-- there currently seems to be no way to point pmd to a configuration file -->
+        <artifactId>maven-changelog-plugin</artifactId>
+        <configuration>
+          <type>range</type>
+          <range>3650</range>
+        </configuration>
       </plugin>
+       -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changelog-maven-plugin</artifactId>
-        <!-- can also send announcement mails -->
-        <!-- can also create report from jira -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
         <reportSets>
           <reportSet>
-            <id>allReports</id>
-            <configuration>
-              <type>date</type>
-              <dates>
-                <date implementation="java.lang.String">1990-01-01</date>
-                <!-- since before Java exists: show all -->
-              </dates>
-              <dateFormat>yyyy-MM-dd</dateFormat>
-            </configuration>
             <reports>
-              <report>changelog</report>
-              <report>dev-activity</report>
-              <report>file-activity</report>
+              <report>changes-report</report>
             </reports>
           </reportSet>
         </reportSets>
       </plugin>
-<!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <linkXref>true</linkXref>
+          <minimumTokens>100</minimumTokens>
+          <targetJdk>1.5</targetJdk>
+          <!--
+          <excludes>
+            <exclude>**/*MyClass.java</exclude>
+          </excludes>
+           -->
+        </configuration>
+        <!-- MUDO configure http://maven.apache.org/plugins/maven-pmd-plugin/examples/usingRuleSets.html -->
+      </plugin>
+      <plugin>
+        <groupId>net.sf</groupId>
+        <artifactId>stat-scm</artifactId>
+      </plugin>
+                        <!--
     <report>maven-linkcheck-plugin</report>
     <report>maven-statcvs-plugin</report>
     <+-
@@ -425,10 +456,6 @@ limitations under the License.
       <plugin>
         <groupId></groupId>
         <artifactId>maven-jdepend-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-changes-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId></groupId>
@@ -533,6 +560,10 @@ limitations under the License.
       <url>http://snapshots.maven.codehaus.org/maven2</url>
     </pluginRepository>
 -->
+    <pluginRepository>
+      <id>stat-scm-sourceforge</id>
+      <url>http://stat-scm.sourceforge.net/maven2</url>
+    </pluginRepository>
   </pluginRepositories>
 
   <!-- Environment Settings -->

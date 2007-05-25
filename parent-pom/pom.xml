@@ -32,7 +32,7 @@ limitations under the License.
 
   <!-- General information -->
   <groupId>org.beedraz</groupId>
-  <artifactId>${beedraz.bareArtifactName}-${beedraz.markVersion}</artifactId>
+  <artifactId>parent-pom</artifactId>
   <packaging>pom</packaging>
 
   <name>Beedraz Parent POM</name>

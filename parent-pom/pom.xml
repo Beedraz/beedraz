@@ -34,10 +34,14 @@ limitations under the License.
   <groupId>org.beedraz</groupId>
   <artifactId>parent-pom</artifactId>
   <packaging>pom</packaging>
+  <version>1.0.0-SNAPSHOT</version>
 
   <name>Beedraz Parent POM</name>
   <description>Beedraz is a library for easy development of semantic structures.
     Easy peripheral code is possible with secondary libraries.</description>
+
+
+
   <inceptionYear>1998</inceptionYear>
   <organization>
     <name>beedraz.org</name>
@@ -52,13 +56,15 @@ limitations under the License.
   </licenses>
   <url>http://www.beedraz.org/</url>
 
-  <version>1.0.0-SNAPSHOT</version>
+
 
   <scm>
     <connection>scm:svn:http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</connection>
     <developerConnection>scm:svn:https://${user.name}@beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</developerConnection>
     <url>http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}/</url>
   </scm>
+
+
 
   <distributionManagement>
     <repository>
@@ -71,6 +77,8 @@ limitations under the License.
       <url>scpexe://cvs.peopleware.be/ppw/projects/Beedraz/public_html/projects/${beedraz.bareArtifactName}/${beedraz.markVersion}/${pom.version}</url>
     </site>
   </distributionManagement>
+
+
 
   <dependencyManagement>
     <dependencies>
@@ -96,20 +104,50 @@ limitations under the License.
     </dependencies>
   </dependencyManagement>
 
+
+
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/beedraz/issues/list</url>
+  </issueManagement>
+
+
+
+  <mailingLists>
+    <mailingList>
+      <name>Beedraz Announcements</name>
+      <post>beedraz@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Beedraz Users</name>
+      <post>beedraz-users@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz-users/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz-users/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz-users/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Beedraz Developers</name>
+      <post>beedraz-dev@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz-dev/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz-dev/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz-dev/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Beedraz Subversion Commits</name>
+      <post>beedraz-svn@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz-svn/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz-svn/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz-svn/topics</archive>
+    </mailingList>
+  </mailingLists>
+
+
+
   <!-- Build Settings -->
   <build>
-  <!--
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>2.0-beta-5</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  -->
-
 
     <!--  also compile resources! needed for test -->
     <resources>
@@ -138,6 +176,7 @@ limitations under the License.
         </includes>
       </resource>
     </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -154,15 +193,15 @@ limitations under the License.
                should be set to true for a release with a profile -->
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.3-SNAPSHOT</version>
-        <!-- snapshot version of 2.3 needed to be able to use JUnit 4 -->
         <configuration>
           <argLine>-ea</argLine>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -174,6 +213,7 @@ limitations under the License.
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
@@ -199,18 +239,24 @@ limitations under the License.
           </toAddresses>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 
+
+
   <!-- Reporting settings -->
   <reporting>
+
     <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
         <configuration>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
@@ -229,19 +275,20 @@ limitations under the License.
           </tags>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jdepend-maven-plugin</artifactId>
-        <!-- currently requires build from source from svn https://svn.codehaus.org/mojo/trunk/mojo/jdepend-maven-plugin;
-              checkout and do <kbd>mvn install</kbd> -->
         <!-- jdepend-2-dot exists! -->
         <!-- there is currently no way to provide jdepend with configuration (properties file); for the time being, it
              is stored in ${basedir}/toolProperties, but not used -->
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -380,8 +427,9 @@ limitations under the License.
           </tags>
         </configuration>
       </plugin>
-      <!--  fails with an exception at 25/5/2007
+
       <plugin>
+        <!--  if this fails, it means you have no svn installed -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changelog-plugin</artifactId>
         <configuration>
@@ -389,7 +437,7 @@ limitations under the License.
           <range>3650</range>
         </configuration>
       </plugin>
-       -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
@@ -401,6 +449,7 @@ limitations under the License.
           </reportSet>
         </reportSets>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -416,13 +465,14 @@ limitations under the License.
         </configuration>
         <!-- MUDO configure http://maven.apache.org/plugins/maven-pmd-plugin/examples/usingRuleSets.html -->
       </plugin>
+
       <plugin>
         <groupId>net.sf</groupId>
         <artifactId>stat-scm</artifactId>
       </plugin>
+
                         <!--
     <report>maven-linkcheck-plugin</report>
-    <report>maven-statcvs-plugin</report>
     <+-
   This plugin is usefull when we have different version to compare, currently
   we only have 1 version in CVS. This plugin needs to be tested when we have
@@ -442,24 +492,8 @@ limitations under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>maven</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId></groupId>
         <artifactId>maven-faq-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-jdepend-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId></groupId>
@@ -467,46 +501,18 @@ limitations under the License.
       </plugin>
       <plugin>
         <groupId></groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-tasklist-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId></groupId>
         <artifactId>taglib</artifactId>
       </plugin>
--->
-<!--
       <plugin>
         <groupId></groupId>
         <artifactId>maven-xhtml-plugin</artifactId>
       </plugin>
 -->
-<!--
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-statcvs-plugin</artifactId>
-      </plugin>
--->
-<!--
-  This plugin is usefull when we have different version to compare, currently
-  we only have 1 version in CVS. This plugin needs to be tested when we have
-  at least 2 version in CVS.
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-jdiff-plugin</artifactId>
-      </plugin>
--->
-<!--
-      <plugin>
-        <groupId></groupId>
-        <artifactId>maven-doccheck-plugin</artifactId>
-      </plugin>
--->
     </plugins>
+
   </reporting>
+
+
 
   <!-- More Project Information -->
   <developers>
@@ -534,14 +540,9 @@ limitations under the License.
       <name>Beedraz Maven 2 repository</name>
       <url>http://www.beedraz.org/mvn2repo</url>
     </repository>
-<!--
-    <repository>
-      <id>ppw-libraries</id>
-      <name>PeopleWare Libraries Repository, via scp</name>
-      <url>https://cvs.peopleware.be/projects/JavaLibraries/maven2-repository</url>
-    </repository>
- -->
   </repositories>
+
+
 
   <pluginRepositories>
 <!--
@@ -566,42 +567,7 @@ limitations under the License.
     </pluginRepository>
   </pluginRepositories>
 
-  <!-- Environment Settings -->
-  <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/beedraz/issues/list</url>
-  </issueManagement>
 
-  <mailingLists>
-    <mailingList>
-      <name>Beedraz Announcements</name>
-      <post>beedraz@googlegroups.com</post>
-      <subscribe>http://groups.google.com/group/beedraz/subscribe</subscribe>
-      <unsubscribe>http://groups.google.com/group/beedraz/subscribe</unsubscribe>
-      <archive>http://groups.google.com/group/beedraz/topics</archive>
-    </mailingList>
-    <mailingList>
-      <name>Beedraz Users</name>
-      <post>beedraz-users@googlegroups.com</post>
-      <subscribe>http://groups.google.com/group/beedraz-users/subscribe</subscribe>
-      <unsubscribe>http://groups.google.com/group/beedraz-users/subscribe</unsubscribe>
-      <archive>http://groups.google.com/group/beedraz-users/topics</archive>
-    </mailingList>
-    <mailingList>
-      <name>Beedraz Developers</name>
-      <post>beedraz-dev@googlegroups.com</post>
-      <subscribe>http://groups.google.com/group/beedraz-dev/subscribe</subscribe>
-      <unsubscribe>http://groups.google.com/group/beedraz-dev/subscribe</unsubscribe>
-      <archive>http://groups.google.com/group/beedraz-dev/topics</archive>
-    </mailingList>
-    <mailingList>
-      <name>Beedraz Subversion Commits</name>
-      <post>beedraz-svn@googlegroups.com</post>
-      <subscribe>http://groups.google.com/group/beedraz-svn/subscribe</subscribe>
-      <unsubscribe>http://groups.google.com/group/beedraz-svn/subscribe</unsubscribe>
-      <archive>http://groups.google.com/group/beedraz-svn/topics</archive>
-    </mailingList>
-  </mailingLists>
 
 <!--
   <ciManagement>...</ciManagement>

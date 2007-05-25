@@ -17,14 +17,13 @@ limitations under the License.
 package org.beedra.example.z_beedra;
 
 
-import static org.beedra.util_I.MultiLineToStringUtil.indent;
+import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
-import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.property.PropertyBeedSelector;
-import org.beedra_II.property.association.BidirToManyBeed;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerSumBeed;
-import org.beedra_II.property.string.EditableStringBeed;
+import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.expression.association.set.BidirToManyBeed;
+import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
+import org.beedraz.semantics_II.expression.number.integer.long64.LongSumBeed;
+import org.beedraz.semantics_II.expression.string.EditableStringBeed;
 
 
 /**
@@ -38,11 +37,11 @@ public class Project extends AbstractBeanBeed {
 
   public final EditableStringBeed name = new EditableStringBeed(this);
 
-  public final EditableIntegerBeed numberOfDaysAnalysis = new EditableIntegerBeed(this);
+  public final EditableLongBeed numberOfDaysAnalysis = new EditableLongBeed(this);
 
-  public final EditableIntegerBeed numberOfDaysDevelopment = new EditableIntegerBeed(this);
+  public final EditableLongBeed numberOfDaysDevelopment = new EditableLongBeed(this);
 
-  public final IntegerSumBeed numberOfDays = new IntegerSumBeed(this);
+  public final LongSumBeed numberOfDays = new LongSumBeed(this);
 
   {
     numberOfDays.addTerm(numberOfDaysAnalysis);
@@ -51,15 +50,6 @@ public class Project extends AbstractBeanBeed {
 
 
   public final BidirToManyBeed<Project, Task> tasks = new BidirToManyBeed<Project, Task>(this);
-
-  public final static PropertyBeedSelector<Project, BidirToManyBeed<Project, Task>> tasksSelector =
-    new PropertyBeedSelector<Project, BidirToManyBeed<Project, Task>>() {
-
-            public BidirToManyBeed<Project, Task> getPropertyBeed(Project owner) {
-              assert owner != null;
-              return owner.tasks;
-            }
-        };
 
   @Override
   protected String otherToStringInformation() {

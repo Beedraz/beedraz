@@ -24,29 +24,29 @@ import static org.junit.Assert.assertTrue;
 
 import org.beedra.example.z_beedra.Project;
 import org.beedra.example.z_beedra.Task;
-import org.beedra.util_I.Comparison;
-import org.beedra_II.aggregate.PropagatedEvent;
-import org.beedra_II.bean.AbstractBeanBeed;
-import org.beedra_II.bean.BeanBeed;
-import org.beedra_II.edit.Edit;
-import org.beedra_II.edit.EditStateException;
-import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.event.Event;
-import org.beedra_II.event.Listener;
-import org.beedra_II.property.association.BidirToManyBeed;
-import org.beedra_II.property.association.BidirToOneEdit;
-import org.beedra_II.property.association.BidirToOneEvent;
-import org.beedra_II.property.integer.EditableIntegerBeed;
-import org.beedra_II.property.integer.IntegerBeed;
-import org.beedra_II.property.integer.IntegerEvent;
-import org.beedra_II.property.integer.IntegerSumBeed;
-import org.beedra_II.property.set.SetEvent;
-import org.beedra_II.property.simple.OldNewEvent;
-import org.beedra_II.property.string.StringEdit;
-import org.beedra_II.property.string.StringEvent;
+import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.Edit;
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.Event;
+import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.Listener;
+import org.beedraz.semantics_II.aggregate.AggregateEvent;
+import org.beedraz.semantics_II.bean.AbstractBeanBeed;
+import org.beedraz.semantics_II.bean.BeanBeed;
+import org.beedraz.semantics_II.expression.association.set.BidirToManyBeed;
+import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
+import org.beedraz.semantics_II.expression.association.set.BidirToOneEvent;
+import org.beedraz.semantics_II.expression.collection.set.SetEvent;
+import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
+import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
+import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
+import org.beedraz.semantics_II.expression.number.integer.long64.LongSumBeed;
+import org.beedraz.semantics_II.expression.string.StringEdit;
+import org.beedraz.semantics_II.expression.string.StringEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ppeew.smallfries_I.ComparisonUtil;
 
 
 public class TestBeedra {
@@ -83,13 +83,13 @@ public class TestBeedra {
 
   }
 
-  class BeanListener implements Listener<PropagatedEvent> {
+  class BeanListener implements Listener<AggregateEvent> {
 
-    public void beedChanged(PropagatedEvent event) {
+    public void beedChanged(AggregateEvent event) {
       $event = event;
     }
 
-    public PropagatedEvent $event;
+    public AggregateEvent $event;
 
   }
 
@@ -184,7 +184,7 @@ public class TestBeedra {
                                    OldNewListener nameListener,
                                    BeanListener projectListener,
                                    EditListener editListener) {
-    if (Comparison.equalsWithNull(expectedOldName, expectedNewName)) {
+    if (ComparisonUtil.equalsWithNull(expectedOldName, expectedNewName)) {
       assertNull(nameListener.$event);
       assertNull(projectListener.$event);
     }
@@ -195,7 +195,8 @@ public class TestBeedra {
       assertEquals(expectedNewName, nameListener.$event.getNewValue());
       assertNotNull(projectListener.$event);
       assertEquals(project, projectListener.$event.getSource());
-      assertEquals(nameListener.$event, projectListener.$event.getCause());
+      assertEquals(1, projectListener.$event.getComponentevents().size());
+      assertTrue(projectListener.$event.getComponentevents().contains(nameListener.$event));
       assertEquals(expectedEdit, editListener.$edit);
     }
     assertEquals(expectedNewName, project.name.get());
@@ -210,11 +211,11 @@ public class TestBeedra {
         System.out.println(event);
       }
     };
-    Listener<OldNewEvent<Integer>> onel = new Listener<OldNewEvent<Integer>>() {
-      public void beedChanged(OldNewEvent<Integer> event) {
-        System.out.println(event);
-      }
-    };
+//    Listener<OldNewEvent<Integer>> onel = new Listener<OldNewEvent<Integer>>() {
+//      public void beedChanged(OldNewEvent<Integer> event) {
+//        System.out.println(event);
+//      }
+//    };
     Listener<IntegerEvent> iel = new Listener<IntegerEvent>() {
       public void beedChanged(IntegerEvent event) {
         System.out.println(event);
@@ -241,15 +242,15 @@ public class TestBeedra {
       // NOP
     };
 
-    IntegerBeed ib = new IntegerSumBeed(dummy);
+    IntegerBeed<?> ib = new LongSumBeed(dummy);
     ib.addListener(el);
-    ib.addListener(onel);
+//    ib.addListener(onel);
     ib.addListener(iel);
 //    ib.addListener(fiel);
 //    ib.addListener(ieel);
 //    ib.addListener(eel);
 
-    EditableBeed<?> eb = new EditableIntegerBeed(dummy);
+    Beed<?> eb = new EditableLongBeed(dummy);
     eb.addListener(el);
 //    eb.addListener(onel);
 //    eb.addListener(iel);
@@ -257,17 +258,17 @@ public class TestBeedra {
 //    eb.addListener(ieel);
     eb.addListener(eel);
 
-    IntegerSumBeed isb = new IntegerSumBeed(dummy);
+    LongSumBeed isb = new LongSumBeed(dummy);
     isb.addListener(el);
-    isb.addListener(onel);
+//    isb.addListener(onel);
     isb.addListener(iel);
 //    isb.addListener(fiel);
 //    isb.addListener(ieel);
 //    isb.addListener(eel);
 
-    EditableIntegerBeed eib = new EditableIntegerBeed(dummy);
+    EditableLongBeed eib = new EditableLongBeed(dummy);
     eib.addListener(el);
-    eib.addListener(onel);
+//    eib.addListener(onel);
     eib.addListener(iel);
 //    eib.addListener(fiel);
     eib.addListener(ieel);
@@ -527,13 +528,14 @@ public class TestBeedra {
   private void validateTaskListener(Task task, BeanListener taskListener, BidirToOneListener taskProjectListener) {
     assertNotNull(taskListener.$event);
     assertEquals(task, taskListener.$event.getSource());
-    assertEquals(taskProjectListener.$event, taskListener.$event.getCause());
+    assertEquals(1, taskListener.$event.getComponentevents().size());
+    assertTrue(taskListener.$event.getComponentevents().contains(taskProjectListener.$event));
   }
 
   private void validateProjectListener(Project project, BeanListener projectListener, BidirToManyListener projectTasksListener) {
     assertNotNull(projectListener.$event);
     assertEquals(project, projectListener.$event.getSource());
-    assertEquals(projectTasksListener.$event, projectListener.$event.getCause());
+    assertTrue(projectListener.$event.getComponentevents().contains(projectTasksListener.$event));
   }
 
   private void validateNoEvents(BeanListener taskListener, BidirToOneListener taskProjectListener, BeanListener project1Listener, BidirToManyListener project1TasksListener, BeanListener project2Listener, BidirToManyListener project2TasksListener) {

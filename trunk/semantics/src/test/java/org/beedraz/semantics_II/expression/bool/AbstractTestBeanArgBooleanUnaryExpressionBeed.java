@@ -23,18 +23,16 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.aggregate.StubAggregateBeed;
 import org.beedraz.semantics_II.bean.RunBeanBeed;
 import org.beedraz.semantics_II.bean.WellBeanBeed;
-import org.beedraz.semantics_II.EditStateException;
-import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
 import org.beedraz.semantics_II.expression.association.set.EditableBidirToOneBeed;
 import org.beedraz.semantics_II.expression.association.set.ToOneBeanPath;
-import org.beedraz.semantics_II.expression.bool.AbstractBeanArgBooleanUnaryExpressionBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanEvent;
 import org.beedraz.semantics_II.path.ConstantPath;
 import org.beedraz.semantics_II.path.NullPath;
 import org.beedraz.semantics_II.path.Path;
@@ -52,8 +50,7 @@ import org.ppeew.smallfries_I.MathUtil;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public abstract class AbstractTestBeanArgBooleanUnaryExpressionBeed<
-                             _BBU_ extends AbstractBeanArgBooleanUnaryExpressionBeed<?>> {
+public abstract class AbstractTestBeanArgBooleanUnaryExpressionBeed<_BBU_ extends AbstractBeanArgBooleanUnaryExpressionBeed<RunBeanBeed>> {
 
   protected abstract RunBeanBeed initBeed();
   protected abstract _BBU_ initSubject();

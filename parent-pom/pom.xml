@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 <!--
-Copyright 2007 - $Date$ by the authors mentioned below.
+Copyright 2007 - $Date$ by the Beedrazz authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,23 +22,23 @@ limitations under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <beedra.bareArtifactName>parent</beedra.bareArtifactName>
-    <beedra.markVersion>pom</beedra.markVersion>
-    <beedra.repositoryModule>BeedraParentPOM</beedra.repositoryModule>
+    <beedraz.bareArtifactName>parent</beedraz.bareArtifactName>
+    <beedraz.markVersion>pom</beedraz.markVersion>
+    <beedraz.repositoryModule>parent-pom</beedraz.repositoryModule>
   </properties>
 
   <!-- General information -->
-  <groupId>org.beedra</groupId>
-  <artifactId>${beedra.bareArtifactName}-${beedra.markVersion}</artifactId>
+  <groupId>org.beedraz</groupId>
+  <artifactId>${beedraz.bareArtifactName}-${beedraz.markVersion}</artifactId>
   <packaging>pom</packaging>
 
-  <name>Beedra Parent POM</name>
-  <description>Beedra is a library for easy development of semantic structures.
+  <name>Beedraz Parent POM</name>
+  <description>Beedraz is a library for easy development of semantic structures.
     Easy peripheral code is possible with secondary libraries.</description>
-  <inceptionYear>2007</inceptionYear>
+  <inceptionYear>1998</inceptionYear>
   <organization>
-    <name>beedra.org</name>
-    <url>http://www.beedra.org/</url>
+    <name>beedraz.org</name>
+    <url>http://www.beedraz.org/</url>
   </organization>
   <licenses>
     <license>
@@ -47,27 +47,25 @@ limitations under the License.
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <url>http://cvs.peopleware.be/projects/JavaLibraries/${beedra.bareArtifactName}/</url>
+  <url>http://www.beedraz.org/</url>
 
   <version>1.0.0-SNAPSHOT</version>
 
   <scm>
-    <!-- no anonymous access possible
-    <connection />
-    -->
-    <developerConnection>scm:cvs:ext:${user.name}@cvs.peopleware.be:/ppw/projects/JavaLibraries/repository:${beedra.repositoryModule}</developerConnection>
-    <url>https://cvs.peopleware.be/viewcvs/JavaLibraries/repository/${beedra.repositoryModule}/</url>
+    <connection>scm:svn:http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</connection>
+    <developerConnection>scm:svn:https://${user.name}@beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</developerConnection>
+    <url>http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}/</url>
   </scm>
 
   <distributionManagement>
     <repository>
-      <id>ppw-libraries</id>
-      <url>scpexe://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/maven2-repository</url>
+      <id>BeedrazRepo</id>
+      <url>scpexe://cvs.peopleware.be/ppw/projects/Beedraz/public_html/mvn2repo</url>
       <uniqueVersion>true</uniqueVersion>
     </repository>
     <site>
-       <id>ppw-libraries-site</id>
-      <url>scpexe://cvs.peopleware.be/ppw/projects/JavaLibraries/public_html/${beedra.bareArtifactName}/${beedra.markVersion}/${pom.version}</url>
+       <id>BeedrazSite</id>
+      <url>scpexe://cvs.peopleware.be/ppw/projects/Beedraz/public_html/projects/${beedraz.bareArtifactName}/${beedraz.markVersion}/${pom.version}</url>
     </site>
   </distributionManagement>
 
@@ -97,6 +95,7 @@ limitations under the License.
 
   <!-- Build Settings -->
   <build>
+  <!--
     <pluginManagement>
       <plugins>
         <plugin>
@@ -106,7 +105,7 @@ limitations under the License.
         </plugin>
       </plugins>
     </pluginManagement>
-
+  -->
 
 
     <!--  also compile resources! needed for test -->
@@ -115,7 +114,7 @@ limitations under the License.
         <directory>src/main/resources</directory>
       </resource>
       <resource>
-        <directory>${beedra.javaSourceDirectory}</directory>
+        <directory>${beedraz.javaSourceDirectory}</directory>
         <!-- ${project.compileSourceRoots} doesn't work here, probably because that is a list or an array,
              and not 1 directory -->
         <includes>
@@ -500,26 +499,31 @@ limitations under the License.
 
   <repositories>
     <repository>
-      <id>ppw-missing</id>
-      <name>PeopleWare Repository of Missing Artifacts, via scp</name>
-      <url>https://cvs.peopleware.be/projects/maven/maven2/repository</url>
+      <id>BeedrazRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>Beedraz Maven 2 repository</name>
+      <url>http://www.beedraz.org/mvn2repo</url>
     </repository>
+<!--
     <repository>
       <id>ppw-libraries</id>
       <name>PeopleWare Libraries Repository, via scp</name>
       <url>https://cvs.peopleware.be/projects/JavaLibraries/maven2-repository</url>
     </repository>
+ -->
   </repositories>
 
   <pluginRepositories>
+<!--
     <pluginRepository>
       <id>ApacheMaven2PluginSnapshots</id>
-      <!--  needed for surefire snapshot version -->
+      <!++  needed for surefire snapshot version ++>
       <url>http://people.apache.org/repo/m2-snapshot-repository</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
     </pluginRepository>
+-->
 <!--
     <pluginRepository>
       <id>pluginSnapshots</id>
@@ -529,13 +533,45 @@ limitations under the License.
   </pluginRepositories>
 
   <!-- Environment Settings -->
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/beedraz/issues/list</url>
+  </issueManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>Beedraz Announcements</name>
+      <post>beedraz@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Beedraz Users</name>
+      <post>beedraz-users@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz-users/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz-users/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz-users/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Beedraz Developers</name>
+      <post>beedraz-dev@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz-dev/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz-dev/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz-dev/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Beedraz Subversion Commits</name>
+      <post>beedraz-svn@googlegroups.com</post>
+      <subscribe>http://groups.google.com/group/beedraz-svn/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/beedraz-svn/subscribe</unsubscribe>
+      <archive>http://groups.google.com/group/beedraz-svn/topics</archive>
+    </mailingList>
+  </mailingLists>
+
 <!--
-  <issueManagement>...</issueManagement>
   <ciManagement>...</ciManagement>
-  <mailingLists>...</mailingLists>
   <prerequisites>...</prerequisites>
-  <repositories>...</repositories>
-  <pluginRepositories>...</pluginRepositories>
   <distributionManagement>...</distributionManagement>
   <profiles>...</profiles>
 -->

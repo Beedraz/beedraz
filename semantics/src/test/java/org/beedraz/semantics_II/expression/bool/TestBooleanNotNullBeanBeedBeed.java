@@ -32,7 +32,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class TestBooleanNotNullBeanBeedBeed
     extends AbstractTestBeanArgBooleanUnaryExpressionBeed<
-                BooleanNotNullBeanBeedBeed<?>> {
+                BooleanNotNullBeanBeedBeed<RunBeanBeed>> {
 
   @Override
   protected RunBeanBeed initBeed() {
@@ -50,7 +50,7 @@ public class TestBooleanNotNullBeanBeedBeed
   }
 
   @Override
-  protected BooleanNotNullBeanBeedBeed<?> initSubject() {
+  protected BooleanNotNullBeanBeedBeed<RunBeanBeed> initSubject() {
     return new BooleanNotNullBeanBeedBeed<RunBeanBeed>();
   }
 

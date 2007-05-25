@@ -22,10 +22,10 @@ import static org.junit.Assert.fail;
 
 import org.beedra.example.z_beedra.Project;
 import org.beedra.example.z_beedra.Task;
-import org.beedra_II.edit.EditStateException;
-import org.beedra_II.edit.IllegalEditException;
-import org.beedra_II.property.association.BidirToOneEdit;
-import org.beedra_II.property.string.StringEdit;
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.expression.association.set.BidirToOneEdit;
+import org.beedraz.semantics_II.expression.string.StringEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

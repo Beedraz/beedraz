@@ -3,7 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 <!--
-Copyright 2007 - $Date$ by the authors mentioned below.
+Date: $Date$
+Revision: $Revision$
+
+Copyright 2007 - $Date$ by the Beedraz authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,32 +24,54 @@ limitations under the License.
 
   <modelVersion>4.0.0</modelVersion>
 
+  <repositories>
+    <repository>
+      <id>BeedrazRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>Beedraz Maven 2 repository</name>
+      <url>http://www.beedraz.org/mvn2repo</url>
+    </repository>
+  </repositories>
+
   <parent>
-    <groupId>org.beedra</groupId>
+    <groupId>org.beedraz</groupId>
     <artifactId>parent-pom</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
   <properties>
-    <beedra.bareArtifactName>beedra-semantics-examples</beedra.bareArtifactName>
-    <beedra.markVersion>II</beedra.markVersion>
+    <beedraz.bareArtifactName>beedraz-examples</beedraz.bareArtifactName>
+    <beedraz.markVersion>II</beedraz.markVersion>
+    <beedraz.repositoryModule>examples</beedraz.repositoryModule>
   </properties>
 
-  <artifactId>${beedra.bareArtifactName}-${beedra.markVersion}</artifactId>
+  <artifactId>${beedraz.bareArtifactName}-${beedraz.markVersion}</artifactId>
   <packaging>jar</packaging>
-  <name>Beedra Semantics Examples ${beedra.markVersion}</name>
-  <description>Beedra is a library for easy development of semantic structures.
-    Easy peripheral code is possible with secondary libraries. These are examples
-    that show why Beedra exists and how it operates. Furthermore, there are
+  <name>Beedraz Examples ${beedraz.markVersion}</name>
+  <description>These are examples
+    that show why Beedraz exists and how it operates. Furthermore, there are
     some overall unit tests, that also serve as demonstration code.</description>
   <inceptionYear>2007</inceptionYear>
 
   <version>1.0.0-1.0-SNAPSHOT</version>
+
+  <!-- start of repeat -->
+  <!-- for some stupid reason, this must be repeated here, to avoid an additional artifactName directory to the path  -->
+
+  <scm>
+    <connection>scm:svn:http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</connection>
+    <developerConnection>scm:svn:https://${user.name}@beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</developerConnection>
+    <url>http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}/</url>
+  </scm>
+  <url>http://www.beedraz.org/</url>
+
+  <!-- end of repeat -->
+
   <dependencies>
     <dependency>
-      <groupId>org.beedra</groupId>
-      <artifactId>beedra-semantics-II</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>org.beedraz</groupId>
+      <artifactId>beedraz-semantics-II</artifactId>
+      <version>1.0.0-1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

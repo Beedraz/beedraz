@@ -197,7 +197,7 @@ public class TestEditableBidirToOneBeed {
     assertNotNull(listener1.$event);
     StringBuffer out = new StringBuffer();
     listener1.$event.toString(out, 1);
-    System.out.println(out);
+//    System.out.println(out);
     assertNull(listener2.$event);
 
     listener1.reset();
@@ -208,11 +208,11 @@ public class TestEditableBidirToOneBeed {
     assertNotNull(listener1.$event);
     out = new StringBuffer();
     listener1.$event.toString(out, 1);
-    System.out.println(out);
+//    System.out.println(out);
     assertNotNull(listener2.$event);
     out = new StringBuffer();
     listener2.$event.toString(out, 1);
-    System.out.println(out);
+//    System.out.println(out);
 
     listener1.reset();
     listener2.reset();
@@ -223,7 +223,7 @@ public class TestEditableBidirToOneBeed {
     assertNotNull(listener2.$event);
     out = new StringBuffer();
     listener2.$event.toString(out, 1);
-    System.out.println(out);
+//    System.out.println(out);
 
     listener1.reset();
     listener2.reset();
@@ -232,10 +232,10 @@ public class TestEditableBidirToOneBeed {
     edit.perform();
     assertNull(listener1.$event);
     assertNotNull(listener2.$event);
-    System.out.println(listener1.$event);
+//    System.out.println(listener1.$event);
     out = new StringBuffer();
     listener2.$event.toString(out, 1);
-    System.out.println(out);
+//    System.out.println(out);
 
     listener1.reset();
     listener2.reset();

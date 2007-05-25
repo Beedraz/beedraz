@@ -3,7 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 <!--
-Copyright 2007 - $Date$ by the authors mentioned below.
+Date: $Date$
+Revision: $Revision$
+
+Copyright 2007 - $Date$ by the Beedrazz authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,23 +24,31 @@ limitations under the License.
 
   <modelVersion>4.0.0</modelVersion>
 
+  <repositories>
+    <repository>
+      <id>BeedrazzRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>Beedrazz Maven 2 repository</name>
+      <url>http://www.beedraz.org/mvn2repo</url>
+    </repository>
+  </repositories>
+
   <parent>
-    <groupId>org.beedra</groupId>
+    <groupId>org.beedraz</groupId>
     <artifactId>parent-pom</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
   <properties>
-    <beedra.bareArtifactName>beedra-semantics</beedra.bareArtifactName>
+    <beedra.bareArtifactName>beedraz-semantics</beedra.bareArtifactName>
     <beedra.markVersion>II</beedra.markVersion>
+    <beedraz.repositoryModule>semantics</beedraz.repositoryModule>
   </properties>
 
-  <artifactId>${beedra.bareArtifactName}-${beedra.markVersion}</artifactId>
   <packaging>jar</packaging>
-  <name>Beedra Semantics ${beedra.markVersion}</name>
-  <description>Beedra is a library for easy development of semantic structures.
+  <name>Beedraz Semantics ${beedra.markVersion}</name>
+  <description>Beedraz is a library for easy development of semantic structures.
     Easy peripheral code is possible with secondary libraries.</description>
-  <inceptionYear>1998</inceptionYear>
 
   <version>1.0.0-1.0-SNAPSHOT</version>
 

@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression.collection.set;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.bean.*;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -33,7 +34,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision: 852 $",
          date     = "$Date: 2007-05-08 16:19:51 +0200 (di, 08 mei 2007) $")
-public class Tuple<_Element1_ extends Beed<?>, _Element2_ extends Beed<?>> {
+public class Tuple<_Element1_ extends Beed<?>, _Element2_ extends Beed<?>>
+    extends AbstractBeanBeed {
 
   public Tuple(_Element1_ element1, _Element2_ element2) {
     $element1 = element1;

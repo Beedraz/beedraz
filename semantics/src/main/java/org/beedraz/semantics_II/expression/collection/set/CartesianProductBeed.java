@@ -75,7 +75,7 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    *          ? owner.registerAggregateElement(this)
    *          : true;
    */
-  protected CartesianProductBeed(AggregateBeed owner) {
+  public CartesianProductBeed(AggregateBeed owner) {
     super(owner);
   }
 

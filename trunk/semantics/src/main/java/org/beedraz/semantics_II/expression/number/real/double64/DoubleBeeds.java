@@ -20,6 +20,9 @@ package org.beedraz.semantics_II.expression.number.real.double64;
 import static org.beedraz.semantics_II.path.Paths.path;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleArithmeticMeanBeed;
@@ -654,6 +657,26 @@ public class DoubleBeeds {
     DoubleMinBeed minBeed = new DoubleMinBeed();
     minBeed.setSourcePath(sourcePath);
     return minBeed;
+  }
+
+  /*</section>*/
+
+
+  /*<section name="editableDoubleBeed">*/
+  //------------------------------------------------------------------
+
+  public static EditableDoubleBeed editableDoubleBeed(double constant, AggregateBeed owner) throws IllegalEditException {
+    try {
+      EditableDoubleBeed editableDoubleBeed = new EditableDoubleBeed(owner);
+      DoubleEdit edit = new DoubleEdit(editableDoubleBeed);
+      edit.setGoal(constant);
+      edit.perform();
+      return editableDoubleBeed;
+    }
+    catch (EditStateException e) {
+      assert false : "Shouldn't happen";
+      return null;
+    }
   }
 
   /*</section>*/

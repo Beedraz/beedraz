@@ -58,7 +58,7 @@ public class TestCartesianProductBeed {
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
     $cartesianProductBeed = new CartesianProductBeed<StringBeed, LongBeed>($owner);
-    $listener3 = new StubListener<SetEvent<Tuple<StringBeed, LongBeed>>>();
+    $listener3 = new StubListener<SetEvent<CartesianProductBeed<StringBeed, LongBeed>.Tuple>>();
     $listener5 = new StubListener<ActualLongEvent>();
     $stringBeed1 = editableStringBeed("stringBeed1", $owner);
     $stringBeed2 = editableStringBeed("stringBeed2", $owner);
@@ -79,7 +79,7 @@ public class TestCartesianProductBeed {
 
   private StubBeanBeed $owner;
   private CartesianProductBeed<StringBeed, LongBeed> $cartesianProductBeed;
-  private StubListener<SetEvent<Tuple<StringBeed, LongBeed>>> $listener3;
+  private StubListener<SetEvent<CartesianProductBeed<StringBeed, LongBeed>.Tuple>> $listener3;
   private StubListener<ActualLongEvent> $listener5;
   private EditableStringBeed $stringBeed1;
   private EditableStringBeed $stringBeed2;
@@ -220,8 +220,8 @@ public class TestCartesianProductBeed {
   }
 
   private boolean containsTuple(StringBeed stringBeed, LongBeed longBeed,
-      Set<Tuple<StringBeed, LongBeed>> tuples) {
-    for (Tuple<StringBeed, LongBeed> tuple : tuples) {
+      Set<CartesianProductBeed<StringBeed, LongBeed>.Tuple> tuples) {
+    for (CartesianProductBeed<StringBeed, LongBeed>.Tuple tuple : tuples) {
       if (tuple.getElement1() == stringBeed && tuple.getElement2() == longBeed) {
         return true;
       }
@@ -451,3 +451,4 @@ public class TestCartesianProductBeed {
   }
 
 }
+

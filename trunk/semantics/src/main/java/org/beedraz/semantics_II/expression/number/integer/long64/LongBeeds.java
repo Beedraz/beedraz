@@ -20,6 +20,9 @@ package org.beedraz.semantics_II.expression.number.integer.long64;
 import static org.beedraz.semantics_II.path.Paths.path;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
@@ -72,5 +75,24 @@ public class LongBeeds {
 
   /*</section>*/
 
+
+  /*<section name="editableLongBeed">*/
+  //------------------------------------------------------------------
+
+  public static EditableLongBeed editableLongBeed(long constant, AggregateBeed owner) throws IllegalEditException {
+    try {
+      EditableLongBeed editableLongBeed = new EditableLongBeed(owner);
+      LongEdit edit = new LongEdit(editableLongBeed);
+      edit.setGoal(constant);
+      edit.perform();
+      return editableLongBeed;
+    }
+    catch (EditStateException e) {
+      assert false : "Shouldn't happen";
+      return null;
+    }
+  }
+
+  /*</section>*/
 }
 

@@ -474,6 +474,41 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     return false;
   }
 
+  private Tuple<_Element1_, _Element2_> findTuple(_Element1_ element1, _Element2_ element2,
+      Set<Tuple<_Element1_, _Element2_>> tuples) {
+    for (Tuple<_Element1_, _Element2_> currentTuple : tuples) {
+      if (element1 == currentTuple.getElement1() &&
+          element2 == currentTuple.getElement2()) {
+        return currentTuple;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return  (forSome Tuple<_Element1_, _Element2_> currentTuple;
+   *             get().contains(currentTuple);
+   *             currentTuple.getElement1() == tuple.getElement1() &&
+   *             currentTuple.getElement2() == tuple.getElement2());
+   */
+  public boolean containsTuple(Tuple<_Element1_, _Element2_> tuple) {
+    return containsTuple(tuple, $cartesianProduct);
+  }
+
+  /**
+   * @return  (forSome Tuple<_Element1_, _Element2_> currentTuple;
+   *             get().contains(currentTuple);
+   *             currentTuple.getElement1() == element1 &&
+   *             currentTuple.getElement2() == element2)
+   *             ? result != null &&
+   *               get().contains(result) &&
+   *               result.getElement1() == element1 &&
+   *               result.getElement2() == element2
+   *             : result == null;
+   */
+  public Tuple<_Element1_, _Element2_> findTuple(_Element1_ element1, _Element2_ element2) {
+    return findTuple(element1, element2, $cartesianProduct);
+  }
 
   /*<property name="source2">*/
   //------------------------------------------------------------------

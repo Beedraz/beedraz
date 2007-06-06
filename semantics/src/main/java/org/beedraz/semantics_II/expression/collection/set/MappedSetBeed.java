@@ -460,12 +460,13 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
    * and then put it in <code>removedFilteredElements</code>.
    * Update the {@link #$elementCriteria}: remove the given element.
    *
-   * @pre  element != null;
-   * @pre  $elementMappings.containsKey(element);
+   * @pre  from != null;
+   * @pre  $elementMappings.containsKey(from);
    * @pre  removedResultingElements != null;
    */
   private void sourceElementRemoved(_From_ from, Set<_To_> removedResultingElements) {
     assert from != null;
+    assert $elementMappings.containsKey(from);
     assert removedResultingElements != null;
     Path<? extends _To_> elementPath = $elementMappings.get(from);
     assert elementPath != null;
@@ -479,7 +480,11 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     }
   }
 
+  /**
+   * @pre $resultCount.containsKey(to);
+   */
   private void removeResultingElement(_To_ to, Set<_To_> removedResultingElements) {
+    assert $resultCount.containsKey(to);
     if (to != null) {
       Integer count = $resultCount.get(to);
       assert count != null;

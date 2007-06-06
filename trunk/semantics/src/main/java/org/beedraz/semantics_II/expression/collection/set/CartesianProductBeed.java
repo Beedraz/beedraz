@@ -32,6 +32,7 @@ import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
+import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
@@ -63,8 +64,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision: 913 $",
          date     = "$Date: 2007-05-24 16:46:42 +0200 (do, 24 mei 2007) $")
 public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends Beed<?>>
-    extends AbstractSetBeed<Tuple<_Element1_, _Element2_>, SetEvent<Tuple<_Element1_, _Element2_>>>
-    implements SetBeed<Tuple<_Element1_, _Element2_>, SetEvent<Tuple<_Element1_, _Element2_>>> {
+    extends AbstractSetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>>
+    implements SetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>> {
 
   /**
    * @post  getSourcePath1() == null;
@@ -79,11 +80,61 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     super(owner);
   }
 
+  public class Tuple extends AbstractBeanBeed {
+
+    public Tuple(_Element1_ element1, _Element2_ element2) {
+      $element1 = element1;
+      $element2 = element2;
+    }
+
+
+    /*<property name="element1">*/
+//  -----------------------------------------------------------------
+
+    /**
+     * @basic
+     */
+    public final _Element1_ getElement1() {
+      return $element1;
+    }
+
+    private final _Element1_ $element1;
+
+    /*</property>*/
+
+
+    /*<property name="element2">*/
+//  -----------------------------------------------------------------
+
+    /**
+     * @basic
+     */
+    public final _Element2_ getElement2() {
+      return $element2;
+    }
+
+    private final _Element2_ $element2;
+
+    /*</property>*/
+
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj instanceof CartesianProductBeed.Tuple) {
+        Tuple other = (Tuple) obj;
+        return other.getElement1().equals(getElement1()) &&
+        other.getElement2().equals(getElement2());
+      }
+      return false;
+    }
+
+  }
+
 
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
     @Override
-    protected SetEvent<Tuple<_Element1_, _Element2_>> filteredUpdate(
+    protected SetEvent<Tuple> filteredUpdate(
         Map<Beed<?>, Event> events, Edit<?> edit) {
       assert events != null;
       assert events.size() > 0;
@@ -96,8 +147,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
        * events from the corresponding source. But these don't
        * matter, since we have a new source.
        */
-      HashSet<Tuple<_Element1_, _Element2_>> addedTuples = new HashSet<Tuple<_Element1_,_Element2_>>();
-      HashSet<Tuple<_Element1_, _Element2_>> removedTuples = new HashSet<Tuple<_Element1_, _Element2_>>();
+      HashSet<Tuple> addedTuples = new HashSet<Tuple>();
+      HashSet<Tuple> removedTuples = new HashSet<Tuple>();
       // source 1
       PathEvent<SetBeed<_Element1_, ?>> pathEvent1 =
         (PathEvent<SetBeed<_Element1_, ?>>)events.get($sourcePath1);
@@ -144,8 +195,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
      */
     private void handleSourcePath1Event(
         PathEvent<SetBeed<_Element1_, ?>> pathEvent1,
-        HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-        HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+        HashSet<Tuple> addedTuples,
+        HashSet<Tuple> removedTuples) {
       assert pathEvent1 != null;
       assert addedTuples != null;
       assert removedTuples != null;
@@ -168,8 +219,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
      */
     private void handleSourcePath2Event(
         PathEvent<SetBeed<_Element2_, ?>> pathEvent2,
-        HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-        HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+        HashSet<Tuple> addedTuples,
+        HashSet<Tuple> removedTuples) {
       assert pathEvent2 != null;
       assert addedTuples != null;
       assert removedTuples != null;
@@ -193,8 +244,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
      * @pre  removedTuples != null;
      */
     private void handleSource1Event(SetEvent<_Element1_> setEvent1,
-        HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-        HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+        HashSet<Tuple> addedTuples,
+        HashSet<Tuple> removedTuples) {
       assert setEvent1 != null;
       assert addedTuples != null;
       assert removedTuples != null;
@@ -222,8 +273,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
      * @pre  removedTuples != null;
      */
     private void handleSource2Event(SetEvent<_Element2_> setEvent2,
-        HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-        HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+        HashSet<Tuple> addedTuples,
+        HashSet<Tuple> removedTuples) {
       assert setEvent2 != null;
       assert addedTuples != null;
       assert removedTuples != null;
@@ -238,25 +289,25 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
 
   };
 
-  private void addElement1(_Element1_ element1, HashSet<Tuple<_Element1_, _Element2_>> addedTuples) {
+  private void addElement1(_Element1_ element1, HashSet<Tuple> addedTuples) {
     if (containsElement1(element1, $cartesianProduct)) {
       // NOP
     }
     else {
       for (_Element2_ element2 : getSource2().get()) {
-        Tuple<_Element1_, _Element2_> tuple = new Tuple<_Element1_, _Element2_>(element1, element2);
+        Tuple tuple = new Tuple(element1, element2);
         $cartesianProduct.add(tuple);
         addedTuples.add(tuple);
       }
     }
   }
 
-  private void removeElement1(_Element1_ element1, HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+  private void removeElement1(_Element1_ element1, HashSet<Tuple> removedTuples) {
     if (!containsElement1(element1, $cartesianProduct)) {
       // NOP
     }
     else {
-      for (Tuple<_Element1_, _Element2_> tuple : new HashSet<Tuple<_Element1_, _Element2_>>($cartesianProduct)) {
+      for (Tuple tuple : new HashSet<Tuple>($cartesianProduct)) {
         if (tuple.getElement1() == element1) {
           $cartesianProduct.remove(tuple);
           removedTuples.add(tuple);
@@ -265,8 +316,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     }
   }
 
-  private boolean containsElement1(_Element1_ element1, HashSet<Tuple<_Element1_, _Element2_>> tuples) {
-    for (Tuple<_Element1_, _Element2_> tuple : tuples) {
+  private boolean containsElement1(_Element1_ element1, HashSet<Tuple> tuples) {
+    for (Tuple tuple : tuples) {
       if (tuple.getElement1() == element1) {
         return true;
       }
@@ -274,25 +325,25 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     return false;
   }
 
-  private void addElement2(_Element2_ element2, HashSet<Tuple<_Element1_, _Element2_>> addedTuples) {
+  private void addElement2(_Element2_ element2, HashSet<Tuple> addedTuples) {
     if (containsElement2(element2, $cartesianProduct)) {
       // NOP
     }
     else {
       for (_Element1_ element1 : getSource1().get()) {
-        Tuple<_Element1_, _Element2_> tuple = new Tuple<_Element1_, _Element2_>(element1, element2);
+        Tuple tuple = new Tuple(element1, element2);
         $cartesianProduct.add(tuple);
         addedTuples.add(tuple);
       }
     }
   }
 
-  private void removeElement2(_Element2_ element2, HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+  private void removeElement2(_Element2_ element2, HashSet<Tuple> removedTuples) {
     if (!containsElement2(element2, $cartesianProduct)) {
       // NOP
     }
     else {
-      for (Tuple<_Element1_, _Element2_> tuple : new HashSet<Tuple<_Element1_, _Element2_>>($cartesianProduct)) {
+      for (Tuple tuple : new HashSet<Tuple>($cartesianProduct)) {
         if (tuple.getElement2() == element2) {
           $cartesianProduct.remove(tuple);
           removedTuples.add(tuple);
@@ -301,8 +352,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     }
   }
 
-  private boolean containsElement2(_Element2_ element2, HashSet<Tuple<_Element1_, _Element2_>> tuples) {
-    for (Tuple<_Element1_, _Element2_> tuple : tuples) {
+  private boolean containsElement2(_Element2_ element2, HashSet<Tuple> tuples) {
+    for (Tuple tuple : tuples) {
       if (tuple.getElement2() == element2) {
         return true;
       }
@@ -356,7 +407,7 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
   /**
    * The old first source path is removed as update source.
    * The new first source path is added as update source.
-   * The first source is replaced by the new first source: see {@link #setSource1(SetBeed))}.
+   * The first source is replaced by the new first source: see {@link #setSource1(SetBeed)}.
    */
   public final void setSourcePath1(Path<? extends SetBeed<_Element1_, ?>> sourcePath1) {
     if ($sourcePath1 instanceof AbstractDependentPath) {
@@ -383,12 +434,12 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    * @post    The listeners of this beed are notified when the value changes.
    */
   private final void setSource1(SetBeed<_Element1_, ?> source1) {
-    HashSet<Tuple<_Element1_, _Element2_>> addedTuples =
-      new HashSet<Tuple<_Element1_, _Element2_>>();
-    HashSet<Tuple<_Element1_, _Element2_>> removedTuples =
-      new HashSet<Tuple<_Element1_, _Element2_>>();
+    HashSet<Tuple> addedTuples =
+      new HashSet<Tuple>();
+    HashSet<Tuple> removedTuples =
+      new HashSet<Tuple>();
     setSource1(source1, addedTuples, removedTuples);
-    ActualSetEvent<Tuple<_Element1_, _Element2_>> event =
+    ActualSetEvent<Tuple> event =
       createEvent(addedTuples, removedTuples, null);
     if (event != null) {
       updateDependents(event);
@@ -410,8 +461,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    * @pre  removedTuples != null;
    */
   private final void setSource1(SetBeed<_Element1_, ?> source1,
-      HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-      HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples) {
     assert addedTuples != null;
     assert removedTuples != null;
     if ($source1 != null) {
@@ -425,18 +476,18 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     recalculate(addedTuples, removedTuples);
   }
 
-  private ActualSetEvent<Tuple<_Element1_, _Element2_>> createEvent(
-      HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-      HashSet<Tuple<_Element1_, _Element2_>> removedTuples,
+  private ActualSetEvent<Tuple> createEvent(
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples,
       Edit<?> edit) {
-    ActualSetEvent<Tuple<_Element1_, _Element2_>> event;
+    ActualSetEvent<Tuple> event;
     @SuppressWarnings("unchecked")
-    Set<Tuple<_Element1_, _Element2_>> addedTuplesClone =
-      (Set<Tuple<_Element1_, _Element2_>>)addedTuples.clone();
+    Set<Tuple> addedTuplesClone =
+      (Set<Tuple>)addedTuples.clone();
     removeTuples(addedTuples, removedTuples);
     removeTuples(removedTuples, addedTuplesClone);
     if ((! removedTuples.isEmpty()) || (! addedTuples.isEmpty())) {
-      event = new ActualSetEvent<Tuple<_Element1_, _Element2_>>(
+      event = new ActualSetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>(
                            CartesianProductBeed.this,
                            addedTuples,
                            removedTuples,
@@ -454,18 +505,18 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
 
   /*</property>*/
 
-  private void removeTuples(Set<Tuple<_Element1_, _Element2_>> tuples,
-      Set<Tuple<_Element1_, _Element2_>> tuplesToRemove) {
-    for (Tuple<_Element1_, _Element2_> tuple : new HashSet<Tuple<_Element1_, _Element2_>>(tuples)) {
+  private void removeTuples(Set<Tuple> tuples,
+      Set<Tuple> tuplesToRemove) {
+    for (Tuple tuple : new HashSet<Tuple>(tuples)) {
       if (containsTuple(tuple, tuplesToRemove)) {
         tuples.remove(tuple);
       }
     }
   }
 
-  private boolean containsTuple(Tuple<_Element1_, _Element2_> tuple,
-      Set<Tuple<_Element1_, _Element2_>> tuples) {
-    for (Tuple<_Element1_, _Element2_> currentTuple : tuples) {
+  private boolean containsTuple(Tuple tuple,
+      Set<Tuple> tuples) {
+    for (Tuple currentTuple : tuples) {
       if (tuple.getElement1() == currentTuple.getElement1() &&
           tuple.getElement2() == currentTuple.getElement2()) {
         return true;
@@ -474,9 +525,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     return false;
   }
 
-  private Tuple<_Element1_, _Element2_> findTuple(_Element1_ element1, _Element2_ element2,
-      Set<Tuple<_Element1_, _Element2_>> tuples) {
-    for (Tuple<_Element1_, _Element2_> currentTuple : tuples) {
+  private Tuple findTuple(_Element1_ element1, _Element2_ element2, Set<Tuple> tuples) {
+    for (Tuple currentTuple : tuples) {
       if (element1 == currentTuple.getElement1() &&
           element2 == currentTuple.getElement2()) {
         return currentTuple;
@@ -491,24 +541,25 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    *             currentTuple.getElement1() == tuple.getElement1() &&
    *             currentTuple.getElement2() == tuple.getElement2());
    */
-  public boolean containsTuple(Tuple<_Element1_, _Element2_> tuple) {
-    return containsTuple(tuple, $cartesianProduct);
-  }
+   public boolean containsTuple(Tuple tuple) {
+     return containsTuple(tuple, $cartesianProduct);
+   }
 
-  /**
-   * @return  (forSome Tuple<_Element1_, _Element2_> currentTuple;
-   *             get().contains(currentTuple);
-   *             currentTuple.getElement1() == element1 &&
-   *             currentTuple.getElement2() == element2)
-   *             ? result != null &&
-   *               get().contains(result) &&
-   *               result.getElement1() == element1 &&
-   *               result.getElement2() == element2
-   *             : result == null;
-   */
-  public Tuple<_Element1_, _Element2_> findTuple(_Element1_ element1, _Element2_ element2) {
-    return findTuple(element1, element2, $cartesianProduct);
-  }
+   /**
+    * @return  (forSome Tuple<_Element1_, _Element2_> currentTuple;
+    *             get().contains(currentTuple);
+    *             currentTuple.getElement1() == element1 &&
+    *             currentTuple.getElement2() == element2)
+    *             ? result != null &&
+    *               get().contains(result) &&
+    *               result.getElement1() == element1 &&
+    *               result.getElement2() == element2
+    *             : result == null;
+    */
+   public Tuple findTuple(_Element1_ element1, _Element2_ element2) {
+     return findTuple(element1, element2, $cartesianProduct);
+   }
+
 
   /*<property name="source2">*/
   //------------------------------------------------------------------
@@ -557,12 +608,12 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    * @post    The listeners of this beed are notified when the value changes.
    */
   private final void setSource2(SetBeed<_Element2_, ?> source2) {
-    HashSet<Tuple<_Element1_, _Element2_>> addedTuples =
-      new HashSet<Tuple<_Element1_, _Element2_>>();
-    HashSet<Tuple<_Element1_, _Element2_>> removedTuples =
-      new HashSet<Tuple<_Element1_, _Element2_>>();
+    HashSet<Tuple> addedTuples =
+      new HashSet<Tuple>();
+    HashSet<Tuple> removedTuples =
+      new HashSet<Tuple>();
     setSource2(source2, addedTuples, removedTuples);
-    ActualSetEvent<Tuple<_Element1_, _Element2_>> event =
+    ActualSetEvent<Tuple> event =
       createEvent(addedTuples, removedTuples, null);
     if (event != null) {
       updateDependents(event);
@@ -584,8 +635,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    * @pre  removedTuples != null;
    */
   private final void setSource2(SetBeed<_Element2_, ?> source2,
-      HashSet<Tuple<_Element1_, _Element2_>> addedTuples,
-      HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples) {
     assert addedTuples != null;
     assert removedTuples != null;
     if ($source2 != null) {
@@ -599,7 +650,7 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     recalculate(addedTuples, removedTuples);
   }
 
-  private void recalculate(HashSet<Tuple<_Element1_, _Element2_>> addedTuples, HashSet<Tuple<_Element1_, _Element2_>> removedTuples) {
+  private void recalculate(HashSet<Tuple> addedTuples, HashSet<Tuple> removedTuples) {
     removedTuples.addAll($cartesianProduct);
     recalculate();
     addedTuples.addAll($cartesianProduct);
@@ -616,8 +667,8 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     if (getSource1() != null && getSource2() != null) {
       for (_Element1_ element1 : getSource1().get()) {
         for (_Element2_ element2 : getSource2().get()) {
-          Tuple<_Element1_, _Element2_> tuple =
-            new Tuple<_Element1_, _Element2_>(element1, element2);
+          Tuple tuple =
+            new Tuple(element1, element2);
           $cartesianProduct.add(tuple);
         }
       }
@@ -629,14 +680,14 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    *
    * @invar  $filteredSet != null;
    */
-  private final HashSet<Tuple<_Element1_, _Element2_>> $cartesianProduct =
-    new HashSet<Tuple<_Element1_, _Element2_>>();
+  private final HashSet<Tuple> $cartesianProduct =
+    new HashSet<Tuple>();
 
 
   /**
    * @basic
    */
-  public final Set<Tuple<_Element1_, _Element2_>> get() {
+  public final Set<Tuple> get() {
     return Collections.unmodifiableSet($cartesianProduct);
   }
 
@@ -664,9 +715,9 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "elements:\n");
-    Iterator<Tuple<_Element1_, _Element2_>> iter = get().iterator();
+    Iterator<Tuple> iter = get().iterator();
     while (iter.hasNext()) {
-      Tuple<_Element1_, _Element2_> tuple = iter.next();
+      Tuple tuple = iter.next();
       sb.append(indent(level + 2) +
           "(" +
           tuple.getElement1().toString() + ", " + tuple.getElement2().toString() +

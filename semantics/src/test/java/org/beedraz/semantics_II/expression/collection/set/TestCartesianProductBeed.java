@@ -17,6 +17,8 @@
 package org.beedraz.semantics_II.expression.collection.set;
 
 
+import static org.beedraz.semantics_II.expression.number.integer.long64.LongBeeds.editableLongBeed;
+import static org.beedraz.semantics_II.expression.string.StringBeeds.editableStringBeed;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -36,7 +38,6 @@ import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
 import org.beedraz.semantics_II.expression.string.EditableStringBeed;
 import org.beedraz.semantics_II.expression.string.StringBeed;
-import org.beedraz.semantics_II.expression.string.StringEdit;
 import org.beedraz.semantics_II.path.ConstantPath;
 import org.beedraz.semantics_II.path.Path;
 import org.junit.After;
@@ -59,10 +60,10 @@ public class TestCartesianProductBeed {
     $cartesianProductBeed = new CartesianProductBeed<StringBeed, LongBeed>($owner);
     $listener3 = new StubListener<SetEvent<Tuple<StringBeed, LongBeed>>>();
     $listener5 = new StubListener<ActualLongEvent>();
-    $stringBeed1 = createEditableStringBeed("stringBeed1");
-    $stringBeed2 = createEditableStringBeed("stringBeed2");
-    $longBeed1 = createEditableLongBeed(0L);
-    $longBeed2 = createEditableLongBeed(1L);
+    $stringBeed1 = editableStringBeed("stringBeed1", $owner);
+    $stringBeed2 = editableStringBeed("stringBeed2", $owner);
+    $longBeed1 = editableLongBeed(0L, $owner);
+    $longBeed2 = editableLongBeed(1L, $owner);
     LongEdit longEdit = new LongEdit($longBeed1);
     longEdit.setGoal(0L);
     longEdit.perform();
@@ -180,7 +181,7 @@ public class TestCartesianProductBeed {
     // one of the sources changes, the beed should be notified
     $listener3.reset();
     assertNull($listener3.$event);
-    StringBeed stringBeed = createEditableStringBeed("extra stringBeed");
+    StringBeed stringBeed = editableStringBeed("extra stringBeed", $owner);
     SetEdit<StringBeed> setEdit = new SetEdit<StringBeed>(source1);
     setEdit.addElementToAdd(stringBeed);
     setEdit.perform();
@@ -406,8 +407,8 @@ public class TestCartesianProductBeed {
     assertNull($listener5.$event);
     // add elements
     SetEdit<StringBeed> setEdit = new SetEdit<StringBeed>(source1);
-    setEdit.addElementToAdd(createEditableStringBeed("stringBeed3"));
-    setEdit.addElementToAdd(createEditableStringBeed("stringBeed3"));
+    setEdit.addElementToAdd(editableStringBeed("stringBeed3", $owner));
+    setEdit.addElementToAdd(editableStringBeed("stringBeed3", $owner));
     setEdit.perform();
     // check the size (4*2)
     assertEquals($cartesianProductBeed.getSize().getLong(), 8L);
@@ -423,7 +424,7 @@ public class TestCartesianProductBeed {
     assertNull($listener5.$event);
     // remove/add elements (4*2)
     setEdit = new SetEdit<StringBeed>(source1);
-    setEdit.addElementToAdd(createEditableStringBeed("stringBeed5"));
+    setEdit.addElementToAdd(editableStringBeed("stringBeed5", $owner));
     setEdit.addElementToRemove($stringBeed2);
     setEdit.perform();
     // check the size
@@ -447,22 +448,6 @@ public class TestCartesianProductBeed {
     assertEquals($listener5.$event.getOldLong(), 8L);
     assertEquals($listener5.$event.getNewLong(), 4L);
     assertEquals($listener5.$event.getEdit(), setEdit2);
-  }
-
-  private EditableLongBeed createEditableLongBeed(Long value) throws EditStateException, IllegalEditException {
-    EditableLongBeed editableLongBeed = new EditableLongBeed($owner);
-    LongEdit edit = new LongEdit(editableLongBeed);
-    edit.setGoal(value);
-    edit.perform();
-    return editableLongBeed;
-  }
-
-  private EditableStringBeed createEditableStringBeed(String value) throws EditStateException, IllegalEditException {
-    EditableStringBeed editableStringBeed = new EditableStringBeed($owner);
-    StringEdit edit = new StringEdit(editableStringBeed);
-    edit.setGoal(value);
-    edit.perform();
-    return editableStringBeed;
   }
 
 }

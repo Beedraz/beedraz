@@ -19,9 +19,7 @@ package org.beedraz.semantics_II.expression.collection.set;
 
 import java.util.Map;
 
-import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -44,17 +42,17 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State: Exp $",
          tag      = "$Name:  $")
-public interface MapEvent<_Key_, _Value_ extends Beed<?>> extends Event {
+public interface MapEvent<_Key_, _Value_> extends Event {
 
   /**
    * @basic
    */
-  Map<_Key_, Path<_Value_>> getAddedElements();
+  Map<_Key_, _Value_> getAddedElements();
 
   /**
    * @basic
    */
-  Map<_Key_, Path<_Value_>> getRemovedElements();
+  Map<_Key_, _Value_> getRemovedElements();
 
 }
 

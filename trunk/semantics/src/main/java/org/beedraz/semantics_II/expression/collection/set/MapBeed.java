@@ -19,9 +19,7 @@ package org.beedraz.semantics_II.expression.collection.set;
 
 import java.util.Set;
 
-import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.expression.ExpressionBeed;
-import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -43,14 +41,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          state    = "$State: Exp $",
          tag      = "$Name:  $")
 public interface MapBeed<_Key_,
-                         _Value_ extends Beed<?>,
+                         _Value_,
                          _Event_ extends MapEvent<_Key_, _Value_>>
   extends ExpressionBeed<_Event_> {
 
   /**
    * @basic
    */
-  Path<_Value_> get(_Key_ key);
+  _Value_ get(_Key_ key);
 
   /**
    * @basic

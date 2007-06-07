@@ -17,8 +17,6 @@
 package org.beedraz.semantics_II.expression.collection.set;
 
 
-import static org.beedraz.semantics_II.expression.number.integer.long64.LongBeeds.editableLongBeed;
-import static org.beedraz.semantics_II.path.Paths.path;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,8 +27,6 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
-import org.beedraz.semantics_II.path.Path;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,49 +53,45 @@ public class TestMapEvent {
   @Test
   public void constructor() throws EditStateException, IllegalEditException {
     // source
-    MapBeed<String, LongBeed, ?> source =
-      new EditableMapBeed<String, LongBeed>($owner);
+    MapBeed<String, Integer, ?> source = new EditableMapBeed<String, Integer>($owner);
     // added and removed elements (null)
-    Map<String, Path<LongBeed>> addedElements = null;
-    Map<String, Path<LongBeed>> removedElements = null;
+    Map<String, Integer> addedElements = null;
+    Map<String, Integer> removedElements = null;
     // edit
-    EditableMapBeed<String, LongBeed> target =
-      new EditableMapBeed<String, LongBeed>($owner);
-    MapEdit<String, LongBeed> edit =
-      new MapEdit<String, LongBeed>(target);
+    EditableMapBeed<String, Integer> target = new EditableMapBeed<String, Integer>($owner);
+    MapEdit<String, Integer> edit = new MapEdit<String, Integer>(target);
     edit.perform();
     // test constructor
-    MapEvent<String, LongBeed> mapEvent =
-      new ActualMapEvent<String, LongBeed>(
-          source, addedElements, removedElements, edit);
+    MapEvent<String, Integer> mapEvent =
+      new ActualMapEvent<String, Integer>(source, addedElements, removedElements, edit);
     assertEquals(mapEvent.getSource(), source);
     assertTrue(mapEvent.getAddedElements().isEmpty());
     assertTrue(mapEvent.getRemovedElements().isEmpty());
     assertEquals(mapEvent.getEdit(), edit);
     assertEquals(mapEvent.getEditState(), edit.getState());
     // added and removed elements (effective)
-    addedElements = new HashMap<String, Path<LongBeed>>();
+    addedElements = new HashMap<String, Integer>();
     String addedKey = "horse";
-    LongBeed addedValue = editableLongBeed(2L, $owner);
-    addedElements.put(addedKey, path(addedValue));
-    removedElements = new HashMap<String, Path<LongBeed>>();
+    Integer addedValue = 4;
+    addedElements.put(addedKey, addedValue);
+    removedElements = new HashMap<String, Integer>();
     String removedKey1 = "cow";
-    LongBeed removedValue1 = editableLongBeed(5L, $owner);
+    Integer removedValue1 = 5;
     String removedKey2 = "sheep";
-    LongBeed removedValue2 = editableLongBeed(6L, $owner);
-    removedElements.put(removedKey1, path(removedValue1));
-    removedElements.put(removedKey2, path(removedValue2));
+    Integer removedValue2 = 6;
+    removedElements.put(removedKey1, removedValue1);
+    removedElements.put(removedKey2, removedValue2);
     // test constructor
-    mapEvent = new ActualMapEvent<String, LongBeed>(source, addedElements, removedElements, edit);
+    mapEvent = new ActualMapEvent<String, Integer>(source, addedElements, removedElements, edit);
     assertEquals(mapEvent.getSource(), source);
     assertTrue(mapEvent.getAddedElements().size() == 1);
     assertTrue(mapEvent.getAddedElements().keySet().contains(addedKey));
-    assertEquals(addedValue, mapEvent.getAddedElements().get(addedKey).get());
+    assertEquals(addedValue, mapEvent.getAddedElements().get(addedKey));
     assertTrue(mapEvent.getRemovedElements().size() == 2);
     assertTrue(mapEvent.getRemovedElements().keySet().contains(removedKey1));
-    assertEquals(removedValue1, mapEvent.getRemovedElements().get(removedKey1).get());
+    assertEquals(removedValue1, mapEvent.getRemovedElements().get(removedKey1));
     assertTrue(mapEvent.getRemovedElements().keySet().contains(removedKey2));
-    assertEquals(removedValue2, mapEvent.getRemovedElements().get(removedKey2).get());
+    assertEquals(removedValue2, mapEvent.getRemovedElements().get(removedKey2));
     assertEquals(mapEvent.getEdit(), edit);
     assertEquals(mapEvent.getEditState(), edit.getState());
   }

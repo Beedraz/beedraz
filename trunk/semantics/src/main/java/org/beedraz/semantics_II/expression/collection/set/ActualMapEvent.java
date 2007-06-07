@@ -24,9 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractEvent;
-import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
-import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -42,7 +40,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State: Exp $",
          tag      = "$Name:  $")
-public final class ActualMapEvent<_Key_, _Value_ extends Beed<?>>
+public final class ActualMapEvent<_Key_, _Value_>
     extends AbstractEvent
     implements MapEvent<_Key_, _Value_> {
 
@@ -62,41 +60,41 @@ public final class ActualMapEvent<_Key_, _Value_ extends Beed<?>>
    *           : getRemovedElements().isEmpty();
    */
   public ActualMapEvent(MapBeed<_Key_, _Value_, ?> source,
-                        Map<_Key_, Path<_Value_>> addedElements,
-                        Map<_Key_, Path<_Value_>> removedElements,
+                        Map<_Key_, _Value_> addedElements,
+                        Map<_Key_, _Value_> removedElements,
                         Edit<?> edit) {
     super(source, edit);
     $addedElements = addedElements == null
-                       ? Collections.<_Key_, Path<_Value_>>emptyMap()
-                       : new HashMap<_Key_, Path<_Value_>>(addedElements);
+                       ? Collections.<_Key_, _Value_>emptyMap()
+                       : new HashMap<_Key_, _Value_>(addedElements);
     $removedElements = removedElements == null
-                         ? Collections.<_Key_, Path<_Value_>>emptyMap()
-                         : new HashMap<_Key_, Path<_Value_>>(removedElements);
+                         ? Collections.<_Key_, _Value_>emptyMap()
+                         : new HashMap<_Key_, _Value_>(removedElements);
   }
 
   /**
    * @basic
    */
-  public Map<_Key_, Path<_Value_>> getAddedElements() {
+  public Map<_Key_, _Value_> getAddedElements() {
     return Collections.unmodifiableMap($addedElements);
   }
 
  /**
    * @invar $addedElements != null;
    */
-  private final Map<_Key_, Path<_Value_>> $addedElements;
+  private final Map<_Key_, _Value_> $addedElements;
 
   /**
    * @basic
    */
-  public Map<_Key_, Path<_Value_>> getRemovedElements() {
+  public Map<_Key_, _Value_> getRemovedElements() {
     return Collections.unmodifiableMap($removedElements);
   }
 
   /**
    * @invar $removedElements != null;
    */
-  private final Map<_Key_, Path<_Value_>> $removedElements;
+  private final Map<_Key_, _Value_> $removedElements;
 
   @Override
   protected String otherToStringInformation() {

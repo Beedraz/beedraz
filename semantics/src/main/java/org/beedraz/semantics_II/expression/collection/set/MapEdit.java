@@ -29,9 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractEdit;
-import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.EditStateException;
-import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -63,7 +61,7 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State: Exp $",
          tag      = "$Name:  $")
-public class MapEdit<_Key_, _Value_ extends Beed<?>>
+public class MapEdit<_Key_, _Value_>
     extends AbstractEdit<EditableMapBeed<_Key_, _Value_>, MapEvent<_Key_, _Value_>> {
 
   /**
@@ -81,11 +79,11 @@ public class MapEdit<_Key_, _Value_ extends Beed<?>>
   /**
    * @basic
    */
-  public final Map<_Key_, Path<_Value_>> getElementsToAdd() {
+  public final Map<_Key_, _Value_> getElementsToAdd() {
     return Collections.unmodifiableMap($elementsToAdd);
   }
 
-  public final void addElementToAdd(_Key_ key, Path<_Value_> value) throws EditStateException {
+  public final void addElementToAdd(_Key_ key, _Value_ value) throws EditStateException {
     if (getState() != State.NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
@@ -101,8 +99,7 @@ public class MapEdit<_Key_, _Value_ extends Beed<?>>
     recalculateValidity();
   }
 
-  private final Map<_Key_, Path<_Value_>> $elementsToAdd =
-    new HashMap<_Key_, Path<_Value_>>();
+  private final Map<_Key_, _Value_> $elementsToAdd = new HashMap<_Key_, _Value_>();
 
   /*</property>*/
 
@@ -113,11 +110,11 @@ public class MapEdit<_Key_, _Value_ extends Beed<?>>
   /**
    * @basic
    */
-  public final Map<_Key_, Path<_Value_>> getElementsToRemove() {
+  public final Map<_Key_, _Value_> getElementsToRemove() {
     return Collections.unmodifiableMap($elementsToRemove);
   }
 
-  public final void addElementToRemove(_Key_ key, Path<_Value_> value) throws EditStateException {
+  public final void addElementToRemove(_Key_ key, _Value_ value) throws EditStateException {
     if (getState() != NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
@@ -137,8 +134,7 @@ public class MapEdit<_Key_, _Value_ extends Beed<?>>
    * The elements to remove should be in a map, containing both key and value, to
    * make undo possible.
    */
-  private final Map<_Key_, Path<_Value_>> $elementsToRemove =
-    new HashMap<_Key_, Path<_Value_>>();
+  private final Map<_Key_, _Value_> $elementsToRemove = new HashMap<_Key_, _Value_>();
 
   /*</property>*/
 
@@ -255,7 +251,7 @@ public class MapEdit<_Key_, _Value_ extends Beed<?>>
    * was added, during an undo, the map {@link #getRemovedElements()}
    * was added.
    */
-  public Map<_Key_, Path<_Value_>> getAddedElements() {
+  public Map<_Key_, _Value_> getAddedElements() {
     return (getState() == DONE) ? $elementsToAdd : $elementsToRemove;
   }
 
@@ -266,7 +262,7 @@ public class MapEdit<_Key_, _Value_ extends Beed<?>>
    * was removed, during an undo, the map {@link #getAddedElements()}
    * was removed.
    */
-  public Map<_Key_, Path<_Value_>> getRemovedElements() {
+  public Map<_Key_, _Value_> getRemovedElements() {
     return (getState() == DONE) ? $elementsToRemove : $elementsToAdd;
   }
 

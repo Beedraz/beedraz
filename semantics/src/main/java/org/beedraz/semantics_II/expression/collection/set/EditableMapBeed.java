@@ -28,7 +28,6 @@ import java.util.Set;
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.vcs.CvsInfo;
 
 
@@ -44,14 +43,14 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
          date     = "$Date$",
          state    = "$State: Exp $",
          tag      = "$Name:  $")
-public class EditableMapBeed<_Key_, _Value_ extends Beed<?>>
+public class EditableMapBeed<_Key_, _Value_>
     extends AbstractBeed<MapEvent<_Key_, _Value_>>
     implements MapBeed<_Key_, _Value_, MapEvent<_Key_, _Value_>> {
 
 
   /**
-   * @pre  owner != null;
-   * @post keySet().isEmpty();
+   * @pre owner != null;
+   * @post  keySet().isEmpty();
    * @post owner.registerAggregateElement(this);
    */
   public EditableMapBeed(AggregateBeed owner) {
@@ -62,7 +61,7 @@ public class EditableMapBeed<_Key_, _Value_ extends Beed<?>>
   /**
    * @basic
    */
-  public final Path<_Value_> get(_Key_ key) {
+  public final _Value_ get(_Key_ key) {
     return $map.get(key);
   }
 
@@ -76,7 +75,7 @@ public class EditableMapBeed<_Key_, _Value_ extends Beed<?>>
   /**
    * @pre key != null;
    */
-  final void put(_Key_ key, Path<_Value_> value) {
+  final void put(_Key_ key, _Value_ value) {
     assert key != null;
     $map.put(key, value);
   }
@@ -89,16 +88,14 @@ public class EditableMapBeed<_Key_, _Value_ extends Beed<?>>
     $map.remove(key);
   }
 
-  private Map<_Key_, Path<_Value_>> $map = new HashMap<_Key_, Path<_Value_>>();
+  private Map<_Key_, _Value_> $map = new HashMap<_Key_, _Value_>();
 
   /**
    * Remark-protected: This method is used in {@link MapEdit#isAcceptable()}.
    *
    * @default  true;
    */
-  public boolean isAcceptable(
-      Map<_Key_, Path<_Value_>> elementsToAdd,
-      Map<_Key_, Path<_Value_>> elementsToRemove) {
+  public boolean isAcceptable(Map<_Key_, _Value_> elementsToAdd, Map<_Key_, _Value_> elementsToRemove) {
     return true;
   }
 

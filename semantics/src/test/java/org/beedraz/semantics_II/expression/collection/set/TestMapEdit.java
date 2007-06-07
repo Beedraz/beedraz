@@ -17,8 +17,6 @@
 package org.beedraz.semantics_II.expression.collection.set;
 
 
-import static org.beedraz.semantics_II.expression.number.integer.long64.LongBeeds.editableLongBeed;
-import static org.beedraz.semantics_II.path.Paths.path;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -35,8 +33,6 @@ import org.beedraz.semantics_II.ValidityListener;
 import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
-import org.beedraz.semantics_II.path.Path;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +40,9 @@ import org.junit.Test;
 
 public class TestMapEdit {
 
-  public class MyMapEdit extends MapEdit<String, LongBeed> {
+  public class MyMapEdit extends MapEdit<String, Integer> {
 
-    public MyMapEdit(EditableMapBeed<String, LongBeed> target) {
+    public MyMapEdit(EditableMapBeed<String, Integer> target) {
       super(target);
     }
 
@@ -102,9 +98,9 @@ public class TestMapEdit {
 
   }
 
-  public class StubMapListener implements Listener<MapEvent<String, LongBeed>> {
+  public class StubMapListener implements Listener<MapEvent<String, Integer>> {
 
-    public void beedChanged(MapEvent<String, LongBeed> event) {
+    public void beedChanged(MapEvent<String, Integer> event) {
       $event = event;
     }
 
@@ -112,18 +108,16 @@ public class TestMapEdit {
       $event = null;
     }
 
-    public MapEvent<String, LongBeed> $event;
+    public MapEvent<String, Integer> $event;
 
   }
 
   @Before
   public void setUp() throws Exception {
     $owner = new StubBeanBeed();
-    $target = new EditableMapBeed<String, LongBeed>($owner) {
+    $target = new EditableMapBeed<String, Integer>($owner) {
       @Override
-      public boolean isAcceptable(
-          Map<String, Path<LongBeed>> elementsToAdd,
-          Map<String, Path<LongBeed>> elementsToRemove) {
+      public boolean isAcceptable(Map<String, Integer> elementsToAdd, Map<String, Integer> elementsToRemove) {
         // all keys in the map of added element are effective
         for (String s : elementsToAdd.keySet()) {
           if (s == null) {
@@ -131,11 +125,8 @@ public class TestMapEdit {
           }
         }
         // all values in the map of added elements are positive
-        for (Path<LongBeed> path : elementsToAdd.values()) {
-          if (path == null ||
-              path.get() == null ||
-              path.get().getLong() == null ||
-              path.get().getlong() <= 0) {
+        for (Integer i : elementsToAdd.values()) {
+          if (i == null || i <= 0) {
             return false;
           }
         }
@@ -155,7 +146,7 @@ public class TestMapEdit {
   }
 
   private StubBeanBeed $owner;
-  private EditableMapBeed<String, LongBeed> $target;
+  private EditableMapBeed<String, Integer> $target;
   private MyMapEdit $mapEdit;
   private StubValidityListener $listener1;
   private StubValidityListener $listener2;
@@ -261,12 +252,12 @@ public class TestMapEdit {
       assertTrue($mapEdit.getElementsToAdd().isEmpty());
       assertTrue($mapEdit.getElementsToRemove().isEmpty());
       String keyA = "horse";
-      LongBeed valueA = editableLongBeed(3L, $owner);
-      $mapEdit.addElementToAdd(keyA, path(valueA));
+      Integer valueA = 3;
+      $mapEdit.addElementToAdd(keyA, valueA);
       $mapEdit.perform();
       assertTrue($mapEdit.getElementsToAdd().size() == 1);
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA));
-      assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA).get());
+      assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA));
       assertTrue($mapEdit.getElementsToRemove().isEmpty());
       // validity listeners should be removed (and notified when removed)
       assertTrue($listener1.listenerRemoved());
@@ -342,8 +333,8 @@ public class TestMapEdit {
     try {
       // perform
       String keyA = "cow";
-      LongBeed valueA = editableLongBeed(-1L, $owner);
-      $mapEdit.addElementToAdd(keyA, path(valueA));
+      Integer valueA = new Integer(-1);
+      $mapEdit.addElementToAdd(keyA, valueA);
       $mapEdit.perform();
       // should not be reached
       assertTrue(false);
@@ -364,8 +355,8 @@ public class TestMapEdit {
     try {
       // perform
       String keyA = null;
-      LongBeed valueA = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd(keyA, path(valueA));
+      Integer valueA = new Integer(1);
+      $mapEdit.addElementToAdd(keyA, valueA);
       $mapEdit.perform();
       // should not be reached
       assertTrue(false);
@@ -395,8 +386,8 @@ public class TestMapEdit {
       assertTrue($mapEdit.isValidityListener($listener2));
       // perform
       String keyA = null;
-      LongBeed valueA = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd(keyA, path(valueA));
+      Integer valueA = new Integer(1);
+      $mapEdit.addElementToAdd(keyA, valueA);
       $mapEdit.perform();
       // should not be reached
       assertTrue(false);
@@ -430,31 +421,31 @@ public class TestMapEdit {
       assertTrue(edit1.getElementsToAdd().isEmpty());
       assertTrue(edit1.getElementsToRemove().isEmpty());
       String keyA1 = "cow";
-      LongBeed valueA1 = editableLongBeed(5L, $owner);
-      edit1.addElementToAdd(keyA1, path(valueA1));
+      Integer valueA1 = 5;
+      edit1.addElementToAdd(keyA1, valueA1);
       edit1.perform();
       assertTrue(edit1.getElementsToAdd().size() == 1);
       assertTrue(edit1.getElementsToAdd().containsKey(keyA1));
-      assertEquals(valueA1, edit1.getElementsToAdd().get(keyA1).get());
+      assertEquals(valueA1, edit1.getElementsToAdd().get(keyA1));
       assertTrue(edit1.getElementsToRemove().isEmpty());
       // perform
       MyMapEdit edit2 = new MyMapEdit($target);
       assertTrue(edit2.getElementsToAdd().isEmpty());
       assertTrue(edit2.getElementsToRemove().isEmpty());
       String keyA2 = "horse";
-      LongBeed valueA2 = editableLongBeed(7L, $owner);
-      edit2.addElementToAdd(keyA2, path(valueA2));
+      Integer valueA2 = 7;
+      edit2.addElementToAdd(keyA2, valueA2);
       edit2.perform();
       assertTrue(edit2.getElementsToAdd().size() == 1);
       assertTrue(edit2.getElementsToAdd().containsKey(keyA2));
-      assertEquals(valueA2, edit2.getElementsToAdd().get(keyA2).get());
+      assertEquals(valueA2, edit2.getElementsToAdd().get(keyA2));
       assertTrue(edit2.getElementsToRemove().isEmpty());
       // perform - no change (getElementsToAdd() and getElementsToRemove() are
       // made empty by the perform method)
       MyMapEdit edit3 = new MyMapEdit($target);
       assertTrue(edit3.getElementsToAdd().isEmpty());
       assertTrue(edit3.getElementsToRemove().isEmpty());
-      edit3.addElementToAdd(keyA2, path(valueA2));
+      edit3.addElementToAdd(keyA2, valueA2);
       edit3.perform();
       assertTrue(edit3.getElementsToAdd().isEmpty());
       assertTrue(edit3.getElementsToRemove().isEmpty());
@@ -475,37 +466,37 @@ public class TestMapEdit {
     try {
       // perform
       String keyA1 = "cow";
-      LongBeed valueA1 = editableLongBeed(5L, $owner);
+      Integer valueA1 = 5;
       MyMapEdit edit1 = new MyMapEdit($target);
-      edit1.addElementToAdd(keyA1, path(valueA1));
+      edit1.addElementToAdd(keyA1, valueA1);
       edit1.perform();
       assertTrue($target.keySet().size() == 1);
       assertTrue($target.keySet().contains(keyA1));
-      assertEquals(valueA1, $target.get(keyA1).get());
+      assertEquals(valueA1, $target.get(keyA1));
       // perform
       String keyA2 = "horse";
-      LongBeed valueA2 = editableLongBeed(7L, $owner);
+      Integer valueA2 = 7;
       MyMapEdit edit2 = new MyMapEdit($target);
-      edit2.addElementToAdd(keyA2, path(valueA2));
+      edit2.addElementToAdd(keyA2, valueA2);
       edit2.perform();
       assertTrue($target.keySet().size() == 2);
       assertTrue($target.keySet().contains(keyA1));
       assertTrue($target.keySet().contains(keyA2));
-      assertEquals(valueA1, $target.get(keyA1).get());
-      assertEquals(valueA2, $target.get(keyA2).get());
+      assertEquals(valueA1, $target.get(keyA1));
+      assertEquals(valueA2, $target.get(keyA2));
       // perform
       String keyA3 = "pig";
-      LongBeed valueA3 = editableLongBeed(11L, $owner);
+      Integer valueA3 = 11;
       MyMapEdit edit3 = new MyMapEdit($target);
-      edit3.addElementToAdd(keyA1, path(valueA1)); // no change
-      edit3.addElementToAdd(keyA3, path(valueA3));
-      edit3.addElementToRemove(keyA2, path(valueA2));
+      edit3.addElementToAdd(keyA1, valueA1); // no change
+      edit3.addElementToAdd(keyA3, valueA3);
+      edit3.addElementToRemove(keyA2, valueA2);
       edit3.perform();
       assertTrue($target.keySet().size() == 2);
       assertTrue($target.keySet().contains(keyA1));
       assertTrue($target.keySet().contains(keyA3));
-      assertEquals(valueA1, $target.get(keyA1).get());
-      assertEquals(valueA3, $target.get(keyA3).get());
+      assertEquals(valueA1, $target.get(keyA1));
+      assertEquals(valueA3, $target.get(keyA3));
     }
     catch (EditStateException e) {
       // should not be reached
@@ -581,8 +572,7 @@ public class TestMapEdit {
   // correct begin-state, check end-state
   public void undo4() {
     try {
-      LongBeed valueA = editableLongBeed(5L, $owner);
-      $mapEdit.addElementToAdd("cow", path(valueA));
+      $mapEdit.addElementToAdd("cow", 5);
       $mapEdit.perform();
       $mapEdit.undo();
       assertEquals($mapEdit.getState(), State.UNDONE);
@@ -611,8 +601,7 @@ public class TestMapEdit {
       assertTrue($mapEdit.isValidityListener($listener1));
       assertTrue($mapEdit.isValidityListener($listener2));
       // perform
-      LongBeed valueA = editableLongBeed(5L, $owner);
-      $mapEdit.addElementToAdd("horse", path(valueA));
+      $mapEdit.addElementToAdd("horse", 5);
       $mapEdit.perform();
       assertFalse($mapEdit.isValidityListener($listener1));
       assertFalse($mapEdit.isValidityListener($listener2));
@@ -650,12 +639,12 @@ public class TestMapEdit {
       // edit1
       edit1 = new MyMapEdit($target);
       String key = "sheep";
-      LongBeed value = editableLongBeed(5L, $owner);
-      edit1.addElementToAdd(key, path(value));
+      Integer value = 5;
+      edit1.addElementToAdd(key, value);
       edit1.perform();
       // edit2
       MyMapEdit edit2 = new MyMapEdit($target);
-      edit2.addElementToRemove(key, path(value));
+      edit2.addElementToRemove(key, value);
       edit2.perform();
       // undo edit1
       edit1.undo();
@@ -679,18 +668,18 @@ public class TestMapEdit {
       // edit1
       MyMapEdit edit1 = new MyMapEdit($target);
       String keyA1 = "horse";
-      LongBeed valueA1 = editableLongBeed(5L, $owner);
-      edit1.addElementToAdd(keyA1, path(valueA1));
+      Integer valueA1 = 5;
+      edit1.addElementToAdd(keyA1, valueA1);
       edit1.perform();
       // $mapEdit
       String keyA2 = "cow";
-      LongBeed valueA2 = editableLongBeed(7L, $owner);
-      $mapEdit.addElementToAdd(keyA2, path(valueA2));
+      Integer valueA2 = 7;
+      $mapEdit.addElementToAdd(keyA2, valueA2);
       $mapEdit.perform();
       $mapEdit.undo();
       assertTrue($target.keySet().size() == 1);
       assertTrue($target.keySet().contains(keyA1));
-      assertEquals(valueA1, $target.get(keyA1).get());
+      assertEquals(valueA1, $target.get(keyA1));
     }
     catch (EditStateException e) {
       // should not be reached
@@ -794,8 +783,7 @@ public class TestMapEdit {
       assertTrue($mapEdit.isValidityListener($listener1));
       assertTrue($mapEdit.isValidityListener($listener2));
       // perform
-      LongBeed value = editableLongBeed(5L, $owner);
-      $mapEdit.addElementToAdd("horse", path(value));
+      $mapEdit.addElementToAdd("horse", 5);
       $mapEdit.perform();
       assertFalse($mapEdit.isValidityListener($listener1));
       assertFalse($mapEdit.isValidityListener($listener2));
@@ -834,13 +822,13 @@ public class TestMapEdit {
       // edit1
       edit1 = new MyMapEdit($target);
       String keyA1 = "chicken";
-      LongBeed valueA1 = editableLongBeed(5L, $owner);
-      edit1.addElementToAdd(keyA1, path(valueA1));
+      Integer valueA1 = 5;
+      edit1.addElementToAdd(keyA1, valueA1);
       edit1.perform();
       edit1.undo();
       // edit2
       MyMapEdit edit2 = new MyMapEdit($target);
-      edit2.addElementToAdd(keyA1, path(valueA1));
+      edit2.addElementToAdd(keyA1, valueA1);
       edit2.perform();
       // redo edit1
       edit1.redo();
@@ -864,21 +852,21 @@ public class TestMapEdit {
       // edit1
       MyMapEdit edit1 = new MyMapEdit($target);
       String keyA1 = "duck";
-      LongBeed valueA1 = editableLongBeed(5L, $owner);
-      edit1.addElementToAdd(keyA1, path(valueA1));
+      Integer valueA1 = 5;
+      edit1.addElementToAdd(keyA1, valueA1);
       edit1.perform();
       // $mapEdit
       String keyA2 = "goat";
-      LongBeed valueA2 = editableLongBeed(7L, $owner);
-      $mapEdit.addElementToAdd(keyA2, path(valueA2));
+      Integer valueA2 = 7;
+      $mapEdit.addElementToAdd(keyA2, valueA2);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.redo();
       assertTrue($target.keySet().size() == 2);
       assertTrue($target.keySet().contains(keyA1));
       assertTrue($target.keySet().contains(keyA2));
-      assertEquals(valueA1, $target.get(keyA1).get());
-      assertEquals(valueA2, $target.get(keyA2).get());
+      assertEquals(valueA1, $target.get(keyA1));
+      assertEquals(valueA2, $target.get(keyA2));
     }
     catch (EditStateException e) {
       // should not be reached
@@ -905,8 +893,7 @@ public class TestMapEdit {
     // check the value of the validity
     assertTrue($mapEdit.isValid());
     // change validity
-    LongBeed value = editableLongBeed(5L, $owner);
-    $mapEdit.addElementToAdd("pig", path(value));
+    $mapEdit.addElementToAdd("pig", 5);
     $mapEdit.perform();
     // validity is still the same, so validity listeners are not notified
     assertTrue($mapEdit.isValid());
@@ -935,8 +922,8 @@ public class TestMapEdit {
     assertTrue($mapEdit.isValid());
     // change validity
     String key = "horse";
-    LongBeed value = editableLongBeed(-1L, $owner);
-    $mapEdit.addElementToAdd(key, path(value));
+    Integer value = -1;
+    $mapEdit.addElementToAdd(key, value);
     try {
       $mapEdit.perform();
     }
@@ -975,11 +962,9 @@ public class TestMapEdit {
   // incorrect begin-state
   public void addElementToAdd1() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("duck1", path(value));
+      $mapEdit.addElementToAdd("duck1", 1);
       $mapEdit.perform();
-      LongBeed value2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToAdd("duck2", path(value2));
+      $mapEdit.addElementToAdd("duck2", 2);
       // should not be reached
       assertTrue(false);
     }
@@ -998,12 +983,10 @@ public class TestMapEdit {
   // incorrect begin-state
   public void addElementToAdd2() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("duck1", path(value));
+      $mapEdit.addElementToAdd("duck1", 1);
       $mapEdit.perform();
       $mapEdit.undo();
-      LongBeed value2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToAdd("duck2", path(value2));
+      $mapEdit.addElementToAdd("duck2", 2);
       // should not be reached
       assertTrue(false);
     }
@@ -1022,13 +1005,11 @@ public class TestMapEdit {
   // incorrect begin-state
   public void addElementToAdd3() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("duck1", path(value));
+      $mapEdit.addElementToAdd("duck1", 1);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.redo();
-      LongBeed value2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToAdd("duck2", path(value2));
+      $mapEdit.addElementToAdd("duck2", 2);
       // should not be reached
       assertTrue(false);
     }
@@ -1045,23 +1026,23 @@ public class TestMapEdit {
 
   @Test
   // correct begin-state, check postconditions
-  public void addElementToAdd4() throws IllegalEditException {
+  public void addElementToAdd4() {
     try {
       assertTrue($mapEdit.getElementsToAdd().isEmpty());
       String keyA1 = "pig";
-      LongBeed valueA1 = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd(keyA1, path(valueA1));
+      Integer valueA1 = 1;
+      $mapEdit.addElementToAdd(keyA1, valueA1);
       assertTrue($mapEdit.getElementsToAdd().size() == 1);
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
       String keyA2 = "lamb";
-      LongBeed valueA2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToAdd(keyA2, path(valueA2));
+      Integer valueA2 = 2;
+      $mapEdit.addElementToAdd(keyA2, valueA2);
       assertTrue($mapEdit.getElementsToAdd().size() == 2);
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA2));
-      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
-      assertEquals(valueA2, $mapEdit.getElementsToAdd().get(keyA2).get());
+      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
+      assertEquals(valueA2, $mapEdit.getElementsToAdd().get(keyA2));
     }
     catch (EditStateException e) {
       // should not be reached
@@ -1073,8 +1054,7 @@ public class TestMapEdit {
   // incorrect begin-state
   public void removeElementToAdd1() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("dog", path(value));
+      $mapEdit.addElementToAdd("dog", 1);
       $mapEdit.perform();
       $mapEdit.removeElementToAdd("cat");
       // should not be reached
@@ -1095,8 +1075,7 @@ public class TestMapEdit {
   // incorrect begin-state
   public void removeElementToAdd2() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("dog", path(value));
+      $mapEdit.addElementToAdd("dog", 1);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.removeElementToAdd("cat");
@@ -1118,8 +1097,7 @@ public class TestMapEdit {
   // incorrect begin-state
   public void removeElementToAdd3() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("dog", path(value));
+      $mapEdit.addElementToAdd("dog", 1);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.redo();
@@ -1140,27 +1118,27 @@ public class TestMapEdit {
 
   @Test
   // correct begin-state, check postconditions
-  public void removeElementToAdd4() throws IllegalEditException {
+  public void removeElementToAdd4() {
     try {
       assertTrue($mapEdit.getElementsToAdd().isEmpty());
       String keyA1 = "cow";
-      LongBeed valueA1 = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd(keyA1, path(valueA1));
+      Integer valueA1 = 1;
+      $mapEdit.addElementToAdd(keyA1, valueA1);
       assertTrue($mapEdit.getElementsToAdd().size() == 1);
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
       String keyA2 = "horse";
-      LongBeed valueA2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToAdd(keyA2, path(valueA2));
+      Integer valueA2 = 2;
+      $mapEdit.addElementToAdd(keyA2, valueA2);
       assertTrue($mapEdit.getElementsToAdd().size() == 2);
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA2));
-      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
-      assertEquals(valueA2, $mapEdit.getElementsToAdd().get(keyA2).get());
+      assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
+      assertEquals(valueA2, $mapEdit.getElementsToAdd().get(keyA2));
       $mapEdit.removeElementToAdd(keyA1);
       assertTrue($mapEdit.getElementsToAdd().size() == 1);
       assertTrue($mapEdit.getElementsToAdd().containsKey(keyA2));
-      assertEquals(valueA2, $mapEdit.getElementsToAdd().get(keyA2).get());
+      assertEquals(valueA2, $mapEdit.getElementsToAdd().get(keyA2));
       $mapEdit.removeElementToAdd(keyA2);
       assertTrue($mapEdit.getElementsToAdd().isEmpty());
     }
@@ -1174,11 +1152,9 @@ public class TestMapEdit {
   // incorrect begin-state
   public void addElementToRemove1() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("cow", path(value));
+      $mapEdit.addElementToAdd("cow", 1);
       $mapEdit.perform();
-      LongBeed value2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToRemove("horse", path(value2));
+      $mapEdit.addElementToRemove("horse", 2);
       // should not be reached
       assertTrue(false);
     }
@@ -1197,12 +1173,10 @@ public class TestMapEdit {
   // incorrect begin-state
   public void addElementToRemove2() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("dog", path(value));
+      $mapEdit.addElementToAdd("dog", 1);
       $mapEdit.perform();
       $mapEdit.undo();
-      LongBeed value2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToRemove("horse", path(value2));
+      $mapEdit.addElementToRemove("horse", 2);
       // should not be reached
       assertTrue(false);
     }
@@ -1221,13 +1195,11 @@ public class TestMapEdit {
   // incorrect begin-state
   public void addElementToRemove3() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("dog", path(value));
+      $mapEdit.addElementToAdd("dog", 1);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.redo();
-      LongBeed value2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToRemove("cat", path(value2));
+      $mapEdit.addElementToRemove("cat", 2);
       // should not be reached
       assertTrue(false);
     }
@@ -1244,23 +1216,23 @@ public class TestMapEdit {
 
   @Test
   // correct begin-state, check postconditions
-  public void addElementToRemove4() throws IllegalEditException {
+  public void addElementToRemove4() {
     try {
       assertTrue($mapEdit.getElementsToRemove().isEmpty());
       String keyR1 = "horse";
-      LongBeed valueR1 = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToRemove(keyR1, path(valueR1));
+      Integer valueR1 = 1;
+      $mapEdit.addElementToRemove(keyR1, valueR1);
       assertTrue($mapEdit.getElementsToRemove().size() == 1);
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
-      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
+      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
       String keyR2 = "cow";
-      LongBeed valueR2 = editableLongBeed(2L, $owner);
-      $mapEdit.addElementToRemove(keyR2, path(valueR2));
+      Integer valueR2 = 2;
+      $mapEdit.addElementToRemove(keyR2, valueR2);
       assertTrue($mapEdit.getElementsToRemove().size() == 2);
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR2));
-      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
-      assertEquals(valueR2, $mapEdit.getElementsToRemove().get(keyR2).get());
+      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
+      assertEquals(valueR2, $mapEdit.getElementsToRemove().get(keyR2));
     }
     catch (EditStateException e) {
       // should not be reached
@@ -1272,8 +1244,7 @@ public class TestMapEdit {
   // incorrect begin-state
   public void removeElementToRemove1() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("cow", path(value));
+      $mapEdit.addElementToAdd("cow", 1);
       $mapEdit.perform();
       $mapEdit.removeElementToRemove("horse");
       // should not be reached
@@ -1294,8 +1265,7 @@ public class TestMapEdit {
   // incorrect begin-state
   public void removeElementToRemove2() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("cow", path(value));
+      $mapEdit.addElementToAdd("cow", 1);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.removeElementToRemove("horse");
@@ -1317,8 +1287,7 @@ public class TestMapEdit {
   // incorrect begin-state
   public void removeElementToRemove3() {
     try {
-      LongBeed value = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToAdd("cow", path(value));
+      $mapEdit.addElementToAdd("cow", 1);
       $mapEdit.perform();
       $mapEdit.undo();
       $mapEdit.redo();
@@ -1339,27 +1308,27 @@ public class TestMapEdit {
 
   @Test
   // correct begin-state, check postconditions
-  public void removeElementToRemove4() throws IllegalEditException {
+  public void removeElementToRemove4() {
     try {
       assertTrue($mapEdit.getElementsToRemove().isEmpty());
       String keyR1 = "duck";
-      LongBeed valueR1 = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToRemove(keyR1, path(valueR1));
+      Integer valueR1 = 1;
+      $mapEdit.addElementToRemove(keyR1, valueR1);
       assertTrue($mapEdit.getElementsToRemove().size() == 1);
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
-      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
+      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
       String keyR2 = "chicken";
-      LongBeed valueR2 = editableLongBeed(1L, $owner);
-      $mapEdit.addElementToRemove(keyR2, path(valueR2));
+      Integer valueR2 = 2;
+      $mapEdit.addElementToRemove(keyR2, valueR2);
       assertTrue($mapEdit.getElementsToRemove().size() == 2);
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR2));
-      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
-      assertEquals(valueR2, $mapEdit.getElementsToRemove().get(keyR2).get());
+      assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
+      assertEquals(valueR2, $mapEdit.getElementsToRemove().get(keyR2));
       $mapEdit.removeElementToRemove(keyR1);
       assertTrue($mapEdit.getElementsToRemove().size() == 1);
       assertTrue($mapEdit.getElementsToRemove().containsKey(keyR2));
-      assertEquals(valueR2, $mapEdit.getElementsToRemove().get(keyR2).get());
+      assertEquals(valueR2, $mapEdit.getElementsToRemove().get(keyR2));
       $mapEdit.removeElementToRemove(keyR2);
       assertTrue($mapEdit.getElementsToRemove().isEmpty());
     }
@@ -1373,9 +1342,9 @@ public class TestMapEdit {
   public void getAddedElements() throws EditStateException, IllegalEditException {
     // set value of target
     String initKey = "dog";
-    LongBeed initValue = editableLongBeed(3L, $owner);
+    Integer initValue = 3;
     MyMapEdit edit = new MyMapEdit($target);
-    edit.addElementToAdd(initKey, path(initValue));
+    edit.addElementToAdd(initKey, initValue);
     edit.perform();
     // check
     assertEquals($mapEdit.getState(), State.NOT_YET_PERFORMED);
@@ -1384,12 +1353,12 @@ public class TestMapEdit {
     assertTrue($mapEdit.getAddedElements().isEmpty());
     // set goal
     String keyA1 = "cat";
-    LongBeed valueA1 = editableLongBeed(5L, $owner);
-    $mapEdit.addElementToAdd(keyA1, path(valueA1));
+    Integer valueA1 = 5;
+    $mapEdit.addElementToAdd(keyA1, valueA1);
     assertEquals($mapEdit.getState(), State.NOT_YET_PERFORMED);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getAddedElements().isEmpty());
     // perform
@@ -1397,17 +1366,17 @@ public class TestMapEdit {
     assertEquals($mapEdit.getState(), State.DONE);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getAddedElements().size() == 1);
     assertTrue($mapEdit.getAddedElements().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getAddedElements().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getAddedElements().get(keyA1));
     // undo
     $mapEdit.undo();
     assertEquals($mapEdit.getState(), State.UNDONE);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getAddedElements().isEmpty());
     // redo
@@ -1415,17 +1384,17 @@ public class TestMapEdit {
     assertEquals($mapEdit.getState(), State.DONE);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getAddedElements().size() == 1);
     assertTrue($mapEdit.getAddedElements().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getAddedElements().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getAddedElements().get(keyA1));
     // kill
     $mapEdit.kill();
     assertEquals($mapEdit.getState(), State.DEAD);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getAddedElements().isEmpty());
   }
@@ -1434,9 +1403,9 @@ public class TestMapEdit {
   public void getRemovedElements() throws EditStateException, IllegalEditException {
     // set value of target
     String initKey = "frog";
-    LongBeed initValue = editableLongBeed(3L, $owner);
+    Integer initValue = 3;
     MyMapEdit edit = new MyMapEdit($target);
-    edit.addElementToAdd(initKey, path(initValue));
+    edit.addElementToAdd(initKey, initValue);
     edit.perform();
     // check
     assertEquals($mapEdit.getState(), State.NOT_YET_PERFORMED);
@@ -1445,22 +1414,22 @@ public class TestMapEdit {
     assertTrue($mapEdit.getRemovedElements().isEmpty());
     // set goal
     String keyA = "fish";
-    LongBeed valueA = editableLongBeed(5L, $owner);
-    $mapEdit.addElementToAdd(keyA, path(valueA));
+    Integer valueA = 5;
+    $mapEdit.addElementToAdd(keyA, valueA);
     assertEquals($mapEdit.getState(), State.NOT_YET_PERFORMED);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getRemovedElements().size() == 1);
     assertTrue($mapEdit.getRemovedElements().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getRemovedElements().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getRemovedElements().get(keyA));
     // perform
     $mapEdit.perform();
     assertEquals($mapEdit.getState(), State.DONE);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getRemovedElements().isEmpty());
     // undo
@@ -1468,17 +1437,17 @@ public class TestMapEdit {
     assertEquals($mapEdit.getState(), State.UNDONE);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getRemovedElements().size() == 1);
     assertTrue($mapEdit.getRemovedElements().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getRemovedElements().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getRemovedElements().get(keyA));
     // redo
     $mapEdit.redo();
     assertEquals($mapEdit.getState(), State.DONE);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getRemovedElements().isEmpty());
     // kill
@@ -1486,11 +1455,11 @@ public class TestMapEdit {
     assertEquals($mapEdit.getState(), State.DEAD);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getElementsToAdd().get(keyA));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.getRemovedElements().size() == 1);
     assertTrue($mapEdit.getRemovedElements().containsKey(keyA));
-    assertEquals(valueA, $mapEdit.getRemovedElements().get(keyA).get());
+    assertEquals(valueA, $mapEdit.getRemovedElements().get(keyA));
   }
 
 
@@ -1508,56 +1477,56 @@ public class TestMapEdit {
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     // change value of target
     String key1 = "pig";
-    LongBeed value1 = editableLongBeed(1L, $owner);
+    Integer value1 = 1;
     String key2 = "frog";
-    LongBeed value2 = editableLongBeed(2L, $owner);
+    Integer value2 = 2;
     String key3 = "fly";
-    LongBeed value3 = editableLongBeed(3L, $owner);
+    Integer value3 = 3;
     String key4 = "bee";
-    LongBeed value4 = editableLongBeed(4L, $owner);
+    Integer value4 = 4;
     MyMapEdit mapEdit = new MyMapEdit($target);
-    mapEdit.addElementToAdd(key1, path(value1));
-    mapEdit.addElementToAdd(key2, path(value2));
-    mapEdit.addElementToAdd(key3, path(value3));
-    mapEdit.addElementToAdd(key4, path(value4));
+    mapEdit.addElementToAdd(key1, value1);
+    mapEdit.addElementToAdd(key2, value2);
+    mapEdit.addElementToAdd(key3, value3);
+    mapEdit.addElementToAdd(key4, value4);
     mapEdit.perform();
     assertTrue($target.keySet().size() == 4);
     assertTrue($target.keySet().contains(key1));
     assertTrue($target.keySet().contains(key2));
     assertTrue($target.keySet().contains(key3));
     assertTrue($target.keySet().contains(key4));
-    assertEquals(value1, $target.get(key1).get());
-    assertEquals(value2, $target.get(key2).get());
-    assertEquals(value3, $target.get(key3).get());
-    assertEquals(value4, $target.get(key4).get());
+    assertEquals(value1, $target.get(key1));
+    assertEquals(value2, $target.get(key2));
+    assertEquals(value3, $target.get(key3));
+    assertEquals(value4, $target.get(key4));
     // add elements to edit
     String key5 = "cow";
     String key6 = "horse";
-    LongBeed value = editableLongBeed(444L, $owner);
+    Integer value = 444;
     $mapEdit = new MyMapEdit($target);
-    $mapEdit.addElementToAdd(key1, path(value));
-    $mapEdit.addElementToAdd(key5, path(value));
-    $mapEdit.addElementToRemove(key3, path(value));
-    $mapEdit.addElementToRemove(key6, path(value));
+    $mapEdit.addElementToAdd(key1, value);
+    $mapEdit.addElementToAdd(key5, value);
+    $mapEdit.addElementToRemove(key3, value);
+    $mapEdit.addElementToRemove(key6, value);
     assertTrue($mapEdit.getElementsToAdd().size() == 2);
     assertTrue($mapEdit.getElementsToAdd().containsKey(key1));
     assertTrue($mapEdit.getElementsToAdd().containsKey(key5));
-    assertEquals(value, $mapEdit.getElementsToAdd().get(key1).get());
-    assertEquals(value, $mapEdit.getElementsToAdd().get(key5).get());
+    assertEquals(value, $mapEdit.getElementsToAdd().get(key1));
+    assertEquals(value, $mapEdit.getElementsToAdd().get(key5));
     assertTrue($mapEdit.getElementsToRemove().size() == 2);
     assertTrue($mapEdit.getElementsToRemove().containsKey(key3));
     assertTrue($mapEdit.getElementsToRemove().containsKey(key6));
-    assertEquals(value, $mapEdit.getElementsToRemove().get(key3).get());
-    assertEquals(value, $mapEdit.getElementsToRemove().get(key6).get());
+    assertEquals(value, $mapEdit.getElementsToRemove().get(key3));
+    assertEquals(value, $mapEdit.getElementsToRemove().get(key6));
     // store initial state
     $mapEdit.perform(); // added = {key1,key5} \ {key1,key,key3,key4},
                         // removed = {key3,key6} intersection {key1,key2,key3,key4}
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(key5));
     assertTrue($mapEdit.getElementsToRemove().size() == 1);
-    assertEquals(value, $mapEdit.getElementsToAdd().get(key5).get());
+    assertEquals(value, $mapEdit.getElementsToAdd().get(key5));
     assertTrue($mapEdit.getElementsToRemove().containsKey(key3));
-    assertEquals(value, $mapEdit.getElementsToRemove().get(key3).get());
+    assertEquals(value, $mapEdit.getElementsToRemove().get(key3));
   }
 
   @Test
@@ -1567,29 +1536,29 @@ public class TestMapEdit {
     assertFalse($mapEdit.isChange());
     // change elements to add and to remove
     String keyA1 = "horse";
-    LongBeed valueA1 = editableLongBeed(2L, $owner);
-    $mapEdit.addElementToAdd(keyA1, path(valueA1));
+    Integer valueA1 = 2;
+    $mapEdit.addElementToAdd(keyA1, valueA1);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.isChange());
     // change elements to add and to remove
     String keyR1 = "cow";
-    LongBeed valueR1 = editableLongBeed(3L, $owner);
-    $mapEdit.addElementToRemove(keyR1, path(valueR1));
+    Integer valueR1 = 3;
+    $mapEdit.addElementToRemove(keyR1, valueR1);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().size() == 1);
     assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
-    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
+    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
     assertTrue($mapEdit.isChange());
     // change elements to add and to remove
     $mapEdit.removeElementToRemove(keyR1);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($mapEdit.isChange());
     // change elements to add and to remove
@@ -1609,60 +1578,60 @@ public class TestMapEdit {
     assertTrue($mapEdit.isInitialStateCurrent());
     // change elements to add and remove
     String keyA1 = "horse";
-    LongBeed valueA1 = editableLongBeed(2L, $owner);
+    Integer valueA1 = 2;
     String keyA2 = "cow";
-    LongBeed valueA2 = editableLongBeed(3L, $owner);
+    Integer valueA2 = 3;
     String keyR1 = "frog";
-    LongBeed valueR1 = editableLongBeed(4L, $owner);
-    $mapEdit.addElementToAdd(keyA1, path(valueA1));
-    $mapEdit.addElementToRemove(keyR1, path(valueR1));
+    Integer valueR1 = 4;
+    $mapEdit.addElementToAdd(keyA1, valueA1);
+    $mapEdit.addElementToRemove(keyR1, valueR1);
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
-    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
+    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
     assertTrue($target.keySet().isEmpty());
     // edit = {A1}, {R1}
     // target = {}
     assertFalse($mapEdit.isInitialStateCurrent());
     // change target
     MyMapEdit mapEdit = new MyMapEdit($target);
-    mapEdit.addElementToAdd(keyA1, path(valueA1));
-    mapEdit.addElementToAdd(keyR1, path(valueR1));
-    mapEdit.addElementToAdd(keyA2, path(valueA2));
+    mapEdit.addElementToAdd(keyA1, valueA1);
+    mapEdit.addElementToAdd(keyR1, valueR1);
+    mapEdit.addElementToAdd(keyA2, valueA2);
     mapEdit.perform();
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
-    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
+    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
     assertTrue($target.keySet().size() == 3);
     assertTrue($target.keySet().contains(keyA1));
     assertTrue($target.keySet().contains(keyA2));
     assertTrue($target.keySet().contains(keyR1));
-    assertEquals(valueA1, $target.get(keyA1).get());
-    assertEquals(valueA2, $target.get(keyA2).get());
-    assertEquals(valueR1, $target.get(keyR1).get());
+    assertEquals(valueA1, $target.get(keyA1));
+    assertEquals(valueA2, $target.get(keyA2));
+    assertEquals(valueR1, $target.get(keyR1));
     // edit = {A1}, {R1}
     // target = {A1, A2, R1}
     assertFalse($mapEdit.isInitialStateCurrent());
     // change target
     MyMapEdit mapEdit2 = new MyMapEdit($target);
-    mapEdit2.addElementToRemove(keyA1, path(valueA1));
+    mapEdit2.addElementToRemove(keyA1, valueA1);
     mapEdit2.perform();
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToRemove().containsKey(keyR1));
-    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1).get());
+    assertEquals(valueR1, $mapEdit.getElementsToRemove().get(keyR1));
     assertTrue($target.keySet().size() == 2);
     assertTrue($target.keySet().contains(keyA2));
     assertTrue($target.keySet().contains(keyR1));
-    assertEquals(valueA2, $target.get(keyA2).get());
-    assertEquals(valueR1, $target.get(keyR1).get());
+    assertEquals(valueA2, $target.get(keyA2));
+    assertEquals(valueR1, $target.get(keyR1));
     // edit = {A1}, {R1}
     // target = {A2, R1}
     assertTrue($mapEdit.isInitialStateCurrent());
@@ -1678,19 +1647,19 @@ public class TestMapEdit {
     assertTrue($mapEdit.isGoalStateCurrent());
     // perform
     String keyA1 = "butterfly";
-    LongBeed valueA1 = editableLongBeed(2L, $owner);
+    Integer valueA1 = 2;
     String keyR1 = "fox";
-    LongBeed valueR1 = editableLongBeed(3L, $owner);
-    $mapEdit.addElementToAdd(keyA1, path(valueA1));
-    $mapEdit.addElementToRemove(keyR1, path(valueR1));
+    Integer valueR1 = 3;
+    $mapEdit.addElementToAdd(keyA1, valueA1);
+    $mapEdit.addElementToRemove(keyR1, valueR1);
     $mapEdit.perform();
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($target.keySet().size() == 1);
     assertTrue($target.keySet().contains(keyA1));
-    assertEquals(valueA1, $target.get(keyA1).get());
+    assertEquals(valueA1, $target.get(keyA1));
     // edit = {A1}, {}
     // target = {A1}
     assertTrue($mapEdit.isGoalStateCurrent());
@@ -1698,7 +1667,7 @@ public class TestMapEdit {
     $mapEdit.undo();
     assertTrue($mapEdit.getElementsToAdd().size() == 1);
     assertTrue($mapEdit.getElementsToAdd().containsKey(keyA1));
-    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1).get());
+    assertEquals(valueA1, $mapEdit.getElementsToAdd().get(keyA1));
     assertTrue($mapEdit.getElementsToRemove().isEmpty());
     assertTrue($target.keySet().isEmpty());
     // edit = {A1}, {}
@@ -1711,18 +1680,18 @@ public class TestMapEdit {
     assertEquals(State.NOT_YET_PERFORMED, $mapEdit.getState());
     // perform
     String keyA1 = "cow";
-    LongBeed valueA1 = editableLongBeed(1L, $owner);
+    Integer valueA1 = 1;
     String keyR1 = "horse";
-    LongBeed valueR1 = editableLongBeed(2L, $owner);
-    $mapEdit.addElementToAdd(keyA1, path(valueA1));
-    $mapEdit.addElementToRemove(keyR1, path(valueR1));
+    Integer valueR1 = 2;
+    $mapEdit.addElementToAdd(keyA1, valueA1);
+    $mapEdit.addElementToRemove(keyR1, valueR1);
     $mapEdit.perform();
     // create event
-    MapEvent<String, LongBeed> createdEvent = $mapEdit.createEvent();
+    MapEvent<String, Integer> createdEvent = $mapEdit.createEvent();
     assertEquals(createdEvent.getEdit(), $mapEdit);
     assertTrue(createdEvent.getAddedElements().size() == 1);
     assertTrue(createdEvent.getAddedElements().containsKey(keyA1));
-    assertEquals(valueA1, createdEvent.getAddedElements().get(keyA1).get());
+    assertEquals(valueA1, createdEvent.getAddedElements().get(keyA1));
     assertTrue(createdEvent.getRemovedElements().isEmpty());
     assertEquals(createdEvent.getSource(), $target);
     // undo
@@ -1733,7 +1702,7 @@ public class TestMapEdit {
     assertTrue(createdEvent.getAddedElements().isEmpty());
     assertTrue(createdEvent.getRemovedElements().size() == 1);
     assertTrue(createdEvent.getRemovedElements().containsKey(keyA1));
-    assertEquals(valueA1, createdEvent.getRemovedElements().get(keyA1).get());
+    assertEquals(valueA1, createdEvent.getRemovedElements().get(keyA1));
     assertEquals(createdEvent.getSource(), $target);
   }
 

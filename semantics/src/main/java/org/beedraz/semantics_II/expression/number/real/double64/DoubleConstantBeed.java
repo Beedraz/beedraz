@@ -56,7 +56,7 @@ public class DoubleConstantBeed
 
   /**
    * This constructor is added for reasons of consistency,
-   * but, since this beed is constact, i.e., its value never
+   * but, since this beed is constant, i.e., its value never
    * changes, it will never send events or start a topological
    * update, so there is no reason to register the beed
    * with the owner. This constructor does nothing with

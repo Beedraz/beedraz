@@ -75,6 +75,30 @@ public class BooleanBeeds {
   /*<section name="and">*/
   //------------------------------------------------------------------
 
+  public static BooleanBeed and(
+      BooleanBeed operand1, BooleanBeed operand2) {
+    return and(path(operand1), path(operand2));
+  }
+
+  public static BooleanBeed and(
+      BooleanBeed operand1, Path<? extends BooleanBeed> operandPath2) {
+    return and(path(operand1), operandPath2);
+  }
+
+  public static BooleanBeed and(
+      Path<? extends BooleanBeed> operandPath1, BooleanBeed operand2) {
+    return and(operandPath1, path(operand2));
+  }
+
+  public static BooleanBeed and(
+      Path<? extends BooleanBeed> operandPath1, Path<? extends BooleanBeed> operandPath2) {
+    BooleanANDBeed andBeed =
+      new BooleanANDBeed();
+    andBeed.setLeftOperandPath(operandPath1);
+    andBeed.setRightOperandPath(operandPath2);
+    return andBeed;
+  }
+
   /**
    * @pre operands != null;
    */
@@ -113,6 +137,28 @@ public class BooleanBeeds {
   /*<section name="or">*/
   //------------------------------------------------------------------
 
+  public static BooleanBeed or(
+      BooleanBeed operand1, BooleanBeed operand2) {
+    return or(path(operand1), path(operand2));
+  }
+
+  public static BooleanBeed or(
+      BooleanBeed operand1, Path<? extends BooleanBeed> operandPath2) {
+    return or(path(operand1), operandPath2);
+  }
+
+  public static BooleanBeed or(
+      Path<? extends BooleanBeed> operandPath1, BooleanBeed operand2) {
+    return or(operandPath1, path(operand2));
+  }
+
+  public static BooleanBeed or(
+      Path<? extends BooleanBeed> operandPath1, Path<? extends BooleanBeed> operandPath2) {
+    BooleanORBeed orBeed = new BooleanORBeed();
+    orBeed.setLeftOperandPath(operandPath1);
+    orBeed.setRightOperandPath(operandPath2);
+    return orBeed;
+  }
   public static BooleanBeed or(BooleanBeed... operands) {
     switch (operands.length) {
       case 0:
@@ -148,6 +194,28 @@ public class BooleanBeeds {
   /*<section name="xor">*/
   //------------------------------------------------------------------
 
+  public static BooleanBeed xor(
+      BooleanBeed operand1, BooleanBeed operand2) {
+    return xor(path(operand1), path(operand2));
+  }
+
+  public static BooleanBeed xor(
+      BooleanBeed operand1, Path<? extends BooleanBeed> operandPath2) {
+    return xor(path(operand1), operandPath2);
+  }
+
+  public static BooleanBeed xor(
+      Path<? extends BooleanBeed> operandPath1, BooleanBeed operand2) {
+    return xor(operandPath1, path(operand2));
+  }
+
+  public static BooleanBeed xor(
+      Path<? extends BooleanBeed> operandPath1, Path<? extends BooleanBeed> operandPath2) {
+    BooleanXORBeed xorBeed = new BooleanXORBeed();
+    xorBeed.setLeftOperandPath(operandPath1);
+    xorBeed.setRightOperandPath(operandPath2);
+    return xorBeed;
+  }
   public static BooleanBeed xor(BooleanBeed... operands) {
     switch (operands.length) {
       case 0:
@@ -182,6 +250,31 @@ public class BooleanBeeds {
 
   /*<section name="cand">*/
   //------------------------------------------------------------------
+
+  public static BooleanBeed cand(
+      BooleanBeed operand1, BooleanBeed operand2) {
+    return cand(path(operand1), path(operand2));
+  }
+
+  public static BooleanBeed cand(
+      BooleanBeed operand1, Path<? extends BooleanBeed> operandPath2) {
+    return cand(path(operand1), operandPath2);
+  }
+
+  public static BooleanBeed cand(
+      Path<? extends BooleanBeed> operandPath1, BooleanBeed operand2) {
+    return cand(operandPath1, path(operand2));
+  }
+
+  public static BooleanBeed cand(
+      Path<? extends BooleanBeed> operandPath1, Path<? extends BooleanBeed> operandPath2) {
+    BooleanConditionalANDBeed candBeed =
+      new BooleanConditionalANDBeed();
+    candBeed.setLeftOperandPath(operandPath1);
+    candBeed.setRightOperandPath(operandPath2);
+    return candBeed;
+  }
+
 
   /**
    * @pre operands != null;
@@ -221,6 +314,29 @@ public class BooleanBeeds {
   /*<section name="cor">*/
   //------------------------------------------------------------------
 
+  public static BooleanBeed cor(
+      BooleanBeed operand1, BooleanBeed operand2) {
+    return cor(path(operand1), path(operand2));
+  }
+
+  public static BooleanBeed cor(
+      BooleanBeed operand1, Path<? extends BooleanBeed> operandPath2) {
+    return cor(path(operand1), operandPath2);
+  }
+
+  public static BooleanBeed cor(
+      Path<? extends BooleanBeed> operandPath1, BooleanBeed operand2) {
+    return cor(operandPath1, path(operand2));
+  }
+
+  public static BooleanBeed cor(
+      Path<? extends BooleanBeed> operandPath1, Path<? extends BooleanBeed> operandPath2) {
+    BooleanConditionalORBeed corBeed =
+      new BooleanConditionalORBeed();
+    corBeed.setLeftOperandPath(operandPath1);
+    corBeed.setRightOperandPath(operandPath2);
+    return corBeed;
+  }
   public static BooleanBeed cor(BooleanBeed... operands) {
     switch (operands.length) {
       case 0:

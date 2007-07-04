@@ -72,4 +72,6 @@ public abstract class AbstractSimpleEdit<_Target_ extends Beed<_Event_>,
     localMarkPerformed();
   }
 
+  /*</property>*/
+
 }

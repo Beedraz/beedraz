@@ -106,6 +106,34 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>,
   }
 
   /**
+   * If this compound edit has only 1 component edit, the single edit
+   * of that component edit. If this compound edit has more than 1 component
+   * edit, this compound edit itself. If this compound edit has 0 component
+   * edits, {@code null}.
+   *
+   * @result getComponentEdits().size() < 1 ? null;
+   * @result getComponentEdits().size() == 1 ? getComponentEdits().get(0).getSingleEdit();
+   * @result getComponentEdits().size() > 1 ? this;
+   */
+  public final Edit<?> getSingleEdit() {
+    switch ($componentEdits.size()) {
+      case 0:
+        return null;
+      case 1:
+        Edit<?> single = getComponentEdits().get(0);
+        if (single instanceof CompoundEdit) {
+          @SuppressWarnings("unchecked")
+          CompoundEdit compoundEdit = ((CompoundEdit)single);
+          single = compoundEdit.getSingleEdit();
+          // alternatively, add "getSingleEdit()" method to all edits
+        }
+        return single;
+      default:
+        return this;
+    }
+  }
+
+  /**
    * Component edits might even be invalid when added. When a component edit is added,
    * validity of the compound edit is recalculated.
    *
@@ -126,6 +154,8 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>,
     $componentEdits.add(componentEdit);
     recalculateValidity();
   }
+
+  // no remove method for now
 
   private final List<Edit<?>> $componentEdits = new ArrayList<Edit<?>>();
 
@@ -222,54 +252,40 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>,
   //------------------------------------------------------------------
 
   /*
-   * MUDO validity of component edits must be evaluated in context of
-   *       earlier edits; this requires a validation expression that allows
-   *       for subsitution; a component edit might be invalid (beforehand)
-   *       in isolation, but it might be valid by the time we reach it;
-   *       so the compound might be valid even if some components are not
-   *       (before performance) -- and vice versa.
-   *       So, changes in validity of components are not really relevant.
-   *       If a goal changes, we need to re-evaluate completely, even
-   *       if the validity of the component doesn't change.
-   *       We are interested in removal though, since this signals dead.
+   * MUDO Validity of component edits must be evaluated in context of
+   *      earlier edits: a component edit might be invalid (beforehand)
+   *      in isolation, but it might be valid by the time we reach it.
+   *      So the compound might be valid even if some components are not
+   *      (before performance) -- and vice versa.
+   *      This requires a validation expression that allows for subsitution.
+   *
+   *      This is not implemented yet. We only look at the first component edit:
+   *      if that is not acceptable, the compound edit can surely not be
+   *      performed. After that, even if the component edit says it is acceptable,
+   *      perform might still fail (as currently with any edit).
+   *
+   *      Validation expressions with substitution is something for a
+   *      later version
    */
 
+  /**
+   * @return getComponentEdits().isEmpty() || getComponentEdits().get(0).isAcceptable();
+   */
   @Override
   protected final boolean isAcceptable() {
-    // MUDO, for now, all component edits need to be valid, but that is not true
-    for (Edit<?> e : $componentEdits) {
-      if (! e.isAcceptable()) {
-        return false;
-      }
-    }
-    return true;
+    return $componentEdits.isEmpty() || $componentEdits.get(0).isAcceptable();
   }
 
   private ValidityListener $componentEditListener = new ValidityListener() {
 
     public void validityChanged(Edit<?> target, boolean newValidity) {
-//      if (isValid() && (! newValidity)) {
-//        // we were true, and now have become false
-//        assignValid(false);
-//      }
-//      else if ((! isValid()) && newValidity) {
-//        // we were false; maybe we are true now
-//        for (Edit<?> e : $edits) {
-//          if (! e.isValid()) {
-//            // we were invalid, and still are; nothing to do
-//            return;
-//          }
-//        }
-//        // we were invalid, but now all components are valid: we have changed
-//        assignValid(true);
-//      }
-//      /* else, we were invalid, and a component changed from true to false:
-//       * we are even more invalid
-//       * or, we were valid, and a component changed from false to true:
-//       * this is impossible: if a component would change from false to true,
-//       * there was a component before that was invalid, so we were invalid
-//       */
-      recalculateValidity();
+      /* Since currently our acceptibility only depends on the first component edit,
+       * we only react to acceptibility changes of the first component edit.
+       */
+      assert $componentEdits.size() > 0;
+      if (target == $componentEdits.get(0)) {
+        recalculateValidity();
+      }
     }
 
     public void listenerRemoved(Edit<?> target) {

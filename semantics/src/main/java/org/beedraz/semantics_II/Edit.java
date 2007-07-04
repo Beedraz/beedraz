@@ -288,9 +288,9 @@ public abstract class Edit<_Target_ extends Beed<?>> {
        * NOT_YET_PERFORMED anyway.
        */
     if (isChange()) {
-      recalculateValidity(); // between setting of the goal and perform, the model might have changed
-  //    updateValidityWithGoal(); // MUDO OLD COMMENT this is not exactly what we want; it doesn't recalulate enough, but potentially sends validity changed events JDJDJD
-      // MUDO why is this update here? a! the other beed might have changed
+      recalculateValidity();
+        /* between setting of the goal and perform, the model might have changed
+           (other beeds than the target) */
       checkValidity(); // throws IllegalEditException
       performance(); // throws IllegalEditException
       markPerformed();
@@ -346,21 +346,6 @@ public abstract class Edit<_Target_ extends Beed<?>> {
     $state = DONE;
     removeValidityListeners();
   }
-
-  /**
-   * <p>Start the topological update algorithm propating changes and warning
-   *   listeners of these changes, as a result of this edit being
-   *   {@link #perform() performed}, {@link #undo() undone} or
-   *   {@link #redo() redone}.</p>
-   * <p>This method is called as part of the {@link #perform()} protocol,
-   *   as part of the {@link #undo()} protocol, and as part of the {@link #redo()}
-   *   protocol. Before this method is called, the state of the edit is already
-   *   changed, so when the method is called as part of the {@link #perform()}
-   *   or {@link #redo()} protocol, {@link #getState()} returns {@link State#DONE},
-   *   and when the method is called as part of the {@link #undo()} protocol,
-   *   {@link #getState()} returns {@link State#UNDONE}.</p>
-   */
-  protected abstract void updateDependents();
 
   /*</section>*/
 
@@ -492,6 +477,28 @@ public abstract class Edit<_Target_ extends Beed<?>> {
 
 
 
+  /*<section name="topological update">*/
+  //-------------------------------------------------------
+
+  /**
+   * <p>Start the topological update algorithm propating changes and warning
+   *   listeners of these changes, as a result of this edit being
+   *   {@link #perform() performed}, {@link #undo() undone} or
+   *   {@link #redo() redone}.</p>
+   * <p>This method is called as part of the {@link #perform()} protocol,
+   *   as part of the {@link #undo()} protocol, and as part of the {@link #redo()}
+   *   protocol. Before this method is called, the state of the edit is already
+   *   changed, so when the method is called as part of the {@link #perform()}
+   *   or {@link #redo()} protocol, {@link #getState()} returns {@link State#DONE},
+   *   and when the method is called as part of the {@link #undo()} protocol,
+   *   {@link #getState()} returns {@link State#UNDONE}.</p>
+   */
+  protected abstract void updateDependents();
+
+  /*</section>*/
+
+
+
   /*<section name="kill">*/
   //-------------------------------------------------------
 
@@ -523,10 +530,12 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * @post for (ValidityListener vl) {vl.isRemoved()};
    */
   protected final void localKill() {
-    $state = DEAD;
-    /* no longer allowed to change and registered ValidityChangedListeners
-        are all deregistred */
-    removeValidityListeners();
+    if ($state != DEAD) { // optimization, especially when triggered for component edit from compound edit
+      $state = DEAD;
+      /* no longer allowed to change and registered ValidityChangedListeners
+          are all deregistred */
+      removeValidityListeners();
+    }
   }
 
   /*</section>*/

@@ -238,7 +238,32 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
           assert criterionEvent.getSource() instanceof FilteredSetBeed.ElementCriterion;
           ElementCriterion ec = (ElementCriterion)criterionEvent.getSource();
           _Element_ element = ec.getElement();
-          if (! removedFilteredElements.contains(element)) {
+          // When handling a BooleanEvent coming from an {@link ElementCriterion},
+          // we should check whether the element has not been removed by a previous
+          // {@link SetEvent}. An element can be removed in two ways:
+          // 1. the element criterion was true, but it changed to false; in this
+          //    case, the element is removed from $filteredSet and it will be in the set
+          //    removedFilteredElements
+          //    before: $elementCriteria.containsKey(element);
+          //            $elementCriteria.get(element).get() == true;
+          //            $filteredSetBeed.contains(element);
+          //    after:  $elementCriteria.containsKey(element);
+          //            $elementCriteria.get(element).get() == false;
+          //            !$filteredSetBeed.contains(element);
+          //            removedFilteredElements.contains(element);
+          // 2. the element criterion was false (so the element was not in the result
+          //    set of the filtered set beed) and the element is removed
+          //    from the source set; for listeners of the filtered set beed, nothing has
+          //    changed, but internally, the element criterion of the element is removed
+          //    before: $elementCriteria.containsKey(element);
+          //            $elementCriteria.get(element).get() == false;
+          //            !$filteredSetBeed.contains(element);
+          //    after:  !$elementCriteria.containsKey(element);
+          //            !$filteredSetBeed.contains(element);
+          //            !removedFilteredElements.contains(element);
+          if (! removedFilteredElements.contains(element) &&
+              $elementCriteria.containsKey(element) &&
+              $elementCriteria.get(element) == ec) {
             if (criterionEvent.getNewValue()) {
               $filteredSet.add(element);
               addedFilteredElements.add(element);
@@ -334,7 +359,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
       if ($bb != null) {
         addUpdateSource($bb);
       }
-      $value = ($bb == null) ? false : $bb.getboolean();
+      $value = ($bb == null || !$bb.isEffective()) ? false : $bb.getboolean();
     }
 
     /**
@@ -430,6 +455,11 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
       return $value;
     }
 
+    @Override
+    protected String otherToStringInformation() {
+      return super.otherToStringInformation() + "  mrusd: " + getMaximumRootUpdateSourceDistance();
+    }
+
   }
 
   private PathFactory<_Element_, BooleanBeed> $criterion;
@@ -501,9 +531,9 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
    * Replace the old {@link #getSource() source} by the given source.
    * Remove the old {@link #getSource() source} and all the
    * {@link ElementCriterion filter criteria} of its elements as
-   * {@link Beed}.
+   * update source.
    * Add the given source and all the {@link ElementCriterion filter criteria}
-   * of its elements as {@link Beed}.
+   * of its elements as update source.
    * Update the {@link #$filteredSet}:
    * - remove the elements that were there, and put them in
    *   <code>removedFilteredElements</code>.

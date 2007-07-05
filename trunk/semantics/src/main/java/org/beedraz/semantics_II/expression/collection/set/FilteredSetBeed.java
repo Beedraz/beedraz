@@ -239,19 +239,10 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
           ElementCriterion ec = (ElementCriterion)criterionEvent.getSource();
           _Element_ element = ec.getElement();
           // When handling a BooleanEvent coming from an {@link ElementCriterion},
-          // we should check whether the element has not been removed by a previous
-          // {@link SetEvent}. An element can be removed in two ways:
-          // 1. the element criterion was true, but it changed to false; in this
-          //    case, the element is removed from $filteredSet and it will be in the set
-          //    removedFilteredElements
-          //    before: $elementCriteria.containsKey(element);
-          //            $elementCriteria.get(element).get() == true;
-          //            $filteredSetBeed.contains(element);
-          //    after:  $elementCriteria.containsKey(element);
-          //            $elementCriteria.get(element).get() == false;
-          //            !$filteredSetBeed.contains(element);
-          //            removedFilteredElements.contains(element);
-          // 2. the element criterion was false (so the element was not in the result
+          // we should check whether the element has not been removed from the $elementCriteria
+          // by a previous {@link SetEvent}. It is not enough to check whether the element
+          // is contained in removedFilteredElements, because the following situation can occur:
+          //    The element criterion was false (so the element was not in the result
           //    set of the filtered set beed) and the element is removed
           //    from the source set; for listeners of the filtered set beed, nothing has
           //    changed, but internally, the element criterion of the element is removed
@@ -261,8 +252,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
           //    after:  !$elementCriteria.containsKey(element);
           //            !$filteredSetBeed.contains(element);
           //            !removedFilteredElements.contains(element);
-          if (! removedFilteredElements.contains(element) &&
-              $elementCriteria.containsKey(element) &&
+          if ($elementCriteria.containsKey(element) &&
               $elementCriteria.get(element) == ec) {
             if (criterionEvent.getNewValue()) {
               $filteredSet.add(element);

@@ -14,7 +14,7 @@
  limitations under the License.
  </license>*/
 
-package org.beedraz.semantics_II.expression.collection.set;
+package org.beedraz.semantics_II.expression.collection.map;
 
 
 import static org.junit.Assert.assertEquals;
@@ -27,6 +27,11 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
+import org.beedraz.semantics_II.expression.collection.map.ActualMapEvent;
+import org.beedraz.semantics_II.expression.collection.map.EditableMapBeed;
+import org.beedraz.semantics_II.expression.collection.map.MapBeed;
+import org.beedraz.semantics_II.expression.collection.map.MapEdit;
+import org.beedraz.semantics_II.expression.collection.map.MapEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

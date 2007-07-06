@@ -70,7 +70,7 @@ public abstract class AbstractUpdateSourceDependentDelegate
   }
 
   @Override
-  final Set<Dependent> getDependents() {
+  public final Set<Dependent> getDependents() {
     return $dependentUpdateSource.getDependents();
   }
 

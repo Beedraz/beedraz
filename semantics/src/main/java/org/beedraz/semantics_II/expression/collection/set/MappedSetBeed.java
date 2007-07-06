@@ -27,9 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
@@ -81,7 +79,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
-    extends AbstractSetBeed<_To_, SetEvent<_To_>> {
+    extends AbstractDependentSetBeed<_To_, SetEvent<_To_>> {
 
   /**
    * @pre   mapping != null;
@@ -107,167 +105,137 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     $mapping = mapping;
   }
 
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-      @Override
-      protected SetEvent<_To_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
-        assert events != null;
-        assert events.size() > 0;
-        /* Events can come:
-         * - from the source path,
-         * - from the source (elements added or removed) and
-         * - from the mappings (paths) for each element
-         * If an event comes from the source path, we might also get
-         * events from the source or even elements. But these don't
-         * matter, since we have a new source, and all elements have
-         * been removed, and new added.
-         * If an event comes from the source, about added or removed elements,
-         * we might also get events from elements. Events from elements that
-         * are just removed should not be dealt with.
-         */
-        HashSet<_To_> addedFilteredElements = new HashSet<_To_>();
-        HashSet<_To_> removedFilteredElements = new HashSet<_To_>();
-        PathEvent<SetBeed<_From_, ?>> pathEvent = (PathEvent<SetBeed<_From_, ?>>)events.get($sourcePath);
-        if (pathEvent != null) {
-          handleSourcePathEvent(pathEvent, addedFilteredElements, removedFilteredElements);
-          // if there is a path event, don't deal with other events
-        }
-        else {
-          @SuppressWarnings("unchecked")
-          SetEvent<_From_> setEvent = (SetEvent<_From_>)events.get($source);
-          if (setEvent != null) {
-            handleSourceEvent(setEvent, addedFilteredElements, removedFilteredElements);
-          }
-          for (Event event : events.values()) {
-            handleElementMappingEvent(event, addedFilteredElements, removedFilteredElements);
-          }
-        }
-        return createEvent(addedFilteredElements, removedFilteredElements, edit);
-      }
-
-      /**
-       * If the given event is of type {@link PathEvent}, then it is caused by
-       * the {@link MappedSetBeed#getSourcePath()}. In this case, we
-       * replace the old source by the new value in the given event.
-       * The elements that are added by this operation are gathered in
-       * <code>addedFilteredElements</code>.
-       * The elements that are removed by this operation are gathered in
-       * <code>removedFilteredElements</code>.
-       *
-       * @pre  pathEvent != null;
-       * @pre  addedFilteredElements != null;
-       * @pre  removedFilteredElements != null;
-       */
-      private void handleSourcePathEvent(PathEvent<SetBeed<_From_, ?>> pathEvent,
-                                         HashSet<_To_> addedFilteredElements,
-                                         HashSet<_To_> removedFilteredElements) {
-        assert pathEvent != null;
-        assert addedFilteredElements != null;
-        assert removedFilteredElements != null;
-        assert pathEvent.getSource() == $sourcePath;
-        SetBeed<_From_, ?> newSource = pathEvent.getNewValue();
-        setSource(newSource, addedFilteredElements, removedFilteredElements);
-      }
-
-      /**
-       * If the given event is of type {@link SetEvent}, then it is caused by
-       * the {@link MappedSetBeed#getSource()}.
-       * In this case, we remove the elements in {@link SetEvent#getRemovedElements()}
-       * and we add the elements in {@link SetEvent#getAddedElements()}.
-       * The elements that are added to {@link MappedSetBeed#$filteredSet}
-       * by this operation are gathered in <code>addedFilteredElements</code>.
-       * The elements that are removed from {@link MappedSetBeed#$filteredSet}
-       * by this operation are gathered in <code>removedFilteredElements</code>.
-       *
-       * @pre  event != null;
-       * @pre  addedFilteredElements != null;
-       * @pre  removedFilteredElements != null;
-       */
-      private void handleSourceEvent(SetEvent<_From_> setEvent,
-                                     HashSet<_To_> addedFilteredElements,
-                                     HashSet<_To_> removedFilteredElements) {
-        assert setEvent != null;
-        assert addedFilteredElements != null;
-        assert removedFilteredElements != null;
-        assert setEvent.getSource() == $source;
-        for (_From_ e : setEvent.getAddedElements()) {
-          sourceElementAdded(e, addedFilteredElements);
-        }
-        for (_From_ e : setEvent.getRemovedElements()) {
-          sourceElementRemoved(e, removedFilteredElements);
-        }
-      }
-
-      /**
-       * If the given event is of type {@link BooleanEvent}, then it is caused by
-       * one of the {@link ElementCriterion filter criteria}.
-       * Since a {@link ElementCriterion filter criterion} is a {@link BooleanBeed},
-       * and since it can only be true or false (not null), this event is sent when
-       * the value of the {@link ElementCriterion filter criterion} changed from true
-       * to false, or from false to true.
-       * When the {@link BooleanEvent#getNewValue() new value} of the event is true,
-       * we add the element of the {@link ElementCriterion filter criterion} to
-       * {@link MappedSetBeed#$filteredSet} and to <code>addedFilteredElements</code>.
-       * When the {@link BooleanEvent#getNewValue() new value} of the event is false,
-       * we remove the element of the {@link ElementCriterion filter criterion} from
-       * {@link MappedSetBeed#$filteredSet} and add it to
-       * <code>removedFilteredElements</code>.
-       * We don't handle events of sources that are already in {@code removedFilteredElements}.
-       *
-       * @pre  event != null;
-       * @pre  addedFilteredElements != null;
-       * @pre  removedFilteredElements != null;
-       */
-      private void handleElementMappingEvent(Event event,
-                                             HashSet<_To_> addedResultingElements,
-                                             HashSet<_To_> removedResultingElements) {
-        assert event != null;
-        assert addedResultingElements != null;
-        assert removedResultingElements != null;
-        try {
-          PathEvent<_To_> mappingEvent = (PathEvent<_To_>)event;
-          if ($elementMappings.containsValue(event.getSource())) {
-            _To_ oldElement = mappingEvent.getOldValue();
-            removeResultingElement(oldElement, removedResultingElements);
-            _To_ newElement = mappingEvent.getNewValue();
-            addResultingElement(newElement, addedResultingElements);
-          }
-          /* otherwise, it means the from element of this mapping was removed from the
-           * source a moment ago, and we don't need to deal with this event anymore
-           */
-        }
-        catch (ClassCastException ccExc) {
-          // NOP
-        }
-      }
-
-    };
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
+  @Override
+  protected SetEvent<_To_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
+    assert events != null;
+    assert events.size() > 0;
+    /* Events can come:
+     * - from the source path,
+     * - from the source (elements added or removed) and
+     * - from the mappings (paths) for each element
+     * If an event comes from the source path, we might also get
+     * events from the source or even elements. But these don't
+     * matter, since we have a new source, and all elements have
+     * been removed, and new added.
+     * If an event comes from the source, about added or removed elements,
+     * we might also get events from elements. Events from elements that
+     * are just removed should not be dealt with.
      */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+    HashSet<_To_> addedFilteredElements = new HashSet<_To_>();
+    HashSet<_To_> removedFilteredElements = new HashSet<_To_>();
+    PathEvent<SetBeed<_From_, ?>> pathEvent = (PathEvent<SetBeed<_From_, ?>>)events.get($sourcePath);
+    if (pathEvent != null) {
+      handleSourcePathEvent(pathEvent, addedFilteredElements, removedFilteredElements);
+      // if there is a path event, don't deal with other events
+    }
+    else {
+      @SuppressWarnings("unchecked")
+      SetEvent<_From_> setEvent = (SetEvent<_From_>)events.get($source);
+      if (setEvent != null) {
+        handleSourceEvent(setEvent, addedFilteredElements, removedFilteredElements);
+      }
+      for (Event event : events.values()) {
+        handleElementMappingEvent(event, addedFilteredElements, removedFilteredElements);
+      }
+    }
+    return createEvent(addedFilteredElements, removedFilteredElements, edit);
   }
 
+  /**
+   * If the given event is of type {@link PathEvent}, then it is caused by
+   * the {@link MappedSetBeed#getSourcePath()}. In this case, we
+   * replace the old source by the new value in the given event.
+   * The elements that are added by this operation are gathered in
+   * <code>addedFilteredElements</code>.
+   * The elements that are removed by this operation are gathered in
+   * <code>removedFilteredElements</code>.
+   *
+   * @pre  pathEvent != null;
+   * @pre  addedFilteredElements != null;
+   * @pre  removedFilteredElements != null;
+   */
+  private void handleSourcePathEvent(PathEvent<SetBeed<_From_, ?>> pathEvent,
+                                     HashSet<_To_> addedFilteredElements,
+                                     HashSet<_To_> removedFilteredElements) {
+    assert pathEvent != null;
+    assert addedFilteredElements != null;
+    assert removedFilteredElements != null;
+    assert pathEvent.getSource() == $sourcePath;
+    SetBeed<_From_, ?> newSource = pathEvent.getNewValue();
+    setSource(newSource, addedFilteredElements, removedFilteredElements);
+  }
+
+  /**
+   * If the given event is of type {@link SetEvent}, then it is caused by
+   * the {@link MappedSetBeed#getSource()}.
+   * In this case, we remove the elements in {@link SetEvent#getRemovedElements()}
+   * and we add the elements in {@link SetEvent#getAddedElements()}.
+   * The elements that are added to {@link MappedSetBeed#$filteredSet}
+   * by this operation are gathered in <code>addedFilteredElements</code>.
+   * The elements that are removed from {@link MappedSetBeed#$filteredSet}
+   * by this operation are gathered in <code>removedFilteredElements</code>.
+   *
+   * @pre  event != null;
+   * @pre  addedFilteredElements != null;
+   * @pre  removedFilteredElements != null;
+   */
+  private void handleSourceEvent(SetEvent<_From_> setEvent,
+                                 HashSet<_To_> addedFilteredElements,
+                                 HashSet<_To_> removedFilteredElements) {
+    assert setEvent != null;
+    assert addedFilteredElements != null;
+    assert removedFilteredElements != null;
+    assert setEvent.getSource() == $source;
+    for (_From_ e : setEvent.getAddedElements()) {
+      sourceElementAdded(e, addedFilteredElements);
+    }
+    for (_From_ e : setEvent.getRemovedElements()) {
+      sourceElementRemoved(e, removedFilteredElements);
+    }
+  }
+
+  /**
+   * If the given event is of type {@link BooleanEvent}, then it is caused by
+   * one of the {@link ElementCriterion filter criteria}.
+   * Since a {@link ElementCriterion filter criterion} is a {@link BooleanBeed},
+   * and since it can only be true or false (not null), this event is sent when
+   * the value of the {@link ElementCriterion filter criterion} changed from true
+   * to false, or from false to true.
+   * When the {@link BooleanEvent#getNewValue() new value} of the event is true,
+   * we add the element of the {@link ElementCriterion filter criterion} to
+   * {@link MappedSetBeed#$filteredSet} and to <code>addedFilteredElements</code>.
+   * When the {@link BooleanEvent#getNewValue() new value} of the event is false,
+   * we remove the element of the {@link ElementCriterion filter criterion} from
+   * {@link MappedSetBeed#$filteredSet} and add it to
+   * <code>removedFilteredElements</code>.
+   * We don't handle events of sources that are already in {@code removedFilteredElements}.
+   *
+   * @pre  event != null;
+   * @pre  addedFilteredElements != null;
+   * @pre  removedFilteredElements != null;
+   */
+  private void handleElementMappingEvent(Event event,
+                                         HashSet<_To_> addedResultingElements,
+                                         HashSet<_To_> removedResultingElements) {
+    assert event != null;
+    assert addedResultingElements != null;
+    assert removedResultingElements != null;
+    try {
+      PathEvent<_To_> mappingEvent = (PathEvent<_To_>)event;
+      if ($elementMappings.containsValue(event.getSource())) {
+        _To_ oldElement = mappingEvent.getOldValue();
+        removeResultingElement(oldElement, removedResultingElements);
+        _To_ newElement = mappingEvent.getNewValue();
+        addResultingElement(newElement, addedResultingElements);
+      }
+      /* otherwise, it means the from element of this mapping was removed from the
+       * source a moment ago, and we don't need to deal with this event anymore
+       */
+    }
+    catch (ClassCastException ccExc) {
+      // NOP
+    }
+  }
 
 
   /*<property name="criterion">*/
@@ -310,11 +278,11 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
    */
   public final void setSourcePath(Path<? extends SetBeed<_From_, ?>> sourcePath) {
     if ($sourcePath instanceof AbstractDependentPath) {
-      $dependent.removeUpdateSource($sourcePath);
+      removeUpdateSource($sourcePath);
     }
     $sourcePath = sourcePath;
     if ($sourcePath instanceof AbstractDependentPath) {
-      $dependent.addUpdateSource($sourcePath);
+      addUpdateSource($sourcePath);
     }
     if ($sourcePath != null) {
       setSource($sourcePath.get());
@@ -375,12 +343,12 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
       for (_From_ from : $source.get()) {
         sourceElementRemoved(from, removedResultingElements);
       }
-      $dependent.removeUpdateSource($source);
+      removeUpdateSource($source);
     }
     // set the source
     $source = source;
     if ($source != null) {
-      $dependent.addUpdateSource($source);
+      addUpdateSource($source);
       for (_From_ from : $source.get()) {
         sourceElementAdded(from, addedResultingElements);
       }
@@ -433,7 +401,7 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     Path<? extends _To_> elementPath = getMapping().createPath(from);
     $elementMappings.put(from, elementPath);
     if (elementPath instanceof AbstractDependentPath) {
-      $dependent.addUpdateSource(elementPath);
+      addUpdateSource(elementPath);
     }
     _To_ to = elementPath.get(); // to might be null or already in the result
     addResultingElement(to, addedResultingElements);
@@ -471,7 +439,7 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
     assert elementPath != null;
     $elementMappings.remove(from);
     if (elementPath instanceof AbstractDependentPath) {
-      $dependent.removeUpdateSource(elementPath);
+      removeUpdateSource(elementPath);
     }
     _To_ to = elementPath.get(); // to might be null or in the result for different froms
     if (to != null) {
@@ -529,20 +497,6 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
   public final Set<_To_> get() {
 //    return $source == null ? null : Collections.unmodifiableSet($result);
     return Collections.unmodifiableSet($result);
-  }
-
-  public final Set<? extends Beed<?>> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends Beed<?>> PHI = Collections.emptySet();
-
-  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
   }
 
   @Override

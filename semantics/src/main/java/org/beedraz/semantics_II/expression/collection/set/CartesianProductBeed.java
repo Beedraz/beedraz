@@ -26,9 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
@@ -64,7 +62,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision: 913 $",
          date     = "$Date: 2007-05-24 16:46:42 +0200 (do, 24 mei 2007) $")
 public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends Beed<?>>
-    extends AbstractSetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>> {
+    extends AbstractDependentSetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>> {
 
   /**
    * @post  getSourcePath1() == null;
@@ -130,163 +128,159 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
   }
 
 
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-    @Override
-    protected SetEvent<Tuple> filteredUpdate(
-        Map<Beed<?>, Event> events, Edit<?> edit) {
-      assert events != null;
-      assert events.size() > 0;
-      /* Events can come:
-       * - from the first source path,
-       * - from the second source path,
-       * - from the first source (elements added or removed) and
-       * - from the second source (elements added or removed)
-       * If an event comes from a source path, we might also get
-       * events from the corresponding source. But these don't
-       * matter, since we have a new source.
-       */
-      HashSet<Tuple> addedTuples = new HashSet<Tuple>();
-      HashSet<Tuple> removedTuples = new HashSet<Tuple>();
-      // source 1
-      PathEvent<SetBeed<_Element1_, ?>> pathEvent1 =
-        (PathEvent<SetBeed<_Element1_, ?>>)events.get($sourcePath1);
-      if (pathEvent1 != null) {
-        handleSourcePath1Event(pathEvent1, addedTuples, removedTuples);
-        // if there is a path event, don't deal with other events
-      }
-      else {
-        @SuppressWarnings("unchecked")
-        SetEvent<_Element1_> setEvent1 = (SetEvent<_Element1_>)events.get($source1);
-        if (setEvent1 != null) {
-          handleSource1Event(setEvent1, addedTuples, removedTuples);
-        }
-      }
-      // source 2
-      PathEvent<SetBeed<_Element2_, ?>> pathEvent2 =
-        (PathEvent<SetBeed<_Element2_, ?>>)events.get($sourcePath2);
-      if (pathEvent2 != null) {
-        handleSourcePath2Event(pathEvent2, addedTuples, removedTuples);
-        // if there is a path event, don't deal with other events
-      }
-      else {
-        @SuppressWarnings("unchecked")
-        SetEvent<_Element2_> setEvent2 =
-          (SetEvent<_Element2_>)events.get($source2);
-        if (setEvent2 != null) {
-          handleSource2Event(setEvent2, addedTuples, removedTuples);
-        }
-      }
-      return createEvent(addedTuples, removedTuples, edit);
-    }
-
-    /**
-     * If the given event is caused by {@link CartesianProductBeed#getSourcePath1()},
-     * then we replace the old first source by the new value in the given event.
-     * The tuples that are added by this operation are gathered in
-     * <code>addedTuples</code>.
-     * The tuples that are removed by this operation are gathered in
-     * <code>removedTuples</code>.
-     *
-     * @pre  pathEvent != null;
-     * @pre  addedTuples != null;
-     * @pre  removedTuples != null;
+  @Override
+  protected SetEvent<Tuple> filteredUpdate(
+      Map<Beed<?>, Event> events, Edit<?> edit) {
+    assert events != null;
+    assert events.size() > 0;
+    /* Events can come:
+     * - from the first source path,
+     * - from the second source path,
+     * - from the first source (elements added or removed) and
+     * - from the second source (elements added or removed)
+     * If an event comes from a source path, we might also get
+     * events from the corresponding source. But these don't
+     * matter, since we have a new source.
      */
-    private void handleSourcePath1Event(
-        PathEvent<SetBeed<_Element1_, ?>> pathEvent1,
-        HashSet<Tuple> addedTuples,
-        HashSet<Tuple> removedTuples) {
-      assert pathEvent1 != null;
-      assert addedTuples != null;
-      assert removedTuples != null;
-      assert pathEvent1.getSource() == $sourcePath1;
-      SetBeed<_Element1_, ?> newSource1 = pathEvent1.getNewValue();
-      setSource1(newSource1, addedTuples, removedTuples);
+    HashSet<Tuple> addedTuples = new HashSet<Tuple>();
+    HashSet<Tuple> removedTuples = new HashSet<Tuple>();
+    // source 1
+    PathEvent<SetBeed<_Element1_, ?>> pathEvent1 =
+      (PathEvent<SetBeed<_Element1_, ?>>)events.get($sourcePath1);
+    if (pathEvent1 != null) {
+      handleSourcePath1Event(pathEvent1, addedTuples, removedTuples);
+      // if there is a path event, don't deal with other events
     }
-
-    /**
-     * If the given event is caused by {@link CartesianProductBeed#getSourcePath2()},
-     * then we replace the old second source by the new value in the given event.
-     * The tuples that are added by this operation are gathered in
-     * <code>addedTuples</code>.
-     * The tuples that are removed by this operation are gathered in
-     * <code>removedTuples</code>.
-     *
-     * @pre  pathEvent != null;
-     * @pre  addedTuples != null;
-     * @pre  removedTuples != null;
-     */
-    private void handleSourcePath2Event(
-        PathEvent<SetBeed<_Element2_, ?>> pathEvent2,
-        HashSet<Tuple> addedTuples,
-        HashSet<Tuple> removedTuples) {
-      assert pathEvent2 != null;
-      assert addedTuples != null;
-      assert removedTuples != null;
-      assert pathEvent2.getSource() == $sourcePath2;
-      SetBeed<_Element2_, ?> newSource2 = pathEvent2.getNewValue();
-      setSource2(newSource2, addedTuples, removedTuples);
-    }
-
-    /**
-     * When the given event is caused by {@link CartesianProductBeed#getSource1()},
-     * we remove the tuples whose first elements are in
-     * {@link SetEvent#getRemovedElements()} and we add the new tuples
-     * whose first elements are in {@link SetEvent#getAddedElements()}.
-     * The elements that are added to {@link CartesianProductBeed#$cartesianProduct}
-     * by this operation are gathered in <code>addedTuples</code>.
-     * The elements that are removed from {@link FilteredSetBeed#$cartesianProduct}
-     * by this operation are gathered in <code>removedTuples</code>.
-     *
-     * @pre  event != null;
-     * @pre  addedTuples != null;
-     * @pre  removedTuples != null;
-     */
-    private void handleSource1Event(SetEvent<_Element1_> setEvent1,
-        HashSet<Tuple> addedTuples,
-        HashSet<Tuple> removedTuples) {
-      assert setEvent1 != null;
-      assert addedTuples != null;
-      assert removedTuples != null;
-      assert setEvent1.getSource() == $source1;
-      for (_Element1_ element1 : setEvent1.getAddedElements()) {
-        addElement1(element1, addedTuples);
-      }
-      for (_Element1_ element1 : setEvent1.getRemovedElements()) {
-        removeElement1(element1, removedTuples);
+    else {
+      @SuppressWarnings("unchecked")
+      SetEvent<_Element1_> setEvent1 = (SetEvent<_Element1_>)events.get($source1);
+      if (setEvent1 != null) {
+        handleSource1Event(setEvent1, addedTuples, removedTuples);
       }
     }
-
-    /**
-     * When the given event is caused by {@link CartesianProductBeed#getSource2()},
-     * we remove the tuples whose second elements are in
-     * {@link SetEvent#getRemovedElements()} and we add the new tuples
-     * whose second elements are in {@link SetEvent#getAddedElements()}.
-     * The elements that are added to {@link CartesianProductBeed#$cartesianProduct}
-     * by this operation are gathered in <code>addedTuples</code>.
-     * The elements that are removed from {@link FilteredSetBeed#$cartesianProduct}
-     * by this operation are gathered in <code>removedTuples</code>.
-     *
-     * @pre  event != null;
-     * @pre  addedTuples != null;
-     * @pre  removedTuples != null;
-     */
-    private void handleSource2Event(SetEvent<_Element2_> setEvent2,
-        HashSet<Tuple> addedTuples,
-        HashSet<Tuple> removedTuples) {
-      assert setEvent2 != null;
-      assert addedTuples != null;
-      assert removedTuples != null;
-      assert setEvent2.getSource() == $source2;
-      for (_Element2_ element2 : setEvent2.getAddedElements()) {
-        addElement2(element2, addedTuples);
-      }
-      for (_Element2_ element2 : setEvent2.getRemovedElements()) {
-        removeElement2(element2, removedTuples);
+    // source 2
+    PathEvent<SetBeed<_Element2_, ?>> pathEvent2 =
+      (PathEvent<SetBeed<_Element2_, ?>>)events.get($sourcePath2);
+    if (pathEvent2 != null) {
+      handleSourcePath2Event(pathEvent2, addedTuples, removedTuples);
+      // if there is a path event, don't deal with other events
+    }
+    else {
+      @SuppressWarnings("unchecked")
+      SetEvent<_Element2_> setEvent2 =
+        (SetEvent<_Element2_>)events.get($source2);
+      if (setEvent2 != null) {
+        handleSource2Event(setEvent2, addedTuples, removedTuples);
       }
     }
+    return createEvent(addedTuples, removedTuples, edit);
+  }
 
-  };
+  /**
+   * If the given event is caused by {@link CartesianProductBeed#getSourcePath1()},
+   * then we replace the old first source by the new value in the given event.
+   * The tuples that are added by this operation are gathered in
+   * <code>addedTuples</code>.
+   * The tuples that are removed by this operation are gathered in
+   * <code>removedTuples</code>.
+   *
+   * @pre  pathEvent != null;
+   * @pre  addedTuples != null;
+   * @pre  removedTuples != null;
+   */
+  private void handleSourcePath1Event(
+      PathEvent<SetBeed<_Element1_, ?>> pathEvent1,
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples) {
+    assert pathEvent1 != null;
+    assert addedTuples != null;
+    assert removedTuples != null;
+    assert pathEvent1.getSource() == $sourcePath1;
+    SetBeed<_Element1_, ?> newSource1 = pathEvent1.getNewValue();
+    setSource1(newSource1, addedTuples, removedTuples);
+  }
+
+  /**
+   * If the given event is caused by {@link CartesianProductBeed#getSourcePath2()},
+   * then we replace the old second source by the new value in the given event.
+   * The tuples that are added by this operation are gathered in
+   * <code>addedTuples</code>.
+   * The tuples that are removed by this operation are gathered in
+   * <code>removedTuples</code>.
+   *
+   * @pre  pathEvent != null;
+   * @pre  addedTuples != null;
+   * @pre  removedTuples != null;
+   */
+  private void handleSourcePath2Event(
+      PathEvent<SetBeed<_Element2_, ?>> pathEvent2,
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples) {
+    assert pathEvent2 != null;
+    assert addedTuples != null;
+    assert removedTuples != null;
+    assert pathEvent2.getSource() == $sourcePath2;
+    SetBeed<_Element2_, ?> newSource2 = pathEvent2.getNewValue();
+    setSource2(newSource2, addedTuples, removedTuples);
+  }
+
+  /**
+   * When the given event is caused by {@link CartesianProductBeed#getSource1()},
+   * we remove the tuples whose first elements are in
+   * {@link SetEvent#getRemovedElements()} and we add the new tuples
+   * whose first elements are in {@link SetEvent#getAddedElements()}.
+   * The elements that are added to {@link CartesianProductBeed#$cartesianProduct}
+   * by this operation are gathered in <code>addedTuples</code>.
+   * The elements that are removed from {@link FilteredSetBeed#$cartesianProduct}
+   * by this operation are gathered in <code>removedTuples</code>.
+   *
+   * @pre  event != null;
+   * @pre  addedTuples != null;
+   * @pre  removedTuples != null;
+   */
+  private void handleSource1Event(SetEvent<_Element1_> setEvent1,
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples) {
+    assert setEvent1 != null;
+    assert addedTuples != null;
+    assert removedTuples != null;
+    assert setEvent1.getSource() == $source1;
+    for (_Element1_ element1 : setEvent1.getAddedElements()) {
+      addElement1(element1, addedTuples);
+    }
+    for (_Element1_ element1 : setEvent1.getRemovedElements()) {
+      removeElement1(element1, removedTuples);
+    }
+  }
+
+  /**
+   * When the given event is caused by {@link CartesianProductBeed#getSource2()},
+   * we remove the tuples whose second elements are in
+   * {@link SetEvent#getRemovedElements()} and we add the new tuples
+   * whose second elements are in {@link SetEvent#getAddedElements()}.
+   * The elements that are added to {@link CartesianProductBeed#$cartesianProduct}
+   * by this operation are gathered in <code>addedTuples</code>.
+   * The elements that are removed from {@link FilteredSetBeed#$cartesianProduct}
+   * by this operation are gathered in <code>removedTuples</code>.
+   *
+   * @pre  event != null;
+   * @pre  addedTuples != null;
+   * @pre  removedTuples != null;
+   */
+  private void handleSource2Event(SetEvent<_Element2_> setEvent2,
+      HashSet<Tuple> addedTuples,
+      HashSet<Tuple> removedTuples) {
+    assert setEvent2 != null;
+    assert addedTuples != null;
+    assert removedTuples != null;
+    assert setEvent2.getSource() == $source2;
+    for (_Element2_ element2 : setEvent2.getAddedElements()) {
+      addElement2(element2, addedTuples);
+    }
+    for (_Element2_ element2 : setEvent2.getRemovedElements()) {
+      removeElement2(element2, removedTuples);
+    }
+  }
 
   private void addElement1(_Element1_ element1, HashSet<Tuple> addedTuples) {
     if (containsElement1(element1, $cartesianProduct)) {
@@ -360,30 +354,6 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     return false;
   }
 
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
-     */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
-  }
 
 
   /*<property name="source1">*/
@@ -410,11 +380,11 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    */
   public final void setSourcePath1(Path<? extends SetBeed<_Element1_, ?>> sourcePath1) {
     if ($sourcePath1 instanceof AbstractDependentPath) {
-      $dependent.removeUpdateSource($sourcePath1);
+      removeUpdateSource($sourcePath1);
     }
     $sourcePath1 = sourcePath1;
     if ($sourcePath1 instanceof AbstractDependentPath) {
-      $dependent.addUpdateSource($sourcePath1);
+      addUpdateSource($sourcePath1);
     }
     if ($sourcePath1 != null) {
       setSource1($sourcePath1.get());
@@ -465,12 +435,12 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     assert addedTuples != null;
     assert removedTuples != null;
     if ($source1 != null) {
-      $dependent.removeUpdateSource($source1);
+      removeUpdateSource($source1);
     }
     // set the source
     $source1 = source1;
     if ($source1 != null) {
-      $dependent.addUpdateSource($source1);
+      addUpdateSource($source1);
     }
     recalculate(addedTuples, removedTuples);
   }
@@ -584,11 +554,11 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
    */
   public final void setSourcePath2(Path<? extends SetBeed<_Element2_, ?>> sourcePath2) {
     if ($sourcePath2 instanceof AbstractDependentPath) {
-      $dependent.removeUpdateSource($sourcePath2);
+      removeUpdateSource($sourcePath2);
     }
     $sourcePath2 = sourcePath2;
     if ($sourcePath2 instanceof AbstractDependentPath) {
-      $dependent.addUpdateSource($sourcePath2);
+      addUpdateSource($sourcePath2);
     }
     if ($sourcePath2 != null) {
       setSource2($sourcePath2.get());
@@ -639,12 +609,12 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     assert addedTuples != null;
     assert removedTuples != null;
     if ($source2 != null) {
-      $dependent.removeUpdateSource($source2);
+      removeUpdateSource($source2);
     }
     // set the source
     $source2 = source2;
     if ($source2 != null) {
-      $dependent.addUpdateSource($source2);
+      addUpdateSource($source2);
     }
     recalculate(addedTuples, removedTuples);
   }
@@ -689,21 +659,6 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
   public final Set<Tuple> get() {
     return Collections.unmodifiableSet($cartesianProduct);
   }
-
-  public final Set<? extends Beed<?>> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends Beed<?>> PHI = Collections.emptySet();
-
-  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
-  }
-
 
   @Override
   protected String otherToStringInformation() {

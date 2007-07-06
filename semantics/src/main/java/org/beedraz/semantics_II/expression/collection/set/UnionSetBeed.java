@@ -26,9 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.beedraz.semantics_II.AbstractUpdateSourceDependentDelegate;
 import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Dependent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
@@ -61,7 +59,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class UnionSetBeed<_Element_>
-    extends AbstractSetBeed<_Element_, SetEvent<_Element_>> {
+    extends AbstractDependentSetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
    * @post  getSources().isEmpty();
@@ -80,62 +78,34 @@ public class UnionSetBeed<_Element_>
     super(owner);
   }
 
-  private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
-
-    /**
-     * @post    get() == the union of the sources
+  /**
+   * @post    get() == the union of the sources
+   */
+  @Override
+  protected SetEvent<_Element_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
+    /* Optimized update is too difficult (what if several events remove the same element?)
+     * If 1 source removes an element, but it exists also in other sources, it must stay
+     * in the union. But what if all the sources that have the element remove it? Then it
+     * has to be removed too.
      */
-    @Override
-    protected SetEvent<_Element_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
-      /* Optimized update is too difficult (what if several events remove the same element?)
-       * If 1 source removes an element, but it exists also in other sources, it must stay
-       * in the union. But what if all the sources that have the element remove it? Then it
-       * has to be removed too.
-       */
-      @SuppressWarnings("unchecked")
-      HashSet<_Element_> oldUnion = (HashSet<_Element_>)$union.clone();
-      recalculate();
-      @SuppressWarnings("unchecked")
-      HashSet<_Element_> added = (HashSet<_Element_>)$union.clone();
-      added.removeAll(oldUnion);
-      @SuppressWarnings("unchecked")
-      HashSet<_Element_> removed = (HashSet<_Element_>)oldUnion.clone();
-      removed.removeAll($union);
-      // notify the listeners if elements are added or removed
-      if (! added.isEmpty() || ! removed.isEmpty()) {
-        return new ActualSetEvent<_Element_>(UnionSetBeed.this, added, removed, edit);
-      }
-      else {
-        return null;
-      }
+    @SuppressWarnings("unchecked")
+    HashSet<_Element_> oldUnion = (HashSet<_Element_>)$union.clone();
+    recalculate();
+    @SuppressWarnings("unchecked")
+    HashSet<_Element_> added = (HashSet<_Element_>)$union.clone();
+    added.removeAll(oldUnion);
+    @SuppressWarnings("unchecked")
+    HashSet<_Element_> removed = (HashSet<_Element_>)oldUnion.clone();
+    removed.removeAll($union);
+    // notify the listeners if elements are added or removed
+    if (! added.isEmpty() || ! removed.isEmpty()) {
+      return new ActualSetEvent<_Element_>(UnionSetBeed.this, added, removed, edit);
     }
-
-  };
-
-  public final int getMaximumRootUpdateSourceDistance() {
-    /* FIX FOR CONSTRUCTION PROBLEM
-     * At construction, the super constructor is called with the future owner
-     * of this property beed. Eventually, in the constructor code of AbstractPropertyBeed,
-     * this object is registered as update source with the dependent of the
-     * aggregate beed. During that registration process, the dependent
-     * checks to see if we need to ++ our maximum root update source distance.
-     * This involves a call to this method getMaximumRootUpdateSourceDistance.
-     * Since however, we are still doing initialization in AbstractPropertyBeed,
-     * initialization code (and construction code) further down is not yet executed.
-     * This means that our $dependent is still null, and this results in a NullPointerException.
-     * On the other hand, we cannot move the concept of $dependent up, since not all
-     * property beeds have a dependent.
-     * The fix implemented here is the following:
-     * This problem only occurs during construction. During construction, we will
-     * not have any update sources, so our maximum root update source distance is
-     * effectively 0.
-     */
-    /*
-     * TODO This only works if we only add 1 update source during construction,
-     *      so a better solution should be sought.
-     */
-    return $dependent == null ? 0 : $dependent.getMaximumRootUpdateSourceDistance();
+    else {
+      return null;
+    }
   }
+
 
 
 
@@ -165,7 +135,7 @@ public class UnionSetBeed<_Element_>
       @SuppressWarnings("unchecked")
       HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
       // add the source
-      $dependent.addUpdateSource(source);
+      addUpdateSource(source);
       $sources.add(source);
       // add the elements of the given source to the union
       $union.addAll(source.get());
@@ -201,7 +171,7 @@ public class UnionSetBeed<_Element_>
       @SuppressWarnings("unchecked")
       HashSet<_Element_> oldValue = (HashSet<_Element_>)$union.clone();
       // remove the source
-      $dependent.removeUpdateSource(source);
+      removeUpdateSource(source);
       $sources.remove(source);
       // remove the elements of the given source from the union
       for (_Element_ element : source.get()) {
@@ -247,20 +217,6 @@ public class UnionSetBeed<_Element_>
    */
   public final Set<_Element_> get() {
     return Collections.unmodifiableSet($union);
-  }
-
-  public final Set<? extends Beed<?>> getUpdateSources() {
-    return $dependent.getUpdateSources();
-  }
-
-  private final static Set<? extends Beed<?>> PHI = Collections.emptySet();
-
-  public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
-    /* fixed to make it possible to use this method during construction,
-     * before $dependent is initialized. But that is bad code, and should be
-     * fixed.
-     */
-    return $dependent == null ? PHI : $dependent.getUpdateSourcesTransitiveClosure();
   }
 
   @Override

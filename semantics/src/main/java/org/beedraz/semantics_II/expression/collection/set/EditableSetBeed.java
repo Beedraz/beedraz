@@ -44,8 +44,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class EditableSetBeed<_Element_>
-    extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
-    implements SetBeed<_Element_, SetEvent<_Element_>> {
+    extends AbstractSetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
    * @pre owner != null;

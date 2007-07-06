@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </license>*/
 
-package org.beedraz.semantics_II.expression.collection.set;
+package org.beedraz.semantics_II.expression.collection.map;
 
 
 import java.util.Map;

@@ -126,6 +126,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * @invar for (Beed<?> us : getUpdateSources()) {
  *          getMaximumRootUpdateSourceDistance() > us.getMaximumRootUpdateSourceDistance()
  *        };
+ * @invar getDependents() != null;
  *
  * @todo to be added: validation, civilization?
  */
@@ -164,13 +165,21 @@ public interface Beed<_Event_ extends Event> {
 
   /**
    * @basic
-   * @init foreach (Dependent d) { ! isDependent(d)};
+   * @init getDependents().isEmpty();
    */
+  Set<Dependent> getDependents();
+
+  /**
+   * @return getDependents().contains(dependent);
+   *
+   * @deprecated use getDependents instead
+   */
+  @Deprecated
   boolean isDependent(Dependent dependent);
 
   /**
-   * @result isDependent(dependent) ||
-   *           exists (Dependent d) {isDependent(d) && d.isTransitiveDependent(dependent)};
+   * @result getDependents().contains(dependent) ||
+   *           exists (Dependent d : getDependents()) {d.isTransitiveDependent(dependent)};
    */
   boolean isTransitiveDependent(Dependent dependent);
 
@@ -179,7 +188,7 @@ public interface Beed<_Event_ extends Event> {
    * @pre ! isTransitiveDependent(dependent);
    *      no loops
    * @pre dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();
-   * @post isDependent(dependent);
+   * @post getDependents().contains(dependent);
    *
    * @note {@code dependent.getMaximumRootUpdateSourceDistance() > getMaximumRootUpdateSourceDistance();}
    *       is obviously a weird and hard precondition for a public method.
@@ -194,7 +203,7 @@ public interface Beed<_Event_ extends Event> {
   void addDependent(Dependent dependent);
 
   /**
-   * @post ! isDependent(dependent);
+   * @post ! getDependents().contains(dependent);
    *
    * @note It is ill-advised to use the method yourself, though. If you make structural
    *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}

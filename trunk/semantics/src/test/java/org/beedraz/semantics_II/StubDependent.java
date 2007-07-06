@@ -51,7 +51,7 @@ public class StubDependent extends Dependent implements Beed<StubEvent> {
   }
 
   @Override
-  Set<Dependent> getDependents() {
+  public Set<Dependent> getDependents() {
     return Collections.emptySet();
   }
 
@@ -96,6 +96,7 @@ public class StubDependent extends Dependent implements Beed<StubEvent> {
     // NOP
   }
 
+  @Deprecated
   public boolean isDependent(Dependent dependent) {
     return false;
   }

@@ -114,7 +114,7 @@ public abstract class Dependent {
    * @result result != null;
    * @result getUpdateSource().getDependents();
    */
-  abstract Set<Dependent> getDependents();
+  public abstract Set<Dependent> getDependents();
 
   /**
    * It is the dependent update source that must fire events, not us.

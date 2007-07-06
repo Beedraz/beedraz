@@ -105,15 +105,20 @@ public abstract class AbstractBeed<_Event_ extends Event>
   /*<section name="dependents">*/
   //------------------------------------------------------------------
 
+  public final Set<Dependent> getDependents() {
+    return ($dependents == null) ? EMPTY_DEPENDENTS : $dependents.clone();
+  }
+
+  @Deprecated
   public final boolean isDependent(Dependent dependent) {
-    return ($dependents != null) && $dependents.contains(dependent);
+    return getDependents().contains(dependent);
   }
 
   public final boolean isTransitiveDependent(Dependent dependent) {
     if ($dependents == null) {
       return false;
     }
-    if (isDependent(dependent)) {
+    if ($dependents.contains(dependent)) {
       return true;
     }
     else {
@@ -127,17 +132,6 @@ public abstract class AbstractBeed<_Event_ extends Event>
   }
 
   private final static Set<Dependent> EMPTY_DEPENDENTS = Collections.emptySet();
-
-  /**
-   * Don't expose the collection of dependents publicly. It's
-   * a secret shared between us and the dependent. This collection
-   * uses strong references.
-   *
-   * @result for (Dependent d) {isDependent(d) ?? result.contains(d)};
-   */
-  protected final Set<Dependent> getDependents() {
-    return ($dependents == null) ? EMPTY_DEPENDENTS : $dependents.clone();
-  }
 
   /**
    * @pre dependent != null;
@@ -182,7 +176,6 @@ public abstract class AbstractBeed<_Event_ extends Event>
   protected final void updateDependents(Event event) {
     org.beedraz.semantics_II.TopologicalUpdate.updateDependents(this, event);
   }
-
 
   /**
    * The topological update method. First change this update source locally,

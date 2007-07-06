@@ -112,8 +112,7 @@ public abstract class Dependent {
    *   Therefor, this method is abstract.</p>
    *
    * @result result != null;
-   * @result for (Dependent d) {getUpdateSource().isDependent(d) ? result.contains(d)};
-   * @result for (Dependent d : result) {getUpdateSource().isDependent(d)};
+   * @result getUpdateSource().getDependents();
    */
   abstract Set<Dependent> getDependents();
 

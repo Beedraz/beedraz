@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2007 - $Date$ by the authors mentioned below.
+Copyright 2007 - $Date: 2007-05-24 16:46:42 +0200 (Thu, 24 May 2007) $ by the authors mentioned below.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package org.beedraz.semantics_II.expression.collection.set;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.collection.CollectionBeed;
@@ -31,26 +30,25 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * Support for implementations of {@link SetBeed}, which are not
- * {@link AbstractDependentBeed dependent beeds}. Dependent set beeds
- * should use {@link AbstractDependentSetBeed}.
+ * Support for implementations of {@link SetBeed} for dependent beeds.
+ * Non-dependent beeds should use {@link AbstractSetBeed}.
  *
  * @author Nele Smeets
  * @author Jan Dockx
  * @author  Peopleware n.v.
  */
-@Copyright("2007 - $Date$, Beedraz authors")
+@Copyright("2007 - $Date: 2007-05-24 16:46:42 +0200 (Thu, 24 May 2007) $, Beedraz authors")
 @License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "$Date$")
-public abstract class AbstractSetBeed<_Element_, _SetEvent_ extends SetEvent<_Element_>>
-    extends AbstractBeed<_SetEvent_>
+@SvnInfo(revision = "$Revision: 913 $",
+         date     = "$Date: 2007-05-24 16:46:42 +0200 (Thu, 24 May 2007) $")
+public abstract class AbstractDependentSetBeed<_Element_, _SetEvent_ extends SetEvent<_Element_>>
+    extends AbstractDependentBeed<_SetEvent_>
     implements SetBeed<_Element_, _SetEvent_> {
 
   /**
    * @post owner != null ? owner.registerAggregateElement(this);
    */
-  protected AbstractSetBeed(AggregateBeed owner) {
+  protected AbstractDependentSetBeed(AggregateBeed owner) {
     if (owner != null) {
       owner.registerAggregateElement(this);
     }

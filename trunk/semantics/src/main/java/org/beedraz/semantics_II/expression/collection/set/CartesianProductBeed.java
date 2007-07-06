@@ -64,8 +64,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision: 913 $",
          date     = "$Date: 2007-05-24 16:46:42 +0200 (do, 24 mei 2007) $")
 public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends Beed<?>>
-    extends AbstractSetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>>
-    implements SetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>> {
+    extends AbstractSetBeed<CartesianProductBeed<_Element1_, _Element2_>.Tuple, SetEvent<CartesianProductBeed<_Element1_, _Element2_>.Tuple>> {
 
   /**
    * @post  getSourcePath1() == null;

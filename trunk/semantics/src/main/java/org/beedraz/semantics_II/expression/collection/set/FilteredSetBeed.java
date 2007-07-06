@@ -74,8 +74,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class FilteredSetBeed<_Element_ extends Beed<?>>
-    extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
-    implements SetBeed<_Element_, SetEvent<_Element_>> {
+    extends AbstractSetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
    * @pre   criterion != null;
@@ -448,7 +447,7 @@ public class FilteredSetBeed<_Element_ extends Beed<?>>
     @Override
     protected String otherToStringInformation() {
       return super.otherToStringInformation() + "  mrusd: " + getMaximumRootUpdateSourceDistance();
-    }
+  }
 
   }
 

@@ -54,8 +54,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
 public class UnionBeed<_Element_>
-    extends AbstractSetBeed<_Element_, SetEvent<_Element_>>
-    implements SetBeed<_Element_, SetEvent<_Element_>> {
+    extends AbstractSetBeed<_Element_, SetEvent<_Element_>> {
 
   /**
    * @post  getSource() == null;

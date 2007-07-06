@@ -28,7 +28,6 @@ import java.util.Set;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.expression.collection.set.AbstractSetBeed;
-import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -45,8 +44,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class BidirToManyBeed<_One_ extends BeanBeed,
                              _Many_ extends BeanBeed>
-    extends AbstractSetBeed<_Many_, SetEvent<_Many_>>
-    implements SetBeed<_Many_, SetEvent<_Many_>> {
+    extends AbstractSetBeed<_Many_, SetEvent<_Many_>> {
 
   /**
    * @pre one != null;

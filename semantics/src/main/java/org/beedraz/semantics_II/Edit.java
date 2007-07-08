@@ -517,6 +517,14 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    *   or {@link #redo()} protocol, {@link #getState()} returns {@link State#DONE},
    *   and when the method is called as part of the {@link #undo()} protocol,
    *   {@link #getState()} returns {@link State#UNDONE}.</p>
+   * <p>The events describe the complete change from old to new state. In creating
+   *   this event, that describes the change the target has just undergone, the
+   *   implementation should use only information available in the edit, since
+   *   the state of the target might already have changed further, after
+   *   {@link #performance()} or {@link #unperformance()} execution, before
+   *   this method is called. Remember that {@link #storeInitialState()} has
+   *   been called already, and that the edit should have enough information
+   *   about the goal state to make this feasible.</p>
    *
    * @result result != null;
    */

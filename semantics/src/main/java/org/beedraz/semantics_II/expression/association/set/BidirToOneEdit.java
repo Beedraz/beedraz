@@ -127,11 +127,19 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
     BidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
     BidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     if (oldToMany != null) {
+      /* We can use getTarget().getOwner() here as singleton for removed elements,
+       * although the target already may have changed further before this method is called,
+       * because the target's owner cannot change.
+       */
       Event removedEvent =
           new ActualSetEvent<_Many_>(oldToMany, null, new Singleton<_Many_>(getTarget().getOwner()), this);
       result.put(oldToMany, removedEvent);
     }
     if (newToMany != null) {
+      /* We can use getTarget().getOwner() here as singleton for added elements,
+       * although the target already may have changed further before this method is called,
+       * because the target's owner cannot change.
+       */
       Event addedEvent =
           new ActualSetEvent<_Many_>(newToMany, new Singleton<_Many_>(getTarget().getOwner()), null, this);
       result.put(newToMany, addedEvent);

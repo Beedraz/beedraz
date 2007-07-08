@@ -304,7 +304,42 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
 
 
 
-
+  /**
+   * <p>Gather source events from all atomic component edits.</p>
+   * <p>These are our component edits, flattened. But, it is very well
+   *   possible that amongst our flattened component edits there are
+   *   several edits that work on a common target. They represent
+   *   sequential changes of the same semantic state. (e.g.,
+   *   0 to 1, 1 to 5, 5 to 3, and then even possibly 3 to 0).</p>
+   * <p>For dependent beeds, this is no problem: they will be visited once
+   *   during the topological update, and generate one event that describes
+   *   the overal change.</p>
+   * <p>For editable beeds, the target of the edits, this is a problem.
+   *   We need to devise a way to generate an overal event for editable beeds,
+   *   but the question is what to use as edit there: in this case we have
+   *   several edits for the same target, and each of these edits can
+   *   be asked to generate an event.</p>
+   * <p>For edits that follow each other directly in the compound edit,
+   *   we can have the second one be {@link Edit#absord} by the first one,
+   *   and ask the combined edit for the event. If edits are separated by
+   *   other edits, this is not trivial: it is possible that a later edit
+   *   for a given target can only be executed after other edits have
+   *   prepared the way, so we cannot just combine separated edits.</p>
+   * <p>In general, this means that we cannot ask the edits for a combined
+   *   event. We can however ask each of the separated edit (groups)
+   *   for an event, and then ask the events to combine: the new state
+   *   of the first event should be the old state of the second event.
+   *   Then we have to make sure however that the edit generates events
+   *   based on the edit goal state, and not on the target state, because
+   *   that might have changed already.</p>
+   * <p>In this overal event, we also need an edit as change reason.
+   *   When all edits for a given target can be combined into one edit,
+   *   or if there is only one edit for the given target, the reason of
+   *   change can be the combined or one edit. When edits cannot be combined,
+   *   the change reason in the combined event must be this compound edit.
+   *   This then signals to other mechanisms that the change can also only
+   *   be undone by undoing the compound edit as a whole.</p>
+   */
   @Override
   protected Map<AbstractBeed<?>, Event> createEvents() {
     // TODO Auto-generated method stub

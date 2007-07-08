@@ -25,8 +25,10 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractSimpleEdit;
 import org.beedraz.semantics_II.EditStateException;
 import org.ppeew.annotations_I.Copyright;
@@ -215,23 +217,20 @@ public class SetEdit<_Element_>
     getTarget().addElements($elementsToRemove);
   }
 
-  @Override
-  protected final void updateDependents(SetEvent<_Element_> event) {
-    getTarget().packageUpdateDependents(event);
-  }
-
   /**
-   * @post  result.getSource() == getTarget();
-   * @post  result.getAddedElements().equals(getAddedElements());
-   * @post  result.getRemovedElements().equals(getRemovedElements());
-   * @post  result.getEdit() == this;
+   * @post  result.size() == 1;
+   * @post  result.get(getTarget()) = event;
+   * @post  result.get(getTarget()).getSource() == getTarget();
+   * @post  result.get(getTarget()).getAddedElements().equals(getAddedElements());
+   * @post  result.get(getTarget()).getRemovedElements().equals(getRemovedElements());
+   * @post  result.get(getTarget()).getEdit() == this;
    */
   @Override
-  protected SetEvent<_Element_> createEvent() {
-    return new ActualSetEvent<_Element_>(getTarget(),
-                                         getAddedElements(),
-                                         getRemovedElements(),
-                                         this);
+  protected Map<AbstractBeed<?>, SetEvent<_Element_>> createEvents() {
+    return singletonEventMap(new ActualSetEvent<_Element_>(getTarget(),
+                                                           getAddedElements(),
+                                                           getRemovedElements(),
+                                                           this));
   }
 
   /**

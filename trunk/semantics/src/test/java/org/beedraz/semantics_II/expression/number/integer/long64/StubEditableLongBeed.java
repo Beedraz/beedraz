@@ -9,9 +9,8 @@ package org.beedraz.semantics_II.expression.number.integer.long64;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
-import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -28,10 +27,10 @@ public class StubEditableLongBeed extends EditableLongBeed {
   }
 
   /**
-   * updateDependents is made public for testing reasons
+   * Makes the updateDependents method public for testing reasons.
    */
-  public void publicUpdateDependents(ActualLongEvent event) {
-    updateDependents(event);
+  public void publicTopologicalUpdateStart(ActualLongEvent event) {
+    TopologicalUpdateAccess.topologicalUpdate(this, event);
   }
 
   @Override

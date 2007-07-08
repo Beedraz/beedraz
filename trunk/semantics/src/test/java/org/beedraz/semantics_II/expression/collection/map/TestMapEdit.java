@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
@@ -33,9 +34,6 @@ import org.beedraz.semantics_II.ValidityListener;
 import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.expression.collection.map.EditableMapBeed;
-import org.beedraz.semantics_II.expression.collection.map.MapEdit;
-import org.beedraz.semantics_II.expression.collection.map.MapEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -1690,7 +1688,8 @@ public class TestMapEdit {
     $mapEdit.addElementToRemove(keyR1, valueR1);
     $mapEdit.perform();
     // create event
-    MapEvent<String, Integer> createdEvent = $mapEdit.createEvent();
+    Map<AbstractBeed<?>, ? extends MapEvent<String, Integer>> events = $mapEdit.createEvents();
+    MapEvent<String, Integer> createdEvent = events.get($mapEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $mapEdit);
     assertTrue(createdEvent.getAddedElements().size() == 1);
     assertTrue(createdEvent.getAddedElements().containsKey(keyA1));
@@ -1700,7 +1699,8 @@ public class TestMapEdit {
     // undo
     $mapEdit.undo();
     // create event
-    createdEvent = $mapEdit.createEvent();
+    events = $mapEdit.createEvents();
+    createdEvent = events.get($mapEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $mapEdit);
     assertTrue(createdEvent.getAddedElements().isEmpty());
     assertTrue(createdEvent.getRemovedElements().size() == 1);

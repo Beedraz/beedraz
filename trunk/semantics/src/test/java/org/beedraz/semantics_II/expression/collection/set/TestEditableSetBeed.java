@@ -27,6 +27,7 @@ import java.util.Set;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
@@ -55,8 +56,11 @@ public class TestEditableSetBeed {
       super(owner);
     }
 
-    public void publicUpdateDependents(SetEvent<Integer> event) {
-      updateDependents(event);
+    /**
+     * Makes the updateDependents method public for testing reasons.
+     */
+    public void publicTopologicalUpdateStart(SetEvent<Integer> event) {
+      TopologicalUpdateAccess.topologicalUpdate(this, event);
     }
 
   }
@@ -156,7 +160,7 @@ public class TestEditableSetBeed {
     $editableSetBeed.addListener($listener3);
     $editableSetBeed.addListener($listener4);
     // fire $editableSetBeed
-    $editableSetBeed.publicUpdateDependents($event1);
+    $editableSetBeed.publicTopologicalUpdateStart($event1);
     // checks
     assertNotNull($listener3.$event);
     assertNotNull($listener4.$event);

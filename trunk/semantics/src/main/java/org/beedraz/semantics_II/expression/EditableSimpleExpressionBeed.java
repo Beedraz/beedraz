@@ -92,10 +92,6 @@ public abstract class EditableSimpleExpressionBeed<_Type_,
     return 0;
   }
 
-  void packageUpdateDependents(_Event_ event) {
-    updateDependents(event);
-  }
-
   private final static String NULL_STRING = "null";
 
   public final Set<Beed<?>> getUpdateSources() {

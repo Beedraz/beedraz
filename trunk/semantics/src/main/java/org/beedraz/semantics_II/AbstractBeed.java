@@ -22,7 +22,6 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.ppeew.annotations_I.Copyright;
@@ -158,44 +157,6 @@ public abstract class AbstractBeed<_Event_ extends Event>
         $dependents = null;
       }
     }
-  }
-
-  /**
-   * The topological update method. First change this update source locally,
-   * then described the change in an event, then call this method with that event.
-   *
-   * @pre event != null;
-   *
-   * @mudo This method is only here to make the method
-   *       {@link TopologicalUpdate#updateDependents(AbstractUpdateSource, Event)}
-   *       accessible in other packates for subtypes.
-   *       The method actually needs to be accessible by edits. The correct
-   *       solution is to put edits in the same package as {@link TopologicalUpdate},
-   *       which would then be the beedra core top package.
-   */
-  protected final void updateDependents(Event event) {
-    org.beedraz.semantics_II.TopologicalUpdate.updateDependents(this, event);
-  }
-
-  /**
-   * The topological update method. First change this update source locally,
-   * then described the change in an event, then call this method with that event.
-   *
-   * @param edit
-   *        The edit that causes this update. This may be {@code null},
-   *        for structural changes.
-   * @pre sourceEvents != null;
-   * @pre sourceEvents.size() > 0;
-   *
-   * @mudo This method is only here to make the method
-   *       {@link TopologicalUpdate#updateDependents(AbstractUpdateSource, Event)}
-   *       accessible in other packates for subtypes.
-   *       The method actually needs to be accessible by edits. The correct
-   *       solution is to put edits in the same package as {@link TopologicalUpdate},
-   *       which would then be the beedra core top package.
-   */
-  protected static void updateDependents(Map<AbstractBeed<?>, Event> sourceEvents, Edit<?> edit) {
-    TopologicalUpdate.updateDependents(sourceEvents, edit);
   }
 
   /**

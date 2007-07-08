@@ -19,6 +19,9 @@ package org.beedraz.semantics_II.expression.string;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.expression.SimpleExpressionEdit;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -44,16 +47,19 @@ public final class StringEdit
   }
 
   /**
-   * @post  result.getSource() == getTarget();
-   * @post  result.getOldValue() == getOldValue();
-   * @post  result.getNewValue() == getNewValue();
-   * @post  result.getEdit() == this;
+   * @post  result.size() == 1;
+   * @post  result.get(getTarget()) = event;
+   * @post  result.get(getTarget()).getSource() == getTarget();
+   * @post  getOldValue() == null ? result.get(getTarget()).getOldValue() == null :
+   *                                result.get(getTarget()).getOldValue().equals(getOldValue());
+   * @post  getNewValue() == null ? result.get(getTarget()).getNewValue() == null :
+   *                                result.get(getTarget()).getNewValue().equals(getNewValue());
+   * @post  result.get(getTarget()).getEdit() == this;
    */
   @Override
-  protected StringEvent createEvent() {
-    return new StringEvent(getTarget(), getOldValue(), getNewValue(), this);
+  protected Map<AbstractBeed<?>, StringEvent> createEvents() {
+    return singletonEventMap(new StringEvent(getTarget(), getOldValue(), getNewValue(), this));
   }
-
 
 }
 

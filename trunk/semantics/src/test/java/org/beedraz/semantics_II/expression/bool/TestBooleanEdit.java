@@ -24,6 +24,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
@@ -714,7 +717,8 @@ public class TestBooleanEdit {
     $booleanEdit.setGoal(goal);
     $booleanEdit.perform();
     // create event
-    BooleanEvent createdEvent = $booleanEdit.createEvent();
+    Map<AbstractBeed<?>, ? extends BooleanEvent> events = $booleanEdit.createEvents();
+    BooleanEvent createdEvent = events.get($booleanEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $booleanEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
@@ -722,7 +726,8 @@ public class TestBooleanEdit {
     // undo
     $booleanEdit.undo();
     // create event
-    createdEvent = $booleanEdit.createEvent();
+    events = $booleanEdit.createEvents();
+    createdEvent = events.get($booleanEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $booleanEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);

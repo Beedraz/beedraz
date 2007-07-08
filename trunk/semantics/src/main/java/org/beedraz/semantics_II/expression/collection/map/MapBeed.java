@@ -33,8 +33,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  * @invar   keySet() != null;
  * @invar   !keySet().contains(null);
  * @invar   (forAll _Key_ key; !keySet().contains(key); get(key) == null);
- *
- * @mudo move to collection package; this is not a set
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",

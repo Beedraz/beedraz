@@ -25,8 +25,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.ValidityListener;
@@ -52,14 +56,6 @@ public class TestOrderedBidirToOneEdit {
 
     public MyOrderedBidirToOneEdit(EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> target) {
       super(target);
-    }
-
-    /**
-     * Made public for testing reasons
-     *
-     */
-    public void notifyListenersPublic() {
-      super.updateDependents();
     }
 
     /**
@@ -1282,7 +1278,8 @@ public class TestOrderedBidirToOneEdit {
     $orderedBidirToOneEdit.setGoal(goal);
     $orderedBidirToOneEdit.perform();
     // create event
-    OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $orderedBidirToOneEdit.createEvent();
+    Map<AbstractBeed<?>, Event> events = $orderedBidirToOneEdit.createEvents();
+    OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = (OrderedBidirToOneEvent<org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.OneBeanBeed, org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.ManyBeanBeed>)events.get($orderedBidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $orderedBidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
@@ -1290,7 +1287,8 @@ public class TestOrderedBidirToOneEdit {
     // undo
     $orderedBidirToOneEdit.undo();
     // create event
-    createdEvent = $orderedBidirToOneEdit.createEvent();
+    events = $orderedBidirToOneEdit.createEvents();
+    createdEvent = (OrderedBidirToOneEvent<org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.OneBeanBeed, org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.ManyBeanBeed>)events.get($orderedBidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $orderedBidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);

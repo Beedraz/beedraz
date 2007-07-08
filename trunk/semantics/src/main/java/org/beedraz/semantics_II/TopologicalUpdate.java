@@ -48,22 +48,6 @@ class TopologicalUpdate {
     // NOP
   }
 
-  /**
-   * The topological update method. First change this update source locally,
-   * then described the change in an event, then call this method with that event.
-   *
-   * @param edit
-   *        The edit that causes this update. This may be {@code null},
-   *        for structural changes.
-   * @pre us != null;
-   * @pre event != null;
-   */
-  static void updateDependents(AbstractBeed<?> us, Event event) {
-    HashMap<AbstractBeed<?>, Event> sourceEvents = new HashMap<AbstractBeed<?>, Event>(1);
-    sourceEvents.put(us, event);
-    updateDependents(sourceEvents, event.getEdit());
-  }
-
   private final static int TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE = 15;
 
   /**
@@ -76,7 +60,7 @@ class TopologicalUpdate {
    * @pre sourceEvents != null;
    * @pre sourceEvents.size() > 0;
    */
-  static void updateDependents(Map<AbstractBeed<?>, Event> sourceEvents, Edit<?> edit) {
+  static void topologicalUpdate(Map<AbstractBeed<?>, ? extends Event> sourceEvents, Edit<?> edit) {
     assert sourceEvents != null;
     assert sourceEvents.size() > 0;
     Map<Beed<?>, Event> events = new HashMap<Beed<?>, Event>(sourceEvents);
@@ -92,10 +76,10 @@ class TopologicalUpdate {
     fireDependentEvents(topologicalOrder, events);
   }
 
-  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<AbstractBeed<?>, Event> sourceEvents) {
+  private static ArrayList<HashSet<Dependent>> initialTopologicalOrder(Map<? extends Beed<?>, ? extends Event> sourceEvents) {
     assert sourceEvents != null;
     ArrayList<HashSet<Dependent>> topologicalOrder = new ArrayList<HashSet<Dependent>>(TOPOLOGICAL_ORDER_ARRAY_INITIAL_SIZE);
-    for (AbstractBeed<?> aus : sourceEvents.keySet()) {
+    for (Beed<?> aus : sourceEvents.keySet()) {
       assert aus != null;
       for (Dependent d : aus.getDependents()) {
         putDependent(topologicalOrder, d);
@@ -159,8 +143,8 @@ class TopologicalUpdate {
     }
   }
 
-  private static void fireInitialUpdateSourcesEvents(Map<AbstractBeed<?>, Event> sourceEvents) {
-    for (Map.Entry<AbstractBeed<?>, Event> entry : sourceEvents.entrySet()) {
+  private static void fireInitialUpdateSourcesEvents(Map<AbstractBeed<?>, ? extends Event> sourceEvents) {
+    for (Map.Entry<AbstractBeed<?>, ? extends Event> entry : sourceEvents.entrySet()) {
       entry.getKey().fireEvent(entry.getValue());
     }
   }

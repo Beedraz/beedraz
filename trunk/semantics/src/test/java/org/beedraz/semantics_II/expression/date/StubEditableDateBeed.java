@@ -21,9 +21,8 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Date;
 
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.date.DateEvent;
-import org.beedraz.semantics_II.expression.date.EditableDateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -45,10 +44,10 @@ public class StubEditableDateBeed extends EditableDateBeed {
   }
 
   /**
-   * updateDependents is made public for testing reasons
+   * Makes the updateDependents method public for testing reasons.
    */
-  public void publicUpdateDependents(DateEvent event) {
-    updateDependents(event);
+  public void publicTopologicalUpdateStart(DateEvent event) {
+    TopologicalUpdateAccess.topologicalUpdate(this, event);
   }
 
 }

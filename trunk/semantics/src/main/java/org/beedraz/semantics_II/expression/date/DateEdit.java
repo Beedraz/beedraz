@@ -20,7 +20,9 @@ package org.beedraz.semantics_II.expression.date;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Date;
+import java.util.Map;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.SimpleExpressionEdit;
 import org.ppeew.annotations_I.Copyright;
@@ -51,14 +53,18 @@ public final class DateEdit
   }
 
   /**
-   * @post  result.getSource() == getTarget();
-   * @post  ComparisonUtil.equalsWithNull(result.getOldValue(), getOldValue());
-   * @post  ComparisonUtil.equalsWithNull(result.getNewValue(), getNewValue());
-   * @post  result.getEdit() == this;
+   * @post  result.size() == 1;
+   * @post  result.get(getTarget()) = event;
+   * @post  result.get(getTarget()).getSource() == getTarget();
+   * @post  getOldValue() == null ? result.get(getTarget()).getOldValue() == null :
+   *                                result.get(getTarget()).getOldValue().equals(getOldValue());
+   * @post  getNewValue() == null ? result.get(getTarget()).getNewValue() == null :
+   *                                result.get(getTarget()).getNewValue().equals(getNewValue());
+   * @post  result.get(getTarget()).getEdit() == this;
    */
   @Override
-  protected DateEvent createEvent() {
-    return new DateEvent(getTarget(), getOldValue(), getNewValue(), this);
+  protected final Map<AbstractBeed<?>, DateEvent> createEvents() {
+    return singletonEventMap(new DateEvent(getTarget(), getOldValue(), getNewValue(), this));
   }
 
 }

@@ -25,7 +25,9 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Date;
+import java.util.Map;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
@@ -676,7 +678,8 @@ public class TestDateEdit {
     $dateEdit.setGoal(goal);
     $dateEdit.perform();
     // create event
-    DateEvent createdEvent = $dateEdit.createEvent();
+    Map<AbstractBeed<?>, ? extends DateEvent> events = $dateEdit.createEvents();
+    DateEvent createdEvent = events.get($dateEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $dateEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
@@ -684,7 +687,8 @@ public class TestDateEdit {
     // undo
     $dateEdit.undo();
     // create event
-    createdEvent = $dateEdit.createEvent();
+    events = $dateEdit.createEvents();
+    createdEvent = events.get($dateEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $dateEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);

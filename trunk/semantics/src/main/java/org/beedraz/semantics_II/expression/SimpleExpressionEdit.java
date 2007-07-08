@@ -205,14 +205,6 @@ public abstract class SimpleExpressionEdit<_Type_,
   }
 
   /**
-   * @post getTarget().packageUpdateDependents(event);
-   */
-  @Override
-  protected final void updateDependents(_Event_ event) {
-    getTarget().packageUpdateDependents(event);
-  }
-
-  /**
    * @return ComparisonUtil.equalsWithNull(getInitial(), getTarget().get());
    *
    * @todo non-final for OrderedBidirToOneEdit; try to fix that

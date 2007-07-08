@@ -47,20 +47,31 @@ public class TestAbstractSimpleEdit {
 
   @Before
   public void setUp() throws Exception {
-    // NOP
+    $beanBeed = new StubBeanBeed();
+    $target = new StubEditableSimpleExpressionBeed($beanBeed);
+    $targetListener = new StubListener<StubEvent>();
+    $target.addListener($targetListener);
+    $edit = new StubSimpleEdit($target);
+    $validityListener1 = new StubValidityListener();
+    $validityListener2 = new StubValidityListener();
   }
 
   @After
   public void tearDown() throws Exception {
-    // NOP
+    $beanBeed = null;
+    $target = null;
+    $edit = null;
+    $validityListener1 = null;
+    $validityListener2 = null;
+    $targetListener = null;
   }
 
-  BeanBeed $beanBeed = new StubBeanBeed();
-  StubEditableSimpleExpressionBeed $target = new StubEditableSimpleExpressionBeed($beanBeed);
-  private StubSimpleEdit $edit =
-      new StubSimpleEdit($target);
-  StubValidityListener $listener1 = new StubValidityListener();
-  StubValidityListener $listener2 = new StubValidityListener();
+  private BeanBeed $beanBeed = new StubBeanBeed();
+  private StubEditableSimpleExpressionBeed $target = new StubEditableSimpleExpressionBeed($beanBeed);
+  private StubSimpleEdit $edit = new StubSimpleEdit($target);
+  private StubValidityListener $validityListener1 = new StubValidityListener();
+  private StubValidityListener $validityListener2 = new StubValidityListener();
+  private StubListener<StubEvent> $targetListener = new StubListener<StubEvent>();
 
   @Test
   public void constructor() {
@@ -70,16 +81,16 @@ public class TestAbstractSimpleEdit {
   @Test
   public void kill() {
     // add validity listeners
-    $edit.addValidityListener($listener1);
-    $edit.addValidityListener($listener2);
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
+    $edit.addValidityListener($validityListener1);
+    $edit.addValidityListener($validityListener2);
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
     // kill
     $edit.kill();
     // check
     assertEquals($edit.getState(), State.DEAD);
-    assertFalse($edit.isValidityListener($listener1));
-    assertFalse($edit.isValidityListener($listener2));
+    assertFalse($edit.isValidityListener($validityListener1));
+    assertFalse($edit.isValidityListener($validityListener2));
   }
 
   @Test
@@ -164,21 +175,21 @@ public class TestAbstractSimpleEdit {
   // correct begin-state, validity listeners should be removed, listeners of the beed are notified
   public void perform5() {
     try {
-      $edit.addValidityListener($listener1);
-      $edit.addValidityListener($listener2);
-      assertTrue($edit.isValidityListener($listener1));
-      assertTrue($edit.isValidityListener($listener2));
+      $edit.addValidityListener($validityListener1);
+      $edit.addValidityListener($validityListener2);
+      assertTrue($edit.isValidityListener($validityListener1));
+      assertTrue($edit.isValidityListener($validityListener2));
       // perform
       assertFalse($edit.isInitialStateStored());
       $edit.setChange(true);
       $edit.perform();
       assertTrue($edit.isInitialStateStored());
       // listeners should be removed
-      assertFalse($edit.isValidityListener($listener1));
-      assertFalse($edit.isValidityListener($listener2));
+      assertFalse($edit.isValidityListener($validityListener1));
+      assertFalse($edit.isValidityListener($validityListener2));
       // listeners of the beed are notified
-      assertNotNull($edit.$firedEvent);
-      assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
+      assertNotNull($targetListener.$event);
+      assertEquals($targetListener.$event, $edit.getCreatedEvent());
     }
     catch (EditStateException e) {
       // should not be reached
@@ -194,20 +205,21 @@ public class TestAbstractSimpleEdit {
   // correct begin-state, edit is no change, so validity listeners are removed, listeners of the beed are not notified
   public void perform6() {
     try {
-      $edit.addValidityListener($listener1);
-      $edit.addValidityListener($listener2);
-      assertTrue($edit.isValidityListener($listener1));
-      assertTrue($edit.isValidityListener($listener2));
+      $edit.addValidityListener($validityListener1);
+      $edit.addValidityListener($validityListener2);
+      assertTrue($edit.isValidityListener($validityListener1));
+      assertTrue($edit.isValidityListener($validityListener2));
       // perform
       assertFalse($edit.isInitialStateStored());
       $edit.setChange(false);
       $edit.perform();
       assertTrue($edit.isInitialStateStored());
       // listeners are removed
-      assertFalse($edit.isValidityListener($listener1));
-      assertFalse($edit.isValidityListener($listener2));
+      assertFalse($edit.isValidityListener($validityListener1));
+      assertFalse($edit.isValidityListener($validityListener2));
       // listeners of the beed are not notified
-      assertNull($edit.$firedEvent);
+      // listeners of the beed are notified
+      assertNull($targetListener.$event);
     }
     catch (EditStateException e) {
       // should not be reached
@@ -321,21 +333,22 @@ public class TestAbstractSimpleEdit {
   // correct begin-state, so there are no validity listeners, listeners of the beed are notified
   public void undo5() {
     try {
-      $edit.addValidityListener($listener1);
-      $edit.addValidityListener($listener2);
-      assertTrue($edit.isValidityListener($listener1));
-      assertTrue($edit.isValidityListener($listener2));
+      $edit.addValidityListener($validityListener1);
+      $edit.addValidityListener($validityListener2);
+      assertTrue($edit.isValidityListener($validityListener1));
+      assertTrue($edit.isValidityListener($validityListener2));
       // perform
       $edit.perform();
-      assertFalse($edit.isValidityListener($listener1));
-      assertFalse($edit.isValidityListener($listener2));
+      assertFalse($edit.isValidityListener($validityListener1));
+      assertFalse($edit.isValidityListener($validityListener2));
+      $targetListener.reset();
       $edit.undo();
       // there are no listeners
-      assertFalse($edit.isValidityListener($listener1));
-      assertFalse($edit.isValidityListener($listener2));
+      assertFalse($edit.isValidityListener($validityListener1));
+      assertFalse($edit.isValidityListener($validityListener2));
       // listeners of the beed are notified
-      assertNotNull($edit.$firedEvent);
-      assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
+      assertNotNull($targetListener.$event);
+      assertEquals($targetListener.$event, $edit.getCreatedEvent());
     }
     catch (EditStateException e) {
       // should not be reached
@@ -450,22 +463,23 @@ public class TestAbstractSimpleEdit {
   // correct begin-state, so there are no validity listeners, listeners of the beed are notified
   public void redo5() {
     try {
-      $edit.addValidityListener($listener1);
-      $edit.addValidityListener($listener2);
-      assertTrue($edit.isValidityListener($listener1));
-      assertTrue($edit.isValidityListener($listener2));
+      $edit.addValidityListener($validityListener1);
+      $edit.addValidityListener($validityListener2);
+      assertTrue($edit.isValidityListener($validityListener1));
+      assertTrue($edit.isValidityListener($validityListener2));
       // perform
       $edit.perform();
-      assertFalse($edit.isValidityListener($listener1));
-      assertFalse($edit.isValidityListener($listener2));
+      assertFalse($edit.isValidityListener($validityListener1));
+      assertFalse($edit.isValidityListener($validityListener2));
       $edit.undo();
+      $targetListener.reset();
       $edit.redo();
       // there are no listeners
-      assertFalse($edit.isValidityListener($listener1));
-      assertFalse($edit.isValidityListener($listener2));
+      assertFalse($edit.isValidityListener($validityListener1));
+      assertFalse($edit.isValidityListener($validityListener2));
       // listeners of the beed are notified
-      assertNotNull($edit.$firedEvent);
-      assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
+      assertNotNull($targetListener.$event);
+      assertEquals($targetListener.$event, $edit.getCreatedEvent());
     }
     catch (EditStateException e) {
       // should not be reached
@@ -501,12 +515,12 @@ public class TestAbstractSimpleEdit {
   @Test
   public void checkValidity() throws IllegalEditException {
     // add validity listeners
-    $edit.addValidityListener($listener1);
-    $edit.addValidityListener($listener2);
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
+    $edit.addValidityListener($validityListener1);
+    $edit.addValidityListener($validityListener2);
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
+    assertTrue($validityListener1.isEmpty());
+    assertTrue($validityListener2.isEmpty());
     // check the value of the validity
     assertTrue($edit.isValid());
     // change validity
@@ -514,10 +528,10 @@ public class TestAbstractSimpleEdit {
     $edit.checkValidity();
     // validity is still the same, so validity listeners are not notified
     assertTrue($edit.isValid());
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
-    assertTrue($listener1.isEmpty());
-    assertTrue($listener2.isEmpty());
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
+    assertTrue($validityListener1.isEmpty());
+    assertTrue($validityListener2.isEmpty());
     // change validity
     $edit.setAcceptable(false);
     try {
@@ -529,117 +543,118 @@ public class TestAbstractSimpleEdit {
     }
     // validity has changed, so validity listeners are notified
     assertFalse($edit.isValid());
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $edit);
-    assertEquals($listener1.$validity, $edit.isValid());
-    assertEquals($listener2.$target, $edit);
-    assertEquals($listener2.$validity, $edit.isValid());
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
+    assertEquals($validityListener1.$target, $edit);
+    assertEquals($validityListener1.$validity, $edit.isValid());
+    assertEquals($validityListener2.$target, $edit);
+    assertEquals($validityListener2.$validity, $edit.isValid());
     // change validity again
-    $listener1.reset();
-    $listener2.reset();
+    $validityListener1.reset();
+    $validityListener2.reset();
     $edit.setAcceptable(true);
     $edit.checkValidity();
     // validity has changed, so validity listeners are notified
     assertTrue($edit.isValid());
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
-    assertEquals($listener1.$target, $edit);
-    assertEquals($listener1.$validity, $edit.isValid());
-    assertEquals($listener2.$target, $edit);
-    assertEquals($listener2.$validity, $edit.isValid());
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
+    assertEquals($validityListener1.$target, $edit);
+    assertEquals($validityListener1.$validity, $edit.isValid());
+    assertEquals($validityListener2.$target, $edit);
+    assertEquals($validityListener2.$validity, $edit.isValid());
   }
 
   @Test
   public void addValidityListener1() {
     // the set of listeners is effective
-    $edit.addValidityListener($listener1);
-    assertTrue($edit.isValidityListener($listener1));
+    $edit.addValidityListener($validityListener1);
+    assertTrue($edit.isValidityListener($validityListener1));
   }
 
   @Test
   public void addValidityListener2() {
     // the set of listeners is not effective
     $edit.kill();
-    $edit.addValidityListener($listener1);
-    assertFalse($edit.isValidityListener($listener1));
+    $edit.addValidityListener($validityListener1);
+    assertFalse($edit.isValidityListener($validityListener1));
   }
 
   @Test
   public void addValidityListener3() throws EditStateException, IllegalEditException {
     // the set of listeners is not effective
     $edit.perform();
-    $edit.addValidityListener($listener1);
-    assertFalse($edit.isValidityListener($listener1));
+    $edit.addValidityListener($validityListener1);
+    assertFalse($edit.isValidityListener($validityListener1));
   }
 
   @Test
   public void removeValidityListener1() {
-    $edit.addValidityListener($listener1);
-    $edit.addValidityListener($listener2);
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
+    $edit.addValidityListener($validityListener1);
+    $edit.addValidityListener($validityListener2);
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
     // the set of listeners is effective
-    $edit.removeValidityListener($listener1);
-    assertFalse($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
+    $edit.removeValidityListener($validityListener1);
+    assertFalse($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
   }
 
   @Test
   public void removeValidityListener2() {
-    $edit.addValidityListener($listener1);
-    $edit.addValidityListener($listener2);
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
+    $edit.addValidityListener($validityListener1);
+    $edit.addValidityListener($validityListener2);
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
     // the set of listeners is not effective
     $edit.kill();
-    $edit.removeValidityListener($listener1);
-    assertFalse($edit.isValidityListener($listener1));
-    assertFalse($edit.isValidityListener($listener2));
+    $edit.removeValidityListener($validityListener1);
+    assertFalse($edit.isValidityListener($validityListener1));
+    assertFalse($edit.isValidityListener($validityListener2));
   }
 
   @Test
   public void removeValidityListener3() throws EditStateException, IllegalEditException {
-    $edit.addValidityListener($listener1);
-    $edit.addValidityListener($listener2);
-    assertTrue($edit.isValidityListener($listener1));
-    assertTrue($edit.isValidityListener($listener2));
+    $edit.addValidityListener($validityListener1);
+    $edit.addValidityListener($validityListener2);
+    assertTrue($edit.isValidityListener($validityListener1));
+    assertTrue($edit.isValidityListener($validityListener2));
     // the set of listeners is not effective
     $edit.perform();
-    $edit.removeValidityListener($listener1);
-    assertFalse($edit.isValidityListener($listener1));
-    assertFalse($edit.isValidityListener($listener2));
+    $edit.removeValidityListener($validityListener1);
+    assertFalse($edit.isValidityListener($validityListener1));
+    assertFalse($edit.isValidityListener($validityListener2));
   }
 
 // method is no longer public or protected
 //  @Test
 //  public void fireValidityChange() {
 //    // register listeners
-//    $edit.addValidityListener($listener1);
-//    $edit.addValidityListener($listener2);
-//    assertTrue($edit.isValidityListener($listener1));
-//    assertTrue($edit.isValidityListener($listener2));
-//    assertTrue($listener1.isEmpty());
-//    assertTrue($listener2.isEmpty());
+//    $edit.addValidityListener($validityListener1);
+//    $edit.addValidityListener($validityListener2);
+//    assertTrue($edit.isValidityListener($validityListener1));
+//    assertTrue($edit.isValidityListener($validityListener2));
+//    assertTrue($validityListener1.isEmpty());
+//    assertTrue($validityListener2.isEmpty());
 //    // fire
 //    $edit.fireValidityChange();
 //    // check
-//    assertTrue($edit.isValidityListener($listener1));
-//    assertTrue($edit.isValidityListener($listener2));
-//    assertEquals($listener1.$target, $edit);
-//    assertEquals($listener1.$validity, $edit.isValid());
-//    assertEquals($listener2.$target, $edit);
-//    assertEquals($listener2.$validity, $edit.isValid());
+//    assertTrue($edit.isValidityListener($validityListener1));
+//    assertTrue($edit.isValidityListener($validityListener2));
+//    assertEquals($validityListener1.$target, $edit);
+//    assertEquals($validityListener1.$validity, $edit.isValid());
+//    assertEquals($validityListener2.$target, $edit);
+//    assertEquals($validityListener2.$validity, $edit.isValid());
 //  }
 
   @Test
   public void notifyListeners() {
-    assertNull($edit.$firedEvent);
+    $edit.createEvents();
+    assertNull($targetListener.$event);
     // notify
-    $edit.updateDependents();
+    $edit.publicTopologicalUpdateStart();
     // check
-    assertEquals($edit.$firedEvent, $edit.getCreatedEvent());
+    assertNotNull($targetListener.$event);
+    assertEquals($targetListener.$event, $edit.getCreatedEvent());
   }
-
 
 }

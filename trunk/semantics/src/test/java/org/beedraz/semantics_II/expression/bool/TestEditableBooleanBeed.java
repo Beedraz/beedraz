@@ -24,12 +24,10 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanEdit;
-import org.beedraz.semantics_II.expression.bool.BooleanEvent;
-import org.beedraz.semantics_II.expression.bool.EditableBooleanBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,11 +48,12 @@ public class TestEditableBooleanBeed {
     }
 
     /**
-     * updateDependents is made public for testing reasons
+     * Makes the updateDependents method public for testing reasons.
      */
-    public void publicUpdateDependents(BooleanEvent event) {
-      updateDependents(event);
+    public void publicTopologicalUpdateStart(BooleanEvent event) {
+      TopologicalUpdateAccess.topologicalUpdate(this, event);
     }
+
 
   }
 
@@ -68,7 +67,7 @@ public class TestEditableBooleanBeed {
     $editableBooleanBeed = new MyEditableBooleanBeed($owner);
     $stringEdit = new BooleanEdit($editableBooleanBeed);
     $stringEdit.perform();
-    $event1 = new BooleanEvent($editableBooleanBeed, Boolean.TRUE, Boolean.FALSE, $stringEdit);
+    $event1 = new BooleanEvent($editableBooleanBeed, Boolean.TRUE, Boolean.FALSE, null);
     $listener1 = new StubListener<AggregateEvent>();
     $listener2 = new StubListener<AggregateEvent>();
   }
@@ -95,7 +94,7 @@ public class TestEditableBooleanBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableBooleanBeed.publicUpdateDependents($event1);
+    $editableBooleanBeed.publicTopologicalUpdateStart($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

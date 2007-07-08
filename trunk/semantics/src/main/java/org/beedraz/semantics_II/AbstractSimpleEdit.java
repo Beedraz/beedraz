@@ -19,17 +19,13 @@ package org.beedraz.semantics_II;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * The top interface for the edit framework. We advise the use of the actual
- * classes in this package. If they do not provide the functionality you need,
- * you can implement your own version implementing this interface.
+ * Superclass with common code for non-compound edits.
  *
  * @author  Jan Dockx
  */
@@ -37,7 +33,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public abstract class AbstractSimpleEdit<_Target_ extends Beed<_Event_>,
+public abstract class AbstractSimpleEdit<_Target_ extends AbstractBeed<_Event_>,
                                          _Event_ extends Event>
     extends AbstractEdit<_Target_, _Event_> {
 

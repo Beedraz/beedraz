@@ -105,7 +105,7 @@ public abstract class Dependent {
 
   /**
    * <p>This method is used by the topological update algorithm in
-   *   {@link AbstractUpdateSource#updateDependents(Event)}.</p>
+   *   {@link TopologicalUpdate#topologicalUpdate(Map, Edit)}.</p>
    * <p>It is the dependent update source that holds the dependents, not us.
    *   And how it holds the dependents, is unknown to use at this level
    *   ({@link UpdateSource} does not offer the collection of dependents).
@@ -146,7 +146,7 @@ public abstract class Dependent {
    *        for structural changes.
    * @pre events != null;
    */
-  protected final Event update(Map<Beed<?>, Event> events, Edit<?> edit) {
+  protected final Event update(Map<? extends Beed<?>, Event> events, Edit<?> edit) {
     Map<Beed<?>, Event> result = new HashMap<Beed<?>, Event>();
     for (Beed<?> us : $updateSources) {
       assert us != null;

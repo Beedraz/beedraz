@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.ppeew.annotations_I.Copyright;
@@ -58,7 +59,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public final class CompoundEdit<_Target_ extends Beed<_Event_>,
+public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
                                 _Event_ extends Event>
     extends AbstractEdit<_Target_, _Event_> {
 
@@ -305,16 +306,13 @@ public final class CompoundEdit<_Target_ extends Beed<_Event_>,
 
 
   @Override
-  protected _Event_ createEvent() {
+  protected Map<AbstractBeed<?>, Event> createEvents() {
     // TODO Auto-generated method stub
     return null;
   }
 
-  @Override
-  protected void updateDependents(_Event_ event) {
-    // TODO Auto-generated method stub
 
-  }
+
 
   /*<section name="undo">*/
   //-------------------------------------------------------

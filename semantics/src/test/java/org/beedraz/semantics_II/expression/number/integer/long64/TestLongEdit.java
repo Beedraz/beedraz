@@ -24,15 +24,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.StubListener;
-import org.beedraz.semantics_II.StubValidityListener;
-import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.bean.StubBeanBeed;
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.StubValidityListener;
 import org.beedraz.semantics_II.Edit.State;
+import org.beedraz.semantics_II.bean.BeanBeed;
+import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
-import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -661,7 +663,8 @@ public class TestLongEdit {
     $longEdit.setGoal(goal);
     $longEdit.perform();
     // create event
-    IntegerEvent createdEvent = $longEdit.createEvent();
+    Map<AbstractBeed<?>, ? extends IntegerEvent> events = $longEdit.createEvents();
+    IntegerEvent createdEvent = events.get($longEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $longEdit);
     assertEquals(createdEvent.getOldLong(), null);
     assertEquals(createdEvent.getNewLong(), goal);
@@ -669,7 +672,8 @@ public class TestLongEdit {
     // undo
     $longEdit.undo();
     // create event
-    createdEvent = $longEdit.createEvent();
+    events = $longEdit.createEvents();
+    createdEvent = events.get($longEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $longEdit);
     assertEquals(createdEvent.getOldLong(), goal);
     assertEquals(createdEvent.getNewLong(), null);

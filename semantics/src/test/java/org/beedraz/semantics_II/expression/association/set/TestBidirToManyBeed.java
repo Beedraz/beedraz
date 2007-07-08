@@ -28,6 +28,7 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
@@ -57,11 +58,12 @@ public class TestBidirToManyBeed {
     }
 
     /**
-     * updateDependents is made public for testing reasons
+     * Makes the updateDependents method public for testing reasons.
      */
-    public void publicUpdateDependents(SetEvent<_Many_> event) {
-      updateDependents(event);
+    public void publicTopologicalUpdateStart(SetEvent<_Many_> event) {
+      TopologicalUpdateAccess.topologicalUpdate(this, event);
     }
+
   }
 
   public class OneBeanBeed extends AbstractBeanBeed {
@@ -98,7 +100,7 @@ public class TestBidirToManyBeed {
     $bidirToOneEdit =
       new BidirToOneEdit<OneBeanBeed, ManyBeanBeed>($editableBidirToOneBeed);
     $bidirToOneEdit.perform();
-    $setEvent = new ActualSetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, $bidirToOneEdit);
+    $setEvent = new ActualSetEvent<ManyBeanBeed>($bidirToManyBeed, null, null, null);
     $listener1 = new StubListener<AggregateEvent>();
     $listener2 = new StubListener<AggregateEvent>();
     $listener5 = new StubListener<ActualLongEvent>();
@@ -130,7 +132,7 @@ public class TestBidirToManyBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $bidirToManyBeed.publicUpdateDependents($setEvent);
+    $bidirToManyBeed.publicTopologicalUpdateStart($setEvent);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

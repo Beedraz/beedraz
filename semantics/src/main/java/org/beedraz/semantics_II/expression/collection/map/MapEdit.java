@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractEdit;
 import org.beedraz.semantics_II.EditStateException;
 import org.ppeew.annotations_I.vcs.CvsInfo;
@@ -54,8 +55,6 @@ import org.ppeew.annotations_I.vcs.CvsInfo;
  *
  * @invar   getElementsToAdd() != null;
  * @invar   getElementsToRemove() != null;
- *
- * @mudo move to collection package; map is not a set
  */
 @CvsInfo(revision = "$Revision$",
          date     = "$Date$",
@@ -223,25 +222,20 @@ public class MapEdit<_Key_, _Value_>
     }
   }
 
-  @Override
-  protected final void updateDependents(MapEvent<_Key_, _Value_> event) {
-    getTarget().packageUpdateDependents(event);
-  }
-
   /**
-   * @post  result.getSource() == getTarget();
-   * @post  result.getAddedElements().equals(getAddedElements());
-   * @post  result.getRemovedElements().equals(getRemovedElements());
-   * @post  result.getEdit() == this;
+   * @post  result.size() == 1;
+   * @post  result.get(getTarget()) = event;
+   * @post  result.get(getTarget()).getSource() == getTarget();
+   * @post  result.get(getTarget()).getAddedElements().equals(getAddedElements());
+   * @post  result.get(getTarget()).getRemovedElements().equals(getRemovedElements());
+   * @post  result.get(getTarget()).getEdit() == this;
    */
   @Override
-  protected MapEvent<_Key_, _Value_> createEvent() {
-    return
-      new ActualMapEvent<_Key_, _Value_>(
-        getTarget(),
-        getAddedElements(),
-        getRemovedElements(),
-        this);
+  protected Map<AbstractBeed<?>, MapEvent<_Key_, _Value_>> createEvents() {
+    return singletonEventMap(new ActualMapEvent<_Key_, _Value_>(getTarget(),
+                                                                getAddedElements(),
+                                                                getRemovedElements(),
+                                                                this));
   }
 
   /**

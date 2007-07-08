@@ -39,7 +39,7 @@ public class TestEditableDateBeed {
     $editableDateBeed = new StubEditableDateBeed($owner);
     $stringEdit = new DateEdit($editableDateBeed);
     $stringEdit.perform();
-    $event1 = new DateEvent($editableDateBeed, Util.createDate(1, 1, 1901), Util.createDate(2, 2, 1902), $stringEdit);
+    $event1 = new DateEvent($editableDateBeed, Util.createDate(1, 1, 1901), Util.createDate(2, 2, 1902), null);
     $listener1 = new StubListener<AggregateEvent>();
     $listener2 = new StubListener<AggregateEvent>();
   }
@@ -66,7 +66,7 @@ public class TestEditableDateBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableDateBeed.publicUpdateDependents($event1);
+    $editableDateBeed.publicTopologicalUpdateStart($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

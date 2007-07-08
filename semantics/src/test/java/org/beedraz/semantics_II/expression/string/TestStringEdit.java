@@ -24,6 +24,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
@@ -647,7 +650,7 @@ public class TestStringEdit {
   }
 
   @Test
-  public void createEvent() throws EditStateException, IllegalEditException {
+  public void createEvents() throws EditStateException, IllegalEditException {
     // can't create event before perform
     assertEquals(State.NOT_YET_PERFORMED, $stringEdit.getState());
 //    StringEvent createdEvent = $stringEdit.createEvent();
@@ -660,7 +663,8 @@ public class TestStringEdit {
     $stringEdit.setGoal(goal);
     $stringEdit.perform();
     // create event
-    StringEvent createdEvent = $stringEdit.createEvent();
+    Map<AbstractBeed<?>, StringEvent> events = $stringEdit.createEvents();
+    StringEvent createdEvent = events.get($stringEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $stringEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
@@ -668,7 +672,8 @@ public class TestStringEdit {
     // undo
     $stringEdit.undo();
     // create event
-    createdEvent = $stringEdit.createEvent();
+    events = $stringEdit.createEvents();
+    createdEvent = events.get($stringEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $stringEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);

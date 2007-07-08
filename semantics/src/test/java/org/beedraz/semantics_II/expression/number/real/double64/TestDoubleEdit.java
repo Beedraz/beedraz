@@ -24,6 +24,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
@@ -719,7 +722,8 @@ public class TestDoubleEdit {
     $doubleEdit.setGoal(goal);
     $doubleEdit.perform();
     // create event
-    RealEvent createdEvent = $doubleEdit.createEvent();
+    Map<AbstractBeed<?>, ? extends RealEvent> events = $doubleEdit.createEvents();
+    RealEvent createdEvent = events.get($doubleEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $doubleEdit);
     assertEquals(createdEvent.getOldDouble(), null);
     assertEquals(createdEvent.getNewDouble(), goal);
@@ -727,7 +731,8 @@ public class TestDoubleEdit {
     // undo
     $doubleEdit.undo();
     // create event
-    createdEvent = $doubleEdit.createEvent();
+    events = $doubleEdit.createEvents();
+    createdEvent = events.get($doubleEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $doubleEdit);
     assertEquals(createdEvent.getOldDouble(), goal);
     assertEquals(createdEvent.getNewDouble(), null);

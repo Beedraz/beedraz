@@ -19,8 +19,9 @@ package org.beedraz.semantics_II;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.Beed;
-import org.beedraz.semantics_II.Event;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -42,7 +43,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public abstract class AbstractEdit<_Target_ extends Beed<?>,
+public abstract class AbstractEdit<_Target_ extends AbstractBeed<?>,
                                    _Event_ extends Event>
     extends Edit<_Target_> {
 
@@ -62,42 +63,23 @@ public abstract class AbstractEdit<_Target_ extends Beed<?>,
   /*</construction>*/
 
 
-
   /**
-   * Should be implemented as
-   * {@code getTarget().fireChangeEvent(<var>an event</var>);}.
-   *
-   * @todo method should be final
-   */
-  @Override
-  protected void updateDependents() {
-    updateDependents(createEvent());
-  }
-
-  /**
-   * <p>Start the topological update algorithm propating changes and warning
-   *   listeners of these changes, with {@code event} expressing the final
-   *   change executed by this edit (either by {@link #perform()},
-   *   {@link #undo()}, or {@link #redo()}).</p>
+   * Utility method for some subclasses that want to return a
+   * singleton map with 1 event for the target.
    *
    * @pre event != null;
+   * @pre event.getSource() == getTarget();
+   * @post result.size() == 1;
+   * @post result.get(getTarget()) = event;
    */
-  protected abstract void updateDependents(_Event_ event);
+  protected final Map<AbstractBeed<?>, _Event_> singletonEventMap(_Event_ event) {
+    assert event != null;
+    assert event.getSource() == getTarget();
+    HashMap<AbstractBeed<?>, _Event_> result = new HashMap<AbstractBeed<?>, _Event_>(1);
+    result.put(getTarget(), event);
+    return result;
+  }
 
-  /**
-   * <p>Create a fresh event describing the state change of the {@link #getTarget()}
-   *   that is the result of this edit being {@link #perform() performed},
-   *   {@link #undo() undone} or {@link #redo() redone}.</p>
-   * <p>This method is called as part of the {@link #perform()} protocol,
-   *   as part of the {@link #undo()} protocol, and as part of the {@link #redo()}
-   *   protocol. Before this method is called, the state of the edit is already
-   *   changed, so when the method is called as part of the {@link #perform()}
-   *   or {@link #redo()} protocol, {@link #getState()} returns {@link State#DONE},
-   *   and when the method is called as part of the {@link #undo()} protocol,
-   *   {@link #getState()} returns {@link State#UNDONE}.</p>
-   *
-   * @result result != null;
-   */
-  protected abstract _Event_ createEvent();
+  // MUDO this is not a good reason for having generics here: _Event_
 
 }

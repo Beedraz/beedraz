@@ -106,10 +106,6 @@ public class EditableSetBeed<_Element_>
     }
   }
 
-  void packageUpdateDependents(SetEvent<_Element_> event) {
-    updateDependents(event);
-  }
-
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
   }

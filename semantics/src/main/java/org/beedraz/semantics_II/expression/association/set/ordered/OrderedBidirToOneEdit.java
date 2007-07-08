@@ -16,11 +16,14 @@ limitations under the License.
 
 package org.beedraz.semantics_II.expression.association.set.ordered;
 
-import static org.beedraz.semantics_II.Edit.State.*;
+import static org.beedraz.semantics_II.Edit.State.DONE;
+import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
+import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.EditStateException;
@@ -83,6 +86,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   private Integer $goalPosition;
 
   /*</property>*/
+
 
 
   /*<property name="goalPosition">*/
@@ -216,7 +220,6 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
     }
   }
 
-
   /**
    * @return ComparisonUtil.equalsWithNull(getGoal(), getTarget().get()) &&
    *         (  getTarget().get() == null ||
@@ -264,13 +267,25 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
+   * @post  result.size() >= 1;
+   * @post  result.size() <= 3;
+   * @post  result.get(getTarget()) = event;
+   * @post  result.get(getTarget()).getSource() == getTarget();
+   * @post  getOldValue() == null ? result.get(getTarget()).getOldValue() == null :
+   *                                result.get(getTarget()).getOldValue().equals(getOldValue());
+   * @post  getNewValue() == null ? result.get(getTarget()).getNewValue() == null :
+   *                                result.get(getTarget()).getNewValue().equals(getNewValue());
+   * @post  result.get(this).getEdit() == this;
    *
+   * @mudo more posts
    */
   @Override
-  protected final void updateDependents() {
-    HashMap<AbstractBeed<?>, Event> events = new HashMap<AbstractBeed<?>, Event>();
-    events.put(getTarget(), createEvent());
+  protected final Map<AbstractBeed<?>, Event> createEvents() {
     assert (getState() == DONE) || (getState() == UNDONE);
+    HashMap<AbstractBeed<?>, Event> result = new HashMap<AbstractBeed<?>, Event>();
+    Event targetEvent =
+      new OrderedBidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
+    result.put(getTarget(), targetEvent);
     OrderedBidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
     Integer oldPosition = getOldPosition();
     OrderedBidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
@@ -282,7 +297,7 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
       newValue.addAll(oldToMany.get());
       ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(oldToMany, oldValue, newValue, this);
-      events.put(oldToMany, event);
+      result.put(oldToMany, event);
     }
     if (newToMany != null) {
       OrderedSet<_Many_> oldValue = new LinkedListOrderedSet<_Many_>();
@@ -291,20 +306,9 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
       newValue.addAll(newToMany.get());
       ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(newToMany, oldValue, newValue, this);
-      events.put(newToMany, event);
+      result.put(newToMany, event);
     }
-    EditableOrderedBidirToOneBeed.packageUpdateDependents(events, this);
-  }
-
-  /**
-   * @post  result.getSource() == getTarget();
-   * @post  result.getOldValue() == getOldValue();
-   * @post  result.getNewValue() == getNewValue();
-   * @post  result.getEdit() == this;
-   */
-  @Override
-  protected OrderedBidirToOneEvent<_One_, _Many_> createEvent() {
-    return new OrderedBidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
+    return result;
   }
 
   @Override

@@ -24,10 +24,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.StubValidityListener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
@@ -35,7 +39,6 @@ import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
-import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,25 +60,18 @@ public class TestSimpleExpressionEdit {
       super(target);
     }
 
-//    /*
-//     * Made public for testing reasons.
-//     */
-//    public void checkValidityPublic() throws IllegalEditException {
-//      super.checkValidity();
-//    }
-
     /*
      * Made public for testing reasons.
      */
-    public void notifyListenersPublic() {
-      super.updateDependents();
+    public void publicTopologicalUpdateStart() {
+      forceDone();
+      TopologicalUpdateAccess.topologicalUpdate(createEvents(), this);
     }
 
     @Override
-    protected ActualLongEvent createEvent() {
-      LongBeed source = new EditableLongBeed(new StubBeanBeed());
-      $createdEvent = new ActualLongEvent(source, new Long(0), new Long(1), null);
-      return $createdEvent;
+    protected final Map<AbstractBeed<?>, ActualLongEvent> createEvents() {
+      $createdEvent = new ActualLongEvent($target, new Long(0), new Long(1), this);
+      return singletonEventMap($createdEvent);
     }
 
     public ActualLongEvent getCreatedEvent() {
@@ -743,7 +739,7 @@ public class TestSimpleExpressionEdit {
     assertTrue($target.isListener($listener3));
     assertNull($listener3.$event);
     // notify
-    $simpleEdit.notifyListenersPublic();
+    $simpleEdit.publicTopologicalUpdateStart();
     // check
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event, $simpleEdit.getCreatedEvent());

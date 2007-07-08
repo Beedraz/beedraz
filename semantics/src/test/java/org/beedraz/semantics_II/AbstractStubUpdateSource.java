@@ -46,8 +46,8 @@ public abstract class AbstractStubUpdateSource
     this(true);
   }
 
-  public void updateDependents() {
-    updateDependents($myEvent);
+  public void publicTopologicalUpdateStart() {
+    TopologicalUpdateAccess.topologicalUpdate(this, $myEvent);
   }
 
   public final StubEvent $myEvent;

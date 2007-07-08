@@ -117,10 +117,6 @@ public class EditableMapBeed<_Key_, _Value_>
     }
   }
 
-  void packageUpdateDependents(MapEvent<_Key_, _Value_> event) {
-    updateDependents(event);
-  }
-
   public final int getMaximumRootUpdateSourceDistance() {
     return 0;
   }

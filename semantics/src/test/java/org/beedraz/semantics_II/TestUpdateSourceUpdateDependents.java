@@ -83,7 +83,7 @@ public class TestUpdateSourceUpdateDependents {
    */
   @Test
   public void testUpdateDependents1() {
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     eventFired($subject1);
   }
 
@@ -106,7 +106,7 @@ public class TestUpdateSourceUpdateDependents {
   @Test
   public void testUpdateDependents2() {
     $dNullEvent1.addUpdateSource($subject1);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     updated($dNullEvent1, $subject1);
     eventFired($dNullEvent1, null);
     eventFired($subject1);
@@ -138,7 +138,7 @@ public class TestUpdateSourceUpdateDependents {
   public void testUpdateDependents3() {
     $dNullEvent1.addUpdateSource($subject1);
     $dNullEvent2.addUpdateSource($subject1);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     updated($dNullEvent1, $subject1);
     updated($dNullEvent2, $subject1);
     eventFired($dNullEvent1, null);
@@ -157,7 +157,7 @@ public class TestUpdateSourceUpdateDependents {
   public void testUpdateDependents4() {
     $dNullEvent1.addUpdateSource($subject1);
     $dNullEvent2.addUpdateSource($dNullEvent1); // $d1 event is null
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     updated($dNullEvent1, $subject1);
     updated($dNullEvent2);
     eventFired($dNullEvent1, null);
@@ -174,7 +174,7 @@ public class TestUpdateSourceUpdateDependents {
   public void testUpdateDependents5() {
     initDs(1);
     $ds[0].addUpdateSource($subject1);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     updated($ds[0], $subject1);
     eventFired($ds[0]);
     eventFired($subject1);
@@ -192,7 +192,7 @@ public class TestUpdateSourceUpdateDependents {
     initDs(2);
     $ds[0].addUpdateSource($subject1);
     $ds[1].addUpdateSource($subject1);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     updated($ds[0], $subject1);
     updated($ds[1], $subject1);
     eventFired($ds[0]);
@@ -212,7 +212,7 @@ public class TestUpdateSourceUpdateDependents {
     initDs(2);
     $ds[0].addUpdateSource($subject1);
     $ds[1].addUpdateSource($ds[0]);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     updated($ds[0], $subject1);
     updated($ds[1], $ds[0]);
     eventFired($ds[0]);
@@ -252,7 +252,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[5].addUpdateSource($subject1);
     $ds[6].addUpdateSource($ds[5]);
     $ds[6].addUpdateSource($ds[4]);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology8();
   }
 
@@ -288,7 +288,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[2].addUpdateSource($ds[0]);
     $ds[1].addUpdateSource($ds[0]);
     $ds[0].addUpdateSource($subject1);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology8();
   }
 
@@ -324,7 +324,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[1].addUpdateSource($ds[0]);
     $ds[5].addUpdateSource($subject1);
     $ds[3].addUpdateSource($ds[0]);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology8();
   }
 
@@ -396,7 +396,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[4].addUpdateSource($ds[2]);
     $ds[5].addUpdateSource($ds[3]);
     $ds[5].addUpdateSource($ds[4]);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology9();
   }
 
@@ -429,7 +429,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[2].addUpdateSource($subject1);
     $ds[1].addUpdateSource($subject1);
     $ds[0].addUpdateSource($subject2);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology9();
   }
 
@@ -462,7 +462,7 @@ public class TestUpdateSourceUpdateDependents {
     $ds[2].addUpdateSource($subject1);
     $ds[5].addUpdateSource($ds[3]);
     $ds[4].addUpdateSource($ds[2]);
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology9();
   }
 
@@ -514,7 +514,7 @@ public class TestUpdateSourceUpdateDependents {
     for (int i = 7; i <= 200; i++) {
       $ds[i].addUpdateSource($ds[i - 1]);
     }
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology10();
   }
 
@@ -574,7 +574,7 @@ public class TestUpdateSourceUpdateDependents {
     for (int i = 7; i <= 200; i++) {
       $ds[i].addUpdateSource($ds[i - 1]);
     }
-    $subject1.updateDependents();
+    $subject1.publicTopologicalUpdateStart();
     checkTopology11();
   }
 

@@ -20,6 +20,7 @@ package org.beedraz.semantics_II;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,6 +46,25 @@ public abstract class AbstractDependentBeed<_Event_ extends Event>
     extends AbstractBeed<_Event_> {
 
   /**
+   * Access to the topological update method. First change this update source locally,
+   * then described the change in an event, then call this method with that event.
+   * This access for subclasses is intended for non-edit changes, i.e., structural
+   * changes.
+   *
+   * @pre event != null;
+   * @pre event.getSource() == this;
+   * @pre event.getEdit() == null;
+   */
+  protected final void updateDependents(Event event) {
+    assert event != null;
+    assert event.getSource() == this;
+    assert event.getEdit() == null;
+    HashMap<AbstractBeed<?>, Event> sourceEvents = new HashMap<AbstractBeed<?>, Event>(1);
+    sourceEvents.put(this, event);
+    TopologicalUpdate.topologicalUpdate(sourceEvents, null);
+  }
+
+  /**
    * This method is called by the dependent when it is asked to update.
    * Subtypes should implement with code that deals with events from any update source
    * they have registered with the dependent.
@@ -55,9 +75,6 @@ public abstract class AbstractDependentBeed<_Event_ extends Event>
   /*<section name="dependent">*/
   //------------------------------------------------------------------
 
-  /**
-   * @mudo must be private, but protected now to force errors in subtypes
-   */
   private final Dependent $dependent = new AbstractUpdateSourceDependentDelegate(this) {
 
     @Override

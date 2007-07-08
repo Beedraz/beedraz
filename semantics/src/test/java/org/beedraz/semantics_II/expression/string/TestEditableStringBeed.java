@@ -27,8 +27,6 @@ import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.expression.string.StringEdit;
-import org.beedraz.semantics_II.expression.string.StringEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +47,7 @@ public class TestEditableStringBeed {
     $editableStringBeed = new StubEditableStringBeed($owner);
     $stringEdit = new StringEdit($editableStringBeed);
     $stringEdit.perform();
-    $event1 = new StringEvent($editableStringBeed, "old", "event", $stringEdit);
+    $event1 = new StringEvent($editableStringBeed, "old", "event", null);
     $listener1 = new StubListener<AggregateEvent>();
     $listener2 = new StubListener<AggregateEvent>();
   }
@@ -76,7 +74,7 @@ public class TestEditableStringBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableStringBeed.publicUpdateDependents($event1);
+    $editableStringBeed.publicTopologicalUpdateStart($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

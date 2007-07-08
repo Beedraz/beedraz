@@ -19,9 +19,8 @@ package org.beedraz.semantics_II.expression.string;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.string.EditableStringBeed;
-import org.beedraz.semantics_II.expression.string.StringEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -37,11 +36,8 @@ public class StubEditableStringBeed extends EditableStringBeed {
     super(owner);
   }
 
-  /**
-   * updateDependents is made public for testing reasons
-   */
-  public void publicUpdateDependents(StringEvent event) {
-    updateDependents(event);
+  public void publicTopologicalUpdateStart(StringEvent event) {
+    TopologicalUpdateAccess.topologicalUpdate(this, event);
   }
 
   @Override

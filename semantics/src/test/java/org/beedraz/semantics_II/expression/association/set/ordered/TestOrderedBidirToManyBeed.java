@@ -28,6 +28,7 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
@@ -58,10 +59,10 @@ public class TestOrderedBidirToManyBeed {
     }
 
     /**
-     * updateDependents is made public for testing reasons
+     * Makes the updateDependents method public for testing reasons.
      */
-    public void publicUpdateDependents(OrderedSetEvent<_Many_> event) {
-      updateDependents(event);
+    public void publicTopologicalUpdateStart(OrderedSetEvent<_Many_> event) {
+      TopologicalUpdateAccess.topologicalUpdate(this, event);
     }
 
   }

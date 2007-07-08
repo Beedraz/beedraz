@@ -23,6 +23,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Event;
@@ -104,37 +105,38 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
   }
 
   /**
-   * @todo super method should be final; can we fix this with a change listener to the to-one that propagates?
+   * @post  result.size() >= 1;
+   * @post  result.size() <= 3;
+   * @post  result.get(getTarget()) = event;
+   * @post  result.get(getTarget()).getSource() == getTarget();
+   * @post  getOldValue() == null ? result.get(getTarget()).getOldValue() == null :
+   *                                result.get(getTarget()).getOldValue().equals(getOldValue());
+   * @post  getNewValue() == null ? result.get(getTarget()).getNewValue() == null :
+   *                                result.get(getTarget()).getNewValue().equals(getNewValue());
+   * @post  result.get(this).getEdit() == this;
+   *
+   * @mudo more posts
    */
   @Override
-  protected final void updateDependents() {
-    HashMap<AbstractBeed<?>, Event> events = new HashMap<AbstractBeed<?>, Event>();
-    events.put(getTarget(), createEvent());
+  protected final Map<AbstractBeed<?>, Event> createEvents() {
     assert (getState() == DONE) || (getState() == UNDONE);
+    HashMap<AbstractBeed<?>, Event> result = new HashMap<AbstractBeed<?>, Event>();
+    Event targetEvent =
+        new BidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
+    result.put(getTarget(), targetEvent);
     BidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
     BidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     if (oldToMany != null) {
-      ActualSetEvent<_Many_> removedEvent =
+      Event removedEvent =
           new ActualSetEvent<_Many_>(oldToMany, null, new Singleton<_Many_>(getTarget().getOwner()), this);
-      events.put(oldToMany, removedEvent);
+      result.put(oldToMany, removedEvent);
     }
     if (newToMany != null) {
-      ActualSetEvent<_Many_> addedEvent =
+      Event addedEvent =
           new ActualSetEvent<_Many_>(newToMany, new Singleton<_Many_>(getTarget().getOwner()), null, this);
-      events.put(newToMany, addedEvent);
+      result.put(newToMany, addedEvent);
     }
-    EditableBidirToOneBeed.packageUpdateDependents(events, this);
-  }
-
-  /**
-   * @post  result.getSource() == getTarget();
-   * @post  result.getOldValue() == getOldValue();
-   * @post  result.getNewValue() == getNewValue();
-   * @post  result.getEdit() == this;
-   */
-  @Override
-  protected BidirToOneEvent<_One_, _Many_> createEvent() {
-    return new BidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
+    return result;
   }
 
   @Override

@@ -25,12 +25,15 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.Listener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.ValidityListener;
 import org.beedraz.semantics_II.Edit.State;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
@@ -55,19 +58,15 @@ public class TestSetEdit {
       super(target);
     }
 
-//    /**
-//     * Made public for testing reasons.
-//     * @throws IllegalEditException
-//     */
-//    public void checkValidityPublic() throws IllegalEditException {
-//      checkValidity();
-//    }
-
     /**
-     * Made public for testing reasons.
+     * Makes the updateDependents method public for testing reasons.
      */
-    public void publicUpdateDependents() {
-      updateDependents();
+    public void publicTopologicalUpdateStart(SetEvent<Integer> event) {
+      TopologicalUpdateAccess.topologicalUpdate($target, event);
+    }
+
+    public void publicTopologicalUpdateStart() {
+      TopologicalUpdateAccess.topologicalUpdate(createEvents(), this);
     }
 
   }
@@ -810,7 +809,7 @@ public class TestSetEdit {
     assertNull($listener3.$event);
     // notify
     $setEdit.perform();
-    $setEdit.publicUpdateDependents();
+    $setEdit.publicTopologicalUpdateStart();
     // check
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event.getEdit(), $setEdit);
@@ -1518,7 +1517,7 @@ public class TestSetEdit {
     removedElements.add(3);
     SetEvent<Integer> event =
       new ActualSetEvent<Integer>($target, addedElements, removedElements, null);
-    $setEdit.updateDependents(event);
+    $setEdit.publicTopologicalUpdateStart(event);
     // check listener
     assertNotNull($listener3.$event);
     assertEquals($listener3.$event, event);
@@ -1539,7 +1538,8 @@ public class TestSetEdit {
     $setEdit.addElementToRemove(toRemove);
     $setEdit.perform();
     // create event
-    SetEvent<Integer> createdEvent = $setEdit.createEvent();
+    Map<AbstractBeed<?>, ? extends SetEvent<Integer>> events = $setEdit.createEvents();
+    SetEvent<Integer> createdEvent = events.get($setEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $setEdit);
     assertTrue(createdEvent.getAddedElements().size() == 1);
     assertTrue(createdEvent.getAddedElements().contains(toAdd));
@@ -1548,7 +1548,8 @@ public class TestSetEdit {
     // undo
     $setEdit.undo();
     // create event
-    createdEvent = $setEdit.createEvent();
+    events = $setEdit.createEvents();
+    createdEvent = events.get($setEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $setEdit);
     assertTrue(createdEvent.getAddedElements().isEmpty());
     assertTrue(createdEvent.getRemovedElements().size() == 1);

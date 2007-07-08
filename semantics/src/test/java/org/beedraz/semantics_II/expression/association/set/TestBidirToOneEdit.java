@@ -24,8 +24,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Map;
+
+import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.Listener;
 import org.beedraz.semantics_II.ValidityListener;
@@ -61,13 +65,13 @@ public class TestBidirToOneEdit {
 //      super.checkValidity();
 //    }
 
-    /**
-     * Made public for testing reasons
-     *
-     */
-    public void notifyListenersPublic() {
-      super.updateDependents();
-    }
+//    /**
+//     * Made public for testing reasons
+//     *
+//     */
+//    public void notifyListenersPublic() {
+//      super.updateDependents();
+//    }
 
     /**
      * Made public for testing reasons
@@ -76,6 +80,7 @@ public class TestBidirToOneEdit {
     public void storeInitialStatePublic() {
       super.storeInitialState();
     }
+
   }
 
   public class MyEditableBidirToOneBeed extends EditableBidirToOneBeed<OneBeanBeed, ManyBeanBeed> {
@@ -1011,7 +1016,8 @@ public class TestBidirToOneEdit {
     $bidirToOneEdit.setGoal(goal);
     $bidirToOneEdit.perform();
     // create event
-    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = $bidirToOneEdit.createEvent();
+    Map<AbstractBeed<?>, Event> events = $bidirToOneEdit.createEvents();
+    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = (BidirToOneEvent<OneBeanBeed, ManyBeanBeed>)events.get($bidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $bidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
@@ -1019,7 +1025,8 @@ public class TestBidirToOneEdit {
     // undo
     $bidirToOneEdit.undo();
     // create event
-    createdEvent = $bidirToOneEdit.createEvent();
+    events = $bidirToOneEdit.createEvents();
+    createdEvent = (BidirToOneEvent<OneBeanBeed, ManyBeanBeed>)events.get($bidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $bidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);

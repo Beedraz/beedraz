@@ -4,6 +4,7 @@ package org.beedraz.semantics_II.expression;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.StubEvent;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -33,10 +34,9 @@ public class StubEditableSimpleExpressionBeed
 
   /**
    * Makes the updateDependents method public for testing reasons.
-   * @param event
    */
-  public void publicUpdateDependents(StubEvent event) {
-    updateDependents(event);
+  public void publicTopologicalUpdateStart(StubEvent event) {
+    TopologicalUpdateAccess.topologicalUpdate(this, event);
   }
 
 }

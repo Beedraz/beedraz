@@ -14,12 +14,10 @@ import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.StubListener;
+import org.beedraz.semantics_II.TopologicalUpdateAccess;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateEvent;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.ActualDoubleEvent;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleEdit;
-import org.beedraz.semantics_II.expression.number.real.double64.EditableDoubleBeed;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +38,10 @@ public class TestEditableDoubleBeed {
     }
 
     /**
-     * updateDependents is made public for testing reasons
+     * Makes the updateDependents method public for testing reasons.
      */
-    public void publicUpdateDependents(ActualDoubleEvent event) {
-      updateDependents(event);
+    public void publicTopologicalUpdateStart(ActualDoubleEvent event) {
+      TopologicalUpdateAccess.topologicalUpdate(this, event);
     }
 
   }
@@ -58,7 +56,7 @@ public class TestEditableDoubleBeed {
     $editableDoubleBeed = new MyEditableDoubleBeed($owner);
     $stringEdit = new DoubleEdit($editableDoubleBeed);
     $stringEdit.perform();
-    $event1 = new ActualDoubleEvent($editableDoubleBeed, new Double(0), new Double(1), $stringEdit);
+    $event1 = new ActualDoubleEvent($editableDoubleBeed, new Double(0), new Double(1), null);
     $listener1 = new StubListener<AggregateEvent>();
     $listener2 = new StubListener<AggregateEvent>();
   }
@@ -85,7 +83,7 @@ public class TestEditableDoubleBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableDoubleBeed.publicUpdateDependents($event1);
+    $editableDoubleBeed.publicTopologicalUpdateStart($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

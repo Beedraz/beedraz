@@ -26,6 +26,7 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.ppeew.annotations_I.Copyright;
@@ -218,6 +219,14 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    */
   public final State getState() {
     return $state;
+  }
+
+  /**
+   * Method added only for testing reasons.
+   * Remove this method when tests are more black-box.
+   */
+  protected final void forceDone() {
+    $state = DONE;
   }
 
   /**
@@ -493,7 +502,25 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    *   and when the method is called as part of the {@link #undo()} protocol,
    *   {@link #getState()} returns {@link State#UNDONE}.</p>
    */
-  protected abstract void updateDependents();
+  private void updateDependents() {
+    TopologicalUpdate.topologicalUpdate(createEvents(), this);
+  }
+
+  /**
+   * <p>Create fresh events describing the state change
+   *   that is the result of this edit being {@link #perform() performed},
+   *   {@link #undo() undone} or {@link #redo() redone}.</p>
+   * <p>This method is called as part of the {@link #perform()} protocol,
+   *   as part of the {@link #undo()} protocol, and as part of the {@link #redo()}
+   *   protocol. Before this method is called, the state of the edit is already
+   *   changed, so when the method is called as part of the {@link #perform()}
+   *   or {@link #redo()} protocol, {@link #getState()} returns {@link State#DONE},
+   *   and when the method is called as part of the {@link #undo()} protocol,
+   *   {@link #getState()} returns {@link State#UNDONE}.</p>
+   *
+   * @result result != null;
+   */
+  protected abstract Map<AbstractBeed<?>, ? extends Event> createEvents();
 
   /*</section>*/
 

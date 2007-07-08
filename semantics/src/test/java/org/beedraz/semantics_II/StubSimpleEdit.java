@@ -19,8 +19,8 @@ package org.beedraz.semantics_II;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.bean.BeanBeed;
-import org.beedraz.semantics_II.bean.StubBeanBeed;
+import java.util.Map;
+
 import org.beedraz.semantics_II.expression.StubEditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -37,12 +37,10 @@ public class StubSimpleEdit extends AbstractSimpleEdit<StubEditableSimpleExpress
     super(target);
   }
 
-  public final static BeanBeed EVENT_SOURCE = new StubBeanBeed();
-
   @Override
-  protected StubEvent createEvent() {
-    $createdEvent = new StubEvent(EVENT_SOURCE);
-    return $createdEvent;
+  protected Map<AbstractBeed<?>, StubEvent> createEvents() {
+    $createdEvent = new StubEvent(getTarget());
+    return singletonEventMap($createdEvent);
   }
 
   public StubEvent getCreatedEvent() {
@@ -50,19 +48,6 @@ public class StubSimpleEdit extends AbstractSimpleEdit<StubEditableSimpleExpress
   }
 
   private StubEvent $createdEvent;
-
-
-  @Override
-  protected void updateDependents(StubEvent event) {
-    $firedEvent = event;
-  }
-
-//  @Override
-//  protected void updateDependents(StubEvent event) {
-//    $firedEvent = event;
-//  }
-
-  public StubEvent $firedEvent;
 
   @Override
   public boolean isChange() {
@@ -129,5 +114,9 @@ public class StubSimpleEdit extends AbstractSimpleEdit<StubEditableSimpleExpress
   }
 
   private boolean $acceptable = true;
+
+  public void publicTopologicalUpdateStart() {
+    TopologicalUpdateAccess.topologicalUpdate(getTarget(), getCreatedEvent());
+  }
 
 }

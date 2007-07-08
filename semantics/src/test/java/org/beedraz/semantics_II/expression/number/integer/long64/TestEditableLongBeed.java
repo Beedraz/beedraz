@@ -39,7 +39,7 @@ public class TestEditableLongBeed {
     $editableIntegerBeed = new StubEditableLongBeed($owner);
     $stringEdit = new LongEdit($editableIntegerBeed);
     $stringEdit.perform();
-    $event1 = new ActualLongEvent($editableIntegerBeed, 0L, 1L, $stringEdit);
+    $event1 = new ActualLongEvent($editableIntegerBeed, 0L, 1L, null);
     $listener1 = new StubListener<AggregateEvent>();
     $listener2 = new StubListener<AggregateEvent>();
   }
@@ -66,7 +66,7 @@ public class TestEditableLongBeed {
     assertNull($listener1.$event);
     assertNull($listener2.$event);
     // fire a change on the registered beed
-    $editableIntegerBeed.publicUpdateDependents($event1);
+    $editableIntegerBeed.publicTopologicalUpdateStart($event1);
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);

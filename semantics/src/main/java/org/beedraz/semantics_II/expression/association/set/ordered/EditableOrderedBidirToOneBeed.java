@@ -19,11 +19,6 @@ package org.beedraz.semantics_II.expression.association.set.ordered;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import java.util.Map;
-
-import org.beedraz.semantics_II.AbstractBeed;
-import org.beedraz.semantics_II.Edit;
-import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.expression.EditableSimpleExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
@@ -32,6 +27,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
+ * @mudo description
+ *
+ * @author  Jan Dockx
  * @author  Nele Smeets
  * @author  Peopleware n.v.
  *
@@ -74,10 +72,6 @@ public class EditableOrderedBidirToOneBeed<_One_ extends BeanBeed,
 
   public final _One_ getOne() {
     return get() == null ? null : get().getOwner();
-  }
-
-  static void packageUpdateDependents(Map<AbstractBeed<?>, Event> events, Edit<?> edit) {
-    AbstractBeed.updateDependents(events, edit);
   }
 
 }

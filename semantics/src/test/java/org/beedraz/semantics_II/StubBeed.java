@@ -35,7 +35,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 public class StubBeed extends AbstractBeed<StubEvent> {
 
   public void publicUpdateDependents(StubEvent event) {
-    updateDependents(event);
+    TopologicalUpdateAccess.topologicalUpdate(this, event);
   }
 
   public int getMaximumRootUpdateSourceDistance() {

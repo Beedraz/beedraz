@@ -62,8 +62,8 @@ public class ActualOldNewEvent<_Type_>
     super(source, edit);
     assert ((oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true) :
            "oldValue: " + oldValue + "; newValue: " + newValue;
-    $oldValue = oldValue;
-    $newValue = newValue;
+    $oldValue = oldValue; // MUDO make a type safe copy
+    $newValue = newValue; // MUDO make a type safe copy
   }
 
   /**

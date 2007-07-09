@@ -32,7 +32,6 @@ import org.beedraz.semantics_II.expression.collection.set.ordered.OrderedSetEven
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.collection_I.CollectionUtil;
 import org.ppeew.collection_I.LinkedListOrderedSet;
 import org.ppeew.collection_I.OrderedSet;
 
@@ -77,7 +76,7 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
 
   /**
    * @basic
-   * 
+   *
    * @mudo rename to getOne();
    */
   public final _One_ getOwner() {
@@ -98,7 +97,7 @@ public class OrderedBidirToManyBeed<_One_ extends BeanBeed,
   }
 
   public final OrderedSet<_Many_> get() {
-    return CollectionUtil.unmodifiableOrderedSet($many);
+    return $many.clone();
   }
 
   /**

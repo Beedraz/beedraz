@@ -44,7 +44,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
          date     = "$Date$")
 public class LinkedListOrderedSet<E>
     extends AbstractSet<E>
-    implements OrderedSet<E>, Cloneable {
+    implements OrderedSet<E> {
 
   public LinkedListOrderedSet() {
     $backingList = new LinkedList<E>();
@@ -73,8 +73,9 @@ public class LinkedListOrderedSet<E>
     try {
       @SuppressWarnings("unchecked")
       LinkedListOrderedSet<E> result = (LinkedListOrderedSet<E>)super.clone();
-      result.$backingList.clear();
-      result.$backingList.addAll($backingList);
+      @SuppressWarnings("unchecked")
+      LinkedList<E> cloneBl = (LinkedList<E>)$backingList.clone();
+      result.$backingList = cloneBl;
       return result;
     }
     catch (CloneNotSupportedException exc) {
@@ -84,9 +85,11 @@ public class LinkedListOrderedSet<E>
   }
 
   /**
+   * Can't be final, because of clone();
+   *
    * @invar $backingList != null;
    */
-  private final LinkedList<E> $backingList;
+  private LinkedList<E> $backingList;
 
   /**
    * @basic

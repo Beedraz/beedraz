@@ -20,6 +20,7 @@ import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
 import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppeew.collection_I.CollectionUtil.unmodifiableOrderedSet;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
@@ -34,7 +35,6 @@ import org.beedraz.semantics_II.expression.collection.set.ordered.ActualOrderedS
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.collection_I.LinkedListOrderedSet;
 import org.ppeew.collection_I.OrderedSet;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
@@ -144,7 +144,130 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       getTarget().get() != null
         ? getTarget().get().indexOf(getTarget().getOwner())
         : null;
+    /* we also need to store the initial list for creating the event, of the
+     * initial and goal OrderedBidirToManyBeed, because that might change
+     * between performance or unperformance, and createEvents
+     * (see compound edit and the documentation of createEvents).
+     */
+    if (getInitial() != null) {
+      $initialManyInitialSet = getInitial().get().clone();
+    }
+    if (getGoal() != null) {
+      $goalManyInitialSet = getGoal().get().clone();
+    }
   }
+
+  /**
+   * The goal set of the initial many is the initial set of the initial many
+   * {@link #$initialManyInitialSet}, minus the target source.
+   *
+   * @pre $initialManyInitialSet != null;
+   * @pre getInitialPosition() != null;
+   */
+  private OrderedSet<_Many_> initialManyGoalSet() {
+    assert $initialManyInitialSet != null;
+    assert getInitialPosition() != null;
+    assert getInitialPosition() != null;
+    OrderedSet<_Many_> result = $initialManyInitialSet.clone();
+    result.remove(getInitialPosition().intValue());
+    // intValue() needed to avoid auto-unboxing and using remove(Object) method
+    return result;
+  }
+
+  /**
+   * The goal set of the goal many is the initial set of the goal many
+   * {@link #$initialManyInitialSet}, plus the target source.
+   *
+   * @pre $goalManyInitialSet != null;
+   * @pre getGoalPosition() != null;
+   */
+  private OrderedSet<_Many_> goalManyGoalSet() {
+    assert $goalManyInitialSet != null;
+    assert getGoalPosition() != null;
+    OrderedSet<_Many_> result = $goalManyInitialSet.clone();
+    result.add(getGoalPosition(), getTarget().getOwner());
+    return result;
+  }
+
+  private OrderedSet<_Many_> getOldManyOldSet() {
+    assert getOldValue() != null;
+    if (getState() == DONE) {
+      assert getOldValue() == getInitial(); // oldMany is initial many
+      assert getInitial() != null;
+      assert $initialManyInitialSet != null;
+      // old set of initial many is initial set of initial many
+      return unmodifiableOrderedSet($initialManyInitialSet);
+    }
+    else {
+      assert getOldValue() == getGoal(); // oldMany is goal many
+      assert getGoal() != null;
+      assert $goalManyInitialSet != null;
+      assert getGoalPosition() != null;
+      // old set of goal many is goal set  of goal many
+      return goalManyGoalSet();
+    }
+  }
+
+  private OrderedSet<_Many_> getOldManyNewSet() {
+    assert getOldValue() != null;
+    if (getState() == DONE) {
+      assert getOldValue() == getInitial(); // oldMany is initial many
+      assert getInitial() != null;
+      assert $initialManyInitialSet != null;
+      assert getInitialPosition() != null;
+      // new set of initial many is goal set of initial many
+      return initialManyGoalSet();
+    }
+    else {
+      assert getOldValue() == getGoal(); // oldMany is goal many
+      assert getGoal() != null;
+      assert $goalManyInitialSet != null;
+      // new set of goal many is initial set of goal many
+      return unmodifiableOrderedSet($goalManyInitialSet);
+    }
+  }
+
+  private OrderedSet<_Many_> getNewManyOldSet() {
+    assert getNewValue() != null;
+    if (getState() == DONE) {
+      assert getNewValue() == getGoal(); // newMany is goal many
+      assert getGoal() != null;
+      assert $goalManyInitialSet != null;
+      // old set of goal many is initial set of goal many
+      return unmodifiableOrderedSet($goalManyInitialSet);
+    }
+    else {
+      assert getNewValue() == getInitial(); // newMany is initial many
+      assert getInitial() != null;
+      assert $initialManyInitialSet != null;
+      assert getInitialPosition() != null;
+      // old set of initial many is goal set of initial many
+      return initialManyGoalSet();
+    }
+  }
+
+  private OrderedSet<_Many_> getNewManyNewSet() {
+    assert getNewValue() != null;
+    if (getState() == DONE) {
+      assert getNewValue() == getGoal(); // newMany is goal many
+      assert getGoal() != null;
+      assert $goalManyInitialSet != null;
+      assert getGoalPosition() != null;
+      // new set of goal many is goal set of goal many
+      return goalManyGoalSet();
+    }
+    else {
+      assert getNewValue() == getInitial(); // newMany is initial many
+      assert getInitial() != null;
+      assert $initialManyInitialSet != null;
+      // new set of initial many is initial set of initial many
+      return unmodifiableOrderedSet($initialManyInitialSet);
+    }
+  }
+
+  private OrderedSet<_Many_> $initialManyInitialSet;
+
+  private OrderedSet<_Many_> $goalManyInitialSet;
 
   /**
    * @return  ! ComparisonUtil.equalsWithNull(getInitial(), getGoal()) ||
@@ -287,25 +410,13 @@ public class OrderedBidirToOneEdit<_One_ extends BeanBeed,
       new OrderedBidirToOneEvent<_One_, _Many_>(getTarget(), getOldValue(), getNewValue(), this);
     result.put(getTarget(), targetEvent);
     OrderedBidirToManyBeed<_One_, _Many_> oldToMany = getOldValue();
-    Integer oldPosition = getOldPosition();
-    OrderedBidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
-    Integer newPosition = getNewPosition();
     if (oldToMany != null) {
-      OrderedSet<_Many_> oldValue = new LinkedListOrderedSet<_Many_>();
-      oldValue.addAll(oldToMany.get());
-      oldValue.add(oldPosition, getTarget().getOwner());
-      OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
-      newValue.addAll(oldToMany.get());
-      ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(oldToMany, oldValue, newValue, this);
+      ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(oldToMany, getOldManyOldSet(), getOldManyNewSet(), this);
       result.put(oldToMany, event);
     }
+    OrderedBidirToManyBeed<_One_, _Many_> newToMany = getNewValue();
     if (newToMany != null) {
-      OrderedSet<_Many_> oldValue = new LinkedListOrderedSet<_Many_>();
-      oldValue.addAll(newToMany.get());
-      oldValue.remove(newPosition.intValue());
-      OrderedSet<_Many_> newValue = new LinkedListOrderedSet<_Many_>();
-      newValue.addAll(newToMany.get());
-      ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(newToMany, oldValue, newValue, this);
+      ActualOrderedSetEvent<_Many_> event = new ActualOrderedSetEvent<_Many_>(newToMany, getNewManyOldSet(), getNewManyNewSet(), this);
       result.put(newToMany, event);
     }
     return result;

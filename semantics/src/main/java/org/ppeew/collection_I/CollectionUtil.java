@@ -145,8 +145,14 @@ public abstract class CollectionUtil {
    * Raw type empty ordered set. Use {@link #emptyOrderedSet()} for a generic, typed
    * equivalent.
    */
+  private final static EmptyOrderedSet EMPTY_ORDERED_SET_TYPED = new EmptyOrderedSet();
+
+  /**
+   * Raw type empty ordered set. Use {@link #emptyOrderedSet()} for a generic, typed
+   * equivalent.
+   */
   @SuppressWarnings("unchecked")
-  public final static OrderedSet EMPTY_ORDERED_SET = new EmptyOrderedSet();
+  public final static OrderedSet EMPTY_ORDERED_SET = EMPTY_ORDERED_SET_TYPED;
 
   @SuppressWarnings("unchecked")
   public static <T> OrderedSet<T> emptyOrderedSet() {
@@ -183,6 +189,11 @@ public abstract class CollectionUtil {
 
     public Object remove(int index) throws UnsupportedOperationException {
       throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EmptyOrderedSet clone() {
+      return EMPTY_ORDERED_SET_TYPED;
     }
 
   }

@@ -44,10 +44,26 @@ public class UnmodifiableOrderedSet<E>
     $backingOs = os;
   }
 
+  @Override
+  public UnmodifiableOrderedSet<E> clone() {
+    try {
+      @SuppressWarnings("unchecked")
+      UnmodifiableOrderedSet<E> result = (UnmodifiableOrderedSet<E>)super.clone();
+      result.$backingOs = $backingOs.clone();
+      return result;
+    }
+    catch (CloneNotSupportedException exc) {
+      assert false : "CloneNotSupportedException should not happen: " + exc;
+      return null; // keep compiler happy
+    }
+  }
+
   /**
+   * Can't be final for clone.
+   *
    * @invar $backingOs != null;
    */
-  private final OrderedSet<? extends E> $backingOs;
+  private OrderedSet<? extends E> $backingOs;
 
   /**
    * @basic

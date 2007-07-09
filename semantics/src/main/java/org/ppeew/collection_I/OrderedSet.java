@@ -65,7 +65,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public interface OrderedSet<E> extends Set<E> {
+public interface OrderedSet<E> extends Set<E>, Cloneable {
 
     /**
      * Gets an unmodifiable view of the order of the Set.
@@ -83,5 +83,7 @@ public interface OrderedSet<E> extends Set<E> {
 //    boolean addAll(int index, Collection<? extends E> coll);
 
     E remove(int index);
+
+    OrderedSet<E> clone();
 
 }

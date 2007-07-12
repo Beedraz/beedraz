@@ -17,6 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.association.set;
 
 
+import static java.util.Collections.singleton;
 import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
@@ -33,7 +34,6 @@ import org.beedraz.semantics_II.expression.collection.set.ActualSetEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.collection_I.Singleton;
 
 
 /**
@@ -132,7 +132,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
        * because the target's owner cannot change.
        */
       Event removedEvent =
-          new ActualSetEvent<_Many_>(oldToMany, null, new Singleton<_Many_>(getTarget().getOwner()), this);
+          new ActualSetEvent<_Many_>(oldToMany, null, singleton(getTarget().getOwner()), this);
       result.put(oldToMany, removedEvent);
     }
     if (newToMany != null) {
@@ -141,7 +141,7 @@ public class BidirToOneEdit<_One_ extends BeanBeed,
        * because the target's owner cannot change.
        */
       Event addedEvent =
-          new ActualSetEvent<_Many_>(newToMany, new Singleton<_Many_>(getTarget().getOwner()), null, this);
+          new ActualSetEvent<_Many_>(newToMany, singleton(getTarget().getOwner()), null, this);
       result.put(newToMany, addedEvent);
     }
     return result;

@@ -98,10 +98,10 @@ public class TestEditableBooleanBeed {
     // listeners of the aggregate beed should be notified
     assertNotNull($listener1.$event);
     assertNotNull($listener2.$event);
-    assertEquals(1, $listener1.$event.getComponentevents().size());
-    assertEquals(1, $listener2.$event.getComponentevents().size());
-    assertTrue($listener1.$event.getComponentevents().contains($event1));
-    assertTrue($listener2.$event.getComponentevents().contains($event1));
+    assertEquals(1, $listener1.$event.getComponentEvents().size());
+    assertEquals(1, $listener2.$event.getComponentEvents().size());
+    assertTrue($listener1.$event.getComponentEvents().contains($event1));
+    assertTrue($listener2.$event.getComponentEvents().contains($event1));
   }
 
 }

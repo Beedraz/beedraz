@@ -24,6 +24,7 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import java.math.BigDecimal;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -102,6 +103,12 @@ public final class ActualDoubleEvent
   }
 
   private final Double $delta;
+
+  @Override
+  protected final ActualDoubleEvent safeCreateCombinedEvent(ActualOldNewEvent<Double> other, CompoundEdit<?, ?> compoundEdit) {
+    ActualDoubleEvent otherADE = (ActualDoubleEvent)other;
+    return new ActualDoubleEvent((DoubleBeed)getSource(), getOldValue(), otherADE.getNewValue(), compoundEdit);
+  }
 
   @Override
   protected String otherToStringInformation() {

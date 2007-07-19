@@ -81,6 +81,51 @@ public interface Event {
   Edit.State getEditState();
 
   /**
+   * <p>Try to combine this event with {@code other} into a fresh event
+   *   of the same type, with {@code edit} as {@link #getEdit() edit}.</p>
+   * <p>To be able to do this, this event and {@code other}
+   *   need to:</p>
+   * <ul>
+   *   <li>be of the same type</li>
+   *   <li>have the same source</li>
+   *   <li>agree on the intermediate state: the new state of this event
+   *      needs to be the same as the old state of {@code other}.</li>
+   * </ul>
+   * <p>There are no other reasons why combining events might fail.</p>
+   * <p>We need to create a new event, and not change an existing one
+   *  ({@code this} or {@code other}), because events are (supposed to
+   *  be) immutable.</p>
+   *
+   * @pre other != null;
+   * @pre edit != null;
+   * @pre getEdit() != null;
+   * @pre other.getEdit() != null;
+   * @pre edit.deepContains(this.getEdit());
+   * @pre edit.deepContains(other.getEdit());
+   * @post result.getClass() == getClass();
+   * @post result.getSource() == getSource();
+   * @post result.getEdit() == edit;
+   * @post result.getEditState() == edit.getState();
+   * @post ; result initial state is this initial state
+   * @post ; result goal state is {@code other} initial state
+   *
+   * @throws CannotCombineEventsException
+   *         (getClass() != other.getClass()) &&
+   *         (exception.getReason() == CannotCombineEventsException.Reason.DIFFERENT_TYPE);
+   * @throws CannotCombineEventsException
+   *         (getSource() != other.getSource()) &&
+   *         (exception.getReason() == CannotCombineEventsException.Reason.DIFFERENT_SOURCE);
+   * @throws CannotCombineEventsException
+   *         exception.getReason() == CannotCombineEventsException.Reason.INCOMPATIBLE_STATES;
+   *         this goal state is different from other initial state
+   *
+   * @note Maybe the pre that the edit must be a compound edit is too strong?
+   *       It is not really necessary for the method itself, but it is what
+   *       this method is intented for. Maybe other pre's are too strong?
+   */
+  Event combineWith(Event other, CompoundEdit<?, ?> edit) throws CannotCombineEventsException;
+
+  /**
    * Multiline instance information.
    * Use in debugging or logging only.
    *

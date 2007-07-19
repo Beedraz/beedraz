@@ -23,6 +23,8 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
@@ -151,6 +153,22 @@ public final class ActualSortedSetEvent<_Element_>
   @Override
   public final SortedSet<_Element_> getRemovedElements() {
     return super.getRemovedElements();
+  }
+
+  @Override
+  protected ActualSortedSetEvent<_Element_> createCombinedEvent(Beed<?> source,
+                                                                SortedSet<_Element_> added,
+                                                                SortedSet<_Element_> removed,
+                                                                CompoundEdit<?, ?> edit) {
+    @SuppressWarnings("unchecked")
+    SortedSetBeed<_Element_> sourceSSB = (SortedSetBeed<_Element_>)source;
+    return new ActualSortedSetEvent<_Element_>(sourceSSB, added, removed, edit);
+  }
+
+  @Override
+  protected final SortedSet<_Element_> freshCopy(SortedSet<_Element_> c) {
+    assert c != null;
+    return new TreeSet<_Element_>(c);
   }
 
 }

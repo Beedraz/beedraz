@@ -20,6 +20,7 @@ package org.beedraz.semantics_II.expression.string;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.OldNewEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -59,6 +60,11 @@ public final class StringEvent extends ActualOldNewEvent<String> {
                      String newValue,
                      Edit<?> edit) {
     super(source, oldValue, newValue, edit);
+  }
+
+  @Override
+  protected final StringEvent safeCreateCombinedEvent(ActualOldNewEvent<String> other, CompoundEdit<?, ?> compoundEdit) {
+    return new StringEvent((StringBeed)getSource(), getOldValue(), other.getNewValue(), compoundEdit);
   }
 
 }

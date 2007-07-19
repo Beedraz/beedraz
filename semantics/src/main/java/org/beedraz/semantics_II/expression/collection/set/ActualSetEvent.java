@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -146,6 +148,20 @@ public final class ActualSetEvent<_Element_>
   @Override
   public final Set<_Element_> getRemovedElements() {
     return super.getRemovedElements();
+  }
+
+  @Override
+  protected ActualSetEvent<_Element_> createCombinedEvent(Beed<?> source,
+                                                          Set<_Element_> added,
+                                                          Set<_Element_> removed,
+                                                          CompoundEdit<?, ?> edit) {
+    return new ActualSetEvent<_Element_>((SetBeed<_Element_, ?>)source, added, removed, edit);
+  }
+
+  @Override
+  protected final Set<_Element_> freshCopy(Set<_Element_> c) {
+    assert c != null;
+    return new HashSet<_Element_>(c);
   }
 
 }

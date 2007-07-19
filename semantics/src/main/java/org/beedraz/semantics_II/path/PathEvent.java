@@ -21,6 +21,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
 import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
@@ -66,6 +67,13 @@ public class PathEvent<_SelectedBeed_ extends Beed<?>>
                         _SelectedBeed_ newBeed,
                         Edit<?> edit) {
     super(source, oldBeed, newBeed, edit);
+  }
+
+  @Override
+  protected final PathEvent<_SelectedBeed_> safeCreateCombinedEvent(ActualOldNewEvent<_SelectedBeed_> other, CompoundEdit<?, ?> compoundEdit) {
+    @SuppressWarnings("unchecked")
+    Path<_SelectedBeed_> path = (Path<_SelectedBeed_>)getSource();
+    return new PathEvent<_SelectedBeed_>(path, getOldValue(), other.getNewValue(), compoundEdit);
   }
 
 }

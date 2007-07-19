@@ -24,6 +24,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -146,6 +148,20 @@ final class ActualCollectionEvent<_Element_>
   @Override
   public final Collection<_Element_> getRemovedElements() {
     return super.getRemovedElements();
+  }
+
+  @Override
+  protected ActualCollectionEvent<_Element_> createCombinedEvent(Beed<?> source,
+                                                                 Collection<_Element_> added,
+                                                                 Collection<_Element_> removed,
+                                                                 CompoundEdit<?, ?> edit) {
+    return new ActualCollectionEvent<_Element_>((CollectionBeed<_Element_, ?>)source, added, removed, edit);
+  }
+
+  @Override
+  protected final Collection<_Element_> freshCopy(Collection<_Element_> c) {
+    assert c != null;
+    return new LinkedList<_Element_>(c);
   }
 
 }

@@ -461,20 +461,28 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   //-------------------------------------------------------
 
   /**
-   * The initial state of a compound edit is current if, from the last
-   * if the initial state of all component edits
-   * is current.
-   *
-   * @mudo This is not true: a previous edit can change conditions
-   *       for a later edit, making the initial state current for
-   *       that edit.
+   * The initials state of a compound edit is current
+   * if the initial sate of the first component edit,
+   * from front to back, for a given target, is current.
+   * Later component edits for the same target must have
+   * a current initial initial state after the earlier
+   * component edit is performed, and this is (should be)
+   * so because of how compound edits work.
    */
   @Override
   protected boolean isInitialStateCurrent() {
-    for (Edit<?> edit : $componentEdits) {
-      if (! edit.isInitialStateCurrent()) {
-        return false;
+    ListIterator<Edit<?>> iter = $componentEdits.listIterator();
+    Set<Beed<?>> alreadyChecked = new HashSet<Beed<?>>();
+    while (iter.hasNext()) {
+      Edit<?> current = iter.next();
+      Beed<?> target = current.getTarget();
+      if (! alreadyChecked.contains(target)) {
+        if (! current.isInitialStateCurrent()) {
+          return false;
+        }
+        alreadyChecked.add(target);
       }
+      // else just skip
     }
     return true;
   }

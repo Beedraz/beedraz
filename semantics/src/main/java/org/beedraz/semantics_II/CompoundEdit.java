@@ -123,34 +123,6 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
     return false;
   }
 
-//  /**
-//   * If this compound edit has only 1 component edit, the single edit
-//   * of that component edit. If this compound edit has more than 1 component
-//   * edit, this compound edit itself. If this compound edit has 0 component
-//   * edits, {@code null}.
-//   *
-//   * @result getComponentEdits().size() < 1 ? null;
-//   * @result getComponentEdits().size() == 1 ? getComponentEdits().get(0).getSingleEdit();
-//   * @result getComponentEdits().size() > 1 ? this;
-//   */
-//  public final Edit<?> getSingleEdit() {
-//    switch ($componentEdits.size()) {
-//      case 0:
-//        return null;
-//      case 1:
-//        Edit<?> single = getComponentEdits().get(0);
-//        if (single instanceof CompoundEdit) {
-//          @SuppressWarnings("unchecked")
-//          CompoundEdit compoundEdit = ((CompoundEdit)single);
-//          single = compoundEdit.getSingleEdit();
-//          // alternatively, add "getSingleEdit()" method to all edits
-//        }
-//        return single;
-//      default:
-//        return this;
-//    }
-//  }
-
   /**
    * Component edits might even be invalid when added. When a component edit is added,
    * validity of the compound edit is recalculated.
@@ -217,22 +189,41 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   /**
-   * Asks all component edits to execute performance,
-   * in the order they were added.
+   * Asks all component edits to execute performance, in the order they were added.
    * If one of the performance executions fails, what is performed until
    * now is undone again (rollback). If something fails during this undo, something
    * is seriously wrong, and the application is in an inconsistent state.
    * After rollback, the offending exception is propagated.
+   * If, immediately before performance, a component edit is
+   * {@link Edit#isChange() not a change}, it is removed from the compound edit
+   * and killed.
    */
   @Override
   final protected void performance() throws IllegalEditException {
+    boolean[] toBeKilled = new boolean[$componentEdits.size()];
     ListIterator<Edit<?>> iter = $componentEdits.listIterator();
     try {
       while (iter.hasNext()) {
         Edit<?> e = iter.next();
         e.recalculateValidity();
         e.checkValidity(); // throws IllegalEditException
-        e.performance(); // throws IllegalEditException; this doesn't change the state yet, and doesn't send events
+        if (e.isChange()) {
+          e.performance(); // throws IllegalEditException; this doesn't change the state yet, and doesn't send events
+        }
+        else {
+          /* we are going to remove and kill this edit; but we can't do that yet,
+           * because, to be atomic, we need to be able to return to the previous
+           * state, and kill is irreversible; so we store the edit for later
+           */
+          toBeKilled[iter.previousIndex()] = true;
+        }
+      }
+      // if we get here, all edits are performed, and we can kill
+      for (int i = toBeKilled.length - 1; i >= 0; i--) {
+        if (toBeKilled[i]) {
+          Edit<?> editToKill = $componentEdits.remove(i);
+          editToKill.kill();
+        }
       }
     }
     catch (IllegalEditException eExc) {
@@ -241,8 +232,11 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
       try {
         while (iter.hasPrevious()) {
           Edit<?> e = iter.previous();
-          assert e.getState() == DONE;
-          e.unperformance();  // no exceptions
+          if (! toBeKilled[iter.nextIndex()]) {
+            assert e.getState() == DONE;
+            e.unperformance();  // no exceptions
+          }
+          // else, just skip
         }
       }
       catch (IllegalEditException ieExc) {
@@ -427,18 +421,30 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   //-------------------------------------------------------
 
   /**
-   * The initial state of a compound edit is current
-   * if the initial state of all component edits
-   * is current.
-   *
-   * @mudo This is not true: a previous edit can change conditions
-   *       for a later edit, making the initial state current for
-   *       that edit.
+   * The goal state of a compound edit is current
+   * if the goal state of the first component edit,
+   * from back to front, for a given target, is current.
+   * Earlier component edits for the same target must
+   * have a current goal state after the later component
+   * edit is performed, and this is (should be) so because of
+   * how compound edits work.
    */
   @Override
   protected boolean isGoalStateCurrent() {
-    // TODO Auto-generated method stub
-    return false;
+    ListIterator<Edit<?>> iter = $componentEdits.listIterator($componentEdits.size());
+    Set<Beed<?>> alreadyChecked = new HashSet<Beed<?>>();
+    while (iter.hasPrevious()) {
+      Edit<?> current = iter.previous();
+      Beed<?> target = current.getTarget();
+      if (! alreadyChecked.contains(target)) {
+        if (! current.isGoalStateCurrent()) {
+          return false;
+        }
+        alreadyChecked.add(target);
+      }
+      // else just skip
+    }
+    return true;
   }
 
   @Override
@@ -455,7 +461,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   //-------------------------------------------------------
 
   /**
-   * The initial state of a compound edit is current
+   * The initial state of a compound edit is current if, from the last
    * if the initial state of all component edits
    * is current.
    *

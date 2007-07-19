@@ -21,9 +21,14 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.beedraz.semantics_II.AbstractEvent;
+import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.CannotCombineEventsException;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
+import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -37,6 +42,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * @invar getSource() instanceof CollectionBeed
  * @invar getAddedElements() != null;
  * @invar getRemovedElements() != null;
+ * @invar Collections.disjoint(getAddedElements(), getRemovedElements());
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -54,6 +60,7 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
    * @pre removedElements is fresh, owned by this;
    * @pre  edit != null;
    * @pre  (edit.getState() == DONE) || (edit.getState() == UNDONE);
+   * @pre Collections.disjoint(getAddedElements(), getRemovedElements());
    *
    * @post getSource() == source;
    * @post getEdit() == edit;
@@ -70,6 +77,7 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
                                     _Collection_ removedElements,
                                     Edit<?> edit) {
     super(source, edit);
+    assert Collections.disjoint(addedElements, removedElements);
     $addedElements = addedElements;
     $removedElements = removedElements;
   }
@@ -99,6 +107,44 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
    * @invar $removedElements != null;
    */
   private final _Collection_ $removedElements;
+
+  /**
+   * <p>Combine added and removed elements.</p>
+   * <p>The combined added elements are {@code this}' added elements,
+   *   minus the {@code other}'s removed elements, plus the {@code other}'s
+   *   added elements.</p>
+   * <p>The combined removed elements are {@code this}' removed elements,
+   *   minus the {@code other}'s added elements, plus the {@code other}'s
+   *   removed elements.</p>
+   * <p>Note that this is true because for {@code this} and {@code other},
+   *   added and removed elemens are disjunct collections.</p>
+   *
+   * @mudo needs unit test
+   */
+  @Override
+  protected AbstractCollectionEvent<_Element_, _Collection_> createCombinedEvent(Event other, CompoundEdit<?, ?> edit)
+      throws CannotCombineEventsException {
+    AbstractCollectionEvent<_Element_, Collection<_Element_>> otherACE =
+        (AbstractCollectionEvent<_Element_, Collection<_Element_>>)other;
+    _Collection_ added = freshCopy(getAddedElements());
+    added.removeAll(otherACE.getRemovedElements());
+    added.addAll(otherACE.getAddedElements());
+    _Collection_ removed = freshCopy(getRemovedElements());
+    removed.removeAll(otherACE.getAddedElements());
+    removed.addAll(otherACE.getRemovedElements());
+    return createCombinedEvent(getSource(), added, removed, edit);
+  }
+
+  /**
+   * @pre c != null;
+   * @post result.equals(c);
+   */
+  protected abstract _Collection_ freshCopy(_Collection_ c);
+
+  protected abstract AbstractCollectionEvent<_Element_, _Collection_> createCombinedEvent(Beed<?> source,
+                                                                                          _Collection_ added,
+                                                                                          _Collection_ removed,
+                                                                                          CompoundEdit<?, ?> edit);
 
   @Override
   protected String otherToStringInformation() {

@@ -23,6 +23,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
@@ -106,33 +107,49 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
     return result;
   }
 
-  /**
-   * If this compound edit has only 1 component edit, the single edit
-   * of that component edit. If this compound edit has more than 1 component
-   * edit, this compound edit itself. If this compound edit has 0 component
-   * edits, {@code null}.
-   *
-   * @result getComponentEdits().size() < 1 ? null;
-   * @result getComponentEdits().size() == 1 ? getComponentEdits().get(0).getSingleEdit();
-   * @result getComponentEdits().size() > 1 ? this;
-   */
-  public final Edit<?> getSingleEdit() {
-    switch ($componentEdits.size()) {
-      case 0:
-        return null;
-      case 1:
-        Edit<?> single = getComponentEdits().get(0);
-        if (single instanceof CompoundEdit) {
-          @SuppressWarnings("unchecked")
-          CompoundEdit compoundEdit = ((CompoundEdit)single);
-          single = compoundEdit.getSingleEdit();
-          // alternatively, add "getSingleEdit()" method to all edits
+  public final boolean deepContains(Edit<?> edit) {
+    for (Edit<?> ce : $componentEdits) {
+      if (ce == edit) {
+        return true;
+      }
+      else if (ce instanceof CompoundEdit) {
+        CompoundEdit<?, ?> compoundComponentEdit = (CompoundEdit<?, ?>)ce;
+        if (compoundComponentEdit.deepContains(edit)) {
+          return true;
         }
-        return single;
-      default:
-        return this;
+      }
+      // else, no match, try next
     }
+    return false;
   }
+
+//  /**
+//   * If this compound edit has only 1 component edit, the single edit
+//   * of that component edit. If this compound edit has more than 1 component
+//   * edit, this compound edit itself. If this compound edit has 0 component
+//   * edits, {@code null}.
+//   *
+//   * @result getComponentEdits().size() < 1 ? null;
+//   * @result getComponentEdits().size() == 1 ? getComponentEdits().get(0).getSingleEdit();
+//   * @result getComponentEdits().size() > 1 ? this;
+//   */
+//  public final Edit<?> getSingleEdit() {
+//    switch ($componentEdits.size()) {
+//      case 0:
+//        return null;
+//      case 1:
+//        Edit<?> single = getComponentEdits().get(0);
+//        if (single instanceof CompoundEdit) {
+//          @SuppressWarnings("unchecked")
+//          CompoundEdit compoundEdit = ((CompoundEdit)single);
+//          single = compoundEdit.getSingleEdit();
+//          // alternatively, add "getSingleEdit()" method to all edits
+//        }
+//        return single;
+//      default:
+//        return this;
+//    }
+//  }
 
   /**
    * Component edits might even be invalid when added. When a component edit is added,
@@ -315,23 +332,27 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    *   during the topological update, and generate one event that describes
    *   the overal change.</p>
    * <p>For editable beeds, the target of the edits, this is a problem.
-   *   We need to devise a way to generate an overal event for editable beeds,
-   *   but the question is what to use as edit there: in this case we have
-   *   several edits for the same target, and each of these edits can
-   *   be asked to generate an event.</p>
+   *   We need to devise a way to generate one overal event for
+   *   every editable beed, but the question is what to use as edit there:
+   *   in this case we have several edits for the a given target, and each
+   *   of these edits can be asked to generate an event (or more).</p>
    * <p>For edits that follow each other directly in the compound edit,
-   *   we can have the second one be {@link Edit#absord} by the first one,
+   *   we can have the second one be <dfn>absorded</dfn> by the first one
+   *   (see {@link javax.swing.undo.UndoableEdit#addEdit(javax.swing.undo.UndoableEdit)}
+   *   for information and a rationale about absorbing edits),
    *   and ask the combined edit for the event. If edits are separated by
    *   other edits, this is not trivial: it is possible that a later edit
    *   for a given target can only be executed after other edits have
    *   prepared the way, so we cannot just combine separated edits.</p>
    * <p>In general, this means that we cannot ask the edits for a combined
    *   event. We can however ask each of the separated edit (groups)
-   *   for an event, and then ask the events to combine: the new state
-   *   of the first event should be the old state of the second event.
+   *   for an event, and then ask the events to
+   *   {@link Event#combineWith(Event, Edit) combine}: the new state
+   *   of the first event will be the old state of the second event.
    *   Then we have to make sure however that the edit generates events
    *   based on the edit goal state, and not on the target state, because
-   *   that might have changed already.</p>
+   *   that might have changed already. That is the rationale for that requirement
+   *   on {@link Edit#createEvents()}.</p>
    * <p>In this overal event, we also need an edit as change reason.
    *   When all edits for a given target can be combined into one edit,
    *   or if there is only one edit for the given target, the reason of
@@ -339,14 +360,67 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    *   the change reason in the combined event must be this compound edit.
    *   This then signals to other mechanisms that the change can also only
    *   be undone by undoing the compound edit as a whole.</p>
+   * <p>With a mechanism to {@link Event#combineWith(Event, Edit) combine}
+   *   events for the same target, there really is no need anymore for
+   *   edits to absorb other edits first. The event combination mechanism
+   *   alone suffices. In Beedraz, it is even better not to combine
+   *   edits. In Beedraz, edits are more coarse than in Swing. It does not make
+   *   sense, for undoability, e.g., to collapse a change of a name from Nele
+   *   to Jos, immediately followed by a change of that same name from Jos to
+   *   Mieke, into a single change from Nele to Mieke. When the user triggers
+   *   undo, he might want to return to the Jos state first. In Swing,
+   *   the absorbtion mechanism is intended to merge, e.g., in a text editor,
+   *   consecutive one-letter-changes into one text-insert-change, that can
+   *   then be undone as a whole. Other than in
+   *   {@link javax.swing.undo.UndoableEdit#addEdit(javax.swing.undo.UndoableEdit) Swing},
+   *   in Beedraz the programmer decides which sequence is to be considered
+   *   as a &quot;whole&quot;, by creating a compound edit. In Swing, deciding
+   *   which actions to merge is done by the undoable edits, without much context,
+   *   and is therefor a less controlled and more magical feature.</p>
+   * <p>In conclusion: this method is implemented to ask each component
+   *   edit for its events, and then asks events for the same target,
+   *   in the order of the edits that generates them, to combine.</p>
    */
   @Override
   protected Map<AbstractBeed<?>, Event> createEvents() {
-    // TODO Auto-generated method stub
-    return null;
+    Map<AbstractBeed<?>, Event> result = new HashMap<AbstractBeed<?>, Event>();
+    for (Edit<?> componentEdit : $componentEdits) {
+      eventsFrom(componentEdit, result);
+    }
+    return result;
   }
 
-
+  private void eventsFrom(Edit<?> componentEdit, Map<AbstractBeed<?>, Event> existingEvents) {
+    Map<AbstractBeed<?>, ? extends Event> newEvents = componentEdit.createEvents();
+    for (Map.Entry<AbstractBeed<?>, ? extends Event> entry : newEvents.entrySet()) {
+      AbstractBeed<?> source = entry.getKey();
+      Event newEvent = entry.getValue();
+      assert newEvent.getSource() == source;
+      Event existingEvent = existingEvents.get(source);
+      if (existingEvent == null) {
+        existingEvents.put(source, newEvent);
+      }
+      else {
+        try {
+          Event mergedEvent = existingEvent.combineWith(newEvent, this); // CannotCombineEventsException
+          existingEvents.put(source, mergedEvent); // overwrite
+        }
+        catch (CannotCombineEventsException cmeExc) {
+          assert existingEvent.getSource() == newEvent.getSource();
+          /* If the reason is DIFFERENT_TYPE in this circumstance, with
+           * the same source, this is clearly a programming error.
+           * This should'nt happen in Beedraz.
+           * The reason can't be DIFFERENT_SOURCE: see assert
+           * If the reason is INCOMPATIBLE_STATES in this circumstance,
+           * it is programming error in the beeds, events, or in
+           * the Beedraz-user code. It is something to signal
+           * to the developer, not the end user. */
+          assert false : "CannotCombineEventsException shouldn't happen" + cmeExc.toString();
+          // MUDO replace with error from ppw-exception
+        }
+      }
+    }
+  }
 
 
   /*<section name="undo">*/

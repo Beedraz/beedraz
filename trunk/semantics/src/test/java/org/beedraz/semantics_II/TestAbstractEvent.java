@@ -39,6 +39,19 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class TestAbstractEvent {
 
+  public class MyAbstractEvent extends AbstractEvent {
+
+    public MyAbstractEvent(Beed<?> source, Edit<?> edit) {
+      super(source, edit);
+    }
+
+    @Override
+    protected Event createCombinedEvent(Event other, CompoundEdit<?, ?> edit) {
+      return new MyAbstractEvent(getSource(), edit);
+    }
+
+  }
+
   @Before
   public void setUp() throws Exception {
     // NOP
@@ -62,19 +75,21 @@ public class TestAbstractEvent {
     $edit.setGoal(goal);
     $edit.perform();
     // create a new event
-    $event = new AbstractEvent($source, $edit) {
+    $event = new MyAbstractEvent($source, $edit) {
       // NOP
     };
     assertEquals($event.getSource(), $source);
     assertEquals($event.getEdit(), $edit);
     assertEquals($event.getEditState(), $edit.getState());
     // create a new event with an edit that is null
-    $event = new AbstractEvent($source, null) {
+    $event = new MyAbstractEvent($source, null) {
       // NOP
     };
     assertEquals($event.getSource(), $source);
     assertEquals($event.getEdit(), null);
     assertEquals($event.getEditState(), null);
   }
+
+  // MUDO add tests for combineWith
 
 }

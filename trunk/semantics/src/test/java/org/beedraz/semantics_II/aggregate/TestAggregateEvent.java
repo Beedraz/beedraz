@@ -78,7 +78,7 @@ public class TestAggregateEvent {
     assertEquals(aggregateEvent.getEdit(), edit);
     assertEquals(aggregateEvent.getEditState(), edit.getState());
     assertEquals(false, aggregateEvent.isClosed());
-    assertTrue(aggregateEvent.getComponentevents().isEmpty());
+    assertTrue(aggregateEvent.getComponentEvents().isEmpty());
   }
 
   @Test
@@ -102,7 +102,7 @@ public class TestAggregateEvent {
     assertEquals(aggregateEvent.getSource(), source);
     assertEquals(aggregateEvent.getEdit(), edit);
     assertEquals(aggregateEvent.getEditState(), edit.getState());
-    assertTrue(aggregateEvent.getComponentevents().isEmpty());
+    assertTrue(aggregateEvent.getComponentEvents().isEmpty());
   }
 
   @Test
@@ -151,13 +151,87 @@ public class TestAggregateEvent {
       assertEquals(aggregateEvent.getSource(), source);
       assertEquals(aggregateEvent.getEdit(), edit);
       assertEquals(aggregateEvent.getEditState(), edit.getState());
-      assertTrue(aggregateEvent.getComponentevents().isEmpty());
+      assertTrue(aggregateEvent.getComponentEvents().isEmpty());
       assertEquals(true, aggregateEvent.isClosed());
     }
   }
 
   @Test
   public void addComponentEvent2() throws EditStateException, IllegalEditException {
+    // event source
+    AggregateBeed owner = new StubAggregateBeed();
+    StringBeed eventSource1 = new EditableStringBeed(owner);
+    StringBeed eventSource2 = new EditableStringBeed(owner);
+    StringBeed eventSource3 = new EditableStringBeed(owner);
+    StringBeed eventSource4 = new EditableStringBeed(owner);
+    // edit
+    EditableStringBeed target = new EditableStringBeed(owner);
+    StringEdit edit = new StringEdit(target);
+    edit.perform();
+    // propagated event source
+    AggregateBeed source = new StubAggregateBeed();
+    AggregateEvent aggregateEvent = new AggregateEvent(source, edit);
+    String oldValue = "0";
+    String newValue = "1";
+    Event cause1 = new StringEvent(eventSource1, oldValue, newValue, edit);
+    try {
+      aggregateEvent.addComponentEvent(cause1);
+      assertEquals(aggregateEvent.getSource(), source);
+      assertEquals(aggregateEvent.getEdit(), edit);
+      assertEquals(aggregateEvent.getEditState(), edit.getState());
+      assertEquals(1, aggregateEvent.getComponentEvents().size());
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause1));
+    }
+    catch (AggregateEventStateException exc) {
+      fail();
+    }
+    Event cause2 = new StringEvent(eventSource2, oldValue, newValue, edit);
+    try {
+      aggregateEvent.addComponentEvent(cause2);
+      assertEquals(aggregateEvent.getSource(), source);
+      assertEquals(aggregateEvent.getEdit(), edit);
+      assertEquals(aggregateEvent.getEditState(), edit.getState());
+      assertEquals(2, aggregateEvent.getComponentEvents().size());
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause1));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause2));
+    }
+    catch (AggregateEventStateException exc) {
+      fail();
+    }
+    Event cause3 = new StringEvent(eventSource3, oldValue, newValue, edit);
+    try {
+      aggregateEvent.addComponentEvent(cause3);
+      assertEquals(aggregateEvent.getSource(), source);
+      assertEquals(aggregateEvent.getEdit(), edit);
+      assertEquals(aggregateEvent.getEditState(), edit.getState());
+      assertEquals(3, aggregateEvent.getComponentEvents().size());
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause1));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause2));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause3));
+    }
+    catch (AggregateEventStateException exc) {
+      fail();
+    }
+    aggregateEvent.close();
+    Event cause4 = new StringEvent(eventSource4, oldValue, newValue, edit);
+    try {
+      aggregateEvent.addComponentEvent(cause4);
+      fail();
+    }
+    catch (AggregateEventStateException exc) {
+      assertEquals(aggregateEvent.getSource(), source);
+      assertEquals(aggregateEvent.getEdit(), edit);
+      assertEquals(aggregateEvent.getEditState(), edit.getState());
+      assertEquals(3, aggregateEvent.getComponentEvents().size());
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause1));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause2));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause3));
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause4));
+    }
+  }
+
+  @Test
+  public void addComponentEvent3() throws EditStateException, IllegalEditException {
     // event source
     AggregateBeed owner = new StubAggregateBeed();
     StringBeed eventSource = new EditableStringBeed(owner);
@@ -176,8 +250,8 @@ public class TestAggregateEvent {
       assertEquals(aggregateEvent.getSource(), source);
       assertEquals(aggregateEvent.getEdit(), edit);
       assertEquals(aggregateEvent.getEditState(), edit.getState());
-      assertEquals(1, aggregateEvent.getComponentevents().size());
-      assertTrue(aggregateEvent.getComponentevents().contains(cause1));
+      assertEquals(1, aggregateEvent.getComponentEvents().size());
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause1));
     }
     catch (AggregateEventStateException exc) {
       fail();
@@ -188,9 +262,9 @@ public class TestAggregateEvent {
       assertEquals(aggregateEvent.getSource(), source);
       assertEquals(aggregateEvent.getEdit(), edit);
       assertEquals(aggregateEvent.getEditState(), edit.getState());
-      assertEquals(2, aggregateEvent.getComponentevents().size());
-      assertTrue(aggregateEvent.getComponentevents().contains(cause1));
-      assertTrue(aggregateEvent.getComponentevents().contains(cause2));
+      assertEquals(1, aggregateEvent.getComponentEvents().size());
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause1));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause2));
     }
     catch (AggregateEventStateException exc) {
       fail();
@@ -201,10 +275,10 @@ public class TestAggregateEvent {
       assertEquals(aggregateEvent.getSource(), source);
       assertEquals(aggregateEvent.getEdit(), edit);
       assertEquals(aggregateEvent.getEditState(), edit.getState());
-      assertEquals(3, aggregateEvent.getComponentevents().size());
-      assertTrue(aggregateEvent.getComponentevents().contains(cause1));
-      assertTrue(aggregateEvent.getComponentevents().contains(cause2));
-      assertTrue(aggregateEvent.getComponentevents().contains(cause3));
+      assertEquals(1, aggregateEvent.getComponentEvents().size());
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause1));
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause2));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause3));
     }
     catch (AggregateEventStateException exc) {
       fail();
@@ -219,11 +293,11 @@ public class TestAggregateEvent {
       assertEquals(aggregateEvent.getSource(), source);
       assertEquals(aggregateEvent.getEdit(), edit);
       assertEquals(aggregateEvent.getEditState(), edit.getState());
-      assertEquals(3, aggregateEvent.getComponentevents().size());
-      assertTrue(aggregateEvent.getComponentevents().contains(cause1));
-      assertTrue(aggregateEvent.getComponentevents().contains(cause2));
-      assertTrue(aggregateEvent.getComponentevents().contains(cause3));
-      assertFalse(aggregateEvent.getComponentevents().contains(cause4));
+      assertEquals(1, aggregateEvent.getComponentEvents().size());
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause1));
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause2));
+      assertTrue(aggregateEvent.getComponentEvents().contains(cause3));
+      assertFalse(aggregateEvent.getComponentEvents().contains(cause4));
     }
 
   }

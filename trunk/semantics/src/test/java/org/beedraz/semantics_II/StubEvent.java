@@ -19,8 +19,6 @@ package org.beedraz.semantics_II;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.AbstractEvent;
-import org.beedraz.semantics_II.Beed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -34,6 +32,11 @@ public class StubEvent extends AbstractEvent {
 
   public StubEvent(Beed<?> source) {
     super(source, null);
+  }
+
+  @Override
+  protected Event createCombinedEvent(Event other, CompoundEdit<?, ?> edit) {
+    return new StubEvent(getSource());
   }
 
 }

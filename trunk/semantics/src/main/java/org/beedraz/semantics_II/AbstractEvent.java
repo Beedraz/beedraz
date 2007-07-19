@@ -77,6 +77,47 @@ public abstract class AbstractEvent implements Event {
 
   private final Edit.State $editState;
 
+  /**
+   * @mudo needs unit test
+   */
+  public final Event combineWith(Event other, CompoundEdit<?, ?> compoundEdit) throws CannotCombineEventsException {
+    assert other != null;
+    assert compoundEdit != null;
+    assert getEdit() != null;
+    assert other.getEdit() != null;
+    assert compoundEdit.deepContains(this.getEdit());
+    assert compoundEdit.deepContains(other.getEdit());
+    if (getClass() != other.getClass()) {
+      throw new CannotCombineEventsException(this, other, CannotCombineEventsException.Reason.DIFFERENT_TYPE);
+    }
+    if (getSource() != other.getSource()) {
+      throw new CannotCombineEventsException(this, other, CannotCombineEventsException.Reason.DIFFERENT_SOURCE);
+    }
+    return createCombinedEvent(other, compoundEdit);
+  }
+
+  /**
+   * @pre other != null;
+   * @pre edit != null;
+   * @pre getEdit() != null;
+   * @pre other.getEdit() != null;
+   * @pre edit.deepContains(this.getEdit());
+   * @pre edit.deepContains(other.getEdit());
+   * @pre getClass() == other.getClass();
+   * @pre getSource() == other.getSource();
+   * @post result.getClass() == getClass();
+   * @post result.getSource() == getSource();
+   * @post result.getEdit() == edit;
+   * @post result.getEditState() == edit.getState();
+   * @post ; result initial state is this initial state
+   * @post ; result goal state is {@code other} initial state
+   * @throws CannotCombineEventsException
+   *         exception.getReason() == CannotCombineEventsException.Reason.INCOMPATIBLE_STATES;
+   *         this goal state is different from other initial state
+   */
+  protected abstract Event createCombinedEvent(Event other, CompoundEdit<?, ?> edit)
+      throws CannotCombineEventsException;
+
   @Override
   public final String toString() {
     return getClass().getSimpleName() + //"@" + hashCode() +

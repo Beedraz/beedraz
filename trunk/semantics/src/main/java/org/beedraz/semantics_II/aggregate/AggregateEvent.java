@@ -21,10 +21,15 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractEvent;
+import org.beedraz.semantics_II.Beed;
+import org.beedraz.semantics_II.CannotCombineEventsException;
+import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
@@ -89,27 +94,79 @@ public class AggregateEvent
   private boolean $closed;
 
   /**
+   * @return getComponentEventsMap().values();
+   */
+  public final Set<Event> getComponentEvents() {
+    return new HashSet<Event>($componentEvents.values());
+  }
+
+  /**
    * @basic
    */
-  public final Set<Event> getComponentevents() {
-    return Collections.unmodifiableSet($componentEvents);
+  public final Map<Beed<?>, Event> getComponentEventsMap() {
+    return Collections.unmodifiableMap($componentEvents);
   }
 
   /**
    * @pre event != null;
-   * @post getComponentEvents().contains(event);
+   * @post getComponentEventsMap().get(event.getSource()) == event;
    * @post 'isClosed() ? false;
    * @throws AggregateEventStateException
    *         isClosed();
    */
   public final void addComponentEvent(Event event) throws AggregateEventStateException {
+    assert event != null;
+    assert event.getSource() != null;
     if (isClosed()) {
       throw new AggregateEventStateException(this, "cannot add component events when aggregate event is closed");
     }
-    $componentEvents.add(event);
+    $componentEvents.put(event.getSource(), event);
   }
 
-  private final Set<Event> $componentEvents = new HashSet<Event>();
+  /**
+   * @invar $componentEvents.values() is a set (no duplicates)
+   */
+  private final Map<Beed<?>, Event> $componentEvents = new HashMap<Beed<?>, Event>();
+
+  /**
+   * Events of the same source are combined. Events of sources that exist
+   * only in {@code this} or {@code other} are kept as they are.
+   *
+   * @mudo needs unit test
+   */
+  @Override
+  protected final AggregateEvent createCombinedEvent(Event other, CompoundEdit<?, ?> edit)
+      throws CannotCombineEventsException {
+    AggregateEvent result = new AggregateEvent((AggregateBeed)getSource(), edit);
+    AggregateEvent otherAE = (AggregateEvent)other;
+    Map<Beed<?>, Event> otherComponentEvents = otherAE.getComponentEventsMap();
+    for (Event e : $componentEvents.values()) {
+      Event resultEvent = e;
+      Event otherComponentEvent = otherComponentEvents.get(e.getSource());
+      if (otherComponentEvent != null) {
+        resultEvent = e.combineWith(otherComponentEvent, edit); // CannotCombineEventsException
+      }
+      try {
+        assert ! result.getComponentEventsMap().containsKey(resultEvent.getSource());
+        result.addComponentEvent(resultEvent);
+      }
+      catch (AggregateEventStateException exc) {
+        assert false : "AggregateEventStateException should not happen (not closed): " + exc;
+      }
+    }
+    for (Event e : otherComponentEvents.values()) {
+      if (! $componentEvents.containsKey(e.getSource())) {
+        try {
+          result.addComponentEvent(e);
+        }
+        catch (AggregateEventStateException exc) {
+          assert false : "AggregateEventStateException should not happen (not closed): " + exc;
+        }
+      }
+    }
+    result.close();
+    return result;
+  }
 
   @Override
   protected String otherToStringInformation() {
@@ -121,7 +178,7 @@ public class AggregateEvent
   public void toString(StringBuffer sb, int level) {
     super.toString(sb, level);
     sb.append(indent(level + 1) + "component events ("+ $componentEvents.size() + "):\n");
-    for (Event event : $componentEvents) {
+    for (Event event : $componentEvents.values()) {
       event.toString(sb, level + 1);
     }
   }

@@ -222,6 +222,11 @@ public class MapEdit<_Key_, _Value_>
     }
   }
 
+  @Override
+  protected final void reperformance() {
+    performance();
+  }
+
   /**
    * @post  result.size() == 1;
    * @post  result.get(getTarget()) = event;
@@ -290,9 +295,21 @@ public class MapEdit<_Key_, _Value_>
 
   /*</property>*/
 
+
+
   @Override
   protected final void markPerformed() {
     localMarkPerformed();
+  }
+
+  @Override
+  protected final void markUndone() {
+    localMarkUndone();
+  }
+
+  @Override
+  protected final void markRedone() {
+    localMarkRedone();
   }
 
 }

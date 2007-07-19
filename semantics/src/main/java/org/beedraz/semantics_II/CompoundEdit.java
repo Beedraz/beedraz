@@ -19,6 +19,7 @@ package org.beedraz.semantics_II;
 
 import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
+import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.util.ArrayList;
@@ -448,9 +449,42 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   @Override
-  protected void unperformance() throws IllegalEditException {
-    // TODO Auto-generated method stub
+  protected final void unperformance() throws IllegalEditException {
+    ListIterator<Edit<?>> iter = $componentEdits.listIterator($componentEdits.size());
+    try {
+      while (iter.hasPrevious()) {
+        Edit<?> e = iter.previous();
+        assert e.getState() == DONE;
+        if (! e.isGoalStateCurrent()) {
+          throw new IllegalEditException(e, null);
+        }
+        e.unperformance();
+      }
+    }
+    catch (IllegalEditException eExc) {
+      // rollback
+      iter.next(); // last edit didn't succeed, and doesn't need to be rolled-back
+      try {
+        while (iter.hasNext()) {
+          Edit<?> e = iter.next();
+          assert e.getState() == UNDONE;
+          e.reperformance();  // no exceptions
+        }
+      }
+      catch (IllegalEditException ieExc) {
+        throw new Error("could not roll-back", ieExc);
+        // MUDO serious; special throwable; use ppw-exception
+      }
+      throw eExc;
+    }
+  }
 
+  @Override
+  protected final void markUndone() {
+    for (Edit<?> e : $componentEdits) {
+      e.localMarkUndone();
+    }
+    localMarkUndone();
   }
 
   /*</section>*/
@@ -485,6 +519,45 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
       // else just skip
     }
     return true;
+  }
+
+  @Override
+  protected final void reperformance() throws IllegalEditException {
+    ListIterator<Edit<?>> iter = $componentEdits.listIterator();
+    try {
+      while (iter.hasNext()) {
+        Edit<?> e = iter.next();
+        assert e.getState() == UNDONE;
+        if (! e.isInitialStateCurrent()) {
+          throw new IllegalEditException(e, null);
+        }
+        e.reperformance();
+      }
+    }
+    catch (IllegalEditException eExc) {
+      // rollback
+      iter.previous(); // last edit didn't succeed, and doesn't need to be rolled-back
+      try {
+        while (iter.hasPrevious()) {
+          Edit<?> e = iter.previous();
+          assert e.getState() == DONE;
+          e.unperformance();  // no exceptions
+        }
+      }
+      catch (IllegalEditException ieExc) {
+        throw new Error("could not roll-back", ieExc);
+        // MUDO serious; special throwable; use ppw-exception
+      }
+      throw eExc;
+    }
+  }
+
+  @Override
+  protected final void markRedone() {
+    for (Edit<?> e : $componentEdits) {
+      e.localMarkRedone();
+    }
+    localMarkRedone();
   }
 
   /*</section>*/

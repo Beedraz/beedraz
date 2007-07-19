@@ -63,9 +63,29 @@ public abstract class AbstractSimpleEdit<_Target_ extends AbstractBeed<_Event_>,
 
   /*</property>*/
 
+
+  /**
+   * For simple edits, re-performance is the same
+   * as {@link #performance()}.
+   */
+  @Override
+  protected final void reperformance() throws IllegalEditException {
+    performance();
+  }
+
   @Override
   protected final void markPerformed() {
     localMarkPerformed();
+  }
+
+  @Override
+  protected final void markUndone() {
+    localMarkUndone();
+  }
+
+  @Override
+  protected final void markRedone() {
+    localMarkRedone();
   }
 
   /*</property>*/

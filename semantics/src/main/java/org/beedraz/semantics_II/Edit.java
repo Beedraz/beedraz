@@ -401,6 +401,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
     }
     // MUDO is this always valid? explain!
     unperformance(); // throws IllegalEditException
+    markUndone();
     $state = UNDONE;
     // end of transaction if unperformance succeeded
     updateDependents();
@@ -423,6 +424,27 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * @pre  getState() == DONE;
    */
   protected abstract void unperformance() throws IllegalEditException;
+
+  /**
+   * Mark the edit as {@link State#UNDONE}. This method is called as part
+   * of the {@link #undo()} protocol. {@link #localMarkUndone()}
+   * does this for this edit, and should be used in the implementation of this
+   * method.
+   *
+   * @pre  getState() == DONE;
+   */
+  protected abstract void markUndone();
+
+  /**
+   * Set the {@link #getState()} to {@link State#UNDONE}. This method is to
+   * be used in the implementation of {@link #markUndone()}.
+   *
+   * @pre  getState() == DONE;
+   * @post getState() == UNDONE;
+   */
+  protected final void localMarkUndone() {
+    $state = UNDONE;
+  }
 
   /*</section>*/
 
@@ -468,8 +490,8 @@ public abstract class Edit<_Target_ extends Beed<?>> {
       throw new IllegalEditException(this, null);
     }
     // MUDO is this always valid? explain!
-    performance(); // throws IllegalEditException
-    $state = DONE;
+    reperformance(); // throws IllegalEditException
+    markRedone();
     // end of transaction if performance succeeded
     updateDependents();
   }
@@ -481,6 +503,37 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * This method is called as part of the {@link #redo()} protocol.
    */
   protected abstract boolean isInitialStateCurrent();
+
+  /**
+   * Perform the redo-change on the {@link #getTarget()}: the state of the
+   * {@link #getTarget()} changes from the current state to the <em>edit
+   * target goal state</em>. If this fails, we throw an exception.
+   * This method is called as part of the {@link #redo()} protocol.
+   *
+   * @pre  getState() == UNDONE;
+   */
+  protected abstract void reperformance() throws IllegalEditException;
+
+  /**
+   * Mark the edit as {@link State#DONE}. This method is called as part
+   * of the {@link #redo()} protocol. {@link #localMarkRedone()}
+   * does this for this edit, and should be used in the implementation of this
+   * method.
+   *
+   * @pre  getState() == UNDONE;
+   */
+  protected abstract void markRedone();
+
+  /**
+   * Set the {@link #getState()} to {@link State#DONE}. This method is to
+   * be used in the implementation of {@link #markRedone()}.
+   *
+   * @pre  getState() == UNDONE;
+   * @post getState() == DONE;
+   */
+  protected final void localMarkRedone() {
+    $state = DONE;
+  }
 
   /*</section>*/
 

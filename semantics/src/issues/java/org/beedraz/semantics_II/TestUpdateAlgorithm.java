@@ -19,7 +19,6 @@ package org.beedraz.semantics_II;
 
 import static org.beedraz.semantics_II.expression.bool.BooleanBeeds.cor;
 import static org.beedraz.semantics_II.path.Paths.path;
-import static org.junit.Assert.assertTrue;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
@@ -105,16 +104,7 @@ public class TestUpdateAlgorithm {
     System.out.println("changing a property of an element in the source...");
     BooleanEdit booleanEdit = new BooleanEdit(person.pretty);
     booleanEdit.setGoal(true);
-    try {
-      booleanEdit.perform();
-      System.out.println("perform is ok");
-      assertTrue(false);
-    }
-    catch(AssertionError e) {
-      assertTrue(true);
-      System.out.println("An assertion error has occurred during the perform.");
-//      e.printStackTrace();
-    }
+    booleanEdit.perform(); // MUDO this currently fails
   }
 
 

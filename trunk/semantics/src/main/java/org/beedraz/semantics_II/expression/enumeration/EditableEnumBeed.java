@@ -14,7 +14,7 @@ import org.beedraz.semantics_II.expression.EditableSimpleExpressionBeed;
  * @author  Jan Dockx
  * @author  PeopleWare n.v.
  */
-public final class EditableEnumBeed<_Enum_ extends Enum<_Enum_>>
+public class EditableEnumBeed<_Enum_ extends Enum<_Enum_>>
     extends EditableSimpleExpressionBeed<_Enum_, EnumEvent<_Enum_>>
     implements EnumBeed<_Enum_> {
 

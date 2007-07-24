@@ -53,7 +53,8 @@ public class EditableDateBeed
 
   @Override
   protected Date safeValueCopy(Date original) {
-    return original != null ? (Date) original.clone() : null;
+    assert original != null;
+    return (Date)original.clone();
   }
 
 }

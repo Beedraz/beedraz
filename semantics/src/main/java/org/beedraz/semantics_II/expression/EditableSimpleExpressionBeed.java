@@ -58,7 +58,7 @@ public abstract class EditableSimpleExpressionBeed<_Type_,
    * @basic
    */
   public final _Type_ get() {
-    return safeValueCopy($t);
+    return safeValueCopyNull($t);
   }
 
   /**
@@ -66,19 +66,50 @@ public abstract class EditableSimpleExpressionBeed<_Type_,
    * @post ; all registred ap change listeners are warned
    */
   void assign(_Type_ t) {
-    $t = t;
+    $t = safeValueCopyNull(t);
   }
 
 
   private _Type_ $t;
 
   /**
-   * Returns a safe copy of {@code original}.
-   * If {@code _Value_} is an immutable type, you can return original.
-   * The default implementation is to return {@code original}.
+   * A safe copy of {@code value}. The returned object may
+   * be {@code value}, but it must be a reference to an object
+   * that is either immutable or is a copy of {@code value},
+   * so that if it is changed, it does not change {@code value}.
+   * Often, a {@link Object#clone()} will do the trick. The default
+   * implementation returns {@code value}, but this should be overwritten
+   * when {@code _Type_} is a type that is to be used by-value,
+   * and is not immutable.
+   * This method is also used in edit-implementations.
    *
-   * @result equalsWithNull(result, original);
-   * @protected-result original;
+   * @result ComparisonUtil.equalsWithNull(result, value);
+   *
+   * @protected-return value;
+   */
+  _Type_ safeValueCopyNull(_Type_ value) {
+    if (value == null) {
+      return null;
+    }
+    else {
+      return safeValueCopy(value);
+    }
+  }
+
+  /**
+   * A safe copy of {@code value}. The returned object may
+   * be {@code value}, but it must be a reference to an object
+   * that is either immutable or is a copy of {@code value},
+   * so that if it is changed, it does not change {@code value}.
+   * Often, a {@link Object#clone()} will do the trick. The default
+   * implementation returns {@code value}, but this should be overwritten
+   * when {@code _Type_} is a type that is to be used by-value,
+   * and is not immutable.
+   *
+   * @result ComparisonUtil.equalsWithNull(result, value);
+   *
+   * @pre value != null;
+   * @protected-return value;
    */
   protected _Type_ safeValueCopy(_Type_ original) {
     return original;

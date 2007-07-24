@@ -86,6 +86,26 @@ public abstract class SimpleExpressionEdit<_Type_,
 
 
 
+  /**
+   * A safe copy of {@code value}. The returned object may
+   * be {@code value}, but it must be a reference to an object
+   * that is either immutable or is a copy of {@code value},
+   * so that if it is changed, it does not change {@code value}.
+   * Often, a {@link Object#clone()} will do the trick. The default
+   * implementation returns {@code value}, but this should be overwritten
+   * when {@code _Type_} is a type that is to be used by-value,
+   * and is not immutable.
+   *
+   * @pre value != null;
+   * @result ComparisonUtil.equalsWithNull(result, value);
+   *
+   * @protected-return value;
+   */
+  protected _Type_ safeCopy(_Type_ value) {
+    return value;
+  }
+
+
   /*<property name="goal">*/
   //-------------------------------------------------------
 
@@ -93,7 +113,7 @@ public abstract class SimpleExpressionEdit<_Type_,
    * @basic
    */
   public final _Type_ getGoal() {
-    return $goal;
+    return getTarget().safeValueCopyNull($goal);
   }
 
   /**
@@ -103,7 +123,7 @@ public abstract class SimpleExpressionEdit<_Type_,
     if (getState() != NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
-    $goal = goalValue;
+    $goal = getTarget().safeValueCopyNull(goalValue);
     recalculateValidity();
   }
 
@@ -120,7 +140,7 @@ public abstract class SimpleExpressionEdit<_Type_,
    * @basic
    */
   public final _Type_ getInitial() {
-    return $initial;
+    return getTarget().safeValueCopyNull($initial);
   }
 
   private _Type_ $initial;

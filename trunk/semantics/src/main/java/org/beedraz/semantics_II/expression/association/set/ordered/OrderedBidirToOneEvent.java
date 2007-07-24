@@ -21,7 +21,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
-import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.OldNewEvent;
 import org.beedraz.semantics_II.bean.BeanBeed;
@@ -80,12 +79,6 @@ public final class OrderedBidirToOneEvent<_One_ extends BeanBeed,
    */
   public final _One_ getNewOne() {
     return (getNewValue() == null) ? null : getNewValue().getOwner();
-  }
-
-  @Override
-  protected final OrderedBidirToOneEvent<_One_, _Many_> safeCreateCombinedEvent(ActualOldNewEvent<OrderedBidirToManyBeed<_One_, _Many_>> other, CompoundEdit<?, ?> compoundEdit) {
-    EditableOrderedBidirToOneBeed<_One_, _Many_> source = (EditableOrderedBidirToOneBeed<_One_, _Many_>)getSource();
-    return new OrderedBidirToOneEvent<_One_, _Many_>(source, getOldValue(), other.getNewValue(), compoundEdit);
   }
 
   @Override

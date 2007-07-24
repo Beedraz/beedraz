@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
-import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
@@ -122,11 +121,6 @@ public final class ActualLongEvent
   }
 
   private final Long $delta;
-
-  @Override
-  protected final ActualLongEvent safeCreateCombinedEvent(ActualOldNewEvent<Long> other, CompoundEdit<?, ?> compoundEdit) {
-    return new ActualLongEvent((LongBeed)getSource(), getOldValue(), other.getNewValue(), compoundEdit);
-  }
 
   @Override
   protected String otherToStringInformation() {

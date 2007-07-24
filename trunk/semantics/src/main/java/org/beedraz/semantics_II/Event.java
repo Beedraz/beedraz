@@ -63,7 +63,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision:849 $",
          date     = "$Date:2007-05-08 16:13:31 +0200 (Tue, 08 May 2007) $")
-public interface Event {
+public interface Event extends Cloneable {
 
   /**
    * @basic

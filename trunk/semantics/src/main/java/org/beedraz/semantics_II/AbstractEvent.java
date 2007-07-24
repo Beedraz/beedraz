@@ -53,7 +53,42 @@ public abstract class AbstractEvent implements Event {
     assert (edit != null) ? (edit.getState() == DONE) || (edit.getState() == UNDONE) : true;
     $source = source;
     $edit = edit;
-    $editState = (edit != null) ? edit.getState() : null;
+    initEditState();
+  }
+
+  /**
+   * @result result != null;
+   * @result ! result.equals(this);
+   * @result result.getSource() == getSource();
+   * @result result.getEdit() == getEdit();
+   * @result result.getEditState() == getEditState();
+   */
+  @Override
+  protected AbstractEvent clone() {
+    try {
+      AbstractEvent result = (AbstractEvent)super.clone();
+      return result;
+    }
+    catch (CloneNotSupportedException exc) {
+      assert false : "CloneNotSupportedException should not happen: " + exc;
+      return null; // make compiler happy
+    }
+  }
+
+  /**
+   * A clone, but with another edit.
+   *
+   * @result result != null;
+   * @result ! result.equals(this);
+   * @result result.getSource() == getSource();
+   * @result result.getEdit() == edit;
+   * @result result.getEditState() == edit.getState();
+   */
+  protected AbstractEvent clone(Edit<?> edit) {
+    AbstractEvent result = clone();
+    result.$edit = edit;
+    result.initEditState();
+    return result;
   }
 
   public final Beed<?> getSource() {
@@ -69,13 +104,23 @@ public abstract class AbstractEvent implements Event {
     return $edit;
   }
 
-  private final Edit<?> $edit;
+  /**
+   * Not final for use in {@link #clone(Edit)}.
+   */
+  private Edit<?> $edit;
 
   public Edit.State getEditState() {
     return $editState;
   }
 
-  private final Edit.State $editState;
+  private void initEditState() {
+    $editState = ($edit != null) ? $edit.getState() : null;
+  }
+
+  /**
+   * Not final for use in {@link #clone(Edit)}.
+   */
+  private Edit.State $editState;
 
   /**
    * @mudo needs unit test

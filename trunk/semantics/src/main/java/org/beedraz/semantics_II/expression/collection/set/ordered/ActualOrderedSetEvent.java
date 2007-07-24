@@ -20,8 +20,6 @@ package org.beedraz.semantics_II.expression.collection.set.ordered;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.collection_I.CollectionUtil.unmodifiableOrderedSet;
 
-import org.beedraz.semantics_II.ActualOldNewEvent;
-import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.AbstractOrderedCollectionEvent;
@@ -153,11 +151,6 @@ public final class ActualOrderedSetEvent<_Element_>
   @Override
   public final OrderedSet<_Element_> getRemovedElements() {
     return super.getRemovedElements();
-  }
-
-  @Override
-  protected final ActualOrderedSetEvent<_Element_> safeCreateCombinedEvent(ActualOldNewEvent<OrderedSet<_Element_>> other, CompoundEdit<?, ?> compoundEdit) {
-    return new ActualOrderedSetEvent<_Element_>((OrderedSetBeed<_Element_, ?>)getSource(), getOldValue(), other.getNewValue(), compoundEdit);
   }
 
 }

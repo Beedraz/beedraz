@@ -23,8 +23,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.beedraz.semantics_II.ActualOldNewEvent;
-import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
 import org.beedraz.semantics_II.expression.collection.AbstractOrderedCollectionEvent;
@@ -153,13 +151,6 @@ public final class ActualListEvent<_Element_>
   @Override
   public final List<_Element_> getRemovedElements() {
     return super.getRemovedElements();
-  }
-
-  @Override
-  protected final ActualListEvent<_Element_> safeCreateCombinedEvent(ActualOldNewEvent<List<_Element_>> other, CompoundEdit<?, ?> compoundEdit) {
-    @SuppressWarnings("unchecked")
-    ListBeed<_Element_> source = (ListBeed<_Element_>)getSource();
-    return new ActualListEvent<_Element_>(source, getOldValue(), other.getNewValue(), compoundEdit);
   }
 
 }

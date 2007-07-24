@@ -66,15 +66,57 @@ public abstract class ActualOldNewEvent<_Type_>
     super(source, edit);
     assert ((oldValue != null) && (newValue != null) ? ! oldValue.equals(newValue) : true) :
            "oldValue: " + oldValue + "; newValue: " + newValue;
-    $oldValue = oldValue; // MUDO make a type safe copy
-    $newValue = newValue; // MUDO make a type safe copy
+    $oldValue = safeValueCopyNull(oldValue);
+    $newValue = safeValueCopyNull(newValue);
+  }
+
+  /**
+   * A safe copy of {@code value}. The returned object may
+   * be {@code value}, but it must be a reference to an object
+   * that is either immutable or is a copy of {@code value},
+   * so that if it is changed, it does not change {@code value}.
+   * Often, a {@link Object#clone()} will do the trick. The default
+   * implementation returns {@code value}, but this should be overwritten
+   * when {@code _Type_} is a type that is to be used by-value,
+   * and is not immutable.
+   *
+   * @result ComparisonUtil.equalsWithNull(result, value);
+   *
+   * @protected-return value;
+   */
+  private _Type_ safeValueCopyNull(_Type_ value) {
+    if (value == null) {
+      return null;
+    }
+    else {
+      return safeValueCopy(value);
+    }
+  }
+
+  /**
+   * A safe copy of {@code value}. The returned object may
+   * be {@code value}, but it must be a reference to an object
+   * that is either immutable or is a copy of {@code value},
+   * so that if it is changed, it does not change {@code value}.
+   * Often, a {@link Object#clone()} will do the trick. The default
+   * implementation returns {@code value}, but this should be overwritten
+   * when {@code _Type_} is a type that is to be used by-value,
+   * and is not immutable.
+   *
+   * @result ComparisonUtil.equalsWithNull(result, value);
+   *
+   * @pre value != null;
+   * @protected-return value;
+   */
+  protected _Type_ safeValueCopy(_Type_ original) {
+    return original;
   }
 
   /**
    * @basic
    */
   public final _Type_ getOldValue() {
-    return $oldValue;
+    return safeValueCopyNull($oldValue);
   }
 
   private final _Type_ $oldValue;
@@ -83,10 +125,13 @@ public abstract class ActualOldNewEvent<_Type_>
    * @basic
    */
   public final _Type_ getNewValue() {
-    return $newValue;
+    return safeValueCopyNull($newValue);
   }
 
-  private final _Type_ $newValue;
+  /**
+   * Not final for clone-use in {@link #safeCreateCombinedEvent(ActualOldNewEvent, CompoundEdit)}.
+   */
+  private _Type_ $newValue;
 
   @Override
   protected String otherToStringInformation() {
@@ -125,7 +170,16 @@ public abstract class ActualOldNewEvent<_Type_>
    * @post ; result initial state is this initial state
    * @post ; result goal state is {@code other} initial state
    */
-  protected abstract ActualOldNewEvent<_Type_> safeCreateCombinedEvent(ActualOldNewEvent<_Type_> other, CompoundEdit<?, ?> compoundEdit);
+  protected final ActualOldNewEvent<_Type_> safeCreateCombinedEvent(ActualOldNewEvent<_Type_> other, CompoundEdit<?, ?> compoundEdit) {
+    @SuppressWarnings("unchecked")
+    ActualOldNewEvent<_Type_> result = (ActualOldNewEvent<_Type_>)clone(compoundEdit);
+    /* we don't make a by-value copy of $oldValue and $newValue, because they
+     * are safe when they go out, and we will not change the objects we refer to
+     * internally.
+     */
+    result.$newValue = other.$newValue;
+    return result;
+  }
 
 
   @Override

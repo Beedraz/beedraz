@@ -22,7 +22,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.Date;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
-import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.OldNewEvent;
 import org.ppeew.annotations_I.Copyright;
@@ -62,8 +61,9 @@ public final class DateEvent extends ActualOldNewEvent<Date> {
   }
 
   @Override
-  protected final DateEvent safeCreateCombinedEvent(ActualOldNewEvent<Date> other, CompoundEdit<?, ?> compoundEdit) {
-    return new DateEvent((DateBeed)getSource(), getOldValue(), other.getNewValue(), compoundEdit);
+  protected Date safeValueCopy(Date original) {
+    assert original != null;
+    return (Date)original.clone();
   }
 
 }

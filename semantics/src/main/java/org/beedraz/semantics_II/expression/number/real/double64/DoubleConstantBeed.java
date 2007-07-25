@@ -48,9 +48,9 @@ public class DoubleConstantBeed
     implements DoubleBeed {
 
   /**
-   * @post  getdouble() == constant;
+   * @post  getDouble() == constant;
    */
-  public DoubleConstantBeed(double constant) {
+  public DoubleConstantBeed(Double constant) {
     this(constant, null);
   }
 
@@ -62,9 +62,9 @@ public class DoubleConstantBeed
    * with the owner. This constructor does nothing with
    * the {@code owner}.
    *
-   * @post  getdouble() == constant;
+   * @post  getDouble() == constant;
    */
-  public DoubleConstantBeed(double constant, AggregateBeed owner) {
+  public DoubleConstantBeed(Double constant, AggregateBeed owner) {
     $constant = constant;
   }
 

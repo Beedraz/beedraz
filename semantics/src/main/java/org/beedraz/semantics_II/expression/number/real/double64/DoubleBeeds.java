@@ -66,6 +66,10 @@ public class DoubleBeeds {
     return new DoubleConstantBeed(constant);
   }
 
+  public static DoubleBeed constant_null() {
+    return new DoubleConstantBeed(null);
+  }
+
   /*</section>*/
 
 

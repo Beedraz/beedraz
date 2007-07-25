@@ -17,6 +17,7 @@
 package org.beedraz.semantics_II.expression.collection.set;
 
 
+import static org.beedraz.semantics_II.expression.number.real.double64.DoubleBeeds.constant;
 import static org.beedraz.semantics_II.path.Paths.path;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,7 +46,6 @@ import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.EditableLongBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongEdit;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleConstantBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleModBeed;
 import org.beedraz.semantics_II.path.ConstantPath;
 import org.beedraz.semantics_II.path.Path;
@@ -117,11 +117,11 @@ public class TestFilteredSetBeed {
           // construct the %
           DoubleModBeed modBeed = new DoubleModBeed();
           modBeed.setDividendPath(path(startBeed.cq));
-          modBeed.setDivisorPath(path(new DoubleConstantBeed(2)));
+          modBeed.setDivisorPath(path(constant(2)));
           // construct the ==
           BooleanEQBeed eqBeed = new BooleanEQBeed();
           eqBeed.setLeftOperandPath(path(modBeed));
-          eqBeed.setRightOperandPath(path(new DoubleConstantBeed(0)));
+          eqBeed.setRightOperandPath(path(constant(0)));
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };
@@ -445,11 +445,11 @@ public class TestFilteredSetBeed {
           // construct the %
           DoubleModBeed modBeed = new DoubleModBeed();
           modBeed.setDividendPath(path(startBeed.cq));
-          modBeed.setDivisorPath(path(new DoubleConstantBeed(2)));
+          modBeed.setDivisorPath(path(constant(2)));
           // construct the ==
           BooleanEQBeed eqBeed = new BooleanEQBeed();
           eqBeed.setLeftOperandPath(path(modBeed));
-          eqBeed.setRightOperandPath(path(new DoubleConstantBeed(1)));
+          eqBeed.setRightOperandPath(path(constant(1)));
           return new ConstantPath<BooleanBeed>(eqBeed);
         }
     };

@@ -26,8 +26,6 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanNotNullBeed;
-import org.beedraz.semantics_II.expression.bool.BooleanNullBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
@@ -49,7 +47,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * @invar getOperand() != null && getOperand().get() != null
  *          ? get() != null
  *          : true;
- * @default (Overridden in {@link BooleanNotNullBeed} and {@link BooleanNullBeed})
+ * @default (Overridden in {@link org.beedraz.semantics_II.expression.bool.BooleanNotNullBeed}
+ *          and {@link org.beedraz.semantics_II.expression.bool.BooleanNullBeed})
  * @invar getOperand() != null && getOperand().get() == null
  *          ? get() == null
  *          : true;
@@ -161,7 +160,8 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
    * which is simply done by setting the value of {@link #isEffective()} to false.
    *
    * This is the default implementation. The method is overridden in
-   * {@link BooleanNotNullBeed} and {@link BooleanNullBeed}.
+   * {@link org.beedraz.semantics_II.expression.bool.BooleanNotNullBeed} and
+   * {@link org.beedraz.semantics_II.expression.bool.BooleanNullBeed}.
    */
   protected void recalculate() {
     if (getOperand() != null && hasEffectiveOperandValue()) {

@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * A beed representing a real value. Real values cannot
- * be represented in a computer. Both {@link DigDecimal}
+ * be represented in a computer. Both {@link BigDecimal}
  * and {@link Double} representations are supported.
  * The first has big consequences on performance.
  *

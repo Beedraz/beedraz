@@ -19,7 +19,6 @@ package org.ppeew.collection_I;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -37,16 +36,16 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *
  * @note This cannot be a {@link List}, sadly, for the dubious reason that the
  *       {@link List} contract says that {@link List#add(Object)} always returns
- *       {@code true}, and the {@link Collection} contract says that
- *       {@link Collection#add(Object)} returns {@code true} if the collection has
+ *       {@code true}, and the {@link java.util.Collection} contract says that
+ *       {@link java.util.Collection#add(Object)} returns {@code true} if the collection has
  *       changed. In a list, every {@code add} has a change effect (the element is
  *       added at the end of the list, possibly as a duplicate). In a list with
  *       set behavior, if the element is already in the list, it would move. This
  *       is also a change, except when the element to be added is already at the end:
  *       then nothing changes (no extra element and no move), so we need to return
  *       {@code false}. Arguably, the contract of {@code List} is too strong. The
- *       same reasoning applies to {@link #add(int, Object)}, {ATlink #addAll(int, Collection)} // TODO change this Javadoc when implemented
- *       and {@link #addAll(Collection)}.
+ *       same reasoning applies to {@link #add(int, Object)}, {ATlink #addAll(int, java.util.Collection)} // TODO change this Javadoc when implemented
+ *       and {@link #addAll(java.util.Collection)}.
  *
  * @note A method {@code boolean addAll(int index, Collection<? extends E> coll)}
  *       has no meaningful semantics in an ordered set or set list. Suppose we take

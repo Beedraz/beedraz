@@ -22,7 +22,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -30,7 +29,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * <p>{@link Set} implementation tweaked at memory efficiency, with a preference
+ * <p>{@link java.util.Set} implementation tweaked at memory efficiency, with a preference
  *  for empty sets, singletons, and sets that change size slowly. The set does
  *  not accept {@code null} as an element.</p>
  *

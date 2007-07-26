@@ -445,7 +445,7 @@ public final class ActualMapEvent<_Key_, _Value_>
    *     {@code this.}{@link #getAddedElements()}
    *     <ul>
    *       <li>If so, if the value in {@code added2} and {@code removed1} are
-   *         not {@link Object#equals(Object) equal}, add {@link added2} to the combined
+   *         not {@link Object#equals(Object) equal}, add {@code added2} to the combined
    *         added elements (else, do nothing).</li>
    *       <li>If not, add {@code added2} to the combined added elements.</li>
    *     </ul>
@@ -461,7 +461,7 @@ public final class ActualMapEvent<_Key_, _Value_>
    *   </li>
    *   <li>For the entries {@code added1} in {@code this.}{@link #getAddedElements()},
    *     for which there is no entry with that key in {@code other.}{@link #getAddedElements()},
-   *     nor in {@code other.}{@link #getRemovedElements()}, add {@link added1} to the
+   *     nor in {@code other.}{@link #getRemovedElements()}, add {@code added1} to the
    *     combined added elements.</li>
    * </ul>
    * <p>The following table reorganizes the entries above that are relevant
@@ -599,9 +599,9 @@ public final class ActualMapEvent<_Key_, _Value_>
    *     {@code other.}{@link #getRemovedElements()}
    *     <ul>
    *       <li>If so, if the value in {@code added2} and {@code removed1} are
-   *         not {@link Object#equals(Object) equal}, add {@link removed1} to the combined
+   *         not {@link Object#equals(Object) equal}, add {@code removed1} to the combined
    *         removed elements (else, do nothing).</li>
-   *       <li>If not, add {@link removed1} to the combined removed elements.</li>
+   *       <li>If not, add {@code removed1} to the combined removed elements.</li>
    *     </ul>
    *     Thus, we need to add {@code removed1} to the combined removed elements if:
    *     <ul>
@@ -615,7 +615,7 @@ public final class ActualMapEvent<_Key_, _Value_>
    *   </li>
    *   <li>For the entries {@code removed2} in {@code other.}{@link #getRemovedElements()},
    *     for which there is no entry with that key in {@code this.}{@link #getRemovedElements()},
-   *     nor in {@code this.}{@link #getAddedElements()}, add {@link removed2} to the
+   *     nor in {@code this.}{@link #getAddedElements()}, add {@code removed2} to the
    *     combined removed elements.</li>
    * </ul>
    *

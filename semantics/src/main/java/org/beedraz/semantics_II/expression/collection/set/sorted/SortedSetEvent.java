@@ -31,7 +31,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>Event that notifies of changes in a {@link SortedSetBeed}.
  *   The changes are represented by a sorted set of {@link #getAddedElements()
  *   added elements} and a soreted set of {@link #getRemovedElements()},
- *   with the same comparator as the {@link #getSource source sorted set beed}.</p>
+ *   with the same comparator as the {@link #getSource() source sorted set beed}.</p>
  *
  * @note In contrast to supertypes, the collection type is not generic in this
  *       class, since there are no more subtypes defined in the Java Collection

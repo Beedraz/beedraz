@@ -34,7 +34,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * {@link SimplePB} whose value can be changed directly
+ * {@link org.beedraz.semantics_II.expression.ExpressionBeed} whose value can be changed directly
  * by the user.
  *
  * @author Jan Dockx

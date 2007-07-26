@@ -21,7 +21,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -31,14 +30,14 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>Beeds to be used as <dfn>properties</dfn> (<dfn>attributes</dfn> and
  *   <dfn>associations</dfn>) or <dfn>derived state</dfn> (reified inspectors).</p>
  * <p><dfn>Expression beeds</dfn> can be used as <dfn>active properties</dfn>
- *   with {@code BeanBeeds}, or, in general, with {@link AggregateBeed AggregateBeeds}.
+ *   with {@code BeanBeeds}, or, in general, with {@link org.beedraz.semantics_II.aggregate.AggregateBeed AggregateBeeds}.
  *   If expression beeds play the role of <dfn>active properties</dfn>
- *   of an {@link AggregateBeed}, the user might decide that
+ *   of an {@link org.beedraz.semantics_II.aggregate.AggregateBeed}, the user might decide that
  *   a change in the property consitutes a change in the aggregate as a whole.
  *   Thus, if the property beed changes, the aggregate should send events
  *   and update its dependents too. To do this, we need to register the
  *   property beed with the aggregate by calling
- *   {@link AggregateBeed#registerAggregateElement(org.beedraz.semantics_II.Beed)},
+ *   {@link org.beedraz.semantics_II.aggregate.AggregateBeed#registerAggregateElement(org.beedraz.semantics_II.Beed)},
  *   which makes the argument an update source,
  *   with the property beed as argument, e.g., with the following idiom:</p>
  * <pre>
@@ -58,7 +57,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * </pre>
  * <p>To make this easier, expression beeds can offer 2 constructors. First, the normal
  *   default constructor, so that the above idiom can be used. Secondly, a constructor
- *   that takes an {@link AggregateBeed} as argument, and simply calls
+ *   that takes an {@link org.beedraz.semantics_II.aggregate.AggregateBeed} as argument, and simply calls
  *   {@link AggregateBeed#registerAggregateElement(org.beedraz.semantics_II.Beed)}
  *   for the user. The idiom then simplifies too:</p>
  * <pre>

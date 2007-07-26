@@ -33,11 +33,24 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * <p>Conditional {@link Path}. The value the {@link #getCondition()}
- *   {@link EnumBeed} has, decices which {@link #getArgumentPaths()
- *   argument path} is used to offer the {@link #get() resulting beed}.</p>
+ * <p>Conditional {@link Path}. The path has a {@link #getKeyBeedPath()} that
+ *   references a {@link EnumBeed}. Each possible value of the {@link #getKey()}
+ *   can be mapped to a {@link Beed} of type {@link _SelectedBeed_}.
+ *   The {@link EnumSwitchPath} returns the {@link _SelectedBeed_} that
+ *   corresponds to the current value of the {@link #getKeyBeed}.
+ *   When there is no corresponding {@link _SelectedBeed_}, then null
+ *   is returned.</p>
  *
- * @author Jan Dockx
+ * @author  Jan Dockx
+ * @author  Nele Smeets
+ * @author  Peopleware n.v.
+ *
+ * @invar   getKeyBeedPath() != null
+ *            ? getKeyBeed() == getKeyBeedPath().get()
+ *            : true;
+ * @invar   getKeyBeed() != null
+ *            ? getKey() == getKeyBeed().get()
+ *            : true;
  */
 @Copyright("2007 - $Date: 2007-05-08 16:22:50 +0200 (Tue, 08 May 2007) $, Beedraz authors")
 @License(APACHE_V2)
@@ -77,7 +90,7 @@ public class EnumSwitchPath<_Enum_ extends Enum<_Enum_>,
       }
     }
     if (oldValue != $selectedBeed) {
-      return new PathEvent<_SelectedBeed_>(this, oldValue, $selectedBeed, null);
+      return new PathEvent<_SelectedBeed_>(this, oldValue, $selectedBeed, edit);
     }
     else {
       return null;
@@ -212,9 +225,9 @@ public class EnumSwitchPath<_Enum_ extends Enum<_Enum_>,
   //-----------------------------------------------------------------
 
   /**
-   * @return getCondition() != null && getArgumentPaths().get(getCondition().get()) != null ?
-   *           getArgumentPaths().get(getCondition().get()).get() :
-   *           null;
+   * @return getKey() != null
+   *           ? getCasePaths().get(getKey())
+   *           : null;
    */
   public final Path<? extends _SelectedBeed_> getSelectedPath() {
     return $selectedPath;
@@ -249,7 +262,9 @@ public class EnumSwitchPath<_Enum_ extends Enum<_Enum_>,
   //-----------------------------------------------------------------
 
   /**
-   * @return getSelectedPath() != null ? getSelectedPath().get() : null;
+   * @return getSelectedPath() != null
+   *           ? getSelectedPath().get()
+   *           : null;
    */
   public final _SelectedBeed_ get() {
     return $selectedBeed;

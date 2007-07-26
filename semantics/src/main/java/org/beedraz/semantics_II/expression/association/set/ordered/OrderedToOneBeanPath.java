@@ -35,7 +35,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * <p>{@link Path} that selects a {@link BeanBeed} from an
- *   {@link OrderedBidirToOneBeed}. The {@link #getToOneBeed() to-one beed} is the result of
+ *   {@link EditableOrderedBidirToOneBeed}. The {@link #getToOneBeed() to-one beed} is the result of
  *   a {@link #getToOnePath() property beed path}. When the result of the
  *   {@link #getToOnePath() ordered to-one beed path} changes (the path sends events),
  *   <em>or the result changes itself</em> (the {@link EditableOrderedBidirToOneBeed}

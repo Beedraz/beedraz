@@ -34,12 +34,13 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * <p>Conditional {@link Path}. The path has a {@link #getKeyBeedPath()} that
- *   references a {@link EnumBeed}. Each possible value of the {@link #getKey()}
- *   can be mapped to a {@link Beed} of type {@link _SelectedBeed_}.
- *   The {@link EnumSwitchPath} returns the {@link _SelectedBeed_} that
- *   corresponds to the current value of the {@link #getKeyBeed}.
- *   When there is no corresponding {@link _SelectedBeed_}, then null
- *   is returned.</p>
+ *   references a {@link EnumBeed}. Each possible value of the {@link #getKey() key}
+ *   can be mapped to a {@link Path} of type {@code _SelectedBeed_}.
+ *   The {@code EnumSwitchPath} returns the {@link #get() selected beed} that
+ *   is returned by the {@link #getSelectedPath() case path that
+ *   corresponds to the current value} of the {@link #getKeyBeed()}.
+ *   When there is no corresponding {@link #getCasePaths() case path}, then
+ *   {@code null} is returned.</p>
  *
  * @author  Jan Dockx
  * @author  Nele Smeets

@@ -30,7 +30,6 @@ import org.ppeew.smallfries_I.ComparisonUtil;
 /**
  * {@link Event} that carries a simple old and new value,
  * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} must be a {@link SimplePB}.
  *
  * @author Jan Dockx
  *

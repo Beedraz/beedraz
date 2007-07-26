@@ -32,7 +32,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * Support for beeds that derive their state from other beeds.
  * Derived beeds have a {@link Dependent dependent delegate},
- * where {@link UpdateSource update sources} are registered.
+ * where update sources are registered.
  * The update method of the dependent delegates to an abstract
  * method of this class. Subtypes should implement
  * that method, dealing with events from all beeds they registered

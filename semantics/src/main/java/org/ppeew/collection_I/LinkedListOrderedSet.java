@@ -252,7 +252,7 @@ public class LinkedListOrderedSet<E>
   }
 
   @Override
-  public boolean equals(Object other) {
+  public final boolean equals(Object other) {
     if (other == this) {
       return true;
     }
@@ -274,6 +274,15 @@ public class LinkedListOrderedSet<E>
     catch (ClassCastException ccExc) {
       return false;
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   * Overriden to make PMD happy (because we also overrode {@link #equals(Object)}.
+   */
+  @Override
+  public final int hashCode() {
+    return super.hashCode();
   }
 
   @Override

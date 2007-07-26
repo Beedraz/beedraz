@@ -19,7 +19,6 @@ package org.beedraz.semantics_II;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.Edit.State;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -32,7 +31,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   in a boolean value, we do not employ an event, but use
  *   a 2-argument method {@link #validityChanged(Edit, boolean)}.</p>
  * <p>Implementations are also warned when the state of an {@link Edit Edit}
- *   they are registered with changes from {@link State#NOT_YET_PERFORMED}.
+ *   they are registered with changes from
+ *   {@link org.beedraz.semantics_II.Edit.State#NOT_YET_PERFORMED}.
  *   When this happens, all registered validity listeners are removed from
  *   the edit. With this warning, they can do clean-up and make themselves
  *   ready for gc.</p>

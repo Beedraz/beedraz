@@ -32,7 +32,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   and send {@link AggregateEvent derived events} themselves:
  *   changes are propagated.</p>
  * <p>Most aggregate beeds are bean beeds. Final propagation
- *   sources are {@link EditableBeed editable beeds}.</p>
+ *   sources are <dfn>editable beeds</dfn>.</p>
  *
  * @author Jan Dockx
  *

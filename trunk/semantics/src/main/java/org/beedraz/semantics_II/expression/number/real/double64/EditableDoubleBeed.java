@@ -25,7 +25,6 @@ import java.text.NumberFormat;
 
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.EditableSimpleExpressionBeed;
-import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -34,11 +33,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * A editable beed containing a {@link Double} value.
  * Listeners of the beed can receive events of type
- * {@link RealEvent}.
+ * {@link org.beedraz.semantics_II.expression.number.real.RealEvent}.
  *
  * @author  Nele Smeets
- *
- * @mudo break link with editable simple property beed and use double instead of Double internally.
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)

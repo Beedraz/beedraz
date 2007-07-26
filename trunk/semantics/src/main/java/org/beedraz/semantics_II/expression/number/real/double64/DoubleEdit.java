@@ -22,18 +22,16 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import java.util.Map;
 
 import org.beedraz.semantics_II.AbstractBeed;
-import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.SimpleExpressionEdit;
-import org.beedraz.semantics_II.expression.number.real.RealEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * An {@link Edit} for a beed of type {@link EditableDoubleBeed}.
+ * An {@link org.beedraz.semantics_II.Edit} for a beed of type {@link EditableDoubleBeed}.
  * This edit can change the value of the target beed, and send
- * {@link RealEvent events} to the listeners of that beed.
+ * {@link ActualDoubleEvent events} to the listeners of that beed.
  *
  * @author  Nele Smeets
  */
@@ -63,7 +61,7 @@ public final class DoubleEdit
    * @post  result.get(getTarget()).getEdit() == this;
    */
   @Override
-  protected final Map<AbstractBeed<?>, ActualDoubleEvent> createEvents() {
+  protected Map<AbstractBeed<?>, ActualDoubleEvent> createEvents() {
     return singletonEventMap(new ActualDoubleEvent(getTarget(), getOldValue(), getNewValue(), this));
   }
 

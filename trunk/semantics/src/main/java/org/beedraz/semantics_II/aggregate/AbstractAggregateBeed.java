@@ -27,14 +27,13 @@ import org.beedraz.semantics_II.AbstractDependentBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.bean.BeanBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * Support for implementations of {@link BeanBeed}.
+ * Support for implementations of {@link AggregateBeed}.
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)

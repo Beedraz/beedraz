@@ -19,7 +19,6 @@ package org.beedraz.semantics_II;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.expression.SimpleExpressionBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -28,7 +27,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * {@link Event} that carries a simple old and new value,
  * expressing the changed that occured in {@link #getSource()}.
- * The {@link #getSource() source} is often a {@link SimpleExpressionBeed},
+ * The {@link #getSource() source} is often a
+ * {@link org.beedraz.semantics_II.expression.SimpleExpressionBeed},
  * but not necessarily.
  *
  * @author Jan Dockx

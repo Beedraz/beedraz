@@ -22,14 +22,13 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import org.beedraz.semantics_II.ActualOldNewEvent;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
-import org.beedraz.semantics_II.Event;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * {@link Event} that describes a change in a {@link Path}. A {@link Path}
+ * {@link org.beedraz.semantics_II.Event} that describes a change in a {@link Path}. A {@link Path}
  * is only considered changed when the beed that is finally returned has changed.
  * {@code null} is a likely value for the old or new state.
  *

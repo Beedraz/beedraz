@@ -21,14 +21,13 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.ActualOldNewEvent;
 import org.beedraz.semantics_II.Edit;
-import org.beedraz.semantics_II.OldNewEvent;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * {@link OldNewEvent} whose source is a {@link StringBeed} and
+ * {@link org.beedraz.semantics_II.OldNewEvent} whose source is a {@link StringBeed} and
  * that carries a simple old and new value of type {@link String}.
  *
  * @author Jan Dockx

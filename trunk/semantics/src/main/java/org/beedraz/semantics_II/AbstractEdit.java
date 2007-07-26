@@ -28,7 +28,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * <p>Implementation of some general methods for {@link #Edit Edits} that
+ * <p>Implementation of some general methods for {@link Edit Edits} that
  *   benefit from generics.</p>
  * <p>This class and {@link Edit} were separated, because the methods in
  *   this class need a generic parameter that is only needed by protected

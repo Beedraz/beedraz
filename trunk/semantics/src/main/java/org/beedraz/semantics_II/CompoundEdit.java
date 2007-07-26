@@ -342,7 +342,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    * <p>In general, this means that we cannot ask the edits for a combined
    *   event. We can however ask each of the separated edit (groups)
    *   for an event, and then ask the events to
-   *   {@link Event#combineWith(Event, Edit) combine}: the new state
+   *   {@link Event#combineWith(Event, CompoundEdit) combine}: the new state
    *   of the first event will be the old state of the second event.
    *   Then we have to make sure however that the edit generates events
    *   based on the edit goal state, and not on the target state, because
@@ -355,7 +355,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    *   the change reason in the combined event must be this compound edit.
    *   This then signals to other mechanisms that the change can also only
    *   be undone by undoing the compound edit as a whole.</p>
-   * <p>With a mechanism to {@link Event#combineWith(Event, Edit) combine}
+   * <p>With a mechanism to {@link Event#combineWith(Event, CompoundEdit) combine}
    *   events for the same target, there really is no need anymore for
    *   edits to absorb other edits first. The event combination mechanism
    *   alone suffices. In Beedraz, it is even better not to combine

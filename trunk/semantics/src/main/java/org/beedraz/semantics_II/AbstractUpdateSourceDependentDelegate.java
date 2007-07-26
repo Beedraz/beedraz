@@ -29,10 +29,10 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * <p>More can be implemented in a general way if we know that our
- *   {@link #getDependentUpdateSource()} is an {@link AbstractUpdateSource}
- *   (which it will be most of the time).</p>
+ *   {@link #getDependentUpdateSource()} is an {@link AbstractBeed}
+ *   (which it will be most of the time). MUDO THIS IS OBSOLETE; MERGE WITH DEPENDENT</p>
  * <p>From experience, we know that it makes no sense for this type to be generic in the types
- *   of allowed {@link UpdateSource UpdateSources} or {@link Event Events}.</p>
+ *   of allowed {@link Beed update sources} or {@link Event Events}.</p>
  *
  * @author Jan Dockx
  *

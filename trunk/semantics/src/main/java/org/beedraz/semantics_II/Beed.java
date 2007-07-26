@@ -33,7 +33,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   {@linkplain org.beedraz.semantics_II.Dependent
  *   registered dependents} to update themselves when they change, using an
  *   {@link Event} that describes the change. Some beeds can be
- *   {@linkplain org.beedraz.semantics_II.edit.Edit edited}
+ *   {@linkplain org.beedraz.semantics_II.Edit edited}
  *   directly, others derive their state from beeds they depend on.
  *   We refer to the first kind as <dfn>editable beeds</dfn>, and to the
  *   second kind as <dfn>dependent beeds</dfn>.</p>
@@ -47,7 +47,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <h3>Editable Beeds</h3>
  * <p>Changing the state of editable beans should always happen via
  *   creation of an appropriate {@link Edit}, which is then
- *   {@linkplain Edit#execute() executed} at the appropriate time. Beeds
+ *   {@linkplain Edit#perform() executed} at the appropriate time. Beeds
  *   should never offer public methods that allow to change directly
  *   the semantic state they hold.</p>
  * <p>See {@link Edit} for more information.</p>
@@ -197,7 +197,7 @@ public interface Beed<_Event_ extends Event> {
    *       has to be declared in this type, and this type has to be an interface, because
    *       beeds need multiple inheritance. Thus, the method must be public.
    *       It is ill-advised to use the method yourself, though. If you make structural
-   *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
+   *       changes through {@link Dependent#addUpdateSource(Beed)} and {@link Dependent#removeUpdateSource(Beed)}
    *       only, everything will be cared for.
    */
   void addDependent(Dependent dependent);
@@ -206,7 +206,7 @@ public interface Beed<_Event_ extends Event> {
    * @post ! getDependents().contains(dependent);
    *
    * @note It is ill-advised to use the method yourself, though. If you make structural
-   *       changes through {@link Dependent#addUpdateSource()} and {@link Dependent#removeUpdateSource()}
+   *       changes through {@link Dependent#addUpdateSource(Beed)} and {@link Dependent#removeUpdateSource(Beed)}
    *       only, everything will be cared for.
    */
   void removeDependent(Dependent dependent);

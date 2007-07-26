@@ -14,15 +14,15 @@
  limitations under the License.
  </license>*/
 
-package org.beedraz.semantics_II.path;
+package org.beedraz.semantics_II.expression.enumeration;
 
 
 import static org.beedraz.semantics_II.expression.enumeration.EnumBeeds.editableEnumBeed;
+import static org.beedraz.semantics_II.expression.enumeration.TestEnumSwitchPath.Colors.BLUE;
+import static org.beedraz.semantics_II.expression.enumeration.TestEnumSwitchPath.Colors.RED;
+import static org.beedraz.semantics_II.expression.enumeration.TestEnumSwitchPath.Colors.YELLOW;
 import static org.beedraz.semantics_II.expression.string.StringBeeds.editableStringBeed;
 import static org.beedraz.semantics_II.path.Paths.path;
-import static org.beedraz.semantics_II.path.TestEnumSwitchPath.Colors.BLUE;
-import static org.beedraz.semantics_II.path.TestEnumSwitchPath.Colors.RED;
-import static org.beedraz.semantics_II.path.TestEnumSwitchPath.Colors.YELLOW;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -33,10 +33,11 @@ import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.StubListener;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
-import org.beedraz.semantics_II.expression.enumeration.EditableEnumBeed;
-import org.beedraz.semantics_II.expression.enumeration.EnumBeed;
-import org.beedraz.semantics_II.expression.enumeration.EnumEdit;
 import org.beedraz.semantics_II.expression.string.StringBeed;
+import org.beedraz.semantics_II.path.MutablePath;
+import org.beedraz.semantics_II.path.NullPath;
+import org.beedraz.semantics_II.path.Path;
+import org.beedraz.semantics_II.path.PathEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

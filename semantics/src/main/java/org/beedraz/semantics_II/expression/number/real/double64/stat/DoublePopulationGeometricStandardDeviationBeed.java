@@ -20,7 +20,6 @@ package org.beedraz.semantics_II.expression.number.real.double64.stat;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -29,7 +28,7 @@ import org.ppeew.smallfries_I.GeometricStandardDeviation;
 
 /**
  * A beed that computes the population geometric standard deviation of a given set of beeds of type
- * {@link DoubleBeed}.
+ * {@link org.beedraz.semantics_II.expression.number.real.RealBeed}.
  *
  * population_geometric_standard_deviation(x_1, ..., x_n) =
  *   Math.exp(population_standard_deviation(Math.log(x_1), ..., Math.log(x_n)))

@@ -21,7 +21,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.apache.commons.math.stat.descriptive.summary.Product;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -29,7 +28,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 /**
  * A beed that computes the product of a given set of beeds of type
- * {@link DoubleBeed}.
+ * {@link org.beedraz.semantics_II.expression.number.real.RealBeed}.
  *
  * @invar getSource() != null ==>
  *        (forAll DoubleBeed db; getSource().get().contains(db); db.getDouble() != null)

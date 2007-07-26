@@ -50,7 +50,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   If none of the elements is {@link Double#NaN} or negative, and at least one value is 0,
  *   then the result is {@link Double#POSITIVE_INFINITY}.
  *   If none of the elements is {@link Double#NaN} or negative, and at least one value is
- *   {@link Double.POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.</p>
+ *   {@link Double#POSITIVE_INFINITY}, the result is {@link Double#POSITIVE_INFINITY}.</p>
  *
  * @author Nele Smeets
  */

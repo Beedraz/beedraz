@@ -20,7 +20,6 @@ package org.beedraz.semantics_II.expression.number.real.double64.stat;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -29,7 +28,7 @@ import org.ppeew.smallfries_I.StandardError;
 
 /**
  * A beed that computes the sample standard error of a given set of beeds of type
- * {@link DoubleBeed}.
+ * {@link org.beedraz.semantics_II.expression.number.real.RealBeed}.
  *
  * sample_standard_error(x_1, ..., x_n) = Math.sqrt(sum((x_i - mean)^2) / ((n - 1)*n))
  *

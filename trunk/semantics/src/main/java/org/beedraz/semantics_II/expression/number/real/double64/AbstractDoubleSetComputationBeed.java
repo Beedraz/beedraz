@@ -44,7 +44,7 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
- * A beed that does a computation on a given set of beeds of type {@link DoubleBeed}.
+ * A beed that does a computation on a given set of beeds of type {@link RealBeed}.
  *
  * @invar getSourcePath() != null
  *          ? getSource() == getSourcePath().get()

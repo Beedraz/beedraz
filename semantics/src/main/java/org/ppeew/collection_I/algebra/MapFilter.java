@@ -19,21 +19,19 @@ package org.ppeew.collection_I.algebra;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import java.util.Map;
-
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
-import org.ppeew.smallfries_I.Filter;
 
 
 /**
- * An {@link Filter} criterion for {@link Map Maps}.
+ * An filter criterion for {@link java.util.Map Maps}.
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
  *
  * @todo Not use in the Beedra code, and no unit test.
+ * @see FilteredMap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

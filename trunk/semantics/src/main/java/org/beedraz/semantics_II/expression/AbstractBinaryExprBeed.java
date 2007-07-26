@@ -237,7 +237,7 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
    * which is simply done by setting the value of {@link #isEffective()} to false.
    *
    * This is the default implementation. The method is overridden in
-   * {@link AbstractBooleanConditionalBinaryExpressionBeed}.
+   * {@link org.beedraz.semantics_II.expression.bool.AbstractBooleanConditionalBinaryExpressionBeed}.
    */
   protected void recalculate() {
     if (($leftOperand != null) && hasEffectiveLeftOperand() &&

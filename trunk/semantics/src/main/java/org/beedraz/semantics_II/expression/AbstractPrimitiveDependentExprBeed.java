@@ -57,8 +57,6 @@ public abstract class AbstractPrimitiveDependentExprBeed<_Result_ extends Object
    * Return the value of this beed, as an object.
    *
    * @basic
-   *
-   * @mudo Isn't this a {@link SimpleBeed} then?
    */
   public abstract _Result_ get();
 

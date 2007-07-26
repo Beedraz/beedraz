@@ -58,7 +58,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>To make this easier, expression beeds can offer 2 constructors. First, the normal
  *   default constructor, so that the above idiom can be used. Secondly, a constructor
  *   that takes an {@link org.beedraz.semantics_II.aggregate.AggregateBeed} as argument, and simply calls
- *   {@link AggregateBeed#registerAggregateElement(org.beedraz.semantics_II.Beed)}
+ *   {@link org.beedraz.semantics_II.aggregate.AggregateBeed#registerAggregateElement(org.beedraz.semantics_II.Beed)}
  *   for the user. The idiom then simplifies too:</p>
  * <pre>
  * public class <var>MyBean</var> extends AbstractBeanBeed {
@@ -74,9 +74,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>Some expression beeds might store the reference to the aggregate beed, but in general, there
  *   is no obligation for expressions beeds to do so. If the reference is stored, it should be
  *   referred to as the <dfn>owner</dfn>.</p>
- * <p><dfn>Editable expression beeds</dfn> must however be registered with an {@link AggregateBeed}.
+ * <p><dfn>Editable expression beeds</dfn> must however be registered with an {@link org.beedraz.semantics_II.aggregate.AggregateBeed}.
  *   Editable beeds should not offer a default constructor, but each constructor should at least
- *   register the editable beed with an {@link AggregateBeed} argument.</p>
+ *   register the editable beed with an {@link org.beedraz.semantics_II.aggregate.AggregateBeed} argument.</p>
  * <p>In general, when used as properties, <em>public</em> properties <em>should</em> be registered
  *   as aggregate elements, and non-public properties (e.g., intermediate steps in a
  *   calculation), should not. Editable expressions make only sense if they are public,

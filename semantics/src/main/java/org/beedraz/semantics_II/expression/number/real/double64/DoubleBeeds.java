@@ -23,32 +23,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
-/* MUDO use of stat-package beeds in this class introduces cyclic package dependency
- *      between this package and stat package. solution: create separate "Beeds" class
- *      in stat package, and move methods there.
- */
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleArithmeticMeanBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleGeometricMeanBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleMaxBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleMinBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationGeometricStandardDeviationBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationGeometricStandardErrorBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationStandardDeviationBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationStandardErrorBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoublePopulationVarianceBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleGeometricStandardDeviationBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleGeometricStandardErrorBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleStandardDeviationBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleStandardErrorBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleVarianceBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetProductBeed;
-import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetSumBeed;
-/* MUDO use of stat-package beeds in this class introduces cyclic package dependency
- *      between this package and stat package. solution: create separate "Beeds" class
- *      in stat package, and move methods there.
- */
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -306,16 +281,6 @@ public class DoubleBeeds {
     }
   }
 
-  public static DoubleBeed product(SetBeed<RealBeed<?>, ?> factors) {
-    return product(path(factors));
-  }
-
-  public static DoubleBeed product(Path<? extends SetBeed<RealBeed<?>, ?>> factorsPath) {
-    DoubleSetProductBeed productBeed = new DoubleSetProductBeed();
-    productBeed.setSourcePath(factorsPath);
-    return productBeed;
-  }
-
   public static DoubleBeed product(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
     return product(path(leftOperand), path(rightOperand));
   }
@@ -415,16 +380,6 @@ public class DoubleBeeds {
     }
   }
 
-  public static DoubleBeed sum(SetBeed<RealBeed<?>, ?> terms) {
-    return sum(path(terms));
-  }
-
-  public static DoubleBeed sum(Path<? extends SetBeed<RealBeed<?>, ?>> termsPath) {
-    DoubleSetSumBeed sumBeed = new DoubleSetSumBeed();
-    sumBeed.setSourcePath(termsPath);
-    return sumBeed;
-  }
-
   public static DoubleBeed sum(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
     return sum(path(leftOperand), path(rightOperand));
   }
@@ -449,231 +404,6 @@ public class DoubleBeeds {
 
 
 
-  /*<section name="avg">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed avg(SetBeed<RealBeed<?>, ?> source) {
-    return avg(path(source));
-  }
-
-  public static DoubleBeed avg(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleArithmeticMeanBeed meanBeed = new DoubleArithmeticMeanBeed();
-    meanBeed.setSourcePath(sourcePath);
-    return meanBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="var_p">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed var_p(SetBeed<RealBeed<?>, ?> source) {
-    return var_p(path(source));
-  }
-
-  public static DoubleBeed var_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoublePopulationVarianceBeed varBeed = new DoublePopulationVarianceBeed();
-    varBeed.setSourcePath(sourcePath);
-    return varBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="var_s">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed var_s(SetBeed<RealBeed<?>, ?> source) {
-    return var_s(path(source));
-  }
-
-  public static DoubleBeed var_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleSampleVarianceBeed varBeed = new DoubleSampleVarianceBeed();
-    varBeed.setSourcePath(sourcePath);
-    return varBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="sd_p">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed sd_p(SetBeed<RealBeed<?>, ?> source) {
-    return sd_p(path(source));
-  }
-
-  public static DoubleBeed sd_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoublePopulationStandardDeviationBeed sdBeed = new DoublePopulationStandardDeviationBeed();
-    sdBeed.setSourcePath(sourcePath);
-    return sdBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="sd_s">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed sd_s(SetBeed<RealBeed<?>, ?> source) {
-    return sd_s(path(source));
-  }
-
-  public static DoubleBeed sd_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleSampleStandardDeviationBeed sdBeed = new DoubleSampleStandardDeviationBeed();
-    sdBeed.setSourcePath(sourcePath);
-    return sdBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="se_p">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed se_p(SetBeed<RealBeed<?>, ?> source) {
-    return se_p(path(source));
-  }
-
-  public static DoubleBeed se_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoublePopulationStandardErrorBeed seBeed = new DoublePopulationStandardErrorBeed();
-    seBeed.setSourcePath(sourcePath);
-    return seBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="se_s">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed se_s(SetBeed<RealBeed<?>, ?> source) {
-    return se_s(path(source));
-  }
-
-  public static DoubleBeed se_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleSampleStandardErrorBeed seBeed = new DoubleSampleStandardErrorBeed();
-    seBeed.setSourcePath(sourcePath);
-    return seBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="gavg">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed gavg(SetBeed<RealBeed<?>, ?> source) {
-    return gavg(path(source));
-  }
-
-  public static DoubleBeed gavg(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleGeometricMeanBeed meanBeed = new DoubleGeometricMeanBeed();
-    meanBeed.setSourcePath(sourcePath);
-    return meanBeed;
-  }
-  /*</section>*/
-
-
-  /*<section name="gsd_p">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed gsd_p(SetBeed<RealBeed<?>, ?> source) {
-    return gsd_p(path(source));
-  }
-
-  public static DoubleBeed gsd_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoublePopulationGeometricStandardDeviationBeed sdBeed =
-      new DoublePopulationGeometricStandardDeviationBeed();
-    sdBeed.setSourcePath(sourcePath);
-    return sdBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="gsd_s">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed gsd_s(SetBeed<RealBeed<?>, ?> source) {
-    return gsd_s(path(source));
-  }
-
-  public static DoubleBeed gsd_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleSampleGeometricStandardDeviationBeed sdBeed =
-      new DoubleSampleGeometricStandardDeviationBeed();
-    sdBeed.setSourcePath(sourcePath);
-    return sdBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="gse_p">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed gse_p(SetBeed<RealBeed<?>, ?> source) {
-    return gse_p(path(source));
-  }
-
-  public static DoubleBeed gse_p(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoublePopulationGeometricStandardErrorBeed seBeed =
-      new DoublePopulationGeometricStandardErrorBeed();
-    seBeed.setSourcePath(sourcePath);
-    return seBeed;
-  }
-  /*</section>*/
-
-
-  /*<section name="gse_s">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed gse_s(SetBeed<RealBeed<?>, ?> source) {
-    return gse_s(path(source));
-  }
-
-  public static DoubleBeed gse_s(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleSampleGeometricStandardErrorBeed seBeed =
-      new DoubleSampleGeometricStandardErrorBeed();
-    seBeed.setSourcePath(sourcePath);
-    return seBeed;
-  }
-
-  /*</section>*/
-
-
-  /*<section name="max">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed max(SetBeed<RealBeed<?>, ?> source) {
-    return max(path(source));
-  }
-
-  public static DoubleBeed max(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleMaxBeed maxBeed = new DoubleMaxBeed();
-    maxBeed.setSourcePath(sourcePath);
-    return maxBeed;
-  }
-  /*</section>*/
-
-
-  /*<section name="min">*/
-  //------------------------------------------------------------------
-
-  public static DoubleBeed min(SetBeed<RealBeed<?>, ?> source) {
-    return min(path(source));
-  }
-
-  public static DoubleBeed min(Path<? extends SetBeed<RealBeed<?>, ?>> sourcePath) {
-    DoubleMinBeed minBeed = new DoubleMinBeed();
-    minBeed.setSourcePath(sourcePath);
-    return minBeed;
-  }
-
-  /*</section>*/
-
-
   /*<section name="editableDoubleBeed">*/
   //------------------------------------------------------------------
 
@@ -692,10 +422,6 @@ public class DoubleBeeds {
   }
 
   /*</section>*/
-
-
-
-
 
 }
 

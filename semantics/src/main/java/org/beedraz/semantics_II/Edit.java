@@ -259,7 +259,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   /**
    * <p>Performs this edit. If the performance succeeds, notifies listeners
    *   of the {@link #getTarget() target} and all objects that got dirty
-   *   (i.e., the transitive closure of {@link UpdateSource#getDependents()})
+   *   (i.e., the transitive closure of {@link Beed#getDependents()})
    *   with an event.</p>
    * <p>An Edit can only be performed once. The state is changed to
    *   {@link State#DONE}.</p>
@@ -366,7 +366,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   /**
    * <p>Undoes this edit. If the undoing succeeds, notifies listeners
    *   of the {@link #getTarget() target} and all objects that got dirty (i.e.,
-   *   the transitive closure of {@link UpdateSource#getDependents()}) with an
+   *   the transitive closure of {@link Beed#getDependents()}) with an
    *   event.</p>
    * <p>An Edit can be undone when the edit is in state {@link #DONE}. The state
    *   is changed to {@link State#UNDONE}.</p>
@@ -456,7 +456,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
   /**
    * <p>Redoes this edit. If the redoing succeeds, notifies listeners
    *   of the {@link #getTarget() target} and all objects that got dirty (i.e.,
-   *   the transitive closure of {@link UpdateSource#getDependents()}) with an
+   *   the transitive closure of {@link Beed#getDependents()}) with an
    *   event.</p>
    * <p>An Edit can be redone when the edit is in state {@link #UNDONE}. The state
    *   is changed to {@link State#DONE}.</p>
@@ -595,8 +595,6 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    *   validity listeners. Note that this is a one way operation: dead edits
    *   cannot be resurrected. Calling {@link #perform()}, {@link #undo()} or
    *   {@link #redo()} on a a dead edit results in an exception being thrown.</p>
-   * <p>Typically an edit is killed when it is consolidated by another
-   *   edit's {@link #addEdit(Edit)} or {@link #replaceEdit(Edit)} method.</p>
    *
    * @post getState() = DEAD;
    * @post for (ValidityListener vl) {! isValidityListener(vl)};

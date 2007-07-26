@@ -76,7 +76,7 @@ public class UpdateSourcesGraph {
       }
     }
 
-    writeDotFooter(updateSources, out);
+    writeDotFooter(out);
   }
 
   private static void writeDotHeader(Set<? extends Beed<?>> updateSources, PrintStream out) {
@@ -84,7 +84,7 @@ public class UpdateSourcesGraph {
     out.println("digraph " + "\"Update Sources of " + updateSources.size() + " UpdateSource instances\" {");
   }
 
-  private static void writeDotFooter(Set<? extends Beed<?>> updateSources, PrintStream out) {
+  private static void writeDotFooter(PrintStream out) {
     out.println("}");
   }
 

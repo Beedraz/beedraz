@@ -25,6 +25,10 @@ import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
+/* MUDO use of stat-package beeds in this class introduces cyclic package dependency
+ *      between this package and stat package. solution: create separate "Beeds" class
+ *      in stat package, and move methods there.
+ */
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleArithmeticMeanBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleGeometricMeanBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleMaxBeed;
@@ -41,6 +45,10 @@ import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampl
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSampleVarianceBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetProductBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.stat.DoubleSetSumBeed;
+/* MUDO use of stat-package beeds in this class introduces cyclic package dependency
+ *      between this package and stat package. solution: create separate "Beeds" class
+ *      in stat package, and move methods there.
+ */
 import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;

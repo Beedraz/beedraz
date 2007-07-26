@@ -26,7 +26,6 @@ import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.beedraz.semantics_II.expression.bool.AbstractBooleanConditionalBinaryExpressionBeed;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
@@ -50,7 +49,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *        getLeftOprnd().get() == null
  *          ? get() == null
  *          : true;
- * @default (Overridden in {@link AbstractBooleanConditionalBinaryExpressionBeed})
+ * @default (Overridden in {@link org.beedraz.semantics_II.expression.bool.AbstractBooleanConditionalBinaryExpressionBeed})
  * @invar getLeftOprnd() != null && getRightOprnd() != null &&
  *        getRightOprnd().get() == null
  *          ? get() == null

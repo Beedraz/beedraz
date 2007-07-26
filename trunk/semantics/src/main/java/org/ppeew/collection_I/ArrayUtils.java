@@ -21,7 +21,6 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,7 +88,7 @@ public abstract class ArrayUtils {
   }
 
   /**
-   * {@link Arrays#asList} returns a dynamic list (changes in the array are seen in the
+   * {@link java.util.Arrays#asList} returns a dynamic list (changes in the array are seen in the
    * list, and vice versa. This does the same, but returns a new list, uncoupled with
    * the array. The result is unmodifiable.
    *

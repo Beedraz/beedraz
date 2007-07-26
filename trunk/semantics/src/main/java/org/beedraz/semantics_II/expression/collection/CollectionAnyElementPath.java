@@ -26,7 +26,6 @@ import java.util.Map;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.beedraz.semantics_II.path.AbstractDependentPath;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathEvent;
@@ -92,16 +91,16 @@ public class CollectionAnyElementPath<_Beed_ extends Beed<?>>
      *       2. the collection beed was empty, and some elements have been added
      *          (so the selected beed changes from null to an effective beed)
      */
-    SetEvent<_Beed_> setEvent = (SetEvent<_Beed_>)events.get($collectionBeed);
+    CollectionEvent<_Beed_> collectionEvent = (CollectionEvent<_Beed_>)events.get($collectionBeed);
     PathEvent<CollectionBeed<_Beed_, ?>> pathEvent =
         (PathEvent<CollectionBeed<_Beed_, ?>>)events.get($collectionBeedPath);
     if (pathEvent != null) {
       $collectionBeed = pathEvent.getNewValue();
     }
     if (( pathEvent != null) ||
-        ( (setEvent != null) &&
-          (setEvent.getRemovedElements().contains($selectedBeed) || // the currently selected beed is removed
-           $selectedBeed == null && !setEvent.getAddedElements().isEmpty()))) { // the set is no longer empty
+        ( (collectionEvent != null) &&
+          (collectionEvent.getRemovedElements().contains($selectedBeed) || // the currently selected beed is removed
+           $selectedBeed == null && !collectionEvent.getAddedElements().isEmpty()))) { // the collection is no longer empty
       select();
     }
     if (oldElement != $selectedBeed) {

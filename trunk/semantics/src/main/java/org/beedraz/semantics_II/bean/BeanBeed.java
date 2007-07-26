@@ -29,8 +29,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>{@link org.beedraz.semantics_II.Beed} that acts like an object, a
  *   JavaBean. {@code BeanBeeds} are not owned by
  *   any other {@link org.beedraz.semantics_II.Beed}.</p>
- * <p>{@code BeanBeeds} are {@link EventPropagator
- *   EventPropagators}.</p>
+ * <p>{@code BeanBeeds} are <dfn>event propagators</dfn>.</p>
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)

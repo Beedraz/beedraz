@@ -27,7 +27,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 /**
  * <p>Implementations can be registered with {@link Edit Edits},
  *   and are warned when the <em>edit target goal state validity</em>
- *   ({@link #isValid()}) changes. Since we observe merely changes
+ *   ({@link Edit#isValid()}) changes. Since we observe merely changes
  *   in a boolean value, we do not employ an event, but use
  *   a 2-argument method {@link #validityChanged(Edit, boolean)}.</p>
  * <p>Implementations are also warned when the state of an {@link Edit Edit}

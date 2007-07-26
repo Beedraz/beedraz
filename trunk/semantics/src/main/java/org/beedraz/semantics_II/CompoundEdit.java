@@ -91,7 +91,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   /**
    * @basic
    */
-  public final List<Edit<?>> getComponentEdits() {
+  public List<Edit<?>> getComponentEdits() {
     return Collections.unmodifiableList($componentEdits);
   }
 
@@ -100,7 +100,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    *           componentEdit.getTarget();
    *         }
    */
-  public final Set<Beed<?>> getComponentEditTargets() {
+  public Set<Beed<?>> getComponentEditTargets() {
     Set<Beed<?>> result = new HashSet<Beed<?>>();
     for (Edit<?> componentEdit : $componentEdits) {
       result.add(componentEdit.getTarget());
@@ -108,7 +108,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
     return result;
   }
 
-  public final boolean deepContains(Edit<?> edit) {
+  public boolean deepContains(Edit<?> edit) {
     for (Edit<?> ce : $componentEdits) {
       if (ce == edit) {
         return true;
@@ -134,7 +134,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    * @throws EditStateException
    *         getState() != NOT_YET_PERFORMED;
    */
-  public final void addComponentEdit(Edit<?> componentEdit) throws EditStateException {
+  public void addComponentEdit(Edit<?> componentEdit) throws EditStateException {
     assert componentEdit != null;
     assert componentEdit.getState() == NOT_YET_PERFORMED;
     assert componentEdit.getTarget().getUpdateSourcesTransitiveClosure().contains(getTarget());
@@ -166,7 +166,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    *       }
    */
   @Override
-  protected final void storeInitialState() {
+  protected void storeInitialState() {
     for (Edit<?> e : $componentEdits) {
       e.storeInitialState();
     }
@@ -180,7 +180,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    * are skipped.
    */
   @Override
-  public final boolean isChange() {
+  public boolean isChange() {
     for (Edit<?> e : $componentEdits) {
       if (e.isChange()) {
         return true;
@@ -200,7 +200,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    * and killed.
    */
   @Override
-  final protected void performance() throws IllegalEditException {
+  protected void performance() throws IllegalEditException {
     boolean[] toBeKilled = new boolean[$componentEdits.size()];
     ListIterator<Edit<?>> iter = $componentEdits.listIterator();
     try {
@@ -249,7 +249,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   @Override
-  protected final void markPerformed() {
+  protected void markPerformed() {
     for (Edit<?> e : $componentEdits) {
       e.markPerformed();
     }
@@ -285,7 +285,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    * @return getComponentEdits().isEmpty() || getComponentEdits().get(0).isAcceptable();
    */
   @Override
-  protected final boolean isAcceptable() {
+  protected boolean isAcceptable() {
     return $componentEdits.isEmpty() || $componentEdits.get(0).isAcceptable();
   }
 
@@ -449,7 +449,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   @Override
-  protected final void unperformance() throws IllegalEditException {
+  protected void unperformance() throws IllegalEditException {
     ListIterator<Edit<?>> iter = $componentEdits.listIterator($componentEdits.size());
     try {
       while (iter.hasPrevious()) {
@@ -480,7 +480,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   @Override
-  protected final void markUndone() {
+  protected void markUndone() {
     for (Edit<?> e : $componentEdits) {
       e.localMarkUndone();
     }
@@ -522,7 +522,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   @Override
-  protected final void reperformance() throws IllegalEditException {
+  protected void reperformance() throws IllegalEditException {
     ListIterator<Edit<?>> iter = $componentEdits.listIterator();
     try {
       while (iter.hasNext()) {
@@ -553,7 +553,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   @Override
-  protected final void markRedone() {
+  protected void markRedone() {
     for (Edit<?> e : $componentEdits) {
       e.localMarkRedone();
     }
@@ -581,7 +581,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
    *       };
    */
   @Override
-  public final void kill() {
+  public void kill() {
     for (Edit<?> e : $componentEdits) {
       e.kill();
     }

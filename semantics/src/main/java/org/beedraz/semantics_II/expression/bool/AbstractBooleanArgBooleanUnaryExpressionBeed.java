@@ -28,7 +28,7 @@ import org.ppeew.smallfries_I.MathUtil;
 
 
 /**
- * General code for Boolean implementations of {@link AbstractRealArgumentUnaryExpressionBeed}.
+ * General code for Boolean implementations of {@link AbstractBooleanArgUnaryExprBeed}.
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)

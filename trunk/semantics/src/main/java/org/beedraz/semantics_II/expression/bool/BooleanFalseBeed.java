@@ -32,7 +32,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * A beed representing the constant boolean value {@link false}.
+ * A beed representing the constant boolean value {@code false}.
  *
  * @invar   isEffective() == true;
  * @invar   get() == false;

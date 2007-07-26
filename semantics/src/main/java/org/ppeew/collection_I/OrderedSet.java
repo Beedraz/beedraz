@@ -45,7 +45,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *       is also a change, except when the element to be added is already at the end:
  *       then nothing changes (no extra element and no move), so we need to return
  *       {@code false}. Arguably, the contract of {@code List} is too strong. The
- *       same reasoning applies to {@link #add(int, Object)}, {@link #addAll(int, Collection)}
+ *       same reasoning applies to {@link #add(int, Object)}, {ATlink #addAll(int, Collection)} // TODO change this Javadoc when implemented
  *       and {@link #addAll(Collection)}.
  *
  * @note A method {@code boolean addAll(int index, Collection<? extends E> coll)}
@@ -80,7 +80,9 @@ public interface OrderedSet<E> extends Set<E>, Cloneable {
 
     boolean add(int index, E object);
 
-//    boolean addAll(int index, Collection<? extends E> coll);
+/*    boolean addAll(int index, Collection<? extends E> coll);
+ * TODO skipped for now, but should be implemented
+ */
 
     E remove(int index);
 

@@ -19,7 +19,6 @@ package org.beedraz.semantics_II.bean;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
-import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
@@ -27,9 +26,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * <p>{@link Beed} that acts like an object, a
+ * <p>{@link org.beedraz.semantics_II.Beed} that acts like an object, a
  *   JavaBean. {@code BeanBeeds} are not owned by
- *   any other {@link Beed}.</p>
+ *   any other {@link org.beedraz.semantics_II.Beed}.</p>
  * <p>{@code BeanBeeds} are {@link EventPropagator
  *   EventPropagators}.</p>
  */

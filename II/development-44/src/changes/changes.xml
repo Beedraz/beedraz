@@ -1,0 +1,10 @@
+<document>
+  <!-- see http://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
+  <properties>
+    <title>Version history of Beedraz Parent POM</title>
+    <author email="jandockx@gmail.com">Jan Dockx</author>
+    <author email="nelesmeetsppw@gmail.com">Nele Smeets</author>
+  </properties>
+  <body>
+  </body>
+</document>

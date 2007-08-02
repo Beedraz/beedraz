@@ -154,8 +154,8 @@ public final class ActualSetEvent<_Element_>
   protected ActualSetEvent<_Element_> createCombinedEvent(Beed<?> source,
                                                           Set<_Element_> added,
                                                           Set<_Element_> removed,
-                                                          CompoundEdit<?, ?> edit) {
-    return new ActualSetEvent<_Element_>((SetBeed<_Element_, ?>)source, added, removed, edit);
+                                                          CompoundEdit<?, ?> compoundEdit) {
+    return new ActualSetEvent<_Element_>((SetBeed<_Element_, ?>)source, added, removed, compoundEdit);
   }
 
   @Override

@@ -143,24 +143,24 @@ public abstract class AbstractEvent implements Event {
 
   /**
    * @pre other != null;
-   * @pre edit != null;
+   * @pre compoundEdit != null;
    * @pre getEdit() != null;
    * @pre other.getEdit() != null;
-   * @pre edit.deepContains(this.getEdit());
-   * @pre edit.deepContains(other.getEdit());
+   * @pre compoundEdit.deepContains(this.getEdit());
+   * @pre compoundEdit.deepContains(other.getEdit());
    * @pre getClass() == other.getClass();
    * @pre getSource() == other.getSource();
    * @post result.getClass() == getClass();
    * @post result.getSource() == getSource();
-   * @post result.getEdit() == edit;
-   * @post result.getEditState() == edit.getState();
+   * @post result.getEdit() == compoundEdit;
+   * @post result.getEditState() == compoundEdit.getState();
    * @post ; result initial state is this initial state
    * @post ; result goal state is {@code other} initial state
    * @throws CannotCombineEventsException
    *         exception.getReason() == CannotCombineEventsException.Reason.INCOMPATIBLE_STATES;
    *         this goal state is different from other initial state
    */
-  protected abstract Event createCombinedEvent(Event other, CompoundEdit<?, ?> edit)
+  protected abstract Event createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit)
       throws CannotCombineEventsException;
 
   @Override

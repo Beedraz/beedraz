@@ -48,7 +48,10 @@ public class DoubleConstantBeed
     implements DoubleBeed {
 
   /**
-   * @post  getDouble() == constant;
+   * @post  constant == null
+   *          ? !isEffective()
+   *          : isEffective() &&
+   *            getdouble() == constant;
    */
   public DoubleConstantBeed(Double constant) {
     this(constant, null);
@@ -62,32 +65,54 @@ public class DoubleConstantBeed
    * with the owner. This constructor does nothing with
    * the {@code owner}.
    *
-   * @post  getDouble() == constant;
+   * @post  constant == null
+   *          ? !isEffective()
+   *          : isEffective() &&
+   *            getdouble() == constant;
    */
   public DoubleConstantBeed(Double constant, AggregateBeed owner) {
-    $constant = constant;
+    if (constant == null) {
+      $isEffective = false;
+    }
+    else {
+      $isEffective = true;
+      $constant = constant;
+    }
   }
 
   /**
    * @return get();
    */
   public final Double getDouble() {
-    return $constant;
+    if (isEffective()) {
+      return getdouble();
+    }
+    else {
+      return null;
+    }
   }
 
   public final BigDecimal getBigDecimal() {
-    return castToBigDecimal($constant);
+    return castToBigDecimal(getDouble());
   }
 
+  /**
+   * @basic
+   */
   public double getdouble() {
     return $constant;
   }
 
+  private double $constant;
+
+  /**
+   * @basic
+   */
   public boolean isEffective() {
-    return true;
+    return $isEffective;
   }
 
-  private double $constant;
+  private boolean $isEffective;
 
   public int getMaximumRootUpdateSourceDistance() {
     return 0;

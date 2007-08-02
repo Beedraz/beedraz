@@ -81,7 +81,7 @@ public interface Event extends Cloneable {
 
   /**
    * <p>Try to combine this event with {@code other} into a fresh event
-   *   of the same type, with {@code edit} as {@link #getEdit() edit}.</p>
+   *   of the same type, with {@code compoundEdit} as {@link #getEdit() edit}.</p>
    * <p>To be able to do this, this event and {@code other}
    *   need to:</p>
    * <ul>
@@ -96,15 +96,15 @@ public interface Event extends Cloneable {
    *  be) immutable.</p>
    *
    * @pre other != null;
-   * @pre edit != null;
+   * @pre compoundEdit != null;
    * @pre getEdit() != null;
    * @pre other.getEdit() != null;
-   * @pre edit.deepContains(this.getEdit());
-   * @pre edit.deepContains(other.getEdit());
+   * @pre compoundEdit.deepContains(this.getEdit());
+   * @pre compoundEdit.deepContains(other.getEdit());
    * @post result.getClass() == getClass();
    * @post result.getSource() == getSource();
-   * @post result.getEdit() == edit;
-   * @post result.getEditState() == edit.getState();
+   * @post result.getEdit() == compoundEdit;
+   * @post result.getEditState() == compoundEdit.getState();
    * @post ; result initial state is this initial state
    * @post ; result goal state is {@code other} initial state
    *
@@ -122,7 +122,7 @@ public interface Event extends Cloneable {
    *       It is not really necessary for the method itself, but it is what
    *       this method is intented for. Maybe other pre's are too strong?
    */
-  Event combineWith(Event other, CompoundEdit<?, ?> edit) throws CannotCombineEventsException;
+  Event combineWith(Event other, CompoundEdit<?, ?> compoundEdit) throws CannotCombineEventsException;
 
   /**
    * Multiline instance information.

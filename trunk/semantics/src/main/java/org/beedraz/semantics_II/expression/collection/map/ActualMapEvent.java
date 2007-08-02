@@ -625,7 +625,7 @@ public final class ActualMapEvent<_Key_, _Value_>
    * @mudo needs unit test
    */
   @Override
-  protected final ActualMapEvent<_Key_, _Value_> createCombinedEvent(Event other, CompoundEdit<?, ?> edit) {
+  protected final ActualMapEvent<_Key_, _Value_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit) {
     ActualMapEvent<_Key_, _Value_> otherSE = (ActualMapEvent<_Key_, _Value_>)other;
     Map<_Key_, _Value_> otherRemovedElements = otherSE.getRemovedElements();
     Map<_Key_, _Value_> otherAddedElements = otherSE.getAddedElements();
@@ -667,7 +667,7 @@ public final class ActualMapEvent<_Key_, _Value_>
         combinedAdded.put(removed2Key, removed2.getValue());
       }
     }
-    return new ActualMapEvent<_Key_, _Value_>((MapBeed<_Key_, _Value_, ?>)getSource(), combinedAdded, combinedRemoved, edit);
+    return new ActualMapEvent<_Key_, _Value_>((MapBeed<_Key_, _Value_, ?>)getSource(), combinedAdded, combinedRemoved, compoundEdit);
   }
 
   @Override

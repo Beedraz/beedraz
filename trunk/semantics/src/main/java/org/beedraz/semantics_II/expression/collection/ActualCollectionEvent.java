@@ -154,8 +154,8 @@ final class ActualCollectionEvent<_Element_>
   protected ActualCollectionEvent<_Element_> createCombinedEvent(Beed<?> source,
                                                                  Collection<_Element_> added,
                                                                  Collection<_Element_> removed,
-                                                                 CompoundEdit<?, ?> edit) {
-    return new ActualCollectionEvent<_Element_>((CollectionBeed<_Element_, ?>)source, added, removed, edit);
+                                                                 CompoundEdit<?, ?> compoundEdit) {
+    return new ActualCollectionEvent<_Element_>((CollectionBeed<_Element_, ?>)source, added, removed, compoundEdit);
   }
 
   @Override

@@ -159,10 +159,10 @@ public final class ActualSortedSetEvent<_Element_>
   protected ActualSortedSetEvent<_Element_> createCombinedEvent(Beed<?> source,
                                                                 SortedSet<_Element_> added,
                                                                 SortedSet<_Element_> removed,
-                                                                CompoundEdit<?, ?> edit) {
+                                                                CompoundEdit<?, ?> compoundEdit) {
     @SuppressWarnings("unchecked")
     SortedSetBeed<_Element_> sourceSSB = (SortedSetBeed<_Element_>)source;
-    return new ActualSortedSetEvent<_Element_>(sourceSSB, added, removed, edit);
+    return new ActualSortedSetEvent<_Element_>(sourceSSB, added, removed, compoundEdit);
   }
 
   @Override

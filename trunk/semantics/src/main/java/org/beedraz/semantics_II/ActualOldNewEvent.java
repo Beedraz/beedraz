@@ -143,13 +143,13 @@ public abstract class ActualOldNewEvent<_Type_>
    * @mudo needs unit test
    */
   @Override
-  protected final ActualOldNewEvent<_Type_> createCombinedEvent(Event other, CompoundEdit<?, ?> edit)
+  protected final ActualOldNewEvent<_Type_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit)
       throws CannotCombineEventsException {
     ActualOldNewEvent<_Type_> otherAONE = (ActualOldNewEvent<_Type_>)other;
     if (! ComparisonUtil.equalsWithNull($newValue, otherAONE.getOldValue())) {
       throw new CannotCombineEventsException(this, otherAONE, INCOMPATIBLE_STATES);
     }
-    return safeCreateCombinedEvent(otherAONE, edit);
+    return safeCreateCombinedEvent(otherAONE, compoundEdit);
   }
 
   /**

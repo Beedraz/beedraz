@@ -50,10 +50,10 @@ public abstract class AbstractAggregateBeed
     for (Event event : events.values()) {
      try {
       result.addComponentEvent(event);
-    }
-    catch (AggregateEventStateException exc) {
-      assert false : "AggregateEventStateException should not happen: we are not closed. " + exc;
-    }
+      }
+      catch (AggregateEventStateException exc) {
+        assert false : "AggregateEventStateException should not happen: we are not closed. " + exc;
+      }
     }
     result.close();
     return result;

@@ -44,8 +44,7 @@ public class EnumBeeds {
   //------------------------------------------------------------------
 
   public static <_Enum_ extends Enum<_Enum_>> EditableEnumBeed<_Enum_> editableEnumBeed(
-      _Enum_ constant, AggregateBeed owner)
-      throws IllegalEditException {
+      _Enum_ constant, AggregateBeed owner) throws IllegalEditException {
     try {
       EditableEnumBeed<_Enum_> editableEnumBeed = new EditableEnumBeed<_Enum_>(owner);
       EnumEdit<_Enum_> edit = new EnumEdit<_Enum_>(editableEnumBeed);
@@ -57,6 +56,16 @@ public class EnumBeeds {
       assert false : "Shouldn't happen";
       return null;
     }
+  }
+
+  /*</section>*/
+
+
+  /*<section name="constantEnumBeed">*/
+  //------------------------------------------------------------------
+
+  public static <_Enum_ extends Enum<_Enum_>> ConstantEnumBeed<_Enum_> constant(_Enum_ constant) {
+    return new ConstantEnumBeed<_Enum_>(constant);
   }
 
   /*</section>*/

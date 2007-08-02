@@ -20,6 +20,9 @@ package org.beedraz.semantics_II.expression.bool;
 import static org.beedraz.semantics_II.path.Paths.path;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import org.beedraz.semantics_II.EditStateException;
+import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.path.Path;
@@ -628,5 +631,28 @@ public class BooleanBeeds {
   }
 
   /*</section>*/
+
+
+  /*<section name="editableBooleanBeed">*/
+  //------------------------------------------------------------------
+
+  public static EditableBooleanBeed editableBooleanBeed(boolean constant, AggregateBeed owner) throws IllegalEditException {
+    try {
+      EditableBooleanBeed editableBooleanBeed = new EditableBooleanBeed(owner);
+      BooleanEdit edit = new BooleanEdit(editableBooleanBeed);
+      edit.setGoal(constant);
+      edit.perform();
+      return editableBooleanBeed;
+    }
+    catch (EditStateException e) {
+      assert false : "Shouldn't happen";
+      return null;
+    }
+  }
+
+  /*</section>*/
+
+
+
 }
 

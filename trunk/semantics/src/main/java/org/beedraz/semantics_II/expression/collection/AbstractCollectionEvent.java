@@ -110,29 +110,50 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
 
   /**
    * <p>Combine added and removed elements.</p>
-   * <p>The combined added elements are {@code this}' added elements,
-   *   minus the {@code other}'s removed elements, plus the {@code other}'s
-   *   added elements.</p>
-   * <p>The combined removed elements are {@code this}' removed elements,
-   *   minus the {@code other}'s added elements, plus the {@code other}'s
-   *   removed elements.</p>
+   * <p>The combined added elements are:
+   *   <ol>
+   *     <li>{@code this}' added elements, minus the {@code other}'s removed
+   *       elements (these elements are first added and then removed again,
+   *       so they are not in the resulting set)</li>
+   *     <li>the {@code other}'s added elements minus {@code this}' removed
+   *       elements (these elements are first removed and then added again,
+   *       so they are in the resulting set, but, in fact, nothing happened
+   *       to them)</li>
+   *   </ol>
+   * </p>
+   * <p>The combined removed elements are
+   *   <ol>
+   *     <li>{@code this}' removed elements, minus the {@code other}'s added
+   *       elements (these elements are first removed, and then added again,
+   *       so they are in the resulting set, but, in fact, nothing happened to
+   *       them)</li>
+   *     <li>the {@code other}'s removed elements, minus {@code this}' added
+   *       elements (these elements are first added, and then removed again,
+   *       so they are not in the resulting set)</li>
+   *     <li>
+   *   </ol>
+   * </p>
    * <p>Note that this is true because for {@code this} and {@code other},
    *   added and removed elemens are disjunct collections.</p>
    *
    * @mudo needs unit test
    */
   @Override
-  protected AbstractCollectionEvent<_Element_, _Collection_> createCombinedEvent(Event other, CompoundEdit<?, ?> edit)
+  protected AbstractCollectionEvent<_Element_, _Collection_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit)
       throws CannotCombineEventsException {
     AbstractCollectionEvent<_Element_, Collection<_Element_>> otherACE =
         (AbstractCollectionEvent<_Element_, Collection<_Element_>>)other;
-    _Collection_ added = freshCopy(getAddedElements());
-    added.removeAll(otherACE.getRemovedElements());
-    added.addAll(otherACE.getAddedElements());
-    _Collection_ removed = freshCopy(getRemovedElements());
-    removed.removeAll(otherACE.getAddedElements());
-    removed.addAll(otherACE.getRemovedElements());
-    return createCombinedEvent(getSource(), added, removed, edit);
+    _Collection_ addedAndNotRemoved = freshCopy(getAddedElements());
+    addedAndNotRemoved.removeAll(otherACE.getRemovedElements());
+    Collection<_Element_> notRemovedAndAdded = otherACE.freshCopy(otherACE.getAddedElements());
+    notRemovedAndAdded.removeAll(getRemovedElements());
+    addedAndNotRemoved.addAll(notRemovedAndAdded);
+    _Collection_ removedAndNotAdded = freshCopy(getRemovedElements());
+    removedAndNotAdded.removeAll(otherACE.getAddedElements());
+    Collection<_Element_> notAddedAndRemoved = otherACE.freshCopy(otherACE.getRemovedElements());
+    notAddedAndRemoved.removeAll(getAddedElements());
+    removedAndNotAdded.addAll(notAddedAndRemoved);
+    return createCombinedEvent(getSource(), addedAndNotRemoved, removedAndNotAdded, compoundEdit);
   }
 
   /**

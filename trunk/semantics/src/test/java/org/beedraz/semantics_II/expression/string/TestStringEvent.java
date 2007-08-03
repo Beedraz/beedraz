@@ -22,6 +22,8 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.TestActualOldNewEvent;
+import org.beedraz.semantics_II.aggregate.AbstractAggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.junit.After;
@@ -36,7 +38,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class TestStringEvent {
+public class TestStringEvent
+    extends TestActualOldNewEvent<String, EditableStringBeed, StringEvent> {
 
   @Before
   public void setUp() throws Exception {
@@ -86,6 +89,41 @@ public class TestStringEvent {
     assertEquals(stringEvent.getNewValue(), null);
     assertEquals(stringEvent.getEdit(), null);
     assertEquals(stringEvent.getEditState(), null);
+  }
+
+  @Override
+  protected StringEvent createActualOldNewEvent(EditableStringBeed source, String old, String newV) {
+    return new StringEvent(source, old, newV, null);
+  }
+
+  @Override
+  protected EditableStringBeed createSource() throws IllegalEditException {
+    return StringBeeds.editableStringBeed("some value", new AbstractAggregateBeed(){/*NOP*/});
+  }
+
+  @Override
+  protected String oldValue() {
+    return "old";
+  }
+
+  @Override
+  protected String middleValue() {
+    return "middle";
+  }
+
+  @Override
+  protected String newValue() {
+    return "new";
+  }
+
+  @Override
+  protected String otherValue(String value) {
+    if (value == null) {
+      return "a";
+    }
+    else {
+      return value + " x";
+    }
   }
 
 }

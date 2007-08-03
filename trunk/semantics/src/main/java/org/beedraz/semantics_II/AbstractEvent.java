@@ -122,9 +122,6 @@ public abstract class AbstractEvent implements Event {
    */
   private Edit.State $editState;
 
-  /**
-   * @mudo needs unit test
-   */
   public final Event combineWith(Event other, CompoundEdit<?, ?> compoundEdit) throws CannotCombineEventsException {
     assert other != null;
     assert compoundEdit != null;

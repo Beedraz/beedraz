@@ -20,10 +20,14 @@ package org.beedraz.semantics_II.expression.date;
 import static org.junit.Assert.assertEquals;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.TestActualOldNewEvent;
+import org.beedraz.semantics_II.aggregate.AbstractAggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.StubBeanBeed;
 import org.junit.After;
@@ -38,7 +42,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class TestDateEvent {
+public class TestDateEvent
+    extends TestActualOldNewEvent<Date, EditableDateBeed, DateEvent> {
 
   @Before
   public void setUp() throws Exception {
@@ -88,6 +93,44 @@ public class TestDateEvent {
     assertEquals(dateEvent.getNewValue(), newValue);
     assertEquals(dateEvent.getEdit(), null);
     assertEquals(dateEvent.getEditState(), null);
+  }
+
+  @Override
+  protected DateEvent createActualOldNewEvent(EditableDateBeed source, Date old, Date newV) {
+    return new DateEvent(source, old, newV, null);
+  }
+
+  @Override
+  protected EditableDateBeed createSource() throws IllegalEditException {
+    return DateBeeds.editableDateBeed(new Date(), new AbstractAggregateBeed() {/*NOP*/});
+  }
+
+  @Override
+  protected Date oldValue() {
+    GregorianCalendar gc = new GregorianCalendar(1997, Calendar.APRIL, 2);
+    return gc.getTime();
+  }
+
+  @Override
+  protected Date middleValue() {
+    GregorianCalendar gc = new GregorianCalendar(1993, Calendar.JUNE, 21);
+    return gc.getTime();
+  }
+
+  @Override
+  protected Date newValue() {
+    GregorianCalendar gc = new GregorianCalendar(1991, Calendar.OCTOBER, 26);
+    return gc.getTime();
+  }
+
+  @Override
+  protected Date otherValue(Date value) {
+    if (value == null) {
+      return new Date();
+    }
+    else {
+      return new Date(value.getTime() + 1000);
+    }
   }
 
 }

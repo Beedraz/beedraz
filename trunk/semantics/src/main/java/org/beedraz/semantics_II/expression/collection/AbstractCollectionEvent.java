@@ -135,8 +135,6 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
    * </p>
    * <p>Note that this is true because for {@code this} and {@code other},
    *   added and removed elemens are disjunct collections.</p>
-   *
-   * @mudo needs unit test
    */
   @Override
   protected AbstractCollectionEvent<_Element_, _Collection_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit)

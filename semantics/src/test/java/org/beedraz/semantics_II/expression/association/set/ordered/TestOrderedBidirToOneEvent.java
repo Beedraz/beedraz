@@ -22,6 +22,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.TestActualOldNewEvent;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.junit.After;
 import org.junit.Before;
@@ -35,15 +36,10 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class TestOrderedBidirToOneEvent {
-
-  public class OneBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
-
-  public class ManyBeanBeed extends AbstractBeanBeed {
-    // NOP
-  }
+public class TestOrderedBidirToOneEvent
+    extends TestActualOldNewEvent<OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>,
+                                  EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>,
+                                  OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed>>{
 
   @Before
   public void setUp() throws Exception {
@@ -93,4 +89,43 @@ public class TestOrderedBidirToOneEvent {
     assertEquals(OrderedBidirToOneEvent.getEditState(), null);
   }
 
+  @Override
+  protected OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> createActualOldNewEvent(EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> source, OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> old, OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> newV) {
+    return new OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed>(source, old, newV, null);
+  }
+
+  @Override
+  protected EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed> createSource() throws IllegalEditException {
+    return new EditableOrderedBidirToOneBeed<OneBeanBeed, ManyBeanBeed>(new ManyBeanBeed());
+  }
+
+  @Override
+  protected OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> oldValue() {
+    return new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>(new OneBeanBeed());
+  }
+
+  @Override
+  protected OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> middleValue() {
+    return new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>(new OneBeanBeed());
+  }
+
+  @Override
+  protected OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> newValue() {
+    return new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>(new OneBeanBeed());
+  }
+
+  @Override
+  protected OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> otherValue(OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed> value) {
+    return new OrderedBidirToManyBeed<OneBeanBeed, ManyBeanBeed>(new OneBeanBeed());
+  }
+
+}
+
+
+class OneBeanBeed extends AbstractBeanBeed {
+  // NOP
+}
+
+class ManyBeanBeed extends AbstractBeanBeed {
+  // NOP
 }

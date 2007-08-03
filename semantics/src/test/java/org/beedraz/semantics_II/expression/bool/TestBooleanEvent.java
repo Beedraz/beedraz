@@ -17,11 +17,14 @@
 package org.beedraz.semantics_II.expression.bool;
 
 
+import static org.beedraz.semantics_II.expression.bool.BooleanBeeds.editableBooleanBeed;
 import static org.junit.Assert.assertEquals;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
+import org.beedraz.semantics_II.TestActualOldNewEvent;
+import org.beedraz.semantics_II.aggregate.AbstractAggregateBeed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.junit.After;
@@ -36,7 +39,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
          date     = "$Date$")
-public class TestBooleanEvent {
+public class TestBooleanEvent
+    extends TestActualOldNewEvent<Boolean, EditableBooleanBeed, BooleanEvent> {
 
   public class MyBeanBeed extends AbstractBeanBeed {
     // NOP
@@ -91,5 +95,40 @@ public class TestBooleanEvent {
     assertEquals(booleanEvent.getEdit(), null);
     assertEquals(booleanEvent.getEditState(), null);
  }
+
+  @Override
+  protected BooleanEvent createActualOldNewEvent(EditableBooleanBeed source, Boolean old, Boolean newV) {
+    return new BooleanEvent(source, old, newV, null);
+  }
+
+  @Override
+  protected EditableBooleanBeed createSource() throws IllegalEditException {
+    return editableBooleanBeed(false, new AbstractAggregateBeed() {/*NOP*/});
+  }
+
+  @Override
+  protected Boolean oldValue() {
+    return false;
+  }
+
+  @Override
+  protected Boolean middleValue() {
+    return true;
+  }
+
+  @Override
+  protected Boolean newValue() {
+    return null;
+  }
+
+  @Override
+  protected Boolean otherValue(Boolean value) {
+    if (value == null) {
+      return false;
+    }
+    else {
+      return !value;
+    }
+  }
 
 }

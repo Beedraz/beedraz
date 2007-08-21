@@ -650,6 +650,20 @@ public class BooleanBeeds {
     }
   }
 
+  public static EditableBooleanBeed nullBooleanBeed(AggregateBeed owner) throws IllegalEditException {
+    try {
+      EditableBooleanBeed editableBooleanBeed = new EditableBooleanBeed(owner);
+      BooleanEdit edit = new BooleanEdit(editableBooleanBeed);
+      edit.setGoal(null);
+      edit.perform();
+      return editableBooleanBeed;
+    }
+    catch (EditStateException e) {
+      assert false : "Shouldn't happen";
+      return null;
+    }
+  }
+
   /*</section>*/
 
 

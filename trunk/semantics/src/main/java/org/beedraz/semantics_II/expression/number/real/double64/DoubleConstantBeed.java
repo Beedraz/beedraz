@@ -23,6 +23,7 @@ import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
@@ -119,11 +120,11 @@ public class DoubleConstantBeed
   }
 
   public Set<? extends Beed<?>> getUpdateSources() {
-    return null;
+    return Collections.emptySet();
   }
 
   public Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
-    return null;
+    return Collections.emptySet();
   }
 
   public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {

@@ -21,6 +21,7 @@ import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.Set;
 
 import org.beedraz.semantics_II.AbstractBeed;
@@ -67,11 +68,11 @@ public class ConstantEnumBeed<_Enum_ extends Enum<_Enum_>>
   }
 
   public final Set<? extends Beed<?>> getUpdateSources() {
-    return null;
+    return Collections.emptySet();
   }
 
   public final Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
-    return null;
+    return Collections.emptySet();
   }
 
   public final void toStringDepth(StringBuffer sb, int depth, NumberFormat numberFormat) {

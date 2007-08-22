@@ -208,15 +208,15 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
   /**
    * @basic
    */
-  public final Path<_SelectedBeed_> getFirstPath() {
+  public final Path<? extends _SelectedBeed_> getFirstPath() {
     return $firstPath;
   }
 
   /**
    * @post getFirstPath() == firstPath;
    */
-  public final void setFirstPath(Path<_SelectedBeed_> firstPath) {
-    Path<_SelectedBeed_> oldPath = $firstPath;
+  public final void setFirstPath(Path<? extends _SelectedBeed_> firstPath) {
+    Path<? extends _SelectedBeed_> oldPath = $firstPath;
     $firstPath = firstPath;
     if ($condition == Boolean.TRUE) {
       assert oldPath == $selectedPath;
@@ -224,7 +224,7 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
     }
   }
 
-  private Path<_SelectedBeed_> $firstPath;
+  private Path<? extends _SelectedBeed_> $firstPath;
 
   /*</property>*/
 
@@ -235,15 +235,15 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
   /**
    * @basic
    */
-  public final Path<_SelectedBeed_> getSecondPath() {
+  public final Path<? extends _SelectedBeed_> getSecondPath() {
     return $secondPath;
   }
 
   /**
    * @post getSecondPath() == secondPath;
    */
-  public final void setSecondPath(Path<_SelectedBeed_> secondPath) {
-    Path<_SelectedBeed_> oldPath = $secondPath;
+  public final void setSecondPath(Path<? extends _SelectedBeed_> secondPath) {
+    Path<? extends _SelectedBeed_> oldPath = $secondPath;
     $secondPath = secondPath;
     if ($condition == Boolean.FALSE) {
       assert oldPath == $selectedPath;
@@ -251,7 +251,7 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
     }
   }
 
-  private Path<_SelectedBeed_> $secondPath;
+  private Path<? extends _SelectedBeed_> $secondPath;
 
   /*</property>*/
 

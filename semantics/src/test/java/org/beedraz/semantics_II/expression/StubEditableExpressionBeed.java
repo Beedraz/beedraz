@@ -19,6 +19,7 @@ package org.beedraz.semantics_II.expression;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.util.Collections;
 import java.util.Set;
 
 import org.beedraz.semantics_II.Beed;
@@ -52,11 +53,11 @@ public class StubEditableExpressionBeed extends AbstractEditableExpressionBeed<S
   }
 
   public Set<? extends Beed<?>> getUpdateSources() {
-    return null;
+    return Collections.emptySet();
   }
 
   public Set<? extends Beed<?>> getUpdateSourcesTransitiveClosure() {
-    return null;
+    return Collections.emptySet();
   }
 
 }

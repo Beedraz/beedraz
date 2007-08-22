@@ -50,6 +50,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *
  * @invar  getAggregateBeedPath() != null;
  * @invar  getAggregateBeed() == getAggregateBeedPath().get();
+ *
+ * @mudo   This class is very similar to AggregateComponentPath.
+ * @mudo   Better name?
  */
 @Copyright("2007 - $Date: 2007-05-16 17:43:13 +0200 (wo, 16 mei 2007) $, Beedraz authors")
 @License(APACHE_V2)

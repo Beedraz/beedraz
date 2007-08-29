@@ -35,7 +35,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 
 
 /**
- * <p>Conditional {@link Path}. The path has a {@link #getConditionPath()} that
+ * <p>Conditional {@link Path}. The path has a {@link #getConditionBeedPath()} that
  *   references a {@link BooleanBeed}.
  *   When the {@link #getCondition() condition} is <code>true</code>, then the
  *   {@code ConditionalPath} returns the beed that is referenced by
@@ -68,7 +68,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *            ? getSelectedPath() == null
  *            : true;
  *
- * @return  getSelectedPath() != null
+ * @result  getSelectedPath() != null
  *            ? get() == getSelectedPath().get()
  *            : get() == null;
  */

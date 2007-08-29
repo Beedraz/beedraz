@@ -49,7 +49,7 @@ public class TestUpdateAlgorithm {
   @Test
   public void test() throws EditStateException, IllegalEditException {
     // some bean beed, necessary for creating a set beed
-    BeanBeed owner = new AbstractBeanBeed(){};
+    BeanBeed owner = new AbstractBeanBeed(){ /* NOP */ };
     // source, containing 1 element
     EditableSetBeed<Person> source = new EditableSetBeed<Person>(owner);
     Person person = new Person();
@@ -60,8 +60,8 @@ public class TestUpdateAlgorithm {
     FilteredSetBeed<Person> filteredSetBeed1 =
       new FilteredSetBeed<Person>(
         new PathFactory<Person, BooleanBeed>() {
-          public Path<? extends BooleanBeed> createPath(Person person) {
-            return path(person.pretty);
+          public Path<? extends BooleanBeed> createPath(Person p) {
+            return path(p.pretty);
           }
         });
     filteredSetBeed1.setSourcePath(path(source));
@@ -69,8 +69,8 @@ public class TestUpdateAlgorithm {
     FilteredSetBeed<Person> filteredSetBeed2 =
       new FilteredSetBeed<Person>(
         new PathFactory<Person, BooleanBeed>() {
-          public Path<? extends BooleanBeed> createPath(Person person) {
-            return path(person.bigComputation);
+          public Path<? extends BooleanBeed> createPath(Person p) {
+            return path(p.bigComputation);
           }
           @Override
           public String toString() {
@@ -90,14 +90,14 @@ public class TestUpdateAlgorithm {
      * By changing this value from false to true, the first filtered set beed
      * will be updated, and as a result, it will contain one element.
      * Then, the second filtered set beed gets a SetEvent saying that an extra
-     * element is added to its source. As a consequence, an extra 
-     * ElementCriterion is created and added to the second filterd set beed. 
+     * element is added to its source. As a consequence, an extra
+     * ElementCriterion is created and added to the second filterd set beed.
      * The mrusd of the filtered set beed is 3, the mrusd of the criterion is
      * 16, so the mrusd of the filtered set beed changes to 17.
-     * Later in the update algorithm, since its mrusd is 16, the newly created 
-     * ElementCriterion is updated, and its value changes from false to true.  
+     * Later in the update algorithm, since its mrusd is 16, the newly created
+     * ElementCriterion is updated, and its value changes from false to true.
      * Then, the second filtered set beed gets a SetEvent and a BooleanEvent.
-     * At this moment, an assertion error is thrown (see sourceElementAdded), 
+     * At this moment, an assertion error is thrown (see sourceElementAdded),
      * since the element to be added is already in the map of element criteria.
      */
     System.out.println();

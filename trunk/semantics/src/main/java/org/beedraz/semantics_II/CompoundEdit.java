@@ -141,14 +141,71 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
     if (getState() != NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
-    componentEdit.addValidityListener($componentEditListener); // for dead
+    componentEdit.addValidityListener($componentEditListener); // for validity
+    componentEdit.addStateChangeListener($componentEditStageChangeListener); // for state changes
     $componentEdits.add(componentEdit);
     recalculateValidity();
   }
 
-  // no remove method for now
+  /**
+   * @throws EditStateException
+   *         getState() != NOT_YET_PERFORMED;
+   */
+  public void removeComponentEdit(Edit<?> componentEdit) throws EditStateException {
+    if (getState() != NOT_YET_PERFORMED) {
+      throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
+    }
+    $componentEdits.remove(componentEdit);
+    componentEdit.removeStateChangeListener($componentEditStageChangeListener); // for state changes
+    componentEdit.removeValidityListener($componentEditListener); // for validity
+    recalculateValidity();
+  }
 
   private final List<Edit<?>> $componentEdits = new ArrayList<Edit<?>>();
+
+  /*</section>*/
+
+
+
+  /*<section name="state">*/
+  //------------------------------------------------------------------
+
+  /* When a component edit is performed, done or undone without us knowing, we are no
+   * longer in sync. We are then dead, and can no longer function. The component edits
+   * might be useful still, so they are not killed.
+   * For this, we listen to the component edits for state changes. They will also
+   * send state changes while we are doing the compound perform, undo and redo
+   * (inside markPerformed, markUndone and markRedone. In that case, the state
+   * change is expected, and we don't need to do anything.
+   */
+
+  /**
+   * During {@link #markPerformed()}, {@link #markUndone()} and {@link #markRedone()},
+   * we expect state change events from the component edits. During the execution
+   * of those methods, this instance variable holds the expected new state ({@link State#DONE} or
+   * {@link State#UNDONE}).
+   *
+   * @invar $stateChangeUnderMyControl == null ||
+   *        $stateChangeUnderMyControl == DONE ||
+   *        $stateChangeUnderMyControl == UNDONE;
+   */
+  private State $stateChangeUnderMyControl = null;
+
+  private EditStateChangeListener $componentEditStageChangeListener = new EditStateChangeListener() {
+
+    public void stateChanged(Edit<?> edit, State oldState, Edit.State newState) {
+      if ($stateChangeUnderMyControl == null) {
+        /* I am dead, but my children might be useful beyond me,
+         * so this is not really a full kill, only a local kill */
+        localKill2();
+      }
+      else {
+        // expected state change
+        assert $stateChangeUnderMyControl == newState;
+      }
+    }
+
+  };
 
   /*</section>*/
 
@@ -250,10 +307,12 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
 
   @Override
   protected void markPerformed() {
+    $stateChangeUnderMyControl = DONE; // state change events from component edits are expected
     for (Edit<?> e : $componentEdits) {
       e.markPerformed();
     }
     localMarkPerformed();
+    $stateChangeUnderMyControl = null;
   }
 
 
@@ -302,11 +361,8 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
     }
 
     public void listenerRemoved(Edit<?> target) {
-      // the sneaking component edit performed without us! we are dead!
-      for (Edit<?> e : $componentEdits) {
-        e.removeValidityListener($componentEditListener);
-      }
-      kill();
+      /* NOP: we are already removed as listener from the source, and here we do
+              not need to cleanup, since we have 1 persistent listener instance */
     }
 
   };
@@ -481,10 +537,12 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
 
   @Override
   protected void markUndone() {
+    $stateChangeUnderMyControl = UNDONE; // state change events from component edits are expected
     for (Edit<?> e : $componentEdits) {
       e.localMarkUndone();
     }
     localMarkUndone();
+    $stateChangeUnderMyControl = null;
   }
 
   /*</section>*/
@@ -554,10 +612,12 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
 
   @Override
   protected void markRedone() {
+    $stateChangeUnderMyControl = DONE; // state change events from component edits are expected
     for (Edit<?> e : $componentEdits) {
       e.localMarkRedone();
     }
     localMarkRedone();
+    $stateChangeUnderMyControl = null;
   }
 
   /*</section>*/
@@ -585,7 +645,16 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
     for (Edit<?> e : $componentEdits) {
       e.kill();
     }
+    localKill2();
+  }
+
+  private void localKill2() {
     localKill();
+    // stop listening
+    for (Edit<?> componentEdit : $componentEdits) {
+      componentEdit.removeStateChangeListener($componentEditStageChangeListener);
+      componentEdit.removeValidityListener($componentEditListener);
+    }
   }
 
   /*</section>*/

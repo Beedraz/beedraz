@@ -54,7 +54,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   {@link State#DONE}. From the state {@link State#NOT_YET_PERFORMED},
  *   {@link State#DONE} and {@link State#UNDONE}, the edit can be made
  *   inoperative by calling the {@link #kill()}, which brings the edit
- *   to state {@link State#DEAD}. An edit can never leave this state anymore.</p>
+ *   to state {@link State#DEAD}. An edit can never leave this state anymore.
+ *   State changes can be observed with an {@link EditStateChangeListener}.</p>
  * <img src="doc-files/edit/img/EditStateMachine.png" />
  * <p>The <em>edit target goal state</em> is the state the edit will bring the
  *   target in once {@link #perform() performed} or {@link #redo() redone}. As long
@@ -226,13 +227,72 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * Remove this method when tests are more black-box.
    */
   protected final void forceDone() {
-    $state = DONE;
+    changeState(DONE);
+  }
+
+  private void changeState(State newState) {
+    assert $state != null;
+    assert $state != DEAD;
+    assert $state == NOT_YET_PERFORMED ? newState == DONE || newState == DEAD : true;
+    assert $state == DONE ? newState == UNDONE || newState == DEAD : true;
+    assert $state == UNDONE ? newState == DONE || newState == DEAD : true;
+    assert newState != NOT_YET_PERFORMED;
+    State oldState = $state;
+    $state = newState;
+    notifyStateChange(oldState);
   }
 
   /**
    * @invar $state != null;
    */
   private State $state = NOT_YET_PERFORMED;
+
+
+
+  /*<section name="listeners">*/
+
+  /**
+   * @basic
+   * @init foreach (EditStateChangeListener escl) { ! isStateChangeListener(escl)};
+   */
+  public final boolean isStateChangeListener(EditStateChangeListener escl) {
+    return $stateChangeListeners.contains(escl);
+  }
+
+  /**
+   * @pre  escl != null;
+   * @post isStateChangeListener(escl);
+   */
+  public final void addStateChangeListener(EditStateChangeListener escl) {
+    $stateChangeListeners.add(escl);
+  }
+
+  /**
+   * @post ! isStateChangeListener(escl);
+   */
+  public final void removeStateChangeListener(EditStateChangeListener escl) {
+    $stateChangeListeners.remove(escl);
+  }
+
+  private void notifyStateChange(State oldState) {
+    assert oldState != null;
+    assert oldState != DEAD;
+    assert oldState == NOT_YET_PERFORMED ? $state == DONE || $state == DEAD : true;
+    assert oldState == DONE ? $state == UNDONE || $state == DEAD : true;
+    assert oldState == UNDONE ? $state == DONE || $state == DEAD : true;
+    assert $state != NOT_YET_PERFORMED;
+    for (EditStateChangeListener escl : $stateChangeListeners) {
+      escl.stateChanged(this, oldState, $state);
+    }
+  }
+
+  /**
+   * @invar $stateChangeListeners != null;
+   */
+  private final Set<EditStateChangeListener> $stateChangeListeners =
+    new HashSet<EditStateChangeListener>();
+
+  /*</section>*/
 
   /*</property>*/
 
@@ -352,7 +412,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * @post for (ValidityListener vl) {vl.isRemoved()};
    */
   protected final void localMarkPerformed() {
-    $state = DONE;
+    changeState(DONE);
     removeValidityListeners();
   }
 
@@ -402,7 +462,6 @@ public abstract class Edit<_Target_ extends Beed<?>> {
     // MUDO is this always valid? explain!
     unperformance(); // throws IllegalEditException
     markUndone();
-    $state = UNDONE;
     // end of transaction if unperformance succeeded
     updateDependents();
   }
@@ -443,7 +502,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * @post getState() == UNDONE;
    */
   protected final void localMarkUndone() {
-    $state = UNDONE;
+    changeState(UNDONE);
   }
 
   /*</section>*/
@@ -532,7 +591,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    * @post getState() == DONE;
    */
   protected final void localMarkRedone() {
-    $state = DONE;
+    changeState(DONE);
   }
 
   /*</section>*/
@@ -617,7 +676,7 @@ public abstract class Edit<_Target_ extends Beed<?>> {
    */
   protected final void localKill() {
     if ($state != DEAD) { // optimization, especially when triggered for component edit from compound edit
-      $state = DEAD;
+      changeState(DEAD);
       /* no longer allowed to change and registered ValidityChangedListeners
           are all deregistred */
       removeValidityListeners();

@@ -53,9 +53,10 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *        if we are done, all components are done
  * @invar getState() == UNDONE ? for (Edit e : getEdits()) {e.getState() == UNDONE};
  *        if we are undone, all components are undone
- * @invar intersection (Beed<?> componentTarget : getComponentEditTargets()) {
- *          componentTarget.getUpdateSourcesTransitiveClosure()
- *        }.contains(getTarget());
+ * @invar (forAll Beed<?> componentTarget;
+ *           getComponentEditTargets().contains(componentTarget);
+ *           componentTarget == getTarget() ||
+ *           componentTarget.getUpdateSourcesTransitiveClosure().contains(getTarget));
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)
@@ -109,6 +110,9 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   }
 
   public boolean deepContains(Edit<?> edit) {
+    if (this == edit) {
+      return true;
+    }
     for (Edit<?> ce : $componentEdits) {
       if (ce == edit) {
         return true;
@@ -137,7 +141,8 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
   public void addComponentEdit(Edit<?> componentEdit) throws EditStateException {
     assert componentEdit != null;
     assert componentEdit.getState() == NOT_YET_PERFORMED;
-    assert componentEdit.getTarget().getUpdateSourcesTransitiveClosure().contains(getTarget());
+//    assert componentEdit.getTarget() == getTarget() ||
+//           getTarget().getUpdateSourcesTransitiveClosure().contains(componentEdit.getTarget());
     if (getState() != NOT_YET_PERFORMED) {
       throw new EditStateException(this, getState(), NOT_YET_PERFORMED);
     }
@@ -280,6 +285,8 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
       for (int i = toBeKilled.length - 1; i >= 0; i--) {
         if (toBeKilled[i]) {
           Edit<?> editToKill = $componentEdits.remove(i);
+          editToKill.removeStateChangeListener($componentEditStageChangeListener);
+          editToKill.removeValidityListener($componentEditListener);
           editToKill.kill();
         }
       }
@@ -466,7 +473,7 @@ public final class CompoundEdit<_Target_ extends AbstractBeed<_Event_>,
            * it is programming error in the beeds, events, or in
            * the Beedraz-user code. It is something to signal
            * to the developer, not the end user. */
-          assert false : "CannotCombineEventsException shouldn't happen" + cmeExc.toString();
+//          assert false : "CannotCombineEventsException shouldn't happen" + cmeExc.toString();
           // MUDO replace with error from ppw-exception
         }
       }

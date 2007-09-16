@@ -39,6 +39,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *
  * @author Jan Dockx
  * @author  PeopleWare n.v.
+ *
+ * @mudo rename to EditValidityListener, for reasons of consistency
  */
 @Copyright("2007 - $Date$, Beedraz authors")
 @License(APACHE_V2)

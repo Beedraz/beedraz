@@ -85,7 +85,9 @@ public abstract class TestActualOldNewEvent<_Type_,
       new CompoundEdit<_Source_, _SourceEvent_>(source);
     Event combinedEvent = event1.combineWith(event2, compoundEdit);
     assertEquals(event1.getClass(), combinedEvent.getClass());
-    ActualOldNewEvent<_Type_> combinedDoubleEvent = (ActualOldNewEvent<_Type_>) combinedEvent;
+    @SuppressWarnings("unchecked")
+    ActualOldNewEvent<_Type_> combinedDoubleEvent =
+      (ActualOldNewEvent<_Type_>) combinedEvent;
     assertEquals(event1.getSource(), combinedDoubleEvent.getSource());
     assertEquals(compoundEdit, combinedDoubleEvent.getEdit());
     assertEquals(compoundEdit.getState(), combinedDoubleEvent.getEditState());

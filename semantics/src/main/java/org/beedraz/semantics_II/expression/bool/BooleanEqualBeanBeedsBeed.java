@@ -81,11 +81,15 @@ public class BooleanEqualBeanBeedsBeed<_BeanBeed_ extends BeanBeed>
      * Then do a recalculate.
      */
     Boolean oldValue = get();
-    PathEvent<_BeanBeed_> leftOperandPathEvent = (PathEvent<_BeanBeed_>)events.get($leftOperandPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<_BeanBeed_> leftOperandPathEvent =
+      (PathEvent<_BeanBeed_>)events.get($leftOperandPath);
     if (leftOperandPathEvent != null) {
       setLeftOperand(leftOperandPathEvent.getNewValue());
     }
-    PathEvent<_BeanBeed_> rightOperandPathEvent = (PathEvent<_BeanBeed_>)events.get($rightOperandPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<_BeanBeed_> rightOperandPathEvent =
+      (PathEvent<_BeanBeed_>)events.get($rightOperandPath);
     if (rightOperandPathEvent != null) {
       setRightOperand(rightOperandPathEvent.getNewValue());
     }

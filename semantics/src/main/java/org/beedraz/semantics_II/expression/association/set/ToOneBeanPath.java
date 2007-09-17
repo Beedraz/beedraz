@@ -80,12 +80,16 @@ public class ToOneBeanPath<_One_ extends BeanBeed>
     assert events.size() >= 1;
     _One_ oldOne = $one;
     // $toOneBeed could be null
-    BidirToOneEvent<_One_, ?> toOneEvent = (BidirToOneEvent<_One_, ?>)events.get($toOneBeed);
+    @SuppressWarnings("unchecked")
+    BidirToOneEvent<_One_, ?> toOneEvent =
+      (BidirToOneEvent<_One_, ?>)events.get($toOneBeed);
     if (toOneEvent != null) {
       assert $one == toOneEvent.getOldOne();
       $one = toOneEvent.getNewOne();
     }
-    PathEvent<EditableBidirToOneBeed<_One_, ?>> pathEvent = (PathEvent<EditableBidirToOneBeed<_One_, ?>>)events.get($toOnePath);
+    @SuppressWarnings("unchecked")
+    PathEvent<EditableBidirToOneBeed<_One_, ?>> pathEvent =
+      (PathEvent<EditableBidirToOneBeed<_One_, ?>>)events.get($toOnePath);
     if (pathEvent != null) {
       assert $toOneBeed == pathEvent.getOldValue(); // could be null
       setToOneBeed(pathEvent.getNewValue());

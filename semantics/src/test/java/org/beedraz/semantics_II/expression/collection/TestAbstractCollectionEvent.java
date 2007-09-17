@@ -97,6 +97,7 @@ public abstract class TestAbstractCollectionEvent<_Collection_ extends Collectio
       new CompoundEdit<EditableSetBeed<String>, SetEvent<String>>(beed);
     Event combinedEvent = event1.combineWith(event2, compoundEdit);
     assertEquals(event1.getClass(), combinedEvent.getClass());
+    @SuppressWarnings("unchecked")
     AbstractCollectionEvent<String, _Collection_> combinedCollectionEvent =
       (AbstractCollectionEvent<String, _Collection_>) combinedEvent;
     assertEquals(event1.getSource(), combinedCollectionEvent.getSource());

@@ -84,7 +84,9 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
   protected final PathEvent<_SelectedBeed_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     // Events are from the condition beed path, the condition beed, or the selected path.
     _SelectedBeed_ oldValue = $selectedBeed;
-    PathEvent<BooleanBeed> conditionBeedPathEvent = (PathEvent<BooleanBeed>)events.get($conditionBeedPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<BooleanBeed> conditionBeedPathEvent =
+      (PathEvent<BooleanBeed>)events.get($conditionBeedPath);
     if (conditionBeedPathEvent != null) {
       setConditionBeed(conditionBeedPathEvent.getNewValue());
       /* we are now no longer interested in condition beed events or selected path events: everything will

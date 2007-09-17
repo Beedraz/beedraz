@@ -75,6 +75,7 @@ public abstract class AbstractUnaryExprBeed<_Result_ extends Object,
      * React to event from path first, setting the operand. Then do a recalculate.
      */
     _Result_ oldValue = get();
+    @SuppressWarnings("unchecked")
     PathEvent<_OperandBeed_> pathEvent = (PathEvent<_OperandBeed_>)events.get($operandPath);
     if (pathEvent != null) {
       setOperand(pathEvent.getNewValue());

@@ -123,7 +123,9 @@ public class MappedSetBeed<_From_ extends Beed<?>, _To_ extends Beed<?>>
      */
     HashSet<_To_> addedFilteredElements = new HashSet<_To_>();
     HashSet<_To_> removedFilteredElements = new HashSet<_To_>();
-    PathEvent<SetBeed<_From_, ?>> pathEvent = (PathEvent<SetBeed<_From_, ?>>)events.get($sourcePath);
+    @SuppressWarnings("unchecked")
+    PathEvent<SetBeed<_From_, ?>> pathEvent =
+      (PathEvent<SetBeed<_From_, ?>>)events.get($sourcePath);
     if (pathEvent != null) {
       handleSourcePathEvent(pathEvent, addedFilteredElements, removedFilteredElements);
       // if there is a path event, don't deal with other events

@@ -94,13 +94,16 @@ public abstract class VariableComponentPath<_AggregateBeed_ extends AggregateBee
     // events can come from:
     //   - $aggregateBeedPath
     //   - $componentBeedPath
-    PathEvent<_AggregateBeed_> aggregateBeedPathEvent = (PathEvent<_AggregateBeed_>)events.get($aggregateBeedPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<_AggregateBeed_> aggregateBeedPathEvent =
+      (PathEvent<_AggregateBeed_>)events.get($aggregateBeedPath);
     if (aggregateBeedPathEvent != null) {
       _AggregateBeed_ newAggregateBeed = aggregateBeedPathEvent.getNewValue();
       assert newAggregateBeed == $aggregateBeedPath.get();
       setComponentBeedPath(newAggregateBeed == null ? null : selectComponentPathFromAggregate(newAggregateBeed));
     }
     else {
+      @SuppressWarnings("unchecked")
       PathEvent<_ComponentBeed_> componentBeedPathEvent =
         (PathEvent<_ComponentBeed_>) events.get($componentBeedPath);
       assert componentBeedPathEvent != null;

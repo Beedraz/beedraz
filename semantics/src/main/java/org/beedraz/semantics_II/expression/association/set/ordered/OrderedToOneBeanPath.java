@@ -93,11 +93,13 @@ public class OrderedToOneBeanPath<_One_ extends BeanBeed>
     assert events.size() >= 1;
     _One_ oldOne = $one;
     // $toOneBeed could be null
+    @SuppressWarnings("unchecked")
     OrderedBidirToOneEvent<_One_, ?> toOneEvent = (OrderedBidirToOneEvent<_One_, ?>)events.get($toOneBeed);
     if (toOneEvent != null) {
       assert $one == toOneEvent.getOldOne();
       $one = toOneEvent.getNewOne();
     }
+    @SuppressWarnings("unchecked")
     PathEvent<EditableOrderedBidirToOneBeed<_One_, ?>> pathEvent =
         (PathEvent<EditableOrderedBidirToOneBeed<_One_, ?>>)events.get($toOnePath);
     if (pathEvent != null) {

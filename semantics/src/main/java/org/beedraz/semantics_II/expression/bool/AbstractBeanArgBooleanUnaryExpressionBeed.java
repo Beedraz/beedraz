@@ -65,6 +65,7 @@ public abstract class AbstractBeanArgBooleanUnaryExpressionBeed<_BeanBeed_ exten
      * Then do a recalculate.
      */
     Boolean oldValue = get();
+    @SuppressWarnings("unchecked")
     PathEvent<_BeanBeed_> beedPathEvent = (PathEvent<_BeanBeed_>)events.get($beedPath);
     if (beedPathEvent != null) {
       setBeed(beedPathEvent.getNewValue());

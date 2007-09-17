@@ -86,11 +86,15 @@ public abstract class AbstractBinaryExprBeed<_Result_ extends Object,
      * React to event from paths first, setting the operands. Then do a recalculate.
      */
     _Result_ oldValue = get();
-    PathEvent<_LeftOperandBeed_> leftPathEvent = (PathEvent<_LeftOperandBeed_>)events.get($leftOperandPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<_LeftOperandBeed_> leftPathEvent =
+      (PathEvent<_LeftOperandBeed_>)events.get($leftOperandPath);
     if (leftPathEvent != null) {
       setLeftOprnd(leftPathEvent.getNewValue());
     }
-    PathEvent<_RightOperandBeed_> rightPathEvent = (PathEvent<_RightOperandBeed_>)events.get($rightOperandPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<_RightOperandBeed_> rightPathEvent =
+      (PathEvent<_RightOperandBeed_>)events.get($rightOperandPath);
     if (rightPathEvent != null) {
       setRightOprnd(rightPathEvent.getNewValue());
     }

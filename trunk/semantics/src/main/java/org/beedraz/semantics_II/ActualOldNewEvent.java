@@ -145,6 +145,7 @@ public abstract class ActualOldNewEvent<_Type_>
   @Override
   protected final ActualOldNewEvent<_Type_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit)
       throws CannotCombineEventsException {
+    @SuppressWarnings("unchecked")
     ActualOldNewEvent<_Type_> otherAONE = (ActualOldNewEvent<_Type_>)other;
     if (! ComparisonUtil.equalsWithNull($newValue, otherAONE.getOldValue())) {
       throw new CannotCombineEventsException(this, otherAONE, INCOMPATIBLE_STATES);

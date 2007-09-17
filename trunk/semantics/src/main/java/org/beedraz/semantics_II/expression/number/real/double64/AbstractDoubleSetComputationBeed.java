@@ -99,6 +99,7 @@ public abstract class AbstractDoubleSetComputationBeed
   protected ActualDoubleEvent filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     boolean oldEffective = $effective;
     double oldValue = $value;
+    @SuppressWarnings("unchecked")
     PathEvent<SetBeed<RealBeed<?>, ?>> pathEvent =
       (PathEvent<SetBeed<RealBeed<?>, ?>>)events.get($sourcePath); // we know this cast is correct
     if (pathEvent != null) {

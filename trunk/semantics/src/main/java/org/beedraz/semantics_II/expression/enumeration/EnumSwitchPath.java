@@ -77,6 +77,7 @@ public class EnumSwitchPath<_Enum_ extends Enum<_Enum_>,
        */
     }
     else {
+      @SuppressWarnings("unchecked")
       EnumEvent<_Enum_> keyBeedEvent = (EnumEvent<_Enum_>)events.get($keyBeed);
       if (keyBeedEvent != null) {
         setKey(keyBeedEvent.getNewValue());

@@ -84,7 +84,9 @@ public abstract class AggregateComponentPath<_AggregateBeed_ extends AggregateBe
   protected PathEvent<_ComponentBeed_> filteredUpdate(Map<Beed<?>, Event> events, Edit<?> edit) {
     assert events != null;
     assert events.size() == 1;
-    PathEvent<_AggregateBeed_> event = (PathEvent<_AggregateBeed_>)events.get($aggregateBeedPath);
+    @SuppressWarnings("unchecked")
+    PathEvent<_AggregateBeed_> event =
+      (PathEvent<_AggregateBeed_>)events.get($aggregateBeedPath);
     assert event != null;
     _ComponentBeed_ oldComponentBeed = $componentBeed;
     _AggregateBeed_ newAggregateBeed = event.getNewValue();

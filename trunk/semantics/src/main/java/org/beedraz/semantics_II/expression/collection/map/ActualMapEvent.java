@@ -626,6 +626,7 @@ public final class ActualMapEvent<_Key_, _Value_>
    */
   @Override
   protected final ActualMapEvent<_Key_, _Value_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit) {
+    @SuppressWarnings("unchecked")
     ActualMapEvent<_Key_, _Value_> otherSE = (ActualMapEvent<_Key_, _Value_>)other;
     Map<_Key_, _Value_> otherRemovedElements = otherSE.getRemovedElements();
     Map<_Key_, _Value_> otherAddedElements = otherSE.getAddedElements();

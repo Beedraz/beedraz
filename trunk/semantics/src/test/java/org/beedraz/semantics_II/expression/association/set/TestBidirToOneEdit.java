@@ -1017,7 +1017,9 @@ public class TestBidirToOneEdit {
     $bidirToOneEdit.perform();
     // create event
     Map<AbstractBeed<?>, Event> events = $bidirToOneEdit.createEvents();
-    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent = (BidirToOneEvent<OneBeanBeed, ManyBeanBeed>)events.get($bidirToOneEdit.getTarget());
+    @SuppressWarnings("unchecked")
+    BidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent =
+      (BidirToOneEvent<OneBeanBeed, ManyBeanBeed>)events.get($bidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $bidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);

@@ -145,6 +145,7 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
     HashSet<Tuple> addedTuples = new HashSet<Tuple>();
     HashSet<Tuple> removedTuples = new HashSet<Tuple>();
     // source 1
+    @SuppressWarnings("unchecked")
     PathEvent<SetBeed<_Element1_, ?>> pathEvent1 =
       (PathEvent<SetBeed<_Element1_, ?>>)events.get($sourcePath1);
     if (pathEvent1 != null) {
@@ -159,6 +160,7 @@ public class CartesianProductBeed<_Element1_ extends Beed<?>, _Element2_ extends
       }
     }
     // source 2
+    @SuppressWarnings("unchecked")
     PathEvent<SetBeed<_Element2_, ?>> pathEvent2 =
       (PathEvent<SetBeed<_Element2_, ?>>)events.get($sourcePath2);
     if (pathEvent2 != null) {

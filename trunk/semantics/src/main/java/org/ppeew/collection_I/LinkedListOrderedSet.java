@@ -52,6 +52,7 @@ public class LinkedListOrderedSet<E>
 
   public LinkedListOrderedSet(Collection<? extends E> coll) {
     if ((coll != null) && (coll instanceof LinkedListOrderedSet)) {
+      @SuppressWarnings("unchecked")
       LinkedListOrderedSet<E> argL = (LinkedListOrderedSet<E>)coll;
       LinkedList<E> argBl = argL.$backingList;
       @SuppressWarnings("unchecked")

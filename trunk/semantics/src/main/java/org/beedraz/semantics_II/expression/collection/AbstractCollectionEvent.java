@@ -139,8 +139,9 @@ public abstract class AbstractCollectionEvent<_Element_, _Collection_ extends Co
   @Override
   protected AbstractCollectionEvent<_Element_, _Collection_> createCombinedEvent(Event other, CompoundEdit<?, ?> compoundEdit)
       throws CannotCombineEventsException {
+    @SuppressWarnings("unchecked")
     AbstractCollectionEvent<_Element_, Collection<_Element_>> otherACE =
-        (AbstractCollectionEvent<_Element_, Collection<_Element_>>)other;
+      (AbstractCollectionEvent<_Element_, Collection<_Element_>>)other;
     _Collection_ addedAndNotRemoved = freshCopy(getAddedElements());
     addedAndNotRemoved.removeAll(otherACE.getRemovedElements());
     Collection<_Element_> notRemovedAndAdded = otherACE.freshCopy(otherACE.getAddedElements());

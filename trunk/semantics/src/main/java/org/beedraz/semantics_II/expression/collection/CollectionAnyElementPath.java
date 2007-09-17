@@ -92,6 +92,7 @@ public class CollectionAnyElementPath<_Beed_ extends Beed<?>>
      *          (so the selected beed changes from null to an effective beed)
      */
     CollectionEvent<_Beed_> collectionEvent = (CollectionEvent<_Beed_>)events.get($collectionBeed);
+    @SuppressWarnings("unchecked")
     PathEvent<CollectionBeed<_Beed_, ?>> pathEvent =
         (PathEvent<CollectionBeed<_Beed_, ?>>)events.get($collectionBeedPath);
     if (pathEvent != null) {

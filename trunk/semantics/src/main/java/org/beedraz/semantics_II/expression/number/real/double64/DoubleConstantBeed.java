@@ -137,5 +137,10 @@ public class DoubleConstantBeed
     sb.append(indent(level + 1) + "value:" + getDouble() + "\n");
   }
 
+  @Override
+  protected final String otherToStringInformation() {
+    return getDouble() == null ? "null" : getDouble().toString();
+  }
+
 }
 

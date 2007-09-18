@@ -269,7 +269,6 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
   }
 
   private void setSelectedPath(Path<? extends _SelectedBeed_> selectedPath) {
-    _SelectedBeed_ oldValue = $selectedBeed;
     if ($selectedPath != null) {
       removeUpdateSource($selectedPath);
     }
@@ -280,10 +279,6 @@ public class ConditionalPath<_SelectedBeed_ extends Beed<?>>
     }
     else {
       $selectedBeed = null;
-    }
-    if (oldValue != $selectedBeed) {
-      PathEvent<_SelectedBeed_> event = new PathEvent<_SelectedBeed_>(this, oldValue, $selectedBeed, null);
-      updateDependents(event);
     }
   }
 

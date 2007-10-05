@@ -17,11 +17,14 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.enumeration;
 
 
+import static org.beedraz.semantics_II.path.Paths.path;
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
+import org.beedraz.semantics_II.expression.bool.BooleanBeed;
+import org.beedraz.semantics_II.path.Path;
 import org.ppeew.annotations_I.Copyright;
 import org.ppeew.annotations_I.License;
 import org.ppeew.annotations_I.vcs.SvnInfo;
@@ -70,6 +73,38 @@ public class EnumBeeds {
 
   /*</section>*/
 
+
+  /*<section name="equalV">*/
+  //------------------------------------------------------------------
+
+  public static <_Enum_ extends Enum<_Enum_>> BooleanBeed equalV(
+      EnumBeed<_Enum_> leftOperand,
+      EnumBeed<_Enum_> rightOperand) {
+    return equalV(path(leftOperand), path(rightOperand));
+  }
+
+  public static <_Enum_ extends Enum<_Enum_>> BooleanBeed equalV(
+      EnumBeed<_Enum_> leftOperand,
+      Path<? extends EnumBeed<_Enum_>> rightOperandPath) {
+    return equalV(path(leftOperand), rightOperandPath);
+  }
+
+  public static <_Enum_ extends Enum<_Enum_>> BooleanBeed equalV(
+      Path<? extends EnumBeed<_Enum_>> leftOperandPath,
+      EnumBeed<_Enum_> rightOperand) {
+    return equalV(leftOperandPath, path(rightOperand));
+  }
+
+  public static <_Enum_ extends Enum<_Enum_>> BooleanBeed equalV(
+      Path<? extends EnumBeed<_Enum_>> leftOperandPath,
+      Path<? extends EnumBeed<_Enum_>> rightOperandPath) {
+    BooleanEQEnumBeed<_Enum_> eqBeed = new BooleanEQEnumBeed<_Enum_>();
+    eqBeed.setLeftOperandPath(leftOperandPath);
+    eqBeed.setRightOperandPath(rightOperandPath);
+    return eqBeed;
+  }
+
+  /*</section>*/
 
 }
 

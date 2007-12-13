@@ -404,6 +404,22 @@ public class BooleanBeeds {
   /*</section>*/
 
 
+  /*<section name="nan">*/
+  //------------------------------------------------------------------
+
+  public static BooleanBeed nan(RealBeed<?> operand) {
+    return nan(path(operand));
+  }
+
+  public static BooleanBeed nan(Path<? extends RealBeed<?>> operandPath) {
+    BooleanNaNBeed nanBeed = new BooleanNaNBeed();
+    nanBeed.setOperandPath(operandPath);
+    return nanBeed;
+  }
+
+  /*</section>*/
+
+
   /*<section name="equalB">*/
   //------------------------------------------------------------------
 

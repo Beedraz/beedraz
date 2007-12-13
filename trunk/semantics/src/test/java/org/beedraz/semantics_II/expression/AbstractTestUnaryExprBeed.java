@@ -116,6 +116,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     $goal2 = null;
     $goalMIN = null;
     $goalMAX = null;
+    $goalNaN = null;
   }
 
   protected _UEB_ $subject;
@@ -128,6 +129,7 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
   protected _Operand_ $goal2;
   protected _Operand_ $goalMIN;
   protected _Operand_ $goalMAX;
+  protected _Operand_ $goalNaN;
   StubListener<_ResultEvent_> $listener;
 
   @Test
@@ -202,6 +204,9 @@ public abstract class AbstractTestUnaryExprBeed<_Result_ extends Object,
     changeOperand($operandDoubleBeed, $goalMAX);
     validateSubjectFromOperand($operandDoubleBeed);
     validateEvent($operandDoubleBeed, $goalMIN, $operandDoubleBeed, $goalMAX);
+    changeOperand($operandDoubleBeed, $goalNaN);
+    validateSubjectFromOperand($operandDoubleBeed);
+    validateEvent($operandDoubleBeed, $goalMAX, $operandDoubleBeed, $goalNaN);
   }
 
   private void validateEvent(_OperandBeed_ oldBeed, _Operand_ oldV,

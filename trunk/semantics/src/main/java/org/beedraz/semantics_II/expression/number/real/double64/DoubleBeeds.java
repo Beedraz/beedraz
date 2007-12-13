@@ -53,6 +53,18 @@ public class DoubleBeeds {
     return new DoubleConstantBeed(null);
   }
 
+  public static DoubleBeed constant_nan() {
+    return new DoubleConstantBeed(Double.NaN);
+  }
+
+  public static DoubleBeed constant_positiveInfinity() {
+    return new DoubleConstantBeed(Double.POSITIVE_INFINITY);
+  }
+
+  public static DoubleBeed constant_negativeInfinity() {
+    return new DoubleConstantBeed(Double.NEGATIVE_INFINITY);
+  }
+
   /*</section>*/
 
 

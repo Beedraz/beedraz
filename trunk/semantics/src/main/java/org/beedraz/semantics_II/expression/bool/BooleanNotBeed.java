@@ -54,7 +54,7 @@ public class BooleanNotBeed extends AbstractBooleanArgBooleanUnaryExpressionBeed
    */
   @Override
   public String getOperatorString() {
-    return "not_null";
+    return "not";
   }
 
   @Override

@@ -52,6 +52,7 @@ public abstract class AbstractTestRealArgBooleanUnaryExpressionBeed<
     $goal2 = Double.NEGATIVE_INFINITY;
     $goalMIN = Double.MIN_VALUE; // - MIN_VALUE == MIN_VALUE (2-bit complement)
     $goalMAX = Double.MAX_VALUE;
+    $goalNaN = Double.NaN;
   }
 
   @Override

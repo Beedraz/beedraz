@@ -19,11 +19,16 @@ package org.ppeew.annotations_I;
 
 import static org.ppeew.annotations_I.License.Type.APACHE_V2;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -60,8 +65,10 @@ public @interface License {
    */
   public enum Type {
     APACHE_V2    ("http://www.apache.org/licenses/LICENSE-2.0.html"),
-    GPL_v2       ("http://www.fsf.org/licensing/licenses/gpl.html"),
-    LGPL_v2_1    ("http://www.fsf.org/licensing/licenses/lgpl.html"),
+    GPL_v2       ("http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"),
+    GPL_v3       ("http://www.fsf.org/licensing/licenses/gpl.html"),
+    LGPL_v2_1    ("http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"),
+    LGPL_v3    ("http://www.fsf.org/licensing/licenses/lgpl.html"),
     MPL_v1_1     ("http://www.mozilla.org/MPL/MPL-1.1.html");
 
     Type(String url) {
@@ -78,6 +85,18 @@ public @interface License {
     }
 
     private URL $url;
+
+    private static Class<?>[] contentTypes = {InputStream.class};
+
+    public final Reader getReader() throws Exception {
+      try {
+        InputStream result = (InputStream)getUrl().getContent(contentTypes);
+        return new InputStreamReader(result);
+      }
+      catch (IOException exc) {
+        throw new Exception(); // MUDO good exception
+      }
+    }
 
   }
 

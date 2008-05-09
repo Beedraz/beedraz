@@ -56,7 +56,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * <p>Beeds are related in <em>an acyclic directed graph</em>. E.g., a beed
  *   that represents an arithmetic expression depends on beeds that are its
  *   operands.</p>
- * <p>Building, changing, and breaking down these beed relation is refered to
+ * <p>Building, changing, and breaking down these beed relation is referred to
  *   as making <dfn>structural changes</dfn>. Such <dfn>dependent beeds</dfn>
  *   have public methods to add, remove or change operands, to make structural
  *   changes possible. Structural changes are not done normally through edits,
@@ -73,13 +73,13 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *   If the structural change does not change the semantic state of the
  *   dependent beed (e.g., exchanging operands +1 and -1 with +7 and -7 in
  *   a dependent beed that represents the sum of its operands), no events are
- *   send. The structural change in itself does not trigger events, and is not
+ *   sent. The structural change in itself does not trigger events, and is not
  *   observable.</p>
  *
  * <h3>Events and Listeners</h3>
  * <p>The {@code Beed} - {@link Listener} - {@link Event} structure implements the
  *   traditional <a href="http://en.wikipedia.org/wiki/Observer_pattern">Model -
- *   View -Controller (a.k.a. Oserver - Observable, a.k.a.
+ *   View -Controller (a.k.a. Observer - Observable, a.k.a.
  *   <acronym title="Model - View - Controller">MVC</acronym>) design pattern</a>.
  *   Generic type invocations define the type of the events {@code Beeds} send.
  *   This static type is defined by the type parameter {@code _Event_}.

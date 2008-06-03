@@ -28,7 +28,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -48,6 +47,8 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * </pre>
  *
  * @author    Jan Dockx
+ *
+ * @note start using org.ppwcode.metainfo_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

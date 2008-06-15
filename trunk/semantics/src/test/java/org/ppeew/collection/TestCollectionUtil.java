@@ -33,6 +33,9 @@ import org.ppeew.collection_I.LinkedListOrderedSet;
 import org.ppeew.collection_I.OrderedSet;
 
 
+/**
+ * @todo start using ppwcode util collections_N asap
+ */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",

@@ -25,6 +25,9 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
 import org.ppeew.collection_I.LinkedListOrderedSet;
 
 
+/**
+ * @todo start using ppwcode util collections_N asap
+ */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",

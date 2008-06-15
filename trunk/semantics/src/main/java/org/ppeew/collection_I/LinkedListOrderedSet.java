@@ -37,6 +37,7 @@ import org.ppeew.smallfries_I.ComparisonUtil;
  * {@link OrderedSet} backed by a {@link LinkedList}.
  *
  * @author Jan Dockx
+ * @todo start using ppwcode util collections_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

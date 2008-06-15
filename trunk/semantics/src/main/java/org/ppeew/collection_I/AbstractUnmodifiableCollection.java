@@ -32,6 +32,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  * Unmodifiable {@link Collection} general code.
  *
  * @author Jan Dockx
+ * @todo start using ppwcode util collections_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

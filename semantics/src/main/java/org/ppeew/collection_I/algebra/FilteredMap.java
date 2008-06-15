@@ -43,6 +43,7 @@ import org.ppeew.smallfries_I.Filter;
  * @invar ! containsValue(null);
  *
  * @todo Not use in the Beedra code, and no unit test.
+ * @todo start using ppwcode util collections_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

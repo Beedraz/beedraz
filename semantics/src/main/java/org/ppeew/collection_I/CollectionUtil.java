@@ -39,6 +39,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *
  * @author Jan Dockx
  * @author PeopleWare n.v.
+ * @todo start using ppwcode util collections_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

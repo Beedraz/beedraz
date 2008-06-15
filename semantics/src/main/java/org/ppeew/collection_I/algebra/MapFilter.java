@@ -32,6 +32,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *
  * @todo Not use in the Beedra code, and no unit test.
  * @see FilteredMap
+ * @todo start using ppwcode util collections_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

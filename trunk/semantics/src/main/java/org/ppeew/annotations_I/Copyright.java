@@ -42,7 +42,7 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
  *
  * @author    Jan Dockx
  *
- * @note start using org.ppwcode.metainfo_N asap
+ * @todo start using org.ppwcode.metainfo_N asap
  */
 @Copyright("2007 - $Date$, PeopleWare n.v.")
 @License(APACHE_V2)

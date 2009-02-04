@@ -42,6 +42,21 @@ import org.ppeew.annotations_I.vcs.SvnInfo;
          date     = "$Date$")
 public class DoubleBeeds {
 
+  /*<section name="abs">*/
+  //------------------------------------------------------------------
+
+  public static DoubleBeed abs(RealBeed<?> operand) {
+    return abs(path(operand));
+  }
+
+  public static DoubleBeed abs(Path<? extends RealBeed<?>> operandPath) {
+    DoubleAbsoluteBeed absoluteBeed = new DoubleAbsoluteBeed();
+    absoluteBeed.setOperandPath(operandPath);
+    return absoluteBeed;
+  }
+
+  /*</section>*/
+
   /*<section name="constant">*/
   //------------------------------------------------------------------
 

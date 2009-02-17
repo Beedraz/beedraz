@@ -19,7 +19,7 @@ package org.beedraz.semantics_II;
 
 import static org.beedraz.semantics_II.expression.bool.BooleanBeeds.cor;
 import static org.beedraz.semantics_II.path.Paths.path;
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.bean.BeanBeed;
@@ -32,9 +32,9 @@ import org.beedraz.semantics_II.expression.collection.set.SetEdit;
 import org.beedraz.semantics_II.path.Path;
 import org.beedraz.semantics_II.path.PathFactory;
 import org.junit.Test;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 @Copyright("2007 - $Date: 2007-05-24 16:46:42 +0200 (do, 24 mei 2007) $, Beedraz authors")

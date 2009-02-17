@@ -28,7 +28,7 @@ import java.util.Set;
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppwcode.metainfo_I.vcs.CvsInfo;
 
 
 /**

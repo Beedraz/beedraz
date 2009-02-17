@@ -18,7 +18,7 @@ package org.ppeew.smallfries_I;
 
 
 import static java.lang.Math.signum;
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,9 +31,9 @@ import org.apache.commons.math.stat.descriptive.rank.Max;
 import org.apache.commons.math.stat.descriptive.rank.Min;
 import org.apache.commons.math.stat.descriptive.summary.Product;
 import org.apache.commons.math.stat.descriptive.summary.Sum;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

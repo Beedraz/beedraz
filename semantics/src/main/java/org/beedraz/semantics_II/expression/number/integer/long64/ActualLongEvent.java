@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.number.integer.long64;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MathUtil.castToBigDecimal;
 import static org.ppeew.smallfries_I.MathUtil.castToBigInteger;
 import static org.ppeew.smallfries_I.MathUtil.castToDouble;
@@ -30,9 +30,9 @@ import org.beedraz.semantics_II.ActualOldNewEvent;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.number.integer.IntegerEvent;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleBeed;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

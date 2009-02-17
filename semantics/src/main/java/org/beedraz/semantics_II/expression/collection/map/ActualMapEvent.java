@@ -27,7 +27,7 @@ import org.beedraz.semantics_II.AbstractEvent;
 import org.beedraz.semantics_II.CompoundEdit;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppwcode.metainfo_I.vcs.CvsInfo;
 
 
 /**

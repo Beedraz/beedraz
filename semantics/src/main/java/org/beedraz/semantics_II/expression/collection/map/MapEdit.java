@@ -31,7 +31,7 @@ import java.util.Set;
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractEdit;
 import org.beedraz.semantics_II.EditStateException;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppwcode.metainfo_I.vcs.CvsInfo;
 
 
 /**

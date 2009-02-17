@@ -19,15 +19,15 @@ package org.beedraz.semantics_II.expression;
 
 import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedraz.semantics_II.AbstractSimpleEdit;
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.Event;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.ComparisonUtil;
 
 

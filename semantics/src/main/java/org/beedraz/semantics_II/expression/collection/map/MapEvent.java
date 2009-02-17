@@ -20,7 +20,7 @@ package org.beedraz.semantics_II.expression.collection.map;
 import java.util.Map;
 
 import org.beedraz.semantics_II.Event;
-import org.ppeew.annotations_I.vcs.CvsInfo;
+import org.ppwcode.metainfo_I.vcs.CvsInfo;
 
 
 /**

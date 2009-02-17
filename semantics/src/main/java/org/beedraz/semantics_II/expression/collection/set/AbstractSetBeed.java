@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.set;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.AbstractBeed;
 import org.beedraz.semantics_II.AbstractDependentBeed;
@@ -25,9 +25,9 @@ import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.collection.CollectionBeed;
 import org.beedraz.semantics_II.expression.number.integer.IntegerBeed;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

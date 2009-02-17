@@ -31,6 +31,11 @@ limitations under the License.
       <name>Beedraz Maven 2 repository</name>
       <url>http://www.beedraz.org/mvn2repo</url>
     </repository>
+    <repository>
+      <id>PPWCodeRepo</id>
+      <name>PPWCode Maven 2 repository</name>
+      <url>http://www.ppwcode.org/java/maven2repo</url>
+    </repository>
   </repositories>
 
   <parent>
@@ -84,6 +89,11 @@ limitations under the License.
       <groupId>commons-math</groupId>
       <artifactId>commons-math</artifactId>
       <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ppwcode</groupId>
+      <artifactId>ppwcode-metainfo-I</artifactId>
+      <version>2.1</version>
     </dependency>
   </dependencies>
 

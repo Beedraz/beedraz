@@ -17,15 +17,15 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.enumeration;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanBeed;
 import org.beedraz.semantics_II.expression.bool.BooleanEvent;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 import org.ppeew.smallfries_I.MathUtil;
 
 

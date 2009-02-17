@@ -17,15 +17,15 @@
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 import static org.junit.Assert.assertNull;
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import org.beedraz.semantics_II.expression.number.real.RealBeed;
 import org.beedraz.semantics_II.expression.number.real.double64.DoubleExponentBeed;
 import org.beedraz.semantics_II.path.Path;
 import org.junit.Test;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 @Copyright("2007 - $Date$, Beedraz authors")

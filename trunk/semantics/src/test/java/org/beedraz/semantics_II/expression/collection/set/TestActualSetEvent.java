@@ -17,16 +17,16 @@
 package org.beedraz.semantics_II.expression.collection.set;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.beedraz.semantics_II.expression.collection.TestAbstractCollectionEvent;
 import org.junit.Test;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 @Copyright("2007 - $Date: 2007-05-11 01:10:13 +0200 (vr, 11 mei 2007) $, Beedraz authors")

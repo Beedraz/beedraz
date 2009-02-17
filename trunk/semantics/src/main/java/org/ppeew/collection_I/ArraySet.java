@@ -17,15 +17,15 @@ limitations under the License.
 package org.ppeew.collection_I;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

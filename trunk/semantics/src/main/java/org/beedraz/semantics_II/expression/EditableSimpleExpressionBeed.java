@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
@@ -26,9 +26,9 @@ import java.util.Set;
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.aggregate.AggregateBeed;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

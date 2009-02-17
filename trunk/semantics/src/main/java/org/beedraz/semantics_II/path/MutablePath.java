@@ -17,16 +17,16 @@ limitations under the License.
 package org.beedraz.semantics_II.path;
 
 
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import java.util.Map;
 
 import org.beedraz.semantics_II.Beed;
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

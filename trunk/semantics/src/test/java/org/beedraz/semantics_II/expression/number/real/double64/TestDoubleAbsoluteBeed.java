@@ -17,12 +17,12 @@
 package org.beedraz.semantics_II.expression.number.real.double64;
 
 import static org.junit.Assert.assertNull;
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
 import org.junit.Test;
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 @Copyright("2009 - $Date: 2007-05-08 16:27:52 +0200 (Tue, 08 May 2007) $, Beedraz authors")
 @License(APACHE_V2)

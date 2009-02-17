@@ -19,13 +19,13 @@ package org.beedraz.semantics_II;
 
 import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.UNDONE;
-import static org.ppeew.annotations_I.License.Type.APACHE_V2;
+import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
 import static org.ppeew.smallfries_I.MultiLineToStringUtil.objectToString;
 
-import org.ppeew.annotations_I.Copyright;
-import org.ppeew.annotations_I.License;
-import org.ppeew.annotations_I.vcs.SvnInfo;
+import org.ppwcode.metainfo_I.Copyright;
+import org.ppwcode.metainfo_I.License;
+import org.ppwcode.metainfo_I.vcs.SvnInfo;
 
 
 /**

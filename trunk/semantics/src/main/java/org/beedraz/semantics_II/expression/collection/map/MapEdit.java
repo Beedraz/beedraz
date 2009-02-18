@@ -19,8 +19,8 @@ package org.beedraz.semantics_II.expression.collection.map;
 
 import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
-import static org.ppeew.collection_I.CollectionUtil.intersection;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.collection_I.CollectionUtil.intersection;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
 import java.util.HashMap;

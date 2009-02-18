@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.map;
 
 
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
 import java.util.HashMap;

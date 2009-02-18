@@ -18,7 +18,7 @@ package org.beedraz.semantics_II.expression.collection.set;
 
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -33,7 +33,7 @@ import org.beedraz.semantics_II.aggregate.AggregateBeed;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppeew.smallfries_I.ComparisonUtil;
+import org.ppwcode.util.smallfries_I.ComparisonUtil;
 
 
 /**

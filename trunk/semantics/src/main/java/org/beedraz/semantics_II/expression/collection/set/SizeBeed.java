@@ -12,7 +12,7 @@ import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.Event;
 import org.beedraz.semantics_II.expression.number.integer.long64.ActualLongEvent;
 import org.beedraz.semantics_II.expression.number.integer.long64.LongBeed;
-import org.ppeew.smallfries_I.MathUtil;
+import org.ppwcode.util.smallfries_I.MathUtil;
 
 /**
  * A beed representing the size of this set beed.

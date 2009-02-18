@@ -21,7 +21,7 @@ import static java.util.Collections.singleton;
 import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
 import java.util.Map;

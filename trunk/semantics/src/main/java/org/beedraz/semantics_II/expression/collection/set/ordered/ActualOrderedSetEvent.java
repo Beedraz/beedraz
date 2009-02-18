@@ -18,7 +18,7 @@ package org.beedraz.semantics_II.expression.collection.set.ordered;
 
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppeew.collection_I.CollectionUtil.unmodifiableOrderedSet;
+import static org.ppwcode.util.collection_I.CollectionUtil.unmodifiableOrderedSet;
 
 import org.beedraz.semantics_II.Edit;
 import org.beedraz.semantics_II.expression.collection.AbstractCollectionEvent;
@@ -28,8 +28,8 @@ import org.beedraz.semantics_II.expression.collection.set.SetEvent;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppeew.collection_I.LinkedListOrderedSet;
-import org.ppeew.collection_I.OrderedSet;
+import org.ppwcode.util.collection_I.LinkedListOrderedSet;
+import org.ppwcode.util.collection_I.OrderedSet;
 
 
 /**

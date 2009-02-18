@@ -32,8 +32,8 @@ import org.junit.Test;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppeew.collection_I.LinkedListOrderedSet;
-import org.ppeew.collection_I.OrderedSet;
+import org.ppwcode.util.collection_I.LinkedListOrderedSet;
+import org.ppwcode.util.collection_I.OrderedSet;
 
 
 @Copyright("2007 - $Date$, Beedraz authors")

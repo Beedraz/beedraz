@@ -18,7 +18,7 @@ package org.beedraz.semantics_II.expression.association.set.ordered;
 
 
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,8 +32,8 @@ import org.beedraz.semantics_II.expression.collection.set.ordered.OrderedSetEven
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppeew.collection_I.LinkedListOrderedSet;
-import org.ppeew.collection_I.OrderedSet;
+import org.ppwcode.util.collection_I.LinkedListOrderedSet;
+import org.ppwcode.util.collection_I.OrderedSet;
 
 
 /**

@@ -20,8 +20,8 @@ import static org.beedraz.semantics_II.Edit.State.DONE;
 import static org.beedraz.semantics_II.Edit.State.NOT_YET_PERFORMED;
 import static org.beedraz.semantics_II.Edit.State.UNDONE;
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppeew.collection_I.CollectionUtil.unmodifiableOrderedSet;
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.collection_I.CollectionUtil.unmodifiableOrderedSet;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +35,8 @@ import org.beedraz.semantics_II.expression.collection.set.ordered.ActualOrderedS
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppeew.collection_I.OrderedSet;
-import org.ppeew.smallfries_I.ComparisonUtil;
+import org.ppwcode.util.collection_I.OrderedSet;
+import org.ppwcode.util.smallfries_I.ComparisonUtil;
 
 
 /**

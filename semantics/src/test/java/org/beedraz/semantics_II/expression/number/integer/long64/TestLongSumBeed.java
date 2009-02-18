@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppeew.smallfries_I.MathUtil.equalValue;
+import static org.ppwcode.util.smallfries_I.MathUtil.equalValue;
 
 import org.beedraz.semantics_II.EditStateException;
 import org.beedraz.semantics_II.IllegalEditException;

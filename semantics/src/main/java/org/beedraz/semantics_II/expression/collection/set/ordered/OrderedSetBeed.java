@@ -23,7 +23,7 @@ import org.beedraz.semantics_II.expression.collection.set.SetBeed;
 import org.ppwcode.metainfo_I.Copyright;
 import org.ppwcode.metainfo_I.License;
 import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppeew.collection_I.OrderedSet;
+import org.ppwcode.util.collection_I.OrderedSet;
 
 
 /**

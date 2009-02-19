@@ -1281,7 +1281,7 @@ public class TestOrderedBidirToOneEdit {
     Map<AbstractBeed<?>, Event> events = $orderedBidirToOneEdit.createEvents();
     @SuppressWarnings("unchecked")
     OrderedBidirToOneEvent<OneBeanBeed, ManyBeanBeed> createdEvent =
-      (OrderedBidirToOneEvent<org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.OneBeanBeed, org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.ManyBeanBeed>)events.get($orderedBidirToOneEdit.getTarget());
+      (OrderedBidirToOneEvent<TestOrderedBidirToOneEdit.OneBeanBeed, TestOrderedBidirToOneEdit.ManyBeanBeed>)events.get($orderedBidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $orderedBidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), null);
     assertEquals(createdEvent.getNewValue(), goal);
@@ -1290,7 +1290,7 @@ public class TestOrderedBidirToOneEdit {
     $orderedBidirToOneEdit.undo();
     // create event
     events = $orderedBidirToOneEdit.createEvents();
-    createdEvent = (OrderedBidirToOneEvent<org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.OneBeanBeed, org.beedraz.semantics_II.expression.association.set.ordered.TestOrderedBidirToOneEdit.ManyBeanBeed>)events.get($orderedBidirToOneEdit.getTarget());
+    createdEvent = (OrderedBidirToOneEvent<TestOrderedBidirToOneEdit.OneBeanBeed, TestOrderedBidirToOneEdit.ManyBeanBeed>)events.get($orderedBidirToOneEdit.getTarget());
     assertEquals(createdEvent.getEdit(), $orderedBidirToOneEdit);
     assertEquals(createdEvent.getOldValue(), goal);
     assertEquals(createdEvent.getNewValue(), null);

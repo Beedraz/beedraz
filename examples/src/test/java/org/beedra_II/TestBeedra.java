@@ -46,7 +46,7 @@ import org.beedraz.semantics_II.expression.string.StringEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ppeew.smallfries_I.ComparisonUtil;
+import org.ppwcode.util.smallfries_I.ComparisonUtil;
 
 
 public class TestBeedra {

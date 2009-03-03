@@ -195,8 +195,8 @@ public class TestBeedra {
       assertEquals(expectedNewName, nameListener.$event.getNewValue());
       assertNotNull(projectListener.$event);
       assertEquals(project, projectListener.$event.getSource());
-      assertEquals(1, projectListener.$event.getComponentevents().size());
-      assertTrue(projectListener.$event.getComponentevents().contains(nameListener.$event));
+      assertEquals(1, projectListener.$event.getComponentEvents().size());
+      assertTrue(projectListener.$event.getComponentEvents().contains(nameListener.$event));
       assertEquals(expectedEdit, editListener.$edit);
     }
     assertEquals(expectedNewName, project.name.get());
@@ -528,14 +528,14 @@ public class TestBeedra {
   private void validateTaskListener(Task task, BeanListener taskListener, BidirToOneListener taskProjectListener) {
     assertNotNull(taskListener.$event);
     assertEquals(task, taskListener.$event.getSource());
-    assertEquals(1, taskListener.$event.getComponentevents().size());
-    assertTrue(taskListener.$event.getComponentevents().contains(taskProjectListener.$event));
+    assertEquals(1, taskListener.$event.getComponentEvents().size());
+    assertTrue(taskListener.$event.getComponentEvents().contains(taskProjectListener.$event));
   }
 
   private void validateProjectListener(Project project, BeanListener projectListener, BidirToManyListener projectTasksListener) {
     assertNotNull(projectListener.$event);
     assertEquals(project, projectListener.$event.getSource());
-    assertTrue(projectListener.$event.getComponentevents().contains(projectTasksListener.$event));
+    assertTrue(projectListener.$event.getComponentEvents().contains(projectTasksListener.$event));
   }
 
   private void validateNoEvents(BeanListener taskListener, BidirToOneListener taskProjectListener, BeanListener project1Listener, BidirToManyListener project1TasksListener, BeanListener project2Listener, BidirToManyListener project2TasksListener) {

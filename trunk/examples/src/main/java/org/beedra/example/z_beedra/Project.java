@@ -17,7 +17,7 @@ limitations under the License.
 package org.beedra.example.z_beedra;
 
 
-import static org.ppeew.smallfries_I.MultiLineToStringUtil.indent;
+import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.indent;
 
 import org.beedraz.semantics_II.bean.AbstractBeanBeed;
 import org.beedraz.semantics_II.expression.association.set.BidirToManyBeed;

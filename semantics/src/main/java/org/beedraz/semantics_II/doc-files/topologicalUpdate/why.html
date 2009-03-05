@@ -6,8 +6,8 @@
 <style type="text/css">
 <!--
 dfn {
-	font-style: italic;
-	color: #009900;
+  font-style: italic;
+  color: #009900;
 }
 -->
 </style>
@@ -47,15 +47,15 @@ dfn {
 <p>In this way, the updates propagate through the beed graph structure, in a depth-first fashion, as if the graph was a tree.  As you can see in the collaboration diagram, there are negative effects.</p>
 <p><img src="img/NaiveMVCCollaboration.png" alt="Colloboration diagram of a naive MVC algorithm" style="width:100%" />  It is clear that <code>a1</code>, <code>a2</code>, and <code>o1</code> are warned twice each, and will recalculate their value, and also warn external listeners, twice. <code>o2</code> is even updated four times, of which two times by the same object <code>a1</code> and two times by the same object <code>o1</code>. The least we can say, is that this is inefficient. Furthermore, also external listeners are warned more than once: since, e.g., <code>a1</code> is visited twice by this algorithm, it will potentially warn external listeners twice of a change in its value, where only the last change reflects the final value. The first warning will trigger the external listener with an intermediate value. A further problem is that this intermediate value might not be semantically valid. This is demonstrated in the applet below, which shows the naive algorithm. The demo can also be used locally, as an application (<a href="bin/LogicCircuitsNaiveDemo.jar">download the application</a>, and double-click the downloaded jar file, or start it via the commandline with <kbd>java -jar LogicCircuitsNaiveDemo.jar</kbd> or <kbd>java -classpath LogicCircuitsNaiveDemo.jar LogicCircuitsDemo</kbd>).</p>
 <applet archive="bin/LogicCircuitsNaiveDemo.jar"
-			code="LogicCircuitsDemo"
-			width="700"
-			height="500"
-			name="Logic Circuits Demo"
-			alt="Logic Circuits Demo">
-	<hr />
-	Deze browser ondersteunt applets niet. <a href="LogicCircuitsNaiveDemo.jar">Download de applicatie</a>,
-	en run ze lokaal met <kbd>java -jar LogicCircuitsNaiveDemo.jar</kbd> of <kbd>java -classpath LogicCircuitsNaiveDemo.jar LogicCircuitsDemo</kbd>.
-	<hr />
+      code="LogicCircuitsDemo"
+      width="700"
+      height="500"
+      name="Logic Circuits Demo"
+      alt="Logic Circuits Demo">
+  <hr />
+  Deze browser ondersteunt applets niet. <a href="LogicCircuitsNaiveDemo.jar">Download de applicatie</a>,
+  en run ze lokaal met <kbd>java -jar LogicCircuitsNaiveDemo.jar</kbd> of <kbd>java -classpath LogicCircuitsNaiveDemo.jar LogicCircuitsDemo</kbd>.
+  <hr />
 </applet>
 <p>The applet is started by clicking on <code>bit1</code> or <code>bit2</code>. In the nominal mode, you can see the results: clicking on <code>bit2</code> reverses the value of <code>n3</code> and <code>a2</code>, and clicking on <code>bit1</code> reverses the value of <code>n1</code>, <code>n2</code> and <code>a2</code>, while leaving the value of <code>a1</code>, <code>o1</code> and <code>o2</code> untouched, as expected from the logic equations above.</p>
 <p>When the <kbd>Demo Mode</kbd> is <kbd>Enabled</kbd>, the beeds send out events when listener processing starts and ends. During event processing, their border is painted blue. What happens is recorded and played in slow motion, to make it possible for you to study the behavior. The slider controls the speed (higher numbers make a slower demonstration). As you can see from the demo, the depth-first algorithm happens as described, and, e.g., <code>a1</code> is visited twice when you click <code>bit1</code>.</p>
@@ -274,7 +274,7 @@ Secondly, this algorithm involves all beeds in a beed structure every time. In o
     <td>3</td>
     <td>4</td>
   </tr>
-	<caption align="bottom">Maximum root update source distances</caption>
+  <caption align="bottom">Maximum root update source distances</caption>
 </table>
 <p><dfn>Root update sources</dfn> are update sources that do not depend on other update sources. They are the potential final source of changes that can propagate through the system. The maximum root update source distance of a root update source is 0. In the example, editable beeds are root update sources (the two {@link org.beedraz.semantics_II.expression.bool.EditableBooleanBeed EditableBooleanBeeds} <code>bit1</code> and <code>bit2</code>). The maximum root update source distance of a dependent beed is one larger than the maximum of the maximum root update source distances of its update sources. The table to the right shows the maximum root update source distances for the beeds in the example.</p>
 <p>Given the maximum root update source distances for all beeds, we can build the topological order in a structure that keeps entries sorted by ascending maximum root update source distance as follows. We start by adding the root update source that is changed to the sorted structure. We employ a cursor to walk through this structure, until we reach the end. When we deal with the current element, we ask it to update itself, and when the current element answers that it has not changed (it returns <code>null</code>), we simply advance the cursor. If the current element answers that is has changed (with an event describing the change) we save the event, and ask the current element for its dependents. We add all these dependents to the sorted structure at their sorted position, and we advance the cursor.</p>
@@ -315,7 +315,7 @@ Secondly, this algorithm involves all beeds in a beed structure every time. In o
     <td>bit1, n1, n2 , a1, o1, <em>a2</em></td>
     <td>{}</td>
   </tr>
-	<caption align="bottom">Progression of the Beedraz topological update algorithm</caption>
+  <caption align="bottom">Progression of the Beedraz topological update algorithm</caption>
 </table>
 <p>The implementation of this algoritm in Beedraz is higly optimized for speed, as that became necessary in a complex, mathematically oriented application. The algorithm also allows for atomic changes of more than one root update source. It is easy to see that we can fill the sorted data structure initially with as many root update sources (MRUSD == 0), in any order, as we want. </p>
 <p>The problem that remains, is the maintenance of the maximum root update source distance for each beed in the beed structure. Luckily, this problem is less complex than the preparatory step in the naive topological sorting algorithm.</p>

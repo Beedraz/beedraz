@@ -17,9 +17,9 @@ limitations under the License.
 package org.beedraz.semantics_II.expression.collection.set.sorted;
 
 
-import static java.util.Collections.unmodifiableSortedSet;
 import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
 
+import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -78,7 +78,7 @@ public final class ActualSortedSetEvent<_Element_>
 
   @Override
   protected SortedSet<_Element_> unmodifiable(SortedSet<_Element_> c) {
-    return unmodifiableSortedSet(c);
+    return Collections.unmodifiableSortedSet(c);
   }
 
   /**

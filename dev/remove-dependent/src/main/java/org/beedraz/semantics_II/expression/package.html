@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Expression Beeds</title>
+  </head>
+  <body>
+    <p>MUDO this is obsolete <em>Simple</em> property beeds are {@link org.beedraz.semantics_II.property.PropertyBeed property beeds}
+      that are state holders for a simple value or reference. Simple property beeds hold
+      one date, or one number, or one object reference.</p>
+    <p>Classes and interfaces in this package should be considered mainly an implementation
+      help for beed developers (notably beed developers for custom value types). The fact that
+      a property beed value or reference is <em>simple</em> has no semantic bearing whatsoever.
+      Often, property beeds of a simple type are yet defined without reference to
+      {@link SimplePropertyBeed}, e.g., the number beeds ({@see org.beedraz.semantics_II.property.double.DoubleBeed}),
+      which are not <em>simple</em> because of inheritance needs.</p>
+    <p>On the other hand, peripheral developers can exploit common code for {@link SimplePropertyBeed}
+      subtypes, so beeds for which it is appropriate, should be developed as a subtype of
+      {@link SimplePropertyType} as much as possible.</p>
+    <p>The events send by simple property beeds are often {@link OldNewEvent OldNewEvents}, that express
+      the change by offering the new and the old value of the changed beed. Yet, also non-simple property
+      beeds, or non-property beeds, could send {@link OldNewEvent OldNewEvents}, and not all subtypes of
+      {@link SimplePropertyBeed} send {@link OldNewEvent OldNewEvents} (see, e.g., {@link SetBeed}).</p>
+    <br clear="all" />
+    <table class="svninfo">
+      <tr>
+        <th>Revision</th>
+        <td>$Revision$</td>
+      </tr>
+      <tr>
+        <th>Date</th>
+        <td>$Date$</td>
+      </tr>
+    </table>
+    <div class="license">
+      <p>Copyright 2007 - $Date$
+        by the Beedraz authors.</p>
+      <p>Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+        <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+      <p>Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an <strong>&quot;AS IS&quot;
+        BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</strong>, either
+        express or implied. See the License for the specific language governing
+        permissions and limitations under the License.</p>
+    </div>
+  </body>
+</html>

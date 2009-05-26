@@ -1,0 +1,186 @@
+<html>
+<head>
+<title>Probleemstelling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../styles.css" type="text/css">
+</head>
+
+<body>
+<p class="pageTitle">Probleemstelling</p>
+<p>Voor het project wordt het probleem tot zijn essentie herleid. We beschouwen 
+  <dfn>logische circuits</dfn> zoals die in digitale elektronica worden gebruikt 
+  om digitale componenten te bouwen. Een verandering in de waarde van een logisch 
+  circuit propageert door het systeem van de inputs van een digitale component 
+  naar de outputs.</p>
+<p>De klasse <code>LogicCircuit</code> stelt een logisch circuit voor. Instanties 
+  van dit type hebben een booleaanse waarde, en wanneer die verandert, sturen 
+  ze <code>ValueChangedEvent</code>s naar geregistreerde <code>ValueChangedListener</code>s. 
+  We onderscheiden 2 soorten logische circuits: <dfn>autonome</dfn> logische circuits 
+  en <dfn>afgeleide</dfn> logische circuits. Deze laatsten worden in digitale 
+  elektronica <dfn>logische poorten</dfn> genoemd. Voorbeelden zijn een NOT poort, 
+  een AND poort en een OR poort. Andere poorten, zoals de NAND poort die in digitale 
+  elektronica erg belangrijk is, zijn mogelijk.<br>
+  Autonome logische circuits verkrijgen hun waarde op een manier die buiten het 
+  systeem valt. In het project staat de klasse <code>Bit</code> voor een autonoom 
+  logisch circuit. In de demo wordt de waarde van <code>Bit</code> instanties 
+  bepaald door de gebruiker. De waarde van logische poorten is volledig bepaald 
+  door de waarde van hun inputs. Logische poorten zijn geregistreerd bij de logische 
+  circuits waarvan ze hun input krijgen, en worden gewaarschuwd als de waarde 
+  van de input verandert, op een recursieve manier. </p>
+<p>Onderstaand applet illustreert het probleem. De demo kan ook<a href="#lokaalDraaien"> 
+  lokaal als applicatie</a> gebruikt worden.</p>
+<applet archive="Opgave/bin/LogicCircuitsNaiveDemo.jar"
+				code="LogicCircuitsDemo"
+				width="700"
+				height="500"
+				name="Logic Circuits Demo"
+				alt="Logic Circuits Demo">
+	<hr>
+	Deze browser ondersteunt applets niet.
+	<a href="Opgave/bin/LogicCircuitsNaiveDemo.jar">Download de applicatie</a>,
+	en run ze lokaal met <kbd>java -jar LogicCircuitsNaiveDemo.jar</kbd> of
+	<kbd>java -classpath LogicCircuitsNaiveDemo.jar LogicCircuitsDemo</kbd>.
+	<hr>
+</applet>
+<p>Wanneer je met de muis klikt op 1 van de <dfn>Bit</dfn>s (<kbd>bit1</kbd> 
+  en <kbd>bit2</kbd>, bovenaan), zal je zien dat de logische waarden van de afhankelijke 
+  logische poorten aangepast worden. Op het eerste zicht lijkt alles ok, maar 
+  effectief gebeurt het aanpassen van de logische waarde van de afhankelijke poorten 
+  foutief. De fouten zijn niet zichtbaar omwille van de snelheid van je computer. 
+  Je kan de uitvoeringssnelheid verlagen <a href="#demoModusAnimatie" class="footnoteReference">(zie 
+  voetnoot)</a> door de <dfn>demo modus</dfn> te activeren. In demo modus kan 
+  je de snelheid aanpassen met de schuifbalk.</p>
+<p>Deze na&iuml;eve implementatie gebruikt het <dfn>standaard event-mechanisme</dfn>, 
+  dat bedoeld was om bijvoorbeeld een GUI de kans te geven zijn representatie 
+  aan te passen indien de waarde van een logisch circuit verandert, ook om afhankelijke 
+  logische poorten hun waarden te laten aanpassen aan veranderde waarden van hun 
+  inputs. Bij <kbd>n1</kbd> bijvoorbeeld, is de GUI representatie van het logisch 
+  circuit geregistreerd als <code>ValueChangedListener</code>. Deze binding zorgt 
+  in het applet hierboven voor het veranderen van de kleur van het lichaam van 
+  de voorstelling en de string die de waarde voorstelt. <kbd>n2</kbd> is ook geregistreerd 
+  als <code>ValueChangedListener</code> bij <kbd>n1</kbd>. Deze binding zorgt 
+  ervoor dat de waarde van <kbd>n2</kbd> verandert indien de waarde van <kbd>n1</kbd> 
+  verandert. Als reactie op een waarschuwing van <kbd>n1</kbd> zal <kbd>n2</kbd> 
+  zijn logische waarde aanpassen, en op zijn beurt events sturen over de verandering 
+  naar de <code>ValueChangedListeners</code> die bij hem geregistreerd zijn. De 
+  listeners zijn in casu de GUI voorstelling van <kbd>n2</kbd>, en <kbd>a1</kbd> 
+  en <kbd>o1</kbd>. Dit betekent dat, in onbepaalde volgorde, de kleur van het 
+  lichaam van de GUI voorstelling zal aangepast worden, en de waarde van de 2 
+  afhankelijk logische poorten (die op hun beurt dan weer ...). <kbd>n1</kbd> 
+  had echter nog meer geregistreerde <code>ValueChangedListeners</code>: <kbd>a1</kbd>, 
+  <kbd>o1</kbd> en <kbd>a2</kbd> zijn ook afhankelijk van <kbd>n1</kbd>. De listeners 
+  geregistreerd bij <kbd>n1</kbd> zullen ook in onbepaalde volgorde afgehandeld 
+  worden. Dus, op het moment dat <kbd>n2</kbd> <kbd>a1</kbd> waarschuwt, zal <kbd>a1</kbd> 
+  ofwel reeds gewerkt hebben als reactie op een waarschuwing van <kbd>n1</kbd>, 
+  ofwel zal dat zo dadelijk nog gebeuren. In elk geval, <kbd>a1</kbd> is geregistreerd 
+  bij al zijn input poorten als <code>ValueChangedListener</code>, en zal dus 
+  van elk van hen events krijgen, en zichzelf evenzoveel keer herberekenen, en 
+  evenzoveel keer zelf events over een wijziging naar de GUI en andere ge&iuml;nteresseerde 
+  listeners sturen. <kbd>o2</kbd> zal in totaal 4 keer reageren op een verandering 
+  in waarde van <kbd>bit1</kbd>; er zijn immers vier paden van <kbd>bit1</kbd> naar 
+  <kbd>o2</kbd>, en events over de verandering zullen over elk van die 4 paden 
+  <kbd>o2</kbd> bereiken.</p>
+<p>Er zijn 2 problemen met deze aanpak: het is niet <em>correct</em>, en het is 
+  niet <em>effici&euml;nt</em>.</p>
+<h1>Correctheidsprobleem</h1>
+<p>Met booleaanse logica kunnen we een aantal dingen aantonen die voor de bovenstaande 
+  configuratie steeds moeten gelden. De configuratie is als volgt gedefinieerd:</p>
+<p><code><kbd>n1</kbd> == ! <kbd>bit1</kbd>;<br>
+  <kbd>n2</kbd> == ! <kbd>n1</kbd>;<br>
+  <kbd>a1</kbd> == <kbd>n1</kbd> &amp;&amp; <kbd>n2</kbd>;<br>
+  <kbd>o1</kbd> == <kbd>n1</kbd> || <kbd>n2</kbd>;<br>
+  <kbd>o2</kbd> == <kbd>a1</kbd> || <kbd>o1</kbd>;<br>
+  <kbd>n3</kbd> == ! <kbd>bit2</kbd>;<br>
+  <kbd>a2</kbd> == <kbd>n1</kbd> &amp;&amp; <kbd>o1</kbd> &amp;&amp; <kbd>n3</kbd>;</code></p>
+<p>Hieruit kunnen we onder andere afleiden dat:</p>
+<p><code><kbd>a1</kbd> == <kbd>n1</kbd> &amp;&amp; <kbd>n2</kbd> == ! <kbd>bit1</kbd> 
+  &amp;&amp; ! <kbd>n1</kbd> == ! <kbd>bit1</kbd> &amp;&amp; ! ! <kbd>bit1</kbd> 
+  == ! <kbd>bit1</kbd> &amp;&amp; <kbd>bit1</kbd> == false;</code> (contradictie)</p>
+<p><code><kbd>o1</kbd> == <kbd>n1</kbd> || <kbd>n2</kbd> == ! <kbd>bit1</kbd> || 
+  ! <kbd>n1</kbd> == ! <kbd>bit1</kbd> || ! ! <kbd>bit1</kbd> == ! <kbd>bit1</kbd> 
+  || <kbd>bit1</kbd> == true;</code> (tautologie)</p>
+<p>of nog, <kbd>a1</kbd> moet steeds rood zijn, en <kbd>o1</kbd> moet steeds groen 
+  zijn.</p>
+<p>Wanneer je de applet in demo modus runt, zal je zien dat hiertegen gezondigd 
+  wordt. Soms wordt <kbd>a1</kbd> groen en soms wordt <kbd>o1</kbd> rood. Een 
+  publieke gebruiker (de GUI bijvoorbeeld) ziet dus ongeldige toestanden.</p>
+<h1></h1>
+<h1>Effici&euml;ntieprobleem</h1>
+<p>Omdat de huidige na&iuml;eve implementatie het standaard event mechanisme gebruikt, 
+  worden verschillende logische poorten meer dan eens gevraagd hun waarde aan 
+  te passen voor 1 verandering in een autonoom logisch circuit. In deze implementatie 
+  doen logische poorten dit door hun logische waarde van nul te berekenen op basis 
+  van de logische waarde van hun inputs <a href="#andOrOptimalisatie" class="footnoteReference">(zie 
+  voetnoot)</a>. Dit werk gebeurt dus verschillende keren. De eerste keren is 
+  het zinloos werk. Ten eerste zal de berekende waarde door latere activaties 
+  overschreven worden. Ten tweede is de berekende waarde fout, omdat sommige inputs 
+  hun oude waarden nog hebben. Enkel de laatste berekening is zinvol. Het correctheidsprobleem 
+  is een direct gevolg hiervan: de tussenliggende foutieve waarden worden ook 
+  nog eens publiek gemaakt.</p>
+<p>Het beste voorbeeld van dit probleem is <kbd>o2</kbd>, die in de demo hierboven 
+  4 keer berekend wordt. Dit wordt zichtbaar gemaakt in de demo door het flikkeren 
+  en de kleur van de rand in de GUI voorstelling van de logische circuits. Om 
+  demonstratieredenen wordt er in deze code ook een event patroon gebruikt om 
+  listeners te waarschuwen van de start en het einde van het update-process van 
+  elk logisch circuit. Vanaf het moment dat een logisch circuit contempleert om 
+  zijn waarde te wijzigen, waarschuwt het de geregisteerde <code>DemoUpdateListeners</code>. 
+  Vanaf het moment dat een logisch circuit de verandering als afgesloten beschouwt, 
+  doet het dat opnieuw. <code>ValueChangedEvents</code> worden dus ergens tussen 
+  dit begin en einde gestuurd.</p>
+<h1>Bron van de problemen</h1>
+<p>De bron van de problemen is de recursieve natuur van het standaard event mechanisme. 
+  Dit leidt tot een <dfn>depth-first walk</dfn> door de structuur van afhankelijk 
+  logische circuits. Daar deze structuur echter geen boom is, maar een grafe, 
+  worden verschillende knopen meer dan eens bezocht (effici&euml;ntie), en in 
+  de verkeerde volgorde.</p>
+<h1>Opdracht</h1>
+<p>De <strong>opdracht</strong> van dit project is om de code te veranderen<strong> 
+  zodat de uitvoering in de eerste plaats correct verloopt</strong>. In de tweede 
+  plaats moet dit <em>zo effici&euml;nt mogelijk gebeuren</em>.</p>
+<p>Een correct en effici&euml;nt algoritme zal ervoor zorgen dat een logische 
+  poort pas wordt geactiveerd als al de inputs waar ze van afhangt reeds hun nieuwe 
+  waarde berekend hebben. In de demo hierboven betekent dat bijvoorbeeld dat <kbd>o1</kbd> 
+  pas geactiveerd wordt als zowel <kbd>n1</kbd> als <kbd>n2</kbd> klaar zijn met 
+  hun aanpassingen. Dit heet de <dfn>topologische volgorde</dfn>. Als de structuur 
+  een boom zou geweest zijn, zoals de manier van voorstellen in het demo-applet 
+  suggereert, dan komt dit overeen met een <dfn>breadth-first walk</dfn>. Deze 
+  term wordt soms ook gebruikt voor een laag-per-laag wandeling door een grafe. 
+  De term <dfn>topologische sortering</dfn> of <dfn>topologische volgorde</dfn> 
+  wordt enkel gebruikt bij gerichte, acyclische grafen, zoals afhankelijkheidsgrafen. 
+  Een ander voorbeeld van afhankelijkheidsgrafen zijn cursussen die voorkennis 
+  vereisen: je mag een bepaalde cursus slechts volgen als je andere cursussen, 
+  waarop de eerste steunt, met succes hebt afgelegd. Je moet je dus voor cursussen 
+  inschrijven in een topologische volgorde.</p>
+<p>Een strategie voor een correct en effici&euml;nt algoritme wordt op de <a href="oplossingsstrategie.html">volgende 
+  pagina</a> beschreven.</p>
+<h1>Code</h1>
+<p>De <a href="Opgave/">volledige code van bovenstaande demo</a> kan je hier bekijken 
+  en downloaden. Ook de <a href="Opgave/doc/index.html" target="javadoc">javadoc 
+  documentatie</a> is hier te bekijken. De javadoc documentatie vermeldt niet 
+  de formele specificatie die je wel in de source code terug zal vinden. Je zal 
+  je project maken op basis van deze code.</p>
+<p>Enkel het pakket <code><a href="Opgave/src/be/ac/kuleuven/cs/ips2/project2002/logicCircuits/">logicCiruits</a></code> 
+  is van belang. Het pakket <a href="Opgave/src/be/ac/kuleuven/cs/ips2/project2002/awtgui/"><code>awtgui</code></a> 
+  en het <a href="Opgave/doc/LogicCircuitsDemo.html">hoofdprogramma</a> beschouw 
+  je best als een black box.</p>
+<hr>
+<h1>Voetnoten:</h1>
+<ul>
+  <li><a name="demoModusAnimatie"></a>Ter informatie: de demo modus vertraagt 
+    niet echt de uitvoering van het programma. De effecten van het programma worden 
+    <em>opgenomen</em> en daarna vertraagd afgespeeld. Tijdens het afspelen is 
+    verdere interactie niet mogelijk. Dit alles is niet van belang voor het project.</li>
+  <li><a name="lokaalDraaien"></a>Om de demo lokaal te gebruiken, <a href="Opgave/bin/LogicCircuitsNaiveDemo.jar">download 
+    je de applicatie</a>, en run je ze lokaal door erop te dubbel-klikken, of 
+    via de commandolijn met <kbd>java -jar LogicCircuitsNaiveDemo.jar</kbd> of 
+    <kbd>java -classpath LogicCircuitsNaiveDemo.jar LogicCircuitsDemo</kbd>. De 
+    applicatie stopt als je het applicatievenster sluit.</li>
+  <li><a name="andOrOptimalisatie"></a>Voor <code>And</code> en <code>Or</code> 
+    zijn optimalisaties mogelijk, en misschien voor andere soorten poorten ook. 
+    We tellen dan het aantal inputs die <code>false</code>, respectievelijk <code>true</code> 
+    zijn, en als dat aantal 0 is, dan is de poort zelf <code>true</code>, respectievelijk 
+    <code>false</code>. Zulke optimalisaties veranderen echter niets aan het probleem 
+    dat hier besproken wordt</li>
+</ul>
+</body>
+</html>

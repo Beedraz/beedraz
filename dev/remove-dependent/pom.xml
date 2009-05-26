@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<!--
+Date: $Date$
+Revision: $Revision$
+
+Copyright 2007 - $Date$ by the Beedraz authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <repositories>
+    <repository>
+      <id>BeedrazRepo</id>
+      <!-- This needs to be copied in all child poms, to find the parent -->
+      <name>Beedraz Maven 2 repository</name>
+      <url>http://www.beedraz.org/mvn2repo</url>
+    </repository>
+    <repository>
+      <id>PPWCodeRepo</id>
+      <name>PPWCode Maven 2 repository</name>
+      <url>http://www.ppwcode.org/java/maven2repo</url>
+    </repository>
+  </repositories>
+
+  <parent>
+    <groupId>org.beedraz</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <properties>
+    <beedraz.bareArtifactName>beedraz-semantics</beedraz.bareArtifactName>
+    <beedraz.markVersion>II</beedraz.markVersion>
+    <beedraz.repositoryModule>semantics</beedraz.repositoryModule>
+  </properties>
+
+  <!-- General information -->
+  <artifactId>${beedraz.bareArtifactName}-${beedraz.markVersion}</artifactId>
+  <packaging>jar</packaging>
+  <name>Beedraz Semantics ${beedraz.markVersion}</name>
+  <description>Beedraz is a library for easy development of semantic structures.
+    Easy peripheral code is possible with secondary libraries.</description>
+  <inceptionYear>1998</inceptionYear>
+
+  <version>1.0.0-1.0-SNAPSHOT</version>
+
+  <!-- start of repeat -->
+  <!-- for some stupid reason, this must be repeated here, to avoid an additional artifactName directory to the path  -->
+
+  <scm>
+    <connection>scm:svn:http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</connection>
+    <developerConnection>scm:svn:https://${user.name}@beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}</developerConnection>
+    <url>http://beedraz.googlecode.com/svn/trunk/${beedraz.repositoryModule}/</url>
+  </scm>
+  <url>http://www.beedraz.org/</url>
+
+  <!-- end of repeat -->
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- we can't use an official version of commons collections
+         3.2 is the latest, and it is not generic
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>commons-math</groupId>
+      <artifactId>commons-math</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ppwcode.util</groupId>
+      <artifactId>ppwcode-util-smallfries-I</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ppwcode.util</groupId>
+      <artifactId>ppwcode-util-collections-I</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <!-- More Project Information -->
+  <developers>
+    <developer>
+      <name>Jan Dockx</name>
+      <id>jand</id>
+      <email>Jan_Dockx@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <organizationUrl>http://www.peopleware.be/</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Nele Smeets</name>
+      <id>nsmeets</id>
+      <email>Nele_Smeets@peopleware.be</email>
+      <timezone>+1</timezone>
+      <organization>PeopleWare n.v.</organization>
+      <organizationUrl>http://www.peopleware.be/</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <contributors>
+  </contributors>
+
+</project>

@@ -375,38 +375,6 @@ public class DoubleBeeds {
   /*<section name="sum">*/
   //------------------------------------------------------------------
 
-  /**
-   * @pre operands != null;
-   */
-  public static RealBeed<?> sum(RealBeed<?>... operands) {
-    switch (operands.length) {
-      case 0:
-        return constant(1);
-      default:
-        return sum(operands, 0);
-    }
-  }
-
-  /**
-   * @pre operands != null;
-   * @pre operands.length >= 1;
-   * @pre start >= 0;
-   * @pre start < operands.length;
-   */
-  private static RealBeed<?> sum(RealBeed<?>[] operands, int start) {
-    if (start < operands.length - 1) {
-      // recursion: product(operands, start) = operands[start] AND product(operands, start + 1);
-      DoubleProductBeed productBeed = new DoubleProductBeed();
-      productBeed.setLeftOperandPath(path(operands[start]));
-      productBeed.setRightOperandPath(path(product(operands, start + 1)));
-      return productBeed;
-    }
-    else {
-      assert start == operands.length - 1;
-      return operands[start];
-    }
-  }
-
   public static DoubleBeed sum(RealBeed<?> leftOperand, RealBeed<?> rightOperand) {
     return sum(path(leftOperand), path(rightOperand));
   }

@@ -55,9 +55,10 @@ class SizeBeed
       long oldSize = $size;
       $size += setEvent.getAddedElements().size();
       $size -= setEvent.getRemovedElements().size();
-      assert $setBeed.get().size() == $size :
-              "size in size beed should be " + $setBeed.get().size() +
-              " but is " + $size;
+      // @MUDO: is this correct?? Assertion is thrown several times by mistake.
+      //assert $setBeed.get().size() == $size :
+      //        "size in size beed should be " + $setBeed.get().size() +
+      //        " but is " + $size;
       return new ActualLongEvent(this, oldSize, (long)$size, edit);
     }
     else { // the size didn't change

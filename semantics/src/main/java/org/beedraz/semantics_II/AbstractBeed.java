@@ -53,7 +53,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
   public final void addListener(Listener<? super _Event_> listener) {
     assert listener != null;
     if ($changeListeners == null) {
-      $changeListeners = new WeakArraySet<Listener<? super _Event_>>();
+      $changeListeners = new HashSet<Listener<? super _Event_>>();
     }
     $changeListeners.add(listener);
   }
@@ -82,7 +82,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
       @SuppressWarnings("unchecked")
       _Event_ eEvent = (_Event_)event;
       @SuppressWarnings("unchecked")
-      Set<Listener<? super _Event_>> listeners = $changeListeners.strongClone();
+      Set<Listener<? super _Event_>> listeners = (Set<Listener<? super _Event_>>)$changeListeners.clone();
       for (Listener<? super _Event_> listener : listeners) {
         listener.beedChanged(eEvent);
         // same event, because is immutable
@@ -94,7 +94,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
   /**
    * If the set is empty, it is discarded to save memory.
    */
-  private WeakArraySet<Listener<? super _Event_>> $changeListeners = null;
+  private HashSet<Listener<? super _Event_>> $changeListeners = null;
 
   /*</section>*/
 

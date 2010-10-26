@@ -22,6 +22,7 @@ import static org.ppwcode.util.smallfries_I.MultiLineToStringUtil.objectToString
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.ppwcode.metainfo_I.Copyright;
@@ -53,7 +54,7 @@ public abstract class AbstractBeed<_Event_ extends Event>
   public final void addListener(Listener<? super _Event_> listener) {
     assert listener != null;
     if ($changeListeners == null) {
-      $changeListeners = new HashSet<Listener<? super _Event_>>();
+      $changeListeners = new LinkedHashSet<Listener<? super _Event_>>();
     }
     $changeListeners.add(listener);
   }

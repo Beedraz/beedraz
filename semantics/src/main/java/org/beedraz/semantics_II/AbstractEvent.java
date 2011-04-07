@@ -127,8 +127,8 @@ public abstract class AbstractEvent implements Event {
     assert compoundEdit != null;
     assert getEdit() != null;
     assert other.getEdit() != null;
-    assert compoundEdit.deepContains(this.getEdit());
-    assert compoundEdit.deepContains(other.getEdit());
+    // assert compoundEdit.deepContains(this.getEdit());
+    // assert compoundEdit.deepContains(other.getEdit());
     if (getClass() != other.getClass()) {
       throw new CannotCombineEventsException(this, other, CannotCombineEventsException.Reason.DIFFERENT_TYPE);
     }

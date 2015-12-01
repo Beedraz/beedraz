@@ -1,0 +1,4 @@
+Beedraz (née Beedra) is a framework that allows to activate JavaBean properties. As a result,  there is much less boilerplate code, and the semantics of your program become almost completely declarative, while staying compatible with standard Java code. Furthermore, the common semantics code is exploited in peripheral code: we offer, e.g., a SWT control tweaked at doubles, one tweaked at Strings, and so one, with integrated support for validation, undoability, etc. Other peripheral code deals with persistence in XML, persistence in a relational database, and so on.
+Beedraz is the second incarnation of work that began before 2001, and is actively used in real-life projects. Beedraz is being fine-tuned as we speak.
+
+&lt;wiki:gadget url="http://www.ohloh.net/p/15561/widgets/project\_basic\_stats.xml" height="220" border="1"/&gt;
